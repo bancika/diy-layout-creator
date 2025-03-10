@@ -30,9 +30,11 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.diylc.swingframework.DoubleTextField;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.annotations.PercentEditor;
-import org.diylc.swingframework.DoubleTextField;
 import org.diylc.utils.Constants;
 
 public class ByteEditor extends JPanel {

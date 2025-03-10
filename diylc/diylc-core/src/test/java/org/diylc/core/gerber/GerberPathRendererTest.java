@@ -11,6 +11,8 @@ import org.junit.Test;
 import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.GenerationSoftware;
 
+import org.diylc.core.gerber.GerberPathRenderer;
+
 public class GerberPathRendererTest {
   
   @Test
@@ -20,7 +22,7 @@ public class GerberPathRendererTest {
     Shape shape = textToShape(text, font);
     DataLayer dataLayer = new DataLayer("Copper.Top", false, new GenerationSoftware("v", "a", "ver"));
     GerberPathRenderer.outputPathArea(shape.getPathIterator(null), dataLayer, 0.1, false, "Conductor");
-    dataLayer.dumpGerberToFile(font + text + ".gbr");
+//    dataLayer.dumpGerberToFile(font + text + ".gbr");
   }
 
   private Shape textToShape(String text, String font) {

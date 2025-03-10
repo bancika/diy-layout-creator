@@ -27,8 +27,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
-import org.diylc.common.PropertyWrapper;
+
 import org.diylc.swingframework.fonts.FontChooserComboBox;
+
+import org.diylc.common.PropertyWrapper;
 import org.diylc.utils.Constants;
 
 public class FontEditor extends FontChooserComboBox {

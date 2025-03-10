@@ -23,6 +23,7 @@ package org.diylc.core.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 import org.diylc.common.DefaultComponentTransformer;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.core.CreationMethod;

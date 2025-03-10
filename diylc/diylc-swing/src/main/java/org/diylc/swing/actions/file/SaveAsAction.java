@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.Optional;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;

@@ -27,6 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.nfunk.jep.JEP;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import org.diylc.common.Display;
 import org.diylc.common.Orientation;
 import org.diylc.components.boards.AbstractBoard;
@@ -56,13 +61,13 @@ import org.diylc.components.passive.Resistor;
 import org.diylc.components.passive.ResistorSymbol;
 import org.diylc.components.semiconductors.BJTSymbol;
 import org.diylc.components.semiconductors.DIL_IC;
-import org.diylc.components.semiconductors.DIL_IC.PinCount;
 import org.diylc.components.semiconductors.DiodePlastic;
 import org.diylc.components.semiconductors.DiodeSymbol;
 import org.diylc.components.semiconductors.ICPointCount;
 import org.diylc.components.semiconductors.ICSymbol;
 import org.diylc.components.semiconductors.LEDSymbol;
 import org.diylc.components.semiconductors.TransistorTO92;
+import org.diylc.components.semiconductors.DIL_IC.PinCount;
 import org.diylc.components.shapes.Ellipse;
 import org.diylc.components.shapes.Rectangle;
 import org.diylc.components.tube.PentodeSymbol;
@@ -78,11 +83,8 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.Presenter;
+import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
-import org.nfunk.jep.JEP;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 public class V2FileParser implements IOldFileParser {

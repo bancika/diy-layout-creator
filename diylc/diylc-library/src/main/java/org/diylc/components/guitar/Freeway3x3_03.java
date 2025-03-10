@@ -36,6 +36,12 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
+import com.kitfox.svg.SVGDiagram;
+import com.kitfox.svg.SVGElement;
+import com.kitfox.svg.SVGUniverse;
+import com.kitfox.svg.ShapeElement;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -54,10 +60,6 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGElement;
-import com.kitfox.svg.SVGUniverse;
-import com.kitfox.svg.ShapeElement;
 
 @ComponentDescriptor(name = "Freeway 3X3-03 Toggle", category = "Guitar",
     author = "Branislav Stojkovic", description = "Freeway 3X3-03 Toggle Switch",

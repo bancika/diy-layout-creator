@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.apache.log4j.Logger;
+
 import org.diylc.core.Angle;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.ComponentProcessor;

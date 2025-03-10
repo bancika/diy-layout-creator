@@ -6,6 +6,9 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.Project;
@@ -13,7 +16,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.ButtonDialog;
 
 public class NewAction extends AbstractAction {
 

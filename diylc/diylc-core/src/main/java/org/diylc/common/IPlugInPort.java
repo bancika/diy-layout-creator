@@ -35,6 +35,7 @@ import org.diylc.appframework.simplemq.IMessageListener;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;

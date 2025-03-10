@@ -32,12 +32,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
-import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
+
+import com.thoughtworks.xstream.XStream;
+
+import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.loadline.LoadlineEditorFrame;
 import org.diylc.swing.plugins.file.FileFilterEnum;
-import com.thoughtworks.xstream.XStream;
 
 public class LoadlineEditor extends JButton {
 

@@ -25,6 +25,7 @@ import java.awt.Cursor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 

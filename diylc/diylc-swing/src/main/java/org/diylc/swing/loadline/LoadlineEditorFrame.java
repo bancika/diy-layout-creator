@@ -35,13 +35,6 @@ import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
-import org.diylc.common.EventType;
-import org.diylc.common.HorizontalAlignment;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.PropertyWrapper;
-import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractCurvedComponent.PointCount;
 import org.diylc.components.connectivity.Dot;
 import org.diylc.components.connectivity.Line;
 import org.diylc.components.misc.Image;
@@ -49,6 +42,18 @@ import org.diylc.components.misc.Image.ImageSizingMode;
 import org.diylc.components.misc.Label;
 import org.diylc.components.misc.LoadlineCurve;
 import org.diylc.components.misc.LoadlineEntity;
+import org.diylc.swingframework.ButtonDialog;
+import org.diylc.swingframework.DoubleTextField;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+import org.diylc.common.EventType;
+import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.IPlugIn;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
+import org.diylc.common.VerticalAlignment;
+import org.diylc.components.AbstractCurvedComponent.PointCount;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -63,10 +68,6 @@ import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
-import org.diylc.swingframework.ButtonDialog;
-import org.diylc.swingframework.DoubleTextField;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class LoadlineEditorFrame extends JFrame implements IView {
 

@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.diylc.core.IDIYComponent;
 
 public abstract class NetlistAnalyzer {

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.swing.ActionFactory;

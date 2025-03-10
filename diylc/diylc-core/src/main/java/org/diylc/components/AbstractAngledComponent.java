@@ -22,6 +22,7 @@
 package org.diylc.components;
 
 import java.awt.Shape;
+
 import org.diylc.common.Orientation;
 import org.diylc.core.Angle;
 import org.diylc.core.annotations.EditableProperty;

@@ -27,6 +27,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
@@ -466,7 +467,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(textColor);
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
     
-    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blåsol 2019", (int) (point.getX() + width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
+    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Blï¿½sol 2019", (int) (point.getX() + width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
         HorizontalAlignment.LEFT, VerticalAlignment.TOP);        
     
     // draw central mini pads

@@ -29,13 +29,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.junit.Test;
+
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
-import org.diylc.testcomponents.MockDIYComponent;
 import org.diylc.utils.BomEntry;
 import org.diylc.utils.BomMaker;
-import org.junit.Test;
+import org.diylc.testcomponents.MockDIYComponent;
 
 public class BomMakerTest {
 

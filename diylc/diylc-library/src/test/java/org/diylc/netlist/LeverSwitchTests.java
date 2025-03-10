@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.guitar.LeverSwitch;
 import org.diylc.components.guitar.LeverSwitch.LeverSwitchType;
-import org.junit.Test;
 
 public class LeverSwitchTests extends AbstractSwitchTests {
 

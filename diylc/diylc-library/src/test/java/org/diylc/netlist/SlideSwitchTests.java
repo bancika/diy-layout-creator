@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.electromechanical.SlideSwitch;
 import org.diylc.components.electromechanical.SlideSwitchType;
-import org.junit.Test;
 
 public abstract class SlideSwitchTests extends AbstractSwitchTests {
 

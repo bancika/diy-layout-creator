@@ -22,6 +22,9 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.util.EnumSet;
 import java.util.Set;
+
+import com.bancika.gerberwriter.GerberFunctions;
+
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
@@ -40,7 +43,6 @@ import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace",

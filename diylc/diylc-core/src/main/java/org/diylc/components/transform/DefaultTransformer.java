@@ -22,6 +22,7 @@
 package org.diylc.components.transform;
 
 import java.awt.geom.Point2D;
+
 import org.diylc.common.IComponentTransformer;
 import org.diylc.core.IDIYComponent;
 

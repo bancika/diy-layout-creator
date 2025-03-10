@@ -34,6 +34,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -51,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Pilot Lamp Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
-    description = "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps",
+    description = "Fender-style pilot bulb holder for T2 and T-3 ï¿½ miniature bayonet lamps",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL", enableCache = true)
 public class PilotLampHolder extends AbstractMultiPartComponent<String> {
 

@@ -32,15 +32,17 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.common.BuildingBlockPackage;
-import org.diylc.common.IBlockProcessor;
-import org.diylc.common.IBlockProcessor.InvalidBlockException;
-import org.diylc.common.IPlugInPort;
-import org.diylc.core.IDIYComponent;
-import org.diylc.serialization.ProjectFileManager;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+
+import org.diylc.common.BuildingBlockPackage;
+import org.diylc.common.IBlockProcessor;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
+import org.diylc.core.IDIYComponent;
+import org.diylc.serialization.ProjectFileManager;
 
 public class BuildingBlockManager {
 

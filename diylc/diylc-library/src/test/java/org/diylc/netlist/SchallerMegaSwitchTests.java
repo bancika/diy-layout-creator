@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.guitar.SchallerMegaSwitch;
 import org.diylc.components.guitar.SchallerMegaSwitch.MegaSwitchType;
-import org.junit.Test;
 
 public class SchallerMegaSwitchTests extends AbstractSwitchTests {
 

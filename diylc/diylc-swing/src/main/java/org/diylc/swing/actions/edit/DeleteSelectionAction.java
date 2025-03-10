@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import org.diylc.appframework.miscutils.Utils;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.images.IconLoader;

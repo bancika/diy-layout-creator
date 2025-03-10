@@ -21,12 +21,13 @@
 */
 package org.diylc.serialization;
 
-import org.diylc.core.measures.AbstractMeasure;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
+import org.diylc.core.measures.AbstractMeasure;
 
 /**
  * Serializes objects of types derived from {@link AbstractMeasure} objects in a compact format. Backwards compatible when unmarshalling.

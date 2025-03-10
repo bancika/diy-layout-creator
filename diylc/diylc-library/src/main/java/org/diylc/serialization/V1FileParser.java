@@ -31,6 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
@@ -71,10 +75,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.CalcUtils;
 import org.diylc.presenter.ComparatorFactory;
+import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class V1FileParser implements IOldFileParser {
 

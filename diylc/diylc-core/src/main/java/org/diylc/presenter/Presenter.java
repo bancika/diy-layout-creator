@@ -55,6 +55,11 @@ import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
 import org.diylc.appframework.update.VersionNumber;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
@@ -90,9 +95,6 @@ import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 import org.diylc.utils.ReflectionUtils;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.

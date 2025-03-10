@@ -25,8 +25,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import org.diylc.common.PropertyWrapper;
+
 import org.diylc.swingframework.DoubleTextField;
+
+import org.diylc.common.PropertyWrapper;
 import org.diylc.utils.Constants;
 
 public class IntEditor extends DoubleTextField {

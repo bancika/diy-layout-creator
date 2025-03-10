@@ -30,12 +30,14 @@ import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.HashMap;
 import java.util.Map;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.measures.SizeUnit;
-import org.diylc.utils.Constants;
+
 import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.padmasters.Circle;
+
+import org.diylc.core.IDrawingObserver;
+import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 public class GerberG2DWrapper extends Graphics2D
     implements IDrawingObserver, IGerberDrawingObserver {

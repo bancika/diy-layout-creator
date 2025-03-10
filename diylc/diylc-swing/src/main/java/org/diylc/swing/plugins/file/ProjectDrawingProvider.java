@@ -26,9 +26,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.EnumSet;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.IDrawingProvider;
+
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
-import org.diylc.swingframework.IDrawingProvider;
 
 /**
  * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw a project onto the

@@ -5,6 +5,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+
 import org.diylc.core.IView;
 import org.diylc.swing.ActionFactory;
 

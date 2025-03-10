@@ -8,6 +8,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import javax.swing.filechooser.FileFilter;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
@@ -21,7 +24,6 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.file.NetlistImportDialog;
-import org.diylc.swingframework.ButtonDialog;
 
 public class ImportNetlistAction extends AbstractAction {
 

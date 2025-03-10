@@ -1,3 +1,4 @@
+package org.diylc.components.smd;
 /*
 
     DIY Layout Creator (DIYLC).

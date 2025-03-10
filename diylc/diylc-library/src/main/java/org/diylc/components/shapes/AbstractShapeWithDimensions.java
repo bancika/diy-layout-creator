@@ -23,6 +23,7 @@ package org.diylc.components.shapes;
 
 import java.awt.geom.Point2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.boards.ShapeModeValidator;
 import org.diylc.core.VisibilityPolicy;

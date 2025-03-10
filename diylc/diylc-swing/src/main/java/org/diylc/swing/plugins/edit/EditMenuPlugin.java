@@ -30,6 +30,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.EnumSet;
 import org.diylc.appframework.undo.IUndoListener;
 import org.diylc.appframework.undo.UndoHandler;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;

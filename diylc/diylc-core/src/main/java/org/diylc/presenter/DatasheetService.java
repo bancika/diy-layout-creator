@@ -55,10 +55,11 @@ public class DatasheetService {
   private DatasheetService() {}
 
   public List<String[]> loadDatasheet(Class<?> clazz) {
+    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
     return datasheetCache.computeIfAbsent(clazz.getCanonicalName(), key -> {
       String fileName = clazz.getSimpleName() + ".datasheet";
       LOG.info("Loading datasheet file for " + fileName);
-      URL resource = clazz.getResource(fileName);
+      URL resource = classloader.getResource(fileName);
       if (resource == null) {
         LOG.warn("Datasheet file not found: " + fileName);
         return null;

@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.electromechanical.MiniToggleSwitch;
 import org.diylc.components.electromechanical.ToggleSwitchType;
-import org.junit.Test;
 
 public class MiniToggleSwitchTests extends AbstractSwitchTests {
   

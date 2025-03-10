@@ -8,6 +8,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.diylc.netlist.NetlistParseException;
+import org.diylc.netlist.ParsedNetlistEntry;
+import org.diylc.netlist.TangoNetlistParser;
+
 public class TangoParserTests {
 
   @Test

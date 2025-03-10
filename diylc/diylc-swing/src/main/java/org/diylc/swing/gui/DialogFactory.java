@@ -25,6 +25,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.AboutDialog;
+import org.diylc.swingframework.IFileChooserAccessory;
+import org.diylc.swingframework.ProgressDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.netlist.ParsedNetlistEntry;
@@ -38,9 +42,6 @@ import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.edit.FindDialog;
 import org.diylc.swing.plugins.file.BomDialog;
 import org.diylc.swing.plugins.file.NetlistImportDialog;
-import org.diylc.swingframework.AboutDialog;
-import org.diylc.swingframework.IFileChooserAccessory;
-import org.diylc.swingframework.ProgressDialog;
 import org.diylc.utils.BomEntry;
 
 public class DialogFactory {

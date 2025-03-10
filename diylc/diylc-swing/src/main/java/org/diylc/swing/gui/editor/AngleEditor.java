@@ -26,6 +26,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.Angle;
 import org.diylc.lang.LangUtil;

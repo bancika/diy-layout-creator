@@ -27,8 +27,9 @@ import java.net.URL;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import org.diylc.DIYLCStarter;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+
+import org.diylc.DIYLCStarter;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.gui.DummyView;
 

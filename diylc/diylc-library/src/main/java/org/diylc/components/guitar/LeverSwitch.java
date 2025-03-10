@@ -35,6 +35,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractAngledComponent;

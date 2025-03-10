@@ -23,6 +23,7 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.event.MouseListener;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.plugins.canvas.EmptyTransferable;

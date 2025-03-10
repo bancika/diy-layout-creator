@@ -22,12 +22,14 @@
 package org.diylc.serialization;
 
 import java.awt.geom.Point2D;
-import org.diylc.utils.Constants;
+
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+
+import org.diylc.utils.Constants;
 
 /**
  * Serializes {@link Point2D} objects by converting coordinates from pixels to inches, thus avoiding

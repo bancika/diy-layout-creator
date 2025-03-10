@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
+
+import org.diylc.swingframework.TextDialog;
+
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
@@ -11,7 +14,6 @@ import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Summary;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.TextDialog;
 
 public class SummarizeNetlistAction extends AbstractAction {
 

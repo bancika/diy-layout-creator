@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.VerticalAlignment;
 

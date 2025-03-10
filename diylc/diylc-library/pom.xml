@@ -53,6 +53,11 @@
             <artifactId>poi</artifactId>
             <version>3.5-FINAL</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
         
         <!-- Local dependencies from lib folder -->
         <dependency>

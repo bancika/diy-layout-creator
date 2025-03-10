@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.electromechanical.SwitchLatchingSymbol;
 import org.diylc.components.electromechanical.SwitchLatchingSymbol.PoleCount;
-import org.junit.Test;
 
 public class SwitchLatchingTests extends AbstractSwitchTests {
   

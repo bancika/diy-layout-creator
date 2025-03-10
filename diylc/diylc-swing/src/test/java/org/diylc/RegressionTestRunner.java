@@ -22,17 +22,18 @@ import java.util.stream.Stream;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.update.VersionNumber;
+import org.diylc.swingframework.export.DrawingExporter;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
 import org.diylc.presenter.Presenter;
-import org.diylc.swing.plugins.file.ProjectDrawingProvider;
-import org.diylc.swingframework.export.DrawingExporter;
 import com.github.romankh3.image.comparison.ImageComparison;
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
+import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 
 public class RegressionTestRunner {
 

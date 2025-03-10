@@ -22,6 +22,7 @@
 package org.diylc.components.passive;
 
 import java.awt.Rectangle;
+
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;

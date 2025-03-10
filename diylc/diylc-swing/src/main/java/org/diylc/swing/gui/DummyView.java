@@ -24,6 +24,7 @@ package org.diylc.swing.gui;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 

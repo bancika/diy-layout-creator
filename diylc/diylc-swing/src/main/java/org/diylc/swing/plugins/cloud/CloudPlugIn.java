@@ -31,6 +31,8 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -50,7 +52,6 @@ import org.diylc.swing.plugins.cloud.view.UserEditDialog;
 import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.browser.UploadManagerFrame;
 import org.diylc.swing.plugins.file.FileFilterEnum;
-import org.diylc.swingframework.ButtonDialog;
 
 public class CloudPlugIn implements IPlugIn {
 

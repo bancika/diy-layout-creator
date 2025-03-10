@@ -22,6 +22,7 @@
 package org.diylc.netlist;
 
 import java.awt.geom.Point2D;
+
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
 

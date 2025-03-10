@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;

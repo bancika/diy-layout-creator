@@ -50,14 +50,15 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.swingframework.openide.DropDownButtonFactory;
+import com.google.common.collect.Lists;
+
 import org.diylc.common.ComponentType;
-import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.openide.DropDownButtonFactory;
-import com.google.common.collect.Lists;
 
 /**
  * Factory that creates {@link JButton}s which display component type icons and instantiates the

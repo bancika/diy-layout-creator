@@ -36,11 +36,12 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
-import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 
 public class CustomTreeModel implements TreeModel {

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.IAutoCreator;

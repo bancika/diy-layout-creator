@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;

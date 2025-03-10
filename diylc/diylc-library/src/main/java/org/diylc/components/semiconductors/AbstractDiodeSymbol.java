@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+
 import org.diylc.components.AbstractSchematicLeadedSymbol;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;

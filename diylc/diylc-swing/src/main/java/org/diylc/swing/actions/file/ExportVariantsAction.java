@@ -14,6 +14,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.AbstractAction;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.CheckBoxListDialog;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
@@ -25,7 +27,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.plugins.file.FileFilterEnum;
-import org.diylc.swingframework.CheckBoxListDialog;
 
 public class ExportVariantsAction extends AbstractAction {
 

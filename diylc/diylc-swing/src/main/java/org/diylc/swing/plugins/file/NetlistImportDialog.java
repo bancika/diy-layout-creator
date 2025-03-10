@@ -44,11 +44,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.ParsedNetlistEntry;
-import org.diylc.swingframework.ButtonDialog;
 
 public class NetlistImportDialog extends ButtonDialog {
 

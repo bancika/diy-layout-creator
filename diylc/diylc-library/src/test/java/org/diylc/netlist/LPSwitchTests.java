@@ -1,7 +1,8 @@
 package org.diylc.netlist;
 
-import org.diylc.components.guitar.LPSwitch;
 import org.junit.Test;
+
+import org.diylc.components.guitar.LPSwitch;
 
 public class LPSwitchTests extends AbstractSwitchTests {
   

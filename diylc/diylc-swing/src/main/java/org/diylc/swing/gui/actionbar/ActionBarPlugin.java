@@ -37,6 +37,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
+
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;

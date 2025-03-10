@@ -2,9 +2,11 @@ package org.diylc.presenter;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.junit.Test;
+import org.diylc.presenter.CalcUtils;
 
 public class CalcUtilsTest {
 

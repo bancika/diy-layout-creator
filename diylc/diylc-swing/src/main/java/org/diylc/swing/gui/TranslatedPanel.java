@@ -21,6 +21,7 @@ import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import org.diylc.lang.LangUtil;
 
 public class TranslatedPanel extends JPanel {

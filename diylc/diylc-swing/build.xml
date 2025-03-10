@@ -3,8 +3,8 @@
 	<taskdef name="bundleapp"
 	             classname="com.oracle.appbundler.AppBundlerTask"  />
 
-	<import file="download_jre.xml" />
-	<import file="appimage.xml" />
+	<import file="deploy/download_jre.xml" />
+	<import file="deploy/linux/appimage/build.xml" />
 
 	<property environment="env"/>
 	<property name="src.dir" value="${basedir}/src/main/java" />

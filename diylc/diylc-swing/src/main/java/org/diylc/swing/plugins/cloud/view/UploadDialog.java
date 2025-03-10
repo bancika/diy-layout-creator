@@ -40,11 +40,13 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swing.plugins.cloud.ThumbnailGenerator;
-import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.KeywordExtractor;
 
 public class UploadDialog extends ButtonDialog {

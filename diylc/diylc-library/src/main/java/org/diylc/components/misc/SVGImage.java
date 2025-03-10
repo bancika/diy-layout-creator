@@ -30,6 +30,11 @@ import java.net.URI;
 import java.util.Random;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
+
+import com.kitfox.svg.SVGDiagram;
+import com.kitfox.svg.SVGException;
+import com.kitfox.svg.SVGUniverse;
+
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
@@ -45,9 +50,6 @@ import org.diylc.core.annotations.ByteArrayProperty;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PercentEditor;
-import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGException;
-import com.kitfox.svg.SVGUniverse;
 
 @ComponentDescriptor(name = "SVG Image", author = "Branislav Stojkovic", category = "Misc",
     description = "Scalable Vector Graphics", instanceNamePrefix = "Svg",

@@ -9,6 +9,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
+
 import org.diylc.swing.images.IconLoader;
 
 /**

@@ -34,6 +34,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;

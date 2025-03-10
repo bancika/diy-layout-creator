@@ -30,6 +30,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IconImageConverter;
+
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -46,7 +49,6 @@ import org.diylc.core.annotations.ByteArrayProperty;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PercentEditor;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @ComponentDescriptor(name = "Image", author = "Branislav Stojkovic", category = "Misc",
     description = "User defined image", instanceNamePrefix = "Img", zOrder = IDIYComponent.COMPONENT,

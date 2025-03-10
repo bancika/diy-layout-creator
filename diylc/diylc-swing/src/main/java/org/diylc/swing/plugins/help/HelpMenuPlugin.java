@@ -32,6 +32,10 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.update.UpdateChecker;
 import org.diylc.appframework.update.Version;
+import org.diylc.swingframework.AboutDialog;
+import org.diylc.swingframework.LinkLabel;
+import org.diylc.swingframework.update.UpdateDialog;
+
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
@@ -40,9 +44,6 @@ import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.AboutDialog;
-import org.diylc.swingframework.LinkLabel;
-import org.diylc.swingframework.update.UpdateDialog;
 
 /**
  * Entry point class for help-related utilities.

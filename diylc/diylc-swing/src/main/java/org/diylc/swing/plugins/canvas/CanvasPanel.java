@@ -43,10 +43,11 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
-import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.swing.plugins.tree.TreePanel;
 import org.diylc.utils.ScaledBufferedImage;
 

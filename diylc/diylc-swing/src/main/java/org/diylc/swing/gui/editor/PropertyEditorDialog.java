@@ -39,10 +39,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ValidationException;
 import org.diylc.lang.LangUtil;
-import org.diylc.swingframework.ButtonDialog;
 
 public class PropertyEditorDialog extends ButtonDialog { 
 

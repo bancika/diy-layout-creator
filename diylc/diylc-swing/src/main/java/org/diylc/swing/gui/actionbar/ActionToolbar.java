@@ -32,6 +32,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+
 import org.diylc.lang.LangUtil;
 
 public class ActionToolbar extends JPanel {

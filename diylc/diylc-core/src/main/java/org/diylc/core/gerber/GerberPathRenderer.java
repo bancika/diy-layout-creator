@@ -19,14 +19,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import javax.imageio.ImageIO;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.Project;
-import org.diylc.core.measures.SizeUnit;
+
 import com.bancika.gerberwriter.DataLayer;
 import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.path.MoveTo;
 import com.bancika.gerberwriter.path.Path;
+
+import org.diylc.core.ComponentState;
+import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
+import org.diylc.core.measures.SizeUnit;
 
 public class GerberPathRenderer {
 

@@ -26,10 +26,15 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.components.autocreate.SolderPadAutoCreator;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
+
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.components.autocreate.SolderPadAutoCreator;
 import org.diylc.core.Theme;
 import org.diylc.flags.FlagLoader;
 import org.diylc.lang.LangUtil;
@@ -38,9 +43,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.utils.ResourceLoader;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 /**
  * Controls configuration menu.

@@ -21,6 +21,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
+import org.diylc.swingframework.IDrawingProvider;
+
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
@@ -69,7 +71,6 @@ import org.diylc.swing.actions.file.OpenAction;
 import org.diylc.swing.actions.file.PrintAction;
 import org.diylc.swing.actions.file.SaveAction;
 import org.diylc.swing.actions.file.SaveAsAction;
-import org.diylc.swingframework.IDrawingProvider;
 
 public class ActionFactory {
 

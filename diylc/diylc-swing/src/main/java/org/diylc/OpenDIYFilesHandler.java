@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import org.diylc.common.IPlugInPort;
 
 public class OpenDIYFilesHandler implements OpenFilesHandler {

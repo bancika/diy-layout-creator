@@ -51,6 +51,8 @@ import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -70,7 +72,6 @@ import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.cloud.ThumbnailGenerator;
 import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
-import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.Pair;
 
 /**

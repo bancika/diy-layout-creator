@@ -20,6 +20,7 @@ package org.diylc.netlist;
 
 import java.util.List;
 import java.util.Map;
+
 import org.diylc.core.IDIYComponent;
 
 /*

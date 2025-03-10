@@ -1,7 +1,8 @@
 package org.diylc.netlist;
 
-import org.diylc.components.guitar.S1Switch;
 import org.junit.Test;
+
+import org.diylc.components.guitar.S1Switch;
 
 public class S1SwitchTests extends AbstractSwitchTests {
   

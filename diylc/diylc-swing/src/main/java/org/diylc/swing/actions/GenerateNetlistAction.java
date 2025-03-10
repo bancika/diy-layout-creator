@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JLabel;
+
+import org.diylc.swingframework.TextDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.netlist.Group;
@@ -12,7 +15,6 @@ import org.diylc.netlist.Netlist;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.TextDialog;
 
 public class GenerateNetlistAction extends AbstractAction {
 

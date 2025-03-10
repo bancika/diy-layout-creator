@@ -10,6 +10,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+
 import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;

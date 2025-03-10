@@ -27,6 +27,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.RoundRectangle2D;
+
 import org.diylc.components.passive.AbstractRadialComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
@@ -34,9 +35,9 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
-import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.core.measures.Voltage;
 
 @ComponentDescriptor(name = "PCB Buzzer", author = "M0JXD", category = "Misc",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "BZ",

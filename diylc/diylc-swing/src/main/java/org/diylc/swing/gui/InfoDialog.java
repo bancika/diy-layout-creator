@@ -25,9 +25,10 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.ButtonDialog;
 
 public class InfoDialog extends ButtonDialog {
 

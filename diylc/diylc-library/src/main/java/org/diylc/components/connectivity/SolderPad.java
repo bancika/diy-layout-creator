@@ -24,6 +24,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.EnumSet;
 import java.util.Set;
+
+import com.bancika.gerberwriter.GerberFunctions;
+
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -46,7 +49,6 @@ import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",

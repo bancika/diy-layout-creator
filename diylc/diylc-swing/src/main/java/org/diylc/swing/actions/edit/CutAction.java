@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
+
 import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;

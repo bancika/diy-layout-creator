@@ -28,9 +28,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-import org.diylc.plugins.cloud.model.IServiceAPI;
+
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
+
+import org.diylc.plugins.cloud.model.IServiceAPI;
 
 public class AnnouncementProvider {
 

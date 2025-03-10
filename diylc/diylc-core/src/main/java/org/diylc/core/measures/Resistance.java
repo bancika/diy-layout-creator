@@ -22,6 +22,7 @@
 package org.diylc.core.measures;
 
 import java.awt.Color;
+
 import org.diylc.common.ResistorColorCode;
 
 public class Resistance extends AbstractMeasure<ResistanceUnit> {

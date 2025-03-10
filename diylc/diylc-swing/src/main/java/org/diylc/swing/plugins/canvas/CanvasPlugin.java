@@ -41,6 +41,14 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.swingframework.ruler.IRulerListener;
+import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
+import org.diylc.swingframework.ruler.RulerScrollPane;
+import com.guigarage.gestures.GestureMagnificationEvent;
+import com.guigarage.gestures.GestureMagnificationListener;
+import com.guigarage.gestures.GestureUtilities;
+import com.guigarage.gestures.GesturesNotSupportedException;
+
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -52,13 +60,6 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.ComponentPopupMenu;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
-import org.diylc.swingframework.ruler.IRulerListener;
-import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
-import org.diylc.swingframework.ruler.RulerScrollPane;
-import com.guigarage.gestures.GestureMagnificationEvent;
-import com.guigarage.gestures.GestureMagnificationListener;
-import com.guigarage.gestures.GestureUtilities;
-import com.guigarage.gestures.GesturesNotSupportedException;
 
 public class CanvasPlugin implements IPlugIn{
 

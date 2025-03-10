@@ -33,6 +33,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.awt.StringUtils;
 import org.diylc.awt.TwoCircleTangent;
 import org.diylc.common.HorizontalAlignment;

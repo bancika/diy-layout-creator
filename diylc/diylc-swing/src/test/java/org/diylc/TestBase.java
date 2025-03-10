@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+
 import org.diylc.common.ComponentType;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;

@@ -35,8 +35,10 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.diylc.lang.LangUtil;
+
 import org.diylc.swingframework.ButtonDialog;
+
+import org.diylc.lang.LangUtil;
 
 public class FindDialog extends ButtonDialog {    
 

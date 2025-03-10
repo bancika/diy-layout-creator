@@ -21,11 +21,12 @@
 */
 package org.diylc;
 
-import org.diylc.plugins.file.BomMakerTest;
-import org.diylc.presenter.ClassProcessorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import org.diylc.plugins.file.BomMakerTest;
+import org.diylc.presenter.ClassProcessorTest;
 
 
 @RunWith(Suite.class)

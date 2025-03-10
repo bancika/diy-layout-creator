@@ -25,6 +25,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.Toolkit;
+
 import org.diylc.core.Theme;
 
 public class Constants {

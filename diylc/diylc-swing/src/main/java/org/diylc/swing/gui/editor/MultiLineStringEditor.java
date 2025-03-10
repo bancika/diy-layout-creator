@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.utils.Constants;

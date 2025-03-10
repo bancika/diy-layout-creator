@@ -1,5 +1,10 @@
 package org.diylc.components.passive;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import org.diylc.components.passive.AxialFilmCapacitor;
+import org.diylc.components.passive.CapacitorDatasheetService;
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
@@ -7,8 +12,6 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class CapacitorDimensionServiceTests {
 

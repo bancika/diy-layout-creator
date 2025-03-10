@@ -36,9 +36,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import javax.swing.JComboBox;
 import org.apache.log4j.Logger;
+import org.diylc.swingframework.DoubleArrayTextField;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.AbstractMeasure;
-import org.diylc.swingframework.DoubleArrayTextField;
 import org.diylc.utils.Constants;
 
 public class MeasureArrayEditor extends Container {

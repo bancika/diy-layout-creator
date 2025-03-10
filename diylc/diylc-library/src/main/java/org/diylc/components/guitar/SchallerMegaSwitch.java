@@ -33,6 +33,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
@@ -199,7 +200,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
 
     g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 1.25)));
-    StringUtils.drawCenteredText(g2d, "Schaller Megaswitch® " + type.toString(), x, y,
+    StringUtils.drawCenteredText(g2d, "Schaller Megaswitchï¿½ " + type.toString(), x, y,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 

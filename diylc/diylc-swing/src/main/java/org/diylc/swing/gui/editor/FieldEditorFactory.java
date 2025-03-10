@@ -26,8 +26,9 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JLabel;
 import org.apache.log4j.Logger;
-import org.diylc.common.PropertyWrapper;
 import org.diylc.components.misc.LoadlineEntity;
+
+import org.diylc.common.PropertyWrapper;
 import org.diylc.core.Angle;
 import org.diylc.core.annotations.ByteArrayProperty;
 import org.diylc.core.annotations.DynamicList;

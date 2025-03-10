@@ -28,6 +28,9 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+import com.bancika.gerberwriter.GerberFunctions;
+
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.Orientation;
 import org.diylc.common.PCBLayer;
@@ -46,7 +49,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.GerberLayer;
 import org.diylc.core.gerber.IGerberComponentCustom;
 import org.diylc.core.gerber.IGerberDrawingObserver;
-import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,

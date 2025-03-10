@@ -26,9 +26,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import org.diylc.common.PropertyWrapper;
-import org.diylc.testcomponents.MockDIYComponent;
 import org.junit.Test;
+
+import org.diylc.common.PropertyWrapper;
+import org.diylc.presenter.ComponentProcessor;
+import org.diylc.testcomponents.MockDIYComponent;
 
 
 public class ClassProcessorTest {

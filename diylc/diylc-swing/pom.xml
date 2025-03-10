@@ -158,6 +158,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
+                    <!-- Temporarily commenting out Ant integration to get Maven build working 
                     <execution>
                         <id>ant-build</id>
                         <phase>package</phase>
@@ -166,14 +167,15 @@
                         </goals>
                         <configuration>
                             <target>
-                                <!-- Call your existing Ant build file -->
-                                <ant antfile="${basedir}/build.xml" target="jar">
-                                    <!-- Pass Maven properties to Ant if needed -->
+                                Call your existing Ant build file
+                                <ant antfile="${basedir}/build.xml" target="full">
+                                    Pass Maven properties to Ant if needed
                                     <property name="version" value="${project.version}"/>
                                 </ant>
                             </target>
                         </configuration>
                     </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>

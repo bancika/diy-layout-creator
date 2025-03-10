@@ -3,6 +3,7 @@ package org.diylc.swing.actions;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.core.IView;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.plugins.config.ConfigPlugin;

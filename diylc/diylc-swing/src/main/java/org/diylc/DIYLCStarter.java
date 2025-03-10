@@ -31,6 +31,10 @@ import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.swingframework.export.DrawingExporter;
+import org.diylc.swingframework.fonts.FontOptimizer;
+import com.thoughtworks.xstream.XStream;
+import ca.cgjennings.jvm.JarLoader;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
@@ -39,10 +43,6 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
-import org.diylc.swingframework.export.DrawingExporter;
-import org.diylc.swingframework.fonts.FontOptimizer;
-import com.thoughtworks.xstream.XStream;
-import ca.cgjennings.jvm.JarLoader;
 
 /**
  * Main class that runs DIYLC.

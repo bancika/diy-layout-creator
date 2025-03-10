@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+
+import com.bancika.gerberwriter.DataLayer;
+
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
@@ -20,7 +23,6 @@ import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
-import com.bancika.gerberwriter.DataLayer;
 
 public class GerberExporter {
 

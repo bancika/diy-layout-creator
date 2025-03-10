@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import org.diylc.appframework.update.Change;
 import org.diylc.appframework.update.Version;
-import org.diylc.presenter.Presenter;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+
+import org.diylc.presenter.Presenter;
 
 public class VersionReader {
   public static void main(String[] args) {

@@ -34,12 +34,14 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
+
+import com.thoughtworks.xstream.XStream;
+
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.VariantPackage;
 import org.diylc.core.Template;
 import org.diylc.serialization.ProjectFileManager;
-import com.thoughtworks.xstream.XStream;
 
 public class VariantManager {
 

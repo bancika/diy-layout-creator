@@ -58,6 +58,9 @@ import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
+import org.diylc.swing.IDynamicSubmenuHandler;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
@@ -68,7 +71,6 @@ import org.diylc.core.IView;
 import org.diylc.core.images.IconLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
-import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.actionbar.ActionBarPlugin;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
@@ -86,7 +88,6 @@ import org.diylc.swing.plugins.statusbar.StatusBar;
 import org.diylc.swing.plugins.test.TestMenuPlugin;
 import org.diylc.swing.plugins.toolbox.ToolBox;
 import org.diylc.swing.plugins.tree.ComponentTree;
-import org.diylc.swingframework.ButtonDialog;
 
 public class MainFrame extends JFrame implements ISwingUI {
 

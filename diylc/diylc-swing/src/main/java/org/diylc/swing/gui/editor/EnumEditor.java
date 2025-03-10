@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;

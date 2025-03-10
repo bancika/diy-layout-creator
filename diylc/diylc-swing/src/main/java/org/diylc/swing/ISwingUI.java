@@ -26,10 +26,12 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu.Separator;
-import javax.swing.SwingConstants;
+
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
+
+import javax.swing.SwingConstants;
 
 /**
  * Interface for plugin access to the swing front end.

@@ -20,6 +20,7 @@ package org.diylc.presenter;
 
 import java.awt.geom.Area;
 import java.io.Serializable;
+
 import org.diylc.netlist.AreaSimplifier;
 
 public class ContinuityArea implements Serializable {

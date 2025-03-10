@@ -30,6 +30,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.ImmutableGraph;
+import com.google.common.graph.ImmutableGraph.Builder;
+
 import org.diylc.common.ComponentType;
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IContinuity;
@@ -42,9 +47,7 @@ import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.Connection;
 import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.RTree;
-import com.google.common.graph.GraphBuilder;
-import com.google.common.graph.ImmutableGraph;
-import com.google.common.graph.ImmutableGraph.Builder;
+
 import com.google.common.graph.Traverser;
 
 public class NetlistBuilder {

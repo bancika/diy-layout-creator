@@ -30,12 +30,14 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+import org.diylc.swingframework.IDrawingProvider;
+
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.presenter.PCBLayerFilter;
-import org.diylc.swingframework.IDrawingProvider;
 
 /**
  * {@link IDrawingProvider} implementation that uses {@link IPlugInPort} to draw a project onto the

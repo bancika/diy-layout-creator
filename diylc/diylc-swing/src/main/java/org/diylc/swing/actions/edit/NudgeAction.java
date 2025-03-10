@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.Nudge;
@@ -17,7 +19,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.ButtonDialog;
 
 public class NudgeAction extends AbstractAction {
 

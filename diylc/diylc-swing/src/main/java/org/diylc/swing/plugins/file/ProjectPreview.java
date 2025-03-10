@@ -36,13 +36,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.swingframework.IFileChooserAccessory;
+
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.DummyView;
-import org.diylc.swingframework.IFileChooserAccessory;
 
 /**
  * {@link JComponent} that shows preview of the selected project in {@link JFileChooser}. It's

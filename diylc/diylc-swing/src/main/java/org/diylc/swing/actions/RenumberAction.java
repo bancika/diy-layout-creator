@@ -2,6 +2,7 @@ package org.diylc.swing.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.swing.ActionFactory;
 

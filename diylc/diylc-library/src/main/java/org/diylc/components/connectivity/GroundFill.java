@@ -27,6 +27,9 @@ import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
+
+import com.bancika.gerberwriter.GerberFunctions;
+
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
@@ -45,7 +48,6 @@ import org.diylc.core.gerber.GerberRenderMode;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import com.bancika.gerberwriter.GerberFunctions;
 
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,

@@ -20,6 +20,7 @@ package org.diylc.swing.gui;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
 import org.diylc.lang.LangUtil;
 
 public class TranslatedMenu extends JMenu {

@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import org.diylc.common.LabelPosition;
 import org.diylc.core.ComponentState;
 import org.diylc.core.annotations.EditableProperty;

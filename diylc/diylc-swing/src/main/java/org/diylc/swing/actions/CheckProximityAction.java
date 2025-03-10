@@ -5,6 +5,9 @@ import java.awt.geom.Area;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.AbstractAction;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -17,7 +20,6 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.ButtonDialog;
 
 public class CheckProximityAction extends AbstractAction implements Cloneable {
 

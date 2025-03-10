@@ -3,6 +3,9 @@ package org.diylc.swing.actions.edit;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.AbstractAction;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.Project;
@@ -10,7 +13,6 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.ButtonDialog;
 
 public class EditProjectAction extends AbstractAction {
 

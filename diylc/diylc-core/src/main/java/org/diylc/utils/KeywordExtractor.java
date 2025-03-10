@@ -23,6 +23,7 @@ package org.diylc.utils;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.diylc.common.ComponentType;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;

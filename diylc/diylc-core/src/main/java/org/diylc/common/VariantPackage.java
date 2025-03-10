@@ -23,6 +23,7 @@ package org.diylc.common;
 
 import java.util.List;
 import java.util.Map;
+
 import org.diylc.core.Template;
 
 public class VariantPackage {

@@ -34,6 +34,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.awt.ShadedPaint;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
@@ -42,6 +43,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
+import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;

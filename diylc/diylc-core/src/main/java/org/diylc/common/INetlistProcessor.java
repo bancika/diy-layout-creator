@@ -22,6 +22,7 @@
 package org.diylc.common;
 
 import java.util.List;
+
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;

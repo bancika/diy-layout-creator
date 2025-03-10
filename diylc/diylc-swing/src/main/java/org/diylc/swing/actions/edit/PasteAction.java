@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.IPlugInPort;
 import org.diylc.presenter.Presenter;

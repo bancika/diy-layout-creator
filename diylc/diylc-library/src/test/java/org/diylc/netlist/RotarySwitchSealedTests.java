@@ -1,8 +1,9 @@
 package org.diylc.netlist;
 
+import org.junit.Test;
+
 import org.diylc.components.electromechanical.RotarySwitchSealed;
 import org.diylc.components.electromechanical.RotarySwitchSealedType;
-import org.junit.Test;
 
 public abstract class RotarySwitchSealedTests extends AbstractSwitchTests {
   

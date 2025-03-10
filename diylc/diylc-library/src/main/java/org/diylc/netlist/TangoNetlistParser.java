@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+
 import org.diylc.components.passive.AxialElectrolyticCapacitor;
 import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.CapacitorSymbol;
@@ -31,6 +32,7 @@ import org.diylc.components.semiconductors.ZenerDiodeSymbol;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Voltage;
+import org.diylc.netlist.AbstractNetlistParser;
 
 public class TangoNetlistParser extends AbstractNetlistParser {
 

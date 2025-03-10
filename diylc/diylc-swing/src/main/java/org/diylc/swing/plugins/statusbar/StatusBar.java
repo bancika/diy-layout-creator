@@ -49,12 +49,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.apache.log4j.Logger;
-import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.update.UpdateChecker;
 import org.diylc.appframework.update.Version;
+import org.diylc.swingframework.MemoryBar;
+import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
+import org.diylc.swingframework.update.UpdateDialog;
+import org.diylc.swingframework.update.UpdateLabel;
+import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.EdgedBalloonStyle;
+import org.diylc.announcements.AnnouncementProvider;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
@@ -67,12 +73,6 @@ import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
-import org.diylc.swingframework.MemoryBar;
-import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
-import org.diylc.swingframework.update.UpdateDialog;
-import org.diylc.swingframework.update.UpdateLabel;
-import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.EdgedBalloonStyle;
 
 public class StatusBar extends JPanel implements IPlugIn {
 

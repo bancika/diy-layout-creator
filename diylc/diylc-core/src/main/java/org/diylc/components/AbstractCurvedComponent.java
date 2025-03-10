@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
+import com.google.common.collect.Streams;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
@@ -41,8 +45,6 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-import com.google.common.collect.Streams;
-import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
 

@@ -37,9 +37,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.diylc.swingframework.ButtonDialog;
+
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.swing.gui.components.HTMLTextArea;
-import org.diylc.swingframework.ButtonDialog;
 
 public class UserEditDialog extends ButtonDialog {
 

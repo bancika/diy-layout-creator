@@ -26,6 +26,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+
 import org.diylc.common.OrientationHV;
 import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;

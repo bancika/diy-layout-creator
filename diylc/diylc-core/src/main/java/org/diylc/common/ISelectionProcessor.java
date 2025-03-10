@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
+
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;

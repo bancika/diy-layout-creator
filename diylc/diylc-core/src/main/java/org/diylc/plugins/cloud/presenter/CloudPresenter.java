@@ -33,6 +33,10 @@ import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+
+import com.diyfever.httpproxy.PhpFlatProxy;
+import com.diyfever.httpproxy.ProxyFactory;
+
 import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
@@ -40,8 +44,6 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
 import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
-import com.diyfever.httpproxy.PhpFlatProxy;
-import com.diyfever.httpproxy.ProxyFactory;
 
 /**
  * Contains all the back-end logic for using the cloud and manipulating projects on the cloud.

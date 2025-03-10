@@ -6,7 +6,7 @@
 
     <groupId>org.diylc</groupId>
     <artifactId>diylc-parent</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.0}</version>
     <packaging>pom</packaging>
     
     <name>DIY Layout Creator</name>
@@ -26,6 +26,8 @@
         <xstream.version>1.4.19</xstream.version>
     </properties>
     
+    <!-- Build configuration will be defined below -->
+    
     <dependencyManagement>
         <dependencies>
             <!-- Internal module dependencies -->
@@ -37,6 +39,11 @@
             <dependency>
                 <groupId>org.diylc</groupId>
                 <artifactId>diylc-library</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.diylc</groupId>
+                <artifactId>diylc-swing</artifactId>
                 <version>${project.version}</version>
             </dependency>
             

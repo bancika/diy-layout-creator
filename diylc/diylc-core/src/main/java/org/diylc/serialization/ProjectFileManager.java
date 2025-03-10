@@ -43,10 +43,6 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
-import org.diylc.common.EventType;
-import org.diylc.core.Project;
-import org.diylc.presenter.Presenter;
-import org.diylc.test.DIYTest;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,6 +52,11 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+
+import org.diylc.common.EventType;
+import org.diylc.core.Project;
+import org.diylc.presenter.Presenter;
+import org.diylc.test.DIYTest;
 
 public class ProjectFileManager {
 
