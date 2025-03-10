@@ -1,0 +1,260 @@
+<java.util.Arrays_-ArrayList>
+	<a class="org.diylc.appframework.update.Version-array">		
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>38</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2024-12-23 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Buzzer component and symbol added (thanks M0JXD)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Resistor symbol now has two draw standards - ANSI and IEC (thanks M0JXD)</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When editing Label components, default focus to the text editor</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Unable to move selected components if one of them is close to being reduced to a point</description>
+				</org.diylc.appframework.update.Change>	
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Toroidal Inductor hangs the application if it doesn't have inductance value set</description>
+				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>39</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-01-25 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded JRE version of Mac builds to Temurin 17 and switched OpenGL to Metal rendering engine for improved performance</description>
+				</org.diylc.appframework.update.Change>				
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Choosing "Print" option from the menu starts printing immediately before choosing printing preferences</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>40</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-02-22 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Freeway 3x3-03 Toggle switch added</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Guitar wiring analyzer can now detect treble bleed circuit on volume controls</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added headless mode for direct render to file without the GUI - use 'inputFile --export (--force) outputFile' syntax</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added two types of 4PDT On/On/On Switches, e.g. DiMarzio EP1111 (thank you Lukasz Tekieli)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to set explicit dimensions of basic shapes - rectangles and ellipses</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Ability to change pitch and appearance of PCB Terminal Block component</description>
+				</org.diylc.appframework.update.Change>					
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased max undo stack size to 128 versions</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added 1-pole DIP switch option</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow guitar wiring analyzer when some of the switching configuration do not produce output</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Save As' displays the current file name by default</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Proto Board 780 Holes' now aligns with the grid</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Show Label text in 'Project Explorer' in addition to the name</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>MacOS version for x86 platform upgraded to java 17 and metal rendering engine</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed null pointer exceptions when trying to add components to the layout in some cases</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Loading files that contain lines with end arrows sometimes produces errors in the log and lines not to be loaded</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Mouse click to select intermittently doesn't register on Mac machines</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Ctrl + Minus sign sometimes doesn't zoom out</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>41</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Export traces, pads (with holes), ground fill and PCB text to Gerber files</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to select PTH or NPTH holes for solder pads</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Optimized continuity calculations to be faster</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased maximum available memory for DIYLC to 4GB</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded Java JRE to version 17 LTE</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added support for high DPI displays</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Added windows x64 build</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Pasting a building block sometimes messes up the z-order of components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Pasting a building block sometimes switches selection to previously added components and canvas moves to the wrong position</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Highlight Continuity Areas' sometimes renders stale areas when clicked</description>
+				</org.diylc.appframework.update.Change>					
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>4</major>
+				<minor>41</minor>
+				<build>1</build>
+			</versionNumber>
+			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Selecting components by drawing a rectangle around them works glitchy</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>0</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>			
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded Windows installer version and Windows EXE launcher version</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed alignment issues of round elements (e.g. solder pads and holes) in exported Gerber files</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with opening DIY files on Mac OS</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+	</a>
+</java.util.Arrays_-ArrayList>

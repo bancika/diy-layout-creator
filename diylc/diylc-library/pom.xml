@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.diylc</groupId>
+        <artifactId>diylc-parent</artifactId>
+        <version>5.0.0</version>
+    </parent>
+    
+    <artifactId>diylc-library</artifactId>
+    <!-- No need to specify version - it inherits from parent -->
+    
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    
+    <dependencies>
+        <!-- Internal module dependencies -->
+        <dependency>
+            <groupId>org.diylc</groupId>
+            <artifactId>diylc-core</artifactId>
+        </dependency>
+        
+        <!-- Common dependencies from Maven Central -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.5-FINAL</version>
+        </dependency>
+        
+        <!-- Local dependencies from lib folder -->
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>app-framework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>gerber-writer-api-1.0.0</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>jep-2.4.1</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>svgSalamander-1.1.2.4</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <!-- Maven-Ant integration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ant-build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Call your existing Ant build file -->
+                                <ant antfile="${basedir}/build.xml" target="jar">
+                                    <!-- Pass Maven properties to Ant if needed -->
+                                    <property name="version" value="${project.version}"/>
+                                </ant>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

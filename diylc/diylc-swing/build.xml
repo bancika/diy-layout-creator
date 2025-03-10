@@ -7,7 +7,7 @@
 	<import file="appimage.xml" />
 
 	<property environment="env"/>
-	<property name="src.dir" value="${basedir}/src" />
+	<property name="src.dir" value="${basedir}/src/main/java" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />
