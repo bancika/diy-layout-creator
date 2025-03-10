@@ -66,7 +66,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   private Orientation orientation;
 
   static {
-    String name = "image.png";
+    String name = "/image.png";
     java.net.URL imgURL = Image.class.getResource(name);
     if (imgURL != null) {
       ICON = new ImageIcon(imgURL, name);
@@ -88,7 +88,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   public Image() {
     try {
-      data = IOUtils.toByteArray(Image.class.getResourceAsStream("image.png"));
+      data = IOUtils.toByteArray(Image.class.getResourceAsStream("/image.png"));
     } catch (IOException e) {
       e.printStackTrace();
     }

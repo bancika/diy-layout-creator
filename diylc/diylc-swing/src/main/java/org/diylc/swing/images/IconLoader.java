@@ -21,6 +21,9 @@
 */
 package org.diylc.swing.images;
 
+import org.apache.log4j.Logger;
+import org.diylc.components.misc.SVGImage;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -78,21 +81,21 @@ public enum IconLoader {
   }
 
   public Icon getIcon() {
-    java.net.URL imgURL = getClass().getResource(name);
+    java.net.URL imgURL = getClass().getResource("/images/" + name);
     if (imgURL != null) {
       return new ImageIcon(imgURL, name);
     } else {
-      System.err.println("Couldn't find file: " + name);
-      return null;
+        Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
+        return null;
     }
   }
 
   public Image getImage() {
     BufferedImage img = null;
     try {
-      img = ImageIO.read(getClass().getResourceAsStream(name));
+      img = ImageIO.read(getClass().getResourceAsStream("/images/" + name));
     } catch (IOException e) {
-      System.err.println("Couldn't find file: " + name);
+        Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
     }
     return img;
   }
