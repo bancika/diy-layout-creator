@@ -36,7 +36,7 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.Theme;
-import org.diylc.flags.FlagLoader;
+import org.diylc.utils.FlagLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
