@@ -35,7 +35,6 @@ import org.diylc.appframework.miscutils.Utils;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
 import com.thoughtworks.xstream.XStream;
-import ca.cgjennings.jvm.JarLoader;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
@@ -61,7 +60,6 @@ public class DIYLCStarter {
 
 	/**
 	 * @param args
-	 * @throws InvalidActivityException
 	 */
 	public static void main(String[] args) {
 		try {
@@ -105,8 +103,6 @@ public class DIYLCStarter {
 
 		// disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
 		ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
-
-		LOG.info("JarLoader strategy: " + JarLoader.getStrategy());
 
 		LOG.info("Loading languages...");
 
