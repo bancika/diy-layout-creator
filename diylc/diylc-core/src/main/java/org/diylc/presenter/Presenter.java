@@ -142,21 +142,18 @@ public class Presenter implements IPlugInPort, IConfigListener {
   // Read the latest version from the local update.xml file
 	static {
 		try {
-			URL resource = Presenter.class.getResource("update.xml");
-			if (resource != null) {
-				BufferedInputStream in = new BufferedInputStream(resource.openStream());
-				XStream xStream = new XStream(new DomDriver());
-				xStream.addPermission(AnyTypePermission.ANY);
-				@SuppressWarnings("unchecked")
-				List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-				CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
-				LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-				RECENT_VERSIONS = allVersions.stream()
-				    .sorted(Comparator.comparing(x -> ((Version)x).getVersionNumber()).reversed())
-				    .limit(10)
-				    .collect(Collectors.toList());
-				in.close();
-			}
+              BufferedInputStream in = new BufferedInputStream(Presenter.class.getResourceAsStream("/update.xml"));
+              XStream xStream = new XStream(new DomDriver());
+              xStream.addPermission(AnyTypePermission.ANY);
+              @SuppressWarnings("unchecked")
+              List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+              CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
+              LOG.info("Current DIYLC version: " + CURRENT_VERSION);
+              RECENT_VERSIONS = allVersions.stream()
+                  .sorted(Comparator.comparing(x -> ((Version)x).getVersionNumber()).reversed())
+                  .limit(10)
+                  .collect(Collectors.toList());
+              in.close();
 		} catch (Exception e) {
 			LOG.error("Could not find version number, using default", e);
 		}

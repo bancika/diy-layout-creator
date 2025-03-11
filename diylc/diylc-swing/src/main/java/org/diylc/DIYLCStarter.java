@@ -19,6 +19,7 @@ package org.diylc;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Arrays;
@@ -88,10 +89,9 @@ public class DIYLCStarter {
     		}
 		}
 
-		URL url = DIYLCStarter.class.getResource("/log4j.properties");
 		Properties properties = new Properties();
-		try {
-			properties.load(url.openStream());
+		try (InputStream inputStream = DIYLCStarter.class.getResourceAsStream("/log4j.properties")) {
+			properties.load(inputStream);
 			PropertyConfigurator.configure(properties);
 		} catch (Exception e) {
 			LOG.error("Could not initialize log4j configuration", e);
@@ -222,13 +222,9 @@ public class DIYLCStarter {
 		}
 
 		properties = new Properties();
-		try {
-			LOG.info("Injecting default properties.");
-			URL resource = Presenter.class.getResource("config.properties");
-			if (resource != null) {
-				properties.load(resource.openStream());
-				PropertyInjector.injectProperties(properties);
-			}
+		try (InputStream inputStream = Presenter.class.getResourceAsStream("/config.properties")) {
+			properties.load(inputStream);
+			PropertyInjector.injectProperties(properties);
 		} catch (Exception e) {
 			LOG.error("Could not read config.properties file", e);
 		}

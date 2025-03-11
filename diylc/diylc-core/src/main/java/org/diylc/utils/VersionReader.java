@@ -1,6 +1,7 @@
 package org.diylc.utils;
 
 import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,9 +18,9 @@ import org.diylc.presenter.Presenter;
 public class VersionReader {
   public static void main(String[] args) {
     try {
-      URL resource = Presenter.class.getResource("update.xml");
-      if (resource != null) {
-        BufferedInputStream in = new BufferedInputStream(resource.openStream());
+      InputStream inputStream = Presenter.class.getResourceAsStream("/update.xml");
+      if (inputStream != null) {
+        BufferedInputStream in = new BufferedInputStream(inputStream);
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         @SuppressWarnings("unchecked")

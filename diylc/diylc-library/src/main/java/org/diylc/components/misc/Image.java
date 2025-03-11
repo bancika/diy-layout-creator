@@ -26,8 +26,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IconImageConverter;
 
@@ -55,6 +58,8 @@ import org.diylc.core.annotations.PercentEditor;
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, transformer = ImageTransformer.class)
 public class Image extends AbstractTransparentComponent<Void> {
 
+  private static final Logger LOG = Logger.getLogger(Image.class);
+
   private static final long serialVersionUID = 1L;
   public static String DEFAULT_TEXT = "Double click to edit text";
   private static ImageIcon ICON;
@@ -67,10 +72,13 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   static {
     String name = "/image.png";
-    java.net.URL imgURL = Image.class.getResource(name);
-    if (imgURL != null) {
-      ICON = new ImageIcon(imgURL, name);
-    }
+      try (InputStream inputStream = Image.class.getResourceAsStream(name)) {
+          if (inputStream != null) {
+            ICON = new ImageIcon(inputStream.readAllBytes(), name);
+          }
+      } catch (IOException e) {
+        LOG.error("Error loading image " + name, e);
+      }
   }
 
   @Override

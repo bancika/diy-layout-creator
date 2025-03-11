@@ -17,11 +17,7 @@
  */
 package org.diylc.presenter;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,9 +63,11 @@ public class BuildingBlockManager {
     // import default templates from variants.xml file only if we didn't do it already
     if (!configManager.readBoolean(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
       try {
-        URL resource = Presenter.class.getResource(BLOCKS_FILE_NAME);
-        if (resource != null) {
-          BufferedInputStream in = new BufferedInputStream(resource.openStream());
+        InputStream inputStream = Presenter.class.getResourceAsStream("/" + BLOCKS_FILE_NAME);
+        if (inputStream == null) {
+          return;
+        }
+        BufferedInputStream in = new BufferedInputStream(inputStream);
           Map<String, List<IDIYComponent<?>>> defaults =
               (Map<String, List<IDIYComponent<?>>>) ProjectFileManager.xStreamSerializer
                   .fromXML(in);
@@ -92,7 +90,6 @@ public class BuildingBlockManager {
           configManager.writeValue(IPlugInPort.BLOCKS_KEY, blocksMap);
           LOG.info(String.format("Imported %d default building blocks",
               defaults == null ? 0 : defaults.size()));
-        }
       } catch (Exception e) {
         LOG.error("Could not load default blocks", e);
       }

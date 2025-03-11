@@ -23,6 +23,7 @@ package org.diylc.utils;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -38,10 +39,10 @@ public class BatchConverter {
   private static final Logger LOG = Logger.getLogger(BatchConverter.class);
 
   public static void main(String[] args) {
-    URL url = DIYLCStarter.class.getResource("log4j.properties");
+    URL url = DIYLCStarter.class.getResource("/log4j.properties");
     Properties properties = new Properties();
-    try {
-      properties.load(url.openStream());
+    try (InputStream inputStream = url.openStream()) {
+      properties.load(inputStream);
       PropertyConfigurator.configure(properties);
     } catch (Exception e) {
       LOG.error("Could not initialize log4j configuration", e);

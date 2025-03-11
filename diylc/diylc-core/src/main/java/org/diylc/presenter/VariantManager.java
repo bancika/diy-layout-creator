@@ -20,6 +20,7 @@ package org.diylc.presenter;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,40 +68,41 @@ public class VariantManager {
     int importCount = 0;
 
     try {
-      URL resource = Presenter.class.getResource(VARIANTS_FILE_NAME);
-      if (resource != null) {
-        BufferedInputStream in = new BufferedInputStream(resource.openStream());
-        Map<String, List<Template>> defaults =
-            (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
-        in.close();
-
-        Map<String, List<Template>> variantMap =
-            (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
-        if (variantMap == null)
-          variantMap = new HashMap<String, List<Template>>();
-
-        // merge default variants with user's
-        for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
-          List<Template> existingVariants = variantMap.computeIfAbsent(entry.getKey(), key -> new ArrayList<Template>());
-          Set<String> existingNames = existingVariants.stream()
-            .map(x -> x.getName())
-            .collect(Collectors.toSet());
-          
-          for (Template variant : entry.getValue()) {
-            if ((variant.getCreatedOn() == null || importDate.compareTo(variant.getCreatedOn()) < 0) 
-                && !existingNames.contains(variant.getName())) {
-              existingVariants.add(variant);
-              importCount++;
-            }
-          }          
-        }
-
-        // update templates and a flag marking that we imported them
-        configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY,
-            LocalDateTime.now());
-        configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
-        LOG.info(String.format("Imported default %d variants", importCount));
+      InputStream inputStream = Presenter.class.getResourceAsStream("/" + VARIANTS_FILE_NAME);
+      if (inputStream == null) {
+        return;
       }
+      BufferedInputStream in = new BufferedInputStream(inputStream);
+      Map<String, List<Template>> defaults =
+          (Map<String, List<Template>>) ProjectFileManager.xStreamSerializer.fromXML(in);
+      in.close();
+
+      Map<String, List<Template>> variantMap =
+          (Map<String, List<Template>>) configManager.readObject(IPlugInPort.TEMPLATES_KEY, null);
+      if (variantMap == null)
+        variantMap = new HashMap<String, List<Template>>();
+
+      // merge default variants with user's
+      for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
+        List<Template> existingVariants = variantMap.computeIfAbsent(entry.getKey(), key -> new ArrayList<Template>());
+        Set<String> existingNames = existingVariants.stream()
+          .map(x -> x.getName())
+          .collect(Collectors.toSet());
+
+        for (Template variant : entry.getValue()) {
+          if ((variant.getCreatedOn() == null || importDate.compareTo(variant.getCreatedOn()) < 0)
+              && !existingNames.contains(variant.getName())) {
+            existingVariants.add(variant);
+            importCount++;
+          }
+        }
+      }
+
+      // update templates and a flag marking that we imported them
+      configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY,
+          LocalDateTime.now());
+      configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
+      LOG.info(String.format("Imported default %d variants", importCount));
     } catch (Exception e) {
       LOG.error("Could not load default variants", e);
     }
