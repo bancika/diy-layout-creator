@@ -427,24 +427,116 @@
                                         <!-- Clean up temporary directory -->
                                         <delete dir="${project.build.directory}/docker-tmp"  />
                                         
-                                        <!-- Linux-specific build -->
-                                        <echo message="Linux build will execute: ${isLinux}" />
-                                        <exec executable="bash" failonerror="true" osfamily="unix">
-                                            <arg line="-c 'echo Building AppImage natively on Linux...'" />
-                                        </exec>
-                                        
-                                        <!-- Install dependencies if needed -->
-                                        <exec executable="bash" failonerror="true" osfamily="unix">
-                                            <arg line="-c 'which appimagetool || (echo &quot;Installing appimagetool...&quot; &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install -y libfuse2 fuse &amp;&amp; wget -O /tmp/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x /tmp/appimagetool &amp;&amp; sudo mv /tmp/appimagetool /usr/local/bin/)'" />
-                                        </exec>
-                                        
-                                        <!-- Build AppImage -->
-                                        <exec executable="bash" failonerror="true" osfamily="unix">
-                                            <arg line="-c 'appimagetool ${appdir.dir} ${project.build.directory}/${appimage.output.file}'" />
-                                        </exec>
-                                        
+<!--                                        &lt;!&ndash; Linux-specific build &ndash;&gt;-->
+<!--                                        <echo message="Linux build will execute: ${isLinux}" />-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'echo Building AppImage natively on Linux...'" />-->
+<!--                                        </exec>-->
+<!--                                        -->
+<!--                                        &lt;!&ndash; Install dependencies if needed &ndash;&gt;-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'which appimagetool || (echo &quot;Installing appimagetool...&quot; &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install -y libfuse2 fuse &amp;&amp; wget -O /tmp/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x /tmp/appimagetool &amp;&amp; sudo mv /tmp/appimagetool /usr/local/bin/)'" />-->
+<!--                                        </exec>-->
+<!--                                        -->
+<!--                                        &lt;!&ndash; Build AppImage &ndash;&gt;-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'appimagetool ${appdir.dir} ${project.build.directory}/${appimage.output.file}'" />-->
+<!--                                        </exec>-->
+
+                                        <!-- Create zip package -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-linux.zip">
+                                            <zipfileset file="${project.build.directory}/${appimage.output.file}"
+                                                        filemode="755" />
+                                        </zip>
+
                                         <echo message="AppImage build completed successfully! Output: ${project.build.directory}/${appimage.output.file}" />
                                     </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Windows InnoSetup build profile using Docker -->
+        <profile>
+            <id>win64-installer</id>
+            <properties>
+                <jdk.version>17.0.14+7</jdk.version>
+                <jdk.version.file>17.0.14_7</jdk.version.file>
+                <jdk.archive.win64>OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
+                <jdk.url.win64>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Download and extract JRE -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>download-extract-jre</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Clean old jre_win folder -->
+                                        <delete dir="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Create folder to hold extracted JRE -->
+                                        <mkdir dir="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Download JRE 64-bit for Windows -->
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        <get src="${jdk.url.win64}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE into jre_win -->
+                                        <unzip src="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                               dest="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Move files up one level -->
+                                        <move todir="${project.build.directory}/jre_win">
+                                            <fileset dir="${project.build.directory}/jre_win/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Remove empty top-level folder -->
+                                        <delete dir="${project.build.directory}/jre_win/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Run InnoSetup -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>build-windows-installer</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>docker</executable>
+                                    <arguments>
+                                        <argument>run</argument>
+                                        <argument>--rm</argument>
+                                        <argument>-v</argument>
+                                        <argument>${project.basedir}:/workspace</argument>
+                                        <argument>amake/innosetup</argument>
+                                        <argument>/Ddiylcver=${project.version}</argument>
+                                        <argument>/Darch=x64</argument>
+                                        <argument>/workspace/deploy/win/install.iss</argument>
+                                    </arguments>
                                 </configuration>
                             </execution>
                         </executions>

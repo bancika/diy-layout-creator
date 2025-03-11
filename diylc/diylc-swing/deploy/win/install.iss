@@ -6,8 +6,8 @@ DefaultGroupName=DIY Layout Creator
 UninstallDisplayIcon={app}\diylc.exe
 Compression=zip
 SolidCompression=yes
-OutputDir=../build
-OutputBaseFilename=diylc
+OutputDir=..\..\target
+OutputBaseFilename=diylc-{#diylcver}-win64
 ChangesAssociations=yes
 AlwaysShowDirOnReadyPage=yes
 ; Only allow the installer to run on x64-compatible systems,
@@ -16,16 +16,11 @@ ArchitecturesAllowed={#arch}
 ArchitecturesInstallIn64BitMode={#arch}
 
 [Files]
-Source: "..\build\diylc.exe"; DestDir: "{app}"
-Source: "..\icons\diylc_file.ico"; DestDir: "{app}"
-Source: "..\build\jar\diylc.jar"; DestDir: "{app}"
-Source: "..\build\jar\lib\*"; DestDir: "{app}\lib"
-Source: "..\build\jar\library\*"; DestDir: "{app}\library"
-Source: "..\themes\*"; DestDir: "{app}\themes"
-Source: "..\lang\*"; DestDir: "{app}\lang"
-Source: "..\fonts\*"; DestDir: "{app}\fonts"
-Source: "..\build\jre_win\*"; DestDir: "{app}\jre17"; Flags: ignoreversion recursesubdirs
-Source: "innosetup\donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
+Source: "diylc-{#arch}.exe"; DestDir: "{app}"; DestName: "diylc.exe"
+Source: "..\..\src\main\resources\icons\diylc_file.ico"; DestDir: "{app}"
+Source: "..\..\target\diylc.jar"; DestDir: "{app}"
+Source: "..\..\target\jre_win\*"; DestDir: "{app}\jre17"; Flags: ignoreversion recursesubdirs
+Source: "donate.bmp"; DestDir: "{tmp}"; Flags: dontcopy nocompression
 
 [Registry]
 Root: HKCR; Subkey: ".diy"; ValueData: "DIYLC"; Flags: uninsdeletevalue; ValueType: string; ValueName: ""
@@ -34,10 +29,10 @@ Root: HKCR; Subkey: "DIYLC\DefaultIcon"; ValueData: "{app}\diylc_file.ico"; Valu
 Root: HKCR; Subkey: "DIYLC\shell\open\command";  ValueData: """{app}\diylc.exe"" ""%1"""; ValueType: string; ValueName: ""
 
 [Icons]
-Name: "{group}\DIY Layout Creator"; Filename: "{app}\diylc.exe"
+Name: "{group}\DIY Layout Creator"; Filename: "{app}/diylc.exe"
 
 [Run]
-Filename: "{app}\diylc.exe"; Description: "Launch DIYLC on exit"; Flags: postinstall skipifsilent
+Filename: "{app}/diylc.exe"; Description: "Launch DIYLC on exit"; Flags: postinstall skipifsilent
 
 [Code]
   

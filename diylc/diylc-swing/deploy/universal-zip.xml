@@ -21,5 +21,13 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/deploy/win</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>run.bat</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>
     </fileSets>
 </assembly>
