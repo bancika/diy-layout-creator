@@ -202,12 +202,250 @@
                                 <id>make-assembly</id>
                                 <configuration>
                                     <finalName>diylc-${project.version}</finalName>
-                                    <appendAssemblyId>false</appendAssemblyId>>
+                                    <appendAssemblyId>false</appendAssemblyId>
                                 </configuration>
                                 <phase>package</phase>
                                 <goals>
                                     <goal>single</goal>
                                 </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>linux-appimage</id>
+            <properties>
+                <appdir.dir>${project.build.directory}/AppDir</appdir.dir>
+                <jdk.version>17.0.14+7</jdk.version>
+                <jdk.version.file>17.0.14_7</jdk.version.file>
+                <jdk.archive.linux>OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz</jdk.archive.linux>
+                <jdk.url.linux>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}</jdk.url.linux>
+                <jre.dest.linux>${project.build.directory}/jre-temp</jre.dest.linux>
+                <appdir.jre>${appdir.dir}/usr/bin/jre</appdir.jre>
+                <wsl.command>wsl bash -c</wsl.command>
+                <appimage.output.file>DIYLayoutCreator-${project.version}-x86_64.AppImage</appimage.output.file>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Create AppDir structure and copy files -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-appdir</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Create directory structure -->
+                                        <mkdir dir="${appdir.dir}/usr/bin" />
+                                        <mkdir dir="${appdir.dir}/usr/lib" />
+                                        <mkdir dir="${appdir.dir}/usr/share/icons/hicolor/512x512/apps" />
+                                        <mkdir dir="${appdir.dir}/usr/share/metainfo" />
+                                        
+                                        <!-- Copy app files -->
+                                        <copy file="${project.build.directory}/diylc.jar" todir="${appdir.dir}/usr/lib" />
+                            
+                                        <!-- Copy AppImage specific files -->
+                                        <copy file="${project.basedir}/deploy/linux/appimage/diylc.sh" tofile="${appdir.dir}/usr/bin/diylc.sh" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/AppRun" tofile="${appdir.dir}/AppRun" />
+                                        <chmod file="${appdir.dir}/AppRun" perm="755" />
+                                        <chmod file="${appdir.dir}/usr/bin/diylc.sh" perm="755" />
+                                        
+                                        <!-- Copy icons and desktop files -->
+                                        <copy file="${project.basedir}/src/main/resources/icons/icon_512x512.png"
+                                              tofile="${appdir.dir}/usr/share/icons/hicolor/512x512/apps/com.diy_fever.DIYLayoutCreator.png" />
+                                        <copy file="${project.basedir}/src/main/resources/icons/icon_512x512.png"
+                                              tofile="${appdir.dir}/com.diy_fever.DIYLayoutCreator.png" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/com.diy_fever.DIYLayoutCreator.desktop" 
+                                              todir="${appdir.dir}" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/com.diy_fever.DIYLayoutCreator.metainfo.xml" 
+                                              todir="${appdir.dir}/usr/share/metainfo" />
+                                        
+                                        <!-- Download and extract JRE for Linux -->
+                                        <!-- Ensure clean jre folders -->
+                                        <delete dir="${jre.dest.linux}" />
+                                        <mkdir dir="${jre.dest.linux}" />
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        
+                                        <!-- Download JRE 17 if not already present -->
+                                        <get src="${jdk.url.linux}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE -->
+                                        <untar src="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                               dest="${jre.dest.linux}" 
+                                               compression="gzip" />
+                                        
+                                        <!-- Move extracted folder into AppImage location -->
+                                        <mkdir dir="${appdir.jre}" />
+                                        <move todir="${appdir.jre}">
+                                            <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Clean up temporary directory -->
+                                        <delete dir="${jre.dest.linux}" />
+                                        
+                                        <echo message="JRE 17 bundled into ${appdir.jre}" />
+                            
+                                        <!-- Convert line endings to Unix format -->
+                                        <fixcrlf file="${appdir.dir}/com.diy_fever.DIYLayoutCreator.desktop" eol="unix" />
+                                        <fixcrlf file="${appdir.dir}/AppRun" eol="unix" />
+                                        <fixcrlf file="${appdir.dir}/usr/bin/diylc.sh" eol="unix" />
+                                        
+                                        <echo message="AppDir structure created successfully at: ${appdir.dir}" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Build AppImage -->
+                            <execution>
+                                <id>build-appimage</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="Starting AppImage build process..." />
+                                        
+                                        <!-- Detect operating system -->
+                                        <condition property="isWindows">
+                                            <os family="windows" />
+                                        </condition>
+                                        
+                                        <condition property="isMac">
+                                            <os family="mac" />
+                                        </condition>
+                                        
+                                        <condition property="isLinux">
+                                            <and>
+                                                <os family="unix" />
+                                                <not>
+                                                    <os family="mac" />
+                                                </not>
+                                            </and>
+                                        </condition>
+                                        
+                                        <echo message="Detected OS: ${os.name}" />
+                                        
+                                        <!-- Windows-specific build -->
+                                        <echo message="Windows build will execute: ${isWindows}" />
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c echo Building AppImage using Windows with WSL..." />
+                                        </exec>
+                                        
+                                        <!-- Check if WSL is available -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c where wsl" />
+                                        </exec>
+                                        
+                                        <!-- Set WSL command -->
+                                        <property name="wsl.command" value="wsl bash -c" />
+                                        
+                                        <!-- Check if WSL has a Linux distribution installed -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl -l" />
+                                        </exec>
+                                        
+                                        <!-- Copy AppDir to WSL /tmp directory -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl cp -r &quot;$(wslpath -u '${appdir.dir}')&quot; /tmp/AppDir" />
+                                        </exec>
+                                        
+                                        <!-- Convert line endings to Unix format in WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/com.diy_fever.DIYLayoutCreator.desktop&quot;" />
+                                        </exec>
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/AppRun&quot;" />
+                                        </exec>
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/usr/bin/diylc.sh&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Setup WSL with required dependencies -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c echo Setting up WSL with required dependencies..." />
+                                        </exec>
+                                        
+                                        <!-- Install necessary Linux dependencies inside WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sudo apt update &amp;&amp; sudo apt install -y wget libfuse2 fuse&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Download AppImageTool into WSL if not already present -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;if [ ! -f ~/appimagetool ]; then wget -O ~/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x ~/appimagetool; fi&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Build AppImage using appimagetool in WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;cd /tmp &amp;&amp; ~/appimagetool /tmp/AppDir /tmp/${appimage.output.file}&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Copy the AppImage back to the build directory -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl bash -c &quot;cp /tmp/${appimage.output.file} $(wslpath -u '${project.build.directory}/${appimage.output.file}')&quot;" />
+                                        </exec>
+                                        
+                                        <!-- macOS-specific build -->
+                                        <echo message="Mac build will execute: ${isMac}" />
+                                        <exec executable="bash" failonerror="true" osfamily="mac">
+                                            <arg line="-c 'echo Building AppImage using macOS with Docker...'" />
+                                        </exec>
+                                        
+                                        <!-- Check if Docker is available -->
+                                        <exec executable="docker" resultproperty="docker.result" failifexecutionfails="false" osfamily="mac">
+                                            <arg line="--version" />
+                                        </exec>
+                                        
+                                        <!-- Create a temporary directory for Docker volume mapping -->
+                                        <mkdir dir="${project.build.directory}/docker-tmp" />
+                                        
+                                        <!-- Copy AppDir to the Docker volume directory -->
+                                        <copy todir="${project.build.directory}/docker-tmp/AppDir">
+                                            <fileset dir="${appdir.dir}" />
+                                        </copy>
+                                        
+                                        <!-- Run AppImageTool in Docker -->
+                                        <exec executable="docker" failonerror="true" osfamily="mac">
+                                            <arg line="run --rm -v &quot;${project.build.directory}/docker-tmp:/workspace&quot; -w /workspace appimagecrafters/appimage-builder:latest /bin/bash -c &quot;ARCH=x86_64 appimagetool AppDir ${appimage.output.file}&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Copy the AppImage to the build directory -->
+                                        <copy file="${project.build.directory}/docker-tmp/${appimage.output.file}" todir="${project.build.directory}" />
+                                        
+                                        <!-- Clean up temporary directory -->
+                                        <delete dir="${project.build.directory}/docker-tmp"  />
+                                        
+                                        <!-- Linux-specific build -->
+                                        <echo message="Linux build will execute: ${isLinux}" />
+                                        <exec executable="bash" failonerror="true" osfamily="unix">
+                                            <arg line="-c 'echo Building AppImage natively on Linux...'" />
+                                        </exec>
+                                        
+                                        <!-- Install dependencies if needed -->
+                                        <exec executable="bash" failonerror="true" osfamily="unix">
+                                            <arg line="-c 'which appimagetool || (echo &quot;Installing appimagetool...&quot; &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install -y libfuse2 fuse &amp;&amp; wget -O /tmp/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x /tmp/appimagetool &amp;&amp; sudo mv /tmp/appimagetool /usr/local/bin/)'" />
+                                        </exec>
+                                        
+                                        <!-- Build AppImage -->
+                                        <exec executable="bash" failonerror="true" osfamily="unix">
+                                            <arg line="-c 'appimagetool ${appdir.dir} ${project.build.directory}/${appimage.output.file}'" />
+                                        </exec>
+                                        
+                                        <echo message="AppImage build completed successfully! Output: ${project.build.directory}/${appimage.output.file}" />
+                                    </target>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

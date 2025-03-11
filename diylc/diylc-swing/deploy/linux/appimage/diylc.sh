@@ -28,10 +28,9 @@ echo "diylc.sh: Current working directory: $(pwd)"
 echo "diylc.sh: Executing DIYLCStarter with Java"
 
 exec "$JAVA" \
-  -javaagent:"$HERE/../lib/lib/jar-loader.jar" \
-  -Xms128m \
+  -Xms512m \
   -Xmx4096m \
-  -cp "$HERE/../lib/diylc.jar:$HERE/../lib/lib/*" \
+  -cp "$HERE/../lib/diylc.jar" \
   --add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED \
   --add-exports java.desktop/com.apple.eio=ALL-UNNAMED \
   --add-opens java.base/java.util=ALL-UNNAMED \
