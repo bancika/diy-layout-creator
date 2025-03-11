@@ -17,12 +17,12 @@
  */
 package org.diylc.lang;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
-import org.diylc.utils.ResourceLoader;
+import org.diylc.utils.ResourceUtils;
 
 public class LangUtil {
 
@@ -89,21 +89,17 @@ public class LangUtil {
     LOG.info("Loading translation for " + language);
     dict = new HashMap<String, String>();
     try {
-      String path = ResourceLoader.getFile(LANG_DIR + File.separator + language + ".txt").getAbsolutePath();
-      LOG.debug("Loading language file: " + path);
-      try (Stream<String> stream = Files.lines(
-          Paths.get(path), StandardCharsets.UTF_8)) {
-        stream.forEach(s -> {
-          if (s.contains("|")) {
-            String[] parts = s.split("\\|");
-            if (parts.length == 2)
-              dict.put(parts[0].toLowerCase().trim(), parts[1].trim());
-          } else {
-            dict.put(s.toLowerCase(), s);
-          }
-        });
-      } catch (IOException e) {
-        LOG.error("Error loading language file", e);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(
+              (LangUtil.class.getResourceAsStream("/" + LANG_DIR + File.separator + language + ".txt"))));
+      while(reader.ready()) {
+        String s = reader.readLine();
+        if (s.contains("|")) {
+          String[] parts = s.split("\\|");
+          if (parts.length == 2)
+            dict.put(parts[0].toLowerCase().trim(), parts[1].trim());
+        } else {
+          dict.put(s.toLowerCase(), s);
+        }
       }
     } catch (Exception e) {
       LOG.error("Error loading language file", e);
@@ -128,9 +124,8 @@ public class LangUtil {
 
   public static List<Language> getAvailableLanguages() {
     List<Language> res = new ArrayList<Language>();
-    File[] files = ResourceLoader.getFiles(LANG_DIR);
-    if (files == null)
-      return res;
+
+    List<File> files = ResourceUtils.getResourceFiles(LANG_DIR);
     try {
       for (File file : files) {        
         String key = file.getName().replaceFirst("[.][^.]+$", "");

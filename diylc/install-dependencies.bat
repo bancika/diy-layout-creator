@@ -13,7 +13,7 @@ REM Define the group ID for all local dependencies
 set GROUP_ID=org.diylc.local
 
 REM List of module lib directories to process
-set MODULES=diylc-core diylc-library diylc-swing
+set MODULES=diylc-swing
 
 echo Processing dependencies...
 echo.

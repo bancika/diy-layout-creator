@@ -80,6 +80,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.measures.Size;
@@ -95,6 +96,11 @@ import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 import org.diylc.utils.ReflectionUtils;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
+
+import static org.reflections.scanners.Scanners.TypesAnnotated;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
@@ -442,21 +448,14 @@ public class Presenter implements IPlugInPort, IConfigListener {
     if (componentTypes == null) {
       LOG.info("Loading component types.");
       componentTypes = new HashMap<String, List<ComponentType>>();
+      Reflections reflections = new Reflections(
+              new ConfigurationBuilder()
+                      .forPackage("org.diylc")
+                      .filterInputsBy(new FilterBuilder().includePackage("org.diylc.components"))
+                      .setScanners(TypesAnnotated));
       Set<Class<?>> componentTypeClasses = null;
       try {
-        componentTypeClasses = Utils.getClasses("org.diylc.components");
-        File libraryFile = new File("library");
-        if (libraryFile.exists() && libraryFile.isDirectory() && !Utils.isMac()) {
-          LOG.info("Loading additional library JARs");
-          try {
-            List<Class<?>> additionalComponentTypeClasses =
-                JarScanner.getInstance().scanFolder("library", IDIYComponent.class);
-            if (additionalComponentTypeClasses != null)
-              componentTypeClasses.addAll(additionalComponentTypeClasses);
-          } catch (Exception e) {
-            LOG.warn("Could not find additional type classes", e);
-          }
-        }
+        componentTypeClasses = reflections.getTypesAnnotatedWith(ComponentDescriptor.class, false);
 
         for (Class<?> clazz : componentTypeClasses) {
           if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {

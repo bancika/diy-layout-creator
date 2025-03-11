@@ -88,7 +88,7 @@ public class DIYLCStarter {
     		}
 		}
 
-		URL url = DIYLCStarter.class.getResource("log4j.properties");
+		URL url = DIYLCStarter.class.getResource("/log4j.properties");
 		Properties properties = new Properties();
 		try {
 			properties.load(url.openStream());
@@ -116,6 +116,7 @@ public class DIYLCStarter {
 				+ System.getProperty("java.vm.vendor"));
 		LOG.debug("Java home: " + System.getProperty("java.home"));
 		LOG.debug("OS: " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
+//		LOG.debug("Classpath: " + System.getProperty("java.class.path"));
 		
 		// set OS name as HTTP agent, java will append java version
 		Properties props = System.getProperties();

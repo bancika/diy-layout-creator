@@ -77,13 +77,38 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.27</version>
         </dependency>
-        
-        <!-- Local dependencies from lib folder -->
         <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>AppleJavaExtensions</artifactId>
-            <version>1.0</version>
+            <groupId>com.orsonpdf</groupId>
+            <artifactId>orsonpdf</artifactId>
+            <version>1.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>commons-compiler</artifactId>
+            <version>3.1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.balloontip</groupId>
+            <artifactId>balloontip</artifactId>
+            <version>1.2.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.guigarage</groupId>
+            <artifactId>gestures-wrapper</artifactId>
+            <version>0.2</version>
+        </dependency>
+
+        <!-- Local dependencies from lib folder -->
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>app-framework</artifactId>
@@ -91,27 +116,7 @@
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
-            <artifactId>balloontip-1.2.4.1</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>commons-compiler-3.0.6</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
             <artifactId>gerber-writer-api-1.0.0</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>gestures-wrapper-0.2</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>janino-3.0.6</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>
@@ -127,16 +132,6 @@
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>jep-2.4.1</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>jettison-1.0.1</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>orsonpdf-1.8</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

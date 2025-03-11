@@ -42,14 +42,14 @@ import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
-import org.diylc.utils.ResourceLoader;
+import org.diylc.utils.ResourceUtils;
 
 /**
  * Controls configuration menu.
  * 
  * @author Branislav Stojkovic
  */
-public class ConfigPlugin implements IPlugIn {   
+public class ConfigPlugin implements IPlugIn {
 
   private static final Logger LOG = Logger.getLogger(ConfigPlugin.class);
 
@@ -64,7 +64,8 @@ public class ConfigPlugin implements IPlugIn {
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
   private static final String LANGUAGE_MENU = LangUtil.translate("Language");
   
-  private static final String LANG_RESTART = LangUtil.translate("Language selection will be applied after the application is restarted.");  
+  private static final String LANG_RESTART = LangUtil.translate("Language selection will be applied after the application is restarted.");
+  public static final String THEMES_DIR = "themes";
 
   private ISwingUI swingUI;
 
@@ -170,8 +171,8 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
 
-    File[] themeFiles = ResourceLoader.getFiles("themes");
-    if (themeFiles != null && themeFiles.length > 0) {
+    List<File> themeFiles = ResourceUtils.getResourceFiles(THEMES_DIR);
+    if (!themeFiles.isEmpty()) {
       XStream xStream = new XStream(new DomDriver());
       xStream.addPermission(AnyTypePermission.ANY);
       swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);

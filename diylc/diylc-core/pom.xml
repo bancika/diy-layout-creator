@@ -48,17 +48,22 @@
             <version>31.1-jre</version>
         </dependency>
         <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
         
         <!-- Local dependencies from lib folder -->
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>AppleJavaExtensions</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>app-framework</artifactId>
@@ -72,11 +77,6 @@
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>java-http-proxy</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.diylc.local</groupId>
-            <artifactId>jettison-1.0.1</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

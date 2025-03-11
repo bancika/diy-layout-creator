@@ -147,7 +147,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * 
    * @param project
    * @param freshStart
-   * @param optional file name when loading from a file
+   * @param filename file name when loading from a file
    */
   void loadProject(Project project, boolean freshStart, String filename);
 

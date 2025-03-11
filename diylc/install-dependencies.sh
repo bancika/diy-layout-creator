@@ -12,7 +12,7 @@ echo
 GROUP_ID="org.diylc.local"
 
 # List of module lib directories to process
-MODULES=("diylc-core" "diylc-library" "diylc-swing")
+MODULES=("diylc-swing")
 
 echo "Processing dependencies..."
 echo
