@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.0.0</version>
+        <version>5.1.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -185,7 +185,7 @@
     
     <profiles>
         <profile>
-            <id>linux-zip</id>
+            <id>universal-zip</id>
             <build>
                 <plugins>
                     <plugin>
@@ -194,7 +194,7 @@
                         <version>3.5.0</version>
                         <configuration>
                             <descriptors>
-                                <descriptor>deploy/linux/linux-zip.xml</descriptor>
+                                <descriptor>deploy/universal-zip.xml</descriptor>
                             </descriptors>
                         </configuration>
                         <executions>
