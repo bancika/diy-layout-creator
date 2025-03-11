@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +49,6 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
@@ -88,7 +86,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.NetlistAnalyzer;
+import org.diylc.netlist.AbstractNetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
 import org.diylc.serialization.ProjectFileManager;
@@ -2030,7 +2028,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
       if (netlists == null)
         return;
       
-      List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
+      List<Set<IDIYComponent<?>>> allGroups = AbstractNetlistAnalyzer.extractComponentGroups(netlists);
       // Find control points of all selected components and all types
       Set<String> selectedNamePrefixes = new HashSet<String>();
       if (expansionMode == ExpansionMode.SAME_TYPE) {

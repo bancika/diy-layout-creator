@@ -72,7 +72,7 @@ public enum IconLoader {
     BufferedImage img = null;
     try {
       img = ImageIO.read(getClass().getResourceAsStream("/images/" + name));
-    } catch (IOException e) {
+    } catch (Exception e) {
       Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
     }
     return img;

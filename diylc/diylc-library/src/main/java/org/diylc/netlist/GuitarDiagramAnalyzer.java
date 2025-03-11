@@ -46,17 +46,9 @@ import org.diylc.components.passive.RadialFilmCapacitor;
 import org.diylc.components.passive.RadialMicaCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
-import org.diylc.netlist.Netlist;
-import org.diylc.netlist.NetlistAnalyzer;
-import org.diylc.netlist.Node;
-import org.diylc.netlist.Summary;
-import org.diylc.netlist.Tree;
-import org.diylc.netlist.TreeConnectionType;
-import org.diylc.netlist.TreeException;
-import org.diylc.netlist.TreeLeaf;
 import org.diylc.netlist.Tree.ITreeWalker;
 
-public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();

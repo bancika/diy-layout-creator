@@ -34,7 +34,7 @@ import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Tree;
 import org.diylc.netlist.TreeException;
 
-public class GuitarNetlistAnalyzerTests {
+public class GuitarAbstractNetlistAnalyzerTests {
 
   @Test
   public void testOneSinglePickup() throws TreeException {

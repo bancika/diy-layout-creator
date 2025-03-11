@@ -21,9 +21,9 @@
 */
 package org.diylc.common;
 
-public enum Orientation {
+public enum Orientation45 {
 
-  DEFAULT, _90, _180, _270;
+  DEFAULT, _45, _90, _135, _180, _225, _270, _315;
 
   @Override
   public String toString() {
@@ -33,13 +33,13 @@ public enum Orientation {
       return name().replace("_", "") + " degrees clockwise";
     }
   }
-  
+
   public double toDegrees() {
     if (this == DEFAULT)
       return 0;
     return Integer.parseInt(name().replace("_", ""));
   }
-  
+
   public double toRadians() {
     return Math.toRadians(toDegrees());
   }

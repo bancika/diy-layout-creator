@@ -27,9 +27,9 @@ import java.util.Set;
 
 import org.diylc.core.IDIYComponent;
 
-public abstract class NetlistAnalyzer {
+public abstract class AbstractNetlistAnalyzer {
 
-  public NetlistAnalyzer() {
+  public AbstractNetlistAnalyzer() {
   }
 
   public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput)
