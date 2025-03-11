@@ -254,6 +254,10 @@
 					<description>Upgraded source code structure to modern standards and introduced Maven</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved robustness of series/parallel graph construction code used in circuit analysis</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
 				</org.diylc.appframework.update.Change>

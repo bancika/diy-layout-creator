@@ -35,14 +35,14 @@ import org.diylc.core.IDIYComponent;
 public class Tree {
 
   private List<Tree> children;
-  private TreeConnectionType connectionType;  
+  private TreeConnectionType connectionType;
   private TreeLeaf leaf;
-  
+
   public Tree(TreeConnectionType connectionType) {
     this.children = new ArrayList<Tree>();
     this.connectionType = connectionType;
   }
-  
+
   public Tree(TreeLeaf leaf) {
     this.leaf = leaf;
   }
@@ -55,19 +55,19 @@ public class Tree {
   public List<Tree> getChildren() {
     return children;
   }
-  
+
   public void trimChildrenLeft(int count) {
     children = children.subList(count, children.size());
   }
-  
+
   public void trimChildrenRight(int count) {
     children = children.subList(0, children.size() - count);
   }
 
-  public TreeConnectionType getConnectionType() { 
+  public TreeConnectionType getConnectionType() {
     return connectionType;
-  }   
-  
+  }
+
   public TreeLeaf getLeaf() {
     return leaf;
   }
@@ -105,7 +105,7 @@ public class Tree {
       return false;
     return true;
   }
-  
+
   private List<Tree> getOrderedChildren() {
     if (getConnectionType() == TreeConnectionType.Series)
       return children;
@@ -115,7 +115,8 @@ public class Tree {
       @Override
       public int compare(Tree o1, Tree o2) {
         return o1.toString().compareToIgnoreCase(o2.toString());
-      }});
+      }
+    });
     return ordered;
   }
 
@@ -123,30 +124,40 @@ public class Tree {
   public String toString() {
     if (leaf != null)
       return leaf.toString();
-    
+
+    // If we only have one child, no need for parentheses
+    if (children.size() == 1)
+      return children.get(0).toString();
+
     StringBuilder sb = new StringBuilder("(");
     boolean first = true;
-    for(Tree child : getOrderedChildren()) {
+    for (Tree child : getOrderedChildren()) {
       if (!first)
-        sb.append(" " ).append(connectionType).append(" ");
+        sb.append(" ").append(connectionType).append(" ");
       first = false;
-      sb.append(child);
+      // Only include child's parentheses if it has multiple children with a different connection type
+      String childStr = child.toString();
+      if (child.children != null && child.children.size() > 1 && child.connectionType != connectionType) {
+        sb.append(childStr);
+      } else {
+        sb.append(childStr.replaceAll("^\\((.*)\\)$", "$1"));
+      }
     }
     sb.append(")");
     return sb.toString();
   }
-  
+
   public String toHTML(int depth) {
     if (leaf != null)
       return leaf.toHTML();
-    
+
     List<Tree> children = getOrderedChildren();
-    
+
     StringBuilder sb = new StringBuilder();
     if (depth > 0 && children.size() > 1)
       sb.append("(");
     boolean first = true;
-    for(Tree child : children) {
+    for (Tree child : children) {
       if (!first) {
         sb.append("&nbsp;").append(connectionType.toHTML()).append("&nbsp;");
         if (depth == 0)
@@ -159,14 +170,15 @@ public class Tree {
       sb.append(")");
     return sb.toString();
   }
-  
+
   public String toAsciiString() {
     return String.join("<br>", toAscii());
   }
-  
+
   private List<String> toAscii() {
     if (leaf != null) {
-      return Arrays.asList(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1));
+      return Arrays.asList(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH,
+          1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1));
     }
 
     List<Tree> children = getOrderedChildren();
@@ -175,12 +187,13 @@ public class Tree {
         children.stream().map(c -> c.toAscii()).collect(Collectors.toList());
 
     if (TreeConnectionType.Series.equals(connectionType)) {
-      return TreeAsciiUtil.concatenateMultiLineSerial(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1), childrenAscii);
+      return TreeAsciiUtil.concatenateMultiLineSerial(
+          TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1), childrenAscii);
     } else {
       return TreeAsciiUtil.concatenateMultiLineParallel(childrenAscii);
     }
   }
-  
+
   @Override
   protected Object clone() throws CloneNotSupportedException {
     if (leaf != null)
@@ -190,10 +203,10 @@ public class Tree {
       newChildren.add((Tree) t.clone());
     return new Tree(newChildren, connectionType);
   }
-  
+
   public Tree filter(Set<String> types) {
     if (leaf != null) {
-      if (types.contains(leaf.getComponent().getClass().getCanonicalName()))        
+      if (types.contains(leaf.getComponent().getClass().getCanonicalName()))
         return new Tree(leaf);
       return null;
     }
@@ -207,7 +220,7 @@ public class Tree {
       return null;
     return new Tree(newChildren, connectionType);
   }
-  
+
   public void walk(ITreeWalker walker) {
     if (leaf != null) {
       walker.visit(leaf);
@@ -218,7 +231,7 @@ public class Tree {
       }
     }
   }
-  
+
   public Set<IDIYComponent<?>> extractComponents(Set<String> types) {
     Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
     if (leaf != null && types.contains(leaf.getComponent().getClass().getCanonicalName())) {
@@ -232,7 +245,7 @@ public class Tree {
     }
     return res;
   }
-  
+
   public Tree locate(TreeLeaf l, boolean forceDirection) {
     if (leaf != null && leaf.equals(l, forceDirection))
       return this;
@@ -240,27 +253,27 @@ public class Tree {
       for (Tree t : children) {
         Tree childL = t.locate(l, forceDirection);
         if (childL != null) {
-//          if (t.getLeaf() != null)
-//            return this;
+          //          if (t.getLeaf() != null)
+          //            return this;
           return childL;
         }
       }
     }
     return null;
   }
-  
+
   public Tree findCommonParent(Tree t1, Tree t2) {
     if (t1 == null)
       return t2;
     if (t2 == null)
-      return t1;   
-    
+      return t1;
+
     if (children == null)
       return null;
-    
+
     if (!this.contains(t1) || !this.contains(t2))
       return null;
-    
+
     Tree p1 = this;
     Tree p2 = this;
     for (Tree c : children) {
@@ -268,51 +281,49 @@ public class Tree {
         p1 = c;
       if (c.contains(t2))
         p2 = c;
-    }   
-    
+    }
+
     if (p1 != p2 || p1 == this || p2 == this)
       return this;
-    
+
     return p1.findCommonParent(t1, t2);
   }
-  
+
   public Tree findCommonParent(List<Tree> t) {
-    if (t.contains(null))
-    {
-      while(t.contains(null))
+    if (t.contains(null)) {
+      while (t.contains(null))
         t.remove(null);
       return findCommonParent(t);
     }
-      
+
     if (t.size() == 0)
       return null;
     if (t.size() == 1)
       return t.get(0);
     if (t.size() == 2)
       return findCommonParent(t.get(0), t.get(1));
-    
+
     List<Tree> remainder = t.subList(1, t.size());
     return findCommonParent(t.get(0), findCommonParent(remainder));
   }
-  
+
   public Tree findParent(Tree t) {
     if (children == null)
       return null;
     if (children.contains(t))
       return this;
-    for (Tree c : children)
-    {
+    for (Tree c : children) {
       Tree p = c.findParent(t);
       if (p != null)
         return p;
     }
     return null;
   }
-  
+
   public boolean contains(Tree t) {
     if (this == t)
       return true;
-    
+
     if (children == null)
       return false;
     if (children.contains(t))
@@ -322,11 +333,11 @@ public class Tree {
         return true;
     return false;
   }
-  
+
   public interface ITreeWalker {
-    
+
     void visit(Tree t);
-    
+
     void visit(TreeLeaf l);
   }
 }

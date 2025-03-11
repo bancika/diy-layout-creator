@@ -137,27 +137,9 @@ public class Presenter implements IPlugInPort, IConfigListener {
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
-  public static VersionNumber CURRENT_VERSION = new VersionNumber(4, 0, 0);
-  public static List<Version> RECENT_VERSIONS = null;
-  // Read the latest version from the local update.xml file
-	static {
-		try {
-              BufferedInputStream in = new BufferedInputStream(Presenter.class.getResourceAsStream("/update.xml"));
-              XStream xStream = new XStream(new DomDriver());
-              xStream.addPermission(AnyTypePermission.ANY);
-              @SuppressWarnings("unchecked")
-              List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-              CURRENT_VERSION = allVersions.get(allVersions.size() - 1).getVersionNumber();
-              LOG.info("Current DIYLC version: " + CURRENT_VERSION);
-              RECENT_VERSIONS = allVersions.stream()
-                  .sorted(Comparator.comparing(x -> ((Version)x).getVersionNumber()).reversed())
-                  .limit(10)
-                  .collect(Collectors.toList());
-              in.close();
-		} catch (Exception e) {
-			LOG.error("Could not find version number, using default", e);
-		}
-	}
+  public static VersionNumber CURRENT_VERSION = null;
+  private static List<Version> RECENT_VERSIONS = null;
+
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
   public static final List<IDIYComponent<?>> EMPTY_SELECTION = Collections.emptyList();
@@ -1091,11 +1073,39 @@ public class Presenter implements IPlugInPort, IConfigListener {
 
   @Override
   public VersionNumber getCurrentVersionNumber() {
+    if (CURRENT_VERSION == null) {
+      List<Version> recentUpdates = getRecentUpdates();
+      CURRENT_VERSION = recentUpdates.stream()
+          .findFirst().map(v -> v.getVersionNumber())
+          .orElse(new VersionNumber(5, 0, 0));
+      LOG.info("Current DIYLC version: " + CURRENT_VERSION);
+    }
     return CURRENT_VERSION;
   }
 
   @Override
   public List<Version> getRecentUpdates() {
+    return getRecentVersions();
+  }
+
+  private static List<Version> getRecentVersions() {
+    if (RECENT_VERSIONS == null) {
+      try {
+        BufferedInputStream in =
+            new BufferedInputStream(Presenter.class.getResourceAsStream("/update.xml"));
+        XStream xStream = new XStream(new DomDriver());
+        xStream.addPermission(AnyTypePermission.ANY);
+        @SuppressWarnings("unchecked")
+        List<Version> allVersions = (List<Version>) xStream.fromXML(in);
+        RECENT_VERSIONS = allVersions.stream()
+            .sorted(Comparator.comparing(x -> ((Version) x).getVersionNumber()).reversed())
+            .limit(10).collect(Collectors.toList());
+        in.close();
+      } catch (Exception e) {
+        LOG.error("Could not load recent versions", e);
+        RECENT_VERSIONS = new ArrayList<>();
+      }
+    }
     return RECENT_VERSIONS;
   }
 
