@@ -20,20 +20,24 @@
 10 throws / 10 positions
 11 throws / 11 positions
 12 throws / 12 positions
+135 degrees clockwise
 180 degrees clockwise
 1P12T
 2 throws / 2 positions
 2 throws / 3 positions / OFF even positions
+225 degrees clockwise
 270 degrees clockwise
 2P5T
 2P6T
 3 throws / 3 positions
 3 throws / 5 positions / SHORT even positions
+315 degrees clockwise
 3P4T
 3PDT
 3PDT (On/Off/On)
 4 band
 4 throws / 4 positions
+45 degrees clockwise
 4P3T
 4P5T
 4P5T (Super/Mega)
@@ -598,6 +602,7 @@ Vertical Inline
 Vertical Offset 1
 Vertical Offset 2
 View
+Virtual Multimeter
 Visible
 Voltage
 Wafer

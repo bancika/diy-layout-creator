@@ -21,6 +21,8 @@ package org.diylc.netlist;
 import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
+import org.diylc.components.passive.AxialFilmCapacitor;
+import org.diylc.components.passive.Resistor;
 import org.junit.Test;
 
 import org.diylc.components.electromechanical.OpenJack1_4;
@@ -28,13 +30,8 @@ import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
-import org.diylc.netlist.Group;
-import org.diylc.netlist.GuitarDiagramAnalyzer;
-import org.diylc.netlist.Netlist;
-import org.diylc.netlist.Tree;
-import org.diylc.netlist.TreeException;
 
-public class GuitarAbstractNetlistAnalyzerTests {
+public class GuitarDiagramAnalyzerTests {
 
   @Test
   public void testOneSinglePickup() throws TreeException {
@@ -68,6 +65,49 @@ public class GuitarAbstractNetlistAnalyzerTests {
   }
 
   @Test
+  public void testOneSinglePickupVolPotTrebleBleedSeries() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    PotentiometerPanel vol = new PotentiometerPanel();
+    vol.setName("Volume");
+    AxialFilmCapacitor cap = new AxialFilmCapacitor();
+    cap.setName("Cbleed");
+    Resistor resistor = new Resistor();
+    resistor.setName("Rbleed");
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup, vol));
+    Group hotGroup = new Group().connect(pickup, 1).connect(vol, 0).connect(resistor, 1);
+    Group tipGroup = new Group().connect(jack, 0).connect(vol, 1).connect(cap, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2);
+    Group trebleBleedGroup = new Group().connect(cap, 0).connect(resistor, 0);
+    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(trebleBleedGroup);
+    Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("((((Cbleed + Rbleed) || Volume.1-2) + Pickup.North<-) || Volume.2-3)", s);
+  }
+
+  @Test
+  public void testOneSinglePickupVolPotTrebleBleedParallel() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    PotentiometerPanel vol = new PotentiometerPanel();
+    vol.setName("Volume");
+    AxialFilmCapacitor cap = new AxialFilmCapacitor();
+    cap.setName("Cbleed");
+    Resistor resistor = new Resistor();
+    resistor.setName("Rbleed");
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup, vol));
+    Group hotGroup = new Group().connect(pickup, 1).connect(vol, 0).connect(resistor, 1).connect(cap, 1);
+    Group tipGroup = new Group().connect(jack, 0).connect(vol, 1).connect(resistor, 0).connect(cap, 0);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2).connect(vol, 2);
+    netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup);
+    Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(((Cbleed || Rbleed || Volume.1-2) + Pickup.North<-) || Volume.2-3)", s);
+  }
+
+  @Test
   public void testOneSinglePickupVolTonePot() throws TreeException {
     OpenJack1_4 jack = new OpenJack1_4();
     SingleCoilPickup pickup = new SingleCoilPickup();
@@ -87,7 +127,7 @@ public class GuitarAbstractNetlistAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(toneGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("((Volume.1-2 + (Tone.2-3 + Cap) || Pickup.North<-) || Volume.2-3)", s);
+    assertEquals("((Volume.1-2 + ((Tone.2-3 + Cap) || Pickup.North<-)) || Volume.2-3)", s);
   }
 
   @Test
@@ -121,7 +161,7 @@ public class GuitarAbstractNetlistAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-        "((Volume.1-2 + (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2) || Pickup1.North<- || Pickup2.North<-) || Volume.2-3)",
+        "((Volume.1-2 + ((Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2) || Pickup1.North<- || Pickup2.North<-)) || Volume.2-3)",
         s);
   }
 
@@ -285,7 +325,7 @@ public class GuitarAbstractNetlistAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-        "((Volume.1-2 + (Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2)) || Volume.2-3)",
+        "((Volume.1-2 + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
         s);
   }
 }
