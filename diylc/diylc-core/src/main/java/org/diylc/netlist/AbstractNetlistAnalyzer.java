@@ -41,6 +41,7 @@ public abstract class AbstractNetlistAnalyzer {
     }
     
     List<Summary> res = new ArrayList<Summary>(summaries.values());
+    res.forEach(summary -> NetlistBuilder.cleanupRedundantSwitches(summary.getNetlist().getSwitchSetup()));
     Collections.sort(res);
     return res;
   }

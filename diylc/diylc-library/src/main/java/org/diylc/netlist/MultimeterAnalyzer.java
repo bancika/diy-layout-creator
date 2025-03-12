@@ -18,10 +18,7 @@
  */
 package org.diylc.netlist;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.swing.JLabel;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.components.connectivity.MultimeterProbe;
@@ -61,10 +58,15 @@ public class MultimeterAnalyzer extends AbstractNetlistAnalyzer implements INetl
 
     String asciiTree = tree.toAsciiString();
 
-    sb.append("<br><br>")
-        .append("<font face='Courier New'>")
-        .append(asciiTree)
-        .append("</font>");
+    if (asciiTree.trim().isEmpty()) {
+      notes.add("No connection detected");
+    } else {
+      sb.append("<br><br>")
+              .append("<font face='Courier New'>")
+              .append(asciiTree)
+              .append("</font>");
+    }
+
     if (!notes.isEmpty()) {
       Collections.sort(notes);
       sb.append("<br><br>");
@@ -85,6 +87,7 @@ public class MultimeterAnalyzer extends AbstractNetlistAnalyzer implements INetl
       throw new TreeException(
           "Place exactly two multimeter probes on the circuit in order to run the analysis.");
     } else {
+      probeNodes.sort(Comparator.comparing(n -> n.getDisplayName()));
       return constructTreeBetween(netlist, probeNodes.get(0), probeNodes.get(1));
     }
   }
