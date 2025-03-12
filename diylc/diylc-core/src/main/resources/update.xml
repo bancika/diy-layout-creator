@@ -250,8 +250,16 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Virtual Multimeter' from 'Analyze' menu traces the circuit finding all possible paths of electricity between two points designated by the probe symbol.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded source code structure to modern standards and introduced Maven</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved robustness of series/parallel graph construction code used in circuit analysis</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
