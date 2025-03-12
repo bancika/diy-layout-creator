@@ -130,90 +130,101 @@ public abstract class AbstractNetlistAnalyzer {
   }
 
   protected void mergePaths(List<Tree> paths, boolean backward) {
-    Map<Tree, Integer> uniques = new HashMap<Tree, Integer>();
-    for (Tree t : paths) {
-      if (t.getConnectionType() != TreeConnectionType.Series)
-        continue;
-      Tree key = t.getChildren().get(backward ? t.getChildren().size() - 1 : 0);
-      Integer count = uniques.get(key);
-      uniques.put(key, count == null ? 1 : count + 1);
-    }
-    
-    List<Tree> unmerged = new ArrayList<Tree>(paths);
+    // First sort paths to get deterministic output
+    paths.sort((a, b) -> {
+        // Convert paths to strings for comparison
+        String pathA = pathToString(a);
+        String pathB = pathToString(b);
+        return pathA.compareTo(pathB);
+    });
 
-    for (Map.Entry<Tree, Integer> e : uniques.entrySet()) {
-      if (e.getValue() > 1) {
-        List<Tree> pathsToMerge = new ArrayList<Tree>();
-        for (Tree t : paths) {
-          Tree key = t.getChildren().get(backward ? t.getChildren().size() - 1 : 0);
-          if (key.equals(e.getKey()))
-            pathsToMerge.add(t);
+    // Find common prefixes/suffixes between paths
+    for (int i = 0; i < paths.size(); i++) {
+        for (int j = i + 1; j < paths.size(); j++) {
+            Tree path1 = paths.get(i);
+            Tree path2 = paths.get(j);
+            
+            // Find common prefix
+            List<Tree> commonPrefix = new ArrayList<>();
+            int prefixLen = 0;
+            while (prefixLen < path1.getChildren().size() && 
+                   prefixLen < path2.getChildren().size() &&
+                   path1.getChildren().get(prefixLen).equals(path2.getChildren().get(prefixLen))) {
+                commonPrefix.add(path1.getChildren().get(prefixLen));
+                prefixLen++;
+            }
+            
+            // Find common suffix
+            List<Tree> commonSuffix = new ArrayList<>();
+            int suffixLen = 0;
+            while (suffixLen < path1.getChildren().size() - prefixLen && 
+                   suffixLen < path2.getChildren().size() - prefixLen &&
+                   path1.getChildren().get(path1.getChildren().size() - 1 - suffixLen)
+                       .equals(path2.getChildren().get(path2.getChildren().size() - 1 - suffixLen))) {
+                commonSuffix.add(0, path1.getChildren().get(path1.getChildren().size() - 1 - suffixLen));
+                suffixLen++;
+            }
+            
+            // If we found common elements, merge the paths
+            if (prefixLen > 0 || suffixLen > 0) {
+                // Create series structure: prefix + parallel + suffix
+                Tree mergedPath = new Tree(TreeConnectionType.Series);
+                
+                // Add common prefix
+                if (!commonPrefix.isEmpty()) {
+                    mergedPath.getChildren().addAll(commonPrefix);
+                }
+                
+                // Add parallel section
+                Tree parallelSection = new Tree(TreeConnectionType.Parallel);
+                
+                // Add unique parts of both paths
+                List<Tree> unique1 = path1.getChildren().subList(prefixLen, path1.getChildren().size() - suffixLen);
+                List<Tree> unique2 = path2.getChildren().subList(prefixLen, path2.getChildren().size() - suffixLen);
+                
+                if (!unique1.isEmpty()) {
+                    Tree series1 = new Tree(TreeConnectionType.Series);
+                    series1.getChildren().addAll(unique1);
+                    parallelSection.getChildren().add(series1);
+                }
+                
+                if (!unique2.isEmpty()) {
+                    Tree series2 = new Tree(TreeConnectionType.Series);
+                    series2.getChildren().addAll(unique2);
+                    parallelSection.getChildren().add(series2);
+                }
+                
+                if (!parallelSection.getChildren().isEmpty()) {
+                    mergedPath.getChildren().add(parallelSection);
+                }
+                
+                // Add common suffix
+                if (!commonSuffix.isEmpty()) {
+                    mergedPath.getChildren().addAll(commonSuffix);
+                }
+                
+                // Replace original paths with merged path
+                paths.remove(j);
+                paths.set(i, mergedPath);
+                j--;
+            }
         }
-        unmerged.removeAll(pathsToMerge);
-
-        Tree jointStart = new Tree(new ArrayList<Tree>(), TreeConnectionType.Series);
-        Tree jointFinish = new Tree(new ArrayList<Tree>(), TreeConnectionType.Series);
-        
-        Tree unique = e.getKey();
-
-        for (int i = 0; i < pathsToMerge.get(0).getChildren().size(); i++) {
-          boolean canMerge = true;
-          unique = pathsToMerge.get(0).getChildren().get(backward ? pathsToMerge.get(0).getChildren().size() - i - 1 : i);
-          for (Tree t : pathsToMerge) {            
-            if (t.getChildren().size() <= i || !t.getChildren().get(backward ? t.getChildren().size() - i - 1 : i).equals(unique)) {
-              canMerge = false;
-              break;
-            }
-          }
-          if (canMerge)
-            (backward ? jointFinish : jointStart).getChildren().add(unique);
-          else
-            break;
-        }        
-        
-        for (int i = 0; i < pathsToMerge.get(0).getChildren().size(); i++) {
-          boolean canMerge = true;
-          unique = pathsToMerge.get(0).getChildren().get(backward ? i : pathsToMerge.get(0).getChildren().size() - i - 1);
-          for (Tree t : pathsToMerge) {            
-            if (t.getChildren().size() <= i || !t.getChildren().get(backward ? 0 : t.getChildren().size() - 1).equals(unique)) {
-              canMerge = false;
-              break;
-            }
-          }
-          if (canMerge)
-            (backward ? jointStart : jointFinish).getChildren().add(unique);
-          else
-            break;
-        }
-
-        if (!jointStart.getChildren().isEmpty() || !jointFinish.getChildren().isEmpty()) {
-          Tree mergedTree = new Tree(new ArrayList<Tree>(), TreeConnectionType.Series);
-          Tree parallelSection = new Tree(new ArrayList<Tree>(pathsToMerge), TreeConnectionType.Parallel);
-          if (!jointStart.getChildren().isEmpty()) {
-            mergedTree.getChildren().add(jointStart);
-            for (Tree t : parallelSection.getChildren()) {
-              t.trimChildrenLeft(jointStart.getChildren().size());
-            }
-          }
-          mergedTree.getChildren().add(parallelSection);
-          if (!jointFinish.getChildren().isEmpty()) {
-            mergedTree.getChildren().add(jointFinish);
-            for (Tree t : parallelSection.getChildren()) {
-              t.trimChildrenRight(jointFinish.getChildren().size());
-            }
-          }
-          paths.removeAll(pathsToMerge);
-          paths.add(mergedTree);          
-        }
-      }
     }
-    
-    // try in the opposite direction for paths we haven't merged
-    if (!backward && !unmerged.isEmpty()) {
-      paths.removeAll(unmerged);
-      mergePaths(unmerged, true);
-      paths.addAll(unmerged);
+  }
+
+  // Helper method to convert a path to a sortable string
+  private String pathToString(Tree path) {
+    StringBuilder sb = new StringBuilder();
+    for (Tree child : path.getChildren()) {
+        if (child.getLeaf() != null) {
+            sb.append(child.getLeaf().getComponent().getName())
+              .append(":");
+        } else {
+            // For non-leaf nodes (parallel/series), recursively convert
+            sb.append("(").append(pathToString(child)).append(")");
+        }
     }
+    return sb.toString();
   }
 
   protected Group findGroup(Netlist netlist, Node node) {

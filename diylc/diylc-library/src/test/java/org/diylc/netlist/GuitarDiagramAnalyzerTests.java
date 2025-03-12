@@ -161,7 +161,7 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-        "((Volume.1-2 + ((Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2) || Pickup1.North<- || Pickup2.North<-)) || Volume.2-3)",
+        "((Volume.1-2 + (Pickup1.North<- || Pickup2.North<- || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
         s);
   }
 
