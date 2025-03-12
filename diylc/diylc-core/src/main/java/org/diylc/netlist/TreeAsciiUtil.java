@@ -154,14 +154,29 @@ public class TreeAsciiUtil {
         if (i < elementLines.size() - 1) {
             StringBuilder separatorLine = new StringBuilder();
             
+            // Start character
             if (lineCounter == centerLine) {
-                separatorLine.append(BOXH).append(BOXVL);
-                separatorLine.append(generateString(BOXH, maxLineLength));
-                separatorLine.append(BOXVR).append(BOXH);
+                separatorLine.append(BOXH);
             } else {
-                separatorLine.append(NBSP).append(BOXV);
+                separatorLine.append(NBSP);
+            }
+            
+            // Left connection
+            if (lineCounter == centerLine) {
+                separatorLine.append(BOXVL);
                 separatorLine.append(generateString(NBSP, maxLineLength));
-                separatorLine.append(BOXV).append(NBSP);
+                separatorLine.append(BOXVR);
+            } else {
+                separatorLine.append(BOXV);
+                separatorLine.append(generateString(NBSP, maxLineLength));
+                separatorLine.append(BOXV);
+            }
+            
+            // End character
+            if (lineCounter == centerLine) {
+                separatorLine.append(BOXH);
+            } else {
+                separatorLine.append(NBSP);
             }
             
             results.add(separatorLine.toString());
