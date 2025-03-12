@@ -251,13 +251,21 @@ public class TreeAsciiUtil {
         
         // Add separator after each element except the last
         if (i < elementLines.size() - 1) {
-          // If all elements have the same height, always use separator (for simple test case)
-          // Otherwise, use separator only on the center line (for original test case)
-          if (uniformHeight || line == centerLine) {
-            sb.append(separator);
-          } else {
-            sb.append(blankSeparator);
-          }
+            // Only add separator on the center line
+            if (line == centerLine) {
+                // Check if the current element ends with a box character
+                String currentLine = sb.toString();
+                if (currentLine.endsWith(BOXDL) || currentLine.endsWith(BOXUL)) {
+                    // If it ends with a box character, just add a single dash
+                    sb.append(BOXH);
+                } else {
+                    // Otherwise add normal separator
+                    sb.append(separator);
+                }
+            } else {
+                // Don't add any separator on non-center lines
+                sb.append(NBSP);
+            }
         }
       }
       
