@@ -20,20 +20,24 @@
 10 throws / 10 positions
 11 throws / 11 positions
 12 throws / 12 positions
+135 degrees clockwise
 180 degrees clockwise
 1P12T
 2 throws / 2 positions
 2 throws / 3 positions / OFF even positions
+225 degrees clockwise
 270 degrees clockwise
 2P5T
 2P6T
 3 throws / 3 positions
 3 throws / 5 positions / SHORT even positions
+315 degrees clockwise
 3P4T
 3PDT
 3PDT (On/Off/On)
 4 band
 4 throws / 4 positions
+45 degrees clockwise
 4P3T
 4P5T
 4P5T (Super/Mega)
@@ -188,6 +192,7 @@ Default Font Size
 Delete Selection
 Description
 Designation
+Deutsch
 Diameter
 Dimension Mode
 Directional
@@ -206,6 +211,7 @@ Drag control point(s) of
 Drag the mouse over the canvas to place a new
 Draw Standard
 Drop
+DualPot
 Duodecar B12C
 Duplicate
 E+
@@ -219,9 +225,11 @@ Electro-Mechanical
 Electrode Labels
 Enable Cache Boost
 End Arrow
+English
 Enjoying DIYLC? Click here to buy me a coffee :)
 Error
 Error occurred while editing selection. Check the log for details.
+Español
 Exit
 Expand Selection
 Explicit Dimensions
@@ -250,6 +258,7 @@ Font Italic
 Font Size
 Font Size Override
 Four
+Français
 Full
 Fuse
 G-D-S     JFET
@@ -306,6 +315,7 @@ Inner 6
 Inside Color
 Integration
 Invert Polarity
+Italiano
 Label
 Label Color
 Label Orientation
@@ -358,6 +368,7 @@ Moveable Label
 NPN
 Name
 Nand
+Nederlands
 Negative
 New
 New version available
@@ -420,6 +431,7 @@ Pole Pieces
 Pole Pieces 1
 Pole Pieces 2
 Poles
+Português
 Positions
 Positive
 Power Rating
@@ -513,6 +525,7 @@ Source Type
 Spacing
 Square
 Square BR-3
+Srpski
 Standard
 Start Arrow
 Start Recording
@@ -533,6 +546,8 @@ Submit a Bug
 Suppressor grid
 Switched
 Switches
+TO-92 w/ 2 Leads
+TO-92 w/ 3 Leads
 Tab
 Tab Border
 Tabbed Toolbar
@@ -554,6 +569,7 @@ Tick Width
 Ticks
 Timing
 Title
+Title Block
 Toolbox
 Top
 Top Lead
@@ -586,6 +602,7 @@ Vertical Inline
 Vertical Offset 1
 Vertical Offset 2
 View
+Virtual Multimeter
 Visible
 Voltage
 Wafer
