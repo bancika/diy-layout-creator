@@ -192,23 +192,25 @@ public class Presenter implements IPlugInPort, IConfigListener {
   }
 
   public Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks) {
+    this(view, configManager, importVariantsAndBlocks, new MessageDispatcher<EventType>(true));
+  }
+
+  // New constructor for testing
+  protected Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks, MessageDispatcher<EventType> messageDispatcher) {
     super();
     this.view = view;
     this.configManager = configManager;
+    this.messageDispatcher = messageDispatcher;
     plugIns = new ArrayList<IPlugIn>();
-    messageDispatcher = new MessageDispatcher<EventType>(true);
     selectedComponents = new HashSet<IDIYComponent<?>>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
     currentProject = new Project();
-    // cloner = new Cloner();
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
 
-    // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
-    // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     if (importVariantsAndBlocks) {
       variantManager.upgradeVariants(getComponentTypes());
       variantManager.importDefaultVariants();
@@ -2856,5 +2858,9 @@ public class Presenter implements IPlugInPort, IConfigListener {
       }
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
+  }
+
+  protected MessageDispatcher<EventType> getMessageDispatcher() {
+    return messageDispatcher;
   }
 }

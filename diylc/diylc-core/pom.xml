@@ -79,5 +79,11 @@
             <artifactId>java-http-proxy</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

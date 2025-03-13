@@ -311,4 +311,9 @@ public class ComponentProcessor {
           return true;
     return false;
   }
+
+  // Add this method for testing purposes
+  protected void setComponentTypeForTest(Class<? extends IDIYComponent<?>> componentClass, ComponentType componentType) {
+    componentTypeMap.put(componentClass.getName(), componentType);
+  }
 }
