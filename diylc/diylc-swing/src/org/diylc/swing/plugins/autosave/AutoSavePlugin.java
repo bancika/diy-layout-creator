@@ -36,7 +36,9 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AutoSavePlugin implements IPlugIn {
 
   private static final String AUTO_SAVE_PATH = Utils.getUserDataDirectory("diylc") + "backup";

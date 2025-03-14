@@ -31,6 +31,13 @@ import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.appframework.miscutils.Utils;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/DIYLCStarter.java
+=======
+import org.diylc.config.DIYLCConfig;
+import org.diylc.swingframework.export.DrawingExporter;
+import org.diylc.swingframework.fonts.FontOptimizer;
+import com.thoughtworks.xstream.XStream;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/DIYLCStarter.java
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
@@ -39,10 +46,16 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/DIYLCStarter.java
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
 import com.thoughtworks.xstream.XStream;
 import ca.cgjennings.jvm.JarLoader;
+=======
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/DIYLCStarter.java
 
 /**
  * Main class that runs DIYLC.
@@ -177,8 +190,15 @@ public class DIYLCStarter {
 
 		LOG.info("Creating the main frame...");
 
-		MainFrame mainFrame = new MainFrame();
-		Presenter presenter = mainFrame.getPresenter();
+		// Disable web server since this is a Swing app
+		ConfigurableApplicationContext context = new SpringApplicationBuilder(DIYLCConfig.class, DIYLCSwingConfig.class)
+				.web(WebApplicationType.NONE)
+				.headless(false)
+				.run(args);
+
+		// Get MainFrame from Spring context and show it
+		MainFrame mainFrame = context.getBean(MainFrame.class);
+		Presenter presenter = context.getBean(Presenter.class);
 
 		LOG.info("Main frame created.");
 		// mainFrame.setLocationRelativeTo(null);

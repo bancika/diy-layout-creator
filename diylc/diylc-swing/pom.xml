@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.diylc</groupId>
+        <artifactId>diylc-parent</artifactId>
+        <version>5.1.0</version>
+    </parent>
+    
+    <artifactId>diylc-swing</artifactId>
+    <!-- No need to specify version - it inherits from parent -->
+    
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    
+    <dependencies>
+        <!-- Internal module dependencies -->
+        <dependency>
+            <groupId>org.diylc</groupId>
+            <artifactId>diylc-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc</groupId>
+            <artifactId>diylc-library</artifactId>
+        </dependency>
+        
+        <!-- Common dependencies from Maven Central -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.5-FINAL</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.4.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
+        <dependency>
+            <groupId>com.orsonpdf</groupId>
+            <artifactId>orsonpdf</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>commons-compiler</artifactId>
+            <version>3.1.12</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.balloontip</groupId>
+            <artifactId>balloontip</artifactId>
+            <version>1.2.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.guigarage</groupId>
+            <artifactId>gestures-wrapper</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+
+        <!-- Local dependencies from lib folder -->
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>app-framework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>gerber-writer-api-1.0.0</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>java-http-proxy</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>jep-2.4.1</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>svgSalamander-1.1.2.4</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>swing-framework</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>3.2.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <finalName>diylc</finalName>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.diylc.DIYLCStarter</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <profiles>
+        <profile>
+            <id>universal-zip</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>deploy/universal-zip.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id>
+                                <configuration>
+                                    <finalName>diylc-${project.version}</finalName>
+                                    <appendAssemblyId>false</appendAssemblyId>
+                                </configuration>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>linux-appimage</id>
+            <properties>
+                <appdir.dir>${project.build.directory}/AppDir</appdir.dir>
+                <jdk.version>17.0.14+7</jdk.version>
+                <jdk.version.file>17.0.14_7</jdk.version.file>
+                <jdk.archive.linux>OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz</jdk.archive.linux>
+                <jdk.url.linux>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}</jdk.url.linux>
+                <jre.dest.linux>${project.build.directory}/jre-temp</jre.dest.linux>
+                <appdir.jre>${appdir.dir}/usr/bin/jre</appdir.jre>
+                <wsl.command>wsl bash -c</wsl.command>
+                <appimage.output.file>DIYLayoutCreator-${project.version}-x86_64.AppImage</appimage.output.file>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Create AppDir structure and copy files -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>create-appdir</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Create directory structure -->
+                                        <mkdir dir="${appdir.dir}/usr/bin" />
+                                        <mkdir dir="${appdir.dir}/usr/lib" />
+                                        <mkdir dir="${appdir.dir}/usr/share/icons/hicolor/512x512/apps" />
+                                        <mkdir dir="${appdir.dir}/usr/share/metainfo" />
+                                        
+                                        <!-- Copy app files -->
+                                        <copy file="${project.build.directory}/diylc.jar" todir="${appdir.dir}/usr/lib" />
+                            
+                                        <!-- Copy AppImage specific files -->
+                                        <copy file="${project.basedir}/deploy/linux/appimage/diylc.sh" tofile="${appdir.dir}/usr/bin/diylc.sh" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/AppRun" tofile="${appdir.dir}/AppRun" />
+                                        <chmod file="${appdir.dir}/AppRun" perm="755" />
+                                        <chmod file="${appdir.dir}/usr/bin/diylc.sh" perm="755" />
+                                        
+                                        <!-- Copy icons and desktop files -->
+                                        <copy file="${project.basedir}/src/main/resources/icons/icon_512x512.png"
+                                              tofile="${appdir.dir}/usr/share/icons/hicolor/512x512/apps/com.diy_fever.DIYLayoutCreator.png" />
+                                        <copy file="${project.basedir}/src/main/resources/icons/icon_512x512.png"
+                                              tofile="${appdir.dir}/com.diy_fever.DIYLayoutCreator.png" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/com.diy_fever.DIYLayoutCreator.desktop" 
+                                              todir="${appdir.dir}" />
+                                        <copy file="${project.basedir}/deploy/linux/appimage/com.diy_fever.DIYLayoutCreator.metainfo.xml" 
+                                              todir="${appdir.dir}/usr/share/metainfo" />
+                                        
+                                        <!-- Download and extract JRE for Linux -->
+                                        <!-- Ensure clean jre folders -->
+                                        <delete dir="${jre.dest.linux}" />
+                                        <mkdir dir="${jre.dest.linux}" />
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        
+                                        <!-- Download JRE 17 if not already present -->
+                                        <get src="${jdk.url.linux}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE -->
+                                        <untar src="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                               dest="${jre.dest.linux}" 
+                                               compression="gzip" />
+                                        
+                                        <!-- Move extracted folder into AppImage location -->
+                                        <mkdir dir="${appdir.jre}" />
+                                        <move todir="${appdir.jre}">
+                                            <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Clean up temporary directory -->
+                                        <delete dir="${jre.dest.linux}" />
+                                        
+                                        <echo message="JRE 17 bundled into ${appdir.jre}" />
+                            
+                                        <!-- Convert line endings to Unix format -->
+                                        <fixcrlf file="${appdir.dir}/com.diy_fever.DIYLayoutCreator.desktop" eol="unix" />
+                                        <fixcrlf file="${appdir.dir}/AppRun" eol="unix" />
+                                        <fixcrlf file="${appdir.dir}/usr/bin/diylc.sh" eol="unix" />
+                                        
+                                        <echo message="AppDir structure created successfully at: ${appdir.dir}" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Build AppImage -->
+                            <execution>
+                                <id>build-appimage</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="Starting AppImage build process..." />
+                                        
+                                        <!-- Detect operating system -->
+                                        <condition property="isWindows">
+                                            <os family="windows" />
+                                        </condition>
+                                        
+                                        <condition property="isMac">
+                                            <os family="mac" />
+                                        </condition>
+                                        
+                                        <condition property="isLinux">
+                                            <and>
+                                                <os family="unix" />
+                                                <not>
+                                                    <os family="mac" />
+                                                </not>
+                                            </and>
+                                        </condition>
+                                        
+                                        <echo message="Detected OS: ${os.name}" />
+                                        
+                                        <!-- Windows-specific build -->
+                                        <echo message="Windows build will execute: ${isWindows}" />
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c echo Building AppImage using Windows with WSL..." />
+                                        </exec>
+                                        
+                                        <!-- Check if WSL is available -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c where wsl" />
+                                        </exec>
+                                        
+                                        <!-- Set WSL command -->
+                                        <property name="wsl.command" value="wsl bash -c" />
+                                        
+                                        <!-- Check if WSL has a Linux distribution installed -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl -l" />
+                                        </exec>
+                                        
+                                        <!-- Copy AppDir to WSL /tmp directory -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl cp -r &quot;$(wslpath -u '${appdir.dir}')&quot; /tmp/AppDir" />
+                                        </exec>
+                                        
+                                        <!-- Convert line endings to Unix format in WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/com.diy_fever.DIYLayoutCreator.desktop&quot;" />
+                                        </exec>
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/AppRun&quot;" />
+                                        </exec>
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sed -i 's/\r$//' /tmp/AppDir/usr/bin/diylc.sh&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Setup WSL with required dependencies -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c echo Setting up WSL with required dependencies..." />
+                                        </exec>
+                                        
+                                        <!-- Install necessary Linux dependencies inside WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;sudo apt update &amp;&amp; sudo apt install -y wget libfuse2 fuse&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Download AppImageTool into WSL if not already present -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;if [ ! -f ~/appimagetool ]; then wget -O ~/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x ~/appimagetool; fi&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Build AppImage using appimagetool in WSL -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c ${wsl.command} &quot;cd /tmp &amp;&amp; ~/appimagetool /tmp/AppDir /tmp/${appimage.output.file}&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Copy the AppImage back to the build directory -->
+                                        <exec executable="cmd.exe" failonerror="true" osfamily="windows">
+                                            <arg line="/c wsl bash -c &quot;cp /tmp/${appimage.output.file} $(wslpath -u '${project.build.directory}/${appimage.output.file}')&quot;" />
+                                        </exec>
+                                        
+                                        <!-- macOS-specific build -->
+                                        <echo message="Mac build will execute: ${isMac}" />
+                                        <exec executable="bash" failonerror="true" osfamily="mac">
+                                            <arg line="-c 'echo Building AppImage using macOS with Docker...'" />
+                                        </exec>
+                                        
+                                        <!-- Check if Docker is available -->
+                                        <exec executable="docker" resultproperty="docker.result" failifexecutionfails="false" osfamily="mac">
+                                            <arg line="--version" />
+                                        </exec>
+                                        
+                                        <!-- Create a temporary directory for Docker volume mapping -->
+                                        <mkdir dir="${project.build.directory}/docker-tmp" />
+                                        
+                                        <!-- Copy AppDir to the Docker volume directory -->
+                                        <copy todir="${project.build.directory}/docker-tmp/AppDir">
+                                            <fileset dir="${appdir.dir}" />
+                                        </copy>
+                                        
+                                        <!-- Run AppImageTool in Docker -->
+                                        <exec executable="docker" failonerror="true" osfamily="mac">
+                                            <arg line="run --rm -v &quot;${project.build.directory}/docker-tmp:/workspace&quot; -w /workspace appimagecrafters/appimage-builder:latest /bin/bash -c &quot;ARCH=x86_64 appimagetool AppDir ${appimage.output.file}&quot;" />
+                                        </exec>
+                                        
+                                        <!-- Copy the AppImage to the build directory -->
+                                        <copy file="${project.build.directory}/docker-tmp/${appimage.output.file}" todir="${project.build.directory}" />
+                                        
+                                        <!-- Clean up temporary directory -->
+                                        <delete dir="${project.build.directory}/docker-tmp"  />
+                                        
+<!--                                        &lt;!&ndash; Linux-specific build &ndash;&gt;-->
+<!--                                        <echo message="Linux build will execute: ${isLinux}" />-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'echo Building AppImage natively on Linux...'" />-->
+<!--                                        </exec>-->
+<!--                                        -->
+<!--                                        &lt;!&ndash; Install dependencies if needed &ndash;&gt;-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'which appimagetool || (echo &quot;Installing appimagetool...&quot; &amp;&amp; sudo apt-get update &amp;&amp; sudo apt-get install -y libfuse2 fuse &amp;&amp; wget -O /tmp/appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage &amp;&amp; chmod +x /tmp/appimagetool &amp;&amp; sudo mv /tmp/appimagetool /usr/local/bin/)'" />-->
+<!--                                        </exec>-->
+<!--                                        -->
+<!--                                        &lt;!&ndash; Build AppImage &ndash;&gt;-->
+<!--                                        <exec executable="bash" failonerror="true" osfamily="unix">-->
+<!--                                            <arg line="-c 'appimagetool ${appdir.dir} ${project.build.directory}/${appimage.output.file}'" />-->
+<!--                                        </exec>-->
+
+                                        <!-- Create zip package -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-linux.zip">
+                                            <zipfileset file="${project.build.directory}/${appimage.output.file}"
+                                                        filemode="755" />
+                                        </zip>
+
+                                        <echo message="AppImage build completed successfully! Output: ${project.build.directory}/${appimage.output.file}" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <!-- Windows InnoSetup build profile using Docker -->
+        <profile>
+            <id>win64-installer</id>
+            <properties>
+                <jdk.version>17.0.14+7</jdk.version>
+                <jdk.version.file>17.0.14_7</jdk.version.file>
+                <jdk.archive.win64>OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
+                <jdk.url.win64>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Download and extract JRE -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>download-extract-jre</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Clean old jre_win folder -->
+                                        <delete dir="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Create folder to hold extracted JRE -->
+                                        <mkdir dir="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Download JRE 64-bit for Windows -->
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        <get src="${jdk.url.win64}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE into jre_win -->
+                                        <unzip src="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                               dest="${project.build.directory}/jre_win" />
+                                        
+                                        <!-- Move files up one level -->
+                                        <move todir="${project.build.directory}/jre_win">
+                                            <fileset dir="${project.build.directory}/jre_win/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Remove empty top-level folder -->
+                                        <delete dir="${project.build.directory}/jre_win/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <!-- Run InnoSetup -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>build-windows-installer</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>docker</executable>
+                                    <arguments>
+                                        <argument>run</argument>
+                                        <argument>--rm</argument>
+                                        <argument>-v</argument>
+                                        <argument>${project.basedir}:/workspace</argument>
+                                        <argument>amake/innosetup</argument>
+                                        <argument>/Ddiylcver=${project.version}</argument>
+                                        <argument>/Darch=x64</argument>
+                                        <argument>/workspace/deploy/win/install.iss</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

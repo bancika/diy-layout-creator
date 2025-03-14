@@ -34,13 +34,18 @@ import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.loadline.LoadlineEditorFrame;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.diylc.appframework.miscutils.IConfigurationManager;
+import org.diylc.common.AbstractPlugin;
 
 /**
  * Entry point class for File management utilities.
  * 
  * @author Branislav Stojkovic
  */
-public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
+@Component
+public class FileMenuPlugin extends AbstractPlugin implements IDynamicSubmenuHandler {
 
   private static final Logger LOG = Logger.getLogger(FileMenuPlugin.class);
 
@@ -56,6 +61,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
 
+  @Autowired
   public FileMenuPlugin(ISwingUI swingUI) {
     super();
     this.swingUI = swingUI;
@@ -130,7 +136,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return null;
+    return EnumSet.of(EventType.FILE_STATUS_CHANGED);
   }
 
   @Override

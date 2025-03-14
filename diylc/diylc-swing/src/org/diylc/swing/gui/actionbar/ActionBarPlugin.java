@@ -47,12 +47,14 @@ import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.help.HelpMenuPlugin;
+import org.springframework.stereotype.Component;
 
 /**
  * Mini toolbar with common actions
  * 
  * @author Branislav Stojkovic
  */
+@Component
 public class ActionBarPlugin implements IPlugIn {
   
   private static final Logger LOG = Logger.getLogger(ActionBarPlugin.class);

@@ -41,7 +41,7 @@ import org.diylc.core.Template;
 import org.diylc.serialization.ProjectFileManager;
 import com.thoughtworks.xstream.XStream;
 
-public class VariantManager {
+public class VariantManager implements VariantService {
 
   private static final String VARIANTS_FILE_NAME = "variants.xml";
 

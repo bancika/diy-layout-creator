@@ -74,7 +74,7 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public class DrawingManager {
+public class DrawingManager implements DrawingService {
 
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
 

@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/utils/BatchConverter.java
 import org.diylc.DIYLCStarter;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.presenter.Presenter;
@@ -61,3 +62,50 @@ public class BatchConverter {
   }
 
 }
+=======
+import org.diylc.DIYLCSwingConfig;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+
+import org.diylc.DIYLCStarter;
+import org.diylc.config.ImportFileDIYLCConfig;
+import org.diylc.presenter.Presenter;
+import org.diylc.swing.gui.DummyView;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+
+public class BatchConverter {
+  
+  private static final Logger LOG = Logger.getLogger(BatchConverter.class);
+
+  public static void main(String[] args) {
+    URL url = DIYLCStarter.class.getResource("/log4j.properties");
+    Properties properties = new Properties();
+    try (InputStream inputStream = url.openStream()) {
+      properties.load(inputStream);
+      PropertyConfigurator.configure(properties);
+    } catch (Exception e) {
+      LOG.error("Could not initialize log4j configuration", e);
+    }
+
+    File dir = new File("C:\\Users\\Branislav Stojkovic\\Documents\\layouts_v1");
+    File[] matchingFiles = dir.listFiles(new FilenameFilter() {
+      public boolean accept(File dir, String name) {
+        return true;
+      }
+    });
+    ConfigurableApplicationContext context = new SpringApplicationBuilder(ImportFileDIYLCConfig.class, DIYLCSwingConfig.class)
+            .web(WebApplicationType.NONE)
+            .headless(false)
+            .run();
+
+    Presenter presenter = context.getBean(Presenter.class);
+    for (File file : matchingFiles) {
+      if (file.getName() != "" && file.getName() != "." && file.getName() != ".." && !file.isDirectory())
+      presenter.loadProjectFromFile(file.getAbsolutePath());
+      presenter.saveProjectToFile(file.getParentFile().getAbsolutePath() + "\\converted\\" + file.getName(), false);
+    }
+  }
+
+}
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/utils/BatchConverter.java

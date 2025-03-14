@@ -32,9 +32,27 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
+import org.diylc.DIYLCSwingConfig;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/loadline/LoadlineEditorFrame.java
+=======
+import org.diylc.components.connectivity.Dot;
+import org.diylc.components.connectivity.Line;
+import org.diylc.components.misc.Image;
+import org.diylc.components.misc.Image.ImageSizingMode;
+import org.diylc.components.misc.Label;
+import org.diylc.components.misc.LoadlineCurve;
+import org.diylc.components.misc.LoadlineEntity;
+import org.diylc.config.ImportFileDIYLCConfig;
+import org.diylc.config.LoadlineDIYLCConfig;
+import org.diylc.swingframework.ButtonDialog;
+import org.diylc.swingframework.DoubleTextField;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/loadline/LoadlineEditorFrame.java
 import org.diylc.common.EventType;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugIn;
@@ -63,11 +81,19 @@ import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.canvas.CanvasPanel;
 import org.diylc.swing.plugins.file.FileFilterEnum;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/loadline/LoadlineEditorFrame.java
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.swingframework.DoubleTextField;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+=======
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.stereotype.Component;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/loadline/LoadlineEditorFrame.java
 
+@Component
 public class LoadlineEditorFrame extends JFrame implements IView {
 
   private static final long serialVersionUID = 1L;
@@ -94,7 +120,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
   private int xIncrement;
   private int yIncrement;
 
-  public LoadlineEditorFrame() {
+  public LoadlineEditorFrame(Presenter plugInPort) {
     super("Loadline Editor");
     setIconImage(IconLoader.Loadline.getImage());
     setResizable(false);
@@ -116,8 +142,9 @@ public class LoadlineEditorFrame extends JFrame implements IView {
       }
     });
 
+    this.plugInPort = plugInPort;
 
-    this.plugInPort = new Presenter(this, configManager);
+
     this.plugInPort.installPlugin(() -> new IPlugIn() {
 
       @SuppressWarnings("incomplete-switch")
@@ -711,7 +738,13 @@ public class LoadlineEditorFrame extends JFrame implements IView {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      new LoadlineEditorFrame().setVisible(true);
+      ConfigurableApplicationContext context = new SpringApplicationBuilder(LoadlineDIYLCConfig.class, DIYLCSwingConfig.class)
+              .web(WebApplicationType.NONE)
+              .headless(false)
+              .run();
+
+      IView view = context.getBean(IView.class);
+      ((LoadlineEditorFrame)view).setVisible(true);
     }
   }
 }

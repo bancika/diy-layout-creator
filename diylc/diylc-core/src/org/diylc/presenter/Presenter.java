@@ -48,6 +48,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.JarScanner;
@@ -90,15 +91,27 @@ import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 import org.diylc.utils.ReflectionUtils;
+<<<<<<< Updated upstream:diylc/diylc-core/src/org/diylc/presenter/Presenter.java
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+=======
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+import static org.reflections.scanners.Scanners.TypesAnnotated;
+>>>>>>> Stashed changes:diylc/diylc-core/src/main/java/org/diylc/presenter/Presenter.java
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
  * 
  * @author Branislav Stojkovic
  */
+@Component
 public class Presenter implements IPlugInPort, IConfigListener {
 
   private static final String REACHED_BOTTOM =
@@ -165,7 +178,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
   private Map<String, List<ComponentType>> componentTypes;
 
   // Maps component class names to ComponentType objects.
-  private List<IPlugIn> plugIns;
+  private List<IPlugIn> plugIns = new ArrayList<>();
 
   private Set<IDIYComponent<?>> selectedComponents;
   // Maps components that have at least one dragged point to set of indices
@@ -175,11 +188,11 @@ public class Presenter implements IPlugInPort, IConfigListener {
 
   // Utilities
   // private Cloner cloner;
-  private DrawingManager drawingManager;
-  private ProjectFileManager projectFileManager;
-  private InstantiationManager instantiationManager;
-  private VariantManager variantManager;
-  private BuildingBlockManager buildingBlockManager;
+  private DrawingService drawingManager;
+  private ProjectFileService projectFileManager;
+  private InstantiationService instantiationManager;
+  private VariantService variantManager;
+  private BuildingBlockService buildingBlockManager;
 
   private Rectangle selectionRect;
 
@@ -202,6 +215,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
   
   private DIYTest test = null;
   
+<<<<<<< Updated upstream:diylc/diylc-core/src/org/diylc/presenter/Presenter.java
   public Presenter(IView view, IConfigurationManager<?> configManager) {
     this(view, configManager, false);
   }
@@ -221,6 +235,28 @@ public class Presenter implements IPlugInPort, IConfigListener {
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
+=======
+  @Autowired
+  public Presenter(
+          @Lazy
+          IView view,
+          IConfigurationManager configManager,
+          MessageDispatcher<EventType> messageDispatcher,
+          DrawingService drawingService,
+          ProjectFileService projectFileService,
+          InstantiationService instantiationService,
+          VariantService variantService,
+          BuildingBlockService buildingBlockService,
+          boolean importVariantsAndBlocks) {
+    this.view = view;
+    this.configManager = configManager;
+    this.messageDispatcher = messageDispatcher;
+    this.drawingManager = drawingService;
+    this.projectFileManager = projectFileService;
+    this.instantiationManager = instantiationService;
+    this.variantManager = variantService;
+    this.buildingBlockManager = buildingBlockService;
+>>>>>>> Stashed changes:diylc/diylc-core/src/main/java/org/diylc/presenter/Presenter.java
 
     // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
     // visibleLayers = EnumSet.allOf(ComponentLayer.class);

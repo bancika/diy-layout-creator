@@ -50,7 +50,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.text.DefaultCaret;
 import org.apache.log4j.Logger;
+import org.diylc.DIYLCSwingConfig;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/plugins/cloud/view/browser/ResultsScrollPanel.java
+=======
+import org.diylc.config.DummyViewDIYLCConfig;
+import org.diylc.swingframework.ButtonDialog;
+
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/plugins/cloud/view/browser/ResultsScrollPanel.java
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
@@ -72,6 +79,9 @@ import org.diylc.swing.plugins.cloud.view.CommentDialog;
 import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swingframework.ButtonDialog;
 import org.diylc.utils.Pair;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Component that is capable of showing a list of {@link ProjectEntity} objects. Can work in paging
@@ -398,9 +408,15 @@ public class ResultsScrollPanel extends JScrollPane {
             + project.getName()
             + "\" with a new file?\nThis opperation is irreversible. Once replaced, the old version of the project cannot be restored.",
             "Replace Project", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION) {
-          
-          final Presenter thumbnailPresenter =
-              new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
+
+
+          ConfigurableApplicationContext context = new SpringApplicationBuilder(DummyViewDIYLCConfig.class, DIYLCSwingConfig.class)
+                  .web(WebApplicationType.NONE)
+                  .headless(false)
+                  .run();
+
+          Presenter thumbnailPresenter = context.getBean(Presenter.class);
+
           final ThumbnailGenerator thumbnailGenerator = new ThumbnailGenerator(thumbnailPresenter);
           
           final File file =

@@ -21,6 +21,7 @@
 */
 package org.diylc.swing.plugins.file;
 
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/plugins/file/ProjectPreview.java
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -44,6 +45,39 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.DummyView;
 import org.diylc.swingframework.IFileChooserAccessory;
 
+=======
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.EnumSet;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.diylc.DIYLCSwingConfig;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.config.DummyViewDIYLCConfig;
+import org.diylc.config.ImportFileDIYLCConfig;
+import org.diylc.swingframework.IFileChooserAccessory;
+
+import org.diylc.common.DrawOption;
+import org.diylc.common.IPlugInPort;
+import org.diylc.core.Project;
+import org.diylc.presenter.Presenter;
+import org.diylc.serialization.ProjectFileManager;
+import org.diylc.swing.gui.DummyView;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/plugins/file/ProjectPreview.java
 /**
  * {@link JComponent} that shows preview of the selected project in {@link JFileChooser}. It's
  * hooked onto {@link JFileChooser} as {@link PropertyChangeListener} and refreshes when file is
@@ -64,7 +98,13 @@ public class ProjectPreview extends JPanel implements PropertyChangeListener, IF
     super();
 
     setPreferredSize(new Dimension(140, 128));
-    presenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
+
+    ConfigurableApplicationContext context = new SpringApplicationBuilder(DummyViewDIYLCConfig.class, DIYLCSwingConfig.class)
+            .web(WebApplicationType.NONE)
+            .headless(false)
+            .run();
+
+    this.presenter = context.getBean(Presenter.class);
 
     emptyProject = new Project();
     emptyProject.setTitle("");

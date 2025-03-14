@@ -9,11 +9,15 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
+import org.diylc.DIYLCSwingConfig;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.clipboard.ComponentTransferableFactory;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.config.DIYLCConfig;
+import org.diylc.config.ImportFileDIYLCConfig;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
@@ -21,6 +25,9 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
 import org.diylc.swing.images.IconLoader;
 import org.diylc.swing.plugins.file.FileFilterEnum;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public class ImportAction extends AbstractAction {
 
@@ -34,35 +41,14 @@ public class ImportAction extends AbstractAction {
     super();
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
-    this.presenter = new Presenter(new IView() {
 
-      @Override
-      public int showConfirmDialog(String message, String title, int optionType,
-          int messageType) {
-        return JOptionPane.showConfirmDialog(null, message, title, optionType, messageType);
-      }
+    ConfigurableApplicationContext context = new SpringApplicationBuilder(ImportFileDIYLCConfig.class, DIYLCSwingConfig.class)
+            .web(WebApplicationType.NONE)
+            .headless(false)
+            .run();
 
-      @Override
-      public void showMessage(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(null, message, title, messageType);
-      }
+    this.presenter = context.getBean(Presenter.class);
 
-      @Override
-      public String showInputDialog(String message, String title) {
-        return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
-      }
-
-      @Override
-      public File promptFileSave() {
-        return null;
-      }
-
-      @Override
-      public boolean editProperties(List<PropertyWrapper> properties,
-          Set<PropertyWrapper> defaultedProperties, String title) {
-        return false;
-      }
-    }, InMemoryConfigurationManager.getInstance());
     putValue(AbstractAction.NAME, "Import");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

@@ -88,6 +88,41 @@ import org.diylc.swing.plugins.toolbox.ToolBox;
 import org.diylc.swing.plugins.tree.ComponentTree;
 import org.diylc.swingframework.ButtonDialog;
 
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/MainFrame.java
+=======
+import org.diylc.common.BadPositionException;
+import org.diylc.common.EventType;
+import org.diylc.common.IPlugIn;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
+import org.diylc.common.PropertyWrapper;
+import org.diylc.core.IView;
+import org.diylc.core.images.IconLoader;
+import org.diylc.lang.LangUtil;
+import org.diylc.presenter.Presenter;
+import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.actionbar.ActionBarPlugin;
+import org.diylc.swing.gui.editor.PropertyEditorDialog;
+import org.diylc.swing.plugins.autosave.AutoSavePlugin;
+import org.diylc.swing.plugins.canvas.CanvasPlugin;
+import org.diylc.swing.plugins.cloud.CloudPlugIn;
+import org.diylc.swing.plugins.config.ConfigPlugin;
+import org.diylc.swing.plugins.edit.EditMenuPlugin;
+import org.diylc.swing.plugins.explorer.ExplorerPlugin;
+import org.diylc.swing.plugins.file.FileFilterEnum;
+import org.diylc.swing.plugins.file.FileMenuPlugin;
+import org.diylc.swing.plugins.help.HelpMenuPlugin;
+import org.diylc.swing.plugins.layers.LayersMenuPlugin;
+import org.diylc.swing.plugins.statusbar.StatusBar;
+import org.diylc.swing.plugins.test.TestMenuPlugin;
+import org.diylc.swing.plugins.toolbox.ToolBox;
+import org.diylc.swing.plugins.tree.ComponentTree;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.diylc.swing.plugins.PluginFactory;
+
+@Component
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/MainFrame.java
 public class MainFrame extends JFrame implements ISwingUI {
 
   private static final Logger LOG = Logger.getLogger(MainFrame.class);
@@ -100,7 +135,8 @@ public class MainFrame extends JFrame implements ISwingUI {
   private JPanel topPanel;
   private JPanel bottomPanel;
 
-  private Presenter presenter;
+  private final Presenter presenter;
+  private final IConfigurationManager configManager;
 
   private JMenuBar mainMenuBar;
   private Map<String, JMenu> menuMap;
@@ -108,26 +144,47 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   private CanvasPlugin canvasPlugin;
 
-  public MainFrame() {
+  @Autowired
+  public MainFrame(
+          Presenter presenter, 
+          IConfigurationManager configManager,
+          List<IPlugIn> plugins) {  // Spring will inject all IPlugIn implementations
     super("DIYLC 4");
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/MainFrame.java
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+=======
+    this.presenter = presenter;
+    this.configManager = configManager;
+    
+    setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/MainFrame.java
     setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
     menuMap = new HashMap<String, JMenu>();
     buttonGroupMap = new HashMap<String, ButtonGroup>();
     setIconImages(Arrays.asList(IconLoader.IconSmall.getImage(), IconLoader.IconMedium.getImage(),
         IconLoader.IconLarge.getImage()));
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/MainFrame.java
     DialogFactory.getInstance().initialize(this);
     
     IConfigurationManager<?> configManager = ConfigurationManager.getInstance();
+=======
+    DialogFactory.getInstance().initialize(this);
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/MainFrame.java
 
-    this.presenter = new Presenter(this, configManager, true);    
+    for (IPlugIn plugIn : plugins) {
+      presenter.installPlugin(() -> plugIn);
+    }
 
-    presenter.installPlugin(() -> new ToolBox(this));    
+//    this.canvasPlugin = (CanvasPlugin) plugins.stream()
+//            .filter(x -> CanvasPlugin.class.isInstance(x))
+//                    .findFirst().orElseThrow();
+    presenter.installPlugin(() -> new ToolBox(this));
     presenter.installPlugin(() -> new FileMenuPlugin(this));
     presenter.installPlugin(() -> new EditMenuPlugin(this));
     presenter.installPlugin(() -> new ConfigPlugin(this));
     presenter.installPlugin(() -> new LayersMenuPlugin(this));
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/MainFrame.java
     presenter.installPlugin(() -> new CloudPlugIn(this));
     if ("true".equalsIgnoreCase(System.getProperty("org.diylc.enableTests")))
         presenter.installPlugin(() -> new TestMenuPlugin(this));
@@ -144,6 +201,20 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(() -> new FramePlugin());
 
     presenter.installPlugin(() -> new AutoSavePlugin(this));
+=======
+    presenter.installPlugin(() -> new CloudPlugIn(this));
+    if ("true".equalsIgnoreCase(System.getProperty("org.diylc.enableTests")))
+      presenter.installPlugin(() -> new TestMenuPlugin(this));
+    presenter.installPlugin(() -> new HelpMenuPlugin(this));
+    presenter.installPlugin(() -> new ActionBarPlugin(this));
+
+    presenter.installPlugin(() -> new StatusBar(this));
+
+    canvasPlugin = new CanvasPlugin(this, configManager);
+    presenter.installPlugin(() -> canvasPlugin);
+    presenter.installPlugin(() -> new ComponentTree(this, canvasPlugin.getCanvasPanel()));
+    presenter.installPlugin(() -> new ExplorerPlugin(this, canvasPlugin.getCanvasPanel()));
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/MainFrame.java
 
     presenter.createNewProject();
 

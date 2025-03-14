@@ -42,7 +42,18 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
+<<<<<<< Updated upstream:diylc/diylc-core/src/org/diylc/presenter/BuildingBlockManager.java
 public class BuildingBlockManager {
+=======
+import org.diylc.common.BuildingBlockPackage;
+import org.diylc.common.IBlockProcessor;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
+import org.diylc.core.IDIYComponent;
+import org.diylc.serialization.ProjectFileManager;
+
+public class BuildingBlockManager implements BuildingBlockService {
+>>>>>>> Stashed changes:diylc/diylc-core/src/main/java/org/diylc/presenter/BuildingBlockManager.java
 
   private static final String BLOCKS_FILE_NAME = "blocks.xml";
 
@@ -50,10 +61,10 @@ public class BuildingBlockManager {
 
   private IConfigurationManager<?> configManager;
   private XStream xStream;
-  private InstantiationManager instantiationManager;
+  private InstantiationService instantiationManager;
 
   public BuildingBlockManager(IConfigurationManager<?> configManager, XStream xStream,
-      InstantiationManager instantiationManager) {
+      InstantiationService instantiationManager) {
     super();
     this.configManager = configManager;
     this.xStream = xStream;

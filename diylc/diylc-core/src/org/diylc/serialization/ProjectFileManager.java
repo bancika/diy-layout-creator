@@ -43,10 +43,14 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
+<<<<<<< Updated upstream:diylc/diylc-core/src/org/diylc/serialization/ProjectFileManager.java
 import org.diylc.common.EventType;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
 import org.diylc.test.DIYTest;
+=======
+import org.diylc.presenter.ProjectFileService;
+>>>>>>> Stashed changes:diylc/diylc-core/src/main/java/org/diylc/serialization/ProjectFileManager.java
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,6 +60,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+<<<<<<< Updated upstream:diylc/diylc-core/src/org/diylc/serialization/ProjectFileManager.java
 
 public class ProjectFileManager {
 
@@ -64,6 +69,21 @@ public class ProjectFileManager {
   private XStream xStream;
   // Legacy deserializer for 3.0.1 through 3.0.7, loads Points referenced in
   // pixels.
+=======
+
+import org.diylc.common.EventType;
+import org.diylc.core.Project;
+import org.diylc.presenter.Presenter;
+import org.diylc.test.DIYTest;
+
+public class ProjectFileManager implements ProjectFileService {
+
+  private static final Logger LOG = Logger.getLogger(ProjectFileManager.class);
+
+  private XStream xStream;
+  // Legacy deserializer for 3.0.1 through 3.0.7, loads Points referenced in
+  // pixels.
+>>>>>>> Stashed changes:diylc/diylc-core/src/main/java/org/diylc/serialization/ProjectFileManager.java
   private XStream xStreamOld;
   
   public static final XStream xStreamSerializer = new XStream(new DomDriver("UTF-8"));

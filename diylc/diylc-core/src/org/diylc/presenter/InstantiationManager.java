@@ -53,7 +53,7 @@ import org.diylc.core.measures.Size;
  * 
  * @author Branislav Stojkovic
  */
-public class InstantiationManager {
+public class InstantiationManager implements InstantiationService{
 
   private static final Logger LOG = Logger.getLogger(InstantiationManager.class);
 

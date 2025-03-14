@@ -52,6 +52,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.ComponentPopupMenu;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/plugins/canvas/CanvasPlugin.java
 import org.diylc.swingframework.ruler.IRulerListener;
 import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
@@ -59,7 +60,11 @@ import com.guigarage.gestures.GestureMagnificationEvent;
 import com.guigarage.gestures.GestureMagnificationListener;
 import com.guigarage.gestures.GestureUtilities;
 import com.guigarage.gestures.GesturesNotSupportedException;
+=======
+import org.springframework.stereotype.Component;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/plugins/canvas/CanvasPlugin.java
 
+@Component
 public class CanvasPlugin implements IPlugIn{
 
   private static final Logger LOG = Logger.getLogger(CanvasPlugin.class);

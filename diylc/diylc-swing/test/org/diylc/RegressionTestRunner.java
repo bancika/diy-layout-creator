@@ -20,19 +20,40 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
+<<<<<<< Updated upstream:diylc/diylc-swing/test/org/diylc/RegressionTestRunner.java
+=======
+import org.diylc.common.EventType;
+import org.diylc.config.DummyViewDIYLCConfig;
+import org.diylc.config.ImportFileDIYLCConfig;
+import org.diylc.presenter.*;
+import org.diylc.swingframework.export.DrawingExporter;
+
+>>>>>>> Stashed changes:diylc/diylc-swing/src/test/java/org/diylc/RegressionTestRunner.java
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
+<<<<<<< Updated upstream:diylc/diylc-swing/test/org/diylc/RegressionTestRunner.java
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
+=======
+>>>>>>> Stashed changes:diylc/diylc-swing/src/test/java/org/diylc/RegressionTestRunner.java
 import com.github.romankh3.image.comparison.ImageComparison;
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
+<<<<<<< Updated upstream:diylc/diylc-swing/test/org/diylc/RegressionTestRunner.java
+=======
+import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/test/java/org/diylc/RegressionTestRunner.java
 
 public class RegressionTestRunner {
 
@@ -79,7 +100,8 @@ public class RegressionTestRunner {
   private static void createReport(List<RegressionTestResult> results, String basePath)
       throws IOException {
     IView view = new MockView();
-    Presenter presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
+
+    Presenter presenter = TestBase.getPresenter(view);
     VersionNumber currentVersionNumber = presenter.getCurrentVersionNumber();
 
     String fileName = basePath + File.separator + "reports" + File.separator
@@ -161,7 +183,7 @@ public class RegressionTestRunner {
     String prefix = "File: " + file.getName() + " status: ";
     try {
       MockView view = new MockView();
-      Presenter presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
+      Presenter presenter = TestBase.getPresenter(view);
       ProjectDrawingProvider drawingProvider =
           new ProjectDrawingProvider(presenter, false, true, false);
       presenter.loadProjectFromFile(file.getAbsolutePath());

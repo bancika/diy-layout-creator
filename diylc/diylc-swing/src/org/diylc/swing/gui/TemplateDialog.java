@@ -21,6 +21,7 @@
 */
 package org.diylc.swing.gui;
 
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/TemplateDialog.java
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -58,7 +59,52 @@ import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
+=======
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import org.apache.log4j.Logger;
+import org.diylc.DIYLCSwingConfig;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+
+import org.diylc.common.DrawOption;
+import org.diylc.common.IPlugInPort;
+import org.diylc.common.PropertyWrapper;
+import org.diylc.config.ImportFileDIYLCConfig;
+import org.diylc.core.IView;
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/TemplateDialog.java
 import org.diylc.presenter.Presenter;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public class TemplateDialog extends JDialog {
 
@@ -85,13 +131,13 @@ public class TemplateDialog extends JDialog {
     setModal(true);
     setResizable(false);
     this.plugInPort = plugInPort;
-    this.presenter = new Presenter(new IView() {
 
-      @Override
-      public int showConfirmDialog(String message, String title, int optionType, int messageType) {
-        return JOptionPane.showConfirmDialog(TemplateDialog.this, message, title, optionType, messageType);
-      }
+    ConfigurableApplicationContext context = new SpringApplicationBuilder(ImportFileDIYLCConfig.class, DIYLCSwingConfig.class)
+            .web(WebApplicationType.NONE)
+            .headless(false)
+            .run();
 
+<<<<<<< Updated upstream:diylc/diylc-swing/src/org/diylc/swing/gui/TemplateDialog.java
       @Override
       public void showMessage(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(TemplateDialog.this, message, title, messageType);
@@ -101,17 +147,10 @@ public class TemplateDialog extends JDialog {
       public String showInputDialog(String message, String title) {
         return JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
       }
+=======
+    this.presenter = context.getBean(Presenter.class);
+>>>>>>> Stashed changes:diylc/diylc-swing/src/main/java/org/diylc/swing/gui/TemplateDialog.java
 
-      @Override
-      public File promptFileSave() {
-        return null;
-      }
-
-      @Override
-      public boolean editProperties(List<PropertyWrapper> properties, Set<PropertyWrapper> defaultedProperties, String title) {
-        return false;
-      }
-    }, InMemoryConfigurationManager.getInstance());
     // this.presenter.installPlugin(new IPlugIn() {
     //
     // @Override
