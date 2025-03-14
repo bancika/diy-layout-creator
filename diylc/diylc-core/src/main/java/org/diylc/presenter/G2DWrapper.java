@@ -1,17 +1,17 @@
 /*
- *
+ * 
  * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
- *
+ * 
  * This file is part of DIYLC.
- *
+ * 
  * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * 
  * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -62,6 +62,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ZoomableStroke;
 import org.diylc.core.IDrawingObserver;
@@ -69,24 +70,24 @@ import org.diylc.core.IDrawingObserver;
 /**
  * {@link Graphics2D} wrapper that keeps track of all drawing actions and creates an {@link Area}
  * that corresponds to drawn objects. Before each component is drawn,
- * {@link #startedDrawingComponent(int)} ()} should be called. After the component is drawn, area may be
+ * {@link #startedDrawingComponent()} should be called. After the component is drawn, area may be
  * retrieved using {@link #finishedDrawingComponent()}. Graphics configuration (color, font, etc) is
  * reset between each two components.
- *
+ * 
  * @author Branislav Stojkovic
  */
 class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   public static int LINE_SENSITIVITY_MARGIN = 2;
-  public static int CURVE_SENSITIVITY = 6;
+  public static int CURVE_SENSITIVITY = 6;  
 
   private boolean drawingComponent = false;
   private boolean trackingAllowed = true;
   private boolean trackingContinuityAllowed = false;
   private boolean trackingContinuityPositive = true;
-
+  
   private HashMap<String, Integer> trackingStacks = new HashMap<String, Integer>();
-
+  
   private int uniqueCounter = 0;
 
   private Graphics2D canvasGraphics;
@@ -104,13 +105,11 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private Shape lastShape;
 
   private double zoom;
-  private int zOrder;
-
-  private AffineTransform mirrorTransform;
+  private int zOrder;  
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
-   *
+   * 
    * @param canvasGraphics
    */
   public G2DWrapper(Graphics2D canvasGraphics, double zoom) {
@@ -123,14 +122,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     continuityMarker = null;
     currentTx = new AffineTransform();
   }
-
+  
   public Graphics2D getCanvasGraphics() {
     return canvasGraphics;
   }
 
   /**
    * Clears out the current area and caches canvas settings.
-   *
+   * 
    * @param zOrder
    */
   public void startedDrawingComponent(int zOrder) {
@@ -154,7 +153,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   /**
    * Reverts {@link Graphics2D} settings and returns area drawn by component in the meantime.
-   *
+   * 
    * @return
    */
   public ComponentArea finishedDrawingComponent() {
@@ -164,27 +163,27 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setTransform(originalTx);
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
-//    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);
-    return new ComponentArea(zOrder,currentArea, new ArrayList<Area>(continuityPositiveAreas.values()),
-            new ArrayList<Area>(continuityNegativeAreas.values()));
+//    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
+    return new ComponentArea(zOrder,currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), 
+        new ArrayList<Area>(continuityNegativeAreas.values()));
   }
-
+  
   // start - used for caching
-
+  
   public Area getCurrentArea() {
     return currentArea;
   }
-
+  
   public Map<String, Area> getContinuityPositiveAreas() {
     return continuityPositiveAreas;
   }
-
+  
   public Map<String, Area> getContinuityNegativeAreas() {
     return continuityNegativeAreas;
   }
-
+  
   // end - used for caching
-
+  
   public void merge(Area currentArea, Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas) {
     this.currentArea = currentArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
@@ -213,22 +212,18 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   }
 
   @Override
-  public boolean isTrackingContinuityArea() {
+  public boolean isTrackingContinuityArea() {   
     return trackingContinuityAllowed;
-  }
-
+  }  
+  
   @Override
   public void setContinuityMarker(String marker) {
-    continuityMarker = marker;
-  }
-
-  public void setMirrorTransform(AffineTransform mirrorTransform) {
-    this.mirrorTransform = mirrorTransform;
-  }
+    continuityMarker = marker;    
+  }    
 
   /**
    * Appends shape interior to the current component area.
-   *
+   * 
    * @param s
    */
   private void appendShape(Shape s) {
@@ -242,7 +237,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
       area.transform(currentTx);
 
       if (trackingAllowed)
-        currentArea.add(area);
+        currentArea.add(area);      
 
       Map<String, Area> toAdd;
       if (trackingContinuityAllowed) {
@@ -255,18 +250,18 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
           toAdd.put(marker, area);
 //          markStack();
         } else {
-          Area current = toAdd.getOrDefault(marker, null);
-          if (current == null) {
+          Area current = toAdd.getOrDefault(marker, null); 
+          if (current == null) {            
             toAdd.put(marker, area);
-//            markStack();
+//            markStack();          
           } else
             current.add(area);
-        }
+        }        
       }
       lastShape = s;
     }
   }
-
+  
   @SuppressWarnings("unused")
   private void markStack() {
     StringWriter sw = new StringWriter();
@@ -280,7 +275,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   /**
    * Appends shape outline to the current component area.
-   *
+   * 
    * @param s
    */
   private void appendShapeOutline(Shape s) {
@@ -350,73 +345,22 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawString(String str, int x, int y) {
-    this.drawString(str, (float)x, (float)y);
+    canvasGraphics.drawString(str, x, y);
+    if (drawingComponent && trackingAllowed) {
+      FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+      Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+      Point2D point = new Point2D.Double(x, y);
+      // currentTx.transform(point, point);
+      Rectangle2D finalRec =
+          new Rectangle2D.Double(rect.getX() + point.getX(), rect.getY() + point.getY(), rect.getWidth(),
+              rect.getHeight());
+      appendShape(finalRec);
+    }
   }
 
   @Override
   public void drawString(String str, float x, float y) {
-    if (this.mirrorTransform == null) {
-      canvasGraphics.drawString(str, x, y);
-    } else {
-      drawStringUnmirrored(str, x, y);
-    }
-    handleDrawString(str, x, y);
-  }
-
-  private void drawStringUnmirrored(String str, float x, float y) {
-    // Save the current transform (T), which includes the mirror.
-    AffineTransform originalTransform = new AffineTransform(getTransform());
-
-    // Compute the non-mirrored transform A by "canceling" the mirror:
-    // Since T = A ? M and M is self-inverse, we have A = T ? M.
-    AffineTransform nonMirroredTransform = new AffineTransform(originalTransform);
-    nonMirroredTransform.concatenate(mirrorTransform);
-
-    GlyphVector gv = getFont().createGlyphVector(this.getFontRenderContext(), str);
-    Rectangle2D visualBounds = gv.getVisualBounds();
-    // Use a temporary Graphics2D (with transform A) to obtain correct FontMetrics.
-    Graphics2D gTemp = (Graphics2D) canvasGraphics.create();
-    gTemp.setTransform(nonMirroredTransform);
-    FontMetrics fm = gTemp.getFontMetrics();
-    double textWidth  = fm.stringWidth(str);
-    // Use ascent + descent as the bounding box height.
-    double textHeight = visualBounds.getHeight();//fm.getAscent() + fm.getDescent();
-    double ascent     = fm.getAscent();
-    gTemp.dispose();
-
-    // 1. Compute the center of the text?s bounding box in the mirrored (T) space.
-    Point2D centerMirrored = new Point2D.Double(x + textWidth / 2.0,
-            y + textHeight / 2.0);
-
-    // 2. Convert that center to screen coordinates using the original transform T.
-    Point2D centerScreen = originalTransform.transform(centerMirrored, null);
-
-    // 3. Map the screen coordinate into the non-mirrored coordinate system (A).
-    Point2D centerNonMirrored;
-    try {
-      centerNonMirrored = nonMirroredTransform.createInverse().transform(centerScreen, null);
-    } catch (NoninvertibleTransformException e) {
-      e.printStackTrace();
-      centerNonMirrored = centerMirrored; // Fallback if inversion fails.
-    }
-
-    // 4. Compute the new top-left in A so that the bounding box (width x height)
-    //     remains centered at centerNonMirrored.
-    double newTopLeftX = centerNonMirrored.getX() - textWidth / 2.0;
-    double newTopLeftY = centerNonMirrored.getY() - textHeight / 2.0;
-    // Adjust for the baseline (drawString uses the baseline for y)
-    float drawX = (float) newTopLeftX;
-    float drawY = (float) (newTopLeftY + ascent);
-
-    // 5. Set the transform to the non-mirrored transform (A) so that mirror is canceled.
-    canvasGraphics.setTransform(nonMirroredTransform);
-    canvasGraphics.drawString(str, drawX, drawY);
-
-    // 6. Restore the original transform.
-    setTransform(originalTransform);
-  }
-
-  private void handleDrawString(String str, float x, float y) {
+    canvasGraphics.drawString(str, x, y);
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
@@ -625,7 +569,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.drawArc(x, y, width, height, startAngle, arcAngle);
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.OPEN));
-    }
+    }    
   }
 
   @Override
@@ -655,14 +599,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
-                           ImageObserver observer) {
+      ImageObserver observer) {
     // FIXME: map
     return canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
   }
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
-                           Color bgcolor, ImageObserver observer) {
+      Color bgcolor, ImageObserver observer) {
     // FIXME: map
     return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
   }
@@ -813,12 +757,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void setXORMode(Color c1) {
     canvasGraphics.setXORMode(c1);
   }
-
+  
   @SuppressWarnings("unused")
   private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap,
-                                                       final boolean order) {
+      final boolean order) {
     List<Entry<String, Integer>> list =
-            new LinkedList<Entry<String, Integer>>(unsortMap.entrySet());
+        new LinkedList<Entry<String, Integer>>(unsortMap.entrySet());
 
     // Sorting the list based on values
     Collections.sort(list, new Comparator<Entry<String, Integer>>() {

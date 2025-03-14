@@ -74,7 +74,7 @@ public class DrawingCache {
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getComponent().getClass());
 
       if (type != null && type.getEnableCache()) {
-        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, scaleFactor, x.getZOrder(), false);
+        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, scaleFactor, x.getZOrder());
       }
     });
   }
@@ -89,14 +89,10 @@ public class DrawingCache {
    * @param outlineMode
    * @param project
    * @param zoom
-   * @param scaleFactor
-   * @param zOrder
-   * @param mirrored
    */
   @SuppressWarnings("unchecked")
   public void draw(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder, Rectangle2D visibleRect,
-                   boolean mirrored) {
+      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder, Rectangle2D visibleRect) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
@@ -104,7 +100,7 @@ public class DrawingCache {
       // if we need to apply caching
       Point2D firstPoint = component.getControlPoint(0);
       
-      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, scaleFactor, zOrder, mirrored);
+      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, scaleFactor, zOrder); 
       
       if (value == null) {
         return;
@@ -184,7 +180,7 @@ public class DrawingCache {
   }
   
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder, boolean mirrored) {
+      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder) {
     // if we need to apply caching
     Point2D firstPoint = component.getControlPoint(0);
 
@@ -200,7 +196,7 @@ public class DrawingCache {
     // only honor the cache if the component hasn't changed in the meantime
     if (value == null || !value.getComponent().equalsTo(component)
         || value.getState() != componentState || value.getZoom() != zoom || value.getOutlineMode() != outlineMode
-        || value.getScaleFactor() != scaleFactor || value.isMirrored() != mirrored) {
+        || value.getScaleFactor() != scaleFactor) {
       // figure out size and placement of buffer image
       Rectangle2D rect = component.getCachingBounds();
       int width = (int)Math.round(rect.getWidth() * zoom);
@@ -274,7 +270,7 @@ public class DrawingCache {
       
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, scaleFactor, dx, dy, rect, mirrored);
+          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, scaleFactor, dx, dy, rect);        
       imageCache.put(component, new SoftReference<DrawingCache.CacheValue>(value));
     }
     
@@ -291,7 +287,6 @@ public class DrawingCache {
     boolean outlineMode;
     double zoom;
     double scaleFactor;
-    boolean mirrored;
     int dx;
     int dy;
     Rectangle2D cacheBounds;
@@ -299,7 +294,7 @@ public class DrawingCache {
     public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
         Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
         ComponentState state, boolean outlineMode, double zoom, double scaleFactor, int dx, int dy,
-        Rectangle2D cacheBounds, boolean mirrored) {
+        Rectangle2D cacheBounds) {
       super();
       this.cacheBounds = cacheBounds;
       // take a copy of the component, so we can check if it changed in the meantime
@@ -314,7 +309,6 @@ public class DrawingCache {
       this.state = state;
       this.outlineMode = outlineMode;
       this.zoom = zoom;
-      this.scaleFactor = scaleFactor;
       this.dx = dx;
       this.dy = dy;
     }
@@ -353,10 +347,6 @@ public class DrawingCache {
     
     public double getScaleFactor() {
       return scaleFactor;
-    }
-
-    public boolean isMirrored() {
-      return mirrored;
     }
 
     public int getDx() {
