@@ -1,5 +1,5 @@
 <project name="diylc-core" basedir="." default="jar">
-	<property name="src.dir" value="src" />
+	<property name="src.dir" value="${basedir}/src/main/java" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />

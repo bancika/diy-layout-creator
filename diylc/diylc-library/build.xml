@@ -1,5 +1,5 @@
 <project name="main" basedir="." default="jar">
-	<property name="src.dir" value="src" />
+	<property name="src.dir" value="${basedir}/src/main/java" />
 
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.dir" value="${basedir}/build" />
@@ -17,7 +17,7 @@
 		<ant antfile="../diylc-core/build.xml" target="jar" inheritAll="false"/>
 		<mkdir dir="${classes.dir}" />
 		<echo>Compile with JDK ${java.runtime.version}</echo>
-		<javac encoding="8859_1" srcdir="${basedir}/${src.dir}" destdir="${classes.dir}" classpathref="class.path" debug="true" includeantruntime="false" />
+		<javac encoding="8859_1" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="class.path" debug="true" includeantruntime="false" />
 	</target>
 
 	<target name="resource.copy">
