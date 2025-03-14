@@ -1,17 +1,17 @@
 /*
- * 
+ *
  * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
- * 
+ *
  * This file is part of DIYLC.
- * 
+ *
  * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
  * <http://www.gnu.org/licenses/>.
  */
@@ -46,17 +46,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
-
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.GridType;
 import org.diylc.common.IComponentFilter;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoard;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ILayeredComponent;
@@ -72,7 +75,7 @@ import org.diylc.utils.Constants;
 /**
  * Utility that deals with painting {@link Project} on the {@link Graphics2D} and keeps areas taken
  * by each drawn component.
- * 
+ *
  * @author Branislav Stojkovic
  */
 public class DrawingManager {
@@ -91,6 +94,8 @@ public class DrawingManager {
 
   public static Color CONTROL_POINT_COLOR = Color.blue;
   public static Color SELECTED_CONTROL_POINT_COLOR = Color.green;
+
+  private static final Byte MIRRORED_ALPHA = 64;
 
   private Theme theme;
 
@@ -127,7 +132,7 @@ public class DrawingManager {
   private List<Area> proximityMarkers = null;
 
   public DrawingManager(MessageDispatcher<EventType> messageDispatcher,
-      IConfigurationManager<?> configManager) {
+                        IConfigurationManager<?> configManager) {
     super();
     this.messageDispatcher = messageDispatcher;
     this.configManager = configManager;
@@ -145,16 +150,16 @@ public class DrawingManager {
     lastDrawnStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
     String debugComponentAreasStr = System.getProperty(DEBUG_COMPONENT_AREAS);
     debugComponentAreas =
-        debugComponentAreasStr != null && debugComponentAreasStr.equalsIgnoreCase("true");
+            debugComponentAreasStr != null && debugComponentAreasStr.equalsIgnoreCase("true");
 
     String debugContinuityAreasStr = System.getProperty(DEBUG_CONTINUITY_AREAS);
     debugContinuityAreas =
-        debugContinuityAreasStr != null && debugContinuityAreasStr.equalsIgnoreCase("true");
+            debugContinuityAreasStr != null && debugContinuityAreasStr.equalsIgnoreCase("true");
   }
 
   /**
    * Paints the project onto the canvas and returns the list of components that failed to draw.
-   * 
+   *
    * @param g2d
    * @param project
    * @param drawOptions
@@ -167,16 +172,18 @@ public class DrawingManager {
    * @param componentSlot
    * @param dragInProgress
    * @param externalZoom
-   * @param scaleFactor 
+   * @param scaleFactor
    * @param visibleRect
    * @return
    */
+  @SuppressWarnings("unlikely-arg-type")
   public List<IDIYComponent<?>> drawProject(Graphics2D g2d, Project project,
-      Set<DrawOption> drawOptions, IComponentFilter filter, Rectangle selectionRect,
-      Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
-      Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
-      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
-      Double scaleFactor, Rectangle2D visibleRect) {
+                                            Set<DrawOption> drawOptions, IComponentFilter filter, Rectangle selectionRect,
+                                            Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
+                                            Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
+                                            List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
+                                            Double scaleFactor, Rectangle2D visibleRect) {
+
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -195,42 +202,39 @@ public class DrawingManager {
 
     G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom);
 
-    if (drawOptions.contains(DrawOption.ANTIALIASING)) {
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    } else {
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    configureG2D(g2d, drawOptions);
+
+    // group components with boards that contain them
+    Map<IBoard, List<IDIYComponent<?>>> boardMap = project.getComponents().stream()
+            .filter(IBoard.class::isInstance)
+            .map(IBoard.class::cast)
+            .filter(b -> b.getBoardUndersideDisplay() != BoardUndersideDisplay.NONE)
+            .collect(Collectors.toMap(x -> x, x -> new ArrayList<IDIYComponent<?>>()));
+    Map<IDIYComponent<?>, List<IBoard>> componentBoardMap = new HashMap<IDIYComponent<?>, List<IBoard>>();
+
+    for (IBoard board : boardMap.keySet()) {
+      Rectangle2D boardRect = board.getBoardRectangle();
+      for (IDIYComponent<?> c : project.getComponents()) {
+        if (c == board) {
+          continue;
+        }
+        boolean include = true;
+        for (int i = 0; i < c.getControlPointCount(); i++) {
+          if (!boardRect.contains(c.getControlPoint(i))) {
+            include = false;
+            break;
+          }
+        }
+        if (include) {
+          boardMap.get(board).add(c);
+          componentBoardMap.computeIfAbsent(c, key -> new ArrayList<IBoard>()).add(board);
+        }
+      }
     }
-    if (configManager.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
-      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-          RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-          RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-      // RenderingHints.VALUE_STROKE_PURE);
-    } else {
-      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-          RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-          RenderingHints.VALUE_COLOR_RENDER_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    }
-    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 
     // AffineTransform initialTx = g2d.getTransform();
     Dimension canvasDimension =
-        getCanvasDimensions(project, zoom, drawOptions.contains(DrawOption.EXTRA_SPACE));
+            getCanvasDimensions(project, zoom, drawOptions.contains(DrawOption.EXTRA_SPACE));
 
     g2dWrapper.setColor(theme.getBgColor());
     g2dWrapper.fillRect(0, 0, canvasDimension.width, canvasDimension.height);
@@ -243,14 +247,14 @@ public class DrawingManager {
     double extraSpace = getExtraSpace(project) * zoom;
 
     drawGrid(project, g2d, zoom, extraSpace, canvasDimension, visibleRect, drawOptions,
-        extraSpaceRect, extraSpaceTx);
+            extraSpaceRect, extraSpaceTx);
 
     // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
       g2dWrapper.scale(zoom, zoom);
       if (visibleRect != null)
         visibleRect.setRect(visibleRect.getX() / zoom, visibleRect.getY() / zoom,
-            visibleRect.getWidth() / zoom, visibleRect.getHeight() / zoom);
+                visibleRect.getWidth() / zoom, visibleRect.getHeight() / zoom);
     }
 
     // Composite mainComposite = g2d.getComposite();
@@ -263,7 +267,7 @@ public class DrawingManager {
     Map<IDIYComponent<?>, ComponentState> componentStateMap = new HashMap<IDIYComponent<?>, ComponentState>();
     List<ComponentForRender> componentForRenderList = new ArrayList<ComponentForRender>();
     for (int i = 0; i < project.getComponents().size(); i++) {
-      IDIYComponent<?> component = project.getComponents().get(i);      
+      IDIYComponent<?> component = project.getComponents().get(i);
       ComponentState state = ComponentState.NORMAL;
       if (drawOptions.contains(DrawOption.SELECTION) && selectedComponents.contains(component)) {
         if (dragInProgress) {
@@ -287,17 +291,18 @@ public class DrawingManager {
 
     for (int i = 0; i < project.getComponents().size(); i++) {
       IDIYComponent<?> component = project.getComponents().get(i);
-      
+
       // Do not draw the component if it's filtered out.
       if (filter != null && !filter.testComponent(component)) {
         continue;
       }
+
       ComponentState state = componentStateMap.get(component);
       // Do not track the area if component is not invalidated and was
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
 
-      synchronized (g2d) {
+      synchronized (this) {
         g2dWrapper.startedDrawingComponent(i);
         if (!trackArea) {
           g2dWrapper.stopTracking();
@@ -312,15 +317,26 @@ public class DrawingManager {
         long componentStart = System.nanoTime();
         try {
 
-          if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
-            DrawingCache.Instance.draw(component, g2dWrapper, state,
-                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
-          else // go straight to the wrapper
-            component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+          AffineTransform txBefore = new AffineTransform(g2d.getTransform());
+          drawComponent(project, drawOptions, scaleFactor, visibleRect, zoom, g2dWrapper,
+                  outlineMode, i, component, state, false);
+          g2dWrapper.setTransform(txBefore);
 
-          if (g2dWrapper.isTrackingContinuityArea()) {
-            LOG.info("Component " + component.getName() + " of type "
-                + component.getClass().getName() + " did not stop tracking continuity area.");
+          // find one or more boards that contain the component and mirror the component to all
+          List<IBoard> boards = componentBoardMap.get(component);
+          if (boards != null) {
+            for (IBoard board : boards) {
+              double boardMirrorSpacing  = board.getUndersideOffset().convertToPixels();
+              drawMirroredComponent(project, drawOptions, scaleFactor, visibleRect, zoom,
+                      g2dWrapper, outlineMode, i, state, boardMirrorSpacing, component, board);
+            }
+          }
+          // if the component is the board itself, mirror it
+          if (boardMap.keySet().contains(component)) {
+            IBoard board = (IBoard) component;
+            double boardMirrorSpacing  = board.getUndersideOffset().convertToPixels();
+            drawMirroredComponent(project, drawOptions, scaleFactor, visibleRect, zoom,
+                    g2dWrapper, outlineMode, i, state, boardMirrorSpacing, component, (IBoard)component);
           }
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
@@ -362,17 +378,17 @@ public class DrawingManager {
               continue;
             VisibilityPolicy visibilityPolicy = component.getControlPointVisibilityPolicy(i);
             if ((groupedComponents.contains(component)
-                && (visibilityPolicy == VisibilityPolicy.ALWAYS
+                    && (visibilityPolicy == VisibilityPolicy.ALWAYS
                     || (selectedComponents.contains(component)
-                        && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED))
-                || (!groupedComponents.contains(component)
+                    && visibilityPolicy == VisibilityPolicy.WHEN_SELECTED))
+                    || (!groupedComponents.contains(component)
                     && !selectedComponents.contains(component)
                     && component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS))) {
               g2dWrapper.setColor(CONTROL_POINT_COLOR);
               Point2D controlPoint = component.getControlPoint(i);
               int pointSize = CONTROL_POINT_SIZE - 2;
               g2dWrapper.fillOval((int) (controlPoint.getX() - pointSize / 2),
-                  (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
+                      (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             }
           }
         }
@@ -381,7 +397,7 @@ public class DrawingManager {
       for (IDIYComponent<?> component : selectedComponents) {
         for (int i = 0; i < component.getControlPointCount(); i++) {
           if (!groupedComponents.contains(component)
-              && (component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.WHEN_SELECTED
+                  && (component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.WHEN_SELECTED
                   || component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS)) {
 
             Point2D controlPoint = component.getControlPoint(i);
@@ -389,11 +405,11 @@ public class DrawingManager {
 
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
             g2dWrapper.fillOval((int) (controlPoint.getX() - pointSize / 2),
-                (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
+                    (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
             g2dWrapper.fillOval((int) (controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1),
-                (int) (controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
-                CONTROL_POINT_SIZE - 2);
+                    (int) (controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
+                    CONTROL_POINT_SIZE - 2);
           }
         }
       }
@@ -407,7 +423,7 @@ public class DrawingManager {
         try {
 
           component.draw(g2dWrapper, ComponentState.NORMAL,
-              drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
+                  drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
 
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
@@ -423,12 +439,12 @@ public class DrawingManager {
         if (point != null) {
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
           g2dWrapper.fillOval((int) (point.getX() - CONTROL_POINT_SIZE / 2),
-              (int) (point.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
-              CONTROL_POINT_SIZE);
+                  (int) (point.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
+                  CONTROL_POINT_SIZE);
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
           g2dWrapper.fillOval((int) (point.getX() - CONTROL_POINT_SIZE / 2 + 1),
-              (int) (point.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
-              CONTROL_POINT_SIZE - 2);
+                  (int) (point.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
+                  CONTROL_POINT_SIZE - 2);
         }
       }
     }
@@ -493,7 +509,7 @@ public class DrawingManager {
     // shade extra space
     if (drawOptions.contains(DrawOption.EXTRA_SPACE) && SHADE_EXTRA_SPACE && extraSpaceRect != null) {
       Area extraSpaceArea = new Area(
-          new Rectangle2D.Double(0, 0, canvasDimension.getWidth(), canvasDimension.getHeight()));
+              new Rectangle2D.Double(0, 0, canvasDimension.getWidth(), canvasDimension.getHeight()));
       extraSpaceArea.subtract(new Area(extraSpaceRect));
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.05f));
       g2d.setTransform(extraSpaceTx);
@@ -510,6 +526,123 @@ public class DrawingManager {
     return failedComponents;
   }
 
+  private void drawMirroredComponent(Project project, Set<DrawOption> drawOptions,
+                                     Double scaleFactor, Rectangle2D visibleRect, double zoom, G2DWrapper g2dWrapper,
+                                     boolean outlineMode, int i, ComponentState state, double boardMirrorSpacing,
+                                     IDIYComponent<?> componentToDraw, IBoard board) {
+    Rectangle2D boardRectangle = board.getBoardRectangle();
+    AffineTransform mirrorTx = null;
+    switch (board.getBoardUndersideDisplay()) {
+      case ABOVE:
+        mirrorTx = new AffineTransform();
+        mirrorTx.translate(boardRectangle.getMinX(), boardRectangle.getMinY());
+        mirrorTx.scale(1, -1);
+        mirrorTx.translate(-boardRectangle.getMinX(), -boardRectangle.getMinY());
+        mirrorTx.translate(0, boardMirrorSpacing);
+        break;
+      case BELOW:
+        mirrorTx = new AffineTransform();
+        mirrorTx.translate(boardRectangle.getMinX(), boardRectangle.getMaxY());
+        mirrorTx.scale(1, -1);
+        mirrorTx.translate(-boardRectangle.getMinX(), -boardRectangle.getMaxY());
+        mirrorTx.translate(0, -boardMirrorSpacing);
+        break;
+      case LEFT:
+        mirrorTx = new AffineTransform();
+        mirrorTx.translate(boardRectangle.getMinX(), boardRectangle.getMinY());
+        mirrorTx.scale(-1, 1);
+        mirrorTx.translate(-boardRectangle.getMinX(), -boardRectangle.getMinY());
+        mirrorTx.translate(boardMirrorSpacing, 0);
+        break;
+      case RIGHT:
+        mirrorTx = new AffineTransform();
+        mirrorTx.translate(boardRectangle.getMaxX(), boardRectangle.getMinY());
+        mirrorTx.scale(-1, 1);
+        mirrorTx.translate(-boardRectangle.getMaxX(), -boardRectangle.getMinY());
+        mirrorTx.translate(-boardMirrorSpacing, 0);
+        break;
+      default:
+        LOG.warn("Unexpected board underside display: " + board.getBoardUndersideDisplay());
+        break;
+    }
+    AffineTransform txBefore = new AffineTransform(g2dWrapper.getTransform());
+    byte alphaBefore = 0;
+    if (AbstractTransparentComponent.class.isInstance(componentToDraw)) {
+      alphaBefore = ((AbstractTransparentComponent<?>)componentToDraw).getAlpha();
+      ((AbstractTransparentComponent<?>)componentToDraw).setAlpha(MIRRORED_ALPHA);
+    }
+    try {
+      g2dWrapper.setMirrorTransform(mirrorTx);
+      g2dWrapper.transform(mirrorTx);
+
+      drawComponent(project, drawOptions, scaleFactor, visibleRect, zoom, g2dWrapper, outlineMode, i, componentToDraw, state, true);
+
+//      componentToDraw.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+    } finally {
+      g2dWrapper.setTransform(txBefore);
+      g2dWrapper.setMirrorTransform(null);
+      if (AbstractTransparentComponent.class.isInstance(componentToDraw)) {
+        ((AbstractTransparentComponent<?>)componentToDraw).setAlpha(alphaBefore);
+      }
+    }
+  }
+
+  private void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,
+                             Rectangle2D visibleRect, double zoom, G2DWrapper g2dWrapper, boolean outlineMode, int i,
+                             IDIYComponent<?> component, ComponentState state, boolean mirrored) {
+
+    AffineTransform txBefore = new AffineTransform(g2dWrapper.getTransform());
+    try {
+      if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
+        DrawingCache.Instance.draw(component, g2dWrapper, state,
+                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect, mirrored);
+      else // go straight to the wrapper
+        component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+
+      if (g2dWrapper.isTrackingContinuityArea()) {
+        LOG.debug("Component " + component.getName() + " of type "
+                + component.getClass().getName() + " did not stop tracking continuity area.");
+      }
+    } finally {
+      g2dWrapper.setTransform(txBefore);
+    }
+  }
+
+  private void configureG2D(Graphics2D g2d, Set<DrawOption> drawOptions) {
+    if (drawOptions.contains(DrawOption.ANTIALIASING)) {
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+              RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    } else {
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+              RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    }
+    if (configManager.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
+      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+              RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+              RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+              RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+      // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+      // RenderingHints.VALUE_STROKE_PURE);
+    } else {
+      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+              RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+              RenderingHints.VALUE_COLOR_RENDER_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+              RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+    }
+    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+            RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+  }
+
   private double zoomCached = 0;
   private Dimension canvasDimensionCached;
   private double extraSpaceCached;
@@ -517,8 +650,8 @@ public class DrawingManager {
   private BufferedImage cachedGridImage;
 
   private void drawGrid(Project project, Graphics2D g2dIn, double zoom, double extraSpace,
-      Dimension canvasDimension, Rectangle2D visibleRect, Set<DrawOption> drawOptions,
-      Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
+                        Dimension canvasDimension, Rectangle2D visibleRect, Set<DrawOption> drawOptions,
+                        Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
 
     GridType gridType = GridType.LINES;
 
@@ -526,10 +659,10 @@ public class DrawingManager {
 
     // draw from cache
     if (zoom != zoomCached || !canvasDimension.equals(canvasDimensionCached)
-        || extraSpace != extraSpaceCached || gridType != gridTypeCached) {      
+            || extraSpace != extraSpaceCached || gridType != gridTypeCached) {
       try {
         cachedGridImage = new BufferedImage((int) canvasDimension.getWidth(),
-            (int) canvasDimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                (int) canvasDimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
         // create graphics
         Graphics2D g2d = cachedGridImage.createGraphics();
 
@@ -538,11 +671,11 @@ public class DrawingManager {
           float gridThickness = (float) (1f * (zoom > 1 ? 1 : zoom));
           if (gridType == GridType.CROSSHAIR) {
             g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f,
-                new float[] {(float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
+                    BasicStroke.JOIN_MITER, 10f,
+                    new float[] {(float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
           } else if (gridType == GridType.DOT) {
             g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f, new float[] {1f, (float) zoomStep - 1}, 0f));
+                    BasicStroke.JOIN_MITER, 10f, new float[] {1f, (float) zoomStep - 1}, 0f));
           } else {
             g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness));
           }
@@ -559,9 +692,9 @@ public class DrawingManager {
             g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness * 3));
             g2d.setColor(theme.getDotColor());
             for (double i = extraSpace + zoomStep * project.getDotSpacing(); i < extraSpace
-                + innerCanvasDimension.width; i += zoomStep * project.getDotSpacing())
+                    + innerCanvasDimension.width; i += zoomStep * project.getDotSpacing())
               for (double j = extraSpace + zoomStep * project.getDotSpacing(); j < extraSpace
-                  + innerCanvasDimension.height; j += zoomStep * project.getDotSpacing()) {
+                      + innerCanvasDimension.height; j += zoomStep * project.getDotSpacing()) {
                 g2d.fillOval((int) Math.round(i - 1), (int) Math.round(j - 1), 3, 3);
               }
           }
@@ -573,12 +706,12 @@ public class DrawingManager {
         gridTypeCached = gridType;
       }
     }
-    
+
     if (cachedGridImage == null) {
       LOG.warn("Cached grid image is null!");
       return;
     }
-    
+
     if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
       g2dIn.drawImage(cachedGridImage, 0, 0, null);
     }
@@ -587,10 +720,10 @@ public class DrawingManager {
     if (drawOptions.contains(DrawOption.EXTRA_SPACE)) {
       float borderThickness = (float) (3f * (zoom > 1 ? 1 : zoom));
       g2dIn.setStroke(ObjectCache.getInstance().fetchStroke(borderThickness,
-          new float[] {borderThickness * 4, borderThickness * 4,}, 0, BasicStroke.CAP_BUTT));
+              new float[] {borderThickness * 4, borderThickness * 4,}, 0, BasicStroke.CAP_BUTT));
       g2dIn.setColor(theme.getOutlineColor());
       extraSpaceRect.setRect(new Rectangle2D.Double(extraSpace, extraSpace,
-          innerCanvasDimension.getWidth(), innerCanvasDimension.getHeight()));
+              innerCanvasDimension.getWidth(), innerCanvasDimension.getHeight()));
       g2dIn.draw(extraSpaceRect);
       extraSpaceTx.setTransform(g2dIn.getTransform());
 
@@ -598,7 +731,7 @@ public class DrawingManager {
       g2dIn.transform(AffineTransform.getTranslateInstance(extraSpace, extraSpace));
       if (visibleRect != null)
         visibleRect.setRect(visibleRect.getX() - extraSpace, visibleRect.getY() - extraSpace,
-            visibleRect.getWidth(), visibleRect.getHeight());
+                visibleRect.getWidth(), visibleRect.getHeight());
     }
   }
 
@@ -607,9 +740,9 @@ public class DrawingManager {
     if (System.currentTimeMillis() - lastStatsReportedTime > statReportFrequencyMs) {
       lastStatsReportedTime = System.currentTimeMillis();
       String mapAsString = renderStatsByType.entrySet().stream()
-          .sorted(
-              (e1, e2) -> -Long.compare(e1.getValue().getNanoTime(), e2.getValue().getNanoTime()))
-          .map(e -> e.toString()).collect(Collectors.joining("; ", "{", "}"));
+              .sorted(
+                      (e1, e2) -> -Long.compare(e1.getValue().getNanoTime(), e2.getValue().getNanoTime()))
+              .map(e -> e.toString()).collect(Collectors.joining("; ", "{", "}"));
       LOG.debug("Render stats: " + mapAsString);
       LOG.debug("Page stats: " + totalStats.toAvgString());
       DrawingCache.Instance.logStats();
@@ -664,11 +797,11 @@ public class DrawingManager {
     double height = project.getHeight().convertToPixels();
     double targetExtraSpace = EXTRA_SPACE * Math.max(width, height);
     return CalcUtils.roundToGrid(targetExtraSpace,
-        project.getGridSpacing().scale(project.getDotSpacing()));
+            project.getGridSpacing().scale(project.getDotSpacing()));
   }
 
   public Dimension getCanvasDimensions(Project project, Double zoomLevel,
-      boolean includeExtraSpace) {
+                                       boolean includeExtraSpace) {
     double width = project.getWidth().convertToPixels();
     double height = project.getHeight().convertToPixels();
 
@@ -705,7 +838,7 @@ public class DrawingManager {
 
     currentContinuityAreas = continuityGraphCache.findAreasFor(p);
   }
-  
+
   public List<ContinuityArea> getContinuityAreas() {
     // Find all individual continuity areas for all components
     List<ContinuityArea> preliminaryAreas = new ArrayList<ContinuityArea>();
@@ -716,17 +849,17 @@ public class DrawingManager {
 
       if (a == null || a.getOutlineArea() == null)
         continue;
-      
+
       IDIYComponent<?> component = entry.getKey();
-      
+
       int layerId;
-      
+
       if (component instanceof ILayeredComponent) {
         layerId = ((ILayeredComponent)component).getLayerId();
       } else {
         layerId = 0;
       }
-      
+
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
@@ -734,7 +867,7 @@ public class DrawingManager {
           checkBreakout.add(false);
         }
       }
-      
+
       Collection<Area> negativeAreas = a.getContinuityNegativeAreas();
       if (negativeAreas != null) {
         for (Area na : negativeAreas) {
@@ -759,9 +892,9 @@ public class DrawingManager {
           areas.add(a);
         } else {
           areas.addAll(breakoutAreas.stream()
-              .map(area -> new ContinuityArea(a.getLayerId(), area))
-              .collect(Collectors.toList())); 
-        }        
+                  .map(area -> new ContinuityArea(a.getLayerId(), area))
+                  .collect(Collectors.toList()));
+        }
       } else
         areas.add(a);
     }
@@ -781,7 +914,7 @@ public class DrawingManager {
       }
       z++;
     }
-    
+
     List<ContinuityArea> areas = getContinuityAreas();
 
     return NetlistBuilder.buildContinuityGraph(areas, connections);
@@ -790,9 +923,9 @@ public class DrawingManager {
   public List<Area> getContinuityAreaProximity(float threshold) {
     List<ContinuityArea> continuityAreas = getContinuityAreas();
     Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for
-                                                                          // approx good results
+    // approx good results
     List<Area> expanded = continuityAreas.parallelStream()
-        .map((a) -> new Area(s.createStrokedShape(a.getArea()))).collect(Collectors.toList());
+            .map((a) -> new Area(s.createStrokedShape(a.getArea()))).collect(Collectors.toList());
     List<Area> intersections = new ArrayList<Area>();
     for (int i = 0; i < expanded.size() - 1; i++) {
       for (int j = i + 1; j < expanded.size(); j++) {
@@ -812,13 +945,13 @@ public class DrawingManager {
       Rectangle2D bounds2d = a.getBounds2D();
       if (bounds2d.getWidth() < minSize)
         bounds2d = new Rectangle2D.Double(bounds2d.getCenterX() - minSize / 2, bounds2d.getY(),
-            minSize, bounds2d.getHeight());
+                minSize, bounds2d.getHeight());
       if (bounds2d.getHeight() < minSize)
         bounds2d = new Rectangle2D.Double(bounds2d.getX(), bounds2d.getCenterY() - minSize / 2,
-            bounds2d.getWidth(), minSize);
+                bounds2d.getWidth(), minSize);
 
       shapes.add(new Area(new Ellipse2D.Double(bounds2d.getX(), bounds2d.getY(),
-          bounds2d.getWidth(), bounds2d.getHeight())));
+              bounds2d.getWidth(), bounds2d.getHeight())));
     }
 
     // AreaUtils.crunchAreas(shapes, null);

@@ -28,14 +28,15 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
-
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoard;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
@@ -43,9 +44,10 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-public abstract class AbstractBoard extends AbstractTransparentComponent<String> {
+public abstract class AbstractBoard extends AbstractTransparentComponent<String> implements IBoard {
 
   private static final long serialVersionUID = 1L;
+  public static final Size DEFAULT_UNDERSIDE_OFFSET = new Size(0.1, SizeUnit.in);
 
   public static Color BORDER_COLOR = PHENOLIC_COLOR.darker();
   public static Color COORDINATE_COLOR = Color.gray.brighter();
@@ -56,7 +58,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected String value = "";
   // two control points used for controlling the position
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0),
-      new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
+          new Point2D.Double(DEFAULT_WIDTH.convertToPixels(), DEFAULT_HEIGHT.convertToPixels())};
   // top-left and bottom-right points
   protected Point2D.Double firstPoint = new Point2D.Double();
   protected Point2D.Double secondPoint = new Point2D.Double();
@@ -69,17 +71,20 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected CoordinateOrigin coordinateOrigin = CoordinateOrigin.Top_Left;
   protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
   protected CoordinateType yType = CoordinateType.Letters;
-  
+
   protected Size length;
   protected Size width;
   protected BoardSizingMode mode = BoardSizingMode.TwoPoints;
 
+  protected BoardUndersideDisplay boardUndersideDisplay = BoardUndersideDisplay.NONE;
+  protected Size undersideOffset = DEFAULT_UNDERSIDE_OFFSET;
+
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
+                   IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    
-    Point2D finalSecondPoint = getFinalSecondPoint();    
+
+    Point2D finalSecondPoint = getFinalSecondPoint();
 
     Composite oldComposite = g2d.getComposite();
     // render as transparent when dragging
@@ -90,64 +95,64 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     g2d.setColor(boardColor);
     g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     g2d.setComposite(oldComposite);
-    
+
     // Do not track any changes that follow because the whole board has been
     // tracked so far.
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : borderColor);
+            : borderColor);
     g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
   }
-  
+
   protected Point2D getFinalSecondPoint() {
     Point2D finalSecondPoint;
     if (getMode() == BoardSizingMode.TwoPoints)
       finalSecondPoint = secondPoint;
     else
-      finalSecondPoint = new Point2D.Double(firstPoint.getX() + getLength().convertToPixels(), 
-         firstPoint.getY() + getWidth().convertToPixels());
+      finalSecondPoint = new Point2D.Double(firstPoint.getX() + getLength().convertToPixels(),
+              firstPoint.getY() + getWidth().convertToPixels());
     return finalSecondPoint;
   }
 
   protected void drawCoordinates(Graphics2D g2d, double spacing, Project project) {
     g2d.setColor(coordinateColor);
     g2d.setFont(project.getFont().deriveFont(COORDINATE_FONT_SIZE));
-    
+
     // The half space is used to do rounding when calculating the range.
     double halfSpace = spacing / 2;
     CoordinateOrigin origin = getCoordinateOrigin();
-    
+
     Point2D finalSecondPoint = getFinalSecondPoint();
-    
+
     if (getCoordinateDisplay() != CoordinateDisplay.None) {
       int range;
       double yOffset;
       CoordinateType yType = getyType();
       double y = firstPoint.getY();
-            
+
       if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Top_Right) {
-    	range = (int) ((finalSecondPoint.getY() - firstPoint.getY() + halfSpace) / spacing);
-    	yOffset = spacing;
+        range = (int) ((finalSecondPoint.getY() - firstPoint.getY() + halfSpace) / spacing);
+        yOffset = spacing;
       } else {
-    	range = (int) ((finalSecondPoint.getY() - firstPoint.getY() + halfSpace) / spacing);
-    	yOffset = -spacing;
-    	y = finalSecondPoint.getY();
+        range = (int) ((finalSecondPoint.getY() - firstPoint.getY() + halfSpace) / spacing);
+        yOffset = -spacing;
+        y = finalSecondPoint.getY();
       }
-      
+
       for (int c = 1; c < range; c++) {
-    	int xOffset = (yType == CoordinateType.Numbers && c >= 10) || (yType == CoordinateType.Letters && c >= 27) ? 0 : 2;
-    	String label = yType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
-    	
-    	y += yOffset;
-    	
-    	StringUtils.drawCenteredText(g2d, label, 
-    		firstPoint.getX() + xOffset, y, 
-    		HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-    	if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-    	  StringUtils.drawCenteredText(g2d, label, 
-    	      finalSecondPoint.getX() - xOffset, y, 
-    		  HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    	}
+        int xOffset = (yType == CoordinateType.Numbers && c >= 10) || (yType == CoordinateType.Letters && c >= 27) ? 0 : 2;
+        String label = yType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
+
+        y += yOffset;
+
+        StringUtils.drawCenteredText(g2d, label,
+                firstPoint.getX() + xOffset, y,
+                HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+        if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
+          StringUtils.drawCenteredText(g2d, label,
+                  finalSecondPoint.getX() - xOffset, y,
+                  HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+        }
       }
     }
 
@@ -155,8 +160,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       int range;
       double xOffset;
       CoordinateType xType = getxType();
-      double x = firstPoint.getX();   
-      
+      double x = firstPoint.getX();
+
       if (origin == CoordinateOrigin.Top_Left || origin == CoordinateOrigin.Bottom_Left) {
         range = (int) ((finalSecondPoint.getX() - firstPoint.getX() + halfSpace) / spacing);
         xOffset = spacing;
@@ -165,19 +170,19 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
         xOffset = -spacing;
         x = finalSecondPoint.getX();
       }
-      
+
       for (int c = 1; c < range; c++) {
         String label = xType == CoordinateType.Letters ? getCoordinateLabel(c) : Integer.toString(c);
-        
+
         x += xOffset;
-        
-        StringUtils.drawCenteredText(g2d, label, 
-            x, firstPoint.getY() + 2, 
-            HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
+
+        StringUtils.drawCenteredText(g2d, label,
+                x, firstPoint.getY() + 2,
+                HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
-          StringUtils.drawCenteredText(g2d, label, 
-              x, (int) (finalSecondPoint.getY() - COORDINATE_FONT_SIZE), 
-              HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
+          StringUtils.drawCenteredText(g2d, label,
+                  x, (int) (finalSecondPoint.getY() - COORDINATE_FONT_SIZE),
+                  HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         }
       }
     }
@@ -225,7 +230,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
   }
-  
+
   @EditableProperty(name = "X")
   public CoordinateType getxType() {
     if (xType == null)
@@ -250,15 +255,15 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   @EditableProperty(name = "Coordinate Origin")
   public CoordinateOrigin getCoordinateOrigin() {
-	  if (coordinateOrigin == null)
-		  coordinateOrigin = CoordinateOrigin.Top_Left;
-	  return coordinateOrigin;
+    if (coordinateOrigin == null)
+      coordinateOrigin = CoordinateOrigin.Top_Left;
+    return coordinateOrigin;
   }
-  
+
   public void setCoordinateOrigin(CoordinateOrigin coordinateOrigin) {
-	  this.coordinateOrigin = coordinateOrigin;
+    this.coordinateOrigin = coordinateOrigin;
   }
-  
+
   @EditableProperty(name = "Y")
   public CoordinateType getyType() {
     if (yType == null)
@@ -294,9 +299,9 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     firstPoint.setLocation(Math.min(controlPoints[0].getX(), controlPoints[1].getX()),
-        Math.min(controlPoints[0].getY(), controlPoints[1].getY()));
+            Math.min(controlPoints[0].getY(), controlPoints[1].getY()));
     secondPoint.setLocation(Math.max(controlPoints[0].getX(), controlPoints[1].getX()),
-        Math.max(controlPoints[0].getY(), controlPoints[1].getY()));
+            Math.max(controlPoints[0].getY(), controlPoints[1].getY()));
   }
 
   @EditableProperty
@@ -309,13 +314,13 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setValue(String value) {
     this.value = value;
   }
-  
+
   private SizeUnit getDefaultUnit() {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true))
       return SizeUnit.mm;
-    return SizeUnit.in;      
+    return SizeUnit.in;
   }
-    
+
   @EditableProperty(name = "Explicit Length", validatorClass = BoardModeValidator.class)
   public Size getLength() {
     if (getMode() == BoardSizingMode.TwoPoints) {
@@ -327,12 +332,12 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setLength(Size length) {
     if (getMode() == BoardSizingMode.Explicit && length != null && width != null) {
-      setControlPoint(firstPoint, 0);      
+      setControlPoint(firstPoint, 0);
       Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(),
-          firstPoint.getY() + width.convertToPixels());
-      setControlPoint(second, 1);    
+              firstPoint.getY() + width.convertToPixels());
+      setControlPoint(second, 1);
     }
-    this.length = length;    
+    this.length = length;
   }
 
   @EditableProperty(name = "Explicit Width", validatorClass = BoardModeValidator.class)
@@ -352,7 +357,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     }
     this.width = width;
   }
-  
+
   @EditableProperty(name = "Dimension Mode")
   public BoardSizingMode getMode() {
     if (mode == null)
@@ -363,27 +368,66 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   public void setMode(BoardSizingMode mode) {
     this.mode = mode;
   }
-  
+
+  @EditableProperty(name = "Underside Display")
+  @Override
+  public BoardUndersideDisplay getBoardUndersideDisplay() {
+    if (this.boardUndersideDisplay == null) {
+      this.boardUndersideDisplay = BoardUndersideDisplay.NONE;
+    }
+    return this.boardUndersideDisplay;
+  }
+
+  public void setBoardUndersideDisplay(BoardUndersideDisplay boardUndersideDisplay) {
+    this.boardUndersideDisplay = boardUndersideDisplay;
+  }
+
+  @EditableProperty(name = "Underside Offset")
+  @Override
+  public Size getUndersideOffset() {
+    if (undersideOffset == null) {
+      undersideOffset = DEFAULT_UNDERSIDE_OFFSET;
+    }
+    return undersideOffset;
+  }
+
+  public void setUndersideOffset(Size undersideOffset) {
+    this.undersideOffset = undersideOffset;
+  }
+
+  @Override
+  public Rectangle2D getBoardRectangle() {
+    Point2D finalSecondPoint = getFinalSecondPoint();
+
+    return new Rectangle2D.Double(firstPoint.getX(), firstPoint.getY(),
+            finalSecondPoint.getX() - firstPoint.getX(), finalSecondPoint.getY() - firstPoint.getY());
+  }
+
+  @Override
+  public boolean shouldExportToGerber() {
+    return false;
+  }
+
   @Override
   public Rectangle2D getCachingBounds() {
-    Point2D finalSecondPoint = getFinalSecondPoint();    
-    return new Rectangle2D.Double(Math.min(firstPoint.getX(), finalSecondPoint.getX()) - 2, Math.min(firstPoint.getY(), finalSecondPoint.getY()) - 2, 
-        Math.abs(finalSecondPoint.getX() - firstPoint.getX()) + 4, Math.abs(finalSecondPoint.getY() - firstPoint.getY()) + 4);
+    Point2D finalSecondPoint = getFinalSecondPoint();
+    return new Rectangle2D.Double(Math.min(firstPoint.getX(), finalSecondPoint.getX()) - 2, Math.min(firstPoint.getY(), finalSecondPoint.getY()) - 2,
+            Math.abs(finalSecondPoint.getX() - firstPoint.getX()) + 4, Math.abs(finalSecondPoint.getY() - firstPoint.getY()) + 4);
   }
 
   public static enum CoordinateType {
     Letters, Numbers
   }
-  
+
   public static enum CoordinateDisplay {
     None, One_Side, Both_Sides;
-    
+
     @Override
     public String toString() {
       return super.toString().replace('_', ' ');
     };
   }
-  
+
   public static enum CoordinateOrigin {
     Top_Left, Top_Right, Bottom_Right, Bottom_Left;
 
@@ -392,19 +436,19 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
       return super.toString().replace('_', ' ');
     };
   }
-  
+
   public static enum BoardSizingMode {
     TwoPoints("Opposing Points"), Explicit("Explicit Dimensions");
-    
+
     private String label;
 
     private BoardSizingMode(String label) {
       this.label = label;
     }
-    
+
     @Override
     public String toString() {
       return label;
     }
-  }  
+  }
 }
