@@ -30,12 +30,18 @@ import java.awt.*;
  */
 public interface ISwitch {
 
-  Color[] POLE_COLORS = new Color[] { Color.decode("#FFD1DC"),
-      Color.decode("#FFE5B4"),
-      Color.decode("#FFFACD"),
-      Color.decode("#B8F2E6"),
-      Color.decode("#AEC6CF"),
-      Color.decode("#E6E6FA")};
+  Color[] POLE_COLORS = new Color[] {
+      Color.decode("#FFD1DC"), // Pastel Pink
+      Color.decode("#FFE5B4"), // Pastel Peach
+      Color.decode("#B8F2E6"), // Pastel Mint
+      Color.decode("#E6E6FA"), // Pastel Lavender
+      Color.decode("#AEC6CF"), // Pastel Blue
+      Color.decode("#FFFACD"), // Pastel Yellow
+      Color.decode("#FF6961"), // Pastel Red
+      Color.decode("#77DD77"), // Pastel Green
+      Color.decode("#CDB4DB"), // Pastel Purple
+      Color.decode("#AAF0D1")  // Pastel Turquoise
+  };
 
   /**
    * @return a positive number of positions.
