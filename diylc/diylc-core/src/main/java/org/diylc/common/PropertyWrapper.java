@@ -24,6 +24,7 @@ package org.diylc.common;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.diylc.core.IDynamicPropertySource;
 import org.diylc.core.IPropertyValidator;
 
 /**
@@ -45,9 +46,10 @@ public class PropertyWrapper implements Cloneable {
   private boolean changed = false;
   private int sortOrder;
   private Object ownerObject;
+  private IDynamicPropertySource dynamicPropertySource;
 
   public PropertyWrapper(String name, Class<?> type, String getter, String setter, boolean defaultable,
-      IPropertyValidator validator, int sortOrder) {
+      IPropertyValidator validator, int sortOrder, IDynamicPropertySource dynamicPropertySource) {
     super();
     this.name = name;
     this.type = type;
@@ -56,6 +58,7 @@ public class PropertyWrapper implements Cloneable {
     this.defaultable = defaultable;
     this.validator = validator;
     this.sortOrder = sortOrder;
+    this.dynamicPropertySource = dynamicPropertySource;
     this.ownerObject = null;
   }
 
@@ -138,6 +141,10 @@ public class PropertyWrapper implements Cloneable {
     return sortOrder;
   }
 
+  public IDynamicPropertySource getDynamicPropertySource() {
+    return dynamicPropertySource;
+  }
+
   // @Override
   // public Object clone() throws CloneNotSupportedException {
   // // Try to invoke clone method on value if possible.
@@ -152,7 +159,7 @@ public class PropertyWrapper implements Cloneable {
   public Object clone() throws CloneNotSupportedException {
     PropertyWrapper clone =
         new PropertyWrapper(this.name, this.type, this.getter, this.setter, this.defaultable, this.validator,
-            this.sortOrder);
+            this.sortOrder, this.dynamicPropertySource);
     clone.value = this.value;
     clone.changed = this.changed;
     clone.unique = this.unique;

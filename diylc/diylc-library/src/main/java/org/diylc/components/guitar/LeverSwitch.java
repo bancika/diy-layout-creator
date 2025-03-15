@@ -32,27 +32,25 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ISwitch;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
+
+import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
@@ -65,7 +63,6 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = Color.decode("#CD8500");
   private static Color LUG_COLOR = METAL_COLOR;
-  private static Color COMMON_LUG_COLOR = Color.decode("#FF9999");
 
   private static Size BASE_WIDTH = new Size(10d, SizeUnit.mm);
   private static Size BASE_LENGTH = new Size(47.5d, SizeUnit.mm);
@@ -83,7 +80,10 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   private transient String value = "";
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private LeverSwitchType type = LeverSwitchType.DP3T;
+  @Deprecated
   private Boolean highlightCommon;
+  private Integer selectedPosition;
+  private Boolean renderConnectedTerminals;
 
   public LeverSwitch() {
     super();
@@ -142,10 +142,12 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     g2d.fill(body[2]);
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
-    g2d.setColor(COMMON_LUG_COLOR);
-    g2d.fill(body[3]);
-    g2d.setColor(COMMON_LUG_COLOR.darker());
-    g2d.draw(body[3]);
+    for (int i = 3; i < body.length; i++) {
+      g2d.setColor(ISwitch.POLE_COLORS[i - 3]);
+      g2d.fill(body[i]);
+      g2d.setColor(ISwitch.POLE_COLORS[i - 3].darker());
+      g2d.draw(body[i]);
+    }
     
 //    g2d.setColor(Color.black);
 //    for(int i = 0; i < getControlPointCount(); i++) {
@@ -156,7 +158,6 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   @SuppressWarnings("incomplete-switch")
   public Shape[] getBody() {
     if (body == null) {
-      body = new Shape[4];
 
       double x = controlPoints[0].getX();
       double y = controlPoints[0].getY();
@@ -192,7 +193,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           + (baseLength - holeSpacing) / 2 - holeSize / 2, holeSize, holeSize)));
       baseArea.subtract(new Area(new Ellipse2D.Double(baseX + baseWidth / 2 - holeSize / 2, baseY
           + (baseLength - holeSpacing) / 2 - holeSize / 2 + holeSpacing, holeSize, holeSize)));
-      body[0] = baseArea;
+
 
       Area waferArea =
           new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2, y
@@ -204,12 +205,18 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
             - (waferLength - terminalSpacing * 12) / 2, waferThickness,
             waferLength)));
       }
-      body[1] = waferArea;
 
       double theta = getAngle().getValueRad();
 
-      Area terminalArea = new Area();
-      Area commonTerminalArea = new Area();
+      List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
+
+      body = new Shape[3 + connectedTerminals.size()];
+      body[0] = baseArea;
+      body[1] = waferArea;
+      for (int i = 0; i <= connectedTerminals.size(); i++) {
+        body[2 + i] = new Area();
+      }
+
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
         Area terminal =
@@ -222,19 +229,14 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
           terminal.transform(rotation);
         }
-        terminalArea.add(terminal);
-        if (getHighlightCommon() && 
-            (((type == LeverSwitchType.DP3T || type == LeverSwitchType.DP3T_5pos) && (i == 1 || i == 6)) ||
-            ((type == LeverSwitchType._6_WAY_OG) && (i == 1 || i == 8)) ||
-            (type == LeverSwitchType.DP4T && (i == 1 || i == 8)) ||
-            (type == LeverSwitchType.DP3T_5pos_Import && (i == 3 || i == 4)) ||
-            ((type == LeverSwitchType._4P5T || type == LeverSwitchType.DP5T) && (i == 0 || i == 11 || i == 12 || i == 23))))
-          commonTerminalArea.add(terminal);
-        else
-          terminalArea.add(terminal);
+
+        int finalI = i;
+        int groupIndex = IntStream.range(0, connectedTerminals.size())
+            .filter(j -> connectedTerminals.get(j).contains(finalI))
+            .findFirst().orElse(-1);
+
+        ((Area)body[3 + groupIndex]).add(terminal);
       }
-      body[2] = terminalArea;
-      body[3] = commonTerminalArea;
 
       // Rotate if needed
       if (theta != 0) {
@@ -249,6 +251,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     }
     return body;
   }
+
+
 
   @SuppressWarnings("incomplete-switch")
   protected void updateControlPoints() {
@@ -382,22 +386,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     // Invalidate body
     this.body = null;
   }
-  
-  @EditableProperty(name = "Mark Common Lugs")
-  public Boolean getHighlightCommon() {
-    if (highlightCommon == null)
-      highlightCommon = true;
-    return highlightCommon;
-  }
-  
-  public void setHighlightCommon(Boolean highlightCommon) {
-    this.highlightCommon = highlightCommon;
-    
-    body = null;
-  }
- 
 
-  
 //  @Override
 //  public String getControlPointNodeName(int index) {
 //    // we don't want the switch to produce any nodes, it just makes connections
@@ -532,7 +521,33 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           new int[] { 1, 9 }
           ) // position 6      
       );
-  
+
+  @DynamicEditableProperty(source = SwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+    this.body = null;
+  }
+
+  @EditableProperty(name = "Visualize Connected")
+  @Override
+  public Boolean getRenderConnectedTerminals() {
+    if (renderConnectedTerminals == null) {
+      renderConnectedTerminals = false;
+    }
+    return renderConnectedTerminals;
+  }
+
+  public void setRenderConnectedTerminals(Boolean renderConnectedTerminals) {
+    this.renderConnectedTerminals = renderConnectedTerminals;
+    this.body = null;
+  }
+
   public static enum LeverSwitchType {
     
     DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),

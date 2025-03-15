@@ -19,24 +19,24 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.utils;
+package org.diylc.core.annotations;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import org.diylc.core.IDynamicPropertySource;
 
-public class ScaledBufferedImage extends BufferedImage {
-  
-  private final double scaleFactor;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-  public ScaledBufferedImage(int width, int height, int imageType, double scaleFactor) {
-    super((int) Math.round(width * scaleFactor), (int) Math.round(height * scaleFactor), imageType);
-    this.scaleFactor = scaleFactor;
-  }
+/***
+ * Used for properties having dynamic set of possible values. Only to be used in addition to
+ * EditableProperty annotation.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DynamicEditableProperty {
 
-  @Override
-  public Graphics2D createGraphics() {
-    Graphics2D returnValue = super.createGraphics();
-    returnValue.scale(scaleFactor, scaleFactor);
-    return returnValue;
-  }
+  /**
+   * Optional parameter for dynamic values
+   *
+   * @return
+   */
+  Class<? extends IDynamicPropertySource> source() ;
 }

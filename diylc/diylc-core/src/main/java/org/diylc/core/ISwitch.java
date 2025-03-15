@@ -21,12 +21,21 @@
 */
 package org.diylc.core;
 
+import java.awt.*;
+
 /**
  * Interface for all component that can act as switches. They must have at least one position.
  * 
  * @author Branislav Stojkovic
  */
 public interface ISwitch {
+
+  Color[] POLE_COLORS = new Color[] { Color.decode("#FFD1DC"),
+      Color.decode("#FFE5B4"),
+      Color.decode("#FFFACD"),
+      Color.decode("#B8F2E6"),
+      Color.decode("#AEC6CF"),
+      Color.decode("#E6E6FA")};
 
   /**
    * @return a positive number of positions.
@@ -48,4 +57,15 @@ public interface ISwitch {
    * @return true if the two points are connected in the given switch position, false otherwise.
    */
   boolean arePointsConnected(int index1, int index2, int position);
+
+  /**
+   * @return currently selected switch position, or null if none
+   */
+  default Integer getSelectedPosition() {
+    return null;
+  }
+
+  default Boolean getRenderConnectedTerminals() {
+    return false;
+  }
 }
