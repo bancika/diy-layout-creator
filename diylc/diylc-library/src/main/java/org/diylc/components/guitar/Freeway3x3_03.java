@@ -129,8 +129,6 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     double[] xOffsets = getXOffsetsPx();
     double[] yOffsets = getYOffsetsPx();
 
-
-
     Rectangle2D rect = new Rectangle2D.Double(x - xOffsets[0], y - yOffsets[0], bounds2d.getWidth(),
         bounds2d.getHeight());
 
