@@ -31,7 +31,7 @@ public class SwitchUtils {
         List<Set<Integer>> connectedGroups = new ArrayList<>();
         
         // Only process if we have a selected position and should render connections
-        if (switchComponent.getSelectedPosition() == null || !Boolean.TRUE.equals(switchComponent.getRenderConnectedTerminals())) {
+        if (switchComponent.getSelectedPosition() == null || !Boolean.TRUE.equals(switchComponent.getHighlightConnectedTerminals())) {
             return connectedGroups;
         }
 

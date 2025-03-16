@@ -71,7 +71,7 @@ public interface ISwitch {
     return null;
   }
 
-  default Boolean getRenderConnectedTerminals() {
+  default Boolean getHighlightConnectedTerminals() {
     return false;
   }
 }

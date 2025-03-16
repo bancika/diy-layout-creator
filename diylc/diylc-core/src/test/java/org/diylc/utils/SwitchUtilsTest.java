@@ -34,7 +34,7 @@ public class SwitchUtilsTest {
         }
 
         @Override
-        public Boolean getRenderConnectedTerminals() {
+        public Boolean getHighlightConnectedTerminals() {
             return renderConnected;
         }
 

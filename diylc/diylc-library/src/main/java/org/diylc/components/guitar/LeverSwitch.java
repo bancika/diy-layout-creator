@@ -83,7 +83,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   @Deprecated
   private Boolean highlightCommon;
   private Integer selectedPosition;
-  private Boolean renderConnectedTerminals;
+  private Boolean highlightConnectedTerminals;
 
   public LeverSwitch() {
     super();
@@ -521,17 +521,17 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     this.body = null;
   }
 
-  @EditableProperty(name = "Visualize Connected")
+  @EditableProperty(name = "Highlight Connected")
   @Override
-  public Boolean getRenderConnectedTerminals() {
-    if (renderConnectedTerminals == null) {
-      renderConnectedTerminals = false;
+  public Boolean getHighlightConnectedTerminals() {
+    if (highlightConnectedTerminals == null) {
+      highlightConnectedTerminals = false;
     }
-    return renderConnectedTerminals;
+    return highlightConnectedTerminals;
   }
 
-  public void setRenderConnectedTerminals(Boolean renderConnectedTerminals) {
-    this.renderConnectedTerminals = renderConnectedTerminals;
+  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
+    this.highlightConnectedTerminals = highlightConnectedTerminals;
     this.body = null;
   }
 
