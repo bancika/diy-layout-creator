@@ -56,7 +56,7 @@ import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitchType> implements ISwitch, IContinuity {
+public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitchType> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -444,14 +444,6 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     return false;
   }
 
-  @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    if (this.selectedPosition == null) {
-      return false;
-    }
-    return arePointsConnected(index1, index2, this.selectedPosition);
-  }
-  
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;

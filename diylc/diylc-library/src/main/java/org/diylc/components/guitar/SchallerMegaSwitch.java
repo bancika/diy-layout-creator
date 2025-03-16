@@ -60,8 +60,7 @@ import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
     author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch,
-    IContinuity {
+public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -543,14 +542,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
     
     return false;   
-  }
-
-  @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    if (this.selectedPosition == null) {
-      return false;
-    }
-    return arePointsConnected(index1, index2, this.selectedPosition);
   }
   
   @Override

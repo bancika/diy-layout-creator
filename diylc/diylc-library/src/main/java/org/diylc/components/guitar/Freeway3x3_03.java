@@ -66,8 +66,7 @@ import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram",
     transformer = Freeway3x3_03Transformer.class, enableCache = true)
-public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements ISwitch,
-    IContinuity {
+public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements ISwitch {
 
   private static final Logger LOG = Logger.getLogger(Freeway3x3_03.class);
 
@@ -490,13 +489,5 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
       return true;
     }
     return false;
-  }
-
-  @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    if (this.selectedPosition == null) {
-      return false;
-    }
-    return arePointsConnected(index1, index2, this.selectedPosition);
   }
 }

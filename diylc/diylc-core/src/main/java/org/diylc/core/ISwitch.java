@@ -28,7 +28,7 @@ import java.awt.*;
  * 
  * @author Branislav Stojkovic
  */
-public interface ISwitch {
+public interface ISwitch extends IContinuity {
 
   Color[] POLE_COLORS = new Color[] {
       Color.decode("#FFD1DC"), // Pastel Pink
@@ -73,5 +73,12 @@ public interface ISwitch {
 
   default Boolean getHighlightConnectedTerminals() {
     return false;
+  }
+
+  default boolean arePointsConnected(int index1, int index2) {
+    if (getSelectedPosition() == null) {
+      return false;
+    }
+    return arePointsConnected(index1, index2, getSelectedPosition());
   }
 }
