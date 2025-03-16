@@ -397,20 +397,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
 
   @Override
   public int getPositionCount() {
-    switch (type) {
-      case DP3T:
-        return 3;
-      case DP4T:
-        return 4;
-      case DP3T_5pos:
-      case DP3T_5pos_Import:
-      case DP5T:        
-      case _4P5T:
-        return 5;
-      case _6_WAY_OG:
-        return 6;
-    }
-    return 0;
+    return type.getPositionCount();
   }
 
   @Override
@@ -522,7 +509,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           ) // position 6      
       );
 
-  @DynamicEditableProperty(source = SwitchPositionPropertyValueSource.class)
+  @DynamicEditableProperty(source = LeverSwitchPositionPropertyValueSource.class)
   @EditableProperty(name = "Selected Position")
   @Override
   public Integer getSelectedPosition() {
@@ -550,13 +537,24 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
 
   public static enum LeverSwitchType {
     
-    DP3T("DP3T (Standard 3-Position Strat)"), DP3T_5pos("DP3T (Standard 5-Position Strat)"), DP3T_5pos_Import("DP3T (Import 5-Position Strat)"),
-    _4P5T("4P5T (Super/Mega)"), DP4T("DP4T (4-Position Tele)"), _6_WAY_OG("DP4T (6-Position Oak Grigsby)"), DP5T("DP5T");
+    DP3T("DP3T (Standard 3-Position Strat)", 3),
+    DP3T_5pos("DP3T (Standard 5-Position Strat)", 5),
+    DP3T_5pos_Import("DP3T (Import 5-Position Strat)", 5),
+    _4P5T("4P5T (Super/Mega)", 5),
+    DP4T("DP4T (4-Position Tele)", 4),
+    _6_WAY_OG("DP4T (6-Position Oak Grigsby)", 6),
+    DP5T("DP5T", 5);
 
+    private final int positionCount;
     private String title;
 
-    private LeverSwitchType(String title) {
+    private LeverSwitchType(String title, int positionCount) {
+      this.positionCount = positionCount;
       this.title = title;
+    }
+
+    public int getPositionCount() {
+      return positionCount;
     }
 
     @Override

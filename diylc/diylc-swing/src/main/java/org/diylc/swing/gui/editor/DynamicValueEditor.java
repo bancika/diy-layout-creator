@@ -71,29 +71,35 @@ public class DynamicValueEditor extends JComboBox<Object> {
       public Component getListCellRendererComponent(JList<?> list, Object value, int index,
           boolean isSelected, boolean cellHasFocus) {
         // TODO Auto-generated method stub
-        return super.getListCellRendererComponent(list, value == null ? null : LangUtil.translate(dynamicPropertySource.getDisplayValue(value)),
+        return super.getListCellRendererComponent(list, LangUtil.translate(dynamicPropertySource.getDisplayValue(value)),
             index, isSelected, cellHasFocus);
       }
       
     });
     setSelectedItem(property.getValue());
 
+    // Create a shared refresh action
+    final Runnable refreshAction = () -> {
+      if (getModel() instanceof DynamicComboBoxModel model) {
+        model.refreshValues();
+      }
+    };
+
     addPopupMenuListener(new PopupMenuListener() {
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        // Schedule the update just after the popup becomes visible
-        SwingUtilities.invokeLater(() -> {
-          if (getModel() instanceof DynamicComboBoxModel model) {
-            model.refreshValues();
-          }
-        });
+        refreshAction.run();
       }
 
       @Override
-      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+      public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+      }
 
       @Override
-      public void popupMenuCanceled(PopupMenuEvent e) {}
+      public void popupMenuCanceled(PopupMenuEvent e) {
+
+      }
     });
 
     addItemListener(new ItemListener() {

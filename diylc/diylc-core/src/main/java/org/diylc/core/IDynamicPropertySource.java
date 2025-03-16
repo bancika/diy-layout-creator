@@ -21,12 +21,16 @@
 */
 package org.diylc.core;
 
+import org.diylc.common.PropertyWrapper;
+
 import java.util.List;
 import java.util.Map;
 
 public interface IDynamicPropertySource {
 
-  void setComponent(IDIYComponent<?> component);
+  void setProperties(List<PropertyWrapper> properties);
+
+  void setComponent(IDIYComponent<?> ownerObject);
 
   List<Object> getAvailableValues();
 
