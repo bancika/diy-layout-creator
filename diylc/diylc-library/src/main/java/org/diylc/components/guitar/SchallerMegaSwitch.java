@@ -44,14 +44,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
-import org.diylc.core.Angle;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ISwitch;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -67,7 +60,8 @@ import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
     author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch {
+public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch,
+    IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -167,7 +161,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
       g2d.setColor(ISwitch.POLE_COLORS[i - 3].darker());
       g2d.draw(body[i]);
     }
-    
+
     g2d.setColor(labelColor);
     // g2d.setFont(project.getFont().deriveFont(LABEL_FONT_SIZE));
     if (type == MegaSwitchType.M) {
@@ -266,7 +260,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
         body[2 + i] = new Area();
       }
 
-      Area terminalArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
         Area terminal = new Area(new RoundRectangle2D.Double(point.getX() - terminalSize / 2,
@@ -550,6 +543,14 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
     
     return false;   
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    if (this.selectedPosition == null) {
+      return false;
+    }
+    return arePointsConnected(index1, index2, this.selectedPosition);
   }
   
   @Override

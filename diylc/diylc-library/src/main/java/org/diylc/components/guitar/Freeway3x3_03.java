@@ -33,6 +33,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -47,26 +50,24 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.Freeway3x3_03Transformer;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ISwitch;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
+
 @ComponentDescriptor(name = "Freeway 3X3-03 Toggle", category = "Guitar",
     author = "Branislav Stojkovic", description = "Freeway 3X3-03 Toggle Switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram",
     transformer = Freeway3x3_03Transformer.class, enableCache = true)
-public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements ISwitch {
+public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements ISwitch,
+    IContinuity {
 
   private static final Logger LOG = Logger.getLogger(Freeway3x3_03.class);
 
@@ -90,6 +91,9 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
 
   private Orientation orientation = Orientation.DEFAULT;
+
+  private Integer selectedPosition;
+  private Boolean highlightConnectedTerminals;
 
   private transient SVGDiagram svgDiagram;
   private transient List<Shape> pads;
@@ -180,16 +184,34 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     g2d.setColor(finalBorderColor);
     g2d.draw(base);
 
+    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
+
     drawingObserver.startTrackingContinuityArea(true);
-    g2d.setColor(PAD_COLOR);
-    for (Shape pad : pads) {
-      g2d.fill(pad);
+    for (int i = 0; i < pads.size(); i++) {
+      int finalI = i;
+      int groupIndex = IntStream.range(0, connectedTerminals.size())
+          .filter(j -> connectedTerminals.get(j).contains(finalI))
+          .findFirst().orElse(-1);
+      if (groupIndex < 0) {
+        g2d.setColor(PAD_COLOR);
+      } else {
+        g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
+      }
+      g2d.fill(pads.get(i));
     }
     drawingObserver.stopTrackingContinuityArea();
 
-    g2d.setColor(PAD_COLOR.darker());
-    for (Shape pad : pads) {
-      g2d.draw(pad);
+    for (int i = 0; i < pads.size(); i++) {
+      int finalI = i;
+      int groupIndex = IntStream.range(0, connectedTerminals.size())
+          .filter(j -> connectedTerminals.get(j).contains(finalI))
+          .findFirst().orElse(-1);
+      if (groupIndex < 0) {
+        g2d.setColor(PAD_COLOR.darker());
+      } else {
+        g2d.setColor(ISwitch.POLE_COLORS[groupIndex].darker());
+      }
+      g2d.draw(pads.get(i));
     }
 
     g2d.setColor(LABEL_COLOR);
@@ -419,6 +441,30 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     return Integer.toString(position + 1);
   }
 
+  @DynamicEditableProperty(source = Freeway3x4_03SwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+  }
+
+  @EditableProperty(name = "Highlight Connected")
+  @Override
+  public Boolean getHighlightConnectedTerminals() {
+    if (highlightConnectedTerminals == null) {
+      highlightConnectedTerminals = false;
+    }
+    return highlightConnectedTerminals;
+  }
+
+  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
+    this.highlightConnectedTerminals = highlightConnectedTerminals;
+  }
+
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
     if (position == 0 && ((index1 == 0 && index2 == 9) || (index1 == 1 && index2 == 7))) {
@@ -444,5 +490,13 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
       return true;
     }
     return false;
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2) {
+    if (this.selectedPosition == null) {
+      return false;
+    }
+    return arePointsConnected(index1, index2, this.selectedPosition);
   }
 }
