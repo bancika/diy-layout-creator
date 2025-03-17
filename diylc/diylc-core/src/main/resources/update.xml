@@ -251,6 +251,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to render the underside of boards along with the top side for easier validation, building and debugging</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Configurable 'High DPI Rendering' feature which makes the diagram smoother on high-resolution displays but can affect performance</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
