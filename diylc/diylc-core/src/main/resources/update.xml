@@ -250,6 +250,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Configurable 'High DPI Rendering' feature which makes the diagram smoother on high-resolution displays but can affect performance</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded source code structure to modern standards and introduced Maven</description>
 				</org.diylc.appframework.update.Change>

@@ -311,6 +311,7 @@ public class DrawingCache {
       this.zoom = zoom;
       this.dx = dx;
       this.dy = dy;
+      this.scaleFactor = scaleFactor;
     }
 
     public IDIYComponent<?> getComponent() {

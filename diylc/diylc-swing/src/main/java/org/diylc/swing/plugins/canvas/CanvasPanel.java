@@ -42,6 +42,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 
 import org.diylc.common.ComponentType;
@@ -97,6 +98,15 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 //    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //    GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
 //    screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
+
+    configManager.addConfigListener(IPlugInPort.HIGH_DPI_RENDERING,
+            new IConfigListener() {
+
+              @Override
+              public void valueChanged(String key, Object value) {
+                bufferImage = null;
+              }
+            });
 
     initializeActions();
   }
@@ -311,8 +321,12 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     }
 
     final Graphics2D g2d = (Graphics2D)g;
-    double scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
-//    scaleFactor = 1d;
+    double scaleFactor;
+    if (configManager.readBoolean(IPlugInPort.HIGH_DPI_RENDERING, false)) {
+      scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
+    } else {
+      scaleFactor = 1d;
+    }
     
     Rectangle visibleRect = getVisibleRect();
 
