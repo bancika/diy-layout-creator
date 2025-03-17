@@ -72,7 +72,13 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi</artifactId>
-                <version>3.5-FINAL</version>
+                <version>5.4.0</version>
+            </dependency>
+            <!-- AppBundler for macOS builds -->
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>appbundler</artifactId>
+                <version>1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
