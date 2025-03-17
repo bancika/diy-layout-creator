@@ -338,28 +338,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     double x = visibleRect.x;// / scaleFactor;
     double y = visibleRect.y;// / scaleFactor;
     bufferG2d.translate(-x, -y);
+    bufferG2d.setClip(visibleRect);
 
-    Set<DrawOption> drawOptions =
-        EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-
-    if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
-      drawOptions.add(DrawOption.ANTIALIASING);
-    }
-    if (configManager.readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
-      drawOptions.add(DrawOption.OUTLINE_MODE);
-    }
-    if (configManager.readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
-      drawOptions.add(DrawOption.GRID);
-    }
-    if (configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
-      drawOptions.add(DrawOption.EXTRA_SPACE);
-    }
-    if (configManager.readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
-      drawOptions.add(DrawOption.ENABLE_CACHING);
-    }
-    if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
-      drawOptions.add(DrawOption.LOCKED_ALPHA);
-    }
+    Set<DrawOption> drawOptions = getDrawOptions();
 
     plugInPort.draw(bufferG2d, drawOptions, null, null, scaleFactor, visibleRect);
     
@@ -387,6 +368,31 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       // bufferImage.flush();
 //    }
     bufferG2d.dispose();
+  }
+
+  private Set<DrawOption> getDrawOptions() {
+    Set<DrawOption> drawOptions =
+        EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+
+    if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+      drawOptions.add(DrawOption.ANTIALIASING);
+    }
+    if (configManager.readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+      drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    if (configManager.readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
+      drawOptions.add(DrawOption.GRID);
+    }
+    if (configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
+      drawOptions.add(DrawOption.EXTRA_SPACE);
+    }
+    if (configManager.readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
+      drawOptions.add(DrawOption.ENABLE_CACHING);
+    }
+    if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
+      drawOptions.add(DrawOption.LOCKED_ALPHA);
+    }
+    return drawOptions;
   }
 
   @Override
