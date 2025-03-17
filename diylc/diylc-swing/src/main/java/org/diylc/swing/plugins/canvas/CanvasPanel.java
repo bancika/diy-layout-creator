@@ -42,6 +42,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 
 import org.diylc.common.ComponentType;
@@ -97,6 +98,15 @@ public class CanvasPanel extends JComponent implements Autoscroll {
 //    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //    GraphicsDevice[] devices = graphicsEnvironment.getScreenDevices();
 //    screenGraphicsConfiguration = devices[0].getDefaultConfiguration();
+
+    configManager.addConfigListener(IPlugInPort.HIGH_DPI_RENDERING,
+            new IConfigListener() {
+
+              @Override
+              public void valueChanged(String key, Object value) {
+                bufferImage = null;
+              }
+            });
 
     initializeActions();
   }
@@ -311,8 +321,12 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     }
 
     final Graphics2D g2d = (Graphics2D)g;
-    double scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
-//    scaleFactor = 1d;
+    double scaleFactor;
+    if (configManager.readBoolean(IPlugInPort.HIGH_DPI_RENDERING, false)) {
+      scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
+    } else {
+      scaleFactor = 1d;
+    }
     
     Rectangle visibleRect = getVisibleRect();
 
@@ -324,28 +338,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     double x = visibleRect.x;// / scaleFactor;
     double y = visibleRect.y;// / scaleFactor;
     bufferG2d.translate(-x, -y);
+    bufferG2d.setClip(visibleRect);
 
-    Set<DrawOption> drawOptions =
-        EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
-
-    if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
-      drawOptions.add(DrawOption.ANTIALIASING);
-    }
-    if (configManager.readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
-      drawOptions.add(DrawOption.OUTLINE_MODE);
-    }
-    if (configManager.readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
-      drawOptions.add(DrawOption.GRID);
-    }
-    if (configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
-      drawOptions.add(DrawOption.EXTRA_SPACE);
-    }
-    if (configManager.readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
-      drawOptions.add(DrawOption.ENABLE_CACHING);
-    }
-    if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
-      drawOptions.add(DrawOption.LOCKED_ALPHA);
-    }
+    Set<DrawOption> drawOptions = getDrawOptions();
 
     plugInPort.draw(bufferG2d, drawOptions, null, null, scaleFactor, visibleRect);
     
@@ -373,6 +368,31 @@ public class CanvasPanel extends JComponent implements Autoscroll {
       // bufferImage.flush();
 //    }
     bufferG2d.dispose();
+  }
+
+  private Set<DrawOption> getDrawOptions() {
+    Set<DrawOption> drawOptions =
+        EnumSet.of(DrawOption.SELECTION, DrawOption.ZOOM, DrawOption.CONTROL_POINTS);
+
+    if (configManager.readBoolean(IPlugInPort.ANTI_ALIASING_KEY, true)) {
+      drawOptions.add(DrawOption.ANTIALIASING);
+    }
+    if (configManager.readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
+      drawOptions.add(DrawOption.OUTLINE_MODE);
+    }
+    if (configManager.readBoolean(IPlugInPort.SHOW_GRID_KEY, true)) {
+      drawOptions.add(DrawOption.GRID);
+    }
+    if (configManager.readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)) {
+      drawOptions.add(DrawOption.EXTRA_SPACE);
+    }
+    if (configManager.readBoolean(IPlugInPort.CACHING_ENABLED_KEY, true)) {
+      drawOptions.add(DrawOption.ENABLE_CACHING);
+    }
+    if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
+      drawOptions.add(DrawOption.LOCKED_ALPHA);
+    }
+    return drawOptions;
   }
 
   @Override

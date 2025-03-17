@@ -278,6 +278,7 @@ Heaters
 Height
 Help
 Hi-Quality Rendering
+High DPI Rendering
 Highlight Connected Areas
 Hole
 Hole Size

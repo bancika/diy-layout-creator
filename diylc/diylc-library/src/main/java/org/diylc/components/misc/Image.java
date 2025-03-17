@@ -40,6 +40,7 @@ import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.transform.ImageTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -94,6 +95,8 @@ public class Image extends AbstractTransparentComponent<Void> {
   private byte newScale = DEFAULT_SCALE;
   private ImageSizingMode sizingMode = ImageSizingMode.Scale;
 
+  private transient ImageIcon imageIcon;
+
   public Image() {
     try {
       data = IOUtils.toByteArray(Image.class.getResourceAsStream("/image.png"));
@@ -105,6 +108,11 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+
+    if (!getImageRectangle().intersects(g2d.getClipBounds())) {
+      return;
+    }
+
     double scaleX;
     double scaleY;
     ImageIcon imageIcon = getImage();
@@ -199,21 +207,24 @@ public class Image extends AbstractTransparentComponent<Void> {
   }
 
   public ImageIcon getImage() {
-    if (image != null) {
-      // when loading old files, convert the stored image to byte array and then then discard it, we won't be needing it anymore
-      BufferedImage bi = ImageUtils.ToBufferedImage(image.getImage());
-      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      try {
-        ImageIO.write(bi, "png", baos);
-        // make it official
-        data = baos.toByteArray();
-      } catch (IOException e) {
-      }      
-      // don't save back to the file
-      image = null;
-    }
+    if (imageIcon == null) {
+      if (image != null) {
+        // when loading old files, convert the stored image to byte array and then then discard it, we won't be needing it anymore
+        BufferedImage bi = ImageUtils.ToBufferedImage(image.getImage());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+          ImageIO.write(bi, "png", baos);
+          // make it official
+          data = baos.toByteArray();
+        } catch (IOException e) {
+        }
+        // don't save back to the file
+        image = null;
+      }
 
-    return new ImageIcon(data);
+      imageIcon = new ImageIcon(data);
+    }
+    return imageIcon;
   }
 
   @ByteArrayProperty(binaryType = BinaryType.IMAGE)
@@ -279,7 +290,28 @@ public class Image extends AbstractTransparentComponent<Void> {
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
   }
-  
+
+  protected Point2D getFinalSecondPoint() {
+    Point2D finalSecondPoint;
+    if (getSizingMode() == ImageSizingMode.TwoPoints) {
+      finalSecondPoint = secondPoint;
+    } else {
+      double scale = 1d * getScale() / DEFAULT_SCALE;
+      ImageIcon iconImage = getImage();
+      finalSecondPoint = new Point2D.Double(point.getX() + iconImage.getIconWidth() * scale,
+              point.getY() + iconImage.getIconHeight() * scale);
+    }
+    return finalSecondPoint;
+  }
+
+  protected Rectangle2D getImageRectangle() {
+    Point2D finalSecondPoint = getFinalSecondPoint();
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()),
+            Math.min(point.getY(), finalSecondPoint.getY()),
+            Math.abs(point.getX() - finalSecondPoint.getX()),
+            Math.abs(point.getY() - finalSecondPoint.getY()));
+  }
+
   public static enum ImageSizingMode {
     TwoPoints("Opposing Points"), Scale("Scale");
     

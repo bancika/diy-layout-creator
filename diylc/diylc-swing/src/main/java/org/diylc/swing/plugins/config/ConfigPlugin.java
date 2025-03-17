@@ -101,6 +101,9 @@ public class ConfigPlugin implements IPlugIn {
 //        ActionFactory.getInstance().createConfigAction(plugInPort, "Hardware Acceleration", IPlugInPort.HARDWARE_ACCELERATION, false),
 //        CONFIG_MENU);
     swingUI.injectMenuAction(
+            ActionFactory.getInstance().createConfigAction(plugInPort, "High DPI Rendering",
+                    IPlugInPort.HIGH_DPI_RENDERING, false), CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
             IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
