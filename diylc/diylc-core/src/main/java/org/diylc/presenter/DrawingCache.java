@@ -181,6 +181,11 @@ public class DrawingCache {
   
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
       boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder) {
+
+    if (!g2d.getClipBounds().intersects(component.getCachingBounds())) {
+      return null;
+    }
+
     // if we need to apply caching
     Point2D firstPoint = component.getControlPoint(0);
 
@@ -311,6 +316,7 @@ public class DrawingCache {
       this.zoom = zoom;
       this.dx = dx;
       this.dy = dy;
+      this.scaleFactor = scaleFactor;
     }
 
     public IDIYComponent<?> getComponent() {

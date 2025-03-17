@@ -120,4 +120,10 @@ public class DatasheetService {
 
     return null;
   }
+
+  // Add method to clear cache for testing
+  public void clearCache() {
+    datasheetCache.clear();
+    lookupCache.clear();
+  }
 }

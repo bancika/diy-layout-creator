@@ -256,6 +256,11 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added ability to highlight connected switch lugs in selected position in order to illustrate how it works internally.</description>
+					<description>Configurable 'High DPI Rendering' feature which makes the diagram smoother on high-resolution displays but can affect performance</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Significantly improved rendering performance</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -61,6 +61,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
   public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
+  public static final String HIGH_DPI_RENDERING = "hiDpiRendering";
   public static final String EXPORT_GRID_KEY = "exportGrid";
   public static final String STICKY_POINTS_KEY = "stickyPoints";
   public static final String METRIC_KEY = "metric";
