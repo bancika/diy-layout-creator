@@ -61,9 +61,14 @@ public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
   
   protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     // grab all components that are in the netlist
-    List<IDIYComponent<?>> allComponents = netlist.getComponents();
-    
     List<Group> groups = netlist.getSortedGroups();
+
+    List<IDIYComponent<?>> allComponents = groups.stream()
+            .flatMap(x -> x.getNodes().stream()
+                    .map(y -> y.getComponent()))
+            .distinct()
+            .collect(Collectors.toList());
+
     int unconnectedIndex = groups.size();
     
     int maxLen = 0;
