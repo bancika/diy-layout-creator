@@ -1569,8 +1569,8 @@ public class Presenter implements IPlugInPort, IConfigListener {
     double centerY = (maxY + minY) / 2;
 
     if (snapToGrid) {
-      CalcUtils.roundToGrid(centerX, this.currentProject.getGridSpacing());
-      CalcUtils.roundToGrid(centerY, this.currentProject.getGridSpacing());
+      centerX = CalcUtils.roundToGrid(centerX, this.currentProject.getGridSpacing());
+      centerY = CalcUtils.roundToGrid(centerY, this.currentProject.getGridSpacing());
     }
 
     return new Point2D.Double(centerX, centerY);
