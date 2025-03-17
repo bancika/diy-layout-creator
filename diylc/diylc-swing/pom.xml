@@ -65,7 +65,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.5-FINAL</version>
+            <version>5.4.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -118,31 +118,43 @@
             <groupId>org.diylc.local</groupId>
             <artifactId>app-framework</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/app-framework.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>gerber-writer-api-1.0.0</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/gerber-writer-api-1.0.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>java-http-proxy</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/java-http-proxy.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>jep-2.4.1</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/jep-2.4.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>svgSalamander-1.1.2.4</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/svgSalamander-1.1.2.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>swing-framework</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/swing-framework.jar</systemPath>
         </dependency>
     </dependencies>
     
