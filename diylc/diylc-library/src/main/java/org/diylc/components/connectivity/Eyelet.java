@@ -21,13 +21,13 @@
 */
 package org.diylc.components.connectivity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -49,7 +49,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class,
     enableCache = true)
-public class Eyelet extends AbstractComponent<String> {
+public class Eyelet extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -71,6 +71,12 @@ public class Eyelet extends AbstractComponent<String> {
     }
     int diameter = getClosestOdd((int) size.convertToPixels());
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
+
+    Composite oldComposite = g2d.getComposite();
+    if (getAlpha() < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
+    }
+
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     g2d.setColor(color);
     drawingObserver.startTrackingContinuityArea(true);
@@ -84,6 +90,8 @@ public class Eyelet extends AbstractComponent<String> {
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
     g2d.drawOval((int)(point.getX() - holeDiameter / 2), (int)(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
+
+    g2d.setComposite(oldComposite);
   }
 
   @Override
