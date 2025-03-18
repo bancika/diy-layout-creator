@@ -136,6 +136,9 @@ public class Presenter implements IPlugInPort, IConfigListener {
   private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
+  
+  public static final Double[] ZOOM_LEVELS =
+      {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
 
   public static VersionNumber CURRENT_VERSION = null;
   private static List<Version> RECENT_VERSIONS = null;
@@ -149,7 +152,6 @@ public class Presenter implements IPlugInPort, IConfigListener {
   private static final int MAX_RECENT_FILES = 20;  
 
   private Project currentProject;
-  private Map<String, List<ComponentType>> componentTypes;
 
   // Maps component class names to ComponentType objects.
   private List<IPlugIn> plugIns;
@@ -242,7 +244,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
 
   @Override
   public java.lang.Double[] getAvailableZoomLevels() {
-    return new java.lang.Double[] {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
+    return ZOOM_LEVELS;
   }
 
   @Override
@@ -424,47 +426,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
   @SuppressWarnings("unchecked")
   @Override
   public Map<String, List<ComponentType>> getComponentTypes() {
-    if (componentTypes == null) {
-      LOG.info("Loading component types.");
-      componentTypes = new HashMap<String, List<ComponentType>>();
-      Reflections reflections = new Reflections(
-              new ConfigurationBuilder()
-                      .forPackage("org.diylc")
-                      .filterInputsBy(new FilterBuilder().includePackage("org.diylc.components"))
-                      .setScanners(TypesAnnotated));
-      Set<Class<?>> componentTypeClasses = null;
-      try {
-        componentTypeClasses = reflections.getTypesAnnotatedWith(ComponentDescriptor.class, false);
-
-        for (Class<?> clazz : componentTypeClasses) {
-          if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
-            ComponentType componentType =
-                ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
-            if (componentType == null)
-              continue;
-            
-            // just to store in the cache
-            ComponentProcessor.getInstance().extractProperties(clazz);
-            
-            List<ComponentType> nestedList;
-            if (componentTypes.containsKey(componentType.getCategory())) {
-              nestedList = componentTypes.get(componentType.getCategory());
-            } else {
-              nestedList = new ArrayList<ComponentType>();
-              componentTypes.put(componentType.getCategory(), nestedList);
-            }
-            nestedList.add(componentType);
-          }
-        }
-
-        for (Map.Entry<String, List<ComponentType>> e : componentTypes.entrySet()) {
-          LOG.debug(e.getKey() + ": " + e.getValue());
-        }
-      } catch (Exception e) {
-        LOG.error("Error loading component types", e);
-      }
-    }
-    return componentTypes;
+    return ComponentProcessor.getInstance().getComponentTypes();
   }
 
   @SuppressWarnings({"unchecked"})
