@@ -136,7 +136,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
   private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
-  
+
   public static final Double[] ZOOM_LEVELS =
       {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
 

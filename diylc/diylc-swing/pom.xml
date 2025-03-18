@@ -238,6 +238,7 @@
             <id>linux-appimage</id>
             <properties>
                 <appdir.dir>${project.build.directory}/AppDir</appdir.dir>
+                <appdir.jre>${appdir.dir}/usr/bin/jre</appdir.jre>
                 <jdk.version>17.0.14+7</jdk.version>
                 <jdk.version.file>17.0.14_7</jdk.version.file>
                 <jdk.archive.linux>OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz</jdk.archive.linux>
