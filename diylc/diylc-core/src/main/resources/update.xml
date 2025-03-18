@@ -291,7 +291,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
-					<description>Ctrl+X (Command+X) doesn't work because 'Project Explorer' steals the focus on X key press</description>
+					<description>Ctrl+X (Command+X) shortcut for Cut action doesn't work because 'Project Explorer' steals the focus on X key press</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
