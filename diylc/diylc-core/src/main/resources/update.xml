@@ -274,6 +274,10 @@
 					<description>Omit boards, wires, traces, terminals, etc from Spice netlist output</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Slightly improved rendering quality of component icons</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
 				</org.diylc.appframework.update.Change>
