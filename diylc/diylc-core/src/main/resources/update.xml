@@ -279,6 +279,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>'Mini Toggle Switch' ends up misaligned after rotating together with other components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
