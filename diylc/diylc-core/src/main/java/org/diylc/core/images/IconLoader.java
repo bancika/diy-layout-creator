@@ -59,7 +59,7 @@ public enum IconLoader {
   }
 
   public Icon getIcon() {
-    java.net.URL imgURL = getClass().getResource("/images/" + name);
+    java.net.URL imgURL = getClass().getResource("/diylc-core-images/" + name);
     if (imgURL != null) {
       return new ImageIcon(imgURL, name);
     } else {
@@ -71,7 +71,7 @@ public enum IconLoader {
   public Image getImage() {
     BufferedImage img = null;
     try {
-      img = ImageIO.read(getClass().getResourceAsStream("/images/" + name));
+      img = ImageIO.read(getClass().getResourceAsStream("/diylc-core-images/" + name));
     } catch (IOException e) {
       Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
     }

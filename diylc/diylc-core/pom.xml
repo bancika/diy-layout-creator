@@ -76,7 +76,7 @@
             <artifactId>app-framework</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/app-framework.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/app-framework-1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
