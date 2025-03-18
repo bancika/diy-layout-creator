@@ -27,7 +27,7 @@ public class PasteAction extends AbstractAction {
     this.clipboard = clipboard;
     putValue(AbstractAction.NAME, "Paste");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Paste.getIcon());
   }
 

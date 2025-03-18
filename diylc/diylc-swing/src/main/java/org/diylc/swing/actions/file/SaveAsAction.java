@@ -29,7 +29,7 @@ public class SaveAsAction extends AbstractAction {
     this.swingUI = swingUI;
     putValue(AbstractAction.NAME, "Save As");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | ActionEvent.SHIFT_MASK));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | ActionEvent.SHIFT_MASK));
     putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
   }
 

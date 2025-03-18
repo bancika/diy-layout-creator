@@ -281,6 +281,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Rotating selected components sometimes wacks the alignment off the grid</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Ctrl+X (Command+X) doesn't work because 'Project Explorer' steals the focus on X key press</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
