@@ -655,11 +655,109 @@
                                             <option value="-Xdock:name=DIY Layout Creator"/>
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
+
+                                        <!-- Sign the app bundle -->
+                                        <echo message="Starting code signing process..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Code signing completed successfully"/>
+
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
+
+                                        <echo message="Preparing zip archive for notarization..."/>
+                                        <!-- Create a ZIP archive for notarization -->
+                                        <zip destfile="${project.build.directory}/DIYLC-notarize.zip"
+                                             basedir="${project.build.directory}"
+                                             includes="DIYLC.app/**"/>
+                                        <echo message="Notarization archive created"/>
+
+                                        <echo message="Submitting app for notarization to Apple (this may take several minutes)..."/>
+                                        <!-- Submit for notarization and save output -->
+                                        <exec executable="xcrun" output="${project.build.directory}/notarization_output.txt" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="submit"/>
+                                            <arg value="${project.build.directory}/DIYLC-notarize.zip"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                            <arg value="--wait"/>
+                                        </exec>
+
+                                        <!-- Extract UUID using loadfile and propertyregex -->
+                                        <loadfile property="notarization.output" srcFile="${project.build.directory}/notarization_output.txt"/>
+                                        <echo message="Full notarization output:${line.separator}${notarization.output}"/>
                                         
-                                        <!-- Create zip package -->
+                                        <propertyregex property="notarization.uuid"
+                                                      input="${notarization.output}"
+                                                      regexp="Submission ID received([a-f0-9-]{36})"
+                                                      select="\1"
+                                                      casesensitive="false" />
+
+                                        <echo message="Extracted UUID: ${notarization.uuid}"/>
+                                        
+                                        <!-- Store UUID in a property file for debugging -->
+                                        <echo file="${project.build.directory}/notarization.properties">notarization.uuid=${notarization.uuid}</echo>
+
+                                        <echo message="Waiting for notarization to complete..."/>
+                                        <!-- Wait for notarization to complete and check status -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="wait"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+
+                                        <echo message="Checking notarization status..."/>
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="info"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+
+                                        <echo message="Waiting for notarization to be fully processed..."/>
+                                        <!-- Sleep for a few seconds to ensure notarization is fully processed -->
+                                        <sleep seconds="10"/>
+
+                                        <echo message="Stapling notarization ticket to app bundle..."/>
+                                        <!-- Staple the notarization ticket -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="staple"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Verifying stapling..."/>
+                                        <!-- Verify stapling -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="validate"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Stapling verification completed successfully"/>
+                                        
+                                        <echo message="Creating final signed and notarized zip package..."/>
+                                        <!-- Create final signed and notarized zip package -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-x86.zip"/>
+                                        <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>
                             </execution>
@@ -779,10 +877,108 @@
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
                                         
-                                        <!-- Create zip package -->
+                                        <!-- Sign the app bundle -->
+                                        <echo message="Starting code signing process..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Code signing completed successfully"/>
+
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
+
+                                        <echo message="Preparing zip archive for notarization..."/>
+                                        <!-- Create a ZIP archive for notarization -->
+                                        <zip destfile="${project.build.directory}/DIYLC-notarize.zip"
+                                             basedir="${project.build.directory}"
+                                             includes="DIYLC.app/**"/>
+                                        <echo message="Notarization archive created"/>
+
+                                        <echo message="Submitting app for notarization to Apple (this may take several minutes)..."/>
+                                        <!-- Submit for notarization and save output -->
+                                        <exec executable="xcrun" output="${project.build.directory}/notarization_output.txt" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="submit"/>
+                                            <arg value="${project.build.directory}/DIYLC-notarize.zip"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                            <arg value="--wait"/>
+                                        </exec>
+
+                                        <!-- Extract UUID using loadfile and propertyregex -->
+                                        <loadfile property="notarization.output" srcFile="${project.build.directory}/notarization_output.txt"/>
+                                        <echo message="Full notarization output:${line.separator}${notarization.output}"/>
+                                        
+                                        <propertyregex property="notarization.uuid"
+                                                      input="${notarization.output}"
+                                                      regexp="Submission ID received([a-f0-9-]{36})"
+                                                      select="\1"
+                                                      casesensitive="false" />
+
+                                        <echo message="Extracted UUID: ${notarization.uuid}"/>
+                                        
+                                        <!-- Store UUID in a property file for debugging -->
+                                        <echo file="${project.build.directory}/notarization.properties">notarization.uuid=${notarization.uuid}</echo>
+
+                                        <echo message="Waiting for notarization to complete..."/>
+                                        <!-- Wait for notarization to complete and check status -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="wait"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+
+                                        <echo message="Checking notarization status..."/>
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="info"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+
+                                        <echo message="Waiting for notarization to be fully processed..."/>
+                                        <!-- Sleep for a few seconds to ensure notarization is fully processed -->
+                                        <sleep seconds="10"/>
+
+                                        <echo message="Stapling notarization ticket to app bundle..."/>
+                                        <!-- Staple the notarization ticket -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="staple"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Verifying stapling..."/>
+                                        <!-- Verify stapling -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="validate"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Stapling verification completed successfully"/>
+                                        
+                                        <echo message="Creating final signed and notarized zip package..."/>
+                                        <!-- Create final signed and notarized zip package -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-arm.zip"/>
+                                        <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>
                             </execution>
