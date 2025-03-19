@@ -1,0 +1,52 @@
+name: Java CI Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: Run Tests
+      run: mvn test
+      
+    # Generate and report coverage without failing
+    - name: Generate Coverage Report
+      run: mvn jacoco:report
+      
+    - name: Report Coverage
+      run: |
+        COVERAGE=$(mvn jacoco:report | grep -oP 'Total coverage: \K[0-9.]+' || echo "unknown")
+        echo "Current test coverage: $COVERAGE%"
+        
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
+        retention-days: 5
+        
+    # Optional: Comment test results on PR
+    - name: Add Test Results Comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: github.event_name == 'pull_request'
+      with:
+        message: |
+          ### Test Results Summary
+          ✅ Tests completed
+          📊 Coverage: ${{ env.COVERAGE }}%
+          
+          Coverage report available in workflow artifacts
