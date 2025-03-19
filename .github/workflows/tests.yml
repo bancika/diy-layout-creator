@@ -33,10 +33,11 @@ jobs:
         echo "Current test coverage: $COVERAGE%"
         
     - name: Upload Coverage Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: target/site/jacoco/
+        retention-days: 5
         
     # Optional: Comment test results on PR
     - name: Add Test Results Comment
@@ -48,4 +49,4 @@ jobs:
           ✅ Tests completed
           📊 Coverage: ${{ env.COVERAGE }}%
           
-          Coverage report available in workflow artifacts 
+          Coverage report available in workflow artifacts
