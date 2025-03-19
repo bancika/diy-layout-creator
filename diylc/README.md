@@ -1,0 +1,1 @@
+[![Java CI Tests](https://github.com/{owner}/{repo}/actions/workflows/tests.yml/badge.svg)](https://github.com/{owner}/{repo}/actions/workflows/tests.yml) 
