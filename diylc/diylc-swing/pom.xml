@@ -260,6 +260,47 @@
                             </target>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>sign-jar-launcher</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Extract JavaAppLauncher -->
+                                <unzip src="${project.build.directory}/diylc.jar" dest="${project.build.directory}/jar-contents">
+                                    <patternset>
+                                        <include name="com/oracle/appbundler/JavaAppLauncher"/>
+                                    </patternset>
+                                </unzip>
+                                
+                                <!-- Make it executable -->
+                                <chmod file="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher" perm="755"/>
+                                
+                                <!-- Sign the launcher -->
+                                <exec executable="codesign" failonerror="true">
+                                    <arg value="--force"/>
+                                    <arg value="--sign"/>
+                                    <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                    <arg value="--timestamp"/>
+                                    <arg value="--options"/>
+                                    <arg value="runtime"/>
+                                    <arg value="--entitlements"/>
+                                    <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                    <arg value="--all-architectures"/>
+                                    <arg value="--strict"/>
+                                    <arg value="--verbose"/>
+                                    <arg value="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher"/>
+                                </exec>
+                                
+                                <!-- Update the jar with signed launcher -->
+                                <jar destfile="${project.build.directory}/diylc.jar" update="true">
+                                    <fileset dir="${project.build.directory}/jar-contents"/>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
