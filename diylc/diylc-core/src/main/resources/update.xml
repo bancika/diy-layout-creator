@@ -246,20 +246,12 @@
 				<minor>1</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-03-20 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability to render the underside of boards along with the top side for easier validation, building and debugging</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
 					<description>Configurable 'High DPI Rendering' feature which makes the diagram smoother on high-resolution displays but can affect performance</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Significantly improved rendering performance</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -279,11 +271,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Slightly improved rendering quality of component icons</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>'Mini Toggle Switch' ends up misaligned after rotating together with other components</description>
+					<description>Updated the windows installer to avoid false positive virus detection</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -292,6 +280,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotating selected components sometimes wacks the alignment off the grid</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>2</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-20 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to render the underside of boards along with the top side for easier validation, building and debugging</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
