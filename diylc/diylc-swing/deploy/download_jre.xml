@@ -1,0 +1,151 @@
+<project name="jre-downloader" basedir="..">
+	
+	<property name="jdk.version" value="17.0.14+7" />
+	<property name="jdk.version.file" value="17.0.14_7" />
+
+	<target name="fetch-jre-macos-x86">
+		<property name="jdk.archive.mac.x86" value="OpenJDK17U-jre_x64_mac_hotspot_${jdk.version.file}.tar.gz" />
+		<property name="jdk.url.mac.x86" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.mac.x86}" />
+		<property name="jre.dest.mac.x86" value="${build.dir}/jre_x86" />
+
+		<!-- Clean old jre_macos folder -->
+		<delete dir="${jre.dest.mac.x86}" />
+
+		<!-- Create folder to hold extracted JRE -->
+		<mkdir dir="${jre.dest.mac.x86}" />
+
+		<!-- Download JRE 17 for macOS Intel -->
+		<mkdir dir="${build.dir}/downloads" />
+		<get src="${jdk.url.mac.x86}" dest="${build.dir}/downloads/${jdk.archive.mac.x86}" usetimestamp="true" />
+
+		<!-- Extract JRE into jre_macos -->
+		<untar src="${build.dir}/downloads/${jdk.archive.mac.x86}" dest="${jre.dest.mac.x86}" compression="gzip" />
+		
+		<!-- Move files up one level in place -->
+        <move todir="${jre.dest.mac.x86}">
+            <fileset dir="${jre.dest.mac.x86}/jdk-${jdk.version}-jre" />
+
+        </move>
+
+        <!-- Remove empty top-level folder -->
+        <delete dir="${jre.dest.mac.x86}/jdk-${jdk.version}-jre" />
+
+		<echo message="JRE 17 (macOS Intel) extracted to ${jre.dest.mac.x86}" />
+	</target>
+
+	<target name="fetch-jre-macos-arm">
+		<property name="jdk.archive.mac.arm" value="OpenJDK17U-jre_aarch64_mac_hotspot_${jdk.version.file}.tar.gz" />
+		<property name="jdk.url.mac.arm" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.mac.arm}" />
+		<property name="jre.dest.mac.arm" value="${build.dir}/jre_arm" />
+
+		<!-- Clean old jre_macos folder -->
+		<delete dir="${jre.dest.mac.arm}" />
+
+		<!-- Create folder to hold extracted JRE -->
+		<mkdir dir="${jre.dest.mac.arm}" />
+
+		<!-- Download JRE 17 for macOS Intel -->
+		<mkdir dir="${build.dir}/downloads" />
+		<get src="${jdk.url.mac.arm}" dest="${build.dir}/downloads/${jdk.archive.mac.arm}" usetimestamp="true" />
+
+		<!-- Extract JRE into jre_macos -->
+		<untar src="${build.dir}/downloads/${jdk.archive.mac.arm}" dest="${jre.dest.mac.arm}" compression="gzip" />
+		
+		<!-- Move files up one level in place -->
+		<move todir="${jre.dest.mac.arm}">
+	        <fileset dir="${jre.dest.mac.arm}/jdk-${jdk.version}-jre" />
+
+	    </move>
+
+        <!-- Remove empty top-level folder -->
+        <delete dir="${jre.dest.mac.arm}/jdk-${jdk.version}-jre" />
+
+		<echo message="JRE 17 (macOS Intel) extracted to ${jre.dest.mac.arm}" />
+	</target>
+
+	<target name="fetch-jre-win32">
+		<property name="jdk.archive.win32" value="OpenJDK17U-jre_x86-32_windows_hotspot_${jdk.version.file}.zip" />
+		<property name="jdk.url.win32" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win32}" />
+		<property name="jre.dest.win32" value="${build.dir}/jre_win" />
+
+		<!-- Clean old jre_win folder -->
+		<delete dir="${jre.dest.win32}" />
+
+		<!-- Create folder to hold extracted JRE -->
+		<mkdir dir="${jre.dest.win32}" />
+
+		<!-- Download JRE 32-bit for Windows -->
+		<mkdir dir="${build.dir}/downloads" />
+		<get src="${jdk.url.win32}" dest="${build.dir}/downloads/${jdk.archive.win32}" usetimestamp="true" />
+
+		<!-- Extract JRE into jre_win -->
+		<unzip src="${build.dir}/downloads/${jdk.archive.win32}" dest="${jre.dest.win32}" />
+		
+		<!-- Move files up one level in place -->
+		<move todir="${jre.dest.win32}">
+            <fileset dir="${jre.dest.win32}/jdk-${jdk.version}-jre" />
+
+        </move>
+
+        <!-- Remove empty top-level folder -->
+        <delete dir="${jre.dest.win32}/jdk-${jdk.version}-jre" />
+
+		<echo message="JRE 17 (32-bit) extracted to ${jre.dest.win32}" />
+	</target>
+
+	<target name="fetch-jre-win64">
+		<property name="jdk.archive.win64" value="OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip" />
+		<property name="jdk.url.win64" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}" />
+		<property name="jre.dest.win64" value="${build.dir}/jre_win" />
+
+		<!-- Clean old jre_win folder -->
+		<delete dir="${jre.dest.win64}" />
+
+		<!-- Create folder to hold extracted JRE -->
+		<mkdir dir="${jre.dest.win64}" />
+
+		<!-- Download JRE 64-bit for Windows -->
+		<mkdir dir="${build.dir}/downloads" />
+		<get src="${jdk.url.win64}" dest="${build.dir}/downloads/${jdk.archive.win64}" usetimestamp="true" />
+
+		<!-- Extract JRE into jre_win -->
+		<unzip src="${build.dir}/downloads/${jdk.archive.win64}" dest="${jre.dest.win64}" />
+		
+		<!-- Move files up one level in place -->
+		<move todir="${jre.dest.win64}">
+            <fileset dir="${jre.dest.win64}/jdk-${jdk.version}-jre" />
+        </move>
+
+        <!-- Remove empty top-level folder -->
+        <delete dir="${jre.dest.win64}/jdk-${jdk.version}-jre" />
+
+		<echo message="JRE 17 (64-bit) extracted to ${jre.dest.win64}" />
+	</target>
+
+	<target name="fetch-jre-linux">
+		<property name="jdk.archive.linux" value="OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz" />
+		<property name="jdk.url.linux" value="https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}" />
+		<property name="jre.dest.linux" value="${basedir}/build/jre" />
+		<property name="appdir.jre" value="${appdir}/usr/bin/jre" />
+
+		<!-- Ensure clean jre folder -->
+		<delete dir="${jre.dest.linux}" />
+		<mkdir dir="${jre.dest.linux}" />
+
+		<!-- Download JRE 17 if not already present -->
+		<mkdir dir="${build.dir}/downloads" />
+		<get src="${jdk.url.linux}" dest="${build.dir}/downloads/${jdk.archive.linux}" usetimestamp="true" />
+
+		<!-- Extract JRE -->
+		<untar src="${build.dir}/downloads/${jdk.archive.linux}" dest="${jre.dest.linux}" compression="gzip" />
+
+		<!-- Move extracted folder into AppImage location -->
+		<mkdir dir="${appdir.jre}" />
+		<move todir="${appdir.jre}">
+            <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
+        </move>
+
+		<echo message="JRE 17 bundled into ${appdir.jre}" />
+	</target>
+
+</project>

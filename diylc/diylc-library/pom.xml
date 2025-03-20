@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>org.diylc</groupId>
+        <artifactId>diylc-parent</artifactId>
+        <version>5.1.0</version>
+    </parent>
+    
+    <artifactId>diylc-library</artifactId>
+    <!-- No need to specify version - it inherits from parent -->
+    
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+    
+    <dependencies>
+        <!-- Internal module dependencies -->
+        <dependency>
+            <groupId>org.diylc</groupId>
+            <artifactId>diylc-core</artifactId>
+        </dependency>
+        
+        <!-- Common dependencies from Maven Central -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Local dependencies from lib folder -->
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>app-framework</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/app-framework-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>gerber-writer-api-1.0.0</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/gerber-writer-api-1.0.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>jep-2.4.1</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/jep-2.4.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
+            <artifactId>svgSalamander-1.1.2.4</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/svgSalamander-1.1.2.4.jar</systemPath>
+        </dependency>
+    </dependencies>
+</project>
