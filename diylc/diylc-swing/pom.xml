@@ -408,21 +408,22 @@
                                                compression="gzip" />
                                         
                                         <!-- Move extracted folder into AppImage location -->
-                                        <mkdir dir="${appdir.jre}" />
-                                        <move todir="${appdir.jre}">
+                                        <mkdir dir="${appdir.dir}/usr/bin/jre" />
+                                        <move todir="${appdir.dir}/usr/bin/jre">
                                             <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
                                         </move>
                                         
                                         <!-- Clean up temporary directory -->
                                         <delete dir="${jre.dest.linux}" />
                                         
-                                        <echo message="JRE 17 bundled into ${appdir.jre}" />
+                                        <echo message="JRE 17 bundled into ${appdir.dir}/usr/bin/jre" />
+
+                                        <!-- Update the launch script to use the correct JRE path -->
+                                        <replace file="${appdir.dir}/usr/bin/diylc.sh">
+                                            <replacetoken>JAVA_HOME="$APPDIR/usr/lib/jre"</replacetoken>
+                                            <replacevalue>JAVA_HOME="$APPDIR/usr/bin/jre"</replacevalue>
+                                        </replace>
                             
-                                        <!-- Convert line endings to Unix format -->
-                                        <fixcrlf file="${appdir.dir}/com.diy_fever.DIYLayoutCreator.desktop" eol="unix" />
-                                        <fixcrlf file="${appdir.dir}/AppRun" eol="unix" />
-                                        <fixcrlf file="${appdir.dir}/usr/bin/diylc.sh" eol="unix" />
-                                        
                                         <echo message="AppDir structure created successfully at: ${appdir.dir}" />
                                     </target>
                                 </configuration>
@@ -771,6 +772,7 @@
                                         <!-- Create unsigned zip for distribution -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                            <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
                                         </zip>
                                         <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
 
@@ -1041,6 +1043,7 @@
                                         <!-- Create unsigned zip for distribution -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                            <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
                                         </zip>
                                         <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
 
