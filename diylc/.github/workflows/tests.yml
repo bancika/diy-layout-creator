@@ -22,5 +22,6 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        working-directory: ./diylc
-        run: mvn -B test
+        run: |
+          cd diylc
+          mvn -B test
