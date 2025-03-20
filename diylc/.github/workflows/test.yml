@@ -11,7 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        path: diy-layout-creator
     
     - name: Set up JDK 17
       uses: actions/setup-java@v3
@@ -21,5 +24,5 @@ jobs:
         cache: maven
         
     - name: Build with Maven
-      working-directory: ./diylc
+      working-directory: ./diy-layout-creator/diylc
       run: mvn -B test 
