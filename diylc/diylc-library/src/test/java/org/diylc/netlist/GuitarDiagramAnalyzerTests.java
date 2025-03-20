@@ -21,11 +21,8 @@ package org.diylc.netlist;
 import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
 import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
-========
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
 import org.junit.Test;
 
 import org.diylc.components.electromechanical.OpenJack1_4;
@@ -33,14 +30,6 @@ import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
-========
-import org.diylc.netlist.Group;
-import org.diylc.netlist.GuitarDiagramAnalyzer;
-import org.diylc.netlist.Netlist;
-import org.diylc.netlist.Tree;
-import org.diylc.netlist.TreeException;
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
 
 public class GuitarDiagramAnalyzerTests {
 
@@ -73,7 +62,6 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("((Volume.1-2 + Pickup.North<-) || Volume.2-3)", s);
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
   }
 
   @Test
@@ -117,8 +105,6 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals("(((Cbleed || Rbleed || Volume.1-2) + Pickup.North<-) || Volume.2-3)", s);
-========
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
   }
 
   @Test
@@ -141,11 +127,7 @@ public class GuitarDiagramAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(toneGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
     assertEquals("((Volume.1-2 + ((Tone.2-3 + Cap) || Pickup.North<-)) || Volume.2-3)", s);
-========
-    assertEquals("((Volume.1-2 + (Tone.2-3 + Cap) || Pickup.North<-) || Volume.2-3)", s);
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
   }
 
   @Test
@@ -179,11 +161,7 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
         "((Volume.1-2 + (Pickup1.North<- || Pickup2.North<- || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
-========
-        "((Volume.1-2 + (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2) || Pickup1.North<- || Pickup2.North<-) || Volume.2-3)",
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
         s);
   }
 
@@ -347,11 +325,7 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-<<<<<<<< HEAD:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarDiagramAnalyzerTests.java
         "((Volume.1-2 + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
-========
-        "((Volume.1-2 + (Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2)) || Volume.2-3)",
->>>>>>>> master:diylc/diylc-library/src/test/java/org/diylc/netlist/GuitarNetlistAnalyzerTests.java
         s);
   }
 }
