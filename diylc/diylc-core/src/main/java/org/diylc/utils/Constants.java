@@ -21,17 +21,15 @@
 */
 package org.diylc.utils;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Stroke;
-import java.awt.Toolkit;
+import java.awt.*;
 
 import org.diylc.core.Theme;
 
 public class Constants {
 
   public static final int PIXELS_PER_INCH = 200;
-  public static final double PIXEL_SIZE = 1d * PIXELS_PER_INCH / Toolkit.getDefaultToolkit().getScreenResolution();
+  public static final double PIXEL_SIZE = 1d * PIXELS_PER_INCH /
+      (GraphicsEnvironment.isHeadless() ? 96 : Toolkit.getDefaultToolkit().getScreenResolution());
 
   public static Color CANVAS_COLOR = Color.white;
 
