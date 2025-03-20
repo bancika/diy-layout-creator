@@ -180,6 +180,17 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <finalName>diylc</finalName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.diylc.DIYLCStarter</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                            <artifactSet>
+                                <includes>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
@@ -190,11 +201,104 @@
                                     </excludes>
                                 </filter>
                             </filters>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.diylc.DIYLCStarter</mainClass>
-                                </transformer>
-                            </transformers>
+                            <minimizeJar>false</minimizeJar>
+                            <createSourcesJar>false</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
+                            <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>3.6.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            
+            <!-- Add dependency plugin to copy system dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-system-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>system</includeScope>
+                            <outputDirectory>${project.build.directory}/system-libs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Add antrun plugin to include system dependencies in the final jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>merge-system-jars</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <unzip dest="${project.build.directory}/combined-classes">
+                                    <fileset dir="${project.build.directory}/system-libs" includes="*.jar"/>
+                                </unzip>
+                                <jar destfile="${project.build.directory}/diylc.jar" update="true">
+                                    <fileset dir="${project.build.directory}/combined-classes"/>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>sign-jar-launcher</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Extract JavaAppLauncher -->
+                                <unzip src="${project.build.directory}/diylc.jar" dest="${project.build.directory}/jar-contents">
+                                    <patternset>
+                                        <include name="com/oracle/appbundler/JavaAppLauncher"/>
+                                    </patternset>
+                                </unzip>
+                                
+                                <!-- Make it executable -->
+                                <chmod file="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher" perm="755"/>
+                                
+                                <!-- Sign the launcher -->
+                                <exec executable="codesign" failonerror="true">
+                                    <arg value="--force"/>
+                                    <arg value="--sign"/>
+                                    <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                    <arg value="--timestamp"/>
+                                    <arg value="--options"/>
+                                    <arg value="runtime"/>
+                                    <arg value="--entitlements"/>
+                                    <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                    <arg value="--all-architectures"/>
+                                    <arg value="--strict"/>
+                                    <arg value="--verbose"/>
+                                    <arg value="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher"/>
+                                </exec>
+                                
+                                <!-- Update the jar with signed launcher -->
+                                <jar destfile="${project.build.directory}/diylc.jar" update="true">
+                                    <fileset dir="${project.build.directory}/jar-contents"/>
+                                </jar>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>
@@ -304,21 +408,22 @@
                                                compression="gzip" />
                                         
                                         <!-- Move extracted folder into AppImage location -->
-                                        <mkdir dir="${appdir.jre}" />
-                                        <move todir="${appdir.jre}">
+                                        <mkdir dir="${appdir.dir}/usr/bin/jre" />
+                                        <move todir="${appdir.dir}/usr/bin/jre">
                                             <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
                                         </move>
                                         
                                         <!-- Clean up temporary directory -->
                                         <delete dir="${jre.dest.linux}" />
                                         
-                                        <echo message="JRE 17 bundled into ${appdir.jre}" />
+                                        <echo message="JRE 17 bundled into ${appdir.dir}/usr/bin/jre" />
+
+                                        <!-- Update the launch script to use the correct JRE path -->
+                                        <replace file="${appdir.dir}/usr/bin/diylc.sh">
+                                            <replacetoken>JAVA_HOME="$APPDIR/usr/lib/jre"</replacetoken>
+                                            <replacevalue>JAVA_HOME="$APPDIR/usr/bin/jre"</replacevalue>
+                                        </replace>
                             
-                                        <!-- Convert line endings to Unix format -->
-                                        <fixcrlf file="${appdir.dir}/com.diy_fever.DIYLayoutCreator.desktop" eol="unix" />
-                                        <fixcrlf file="${appdir.dir}/AppRun" eol="unix" />
-                                        <fixcrlf file="${appdir.dir}/usr/bin/diylc.sh" eol="unix" />
-                                        
                                         <echo message="AppDir structure created successfully at: ${appdir.dir}" />
                                     </target>
                                 </configuration>
@@ -554,7 +659,7 @@
                 <jdk.version.file>17.0.14_7</jdk.version.file>
                 <jdk.archive.osx>OpenJDK17U-jre_x64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
                 <jdk.url.osx>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
-                <jre.dest.osx>${project.build.directory}/jre_x86</jre.dest.osx>
+                <jre.dest.osx>${project.build.directory}/jre_x86.bundle</jre.dest.osx>
             </properties>
             <build>
                 <plugins>
@@ -656,10 +761,158 @@
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
                                         
-                                        <!-- Create zip package -->
+                                        <!-- First remove existing signatures -->
+                                        <echo message="Removing any existing signatures..."/>
+                                        <exec executable="codesign" failonerror="false">
+                                            <arg value="--remove-signature"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                            <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
+
+                                        <!-- Sign the entire app bundle in one shot -->
+                                        <echo message="Signing complete app bundle..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="--timestamp"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--all-architectures"/>
+                                            <arg value="--strict"/>
+                                            <arg value="--verbose"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        
+                                        <!-- Verify the signature -->
+                                        <echo message="Verifying code signature..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--verify"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--verbose=4"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Code signing completed successfully"/>
+
+                                        <echo message="Preparing zip archive for notarization..."/>
+                                        <!-- Create a ZIP archive for notarization -->
+                                        <zip destfile="${project.build.directory}/DIYLC-notarize.zip"
+                                             basedir="${project.build.directory}"
+                                             includes="DIYLC.app/**"/>
+                                        <echo message="Notarization archive created"/>
+
+                                        <!-- Submit for notarization -->
+                                        <echo message="Submitting app for notarization to Apple (this may take several minutes)..."/>
+                                        <exec executable="xcrun" outputproperty="submission.output" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="submit"/>
+                                            <arg value="${project.build.directory}/DIYLC-notarize.zip"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <!-- Extract UUID using string manipulation -->
+                                        <echo message="Notarization submission output: ${submission.output}"/>
+                                        
+                                        <!-- Save output to a file for processing -->
+                                        <echo file="${project.build.directory}/notarization_output.txt" message="${submission.output}"/>
+                                        
+                                        <!-- Use loadfile with filterchain to extract UUID -->
+                                        <loadfile property="notarization.uuid.raw" srcFile="${project.build.directory}/notarization_output.txt">
+                                            <filterchain>
+                                                <striplinebreaks/>
+                                                <tokenfilter>
+                                                    <replaceregex pattern=".*id: ([a-f0-9-]{36}).*" replace="\1"/>
+                                                </tokenfilter>
+                                            </filterchain>
+                                        </loadfile>
+                                        
+                                        <!-- Create clean UUID property without any whitespace -->
+                                        <loadresource property="notarization.uuid">
+                                            <propertyresource name="notarization.uuid.raw"/>
+                                            <filterchain>
+                                                <striplinebreaks/>
+                                                <tokenfilter>
+                                                    <replaceregex pattern="\s+" replace=""/>
+                                                </tokenfilter>
+                                            </filterchain>
+                                        </loadresource>
+                                        
+                                        <echo message="Raw UUID: '${notarization.uuid.raw}'"/>
+                                        <echo message="Clean UUID: '${notarization.uuid}'"/>
+                                        
+                                        <!-- Wait for notarization with timeout -->
+                                        <echo message="Waiting for notarization to complete (this may take several minutes)..."/>
+                                        <exec executable="xcrun" resultproperty="wait.result" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="wait"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <!-- Check notarization status -->
+                                        <echo message="Checking final notarization status..."/>
+                                        <exec executable="xcrun" outputproperty="status.output" resultproperty="status.result" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="info"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <echo message="Notarization status output:${line.separator}${status.output}"/>
+                                        
+                                        <!-- Get log regardless of status -->
+                                        <exec executable="xcrun" outputproperty="log.output" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="log"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <echo message="Detailed notarization log:${line.separator}${log.output}"/>
+                                        
+                                        <!-- Check if status contains "Invalid" -->
+                                        <condition property="notarization.failed">
+                                            <contains string="${status.output}" substring="Invalid"/>
+                                        </condition>
+                                        
+                                        <!-- Fail if notarization was invalid -->
+                                        <fail if="notarization.failed" message="Notarization failed. Please check the detailed log above for more information."/>
+                                        
+                                        <!-- Only continue if notarization succeeded -->
+                                        <echo message="Notarization completed successfully. Proceeding with stapling..."/>
+                                        
+                                        <!-- Sleep for a few seconds to ensure notarization is fully processed -->
+                                        <sleep seconds="10"/>
+
+                                        <echo message="Stapling notarization ticket to app bundle..."/>
+                                        <!-- Staple the notarization ticket -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="staple"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Creating final signed and notarized zip package..."/>
+                                        <!-- Create final signed and notarized zip package -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-x86.zip"/>
+                                        <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>
                             </execution>
@@ -676,7 +929,7 @@
                 <jdk.version.file>17.0.14_7</jdk.version.file>
                 <jdk.archive.osx>OpenJDK17U-jre_aarch64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
                 <jdk.url.osx>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
-                <jre.dest.osx>${project.build.directory}/jre_arm</jre.dest.osx>
+                <jre.dest.osx>${project.build.directory}/jre_arm.bundle</jre.dest.osx>
             </properties>
             <build>
                 <plugins>
@@ -698,22 +951,22 @@
                                         <delete dir="${jre.dest.osx}" />
                                         <mkdir dir="${jre.dest.osx}" />
                                         <mkdir dir="${project.build.directory}/downloads" />
-
+                                        
                                         <!-- Download JRE -->
-                                        <get src="${jdk.url.osx}"
-                                             dest="${project.build.directory}/downloads/${jdk.archive.osx}"
+                                        <get src="${jdk.url.osx}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.osx}" 
                                              usetimestamp="true" />
-
+                                        
                                         <!-- Extract JRE -->
-                                        <untar src="${project.build.directory}/downloads/${jdk.archive.osx}"
-                                               dest="${jre.dest.osx}"
+                                        <untar src="${project.build.directory}/downloads/${jdk.archive.osx}" 
+                                               dest="${jre.dest.osx}" 
                                                compression="gzip" />
 
                                         <!-- Move files up one level -->
                                         <move todir="${jre.dest.osx}">
                                             <fileset dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
                                         </move>
-
+                                        
                                         <!-- Remove empty top-level folder -->
                                         <delete dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
                                     </target>
@@ -779,10 +1032,158 @@
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
                                         
-                                        <!-- Create zip package -->
+                                        <!-- First remove existing signatures -->
+                                        <echo message="Removing any existing signatures..."/>
+                                        <exec executable="codesign" failonerror="false">
+                                            <arg value="--remove-signature"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                            <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
+
+                                        <!-- Sign the entire app bundle in one shot -->
+                                        <echo message="Signing complete app bundle..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="--timestamp"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--all-architectures"/>
+                                            <arg value="--strict"/>
+                                            <arg value="--verbose"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        
+                                        <!-- Verify the signature -->
+                                        <echo message="Verifying code signature..."/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--verify"/>
+                                            <arg value="--deep"/>
+                                            <arg value="--verbose=4"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+                                        <echo message="Code signing completed successfully"/>
+
+                                        <echo message="Preparing zip archive for notarization..."/>
+                                        <!-- Create a ZIP archive for notarization -->
+                                        <zip destfile="${project.build.directory}/DIYLC-notarize.zip"
+                                             basedir="${project.build.directory}"
+                                             includes="DIYLC.app/**"/>
+                                        <echo message="Notarization archive created"/>
+
+                                        <!-- Submit for notarization -->
+                                        <echo message="Submitting app for notarization to Apple (this may take several minutes)..."/>
+                                        <exec executable="xcrun" outputproperty="submission.output" failonerror="true">
+                                            <arg value="notarytool"/>
+                                            <arg value="submit"/>
+                                            <arg value="${project.build.directory}/DIYLC-notarize.zip"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <!-- Extract UUID using string manipulation -->
+                                        <echo message="Notarization submission output: ${submission.output}"/>
+                                        
+                                        <!-- Save output to a file for processing -->
+                                        <echo file="${project.build.directory}/notarization_output.txt" message="${submission.output}"/>
+                                        
+                                        <!-- Use loadfile with filterchain to extract UUID -->
+                                        <loadfile property="notarization.uuid.raw" srcFile="${project.build.directory}/notarization_output.txt">
+                                            <filterchain>
+                                                <striplinebreaks/>
+                                                <tokenfilter>
+                                                    <replaceregex pattern=".*id: ([a-f0-9-]{36}).*" replace="\1"/>
+                                                </tokenfilter>
+                                            </filterchain>
+                                        </loadfile>
+                                        
+                                        <!-- Create clean UUID property without any whitespace -->
+                                        <loadresource property="notarization.uuid">
+                                            <propertyresource name="notarization.uuid.raw"/>
+                                            <filterchain>
+                                                <striplinebreaks/>
+                                                <tokenfilter>
+                                                    <replaceregex pattern="\s+" replace=""/>
+                                                </tokenfilter>
+                                            </filterchain>
+                                        </loadresource>
+                                        
+                                        <echo message="Raw UUID: '${notarization.uuid.raw}'"/>
+                                        <echo message="Clean UUID: '${notarization.uuid}'"/>
+                                        
+                                        <!-- Wait for notarization with timeout -->
+                                        <echo message="Waiting for notarization to complete (this may take several minutes)..."/>
+                                        <exec executable="xcrun" resultproperty="wait.result" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="wait"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <!-- Check notarization status -->
+                                        <echo message="Checking final notarization status..."/>
+                                        <exec executable="xcrun" outputproperty="status.output" resultproperty="status.result" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="info"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <echo message="Notarization status output:${line.separator}${status.output}"/>
+                                        
+                                        <!-- Get log regardless of status -->
+                                        <exec executable="xcrun" outputproperty="log.output" failonerror="false">
+                                            <arg value="notarytool"/>
+                                            <arg value="log"/>
+                                            <arg value="${notarization.uuid}"/>
+                                            <arg value="--keychain-profile"/>
+                                            <arg value="AC_PASSWORD"/>
+                                        </exec>
+                                        
+                                        <echo message="Detailed notarization log:${line.separator}${log.output}"/>
+                                        
+                                        <!-- Check if status contains "Invalid" -->
+                                        <condition property="notarization.failed">
+                                            <contains string="${status.output}" substring="Invalid"/>
+                                        </condition>
+                                        
+                                        <!-- Fail if notarization was invalid -->
+                                        <fail if="notarization.failed" message="Notarization failed. Please check the detailed log above for more information."/>
+                                        
+                                        <!-- Only continue if notarization succeeded -->
+                                        <echo message="Notarization completed successfully. Proceeding with stapling..."/>
+                                        
+                                        <!-- Sleep for a few seconds to ensure notarization is fully processed -->
+                                        <sleep seconds="10"/>
+
+                                        <echo message="Stapling notarization ticket to app bundle..."/>
+                                        <!-- Staple the notarization ticket -->
+                                        <exec executable="xcrun" failonerror="true">
+                                            <arg value="stapler"/>
+                                            <arg value="staple"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
+
+                                        <echo message="Creating final signed and notarized zip package..."/>
+                                        <!-- Create final signed and notarized zip package -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-arm.zip"/>
+                                        <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>
                             </execution>

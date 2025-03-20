@@ -41,9 +41,16 @@ import org.diylc.common.IComponentTransformer;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+
 import org.diylc.core.IDynamicPropertySource;
 import org.diylc.core.IPropertyValidator;
 import org.diylc.core.annotations.*;
+
+import org.diylc.core.annotations.BomPolicy;
+import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.KeywordPolicy;
+
 import org.diylc.lang.LangUtil;
 
 /**

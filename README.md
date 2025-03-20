@@ -29,7 +29,7 @@ DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists
    <li>group components together and treat them as one, e.g. move, edit or delete </li>
    <li>export the output to image, PDF or printer </li>
    <li>export PCB trace mask suitable for toner transfer </li>
-   <li>export the circuit to a SPICE compatible netlist (beta) </li>
+   <li>export PCB designs to Gerber for fabrication </li>
    <li>create a Bill of Materials as a part of the project or export it to few different file formats </li>
    <li>analyze guitar wirings and show detailed pickup configuration in each switch configuration</li>
    <li>zoom in/out feature </li>

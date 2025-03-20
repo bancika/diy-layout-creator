@@ -36,7 +36,9 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.clipboard.ComponentTransferable;
+
 import org.diylc.common.*;
+
 import org.diylc.core.Angle;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;

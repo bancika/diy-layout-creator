@@ -25,7 +25,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import org.diylc.core.AllowAllValidator;
-import org.diylc.core.IDynamicPropertySource;
 import org.diylc.core.IPropertyValidator;
 
 /**
