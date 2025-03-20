@@ -34,7 +34,7 @@ import org.diylc.netlist.Node;
 import org.diylc.netlist.Summary;
 import org.diylc.netlist.TreeException;
 
-public class SpiceAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
+public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
   public SpiceAnalyzer() {
   }

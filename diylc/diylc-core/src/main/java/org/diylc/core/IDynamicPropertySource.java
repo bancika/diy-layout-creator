@@ -19,24 +19,20 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.utils;
+package org.diylc.core;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import org.diylc.common.PropertyWrapper;
 
-public class ScaledBufferedImage extends BufferedImage {
-  
-  private final double scaleFactor;
+import java.util.List;
+import java.util.Map;
 
-  public ScaledBufferedImage(int width, int height, int imageType, double scaleFactor) {
-    super((int) Math.round(width * scaleFactor), (int) Math.round(height * scaleFactor), imageType);
-    this.scaleFactor = scaleFactor;
-  }
+public interface IDynamicPropertySource {
 
-  @Override
-  public Graphics2D createGraphics() {
-    Graphics2D returnValue = super.createGraphics();
-    returnValue.scale(scaleFactor, scaleFactor);
-    return returnValue;
-  }
+  void setProperties(List<PropertyWrapper> properties);
+
+  void setComponent(IDIYComponent<?> ownerObject);
+
+  List<Object> getAvailableValues();
+
+  String getDisplayValue(Object value);
 }

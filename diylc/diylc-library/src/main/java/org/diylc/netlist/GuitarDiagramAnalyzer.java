@@ -56,7 +56,7 @@ import org.diylc.netlist.TreeException;
 import org.diylc.netlist.TreeLeaf;
 import org.diylc.netlist.Tree.ITreeWalker;
 
-public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();

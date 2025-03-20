@@ -76,6 +76,13 @@ public class PropertyEditorDialog extends ButtonDialog {
     this.properties = properties;
     this.defaultedProperties = new HashSet<PropertyWrapper>();
 
+    // update dynamic property sources
+    // TODO consider better way to do this
+    properties.stream()
+        .map(x -> x.getDynamicPropertySource())
+        .filter(x -> x != null)
+        .forEach(source -> source.setProperties(properties));
+
     setMinimumSize(new Dimension(240, 40));
 
     layoutGui();

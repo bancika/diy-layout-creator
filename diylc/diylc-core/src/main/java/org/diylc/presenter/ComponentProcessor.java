@@ -41,11 +41,16 @@ import org.diylc.common.IComponentTransformer;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+
+import org.diylc.core.IDynamicPropertySource;
 import org.diylc.core.IPropertyValidator;
+import org.diylc.core.annotations.*;
+
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
+
 import org.diylc.lang.LangUtil;
 
 /**
@@ -189,10 +194,16 @@ public class ComponentProcessor {
                 LangUtil.translate(o.toString());
               }
             }
+
+            IDynamicPropertySource dynamicPropertySource = null;
+            if (getter.isAnnotationPresent(DynamicEditableProperty.class)) {
+              DynamicEditableProperty dynamicAnnotation = getter.getAnnotation(DynamicEditableProperty.class);
+              dynamicPropertySource = getDynamicPropertySource(dynamicAnnotation.source());
+            }
             
             PropertyWrapper property =
                 new PropertyWrapper(name, getter.getReturnType(), getter.getName(), setterName,
-                    annotation.defaultable(), validator, annotation.sortOrder());
+                    annotation.defaultable(), validator, annotation.sortOrder(), dynamicPropertySource);
             properties.add(property);
           }       
       }
@@ -278,6 +289,17 @@ public class ComponentProcessor {
     return validator;
   }
 
+  private IDynamicPropertySource getDynamicPropertySource(Class<? extends IDynamicPropertySource> clazz) {
+    IDynamicPropertySource source;
+    try {
+      source = clazz.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
+      LOG.error("Could not instantiate source for " + clazz.getName(), e);
+      return null;
+    }
+    return source;
+  }
+
   private IComponentTransformer getComponentTransformer(Class<? extends IComponentTransformer> clazz) {
     if (clazz == null)
       return null;
@@ -310,5 +332,10 @@ public class ComponentProcessor {
         if (c1.isControlPointSticky(i) && c2.isControlPointSticky(j) && c1.getControlPoint(i).distance(c2.getControlPoint(j)) < touchSensitivity)
           return true;
     return false;
+  }
+
+  // Add this method for testing purposes
+  protected void setComponentTypeForTest(Class<? extends IDIYComponent<?>> componentClass, ComponentType componentType) {
+    componentTypeMap.put(componentClass.getName(), componentType);
   }
 }

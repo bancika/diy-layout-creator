@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +49,6 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
@@ -88,7 +86,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.NetlistAnalyzer;
+import org.diylc.netlist.AbstractNetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
 import org.diylc.serialization.ProjectFileManager;
@@ -194,23 +192,25 @@ public class Presenter implements IPlugInPort, IConfigListener {
   }
 
   public Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks) {
+    this(view, configManager, importVariantsAndBlocks, new MessageDispatcher<EventType>(true));
+  }
+
+  // New constructor for testing
+  protected Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks, MessageDispatcher<EventType> messageDispatcher) {
     super();
     this.view = view;
     this.configManager = configManager;
+    this.messageDispatcher = messageDispatcher;
     plugIns = new ArrayList<IPlugIn>();
-    messageDispatcher = new MessageDispatcher<EventType>(true);
     selectedComponents = new HashSet<IDIYComponent<?>>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
     currentProject = new Project();
-    // cloner = new Cloner();
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
 
-    // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
-    // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     if (importVariantsAndBlocks) {
       variantManager.upgradeVariants(getComponentTypes());
       variantManager.importDefaultVariants();
@@ -2030,7 +2030,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
       if (netlists == null)
         return;
       
-      List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
+      List<Set<IDIYComponent<?>>> allGroups = AbstractNetlistAnalyzer.extractComponentGroups(netlists);
       // Find control points of all selected components and all types
       Set<String> selectedNamePrefixes = new HashSet<String>();
       if (expansionMode == ExpansionMode.SAME_TYPE) {
@@ -2858,5 +2858,9 @@ public class Presenter implements IPlugInPort, IConfigListener {
       }
       messageDispatcher.dispatchMessage(EventType.REPAINT);
     }
+  }
+
+  protected MessageDispatcher<EventType> getMessageDispatcher() {
+    return messageDispatcher;
   }
 }

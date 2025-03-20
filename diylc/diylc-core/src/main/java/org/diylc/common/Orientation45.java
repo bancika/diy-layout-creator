@@ -19,24 +19,28 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.utils;
+package org.diylc.common;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+public enum Orientation45 {
 
-public class ScaledBufferedImage extends BufferedImage {
-  
-  private final double scaleFactor;
-
-  public ScaledBufferedImage(int width, int height, int imageType, double scaleFactor) {
-    super((int) Math.round(width * scaleFactor), (int) Math.round(height * scaleFactor), imageType);
-    this.scaleFactor = scaleFactor;
-  }
+  DEFAULT, _45, _90, _135, _180, _225, _270, _315;
 
   @Override
-  public Graphics2D createGraphics() {
-    Graphics2D returnValue = super.createGraphics();
-    returnValue.scale(scaleFactor, scaleFactor);
-    return returnValue;
+  public String toString() {
+    if (this == DEFAULT) {
+      return "Default";
+    } else {
+      return name().replace("_", "") + " degrees clockwise";
+    }
+  }
+
+  public double toDegrees() {
+    if (this == DEFAULT)
+      return 0;
+    return Integer.parseInt(name().replace("_", ""));
+  }
+
+  public double toRadians() {
+    return Math.toRadians(toDegrees());
   }
 }
