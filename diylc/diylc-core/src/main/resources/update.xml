@@ -270,6 +270,10 @@
 					<description>Omit boards, wires, traces, terminals, etc from Spice netlist output</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Updated the windows installer to avoid false positive virus detection</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
 				</org.diylc.appframework.update.Change>

@@ -767,6 +767,13 @@
                                             <arg value="${project.build.directory}/DIYLC.app"/>
                                         </exec>
 
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
+
                                         <!-- Sign the entire app bundle in one shot -->
                                         <echo message="Signing complete app bundle..."/>
                                         <exec executable="codesign" failonerror="true">
@@ -794,13 +801,6 @@
                                             <arg value="${project.build.directory}/DIYLC.app"/>
                                         </exec>
                                         <echo message="Code signing completed successfully"/>
-
-                                        <echo message="Creating unsigned zip for distribution..."/>
-                                        <!-- Create unsigned zip for distribution -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
-                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
-                                        </zip>
-                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
 
                                         <echo message="Preparing zip archive for notarization..."/>
                                         <!-- Create a ZIP archive for notarization -->
@@ -1037,6 +1037,13 @@
                                             <arg value="${project.build.directory}/DIYLC.app"/>
                                         </exec>
 
+                                        <echo message="Creating unsigned zip for distribution..."/>
+                                        <!-- Create unsigned zip for distribution -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
+                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
+                                        </zip>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
+
                                         <!-- Sign the entire app bundle in one shot -->
                                         <echo message="Signing complete app bundle..."/>
                                         <exec executable="codesign" failonerror="true">
@@ -1064,13 +1071,6 @@
                                             <arg value="${project.build.directory}/DIYLC.app"/>
                                         </exec>
                                         <echo message="Code signing completed successfully"/>
-
-                                        <echo message="Creating unsigned zip for distribution..."/>
-                                        <!-- Create unsigned zip for distribution -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
-                                            <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
-                                        </zip>
-                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
 
                                         <echo message="Preparing zip archive for notarization..."/>
                                         <!-- Create a ZIP archive for notarization -->
