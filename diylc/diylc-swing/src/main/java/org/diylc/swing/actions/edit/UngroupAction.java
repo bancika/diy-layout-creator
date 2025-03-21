@@ -21,7 +21,7 @@ public class UngroupAction extends AbstractAction {
     this.plugInPort = plugInPort;
     putValue(AbstractAction.NAME, "Ungroup Selection");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Ungroup.getIcon());
   }
 

@@ -134,11 +134,6 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
   }
 
   @Override
-  public Byte getAlpha() {
-    return super.getAlpha();
-  }
-
-  @Override
   public Size getLength() {
     return super.getLength();
   }

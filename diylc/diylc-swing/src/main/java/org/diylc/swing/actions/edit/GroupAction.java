@@ -21,7 +21,7 @@ public class GroupAction extends AbstractAction {
     this.plugInPort = plugInPort;
     putValue(AbstractAction.NAME, "Group Selection");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_G,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Group.getIcon());
   }
 

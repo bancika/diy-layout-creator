@@ -79,7 +79,7 @@ public class LayersMenuPlugin implements IPlugIn {
       };
       visibleAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
       visibleAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + zOrder,
-          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+          Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
       visibleActionMap.put(layer, visibleAction);
 
       AbstractAction selectAllAction = new AbstractAction("Select All") {

@@ -38,12 +38,11 @@ import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.gerber.IGerberBoard;
 
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
-    zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class BlankBoard extends AbstractBoard implements IGerberBoard {
+        zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
+        bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, transformer = SimpleComponentTransformer.class)
+public class BlankBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -60,14 +59,14 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {    
-    Point2D finalSecondPoint = getFinalSecondPoint();    
-    
+                   IDrawingObserver drawingObserver) {
+    Point2D finalSecondPoint = getFinalSecondPoint();
+
     Shape clip = g2d.getClip();
     if (checkPointsClipped(clip) && !clip.contains(firstPoint.getX(), finalSecondPoint.getY())
-        && !clip.contains(finalSecondPoint.getX(), firstPoint.getY())) {
+            && !clip.contains(finalSecondPoint.getX(), firstPoint.getY())) {
       return;
-    }        
+    }
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     if (componentState != ComponentState.DRAGGING) {
@@ -86,13 +85,13 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
     // tracked so far.
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : borderColor);
+            : borderColor);
     if (getType() == Type.SQUARE)
       g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     else
       g2d.drawOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
   }
-  
+
   @Override
   public CoordinateType getxType() {
     // Override to prevent editing.
@@ -128,10 +127,15 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
   public void setType(Type type) {
     this.type = type;
   }
-  
+
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @Override
+  public boolean shouldExportToGerber() {
+    return true;
   }
 
   static enum Type {
@@ -141,13 +145,5 @@ public class BlankBoard extends AbstractBoard implements IGerberBoard {
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase();
     }
-  }
-
-  @Override
-  public Rectangle2D getBoardRectangle() {
-    Point2D finalSecondPoint = getFinalSecondPoint();
-    
-    return new Rectangle2D.Double(firstPoint.getX(), firstPoint.getY(), 
-        finalSecondPoint.getX() - firstPoint.getX(), finalSecondPoint.getY() - firstPoint.getY());    
   }
 }

@@ -21,7 +21,7 @@ public class SelectAllAction extends AbstractAction {
     this.plugInPort = plugInPort;
     putValue(AbstractAction.NAME, "Select All");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Selection.getIcon());
   }
 

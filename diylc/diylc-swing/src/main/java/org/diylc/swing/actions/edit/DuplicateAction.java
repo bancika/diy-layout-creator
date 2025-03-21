@@ -21,7 +21,7 @@ public class DuplicateAction extends AbstractAction {
     this.plugInPort = plugInPort;
     putValue(AbstractAction.NAME, "Duplicate");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.DocumentsGear.getIcon());
   }
 

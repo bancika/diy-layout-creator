@@ -29,10 +29,13 @@ public abstract class AbstractTransparentComponent<T> extends AbstractComponent<
 
   public static byte MAX_ALPHA = 127;
 
-  protected byte alpha = MAX_ALPHA;
+  protected Byte alpha = MAX_ALPHA;
 
   @EditableProperty
   public Byte getAlpha() {
+    if (alpha == null) {
+      alpha = MAX_ALPHA;
+    }
     return alpha;
   }
 

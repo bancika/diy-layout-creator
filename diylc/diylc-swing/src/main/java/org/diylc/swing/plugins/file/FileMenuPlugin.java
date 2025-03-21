@@ -86,7 +86,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(
         actionFactory.createExportGerberAction(plugInPort, swingUI), EXPORT_TITLE);
     swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider, swingUI,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), FILE_TITLE);
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), FILE_TITLE);
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort,
         traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
@@ -94,7 +94,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(traceMaskDrawingProvider, swingUI,
-            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK),
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
         TRACE_MASK_TITLE);
 
     swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);

@@ -441,7 +441,11 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness / 4, thickness * 4}, 0, BasicStroke.CAP_ROUND);
         break;
     }
-    
+
+    Composite oldComposite = g2d.getComposite();
+    if (getAlpha() < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
+    }
     if (shouldShadeLeads()) {     
       Shape lineShape = stroke.createStrokedShape(line);
       
@@ -463,6 +467,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       if (isCopperArea)
         observer.stopTrackingContinuityArea();
     }
+    g2d.setComposite(oldComposite);
   }
 
   protected LineStyle getStyle() {

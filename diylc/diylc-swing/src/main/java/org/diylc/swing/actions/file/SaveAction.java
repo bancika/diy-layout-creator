@@ -28,7 +28,7 @@ public class SaveAction extends AbstractAction {
     this.swingUI = swingUI;
     putValue(AbstractAction.NAME, "Save");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.DiskBlue.getIcon());
   }
 

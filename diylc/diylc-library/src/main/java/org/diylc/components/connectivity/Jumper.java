@@ -104,11 +104,6 @@ public class Jumper extends AbstractLeadedComponent<Void> implements IContinuity
   }
 
   @Override
-  public Byte getAlpha() {
-    return super.getAlpha();
-  }
-
-  @Override
   public Size getLength() {
     return super.getLength();
   }

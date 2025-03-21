@@ -43,7 +43,7 @@ public class CliffJackTransformer implements IComponentTransformer {
 
   @Override
   public boolean mirroringChangesCircuit() {
-    return true;
+    return false;
   }
 
   @Override
