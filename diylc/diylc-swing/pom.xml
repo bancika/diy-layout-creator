@@ -260,47 +260,6 @@
                             </target>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>sign-jar-launcher</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-                                <!-- Extract JavaAppLauncher -->
-                                <unzip src="${project.build.directory}/diylc.jar" dest="${project.build.directory}/jar-contents">
-                                    <patternset>
-                                        <include name="com/oracle/appbundler/JavaAppLauncher"/>
-                                    </patternset>
-                                </unzip>
-                                
-                                <!-- Make it executable -->
-                                <chmod file="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher" perm="755"/>
-                                
-                                <!-- Sign the launcher -->
-                                <exec executable="codesign" failonerror="true">
-                                    <arg value="--force"/>
-                                    <arg value="--sign"/>
-                                    <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
-                                    <arg value="--timestamp"/>
-                                    <arg value="--options"/>
-                                    <arg value="runtime"/>
-                                    <arg value="--entitlements"/>
-                                    <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
-                                    <arg value="--all-architectures"/>
-                                    <arg value="--strict"/>
-                                    <arg value="--verbose"/>
-                                    <arg value="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher"/>
-                                </exec>
-                                
-                                <!-- Update the jar with signed launcher -->
-                                <jar destfile="${project.build.directory}/diylc.jar" update="true">
-                                    <fileset dir="${project.build.directory}/jar-contents"/>
-                                </jar>
-                            </target>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>
@@ -539,9 +498,17 @@
                                             <fileset dir="${appdir.dir}" />
                                         </copy>
                                         
-                                        <!-- Run AppImageTool in Docker -->
+                                        <!-- Ensure proper permissions in Docker volume -->
+                                        <exec executable="chmod" failonerror="true" osfamily="mac">
+                                            <arg line="-R 755 ${project.build.directory}/docker-tmp/AppDir/AppRun" />
+                                        </exec>
+                                        <exec executable="chmod" failonerror="true" osfamily="mac">
+                                            <arg line="-R 755 ${project.build.directory}/docker-tmp/AppDir/usr/bin/diylc.sh" />
+                                        </exec>
+                                        
+                                        <!-- Run AppImageTool in Docker with proper volume mounting -->
                                         <exec executable="docker" failonerror="true" osfamily="mac">
-                                            <arg line="run --rm -v &quot;${project.build.directory}/docker-tmp:/workspace&quot; -w /workspace appimagecrafters/appimage-builder:latest /bin/bash -c &quot;ARCH=x86_64 appimagetool AppDir ${appimage.output.file}&quot;" />
+                                            <arg line="run --rm -v &quot;${project.build.directory}/docker-tmp:/workspace&quot; -w /workspace appimagecrafters/appimage-builder:latest /bin/bash -c &quot;chmod +x AppDir/AppRun AppDir/usr/bin/diylc.sh &amp;&amp; ARCH=x86_64 appimagetool AppDir ${appimage.output.file}&quot;" />
                                         </exec>
                                         
                                         <!-- Copy the AppImage to the build directory -->
@@ -699,6 +666,49 @@
                                         
                                         <!-- Remove empty top-level folder -->
                                         <delete dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Sign JAR launcher -->
+                            <execution>
+                                <id>sign-jar-launcher</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Extract JavaAppLauncher -->
+                                        <unzip src="${project.build.directory}/diylc.jar" dest="${project.build.directory}/jar-contents">
+                                            <patternset>
+                                                <include name="com/oracle/appbundler/JavaAppLauncher"/>
+                                            </patternset>
+                                        </unzip>
+                                        
+                                        <!-- Make it executable -->
+                                        <chmod file="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher" perm="755"/>
+                                        
+                                        <!-- Sign the launcher -->
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="--timestamp"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--all-architectures"/>
+                                            <arg value="--strict"/>
+                                            <arg value="--verbose"/>
+                                            <arg value="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher"/>
+                                        </exec>
+                                        
+                                        <!-- Update the jar with signed launcher -->
+                                        <jar destfile="${project.build.directory}/diylc.jar" update="true">
+                                            <fileset dir="${project.build.directory}/jar-contents"/>
+                                        </jar>
                                     </target>
                                 </configuration>
                             </execution>
@@ -969,6 +979,49 @@
                                         
                                         <!-- Remove empty top-level folder -->
                                         <delete dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Sign JAR launcher -->
+                            <execution>
+                                <id>sign-jar-launcher</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Extract JavaAppLauncher -->
+                                        <unzip src="${project.build.directory}/diylc.jar" dest="${project.build.directory}/jar-contents">
+                                            <patternset>
+                                                <include name="com/oracle/appbundler/JavaAppLauncher"/>
+                                            </patternset>
+                                        </unzip>
+                                        
+                                        <!-- Make it executable -->
+                                        <chmod file="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher" perm="755"/>
+                                        
+                                        <!-- Sign the launcher -->
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg value="--force"/>
+                                            <arg value="--sign"/>
+                                            <arg value="${env.APPLE_DEVELOPER_IDENTITY}"/>
+                                            <arg value="--timestamp"/>
+                                            <arg value="--options"/>
+                                            <arg value="runtime"/>
+                                            <arg value="--entitlements"/>
+                                            <arg value="${project.basedir}/deploy/mac/entitlements.plist"/>
+                                            <arg value="--all-architectures"/>
+                                            <arg value="--strict"/>
+                                            <arg value="--verbose"/>
+                                            <arg value="${project.build.directory}/jar-contents/com/oracle/appbundler/JavaAppLauncher"/>
+                                        </exec>
+                                        
+                                        <!-- Update the jar with signed launcher -->
+                                        <jar destfile="${project.build.directory}/diylc.jar" update="true">
+                                            <fileset dir="${project.build.directory}/jar-contents"/>
+                                        </jar>
                                     </target>
                                 </configuration>
                             </execution>
