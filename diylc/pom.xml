@@ -23,7 +23,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <log4j.version>1.2.15</log4j.version>
-        <xstream.version>1.4.19</xstream.version>
+        <xstream.version>1.4.21</xstream.version>
     </properties>
     
     <!-- Build configuration will be defined below -->
@@ -61,7 +61,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.7</version>
+                <version>4.13.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

@@ -24,7 +24,7 @@
     <requires64Bit>true</requires64Bit>
     <minVersion>17</minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>512</initialHeapSize>
+    <initialHeapSize>1024</initialHeapSize>
     <maxHeapSize>4096</maxHeapSize>
     <opt>-Dorg.diylc.scriptRun=true</opt>
     <opt>-Dfile.encoding=UTF-8</opt>
