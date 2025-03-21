@@ -750,7 +750,7 @@
                                             <runtime dir="${jre.dest.osx}/Contents/Home" />
                                             <arch name="x86_64"/>
                                             <classpath file="${project.build.directory}/diylc.jar" />
-                                            <option value="-Xms512m" />
+                                            <option value="-Xms1024m" />
                                             <option value="-Xmx4096m" />
                                             <option value="--add-exports=java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
                                             <option value="--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED" />
@@ -1064,7 +1064,7 @@
                                             <arch name="arm64"/>
                                             <arch name="arm64e"/>
                                             <classpath file="${project.build.directory}/diylc.jar" />
-                                            <option value="-Xms512m" />
+                                            <option value="-Xms1024m" />
                                             <option value="-Xmx4096m" />
                                             <option value="--add-exports=java.desktop/com.apple.eawt.event=ALL-UNNAMED" />
                                             <option value="--add-exports=java.desktop/com.apple.eio=ALL-UNNAMED" />
