@@ -33,21 +33,21 @@ public class DatasheetServiceTest {
 
     @Test
     public void testLookupExactMatch() {
-        String[] result = service.lookup(TEST_CLASS, 0.0, "TEST,KEY", 10.0);
+        String[] result = service.lookup(TEST_CLASS, 0.0, "TEST|KEY", 10.0);
         assertNotNull(result);
         assertEquals("10.0", result[2]);
     }
 
     @Test
     public void testLookupWithinTolerance() {
-        String[] result = service.lookup(TEST_CLASS, 5.0, "TEST,KEY", 10.5);
+        String[] result = service.lookup(TEST_CLASS, 5.0, "TEST|KEY", 10.5);
         assertNotNull(result);
         assertEquals("10.0", result[2]);
     }
 
     @Test
     public void testLookupOutsideTolerance() {
-        String[] result = service.lookup(TEST_CLASS, 5.0, "TEST,KEY", 12.0);
+        String[] result = service.lookup(TEST_CLASS, 5.0, "TEST|KEY", 12.0);
         assertNull(result);
     }
 
@@ -65,14 +65,14 @@ public class DatasheetServiceTest {
 
     @Test
     public void testLookupWithTolerance() {
-        String[] result = service.lookup(TEST_CLASS, 50.0, "TEST,KEY", 15.0);
+        String[] result = service.lookup(TEST_CLASS, 50.0, "TEST|KEY", 15.0);
         assertNotNull(result);
         assertEquals("10.0", result[2]);
     }
 
     @Test
     public void testLookupMultipleValues() {
-        String[] result = service.lookup(TEST_CLASS, 0.0, "TEST,KEY", 10.0, 20.0);
+        String[] result = service.lookup(TEST_CLASS, 0.0, "TEST|KEY", 10.0, 20.0);
         assertNotNull(result);
         assertEquals("10.0", result[2]);
         assertEquals("20.0", result[3]);
