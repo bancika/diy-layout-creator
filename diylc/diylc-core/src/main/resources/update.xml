@@ -246,7 +246,7 @@
 				<minor>1</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-03-22 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-03-24 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -279,7 +279,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Updated the windows installer to avoid false positive virus detection</description>
+					<description>Updated the windows installer (hopefully) to avoid false positive anti-virus detection</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
