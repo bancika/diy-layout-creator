@@ -6,16 +6,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Set DEBUG environment variable
 export DEBUG=true
 
-# Build classpath from lib and library directories
-CLASSPATH=""
-for jar in "$SCRIPT_DIR/../lib"/*.jar "$SCRIPT_DIR/../library"/*.jar; do
-    if [ -f "$jar" ]; then
-        CLASSPATH="$CLASSPATH:$jar"
-    fi
-done
-
-# Remove leading colon
-CLASSPATH="${CLASSPATH#:}"
-
 # Run the VersionReader class
-java -cp "$CLASSPATH" org.diylc.utils.VersionReader "$SCRIPT_DIR/../" 
+java -cp "../target/diylc.jar" --add-opens java.base/java.util=ALL-UNNAMED \
+                                   --add-opens java.base/java.lang=ALL-UNNAMED \
+                                   --add-opens java.base/java.text=ALL-UNNAMED \
+                                   --add-opens java.desktop/java.awt=ALL-UNNAMED \
+                                   --add-opens java.desktop/java.awt.font=ALL-UNNAMED \
+                                   --add-opens java.desktop/java.awt.geom=ALL-UNNAMED \
+                                   org.diylc.utils.VersionReader "$SCRIPT_DIR/../"
