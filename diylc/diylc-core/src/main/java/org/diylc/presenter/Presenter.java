@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +49,6 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.appframework.miscutils.JarScanner;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.Version;
@@ -80,7 +78,6 @@ import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.measures.Size;
@@ -96,11 +93,6 @@ import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
 import org.diylc.utils.Constants;
 import org.diylc.utils.ReflectionUtils;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
-
-import static org.reflections.scanners.Scanners.TypesAnnotated;
 
 /**
  * The main presenter class, contains core app logic and drawing routines.
@@ -2521,7 +2513,8 @@ public class Presenter implements IPlugInPort, IConfigListener {
         }
       }
       try {
-        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream("variants.xml"));
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(
+            "import-defaults/variants.xml"));
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         ProjectFileManager.xStreamSerializer.toXML(defaultVariantMap, out);
