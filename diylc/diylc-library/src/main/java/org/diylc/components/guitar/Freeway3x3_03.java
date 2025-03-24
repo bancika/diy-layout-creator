@@ -285,7 +285,8 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     if (svgDiagram == null) {
       try {
         byte[] data =
-            IOUtils.toByteArray(Freeway3x3_03.class.getResourceAsStream("/freeway_3x3-03.svg"));
+            IOUtils.toByteArray(Freeway3x3_03.class.getResourceAsStream(
+                "/component-drawings/freeway_3x3-03.svg"));
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         SVGUniverse universe = new SVGUniverse();
         URI url = universe.loadSVG(bis,

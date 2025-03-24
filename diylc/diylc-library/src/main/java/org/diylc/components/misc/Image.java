@@ -40,7 +40,6 @@ import org.diylc.awt.ImageUtils;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.transform.ImageTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -72,7 +71,7 @@ public class Image extends AbstractTransparentComponent<Void> {
   private Orientation orientation;
 
   static {
-    String name = "/image.png";
+    String name = "/diylc-library-images/image.png";
       try (InputStream inputStream = Image.class.getResourceAsStream(name)) {
           if (inputStream != null) {
             ICON = new ImageIcon(inputStream.readAllBytes(), name);
@@ -99,7 +98,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   public Image() {
     try {
-      data = IOUtils.toByteArray(Image.class.getResourceAsStream("/image.png"));
+      data = IOUtils.toByteArray(Image.class.getResourceAsStream("/diylc-library-images/image.png"));
     } catch (IOException e) {
       e.printStackTrace();
     }
