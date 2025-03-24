@@ -78,7 +78,7 @@ public class DatasheetService {
 
   public String[] lookup(Class<?> clazz, double tolerance, String key,
       double... approximateValues) {
-    int keySize = (int) (key.chars().filter(i -> i == '|').count() + 1);
+    int keySize = (int) (key.chars().filter(i -> i == ',').count() + 1);
 
     Map<String, List<String[]>> classData =
         lookupCache.computeIfAbsent(clazz.getCanonicalName(), k -> {
@@ -90,13 +90,17 @@ public class DatasheetService {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < keySize; i++) {
               if (i > 0) {
-                sb.append("|");
+                sb.append(",");
               }
               sb.append(line[i]);
             }
             return sb.toString();
           }));
         });
+
+    if (classData == null) {
+      return null;
+    }
 
     List<String[]> list = classData.get(key);
 
@@ -107,7 +111,7 @@ public class DatasheetService {
     outerloop: for (String[] line : list) {
       for (int i = 0; i < approximateValues.length; i++) {
         String valueStr = line[keySize + i];
-        double actualValue = Double.parseDouble(valueStr.split(" ")[0]);
+        double actualValue = Double.parseDouble(valueStr);
         if (Math.abs(actualValue - approximateValues[i]) / actualValue * 100 > tolerance)
           continue outerloop;
       }
