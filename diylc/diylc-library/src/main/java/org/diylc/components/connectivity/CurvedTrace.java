@@ -112,11 +112,6 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   public void setValue(Void value) {}
 
   @Override
-  public Byte getAlpha() {
-    return super.getAlpha();
-  }
-
-  @Override
   public void setAlpha(Byte alpha) {
     super.setAlpha(alpha);
   }

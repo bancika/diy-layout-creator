@@ -70,6 +70,7 @@ And
 Angle
 Angle Offset
 Anti-Aliasing
+Apply Model
 Arrow Size
 Author
 Auto-Create Pads
@@ -81,6 +82,8 @@ Below
 Board
 Board Color
 Board Width
+Board1
+Board2
 Boards
 Bobbin 1
 Bobbin 2
@@ -584,6 +587,8 @@ Tubular Beveled
 Two
 Type
 Ultra-miniature
+Underside Display
+Underside Offset
 Underside Pad Color
 Underside Trace Color
 Undo

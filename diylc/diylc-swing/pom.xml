@@ -287,7 +287,7 @@
                                     <goal>single</goal>
                                 </goals>
                                 <configuration>
-                                    <finalName>diylc-${project.version}</finalName>
+                                    <finalName>diylc-${project.version}-universal</finalName>
                                     <appendAssemblyId>false</appendAssemblyId>
                                 </configuration>
                             </execution>
@@ -350,39 +350,6 @@
                                         <copy file="${project.basedir}/deploy/linux/appimage/com.diy_fever.DIYLayoutCreator.metainfo.xml" 
                                               todir="${appdir.dir}/usr/share/metainfo" />
                                         
-                                        <!-- Download and extract JRE for Linux -->
-                                        <!-- Ensure clean jre folders -->
-                                        <delete dir="${jre.dest.linux}" />
-                                        <mkdir dir="${jre.dest.linux}" />
-                                        <mkdir dir="${project.build.directory}/downloads" />
-                                        
-                                        <!-- Download JRE 17 if not already present -->
-                                        <get src="${jdk.url.linux}" 
-                                             dest="${project.build.directory}/downloads/${jdk.archive.linux}" 
-                                             usetimestamp="true" />
-                                        
-                                        <!-- Extract JRE -->
-                                        <untar src="${project.build.directory}/downloads/${jdk.archive.linux}" 
-                                               dest="${jre.dest.linux}" 
-                                               compression="gzip" />
-                                        
-                                        <!-- Move extracted folder into AppImage location -->
-                                        <mkdir dir="${appdir.dir}/usr/bin/jre" />
-                                        <move todir="${appdir.dir}/usr/bin/jre">
-                                            <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
-                                        </move>
-                                        
-                                        <!-- Clean up temporary directory -->
-                                        <delete dir="${jre.dest.linux}" />
-                                        
-                                        <echo message="JRE 17 bundled into ${appdir.dir}/usr/bin/jre" />
-
-                                        <!-- Update the launch script to use the correct JRE path -->
-                                        <replace file="${appdir.dir}/usr/bin/diylc.sh">
-                                            <replacetoken>JAVA_HOME="$APPDIR/usr/lib/jre"</replacetoken>
-                                            <replacevalue>JAVA_HOME="$APPDIR/usr/bin/jre"</replacevalue>
-                                        </replace>
-                            
                                         <echo message="AppDir structure created successfully at: ${appdir.dir}" />
                                     </target>
                                 </configuration>

@@ -28,7 +28,7 @@ public class CopyAction extends AbstractAction {
     this.clipboardOwner = clipboardOwner;
     putValue(AbstractAction.NAME, "Copy");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_C,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Copy.getIcon());
   }
 

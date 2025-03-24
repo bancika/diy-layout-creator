@@ -26,12 +26,8 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Modifier;
+import java.util.*;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
@@ -47,6 +43,11 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.lang.LangUtil;
+import org.reflections.Reflections;
+import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
+
+import static org.reflections.scanners.Scanners.TypesAnnotated;
 
 /**
  * Utility class with component processing methods.
@@ -63,6 +64,7 @@ public class ComponentProcessor {
   private Map<String, IPropertyValidator> propertyValidatorCache;
   private Map<String, ComponentType> componentTypeMap;
   private Map<String, IComponentTransformer> componentTransformerMap;
+  private Map<String, List<ComponentType>> componentTypes;
 
   public static ComponentProcessor getInstance() {
     if (instance == null) {
@@ -133,6 +135,10 @@ public class ComponentProcessor {
       Graphics2D g2d = (Graphics2D) image.getGraphics();
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+          RenderingHints.VALUE_FRACTIONALMETRICS_ON);
       // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
       // RenderingHints.VALUE_STROKE_PURE);
       componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
@@ -212,6 +218,50 @@ public class ComponentProcessor {
       }
     }
     return result;
+  }
+
+  public Map<String, List<ComponentType>> getComponentTypes() {
+    if (componentTypes == null) {
+      LOG.info("Loading component types.");
+      componentTypes = new HashMap<String, List<ComponentType>>();
+      Reflections reflections = new Reflections(
+          new ConfigurationBuilder()
+              .forPackage("org.diylc")
+              .filterInputsBy(new FilterBuilder().includePackage("org.diylc.components"))
+              .setScanners(TypesAnnotated));
+      Set<Class<?>> componentTypeClasses = null;
+      try {
+        componentTypeClasses = reflections.getTypesAnnotatedWith(ComponentDescriptor.class, false);
+
+        for (Class<?> clazz : componentTypeClasses) {
+          if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
+            ComponentType componentType =
+                ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
+            if (componentType == null)
+              continue;
+
+            // just to store in the cache
+            ComponentProcessor.getInstance().extractProperties(clazz);
+
+            List<ComponentType> nestedList;
+            if (componentTypes.containsKey(componentType.getCategory())) {
+              nestedList = componentTypes.get(componentType.getCategory());
+            } else {
+              nestedList = new ArrayList<ComponentType>();
+              componentTypes.put(componentType.getCategory(), nestedList);
+            }
+            nestedList.add(componentType);
+          }
+        }
+
+        for (Map.Entry<String, List<ComponentType>> e : componentTypes.entrySet()) {
+          LOG.debug(e.getKey() + ": " + e.getValue());
+        }
+      } catch (Exception e) {
+        LOG.error("Error loading component types", e);
+      }
+    }
+    return componentTypes;
   }
 
   /**

@@ -17,8 +17,7 @@
  */
 package org.diylc.components.connectivity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -29,6 +28,7 @@ import com.bancika.gerberwriter.GerberFunctions;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -55,7 +55,8 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class SolderPad extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentCustom {
+public class SolderPad extends AbstractTransparentComponent<Void>
+    implements ILayeredComponent, IGerberComponentCustom {
 
   private static final long serialVersionUID = 1L;
 
@@ -90,6 +91,11 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
       gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
       gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
     }
+    Composite oldComposite = g2d.getComposite();
+    if (getAlpha() < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
+    }
+
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
           diameter, diameter));
@@ -116,6 +122,7 @@ public class SolderPad extends AbstractComponent<Void> implements ILayeredCompon
       g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,
           point.getY() - holeDiameter / 2, holeDiameter, holeDiameter));
     }
+    g2d.setComposite(oldComposite);
     if (gerberDrawingObserver != null)
       gerberDrawingObserver.stopGerberOutput();
   }

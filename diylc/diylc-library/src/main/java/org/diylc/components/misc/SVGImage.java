@@ -81,7 +81,8 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
 
   public SVGImage() {
     try {
-      data = IOUtils.toByteArray(SVGImage.class.getResourceAsStream("/diylc.svg"));
+      data = IOUtils.toByteArray(SVGImage.class.getResourceAsStream(
+          "/diylc-library-images/diylc.svg"));
     } catch (IOException e) {
       e.printStackTrace();
     }

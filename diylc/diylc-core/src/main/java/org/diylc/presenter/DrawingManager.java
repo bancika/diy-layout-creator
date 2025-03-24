@@ -49,20 +49,9 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 
-import org.diylc.common.DrawOption;
-import org.diylc.common.EventType;
-import org.diylc.common.GridType;
-import org.diylc.common.IComponentFilter;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.core.ComponentForRender;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IContinuity;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.ILayeredComponent;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.common.*;
+import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.core.*;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.netlist.ContinuityGraph;
@@ -78,6 +67,7 @@ import org.diylc.utils.Constants;
 public class DrawingManager {
 
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
+  public static final byte MIRROR_ALPHA = 64;
 
   public static int CONTROL_POINT_SIZE = 7;
   public static double EXTRA_SPACE = 0.25;
@@ -195,38 +185,35 @@ public class DrawingManager {
 
     G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom);
 
-    if (drawOptions.contains(DrawOption.ANTIALIASING)) {
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    } else {
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    configureRenderingHints(g2d, drawOptions);
+
+    // group components with boards that contain them
+    Map<IBoard, List<IDIYComponent<?>>> boardMap = project.getComponents().stream()
+            .filter(IBoard.class::isInstance)
+            .map(IBoard.class::cast)
+            .filter(b -> b.getBoardUndersideDisplay() != BoardUndersideDisplay.NONE)
+            .collect(Collectors.toMap(x -> x, x -> new ArrayList<IDIYComponent<?>>()));
+    Map<IDIYComponent<?>, Set<IBoard>> componentBoardMap = new HashMap<IDIYComponent<?>, Set<IBoard>>();
+
+    for (IBoard board : boardMap.keySet()) {
+      Rectangle2D boardRect = board.getBoardRectangle();
+      for (IDIYComponent<?> c : project.getComponents()) {
+        if (c == board) {
+          continue;
+        }
+        boolean include = true;
+        for (int i = 0; i < c.getControlPointCount(); i++) {
+          if (!boardRect.contains(c.getControlPoint(i))) {
+            include = false;
+            break;
+          }
+        }
+        if (include) {
+          boardMap.get(board).add(c);
+          componentBoardMap.computeIfAbsent(c, key -> new HashSet<IBoard>()).add(board);
+        }
+      }
     }
-    if (configManager.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
-      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-          RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-          RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-      // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-      // RenderingHints.VALUE_STROKE_PURE);
-    } else {
-      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-          RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-          RenderingHints.VALUE_COLOR_RENDER_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    }
-    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 
     // AffineTransform initialTx = g2d.getTransform();
     Dimension canvasDimension =
@@ -297,7 +284,7 @@ public class DrawingManager {
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
 
-      synchronized (g2d) {
+      synchronized (this) {
         g2dWrapper.startedDrawingComponent(i);
         if (!trackArea) {
           g2dWrapper.stopTracking();
@@ -312,11 +299,7 @@ public class DrawingManager {
         long componentStart = System.nanoTime();
         try {
 
-          if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
-            DrawingCache.Instance.draw(component, g2dWrapper, state,
-                drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
-          else // go straight to the wrapper
-            component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+          drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper, state, zoom, i, outlineMode);
 
           if (g2dWrapper.isTrackingContinuityArea()) {
             LOG.info("Component " + component.getName() + " of type "
@@ -348,6 +331,29 @@ public class DrawingManager {
         if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
           componentAreaMap.put(component, area);
           lastDrawnStateMap.put(component, state);
+        }
+
+        // Mirror components that belong to boards that need to be mirrored
+        if (componentBoardMap.containsKey(component)) {
+          @SuppressWarnings("unchecked")
+          ComponentType componentType = ComponentProcessor.getInstance()
+                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+          if (componentType.getTransformer() != null) {
+            Set<IBoard> boards = componentBoardMap.get(component);
+            for (IBoard board : boards) {
+              drawMirroredComponent(project, board, component, componentType, g2dWrapper, state, outlineMode);
+            }
+          }
+        }
+
+        // if a component itself is a board that needs to be mirrored, do it
+        if (IBoard.class.isInstance(component) && componentBoardMap.values().stream()
+                .anyMatch(boards -> boards.contains(component))) {
+          ComponentType componentType = ComponentProcessor.getInstance()
+                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+          if (componentType.getTransformer() != null) {
+            drawMirroredComponent(project, (IBoard) component, component, componentType, g2dWrapper, state, outlineMode);
+          }
         }
       }
     }
@@ -508,6 +514,86 @@ public class DrawingManager {
     logStats();
 
     return failedComponents;
+  }
+
+  private static void drawMirroredComponent(Project project, IBoard board, IDIYComponent<?> component,
+                                            ComponentType componentType, G2DWrapper g2dWrapper, ComponentState state, boolean outlineMode) {
+    double offset = board.getUndersideOffset().convertToPixels();
+    Rectangle2D boardRectangle = board.getBoardRectangle();
+    try {
+        IDIYComponent<?> clonedComponent = component.clone();
+        int direction = 0;
+        Point2D pivotPoint = new Point2D.Double();
+        switch (board.getBoardUndersideDisplay()) {
+          case ABOVE:
+            direction = IComponentTransformer.VERTICAL;
+            pivotPoint.setLocation(boardRectangle.getMinX(), boardRectangle.getMinY() - offset / 2);
+            break;
+          case BELOW:
+            direction = IComponentTransformer.VERTICAL;
+            pivotPoint.setLocation(boardRectangle.getMinX(), boardRectangle.getMaxY() + offset / 2);
+            break;
+          case LEFT:
+            direction = IComponentTransformer.HORIZONTAL;
+            pivotPoint.setLocation(boardRectangle.getMinX() - offset / 2, boardRectangle.getMinY());
+            break;
+          case RIGHT:
+            direction = IComponentTransformer.HORIZONTAL;
+            pivotPoint.setLocation(boardRectangle.getMaxX() + offset / 2, boardRectangle.getMinY());
+            break;
+        }
+      componentType.getTransformer().mirror(clonedComponent, pivotPoint, direction);
+      if (AbstractTransparentComponent.class.isInstance(clonedComponent)) {
+        AbstractTransparentComponent<?> transparentComponent = (AbstractTransparentComponent<?>) clonedComponent;
+        transparentComponent.setAlpha(MIRROR_ALPHA);
+      }
+      clonedComponent.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+    } catch (CloneNotSupportedException e) {
+        throw new RuntimeException(e);
+    }
+  }
+
+  private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor, Rectangle2D visibleRect, IDIYComponent<?> component, G2DWrapper g2dWrapper, ComponentState state, double zoom, int i, boolean outlineMode) {
+    if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
+      DrawingCache.Instance.draw(component, g2dWrapper, state,
+          drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
+    else // go straight to the wrapper
+      component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+  }
+
+  private void configureRenderingHints(Graphics2D g2d, Set<DrawOption> drawOptions) {
+    if (drawOptions.contains(DrawOption.ANTIALIASING)) {
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    } else {
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    }
+    if (configManager.readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
+      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+          RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+          RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+      // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+      // RenderingHints.VALUE_STROKE_PURE);
+    } else {
+      g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+          RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+          RenderingHints.VALUE_COLOR_RENDER_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+      g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+    }
+    g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+        RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
   }
 
   private double zoomCached = 0;

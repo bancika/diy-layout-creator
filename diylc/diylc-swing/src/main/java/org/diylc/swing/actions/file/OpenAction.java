@@ -28,7 +28,7 @@ public class OpenAction extends AbstractAction {
     this.swingUI = swingUI;
     putValue(AbstractAction.NAME, "Open");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.FolderOut.getIcon());
   }
 

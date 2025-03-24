@@ -21,8 +21,7 @@
 */
 package org.diylc.components.connectivity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -33,6 +32,7 @@ import com.bancika.gerberwriter.GerberFunctions;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -52,7 +52,8 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Ground Fill", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class GroundFill extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentSimple {
+public class GroundFill extends AbstractTransparentComponent<Void>
+    implements ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 
@@ -83,7 +84,12 @@ public class GroundFill extends AbstractComponent<Void> implements ILayeredCompo
       yPoints[i] = (int)controlPoints[i].getY();
     }
     drawingObserver.startTrackingContinuityArea(true);
+    Composite oldComposite = g2d.getComposite();
+    if (getAlpha() < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
+    }
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
+    g2d.setComposite(oldComposite);
     drawingObserver.stopTrackingContinuityArea();
     // Do not track any changes that follow because the whole board has been
     // tracked so far.

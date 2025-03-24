@@ -21,14 +21,14 @@
 */
 package org.diylc.components.connectivity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.boards.AbstractBoard;
 import org.diylc.components.boards.VeroBoard;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -49,7 +49,7 @@ import org.diylc.utils.Constants;
     description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut",
     zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class TraceCut extends AbstractComponent<Void> implements ILayeredComponent {
+public class TraceCut extends AbstractTransparentComponent<Void> implements ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -79,6 +79,10 @@ public class TraceCut extends AbstractComponent<Void> implements ILayeredCompone
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
+    Composite oldComposite = g2d.getComposite();
+    if (getAlpha() < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
+    }
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     int size = getClosestOdd((int) this.size.convertToPixels());
     int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());
@@ -105,6 +109,7 @@ public class TraceCut extends AbstractComponent<Void> implements ILayeredCompone
       g2d.setColor(getBoardColor().darker());
       g2d.drawOval((int)(point.getX() - holeSize / 2), (int)(point.getY() - holeSize / 2), holeSize, holeSize);
     }
+    g2d.setComposite(oldComposite);
   }
 
   @Override

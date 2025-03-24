@@ -28,7 +28,7 @@ public class CutAction extends AbstractAction {
     this.clipboardOwner = clipboardOwner;
     putValue(AbstractAction.NAME, "Cut");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.Cut.getIcon());
   }
 

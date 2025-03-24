@@ -21,7 +21,6 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +45,7 @@ import org.diylc.serialization.ProjectFileManager;
 
 public class VariantManager {
 
-  private static final String VARIANTS_FILE_NAME = "variants.xml";
+  private static final String VARIANTS_FILE_NAME = "import-defaults/variants.xml";
 
   private static final Logger LOG = Logger.getLogger(VariantManager.class);
 
