@@ -6,6 +6,7 @@ import org.diylc.lang.LangUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,9 @@ public class ResourceUtils {
             if (dirUrl != null) {
                 if (dirUrl.getProtocol().equals("jar")) {
                     // Running from JAR
-                    String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!"));
+                    String jarPath = dirUrl.getPath();
+                    // Remove the "file:" prefix and decode the URL
+                    jarPath = URLDecoder.decode(jarPath.substring(5, jarPath.indexOf("!")), StandardCharsets.UTF_8);
                     JarFile jarFile = new JarFile(jarPath);
                     try {
                         jarFile.stream()
