@@ -737,13 +737,6 @@
                                             <option value="-Xdock:name=DIY Layout Creator"/>
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
-                                        
-                                        <!-- First remove existing signatures -->
-                                        <echo message="Removing any existing signatures..."/>
-                                        <exec executable="codesign" failonerror="false">
-                                            <arg value="--remove-signature"/>
-                                            <arg value="${project.build.directory}/DIYLC.app"/>
-                                        </exec>
 
                                         <echo message="Creating unsigned zip for distribution..."/>
                                         <!-- Create unsigned zip for distribution -->
@@ -752,6 +745,13 @@
                                             <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
                                         </zip>
                                         <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
+
+                                        <!-- First remove existing signatures -->
+                                        <echo message="Removing any existing signatures..."/>
+                                        <exec executable="codesign" failonerror="false">
+                                            <arg value="--remove-signature"/>
+                                            <arg value="${project.build.directory}/DIYLC.app"/>
+                                        </exec>
 
                                         <!-- Sign the entire app bundle in one shot -->
                                         <echo message="Signing complete app bundle..."/>
