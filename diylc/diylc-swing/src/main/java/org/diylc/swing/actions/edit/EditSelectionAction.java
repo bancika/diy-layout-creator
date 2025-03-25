@@ -23,7 +23,7 @@ public class EditSelectionAction extends AbstractAction {
     this.plugInPort = plugInPort;
     putValue(AbstractAction.NAME, "Edit Selection");
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.EditComponent.getIcon());
   }
 

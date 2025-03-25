@@ -17,10 +17,7 @@
  */
 package org.diylc.presenter;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -55,16 +52,15 @@ public class DatasheetService {
   private DatasheetService() {}
 
   public List<String[]> loadDatasheet(Class<?> clazz) {
-    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
     return datasheetCache.computeIfAbsent(clazz.getCanonicalName(), key -> {
       String fileName = clazz.getSimpleName() + ".datasheet";
       LOG.info("Loading datasheet file for " + fileName);
-      URL resource = classloader.getResource(fileName);
-      if (resource == null) {
+      InputStream inputStream = clazz.getResourceAsStream("/datasheets/"  + fileName);
+      if (inputStream == null) {
         LOG.warn("Datasheet file not found: " + fileName);
         return null;
       }
-      try (BufferedInputStream in = new BufferedInputStream(resource.openStream())) {
+      try (BufferedInputStream in = new BufferedInputStream(inputStream)) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
 
           List<String[]> types =

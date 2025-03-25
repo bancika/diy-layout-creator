@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -174,23 +175,24 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
 
-    List<File> themeFiles = ResourceUtils.getResourceFiles(THEMES_DIR);
-    if (!themeFiles.isEmpty()) {
+    Map<String, String> themeContents = ResourceUtils.getResourceContents(THEMES_DIR);
+    if (!themeContents.isEmpty()) {
       XStream xStream = new XStream(new DomDriver());
       xStream.addPermission(AnyTypePermission.ANY);
       swingUI.injectSubmenu(THEME_MENU, IconLoader.Pens.getIcon(), CONFIG_MENU);
-      for (File file : themeFiles) {
-        if (file.getName().toLowerCase().endsWith(".xml")) {
-          try {
-            InputStream in = new FileInputStream(file);
-            Theme theme = (Theme) xStream.fromXML(in);
-            LOG.debug("Found theme: " + theme.getName());
-            swingUI.injectMenuAction(ActionFactory.getInstance().createThemeAction(plugInPort, theme), THEME_MENU);
-          } catch (Exception e) {
-            LOG.error("Could not load theme file " + file.getName(), e);
-          }
-        }
-      }
+      themeContents.entrySet().stream()
+          .sorted(Map.Entry.comparingByKey())
+          .forEach(entry -> {
+            if (entry.getKey().toLowerCase().endsWith(".xml")) {
+              try {
+                Theme theme = (Theme) xStream.fromXML(entry.getValue());
+                LOG.debug("Found theme: " + theme.getName());
+                swingUI.injectMenuAction(ActionFactory.getInstance().createThemeAction(plugInPort, theme), THEME_MENU);
+              } catch (Exception e) {
+                LOG.error("Could not load theme file " + entry.getKey(), e);
+              }
+            }
+          });
     }
 
     swingUI.injectSubmenu(COMPONENT_BROWSER_MENU, IconLoader.Hammer.getIcon(), CONFIG_MENU);

@@ -18,7 +18,6 @@
 package org.diylc.presenter;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,7 +41,7 @@ import org.diylc.serialization.ProjectFileManager;
 
 public class BuildingBlockManager {
 
-  private static final String BLOCKS_FILE_NAME = "blocks.xml";
+  private static final String BLOCKS_FILE_NAME = "import-defaults/blocks.xml";
 
   private static final Logger LOG = Logger.getLogger(VariantManager.class);
 

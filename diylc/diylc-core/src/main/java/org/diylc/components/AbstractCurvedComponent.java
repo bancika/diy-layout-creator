@@ -76,7 +76,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
    * @param curve
    * @param g2d
    * @param componentState
-   * @param theme
+   * @param drawingObserver
    */
   protected abstract void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState,
       IDrawingObserver drawingObserver);

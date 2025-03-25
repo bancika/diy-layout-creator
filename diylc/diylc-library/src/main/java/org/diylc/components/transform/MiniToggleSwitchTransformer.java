@@ -48,14 +48,26 @@ public class MiniToggleSwitchTransformer implements IComponentTransformer {
 
   @Override
   public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
-    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
-    for (int index = 0; index < component.getControlPointCount(); index++) {
-      Point2D p = new Point2D.Double();
-      rotate.transform(component.getControlPoint(index), p);
-      component.setControlPoint(p, index);
-    }
-
     MiniToggleSwitch sw = (MiniToggleSwitch) component;
+    
+    // Calculate center of all control points
+    double sumX = 0, sumY = 0;
+    for (int i = 0; i < sw.getControlPointCount(); i++) {
+      Point2D p = sw.getControlPoint(i);
+      sumX += p.getX();
+      sumY += p.getY();
+    }
+    Point2D controlCenter = new Point2D.Double(
+      sumX / sw.getControlPointCount(),
+      sumY / sw.getControlPointCount()
+    );
+    
+    // Calculate where control center should end up after rotation
+    Point2D targetCenter = new Point2D.Double();
+    AffineTransform rotate = AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(), center.getY());
+    rotate.transform(controlCenter, targetCenter);
+    
+    // Update orientation first - this will rotate points around first point
     OrientationHV o = sw.getOrientation();
     int oValue = o.ordinal();
     oValue += direction;
@@ -65,6 +77,29 @@ public class MiniToggleSwitchTransformer implements IComponentTransformer {
       oValue = 0;
     o = OrientationHV.values()[oValue];
     sw.setOrientation(o);
+    
+    // Recalculate current control center after orientation change
+    sumX = 0;
+    sumY = 0;
+    for (int i = 0; i < sw.getControlPointCount(); i++) {
+      Point2D p = sw.getControlPoint(i);
+      sumX += p.getX();
+      sumY += p.getY();
+    }
+    Point2D newControlCenter = new Point2D.Double(
+      sumX / sw.getControlPointCount(),
+      sumY / sw.getControlPointCount()
+    );
+    
+    // Calculate and apply translation to move control center to target position
+    double dx = targetCenter.getX() - newControlCenter.getX();
+    double dy = targetCenter.getY() - newControlCenter.getY();
+    
+    // Apply translation to all points
+    for (int i = 0; i < sw.getControlPointCount(); i++) {
+      Point2D p = sw.getControlPoint(i);
+      sw.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
+    }
   }
 
   @Override

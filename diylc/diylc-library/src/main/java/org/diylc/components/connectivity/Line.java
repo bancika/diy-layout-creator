@@ -234,11 +234,6 @@ public class Line extends AbstractLeadedComponent<Void> {
   }
 
   @Override
-  public Byte getAlpha() {
-    return super.getAlpha();
-  }
-
-  @Override
   public Size getLength() {
     return super.getLength();
   }

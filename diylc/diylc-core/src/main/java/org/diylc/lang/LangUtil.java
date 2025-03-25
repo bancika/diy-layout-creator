@@ -125,25 +125,28 @@ public class LangUtil {
   public static List<Language> getAvailableLanguages() {
     List<Language> res = new ArrayList<Language>();
 
-    List<File> files = ResourceUtils.getResourceFiles(LANG_DIR);
+    Map<String, String> langContents = ResourceUtils.getResourceContents(LANG_DIR);
     try {
-      for (File file : files) {        
-        String key = file.getName().replaceFirst("[.][^.]+$", "");
-        Map<String, String> details = new HashMap<String, String>();
-        try (Stream<String> stream = Files.lines(
-            Paths.get(file.getAbsolutePath()), StandardCharsets.UTF_8)) {
-          stream.forEach(s -> {
-            if (s.contains("=")) {
-              String[] parts = s.split("=");
-              if (parts.length == 2)
-                details.put(parts[0].toLowerCase().trim(), parts[1].trim());
+      langContents.entrySet().stream()
+          .sorted(Map.Entry.comparingByKey())
+          .forEach(entry -> {
+            String key = entry.getKey().replaceFirst("[.][^.]+$", "");
+            Map<String, String> details = new HashMap<String, String>();
+            try {
+              String content = entry.getValue();
+              String[] lines = content.split("\n");
+              for (String line : lines) {
+                if (line.contains("=")) {
+                  String[] parts = line.split("=");
+                  if (parts.length == 2)
+                    details.put(parts[0].toLowerCase().trim(), parts[1].trim());
+                }
+              }
+            } catch (Exception e) {
+              LOG.error("Error loading language file", e);
             }
+            res.add(new Language(key, details));
           });
-        } catch (IOException e) {
-          LOG.error("Error loading language file", e);
-        }
-        res.add(new Language(key, details));
-      }
       Collections.sort(res);
       return res;
     } catch (Exception e) {
