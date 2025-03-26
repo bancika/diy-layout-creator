@@ -117,9 +117,6 @@ public class DIYLCStarter {
 		  LOG.info("Running in export mode with params: " + String.join(", ", args));
 		}
 
-		// disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
-		ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
-
 		LOG.info("Loading languages...");
 
 		LangUtil.configure();

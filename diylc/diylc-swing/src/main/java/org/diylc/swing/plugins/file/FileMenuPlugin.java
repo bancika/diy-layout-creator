@@ -44,7 +44,6 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private static final String FILE_TITLE = "File";
   private static final String TRACE_MASK_TITLE = "Trace Mask";
   private static final String INTEGRATION_TITLE = "Integration";
-  private static final String ANALYZE_TITLE = "Analyze";
   private static final String EXPORT_TITLE = "Export";
 
   private ProjectDrawingProvider drawingProvider;
@@ -92,31 +91,6 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createPrintAction(traceMaskDrawingProvider, swingUI,
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
         TRACE_MASK_TITLE);
-
-    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createCheckProximityAction(plugInPort, swingUI),
-        ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, false),
-        ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, true),
-        ANALYZE_TITLE);
-
-    List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
-    if (summarizers != null) {
-      for (INetlistAnalyzer summarizer : summarizers) {
-        if (summarizer.getSwitchPreference().contains(NetlistSwitchPreference.WITH)) {
-          swingUI.injectMenuAction(
-              actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer, true),
-              ANALYZE_TITLE);
-        }
-        if (summarizer.getSwitchPreference().contains(NetlistSwitchPreference.WITHOUT)) {
-          swingUI.injectMenuAction(
-              actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer, false),
-              ANALYZE_TITLE);
-        }
-      }
-    }
 
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);

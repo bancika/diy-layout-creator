@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,11 +39,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 
-import org.diylc.common.BadPositionException;
-import org.diylc.common.EventType;
-import org.diylc.common.IComponentTransformer;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
+import org.diylc.common.*;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
@@ -68,6 +65,7 @@ public class ActionBarPlugin implements IPlugIn {
   
   private static final String DONATE_HTML = LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)");
   private static final String DONATE_HTML_SHORT = LangUtil.translate("Donate");
+  private Consumer<Boolean> highlightConnectedAreasUpdateAction;
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
@@ -165,7 +163,14 @@ public class ActionBarPlugin implements IPlugIn {
       configToolbar.add(new JLabel(" "));
       
       configToolbar.add(LangUtil.translate("Continuous Creation"), IPlugInPort.CONTINUOUS_CREATION_KEY, IconLoader.Elements.getIcon(), false);
-      configToolbar.add(LangUtil.translate("Highlight Connected Areas") + " (Alt)", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, IconLoader.LaserPointer.getIcon(), false);
+      highlightConnectedAreasUpdateAction =
+          configToolbar.add(LangUtil.translate("Highlight Connected Areas") + " (Alt)",
+              IconLoader.LaserPointer.getIcon(),
+              plugInPort.getOperationMode() == OperationMode.HIGHLIGHT_CONNECTED_AREAS,
+              () -> plugInPort.setOperationMode(
+                  plugInPort.getOperationMode() == OperationMode.EDIT ?
+                      OperationMode.HIGHLIGHT_CONNECTED_AREAS :
+                      OperationMode.EDIT));
       configToolbar.add(LangUtil.translate("Sticky Points") + " (Ctrl)", IPlugInPort.STICKY_POINTS_KEY, IconLoader.GraphNodes.getIcon(), true);
     }
     return configToolbar;
@@ -207,14 +212,17 @@ public class ActionBarPlugin implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.SELECTION_CHANGED);
+    return EnumSet.of(EventType.SELECTION_CHANGED, EventType.STATUS_MESSAGE_CHANGED);
   }
 
   @Override
   public void processMessage(EventType eventType, Object... params) {
-    if (eventType != EventType.SELECTION_CHANGED)
-      return;
-    boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
-    getContextActionToolbar().setEnabled(enabled);
+    if (eventType == EventType.SELECTION_CHANGED) {
+      boolean enabled = !plugInPort.getSelectedComponents().isEmpty();
+      getContextActionToolbar().setEnabled(enabled);
+    } else if (eventType == EventType.STATUS_MESSAGE_CHANGED) {
+      highlightConnectedAreasUpdateAction.accept(plugInPort.getOperationMode() ==
+          OperationMode.HIGHLIGHT_CONNECTED_AREAS);
+    }
   }
 }

@@ -78,7 +78,6 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String RECENT_FILES_KEY = "recentFiles";
   public static final String SHOW_RULERS_KEY = "showRulers";
   public static final String SHOW_GRID_KEY = "showGrid";
-  public static final String HIGHLIGHT_CONTINUITY_AREA = "highlightContinuityArea";
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
   public static final String EXTRA_SPACE_KEY = "extraSpace";
   public static final String FAVORITES_KEY = "favorites";
@@ -400,4 +399,16 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @param threshold
    */
   List<Area> checkContinuityAreaProximity(Size threshold);
+
+  /**
+   * @return the current operation mode of the application
+   */
+  OperationMode getOperationMode();
+
+  /**
+   * Updates the current operation mode of the application
+   *
+   * @param operationMode
+   */
+  void setOperationMode(OperationMode operationMode);
 }

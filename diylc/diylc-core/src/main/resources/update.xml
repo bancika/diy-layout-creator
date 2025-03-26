@@ -319,6 +319,14 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Moved 'Analyze' functions from 'File' menu to their own menu for faster access</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved 'Highlight Connected Areas' feature from 'Config' menu to 'Analyze' menu</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
 				</org.diylc.appframework.update.Change>
 			</changes>

@@ -107,13 +107,10 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
             IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
-    swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
-            false), CONFIG_MENU);
     
     try {
       List<Language> languages = LangUtil.getAvailableLanguages(); 
-      if (languages != null && languages.size() > 0) {
+      if (languages != null && !languages.isEmpty()) {
         swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
         for(Language language : languages) {
           Icon icon = null;
