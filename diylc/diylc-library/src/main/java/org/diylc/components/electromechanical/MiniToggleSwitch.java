@@ -441,7 +441,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     g2d.setColor(BORDER_COLOR);
     g2d.drawRoundRect(width / 4, 1, width / 2, height - 2, circleSize, circleSize);
     for (int i = 1; i <= 3; i++) {
-      g2d.setColor(CIRCLE_COLOR);
+      g2d.setColor(LIGHT_METAL_COLOR);
       g2d.fillOval(width / 2 - circleSize / 2, i * height / 4 - 3, circleSize, circleSize);
       g2d.setColor(METAL_COLOR);
       g2d.drawLine(width / 2 - circleSize / 2 + 1, i * height / 4 - 1, width / 2 + circleSize / 2 - 1, i * height / 4
