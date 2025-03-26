@@ -313,6 +313,14 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added ability to highlight connected switch lugs in selected position in order to illustrate how it works internally.</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Windows zip file distribution in addition to the installer.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
