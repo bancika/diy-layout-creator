@@ -66,7 +66,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = FR4_LIGHT_COLOR;
-  private static Color LUG_COLOR = GOLD_COLOR;
+  private static Color LUG_COLOR = METAL_COLOR;
 
   private static Size BASE_WIDTH = new Size(10d, SizeUnit.mm);
   private static Size BASE_LENGTH = new Size(47.5d, SizeUnit.mm);
