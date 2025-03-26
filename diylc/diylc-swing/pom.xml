@@ -587,6 +587,99 @@
         </profile>
         
         <profile>
+            <id>win64-zip</id>
+            <properties>
+                <jdk.version>17.0.14+7</jdk.version>
+                <jdk.version.file>17.0.14_7</jdk.version.file>
+                <jdk.archive.win64>OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
+                <jdk.url.win64>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
+                <jre.dest.win64>${project.build.directory}/jre_win</jre.dest.win64>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Download and extract JRE -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>download-extract-jre</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Clean old jre_win folder -->
+                                        <delete dir="${jre.dest.win64}" />
+                                        
+                                        <!-- Create folder to hold extracted JRE -->
+                                        <mkdir dir="${jre.dest.win64}" />
+                                        
+                                        <!-- Download JRE 64-bit for Windows -->
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        <get src="${jdk.url.win64}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE into jre_win -->
+                                        <unzip src="${project.build.directory}/downloads/${jdk.archive.win64}" 
+                                               dest="${jre.dest.win64}" />
+                                        
+                                        <!-- Move files up one level -->
+                                        <move todir="${jre.dest.win64}">
+                                            <fileset dir="${jre.dest.win64}/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Remove empty top-level folder -->
+                                        <delete dir="${jre.dest.win64}/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Create ZIP package -->
+                            <execution>
+                                <id>create-zip-package</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Create a temporary directory for the zip contents -->
+                                        <mkdir dir="${project.build.directory}/zip-temp" />
+                                        
+                                        <!-- Copy JAR file -->
+                                        <copy file="${project.build.directory}/diylc.jar" 
+                                              tofile="${project.build.directory}/zip-temp/diylc.jar" />
+                                        
+                                        <!-- Copy and rename the executable -->
+                                        <copy file="${project.basedir}/deploy/win/diylc-x64.exe" 
+                                              tofile="${project.build.directory}/zip-temp/diylc.exe" />
+                                        
+                                        <!-- Copy JRE -->
+                                        <copy todir="${project.build.directory}/zip-temp/jre">
+                                            <fileset dir="${jre.dest.win64}" />
+                                        </copy>
+                                        
+                                        <!-- Create the ZIP file -->
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-win64.zip">
+                                            <fileset dir="${project.build.directory}/zip-temp" />
+                                        </zip>
+                                        
+                                        <!-- Clean up temporary directory -->
+                                        <delete dir="${project.build.directory}/zip-temp" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
             <id>mac-x86</id>
             <properties>
                 <jdk.version>17.0.14+7</jdk.version>

@@ -29,5 +29,12 @@
             </includes>
             <fileMode>755</fileMode>
         </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>icons/**</include>
+            </includes>
+        </fileSet>
     </fileSets>
 </assembly>
