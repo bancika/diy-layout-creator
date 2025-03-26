@@ -31,12 +31,17 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.guitar.ToggleSwitchPositionPropertyValueSource;
 import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -47,12 +52,15 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
+
+import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
@@ -69,7 +77,8 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   private static Color BODY_COLOR = Color.decode("#3299CC");
   private static Color BORDER_COLOR = BODY_COLOR.darker();
-  private static Color CIRCLE_COLOR = Color.decode("#FFFFAA");
+  private static Color CIRCLE_COLOR = Color.decode("#287ba4");
+  private static Color TERMINAL_COLOR = LIGHT_METAL_COLOR;
 
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   transient protected Shape body;
@@ -79,6 +88,11 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
+  private Color terminalPadColor = CIRCLE_COLOR;
+  private Color terminalColor = TERMINAL_COLOR;
+
+  private Integer selectedPosition;
+  private Boolean highlightConnectedTerminals;
   
   @Deprecated
   protected String name;
@@ -313,8 +327,11 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       lugWidth = getClosestOdd((int) LUG_WIDTH.convertToPixels());
       lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());  
     }
-    
-    for (Point2D p : controlPoints) {
+
+    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
+
+    for (int i = 0; i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
       if (outlineMode) {
 //        g2d.setColor(Constants.TRANSPARENT_COLOR);
 //        drawingObserver.startTrackingContinuityArea(true);
@@ -322,13 +339,35 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 //        drawingObserver.stopTrackingContinuityArea();
         
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);        
+        g2d.drawRect((int)(p.getX() - lugWidth / 2d), (int)(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
       } else {
-        g2d.setColor(CIRCLE_COLOR);
-        g2d.fillOval((int)(p.getX() - circleDiameter / 2), (int)(p.getY() - circleDiameter / 2), circleDiameter, circleDiameter);
-        g2d.setColor(METAL_COLOR);
+        int finalI = i;
+        int groupIndex = IntStream.range(0, connectedTerminals.size())
+            .filter(j -> connectedTerminals.get(j).contains(finalI))
+            .findFirst().orElse(-1);
+
+        if (groupIndex < 0) {
+          g2d.setColor(getTerminalPadColor().darker());
+        } else {
+          g2d.setColor(ISwitch.POLE_COLORS[groupIndex].darker());
+        }
+
+        g2d.drawOval((int)(p.getX() - circleDiameter / 2d), (int)(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
+
+
+        if (groupIndex < 0) {
+          g2d.setColor(getTerminalPadColor());
+        } else {
+          g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
+        }
+        g2d.fillOval((int)(p.getX() - circleDiameter / 2d), (int)(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
+        if (groupIndex < 0) {
+          g2d.setColor(getTerminalColor());
+        } else {
+          g2d.setColor(getTerminalColor().darker());
+        }
 //        drawingObserver.startTrackingContinuityArea(true);
-        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.fillRect((int)(p.getX() - lugWidth / 2d), (int)(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
 //        drawingObserver.stopTrackingContinuityArea();
       }
     }
@@ -431,7 +470,31 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   public void setBorderColor(Color borderColor) {
     this.borderColor = borderColor;
   }
-  
+
+  @EditableProperty(name = "Pad")
+  public Color getTerminalPadColor() {
+    if (terminalPadColor == null) {
+      terminalPadColor = CIRCLE_COLOR;
+    }
+    return terminalPadColor;
+  }
+
+  public void setTerminalPadColor(Color terminalPadColor) {
+    this.terminalPadColor = terminalPadColor;
+  }
+
+  @EditableProperty(name = "Terminal")
+  public Color getTerminalColor() {
+    if (terminalColor == null) {
+      terminalColor = TERMINAL_COLOR;
+    }
+    return terminalColor;
+  }
+
+  public void setTerminalColor(Color terminalColor) {
+    this.terminalColor = terminalColor;
+  }
+
   // switch stuff
 //  
 //  @Override
@@ -447,27 +510,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   @Override
   public int getPositionCount() {
-    switch (switchType) {
-      case SPST:        
-      case SPDT:
-      case DPDT:
-      case _3PDT:
-      case _4PDT:
-      case _5PDT:
-        return 2;        
-      case _DP3T_mustang:             
-      case SPDT_off:
-      case DPDT_off:
-      case _3PDT_off:
-      case _4PDT_off:
-      case _4PDT_ononon_1:
-      case _4PDT_ononon_2:
-      case _5PDT_off:
-      case DPDT_ononon_1:
-      case DPDT_ononon_2:
-        return 3;      
-    }
-    return 2;
+    return switchType.getPositionCount();
   }
 
   @Override
@@ -475,6 +518,32 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     if (switchType.name().endsWith("_off") && position == 2)
       return "OFF";
     return "ON" + Integer.toString(position + 1);
+  }
+
+  @DynamicEditableProperty(source = ToggleSwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+    this.body = null;
+  }
+
+  @EditableProperty(name = "Highlight Connected")
+  @Override
+  public Boolean getHighlightConnectedTerminals() {
+    if (highlightConnectedTerminals == null) {
+      highlightConnectedTerminals = false;
+    }
+    return highlightConnectedTerminals;
+  }
+
+  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
+    this.highlightConnectedTerminals = highlightConnectedTerminals;
+    this.body = null;
   }
 
   @Override
