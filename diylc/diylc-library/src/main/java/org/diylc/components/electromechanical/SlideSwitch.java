@@ -291,7 +291,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
       Point2D p = controlPoints[i];
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       } else {
         int finalI = i;
@@ -303,14 +303,10 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
         } else {
           g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
         }
-        g2d.fillRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.fillRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
-        if (groupIndex < 0) {
-          g2d.setColor(TERMINAL_COLOR.darker());
-        } else {
-          g2d.setColor(ISwitch.POLE_COLORS[groupIndex].darker());
-        }
-        g2d.drawRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.setColor(TERMINAL_COLOR.darker());
+        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       }
     }

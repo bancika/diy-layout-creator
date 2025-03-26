@@ -32,6 +32,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -41,6 +44,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.guitar.RotarySwitchOpenPositionPropertyValueSource;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.Angle;
 import org.diylc.core.ComponentState;
@@ -51,6 +55,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -58,6 +63,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
+
+import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
 @ComponentDescriptor(name = "Rotary Switch (Open)", author = "Branislav Stojkovic",
     category = "Electro-Mechanical", instanceNamePrefix = "SW",
@@ -98,6 +105,9 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private double[] pointAngles;
+
+  private Integer selectedPosition;
+  private Boolean highlightConnectedTerminals;
 
   public RotarySwitchOpen() {
     super();
@@ -246,7 +256,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
       bodyList.add(bodyArea);
 
-
       int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
       int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
 
@@ -350,11 +359,21 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     int commonPinCount = 2;
     int secondLevelStart = 2 * configuration.getPositionCount() + commonPinCount;
 
+    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
+
     // Draw outer pins
     if (configuration.getNeedsSecondLevel()) {
       drawingObserver.startTrackingContinuityArea(true);
       for (int i = secondLevelStart; i < body.length; i++) {
-        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
+        int finalI = i;
+        int groupIndex = IntStream.range(0, connectedTerminals.size())
+            .filter(j -> connectedTerminals.get(j).contains(finalI))
+            .findFirst().orElse(-1);
+        if (groupIndex < 0) {
+          g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
+        } else {
+          g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
+        }
         g2d.fill(body[i]);
         g2d.setColor(outlineMode ? finalBorderColor : pinColor.darker());
         g2d.draw(body[i]);
@@ -376,7 +395,15 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     // Draw pins
     for (int i = 1; i <= secondLevelStart; i++) {
       drawingObserver.startTrackingContinuityArea(true);
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
+      int finalI = i;
+      int groupIndex = IntStream.range(0, connectedTerminals.size())
+          .filter(j -> connectedTerminals.get(j).contains(finalI))
+          .findFirst().orElse(-1);
+      if (groupIndex < 0) {
+        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
+      } else {
+        g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
+      }
       g2d.fill(body[i]);
       drawingObserver.stopTrackingContinuityArea();
       if (!outlineMode) {
@@ -560,6 +587,30 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     updateControlPoints();
     // Reset body shape
     body = null;
+  }
+
+  @DynamicEditableProperty(source = RotarySwitchOpenPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+  }
+
+  @EditableProperty(name = "Highlight Connected")
+  @Override
+  public Boolean getHighlightConnectedTerminals() {
+    if (highlightConnectedTerminals == null) {
+      highlightConnectedTerminals = false;
+    }
+    return highlightConnectedTerminals;
+  }
+
+  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
+    this.highlightConnectedTerminals = highlightConnectedTerminals;
   }
 
   @Override
