@@ -21,11 +21,15 @@
 */
 package org.diylc.netlist;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.diylc.common.INetlistAnalyzer;
+import org.diylc.common.NetlistSwitchPreference;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
@@ -33,6 +37,7 @@ import org.diylc.netlist.NetlistAnalyzer;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Summary;
 import org.diylc.netlist.TreeException;
+import org.diylc.presenter.ComponentProcessor;
 
 public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
@@ -57,6 +62,11 @@ public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAn
   @Override
   public String getFontName() {   
     return "Courier New";
+  }
+
+  @Override
+  public Set<NetlistSwitchPreference> getSwitchPreference() {
+    return EnumSet.allOf(NetlistSwitchPreference.class);
   }
   
   protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
@@ -121,7 +131,7 @@ public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAn
         sb.append(" ");
       }
       
-      sb.append(c.getValue());
+      sb.append(formatValue(c));
       
       if (c instanceof ISpiceMapper) {
         String comment = ((ISpiceMapper)c).getComment();
@@ -137,7 +147,27 @@ public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAn
         .sorted()
         .collect(Collectors.joining("\n")));
   }
-  
+
+  private static Object formatValue(IDIYComponent<?> c) {
+    if (c.getValue() == null || c.getValue().toString().trim().isEmpty()) {
+      String typeName = ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass()).getName();
+//      if (
+//          Void.class.equals(((ParameterizedType) c.getClass()
+//              .getGenericSuperclass()).getActualTypeArguments()[0])) {
+//        return typeName;
+//      }
+      if (typeName.contains(" ")) {
+        return "\"" + typeName + "\"";
+      }
+      return typeName;
+    }
+    if (c.getValue().toString().contains(" ")) {
+      return "\"" + c.getValue() + "\"";
+    }
+    return c.getValue();
+  }
+
   private static String formatSpiceNode(int i) {
     return String.format("N%03d" , i);
   }

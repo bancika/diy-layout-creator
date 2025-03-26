@@ -280,8 +280,8 @@ public class ActionFactory {
   }
 
   public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,
-      ISwingUI swingUI, INetlistAnalyzer summarizer) {
-    return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
+      ISwingUI swingUI, INetlistAnalyzer summarizer, boolean includeSwitches) {
+    return new SummarizeNetlistAction(plugInPort, swingUI, summarizer, includeSwitches);
   }
 
   public CheckProximityAction createCheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {

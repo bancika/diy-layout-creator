@@ -22,6 +22,7 @@
 package org.diylc.common;
 
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Node;
@@ -59,4 +60,9 @@ public interface INetlistAnalyzer {
    * @return name of the font to be used for display.
    */
   String getFontName();
+
+  /**
+   * @return ability to process netlists with or without switches included.
+   */
+  Set<NetlistSwitchPreference> getSwitchPreference();
 }

@@ -22,14 +22,21 @@ public class SummarizeNetlistAction extends AbstractAction {
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
   private INetlistAnalyzer summarizer;
+  private final boolean includeSwitches;
 
   public SummarizeNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI,
-      INetlistAnalyzer summarizer) {
+      INetlistAnalyzer summarizer, boolean includeSwitches) {
     super();
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
     this.summarizer = summarizer;
-    putValue(AbstractAction.NAME, summarizer.getName());
+    this.includeSwitches = includeSwitches;
+    String name = summarizer.getName();
+    if (summarizer.getSwitchPreference().size() > 1) {
+      name += includeSwitches ?
+          " (incl. Switches)" : " (excl. Switches)";
+    }
+    putValue(AbstractAction.NAME, name);
     putValue(AbstractAction.SMALL_ICON,
         Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
   }
@@ -41,7 +48,7 @@ public class SummarizeNetlistAction extends AbstractAction {
 
       @Override
       public List<Summary> doInBackground() throws Exception {
-        List<Netlist> netlists = plugInPort.extractNetlists(true);
+        List<Netlist> netlists = plugInPort.extractNetlists(includeSwitches);
         if (netlists == null || netlists.isEmpty()) {
           throw new Exception("The generated netlist is empty, nothing to show.");
         }

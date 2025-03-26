@@ -69,7 +69,7 @@ public class NetlistBuilder {
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
       // extract nodes
-      if (!(c instanceof IContinuity) && !(c instanceof ICommonNode)) {
+      if (!(c instanceof IContinuity && !(c instanceof ISwitch)) && !(c instanceof ICommonNode)) {
         // regular components, create a node per control point
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
@@ -415,8 +415,10 @@ public class NetlistBuilder {
       IDIYComponent<?> c = project.getComponents().get(z);
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      // handle direct connections
-      if (c instanceof IContinuity) {
+      // handle direct connections or connections through a switch
+      // when not using "includeSwitches" flag
+      if (c instanceof IContinuity &&
+          (!(c instanceof ISwitch) || switchPositions.isEmpty())) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))

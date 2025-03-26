@@ -21,6 +21,7 @@ package org.diylc.netlist;
 import java.util.*;
 import javax.swing.JLabel;
 import org.diylc.common.INetlistAnalyzer;
+import org.diylc.common.NetlistSwitchPreference;
 import org.diylc.components.connectivity.MultimeterProbe;
 
 public class MultimeterAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
@@ -43,6 +44,11 @@ public class MultimeterAnalyzer extends AbstractNetlistAnalyzer implements INetl
   @Override
   public String getFontName() {
     return new JLabel().getFont().getName();
+  }
+
+  @Override
+  public Set<NetlistSwitchPreference> getSwitchPreference() {
+    return EnumSet.allOf(NetlistSwitchPreference.class);
   }
 
   protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {

@@ -24,13 +24,9 @@ import java.util.EnumSet;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.*;
 import org.diylc.swing.IDynamicSubmenuHandler;
 
-import org.diylc.common.EventType;
-import org.diylc.common.INetlistAnalyzer;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -108,10 +104,18 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
 
     List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
     if (summarizers != null) {
-      for (INetlistAnalyzer summarizer : summarizers)
-        swingUI.injectMenuAction(
-            actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer),
-            ANALYZE_TITLE);
+      for (INetlistAnalyzer summarizer : summarizers) {
+        if (summarizer.getSwitchPreference().contains(NetlistSwitchPreference.WITH)) {
+          swingUI.injectMenuAction(
+              actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer, true),
+              ANALYZE_TITLE);
+        }
+        if (summarizer.getSwitchPreference().contains(NetlistSwitchPreference.WITHOUT)) {
+          swingUI.injectMenuAction(
+              actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer, false),
+              ANALYZE_TITLE);
+        }
+      }
     }
 
     swingUI.injectMenuAction(null, FILE_TITLE);
