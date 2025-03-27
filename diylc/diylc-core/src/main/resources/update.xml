@@ -345,6 +345,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Copy operation doesn't work when certain component types are selected</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
