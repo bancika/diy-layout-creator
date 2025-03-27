@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.1.0</version>
+        <version>5.1.1</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
