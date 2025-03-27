@@ -151,21 +151,24 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
       double theta = getAngle().getValueRad();
       g2d.setColor(MARKER_COLOR);
-      AffineTransform tx = null;
-      if (theta != 0) {
-        tx = AffineTransform.getRotateInstance(theta, getControlPoint(0).getX(), getControlPoint(0).getY());
-      }
+      double x = controlPoints[0].getX();
+      double y = controlPoints[0].getY();
+
       double offset = MARKER_OFFSET.convertToPixels();
       for (int i = 0; i < getControlPointCount(); i++) {
         if (markers[i] == null)
-          continue;;
+          continue;
 
         Point2D p = getControlPoint(i);
-        Point2D labelPoint = new Point2D.Double(p.getX() + offset, p.getY());
+        Point2D labelPoint = new Point2D.Double(offset, 0);
+        AffineTransform tx = null;
+        if (theta != 0) {
+          tx = AffineTransform.getRotateInstance(theta);
+        }
         if (tx != null) {
           tx.transform(labelPoint, labelPoint);
         }
-        StringUtils.drawCenteredText(g2d, markers[i], labelPoint.getX(), labelPoint.getY(),
+        StringUtils.drawCenteredText(g2d, markers[i], p.getX() + labelPoint.getX(), p.getY() + labelPoint.getY(),
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
     }
@@ -253,8 +256,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
       // Rotate if needed
       if (theta != 0) {
         AffineTransform rotation = AffineTransform.getRotateInstance(theta, controlPoints[0].getX(), controlPoints[0].getY());
-        // Skip the last two because terminals are already rotated
-        for (int i = 0; i < body.length - 2; i++) {
+        // Skip the last one because terminals are already rotated
+        for (int i = 0; i < body.length - 1; i++) {
           Shape shape = body[i];
           Area area = (Area) shape;
           area.transform(rotation);

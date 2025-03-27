@@ -35,9 +35,8 @@ import java.util.stream.IntStream;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.common.OrientationHV;
+import org.diylc.awt.StringUtils;
+import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.guitar.Freeway3x4_03SwitchPositionPropertyValueSource;
 import org.diylc.components.transform.MiniToggleSwitchTransformer;
@@ -56,6 +55,7 @@ import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
+import org.diylc.utils.SwitchUtils;
 
 import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
@@ -73,12 +73,14 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   private static Size LUG_WIDTH = new Size(0.020d, SizeUnit.in);
   private static Size LUG_THICKNESS = new Size(0.1d, SizeUnit.in);
   private static Size HOLE_DIAMETER = new Size(3d, SizeUnit.mm);
+  private static Size MARKER_OFFSET = new Size(0.05d, SizeUnit.in);
 
   private static Color BODY_COLOR = PHENOLIC_DARK_COLOR;
   private static Color BORDER_COLOR = Color.gray;
   public static Color TERMINAL_COLOR = METAL_COLOR;
   public static Color LABEL_COLOR = Color.white;
   public static Color BRACKET_COLOR = Color.lightGray;
+  public static Color MARKER_COLOR = Color.lightGray;
 
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   transient protected Shape[] body;
@@ -94,7 +96,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   private Boolean showBracket = true;
 
   private Integer selectedPosition;
-  private Boolean highlightConnectedTerminals;
+  private Boolean showMarkers;
 
   public SlideSwitch() {
     super();
@@ -133,9 +135,10 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
                 firstPoint.getY() + 3 * rowSpacing)};
         break;
     }
-    AffineTransform xform =
-        AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
+
     if (getOrientation() == OrientationHV.HORIZONTAL) {
+      AffineTransform xform =
+          AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
       for (int i = 1; i < controlPoints.length; i++) {
         xform.transform(controlPoints[i], controlPoints[i]);
       }
@@ -284,8 +287,6 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
       lugHeight = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
     }
 
-    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
-
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     for (int i = 0; i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
@@ -294,20 +295,39 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
         g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       } else {
-        int finalI = i;
-        int groupIndex = IntStream.range(0, connectedTerminals.size())
-            .filter(j -> connectedTerminals.get(j).contains(finalI))
-            .findFirst().orElse(-1);
-        if (groupIndex < 0) {
-          g2d.setColor(TERMINAL_COLOR);
-        } else {
-          g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
-        }
+        g2d.setColor(TERMINAL_COLOR);
         g2d.fillRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
         g2d.setColor(TERMINAL_COLOR.darker());
         g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
+      }
+    }
+
+    if (getShowMarkers()) {
+      String[] markers =
+          SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
+
+      g2d.setColor(MARKER_COLOR);
+
+      double offset = MARKER_OFFSET.convertToPixels();
+      for (int i = 0; i < getControlPointCount(); i++) {
+        if (markers[i] == null)
+          continue;
+
+        Point2D p = getControlPoint(i);
+        int direction = switchType == SlideSwitchType.SPDT || i < getControlPointCount() / 2 ? 1 : -1;
+        Point2D labelPoint = new Point2D.Double(direction * offset, 0);
+
+        AffineTransform tx = null;
+        if (getOrientation() == OrientationHV.HORIZONTAL) {
+          tx = AffineTransform.getRotateInstance(-Math.PI / 2, 0, 0);
+        }
+        if (tx != null) {
+          tx.transform(labelPoint, labelPoint);
+        }
+        StringUtils.drawCenteredText(g2d, markers[i], p.getX() + labelPoint.getX(), p.getY() + labelPoint.getY(),
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
     }
   }
@@ -504,16 +524,16 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
     this.selectedPosition = selectedPosition;
   }
 
-  @EditableProperty(name = "Highlight Connected")
+  @EditableProperty(name = "Markers")
   public Boolean getShowMarkers() {
-    if (highlightConnectedTerminals == null) {
-      highlightConnectedTerminals = false;
+    if (showMarkers == null) {
+      showMarkers = false;
     }
-    return highlightConnectedTerminals;
+    return showMarkers;
   }
 
-  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
-    this.highlightConnectedTerminals = highlightConnectedTerminals;
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
   }
 
   @Override

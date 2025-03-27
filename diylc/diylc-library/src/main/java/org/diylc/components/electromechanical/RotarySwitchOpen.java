@@ -65,8 +65,6 @@ import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
-import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
-
 @ComponentDescriptor(name = "Rotary Switch (Open)", author = "Branislav Stojkovic",
     category = "Electro-Mechanical", instanceNamePrefix = "SW",
     description = "Open rotary switch in several different switching configurations",
@@ -403,7 +401,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     String[] switchingMarkers =
         SwitchUtils.getSwitchingMarkers(this, this.getControlPointCount(), false);
 
-    if (showMarkers) {
+    if (getShowMarkers()) {
       g2d.setColor(labelColor);
       int innerPinSpacing = getClosestOdd(INNER_PIN_SPACING.convertToPixels());
       int innerCommonPinSpacing = getClosestOdd(INNER_COMMON_PIN_SPACING.convertToPixels());
