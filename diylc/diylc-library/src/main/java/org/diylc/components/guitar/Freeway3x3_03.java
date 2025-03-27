@@ -451,8 +451,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   }
 
   @EditableProperty(name = "Highlight Connected")
-  @Override
-  public Boolean getHighlightConnectedTerminals() {
+  public Boolean getShowMarkers() {
     if (highlightConnectedTerminals == null) {
       highlightConnectedTerminals = false;
     }

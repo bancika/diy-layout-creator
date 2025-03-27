@@ -505,8 +505,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   }
 
   @EditableProperty(name = "Highlight Connected")
-  @Override
-  public Boolean getHighlightConnectedTerminals() {
+  public Boolean getShowMarkers() {
     if (highlightConnectedTerminals == null) {
       highlightConnectedTerminals = false;
     }

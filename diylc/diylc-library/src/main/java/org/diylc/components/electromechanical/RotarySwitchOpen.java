@@ -107,7 +107,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
   private double[] pointAngles;
 
   private Integer selectedPosition;
-  private Boolean highlightConnectedTerminals;
 
   public RotarySwitchOpen() {
     super();
@@ -598,19 +597,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
   public void setSelectedPosition(Integer selectedPosition) {
     this.selectedPosition = selectedPosition;
-  }
-
-  @EditableProperty(name = "Highlight Connected")
-  @Override
-  public Boolean getHighlightConnectedTerminals() {
-    if (highlightConnectedTerminals == null) {
-      highlightConnectedTerminals = false;
-    }
-    return highlightConnectedTerminals;
-  }
-
-  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
-    this.highlightConnectedTerminals = highlightConnectedTerminals;
   }
 
   @Override

@@ -27,6 +27,26 @@ import java.util.*;
 
 public class SwitchUtils {
 
+  public static Map<Integer, List<List<Integer>>> getSwitchingMatrix(ISwitch switchComponent, int numPoints) {
+    Map<Integer, List<List<Integer>>> result = new HashMap<>();
+
+    for (Integer commonPoint : switchComponent.getCommonPoints()) {
+      List<List<Integer>> connectedPoints = new ArrayList<>();
+      result.put(commonPoint, connectedPoints);
+      for (int i = 0; i < switchComponent.getPositionCount(); i++) {
+        List<Integer> positionPoints = new ArrayList<>();
+        for (int j = 0; j < numPoints; j++) {
+          if (commonPoint != j && switchComponent.arePointsConnected(commonPoint, j, i)) {
+            positionPoints.add(j);
+          }
+        }
+        connectedPoints.add(positionPoints);
+      }
+    }
+
+    return result;
+  }
+
   public static List<Set<Integer>> getConnectedTerminals(ISwitch switchComponent, int numPoints) {
 
     if (!Boolean.TRUE.equals(switchComponent.getHighlightConnectedTerminals())) {

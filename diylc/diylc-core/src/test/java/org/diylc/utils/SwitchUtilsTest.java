@@ -33,8 +33,7 @@ public class SwitchUtilsTest {
             return selectedPosition;
         }
 
-        @Override
-        public Boolean getHighlightConnectedTerminals() {
+        public Boolean getShowMarkers() {
             return renderConnected;
         }
 

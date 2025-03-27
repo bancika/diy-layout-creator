@@ -90,7 +90,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   private transient Double labelDy = null;
 
   private Integer selectedPosition;
-  private Boolean highlightConnectedTerminals;
+  private Boolean showMarkers;
 
   public SchallerMegaSwitch() {
     super();
@@ -570,16 +570,15 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   }
 
   @EditableProperty(name = "Highlight Connected")
-  @Override
-  public Boolean getHighlightConnectedTerminals() {
-    if (highlightConnectedTerminals == null) {
-      highlightConnectedTerminals = false;
+  public Boolean getShowMarkers() {
+    if (showMarkers == null) {
+      showMarkers = false;
     }
-    return highlightConnectedTerminals;
+    return showMarkers;
   }
 
-  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
-    this.highlightConnectedTerminals = highlightConnectedTerminals;
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
     this.body = null;
   }
 

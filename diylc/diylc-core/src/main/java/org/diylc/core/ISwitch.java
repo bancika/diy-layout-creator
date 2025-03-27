@@ -21,7 +21,9 @@
 */
 package org.diylc.core;
 
-import java.awt.*;
+import java.awt.Color;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Interface for all component that can act as switches. They must have at least one position.
@@ -81,4 +83,6 @@ public interface ISwitch extends IContinuity {
     }
     return arePointsConnected(index1, index2, getSelectedPosition());
   }
+
+  List<Integer> getCommonPoints();
 }
