@@ -83,6 +83,4 @@ public interface ISwitch extends IContinuity {
     }
     return arePointsConnected(index1, index2, getSelectedPosition());
   }
-
-  List<Integer> getCommonPoints();
 }

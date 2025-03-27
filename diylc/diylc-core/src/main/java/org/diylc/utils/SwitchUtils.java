@@ -27,24 +27,48 @@ import java.util.*;
 
 public class SwitchUtils {
 
-  public static Map<Integer, List<List<Integer>>> getSwitchingMatrix(ISwitch switchComponent, int numPoints) {
-    Map<Integer, List<List<Integer>>> result = new HashMap<>();
-
-    for (Integer commonPoint : switchComponent.getCommonPoints()) {
-      List<List<Integer>> connectedPoints = new ArrayList<>();
-      result.put(commonPoint, connectedPoints);
-      for (int i = 0; i < switchComponent.getPositionCount(); i++) {
-        List<Integer> positionPoints = new ArrayList<>();
-        for (int j = 0; j < numPoints; j++) {
-          if (commonPoint != j && switchComponent.arePointsConnected(commonPoint, j, i)) {
-            positionPoints.add(j);
+  public static String[] getSwitchingMarkers(ISwitch switchComponent, int numPoints, boolean verbose) {
+    String[] markers = new String[numPoints];
+    List<List<Set<Integer>>> switchingMatrix = new ArrayList<>();
+    for (int p = 0; p < switchComponent.getPositionCount(); p++) {
+      List<Set<Integer>> connectedPoints = new ArrayList<>();
+      switchingMatrix.add(connectedPoints);
+      for (int i = 0; i < numPoints - 1; i++) {
+        for (int j = i + 1; j < numPoints; j++) {
+          if (switchComponent.arePointsConnected(i, j, p)) {
+            connectedPoints.add(Set.of(i, j));
           }
         }
-        connectedPoints.add(positionPoints);
       }
     }
-
-    return result;
+    List<Integer> commonPoints = new ArrayList<>();
+    for (int i = 0; i < numPoints; i++) {
+      final int finalI = i;
+      if (switchingMatrix.stream().allMatch(
+          l -> l.stream().anyMatch(
+              s -> s.contains(finalI)))) {
+        markers[i] = String.valueOf((char)((int)'A' + commonPoints.size()));
+        commonPoints.add(i);
+      }
+    }
+    for (int p = 0; p < switchComponent.getPositionCount(); p++) {
+      for (int c : commonPoints) {
+        for (int i = 0; i < numPoints; i++) {
+          if (commonPoints.contains(i)) {
+            continue;
+          }
+          if (switchComponent.arePointsConnected(Math.min(c, i), Math.max(c, i), p)) {
+            String marker = verbose ? markers[c] + (p + 1) : Integer.toString(p + 1);
+            if (markers[i] == null) {
+              markers[i] = marker;
+            } else {
+              markers[i] += "," + marker;
+            }
+          }
+        }
+      }
+    }
+    return markers;
   }
 
   public static List<Set<Integer>> getConnectedTerminals(ISwitch switchComponent, int numPoints) {

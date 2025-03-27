@@ -63,6 +63,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
+import org.diylc.utils.SwitchUtils;
 
 import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
@@ -358,21 +359,11 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     int commonPinCount = 2;
     int secondLevelStart = 2 * configuration.getPositionCount() + commonPinCount;
 
-    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
-
     // Draw outer pins
     if (configuration.getNeedsSecondLevel()) {
       drawingObserver.startTrackingContinuityArea(true);
       for (int i = secondLevelStart; i < body.length; i++) {
-        int finalI = i;
-        int groupIndex = IntStream.range(0, connectedTerminals.size())
-            .filter(j -> connectedTerminals.get(j).contains(finalI))
-            .findFirst().orElse(-1);
-        if (groupIndex < 0) {
-          g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
-        } else {
-          g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
-        }
+        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
         g2d.fill(body[i]);
         g2d.setColor(outlineMode ? finalBorderColor : pinColor.darker());
         g2d.draw(body[i]);
@@ -394,15 +385,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     // Draw pins
     for (int i = 1; i <= secondLevelStart; i++) {
       drawingObserver.startTrackingContinuityArea(true);
-      int finalI = i;
-      int groupIndex = IntStream.range(0, connectedTerminals.size())
-          .filter(j -> connectedTerminals.get(j).contains(finalI))
-          .findFirst().orElse(-1);
-      if (groupIndex < 0) {
-        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
-      } else {
-        g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
-      }
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pinColor);
       g2d.fill(body[i]);
       drawingObserver.stopTrackingContinuityArea();
       if (!outlineMode) {
@@ -417,6 +400,9 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     // StringUtils.drawCenteredText(g2d, name, controlPoints[0].getX(), controlPoints[0].getY(),
     // HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
+    String[] switchingMarkers =
+        SwitchUtils.getSwitchingMarkers(this, this.getControlPointCount(), false);
+
     if (showMarkers) {
       g2d.setColor(labelColor);
       int innerPinSpacing = getClosestOdd(INNER_PIN_SPACING.convertToPixels());
@@ -429,7 +415,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
             + Math.cos(pointAngles[i + 1]) * relativeLabelLocation * innerPinSpacing / 2);
         int y = (int) (firstPoint.getY()
             + Math.sin(pointAngles[i + 1]) * relativeLabelLocation * innerPinSpacing / 2);
-        StringUtils.drawCenteredText(g2d, getControlPointNodeNameForRender(i + 1), x, y,
+        StringUtils.drawCenteredText(g2d, switchingMarkers[i + 1], x, y,
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
       relativeLabelLocation = 0.65;
@@ -438,7 +424,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
             * relativeLabelLocation * innerCommonPinSpacing / 2);
         int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + outerPinCount + 1])
             * relativeLabelLocation * innerCommonPinSpacing / 2);
-        StringUtils.drawCenteredText(g2d, getControlPointNodeNameForRender(i + outerPinCount + 1),
+        StringUtils.drawCenteredText(g2d, switchingMarkers[i + outerPinCount + 1],
             x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
 
@@ -453,7 +439,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
           int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + 1 + secondLevelStart])
               * relativeLabelLocation * outerPinSpacing / 2);
           StringUtils.drawCenteredText(g2d,
-              getControlPointNodeNameForRender(i + 1 + secondLevelStart), x, y,
+              switchingMarkers[i + secondLevelStart + 1], x, y,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
         // relativeLabelLocation = 0.90;
@@ -465,7 +451,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
               + Math.sin(pointAngles[i + outerPinCount + 1 + secondLevelStart])
                   * relativeLabelLocation * outerCommonPinSpacing / 2);
           StringUtils.drawCenteredText(g2d,
-              getControlPointNodeNameForRender(i + outerPinCount + 1 + secondLevelStart), x, y,
+              switchingMarkers[i + outerPinCount + secondLevelStart + 1], x, y,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
       }
@@ -642,60 +628,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
   @Override
   public String getPositionName(int position) {
     return Integer.toString(position + 1);
-  }
-
-  public String getControlPointNodeNameForRender(int index) {
-    int commonPinCount = 2;
-    int positionCount = configuration.getPositionCount();
-
-    if (index <= positionCount) {
-      return Integer.toString(positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount) {
-      return Integer.toString(2 * positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount + commonPinCount) {
-      return Character.toString((char) ('A' + (index - 2 * positionCount - 1)));
-    }
-    int secondLevelStart = 2 * positionCount + commonPinCount;
-    if (index <= positionCount + secondLevelStart) {
-      return Integer.toString(positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + secondLevelStart) {
-      return Integer.toString(2 * positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + commonPinCount + secondLevelStart) {
-      return Character.toString((char) ('C' + (index - 2 * positionCount - 1 - secondLevelStart)));
-    }
-    return null;
-  }
-
-  @Override
-  public String getControlPointNodeName(int index) {
-    int commonPinCount = 2;
-    int positionCount = configuration.getPositionCount();
-
-    if (index <= positionCount) {
-      return "A" + (positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount) {
-      return "B" + (2 * positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount + commonPinCount) {
-      return Character.toString((char) ('A' + (index - 2 * positionCount - 1)));
-    }
-
-    int secondLevelStart = 2 * positionCount + commonPinCount;
-    if (index <= positionCount + secondLevelStart) {
-      return "C" + (positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + secondLevelStart) {
-      return "D" + (2 * positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + commonPinCount + secondLevelStart) {
-      return Character.toString((char) ('C' + (index - 2 * positionCount - 1 - secondLevelStart)));
-    }
-    return null;
   }
 
   @Override
