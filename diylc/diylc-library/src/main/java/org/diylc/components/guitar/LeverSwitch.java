@@ -33,12 +33,14 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.*;
-import java.util.stream.IntStream;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.*;
@@ -49,8 +51,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
+import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
@@ -63,6 +64,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = Color.decode("#CD8500");
   private static Color LUG_COLOR = METAL_COLOR;
+  private static Color MARKER_COLOR = Color.gray;
 
   private static Size BASE_WIDTH = new Size(10d, SizeUnit.mm);
   private static Size BASE_LENGTH = new Size(47.5d, SizeUnit.mm);
@@ -74,6 +76,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
   private static Size TERMINAL_WIDTH = new Size(2d, SizeUnit.mm);
   private static Size TERMINAL_LENGTH = new Size(0.1d, SizeUnit.in);
   private static Size TERMINAL_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size MARKER_OFFSET = new Size(0.1d, SizeUnit.in);
 
   @SuppressWarnings("unused")
   @Deprecated
@@ -142,11 +145,29 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     g2d.fill(body[2]);
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
-    for (int i = 3; i < body.length; i++) {
-      g2d.setColor(ISwitch.POLE_COLORS[i - 3]);
-      g2d.fill(body[i]);
-      g2d.setColor(ISwitch.POLE_COLORS[i - 3].darker());
-      g2d.draw(body[i]);
+
+    if (getShowMarkers()) {
+      String[] markers =
+          SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
+      double theta = getAngle().getValueRad();
+      g2d.setColor(MARKER_COLOR);
+      AffineTransform tx = null;
+      if (theta != 0) {
+        tx = AffineTransform.getRotateInstance(theta, getControlPoint(0).getX(), getControlPoint(0).getY());
+      }
+      double offset = MARKER_OFFSET.convertToPixels();
+      for (int i = 0; i < getControlPointCount(); i++) {
+        if (markers[i] == null)
+          continue;;
+
+        Point2D p = getControlPoint(i);
+        Point2D labelPoint = new Point2D.Double(p.getX() + offset, p.getY());
+        if (tx != null) {
+          tx.transform(labelPoint, labelPoint);
+        }
+        StringUtils.drawCenteredText(g2d, markers[i], labelPoint.getX(), labelPoint.getY(),
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
     }
     
 //    g2d.setColor(Color.black);
@@ -208,34 +229,25 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
 
       double theta = getAngle().getValueRad();
 
-      List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
-
-      body = new Shape[3 + connectedTerminals.size()];
+      body = new Shape[3];
       body[0] = baseArea;
       body[1] = waferArea;
-      for (int i = 0; i <= connectedTerminals.size(); i++) {
-        body[2 + i] = new Area();
-      }
+      body[2] = new Area();
 
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
         Area terminal =
-            new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 2, point.getY() - terminalWidth / 2,
-                terminalLength, terminalWidth, terminalWidth / 2, terminalWidth / 2));
-        terminal.subtract(new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 4, point.getY() - terminalWidth
-            / 4, terminalLength / 2, terminalWidth / 2, terminalWidth / 2, terminalWidth / 2)));
+            new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 2d, point.getY() - terminalWidth / 2d,
+                terminalLength, terminalWidth, terminalWidth / 2d, terminalWidth / 2d));
+        terminal.subtract(new Area(new RoundRectangle2D.Double(point.getX() - terminalLength / 4d, point.getY() - terminalWidth
+            / 4d, terminalLength / 2d, terminalWidth / 2d, terminalWidth / 2d, terminalWidth / 2d)));
         // Rotate the terminal if needed
         if (theta != 0) {
           AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
           terminal.transform(rotation);
         }
 
-        int finalI = i;
-        int groupIndex = IntStream.range(0, connectedTerminals.size())
-            .filter(j -> connectedTerminals.get(j).contains(finalI))
-            .findFirst().orElse(-1);
-
-        ((Area)body[3 + groupIndex]).add(terminal);
+        ((Area)body[2]).add(terminal);
       }
 
       // Rotate if needed
