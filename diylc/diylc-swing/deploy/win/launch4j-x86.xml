@@ -3,7 +3,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>diylc.jar</jar>
-  <outfile>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\deploy\diylc-x86.exe</outfile>
+  <outfile>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\deploy\win\diylc-x86.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,10 +13,9 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\icons\diylc.ico</icon>
+  <icon>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\src\main\resources\icons\diylc.ico</icon>
   <classPath>
     <mainClass>org.diylc.DIYLCStarter</mainClass>
-    <cp>lib</cp>
   </classPath>
   <jre>
     <path>jre17</path>
@@ -24,11 +23,10 @@
     <requires64Bit>false</requires64Bit>
     <minVersion>17</minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>512</initialHeapSize>
+    <initialHeapSize>1024</initialHeapSize>
     <maxHeapSize>2048</maxHeapSize>
     <opt>-Dorg.diylc.scriptRun=true</opt>
     <opt>-Dfile.encoding=UTF-8</opt>
-    <opt>-javaagent:lib/jar-loader.jar</opt>
     <opt>--add-opens java.base/java.util=ALL-UNNAMED</opt>
     <opt>--add-opens java.base/java.lang=ALL-UNNAMED</opt>
     <opt>--add-opens java.base/java.text=ALL-UNNAMED</opt>
