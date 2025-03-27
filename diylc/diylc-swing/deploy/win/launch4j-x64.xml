@@ -3,7 +3,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>diylc.jar</jar>
-  <outfile>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\deploy\diylc-x64.exe</outfile>
+  <outfile>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\deploy\win\diylc-x64.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,10 +13,9 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\icons\diylc.ico</icon>
+  <icon>C:\Users\bancika\Documents\GitHub\diy-layout-creator\diylc\diylc-swing\src\main\resources\icons\diylc.ico</icon>
   <classPath>
     <mainClass>org.diylc.DIYLCStarter</mainClass>
-    <cp>lib</cp>
   </classPath>
   <jre>
     <path>jre17</path>
