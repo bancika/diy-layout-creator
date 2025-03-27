@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import com.kitfox.svg.A;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -53,8 +54,6 @@ import org.diylc.core.images.IconLoader;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
 
 @ComponentDescriptor(name = "Schaller Megaswitch", category = "Guitar",
     author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
@@ -209,9 +208,8 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   public Shape[] getBody() {
     if (body == null) {
-      List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
 
-      body = new Shape[3 + connectedTerminals.size()];
+      body = new Shape[3];
 
       int lastPointIdx =
           type == MegaSwitchType.M ? controlPoints.length / 2 - 1 : controlPoints.length - 1;
@@ -252,12 +250,9 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
           new Area(new Rectangle2D.Double(waferX, waferY, waferThickness, waferLength));
 
       body[1] = waferArea;
+      body[2] = new Area();
 
       double theta = getAngle().getValueRad();
-
-      for (int i = 0; i <= connectedTerminals.size(); i++) {
-        body[2 + i] = new Area();
-      }
 
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
@@ -274,12 +269,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
           terminal.transform(rotation);
         }
 
-        int finalI = i;
-        int groupIndex = IntStream.range(0, connectedTerminals.size())
-            .filter(j -> connectedTerminals.get(j).contains(finalI))
-            .findFirst().orElse(-1);
-
-        ((Area)body[3 + groupIndex]).add(terminal);
+        ((Area)body[2]).add(terminal);
       }
 
       // Rotate if needed
@@ -304,24 +294,12 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     double terminalWidth = TERMINAL_WIDTH.convertToPixels();
     int waferThickness = (int) WAFER_THICKNESS.convertToPixels();
 
-    int pointCount = 0;
-
-    switch (type) {
-      case E:
-      case P:
-        pointCount = 7;
-        break;
-      case E_PLUS:
-        pointCount = 9;
-        break;
-      case S:
-      case T:
-        pointCount = 8;
-        break;
-      case M:
-        pointCount = 24;
-        break;
-    }
+    int pointCount = switch (type) {
+      case E, P -> 7;
+      case E_PLUS -> 9;
+      case S, T -> 8;
+      case M -> 24;
+    };
 
     controlPoints = new Point2D[pointCount];
     if (pointCount < 12) {
@@ -509,38 +487,22 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
-    List<List<int[]>> connections = null;
-    
-    switch (type) {
-      case E:
-        connections = E_CONNECTIONS;
-        break;
-      case E_PLUS:
-        connections = E_PLUS_CONNECTIONS;
-        break;
-      case S:
-        connections = S_CONNECTIONS;
-        break;
-      case P:
-        connections = P_CONNECTIONS;
-        break;
-      case T:
-        connections = T_CONNECTIONS;
-        break;
-      case M:
-        connections = M_CONNECTIONS;
-        break;
+    List<List<int[]>> connections = switch (type) {
+      case E -> E_CONNECTIONS;
+      case E_PLUS -> E_PLUS_CONNECTIONS;
+      case S -> S_CONNECTIONS;
+      case P -> P_CONNECTIONS;
+      case T -> T_CONNECTIONS;
+      case M -> M_CONNECTIONS;
+    };
+
+    List<int[]> positionConnections = connections.get(position);
+    for (int[] arr : positionConnections) {
+      if (arr[0] == index1 && arr[1] == index2) {
+        return true;
+      }
     }
-    
-    if (connections != null) {
-      List<int[]> positionConnections = connections.get(position);
-      for (int[] arr : positionConnections) {
-        if (arr[0] == index1 && arr[1] == index2) {
-          return true;
-        }
-      }      
-    }
-    
+
     return false;   
   }
   
@@ -569,7 +531,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     this.body = null;
   }
 
-  @EditableProperty(name = "Highlight Connected")
+  @EditableProperty(name = "Markers")
   public Boolean getShowMarkers() {
     if (showMarkers == null) {
       showMarkers = false;
@@ -579,7 +541,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   public void setShowMarkers(Boolean showMarkers) {
     this.showMarkers = showMarkers;
-    this.body = null;
   }
 
   private static final List<List<int[]>> E_CONNECTIONS = Arrays.asList(

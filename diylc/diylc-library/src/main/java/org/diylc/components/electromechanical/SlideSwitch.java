@@ -57,8 +57,6 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
-import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
-
 @ComponentDescriptor(name = "Slide Switch", category = "Electro-Mechanical",
     author = "Branislav Stojkovic", description = "Panel mounted slide switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", autoEdit = false,

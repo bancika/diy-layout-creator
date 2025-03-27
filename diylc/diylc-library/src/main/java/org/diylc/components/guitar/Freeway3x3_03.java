@@ -45,9 +45,8 @@ import com.kitfox.svg.SVGElement;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.ShapeElement;
 
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
+import org.diylc.awt.StringUtils;
+import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.Freeway3x3_03Transformer;
 import org.diylc.core.*;
@@ -58,8 +57,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
-
-import static org.diylc.utils.SwitchUtils.getConnectedTerminals;
+import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Freeway 3X3-03 Toggle", category = "Guitar",
     author = "Branislav Stojkovic", description = "Freeway 3X3-03 Toggle Switch",
@@ -76,6 +74,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   private static Color PAD_COLOR = COPPER_COLOR;
   private static Color LABEL_COLOR = Color.WHITE;
   private static Color CASE_COLOR = METAL_COLOR;
+  private static Color MARKER_COLOR = Color.lightGray;
 
   private static final double[] X_OFFSETS =
       new double[] {9, 15, 21, 21, 21, 21, 21, 21, 12, 3, 3, 3, 3, 3, 3};
@@ -92,7 +91,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
   private Orientation orientation = Orientation.DEFAULT;
 
   private Integer selectedPosition;
-  private Boolean highlightConnectedTerminals;
+  private Boolean showMarkers;
 
   private transient SVGDiagram svgDiagram;
   private transient List<Shape> pads;
@@ -152,6 +151,8 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
 
+    AffineTransform oldTx = new AffineTransform(g2d.getTransform());
+
     if (getOrientation() != Orientation.DEFAULT) {
       double theta = orientation.toRadians();
       g2d.rotate(theta, x, y);
@@ -181,33 +182,15 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     g2d.setColor(finalBorderColor);
     g2d.draw(base);
 
-    List<Set<Integer>> connectedTerminals = getConnectedTerminals(this, controlPoints.length);
-
     drawingObserver.startTrackingContinuityArea(true);
     for (int i = 0; i < pads.size(); i++) {
-      int finalI = i;
-      int groupIndex = IntStream.range(0, connectedTerminals.size())
-          .filter(j -> connectedTerminals.get(j).contains(finalI))
-          .findFirst().orElse(-1);
-      if (groupIndex < 0) {
-        g2d.setColor(PAD_COLOR);
-      } else {
-        g2d.setColor(ISwitch.POLE_COLORS[groupIndex]);
-      }
+      g2d.setColor(PAD_COLOR);
       g2d.fill(pads.get(i));
     }
     drawingObserver.stopTrackingContinuityArea();
 
     for (int i = 0; i < pads.size(); i++) {
-      int finalI = i;
-      int groupIndex = IntStream.range(0, connectedTerminals.size())
-          .filter(j -> connectedTerminals.get(j).contains(finalI))
-          .findFirst().orElse(-1);
-      if (groupIndex < 0) {
-        g2d.setColor(PAD_COLOR.darker());
-      } else {
-        g2d.setColor(ISwitch.POLE_COLORS[groupIndex].darker());
-      }
+      g2d.setColor(PAD_COLOR.darker());
       g2d.draw(pads.get(i));
     }
 
@@ -221,6 +204,20 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
 
     g2d.setColor(CASE_COLOR.darker());
     g2d.draw(caseShape);
+
+    if (getShowMarkers()) {
+      g2d.setTransform(oldTx);
+//      g2d.setFont(g2d.getFont().deriveFont(g2d.getFont().getSize() * 0.8f));
+      String[] markers = SwitchUtils.getSwitchingMarkers(this, this.getControlPointCount(), false);
+      g2d.setColor(MARKER_COLOR);
+      for (int i = 0; i < getControlPointCount(); i++) {
+        if (markers[i] == null)
+          continue;;
+
+        Point2D p = getControlPoint(i);
+        StringUtils.drawCenteredText(g2d, markers[i], p.getX(), p.getY(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
+    }
 
     g2d.setComposite(oldComposite);
   }
@@ -450,16 +447,16 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     this.selectedPosition = selectedPosition;
   }
 
-  @EditableProperty(name = "Highlight Connected")
+  @EditableProperty(name = "Markers")
   public Boolean getShowMarkers() {
-    if (highlightConnectedTerminals == null) {
-      highlightConnectedTerminals = false;
+    if (showMarkers == null) {
+      showMarkers = false;
     }
-    return highlightConnectedTerminals;
+    return showMarkers;
   }
 
-  public void setHighlightConnectedTerminals(Boolean highlightConnectedTerminals) {
-    this.highlightConnectedTerminals = highlightConnectedTerminals;
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
   }
 
   @Override
