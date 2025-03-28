@@ -347,6 +347,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Applying a variant to a 'Hookup Wire' or 'Curved Trace' makes it lose its shape</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Copy operation doesn't work when certain component types are selected</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
