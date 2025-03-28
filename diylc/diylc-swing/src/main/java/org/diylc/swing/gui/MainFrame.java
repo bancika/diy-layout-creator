@@ -59,6 +59,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.swing.IDynamicSubmenuHandler;
+import org.diylc.swing.plugins.analyze.AnalyzeMenuPlugin;
 import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.BadPositionException;
@@ -126,6 +127,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
     presenter.installPlugin(() -> new ToolBox(this));    
     presenter.installPlugin(() -> new FileMenuPlugin(this));
+    presenter.installPlugin(() -> new AnalyzeMenuPlugin(this));
     presenter.installPlugin(() -> new EditMenuPlugin(this));
     presenter.installPlugin(() -> new ConfigPlugin(this));
     presenter.installPlugin(() -> new LayersMenuPlugin(this));

@@ -29,12 +29,16 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.common.OrientationHV;
+import org.diylc.awt.StringUtils;
+import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.guitar.Freeway3x4_03SwitchPositionPropertyValueSource;
 import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -44,12 +48,14 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
+import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Slide Switch", category = "Electro-Mechanical",
     author = "Branislav Stojkovic", description = "Panel mounted slide switch",
@@ -65,12 +71,14 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   private static Size LUG_WIDTH = new Size(0.020d, SizeUnit.in);
   private static Size LUG_THICKNESS = new Size(0.1d, SizeUnit.in);
   private static Size HOLE_DIAMETER = new Size(3d, SizeUnit.mm);
+  private static Size MARKER_OFFSET = new Size(0.05d, SizeUnit.in);
 
   private static Color BODY_COLOR = PHENOLIC_DARK_COLOR;
   private static Color BORDER_COLOR = Color.gray;
   public static Color TERMINAL_COLOR = METAL_COLOR;
   public static Color LABEL_COLOR = Color.white;
   public static Color BRACKET_COLOR = Color.lightGray;
+  public static Color MARKER_COLOR = Color.lightGray;
 
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   transient protected Shape[] body;
@@ -84,6 +92,9 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
   private Color labelColor = LABEL_COLOR;
   private Color bracketColor = BRACKET_COLOR;
   private Boolean showBracket = true;
+
+  private Integer selectedPosition;
+  private Boolean showMarkers;
 
   public SlideSwitch() {
     super();
@@ -122,9 +133,10 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
                 firstPoint.getY() + 3 * rowSpacing)};
         break;
     }
-    AffineTransform xform =
-        AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
+
     if (getOrientation() == OrientationHV.HORIZONTAL) {
+      AffineTransform xform =
+          AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
       for (int i = 1; i < controlPoints.length; i++) {
         xform.transform(controlPoints[i], controlPoints[i]);
       }
@@ -274,38 +286,48 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
     }
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    for (Point2D p : controlPoints) {
+    for (int i = 0; i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       } else {
         g2d.setColor(TERMINAL_COLOR);
-        g2d.fillRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.fillRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
         g2d.setColor(TERMINAL_COLOR.darker());
-        g2d.drawRect((int) (p.getX() - lugWidth / 2), (int) (p.getY() - lugHeight / 2), lugWidth,
+        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       }
     }
 
-//    g2d.setFont(project.getFont());
-//    g2d.setColor(getLabelColor());
-//
-//    double labelOffsetX = 0;
-//    double labelOffsetY = 0;
-//    if (getValue() == SlideSwitchType.SPDT) {
-//      int rowSpacing = (int) getRowSpacing().convertToPixels();
-//      if (getOrientation() == OrientationHV.VERTICAL) {
-//        labelOffsetY = -rowSpacing / 2;
-//      } else {
-//        labelOffsetX = -rowSpacing / 2;
-//      }
-//    }
-//
-//    Rectangle bounds = body[0].getBounds();
-//    StringUtils.drawCenteredText(g2d, getName(), bounds.getCenterX() + labelOffsetX,
-//        bounds.getCenterY() + labelOffsetY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    if (getShowMarkers()) {
+      String[] markers =
+          SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
+
+      g2d.setColor(MARKER_COLOR);
+
+      double offset = MARKER_OFFSET.convertToPixels();
+      for (int i = 0; i < getControlPointCount(); i++) {
+        if (markers[i] == null)
+          continue;
+
+        Point2D p = getControlPoint(i);
+        int direction = switchType == SlideSwitchType.SPDT || i < getControlPointCount() / 2 ? 1 : -1;
+        Point2D labelPoint = new Point2D.Double(direction * offset, 0);
+
+        AffineTransform tx = null;
+        if (getOrientation() == OrientationHV.HORIZONTAL) {
+          tx = AffineTransform.getRotateInstance(-Math.PI / 2, 0, 0);
+        }
+        if (tx != null) {
+          tx.transform(labelPoint, labelPoint);
+        }
+        StringUtils.drawCenteredText(g2d, markers[i], p.getX() + labelPoint.getX(), p.getY() + labelPoint.getY(),
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
+    }
   }
 
   public Shape[] getBody() {
@@ -411,14 +433,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
 
   @Override
   public int getPositionCount() {
-    switch (switchType) {
-      case SPDT:
-      case DPDT:
-        return 2;
-      case DP3T:
-        return 3;
-    }
-    return 2;
+    return switchType.getPositionCount();
   }
 
   @Override
@@ -428,12 +443,43 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
+    // Method assumes index1 < index2
     switch (switchType) {
       case SPDT:
-        return (index1 == position) && (index2 - index1 == 1);
+        // For SPDT, index 1 is the common (center) terminal
+        // Position 1: connects terminals 0-1
+        // Position 2: connects terminals 1-2
+        if (position == 0) {
+          return index1 == 0 && index2 == 1;
+        } else if (position == 1) {
+          return index1 == 1 && index2 == 2;
+        }
+        return false;
       case DPDT:
+        // For DPDT, indices 1 and 4 are the common (center) terminals
+        // Position 1: connects terminals 0-1 and 3-4
+        // Position 2: connects terminals 1-2 and 4-5
+        if (position == 0) {
+          return (index1 == 0 && index2 == 1) || (index1 == 3 && index2 == 4);
+        } else if (position == 1) {
+          return (index1 == 1 && index2 == 2) || (index1 == 4 && index2 == 5);
+        }
+        return false;
       case DP3T:
-        return (index1 == position * 2 || index1 == position * 2 + 1) && (index2 - index1 == 2);
+        // For DP3T, following the schematic:
+        // Position 1: A1-A2 and B1-B2 (0-1 and 4-5)
+        // Position 2: A2-A3 and B2-B3 (1-2 and 5-6)
+        // Position 3: A3-A4 and B3-B4 (2-3 and 6-7)
+        if (position == 0) { // Position 1
+          return (index1 == 0 && index2 == 1) || // A1-A2
+                 (index1 == 4 && index2 == 5);   // B1-B2
+        } else if (position == 1) { // Position 2
+          return (index1 == 1 && index2 == 2) || // A2-A3
+                 (index1 == 5 && index2 == 6);   // B2-B3
+        } else if (position == 2) { // Position 3
+          return (index1 == 2 && index2 == 3) || // A3-A4
+                 (index1 == 6 && index2 == 7);   // B3-B4
+        }
     }
     return false;
   }
@@ -463,6 +509,29 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
 
   public void setBracketColor(Color bracketColor) {
     this.bracketColor = bracketColor;
+  }
+
+  @DynamicEditableProperty(source = SlideSwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+  }
+
+  @EditableProperty(name = "Markers")
+  public Boolean getShowMarkers() {
+    if (showMarkers == null) {
+      showMarkers = false;
+    }
+    return showMarkers;
+  }
+
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
   }
 
   @Override

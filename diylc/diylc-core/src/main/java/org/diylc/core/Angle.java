@@ -1,9 +1,10 @@
 package org.diylc.core;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Angle {
+public class Angle implements Serializable {
 
   private int value;
   

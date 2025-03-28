@@ -51,6 +51,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.swing.plugins.tree.TreePanel;
 import org.diylc.utils.ScaledBufferedImage;
+import org.diylc.utils.UIScalingUtil;
 
 /**
  * GUI class used to draw onto.
@@ -323,7 +324,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     final Graphics2D g2d = (Graphics2D)g;
     double scaleFactor;
     if (configManager.readBoolean(IPlugInPort.HIGH_DPI_RENDERING, false)) {
-      scaleFactor = Math.sqrt(g2d.getTransform().getDeterminant());
+      scaleFactor = UIScalingUtil.GUISCALINGFACTOR_CUSTOMGRAPHICS;
     } else {
       scaleFactor = 1d;
     }

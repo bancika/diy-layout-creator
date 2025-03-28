@@ -172,10 +172,10 @@ public class Tree {
   }
 
   public String toAsciiString() {
-    return String.join("<br>", toAscii());
+    return String.join("<br>", toAsciiLines());
   }
 
-  private List<String> toAscii() {
+  private List<String> toAsciiLines() {
     if (leaf != null) {
       return Arrays.asList(TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH,
           1) + " " + leaf.toHTML() + " " + TreeAsciiUtil.generateString(TreeAsciiUtil.BOXH, 1));
@@ -184,7 +184,7 @@ public class Tree {
     List<Tree> children = getOrderedChildren();
 
     List<List<String>> childrenAscii =
-        children.stream().map(c -> c.toAscii()).collect(Collectors.toList());
+        children.stream().map(c -> c.toAsciiLines()).collect(Collectors.toList());
 
     if (TreeConnectionType.Series.equals(connectionType)) {
       return TreeAsciiUtil.concatenateMultiLineSerial(

@@ -1,5 +1,5 @@
 <java.util.Arrays_-ArrayList>
-	<a class="org.diylc.appframework.update.Version-array">		
+	<a class="org.diylc.appframework.update.Version-array">
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>4</major>
@@ -12,27 +12,27 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Buzzer component and symbol added (thanks M0JXD)</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Resistor symbol now has two draw standards - ANSI and IEC (thanks M0JXD)</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fixed run.sh application starter for Linux and Apple OSX with M1/M2 processors when using Java 17 or newer</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>When editing Label components, default focus to the text editor</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Unable to move selected components if one of them is close to being reduced to a point</description>
-				</org.diylc.appframework.update.Change>	
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Toroidal Inductor hangs the application if it doesn't have inductance value set</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
@@ -48,7 +48,7 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded JRE version of Mac builds to Temurin 17 and switched OpenGL to Metal rendering engine for improved performance</description>
-				</org.diylc.appframework.update.Change>				
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Choosing "Print" option from the menu starts printing immediately before choosing printing preferences</description>
@@ -88,7 +88,7 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Ability to change pitch and appearance of PCB Terminal Block component</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better rendering of the effective circuit graph in the guitar wiring analyzer, showing series and parallel connections in a more intuitive way</description>
@@ -188,7 +188,7 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Highlight Continuity Areas' sometimes renders stale areas when clicked</description>
-				</org.diylc.appframework.update.Change>					
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
@@ -200,7 +200,7 @@
 			</versionNumber>
 			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
@@ -220,7 +220,7 @@
 			</versionNumber>
 			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
 			<name></name>
-			<changes>			
+			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
@@ -312,6 +312,46 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Windows version doesn't start in some cases</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>2</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-03-20 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Virtual Multimeter' from 'Analyze' menu traces the circuit finding all possible paths of electricity between two points designated by the probe symbol.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to highlight connected switch lugs in selected position in order to illustrate how it works internally.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved 'Analyze' functions from 'File' menu to their own menu for faster access</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved 'Highlight Connected Areas' feature from 'Config' menu to 'Analyze' menu</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Applying a variant to a 'Hookup Wire' or 'Curved Trace' makes it lose its shape</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Copy operation doesn't work when certain component types are selected</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
