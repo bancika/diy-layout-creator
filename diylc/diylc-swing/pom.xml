@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.1.1</version>
+        <version>5.2.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -161,7 +161,7 @@
             <artifactId>swing-framework</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/swing-framework-1.0.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/swing-framework-1.1.jar</systemPath>
         </dependency>
     </dependencies>
     

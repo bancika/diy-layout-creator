@@ -331,7 +331,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability to display switch lug markings in order to illustrate how it works internally.</description>
+					<description>Added ability to display switch lug markings in order to illustrate how it works internally</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added a 'Save' button to all analysis screens which saves results of a circuit analysis to an HTML file</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
