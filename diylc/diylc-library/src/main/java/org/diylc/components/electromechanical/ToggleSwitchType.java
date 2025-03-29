@@ -30,7 +30,6 @@ public enum ToggleSwitchType {
   DPDT_off("DPDT (On/Off/On)", 3),
   DPDT_ononon_1("DPDT (On/On/On Type 1)", 3),
   DPDT_ononon_2("DPDT (On/On/On Type 2)", 3),
-  _DP3T_mustang("DP3T", 3),
   _3PDT("3PDT", 2),
   _3PDT_off("3PDT (On/Off/On)", 3),
   _4PDT("4PDT", 2),

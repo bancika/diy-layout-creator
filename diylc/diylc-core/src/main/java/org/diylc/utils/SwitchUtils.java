@@ -45,7 +45,8 @@ public class SwitchUtils {
     for (int i = 0; i < numPoints; i++) {
       final int finalI = i;
       if (switchingMatrix.stream().allMatch(
-          l -> l.stream().anyMatch(
+          l -> l.isEmpty() ||
+              l.stream().anyMatch(
               s -> s.contains(finalI)))) {
         markers[i] = String.valueOf((char)((int)'A' + commonPoints.size()));
         commonPoints.add(i);

@@ -331,7 +331,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability to highlight connected switch lugs in selected position in order to illustrate how it works internally.</description>
+					<description>Added ability to display switch lug markings in order to illustrate how it works internally.</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -344,6 +344,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Removed 'DP3T' options from 'Mini Toggle Switch' because that is covered by 'Slide Switch' component and does not belong here</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

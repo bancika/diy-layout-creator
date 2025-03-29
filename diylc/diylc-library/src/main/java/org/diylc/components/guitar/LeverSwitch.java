@@ -151,8 +151,6 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
       double theta = getAngle().getValueRad();
       g2d.setColor(MARKER_COLOR);
-      double x = controlPoints[0].getX();
-      double y = controlPoints[0].getY();
 
       double offset = MARKER_OFFSET.convertToPixels();
       for (int i = 0; i < getControlPointCount(); i++) {
