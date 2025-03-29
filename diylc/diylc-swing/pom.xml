@@ -159,7 +159,7 @@
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>swing-framework</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/swing-framework-1.1.jar</systemPath>
         </dependency>
