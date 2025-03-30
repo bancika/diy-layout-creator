@@ -42,9 +42,24 @@ Windows 32bit
 
 #### Mac OS ####
 
-Download the OSX build (ending with -osx.zip) and unpack it into the Applications folder. Java JRE is not required as it comes bundled with the app. Run the app.
+Download the OSX build matching your Mac's architecture (ending with -osx-arm.zip for Silicon Apple Macs with M1/M2/M3 processors or osx-x86.zip for older Intel-based Macs) and unpack it into the Applications folder. Java JRE is not required as it comes bundled with the app.
+
+There are two ways to get DIYLC to run on a Mac
+
+- Download a signed and notarized version from DIYLC Patreon which does not require any hassle. Head over to https://www.patreon.com/c/user?u=5213116 to become a member.
+- Download the unsigned build and allow DIYLC to run after OSX Gatekeep blocks it initially as unsafe (more details below)
 
 ##### Whitelisting DIYLC with OSX Gatekeeper #####
+
+*OSX Sequioa*
+
+- Run DIYLC
+- Gatekeeper will block it and offer to move it to Trash - do not do that
+- Go to Settings > Privacy and Security
+- Find "DIYLC" at the bottom of the screen and allow it
+- DIYLC should run fine from this point
+
+*Older Versions of OSX*
 
 If you are getting the error saying that the application is damaged, you need to either whitelist DIYLC with the Gatekeeper or temporarily disable Gatekeeper altogether.
 
@@ -80,23 +95,15 @@ If it stills fails to start, try double clicking on *diylc.jar* file to start th
 
 #### Linux ####
 
-For most Linux distributions, the easiest way to get DIYLC installed is through [Flatpak](https://flatpak.org/). To install DIYLC run the following command
-
-`flatpak install flathub com.diy_fever.DIYLayoutCreator`
-
-and to run it
-
-`flatpak run com.diy_fever.DIYLayoutCreator`
-  
-If Flatpak is not an option for any reason, running the universal build should work.
+Linux distribution is packaged as AppImage since version 5.0.0 and it contains bundled JRE 17. If you have any issues with AppImage build, you can always run the universal build.
 
 #### Universal ####
 
 This should work on any Linix/Unix machine as well as MacOS, as long as there is Java JRE installed. Just follow these steps:
 
-* Extract the entire *diylc-[version number].ZIP* file into a separate directory
+* Extract the entire *diylc-[version number]-universal.zip* file into a separate directory
 * Open the terminal
-* Change the directory to the directory where all the files are extracted (**cd `<`path to diylc3`>`**)
+* Change the directory to the directory where all the files are extracted (**cd `<`path to diylc`>`**)
 * Set the file *run.sh* to be executable by typing **chmod +x run.sh**
 * Type **./run.sh** which is the same as **sh run.sh**
   
