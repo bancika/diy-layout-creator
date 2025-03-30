@@ -15,7 +15,7 @@
 - [Using building blocks](#using-building-blocks)
 - [Working with layers](#working-with-layers)
 - [Using the status bar](#using-the-status-bar)
-- [Using 'Highlight Connected Areas' Feature](#using--highlight-connected-areas--feature)
+- [Using 'Highlight Connected Areas' Feature](#using-highlight-connected-areas-feature)
 - [Drawing and Analyzing Guitar Wiring Diagrams](#drawing-and-analyzing-guitar-wiring-diagrams)
 
 
