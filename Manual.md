@@ -30,7 +30,15 @@
 
 #### Windows ####
 
-Download the windows installer build (ending with -win.exe) and follow the wizard to install it. Java JRE is not required as it comes bundled with the installation. The universal build will also run as a portable version if this is a preferred way of using DIYLC.
+There are several ways to run DIYLC on Windows
+
+Windows 64bit
+
+- Download the Windows installer build (ending with -win64.exe) and follow the wizard to install it. Java JRE is not required as it comes bundled with the installation.
+- Download the Windows ZIP build (ending with -win64.zip) and unpack to the desired folder. Java JRE is not required as it comes bundled with the installation.
+
+Windows 32bit
+- Download the universal ZIP build (ending with -universal.zip) and unpack to the desired folder. Java JRE 17 or newer is required because universal builds comes without a bundled JRE.
 
 #### Mac OS ####
 
