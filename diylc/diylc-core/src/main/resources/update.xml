@@ -358,12 +358,24 @@
 					<description>Removed 'DP3T' options from 'Mini Toggle Switch' because that is covered by 'Slide Switch' component and does not belong here</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include components in the underside display that have at least one control point laying in the board, as opposed to all</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Applying a variant to a 'Hookup Wire' or 'Curved Trace' makes it lose its shape</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Copy operation doesn't work when certain component types are selected</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Board underside display does not work if there's a Label or PCB Text component on the board</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Using board underside display sometimes makes other components semi-transparent</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
