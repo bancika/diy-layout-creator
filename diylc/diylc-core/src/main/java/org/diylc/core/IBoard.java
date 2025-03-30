@@ -8,9 +8,11 @@ public interface IBoard {
   
   Rectangle2D getBoardRectangle();
 
-  BoardUndersideDisplay getBoardUndersideDisplay();
+  BoardUndersideDisplay getUndersideDisplay();
 
   Size getUndersideOffset();
+
+  Boolean getUndersideTransparency();
   
   boolean shouldExportToGerber();
 }

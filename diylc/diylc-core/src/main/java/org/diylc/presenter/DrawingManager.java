@@ -191,7 +191,7 @@ public class DrawingManager {
     Map<IBoard, List<IDIYComponent<?>>> boardMap = project.getComponents().stream()
             .filter(IBoard.class::isInstance)
             .map(IBoard.class::cast)
-            .filter(b -> b.getBoardUndersideDisplay() != BoardUndersideDisplay.NONE)
+            .filter(b -> b.getUndersideDisplay() != BoardUndersideDisplay.NONE)
             .collect(Collectors.toMap(x -> x, x -> new ArrayList<IDIYComponent<?>>()));
     Map<IDIYComponent<?>, Set<IBoard>> componentBoardMap = new HashMap<IDIYComponent<?>, Set<IBoard>>();
 
@@ -524,7 +524,7 @@ public class DrawingManager {
         IDIYComponent<?> clonedComponent = component.clone();
         int direction = 0;
         Point2D pivotPoint = new Point2D.Double();
-        switch (board.getBoardUndersideDisplay()) {
+        switch (board.getUndersideDisplay()) {
           case ABOVE:
             direction = IComponentTransformer.VERTICAL;
             pivotPoint.setLocation(boardRectangle.getMinX(), boardRectangle.getMinY() - offset / 2);
@@ -543,7 +543,7 @@ public class DrawingManager {
             break;
         }
       componentType.getTransformer().mirror(clonedComponent, pivotPoint, direction);
-      if (AbstractTransparentComponent.class.isInstance(clonedComponent)) {
+      if (board.getUndersideTransparency() && AbstractTransparentComponent.class.isInstance(clonedComponent)) {
         AbstractTransparentComponent<?> transparentComponent = (AbstractTransparentComponent<?>) clonedComponent;
         transparentComponent.setAlpha(MIRROR_ALPHA);
       }

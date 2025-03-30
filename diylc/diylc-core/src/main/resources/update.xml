@@ -338,6 +338,10 @@
 					<description>Added a 'Save' button to all analysis screens which saves results of a circuit analysis to an HTML file</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability control if the board underside display should render as transparent or not</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Moved 'Analyze' functions from 'File' menu to their own menu for faster access</description>
 				</org.diylc.appframework.update.Change>
