@@ -14,6 +14,7 @@
 - [Grouping components together](#grouping-components-together)
 - [Using building blocks](#using-building-blocks)
 - [Working with layers](#working-with-layers)
+- [Showing board underside](#showing-board-underside)
 - [Using the status bar](#using-the-status-bar)
 - [Using 'Highlight Connected Areas' Feature](#using-highlight-connected-areas-feature)
 - [Drawing and Analyzing Guitar Wiring Diagrams](#drawing-and-analyzing-guitar-wiring-diagrams)
@@ -262,6 +263,22 @@ DIYLC offers few functionalities for working with layers:
 
 <p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/layers2.png' /></p>
 
+### Showing board underside ###
+
+In order to make the board design process and the process of building circuit boards simpler, DIYLC offers posiblity to render the underside of a board along with the top side, showing both sides simultaneosly. In order to activate this functionality, double click on a board (or use other ways to get to the editor dialog) and set the following properties:
+
+- Underside Display: position of the underside display relative to the original top side component. Can be set to None, Above, Below, Left, Right.
+- Underside Offset: distance between the top and bottom side of the board.
+- Underside Transparency: if selected, the bottom side of the board will be rendered semi-transparent to distinguish it from the main top side.
+
+<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/underside_properties.png' /></p>
+
+<p align="center">
+ <a href="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/underside_display.png" target="_blank">
+  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/underside_display_small.png" alt="Wiring Diagram"/>
+ </a>
+</p>
+
 ### Using the status bar ###
 
 Status bar contains the following sections (going left to right):
@@ -315,7 +332,9 @@ We can run the analyzer by running the Analyze Guitar Diagrams tool from the Fil
 The output will have six sections - one for each switch configuration. Below is how analysis of one of the positions looks like. This is the middle position of the 3-way switch and coil-splitting push/pull is not engaged.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar_sample.png" alt="Analyze Guitar Diagrams"/>
+ <a href="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar_sample.png" target="_blank">
+  <img src="https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/analyze_guitar_sample_small.png" alt="Wiring Diagram"/>
+ </a>
 </p>
 
 Parallel/Series connectivity tree is basically how our circuit looks like in this switch configuration, from the perspective of the output jack. It uses parethesys to achive hierarchy, + sign for series connection and || sign for parallel connection. Pickup coils are shown in the PickupName.South or PickupName.North format with an arrow next to the name, designating the polarity.
