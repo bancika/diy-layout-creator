@@ -1,5 +1,6 @@
 package org.diylc.swing.plugins.chatbot;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
@@ -7,6 +8,7 @@ import org.diylc.plugins.chatbot.presenter.ChatbotPresenter;
 import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.plugins.cloud.presenter.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.plugins.config.ConfigPlugin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +19,8 @@ import java.io.File;
 public class ChatbotPane extends JPanel {
 
   private static final long serialVersionUID = 1L;
+
+  private static final Logger LOG = Logger.getLogger(ChatbotPane.class);
 
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
@@ -200,9 +204,9 @@ public class ChatbotPane extends JPanel {
           "<style>" +
           "body { font-family: %s; font-size: %dpt; color: rgb(%d,%d,%d); background-color: rgb(%d,%d,%d); padding: 0px; margin: 0; }" +
           "pre { white-space: pre-wrap; margin: 0; }" +
-          ".user { color: #4CAF50; }" +
-          ".assistant { color: #2196F3; }" +
-          ".system { color: #FF9800; }" +
+          ".user { color: #98C379; }" +      // Softer green that's easier on the eyes
+          ".assistant { color: #61AFEF; }" +  // Lighter, more vibrant blue
+          ".system { color: #E5C07B; }" +     // Warmer, muted yellow
           "</style>",
           MONOSPACED_FONT.getFamily(),
           MONOSPACED_FONT.getSize(),
@@ -255,8 +259,8 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public void failed(Exception e) {
-            swingUI.showMessage("Failed to ask AI Assistant. Error: " + e.getMessage(), "AI Assistant Error",
-                IView.ERROR_MESSAGE);
+            appendSection("system", "Failed to retrieve the response from the server. Error: " + e.getMessage());
+            LOG.error("Failed to retrieve the response from the server", e);
             getClearButton().setEnabled(true);
           }
 
