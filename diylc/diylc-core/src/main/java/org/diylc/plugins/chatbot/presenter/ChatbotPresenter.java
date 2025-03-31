@@ -78,9 +78,10 @@ public class ChatbotPresenter {
     return service;
   }
 
-  String promptChatbot() throws NotLoggedInException {
+  public String promptChatbot(String project, String netlist, String prompt) throws NotLoggedInException {
     if (!CloudPresenter.Instance.isLoggedIn())
       throw new NotLoggedInException();
-    return null;
+    return getService().promptChatbot(CloudPresenter.Instance.getCurrentUsername(), CloudPresenter.Instance.getCurrentToken(),
+        CloudPresenter.Instance.getMachineId(), project, netlist, prompt);
   }
 }

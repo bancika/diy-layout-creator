@@ -1,10 +1,18 @@
 package org.diylc.swing.plugins.chatbot;
 
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.ITask;
+import org.diylc.core.IView;
+import org.diylc.plugins.chatbot.presenter.ChatbotPresenter;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.plugins.cloud.presenter.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class ChatbotPane extends JPanel {
 
@@ -229,8 +237,65 @@ public class ChatbotPane extends JPanel {
       askButton.setForeground(TERMINAL_FG);
       askButton.setFocusPainted(false);
       askButton.setBorderPainted(true);
+      askButton.addActionListener(e -> {
+        final String prompt = getPromptArea().getText();
+        appendSection("user", prompt);
+        getPromptArea().setText(null);
+        String currentFile = plugInPort.getCurrentFileName();
+        String fileName = extractFileName(currentFile);
+
+        getAskButton().setEnabled(false);
+        getClearButton().setEnabled(false);
+        swingUI.executeBackgroundTask(new ITask<String>() {
+
+          @Override
+          public String doInBackground() throws Exception {
+            return ChatbotPresenter.Instance.promptChatbot(fileName, "", prompt);
+          }
+
+          @Override
+          public void failed(Exception e) {
+            swingUI.showMessage("Failed to ask AI Assistant. Error: " + e.getMessage(), "AI Assistant Error",
+                IView.ERROR_MESSAGE);
+            getClearButton().setEnabled(true);
+          }
+
+          @Override
+          public void complete(String result) {
+            appendSection("assistant", result);
+            getClearButton().setEnabled(true);
+          }
+        }, true);
+      });
     }
     return askButton;
+  }
+
+  private void appendSection(String style, String insertText) {
+    String text = getChatEditorPane().getText();
+    int bodyCloseIndex = text.indexOf("</body>");
+    text = text.substring(0, bodyCloseIndex) +
+        "\n<div class='" + style + "'>" + insertText + "</div>\n" +
+        text.substring(bodyCloseIndex);
+    getChatEditorPane().setText(text);
+  }
+
+  /**
+   * Extracts the base file name without extension from a full path.
+   * For example: "/path/to/myfile.diy" returns "myfile"
+   */
+  private String extractFileName(String path) {
+    if (path == null || path.isEmpty()) {
+      return "Untitled";
+    }
+    // Get the last part after the last separator
+    String fileName = path.substring(path.lastIndexOf(File.separator) + 1);
+    // Remove the extension if present
+    int dotIndex = fileName.lastIndexOf('.');
+    if (dotIndex > 0) {
+      fileName = fileName.substring(0, dotIndex);
+    }
+    return fileName;
   }
 
   public JButton getClearButton() {

@@ -291,6 +291,10 @@ public class CloudPresenter {
     return ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
   }
 
+  public String getCurrentToken() {
+    return ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
+  }
+
   public void updatePassword(String oldPassword, String newPassword) throws CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
 
@@ -416,7 +420,7 @@ public class CloudPresenter {
     return properties;
   }
 
-  private String getMachineId() {
+  public String getMachineId() {
     if (machineId == null) {
       try {
         InetAddress ip = InetAddress.getLocalHost();
