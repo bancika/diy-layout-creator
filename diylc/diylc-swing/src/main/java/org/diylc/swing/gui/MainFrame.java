@@ -60,6 +60,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.swing.IDynamicSubmenuHandler;
 import org.diylc.swing.plugins.analyze.AnalyzeMenuPlugin;
+import org.diylc.swing.plugins.chatbot.ChatbotPlugin;
 import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.BadPositionException;
@@ -111,7 +112,7 @@ public class MainFrame extends JFrame implements ISwingUI {
   private CanvasPlugin canvasPlugin;
 
   public MainFrame() {
-    super("DIYLC 4");
+    super("DIYLC 5");
     setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     setPreferredSize(new Dimension(1024, 700));
     createBasePanels();
@@ -131,6 +132,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(() -> new EditMenuPlugin(this));
     presenter.installPlugin(() -> new ConfigPlugin(this));
     presenter.installPlugin(() -> new LayersMenuPlugin(this));
+    presenter.installPlugin(() -> new ChatbotPlugin(this));
     presenter.installPlugin(() -> new CloudPlugIn(this));
     if ("true".equalsIgnoreCase(System.getProperty("org.diylc.enableTests")))
         presenter.installPlugin(() -> new TestMenuPlugin(this));

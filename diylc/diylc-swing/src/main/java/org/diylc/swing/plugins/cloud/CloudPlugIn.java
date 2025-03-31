@@ -55,7 +55,7 @@ import org.diylc.swing.plugins.file.FileFilterEnum;
 
 public class CloudPlugIn implements IPlugIn {
 
-  private static final String ONLINE_TITLE = "Project Cloud";
+  private static final String ONLINE_TITLE = "Cloud";
 
   private final static Logger LOG = Logger.getLogger(CloudPlugIn.class);
 
@@ -99,6 +99,7 @@ public class CloudPlugIn implements IPlugIn {
     // default state
     getUploadAction().setEnabled(false);
     getManageProjectsAction().setEnabled(false);
+    getManageAccountAction().setEnabled(false);
     getLogOutAction().setEnabled(false);
   }
 
