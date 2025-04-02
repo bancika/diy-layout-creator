@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.plugins.chatbot.presenter.ChatbotPresenter;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISwingUI;
 
 import javax.swing.*;
@@ -170,11 +171,11 @@ public class ChatbotPane extends JPanel {
     int desiredHeight = lineHeight * 3 + 10; // 3 lines + padding
     
     // Set minimum and preferred size for both text area and scroll pane
-    Dimension promptSize = new Dimension(150, desiredHeight);
+    Dimension promptSize = new Dimension(200, desiredHeight);
     getPromptArea().setMinimumSize(promptSize);
     getPromptArea().setPreferredSize(promptSize);
-    promptScrollPane.setMinimumSize(new Dimension(150, desiredHeight + 10));
-    promptScrollPane.setPreferredSize(new Dimension(150, desiredHeight + 10));
+    promptScrollPane.setMinimumSize(new Dimension(200, desiredHeight + 10));
+    promptScrollPane.setPreferredSize(new Dimension(200, desiredHeight + 10));
     
     gbc.gridx = 0;
     gbc.gridy = 3;
@@ -197,7 +198,7 @@ public class ChatbotPane extends JPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;  // Fill horizontally
     add(buttonPanel, gbc);
 
-    setPreferredSize(new Dimension(300, 400));
+    setPreferredSize(new Dimension(360, 400));
   }
 
   public JTextArea getPromptArea() {
@@ -227,8 +228,8 @@ public class ChatbotPane extends JPanel {
       // Calculate height based on font metrics
       int lineHeight = promptArea.getFontMetrics(promptArea.getFont()).getHeight();
       int desiredHeight = lineHeight * 3 + 10; // 3 lines + padding
-      promptArea.setMinimumSize(new Dimension(150, desiredHeight));
-      promptArea.setPreferredSize(new Dimension(150, desiredHeight));
+      promptArea.setMinimumSize(new Dimension(200, desiredHeight));
+      promptArea.setPreferredSize(new Dimension(200, desiredHeight));
 
       // Add placeholder text behavior
       final String placeholder = "Type your question here...";
@@ -309,7 +310,7 @@ public class ChatbotPane extends JPanel {
           TERMINAL_FG.getRed(), TERMINAL_FG.getGreen(), TERMINAL_FG.getBlue(),
           TERMINAL_BG.getRed(), TERMINAL_BG.getGreen(), TERMINAL_BG.getBlue());
 
-      String sampleChat = getSampleChat();
+      String sampleChat = getInitialChatContents();
 
       chatEditorPane.setContentType("text/html");
       chatEditorPane.setText(htmlStyle + "<body><pre>" + sampleChat + "</pre></body>");
@@ -317,19 +318,27 @@ public class ChatbotPane extends JPanel {
     return chatEditorPane;
   }
 
-  private String getSampleChat() {
+  private String getInitialChatContents() {
     Random r = new Random();
 
-    return
+    String chatHtml =
         "<div class='system'>Welcome to the DIYLC AI Assistant!</div><br><br>\n" +
             "<div class='assistant'>I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:</div><br>\n" +
-            "<ul>\n" +
-            "  <li><b>Electronics theory or concepts:</b> <i>e.g.,</i> '<span class='user'>" + electronicsQuestions[r.nextInt(
-            electronicsQuestions.length)] + "</span>'</li>\n" +
-            "  <li><b>DIYLC features and usage:</b> <i>e.g.,</i> '<span class='user'>" + diylcQuestions[r.nextInt(diylcQuestions.length)] + "</span>'</li>\n" +
-            "  <li><b>Your current circuit project:</b> <i>e.g.,</i> '<span class='user'>" + circuitQuestions[r.nextInt(circuitQuestions.length)] + "</span>'</li>\n" +
-            "</ul><br>\n" +
-            "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>";
+//            "<ul>\n" +
+            "\n" +
+            "- <b>Electronics theory or concepts:</b> <i>e.g.,</i> '<span class='user'>" + electronicsQuestions[r.nextInt(
+            electronicsQuestions.length)] + "</span>'<br>\n" +
+            "- <b>DIYLC features and usage:</b> <i>e.g.,</i> '<span class='user'>" + diylcQuestions[r.nextInt(diylcQuestions.length)] + "</span>'<br>\n" +
+            "- <b>Your current circuit project:</b> <i>e.g.,</i> '<span class='user'>" + circuitQuestions[r.nextInt(circuitQuestions.length)] + "</span>'<br>\n" +
+//            "</ul><br>\n" +
+            "<br>\n" +
+            "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>\n";
+
+    if (!CloudPresenter.Instance.isLoggedIn()) {
+      chatHtml = chatHtml + "<div class='system' id='login'>Please log into your DIYLC Cloud account in order to use the AI Assistant.</div><br>\n";
+    }
+
+    return chatHtml;
   }
 
   public JButton getAskButton() {

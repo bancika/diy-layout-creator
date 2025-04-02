@@ -28,6 +28,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 
