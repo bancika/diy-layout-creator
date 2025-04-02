@@ -658,8 +658,8 @@
                                         <copy file="${project.basedir}/deploy/win/diylc-x64.exe" 
                                               tofile="${project.build.directory}/zip-temp/diylc.exe" />
                                         
-                                        <!-- Copy JRE -->
-                                        <copy todir="${project.build.directory}/zip-temp/jre">
+                                        <!-- Copy JRE to jre17 folder instead of jre -->
+                                        <copy todir="${project.build.directory}/zip-temp/jre17">
                                             <fileset dir="${jre.dest.win64}" />
                                         </copy>
                                         
