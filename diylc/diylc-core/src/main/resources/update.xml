@@ -377,6 +377,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Using board underside display sometimes makes other components semi-transparent</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed Windows ZIP package issue with the bundled JRE</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
