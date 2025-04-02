@@ -377,7 +377,7 @@ public class ChatbotPane extends JPanel {
             appendSection(ASSISTANT, result);
             getClearButton().setEnabled(true);
           }
-        }, true);
+        }, false);
       });
     }
     return askButton;
