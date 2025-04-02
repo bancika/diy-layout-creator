@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.1.1</version>
+        <version>5.2.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -159,9 +159,9 @@
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>swing-framework</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/swing-framework-1.0.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/swing-framework-1.1.jar</systemPath>
         </dependency>
     </dependencies>
     
@@ -658,8 +658,8 @@
                                         <copy file="${project.basedir}/deploy/win/diylc-x64.exe" 
                                               tofile="${project.build.directory}/zip-temp/diylc.exe" />
                                         
-                                        <!-- Copy JRE -->
-                                        <copy todir="${project.build.directory}/zip-temp/jre">
+                                        <!-- Copy JRE to jre17 folder instead of jre -->
+                                        <copy todir="${project.build.directory}/zip-temp/jre17">
                                             <fileset dir="${jre.dest.win64}" />
                                         </copy>
                                         

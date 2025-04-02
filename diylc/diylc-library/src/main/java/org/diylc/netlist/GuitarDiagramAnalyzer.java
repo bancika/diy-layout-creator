@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import javax.swing.JLabel;
 
 import org.diylc.common.INetlistAnalyzer;
+import org.diylc.common.NetlistSwitchPreference;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.AbstractGuitarPickup;
@@ -56,7 +57,7 @@ import org.diylc.netlist.TreeException;
 import org.diylc.netlist.TreeLeaf;
 import org.diylc.netlist.Tree.ITreeWalker;
 
-public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();
@@ -89,6 +90,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     RC_TYPES.addAll(RESISTOR_TYPES);
   }
 
+  private int positiveCount;
+  private int negativeCount;
+  private int noiseCount;
+
   @Override
   public String getName() {
     return "Analyze Guitar Diagrams";
@@ -109,10 +114,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     return new JLabel().getFont().getName();
   }
 
-
-  private int positiveCount;
-  private int negativeCount;
-  private int noiseCount;
+  @Override
+  public Set<NetlistSwitchPreference> getSwitchPreference() {
+    return Set.of(NetlistSwitchPreference.WITH);
+  }
 
   protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
     List<String> notes = new ArrayList<String>();

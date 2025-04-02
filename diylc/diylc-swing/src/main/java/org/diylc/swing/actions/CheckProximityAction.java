@@ -49,7 +49,7 @@ public class CheckProximityAction extends AbstractAction implements Cloneable {
   @Override
   public void actionPerformed(ActionEvent e) {
     PropertyWrapper wrapper = new PropertyWrapper("Threshold", Size.class, "getThreshold",
-        "setThreshold", false, new PositiveNonZeroMeasureValidator(), 0);
+        "setThreshold", false, new PositiveNonZeroMeasureValidator(), 0, null);
     try {
       wrapper.readFrom(CheckProximityAction.this);
     } catch (Exception e1) {

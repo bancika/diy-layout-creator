@@ -1,4 +1,4 @@
-package org.diylc.swing.actions;
+package org.diylc.swing.actions.analyze;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;

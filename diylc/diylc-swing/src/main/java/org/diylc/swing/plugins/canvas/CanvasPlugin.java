@@ -187,15 +187,6 @@ public class CanvasPlugin implements IPlugIn{
           }
         });
 
-    configManager.addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA,
-        new IConfigListener() {
-
-          @Override
-          public void valueChanged(String key, Object value) {
-            canvasPanel.repaint();
-          }
-        });
-
     getScrollPane().getViewport().setVisible(false);
   }
 
