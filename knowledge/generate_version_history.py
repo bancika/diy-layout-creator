@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Script to parse DIYLC update_archive.xml and update.xml files to generate
-SQL INSERT statements for the diylc_knowledge table with JSON content.
+SQL INSERT statements for the diylc_knowledge_base table with JSON content.
 """
 import xml.etree.ElementTree as ET
 import json
@@ -93,7 +93,8 @@ def generate_sql_insert(version_info):
     json_string = json.dumps(json_data, indent=2).replace("'", "''")
     
     sql_insert = f"""-- Version {version}
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version {version}' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version {version}', 
 '{json_string}');
 """
@@ -102,7 +103,7 @@ VALUES ('History', 'DIYLC Version {version}',
 def generate_sql_file(versions, output_file):
     """Generate SQL file with INSERT statements for all versions."""
     with open(output_file, 'w') as f:
-        f.write("-- SQL script to insert DIYLC version history into diylc_knowledge table\n")
+        f.write("-- SQL script to insert DIYLC version history into diylc_knowledge_base table\n")
         f.write("-- Generated from update_archive.xml and update.xml data\n")
         f.write("-- Content is stored as JSON for easier parsing and flexibility\n\n")
         

@@ -1,9 +1,10 @@
--- SQL script to insert DIYLC version history into diylc_knowledge table
+-- SQL script to insert DIYLC version history into diylc_knowledge_base table
 -- Generated from update_archive.xml and update.xml data
 -- Content is stored as JSON for easier parsing and flexibility
 
 -- Version 3.0.4
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.4' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.4', 
 '{
   "version": "3.0.4",
@@ -73,7 +74,8 @@ VALUES ('History', 'DIYLC Version 3.0.4',
 }');
 
 -- Version 3.0.5
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.5' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.5', 
 '{
   "version": "3.0.5",
@@ -135,7 +137,8 @@ VALUES ('History', 'DIYLC Version 3.0.5',
 }');
 
 -- Version 3.0.6
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.6' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.6', 
 '{
   "version": "3.0.6",
@@ -197,7 +200,8 @@ VALUES ('History', 'DIYLC Version 3.0.6',
 }');
 
 -- Version 3.0.7
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.7' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.7', 
 '{
   "version": "3.0.7",
@@ -267,7 +271,8 @@ VALUES ('History', 'DIYLC Version 3.0.7',
 }');
 
 -- Version 3.0.8
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.8' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.8', 
 '{
   "version": "3.0.8",
@@ -301,7 +306,8 @@ VALUES ('History', 'DIYLC Version 3.0.8',
 }');
 
 -- Version 3.0.9
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.0.9' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.0.9', 
 '{
   "version": "3.0.9",
@@ -359,7 +365,8 @@ VALUES ('History', 'DIYLC Version 3.0.9',
 }');
 
 -- Version 3.1.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.1.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.1.0', 
 '{
   "version": "3.1.0",
@@ -397,7 +404,8 @@ VALUES ('History', 'DIYLC Version 3.1.0',
 }');
 
 -- Version 3.2.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.2.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.2.0', 
 '{
   "version": "3.2.0",
@@ -439,7 +447,8 @@ VALUES ('History', 'DIYLC Version 3.2.0',
 }');
 
 -- Version 3.3.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.3.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.3.0', 
 '{
   "version": "3.3.0",
@@ -457,7 +466,8 @@ VALUES ('History', 'DIYLC Version 3.3.0',
 }');
 
 -- Version 3.4.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.4.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.4.0', 
 '{
   "version": "3.4.0",
@@ -503,7 +513,8 @@ VALUES ('History', 'DIYLC Version 3.4.0',
 }');
 
 -- Version 3.5.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.5.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.5.0', 
 '{
   "version": "3.5.0",
@@ -525,7 +536,8 @@ VALUES ('History', 'DIYLC Version 3.5.0',
 }');
 
 -- Version 3.6.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.6.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.6.0', 
 '{
   "version": "3.6.0",
@@ -551,7 +563,8 @@ VALUES ('History', 'DIYLC Version 3.6.0',
 }');
 
 -- Version 3.7.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.7.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.7.0', 
 '{
   "version": "3.7.0",
@@ -569,7 +582,8 @@ VALUES ('History', 'DIYLC Version 3.7.0',
 }');
 
 -- Version 3.8.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.8.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.8.0', 
 '{
   "version": "3.8.0",
@@ -599,7 +613,8 @@ VALUES ('History', 'DIYLC Version 3.8.0',
 }');
 
 -- Version 3.9.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.9.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.9.0', 
 '{
   "version": "3.9.0",
@@ -649,7 +664,8 @@ VALUES ('History', 'DIYLC Version 3.9.0',
 }');
 
 -- Version 3.10.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.10.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.10.0', 
 '{
   "version": "3.10.0",
@@ -667,7 +683,8 @@ VALUES ('History', 'DIYLC Version 3.10.0',
 }');
 
 -- Version 3.11.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.11.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.11.0', 
 '{
   "version": "3.11.0",
@@ -685,7 +702,8 @@ VALUES ('History', 'DIYLC Version 3.11.0',
 }');
 
 -- Version 3.12.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.12.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.12.0', 
 '{
   "version": "3.12.0",
@@ -723,7 +741,8 @@ VALUES ('History', 'DIYLC Version 3.12.0',
 }');
 
 -- Version 3.13.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.13.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.13.0', 
 '{
   "version": "3.13.0",
@@ -765,7 +784,8 @@ VALUES ('History', 'DIYLC Version 3.13.0',
 }');
 
 -- Version 3.14.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.14.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.14.0', 
 '{
   "version": "3.14.0",
@@ -807,7 +827,8 @@ VALUES ('History', 'DIYLC Version 3.14.0',
 }');
 
 -- Version 3.15.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.15.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.15.0', 
 '{
   "version": "3.15.0",
@@ -829,7 +850,8 @@ VALUES ('History', 'DIYLC Version 3.15.0',
 }');
 
 -- Version 3.16.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.16.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.16.0', 
 '{
   "version": "3.16.0",
@@ -863,7 +885,8 @@ VALUES ('History', 'DIYLC Version 3.16.0',
 }');
 
 -- Version 3.17.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.17.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.17.0', 
 '{
   "version": "3.17.0",
@@ -893,7 +916,8 @@ VALUES ('History', 'DIYLC Version 3.17.0',
 }');
 
 -- Version 3.18.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.18.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.18.0', 
 '{
   "version": "3.18.0",
@@ -915,7 +939,8 @@ VALUES ('History', 'DIYLC Version 3.18.0',
 }');
 
 -- Version 3.19.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.19.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.19.0', 
 '{
   "version": "3.19.0",
@@ -933,7 +958,8 @@ VALUES ('History', 'DIYLC Version 3.19.0',
 }');
 
 -- Version 3.20.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.20.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.20.0', 
 '{
   "version": "3.20.0",
@@ -971,7 +997,8 @@ VALUES ('History', 'DIYLC Version 3.20.0',
 }');
 
 -- Version 3.21.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.21.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.21.0', 
 '{
   "version": "3.21.0",
@@ -985,7 +1012,8 @@ VALUES ('History', 'DIYLC Version 3.21.0',
 }');
 
 -- Version 3.22.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.22.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.22.0', 
 '{
   "version": "3.22.0",
@@ -1011,7 +1039,8 @@ VALUES ('History', 'DIYLC Version 3.22.0',
 }');
 
 -- Version 3.23.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.23.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.23.0', 
 '{
   "version": "3.23.0",
@@ -1053,7 +1082,8 @@ VALUES ('History', 'DIYLC Version 3.23.0',
 }');
 
 -- Version 3.24.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.24.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.24.0', 
 '{
   "version": "3.24.0",
@@ -1079,7 +1109,8 @@ VALUES ('History', 'DIYLC Version 3.24.0',
 }');
 
 -- Version 3.25.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.25.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.25.0', 
 '{
   "version": "3.25.0",
@@ -1097,7 +1128,8 @@ VALUES ('History', 'DIYLC Version 3.25.0',
 }');
 
 -- Version 3.26.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.26.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.26.0', 
 '{
   "version": "3.26.0",
@@ -1119,7 +1151,8 @@ VALUES ('History', 'DIYLC Version 3.26.0',
 }');
 
 -- Version 3.27.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.27.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.27.0', 
 '{
   "version": "3.27.0",
@@ -1169,7 +1202,8 @@ VALUES ('History', 'DIYLC Version 3.27.0',
 }');
 
 -- Version 3.28.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.28.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.28.0', 
 '{
   "version": "3.28.0",
@@ -1191,7 +1225,8 @@ VALUES ('History', 'DIYLC Version 3.28.0',
 }');
 
 -- Version 3.29.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.29.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.29.0', 
 '{
   "version": "3.29.0",
@@ -1229,7 +1264,8 @@ VALUES ('History', 'DIYLC Version 3.29.0',
 }');
 
 -- Version 3.30.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.30.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.30.0', 
 '{
   "version": "3.30.0",
@@ -1243,7 +1279,8 @@ VALUES ('History', 'DIYLC Version 3.30.0',
 }');
 
 -- Version 3.31.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.31.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.31.0', 
 '{
   "version": "3.31.0",
@@ -1257,7 +1294,8 @@ VALUES ('History', 'DIYLC Version 3.31.0',
 }');
 
 -- Version 3.32.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.32.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.32.0', 
 '{
   "version": "3.32.0",
@@ -1323,7 +1361,8 @@ VALUES ('History', 'DIYLC Version 3.32.0',
 }');
 
 -- Version 3.33.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.33.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.33.0', 
 '{
   "version": "3.33.0",
@@ -1373,7 +1412,8 @@ VALUES ('History', 'DIYLC Version 3.33.0',
 }');
 
 -- Version 3.34.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.34.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.34.0', 
 '{
   "version": "3.34.0",
@@ -1431,7 +1471,8 @@ VALUES ('History', 'DIYLC Version 3.34.0',
 }');
 
 -- Version 3.35.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.35.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.35.0', 
 '{
   "version": "3.35.0",
@@ -1465,7 +1506,8 @@ VALUES ('History', 'DIYLC Version 3.35.0',
 }');
 
 -- Version 3.36.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.36.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.36.0', 
 '{
   "version": "3.36.0",
@@ -1531,7 +1573,8 @@ VALUES ('History', 'DIYLC Version 3.36.0',
 }');
 
 -- Version 3.37.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.37.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.37.0', 
 '{
   "version": "3.37.0",
@@ -1553,7 +1596,8 @@ VALUES ('History', 'DIYLC Version 3.37.0',
 }');
 
 -- Version 3.38.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.38.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.38.0', 
 '{
   "version": "3.38.0",
@@ -1607,7 +1651,8 @@ VALUES ('History', 'DIYLC Version 3.38.0',
 }');
 
 -- Version 3.39.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.39.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.39.0', 
 '{
   "version": "3.39.0",
@@ -1661,7 +1706,8 @@ VALUES ('History', 'DIYLC Version 3.39.0',
 }');
 
 -- Version 3.40.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.40.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.40.0', 
 '{
   "version": "3.40.0",
@@ -1719,7 +1765,8 @@ VALUES ('History', 'DIYLC Version 3.40.0',
 }');
 
 -- Version 3.41.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.41.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.41.0', 
 '{
   "version": "3.41.0",
@@ -1753,7 +1800,8 @@ VALUES ('History', 'DIYLC Version 3.41.0',
 }');
 
 -- Version 3.41.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.41.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.41.1', 
 '{
   "version": "3.41.1",
@@ -1771,7 +1819,8 @@ VALUES ('History', 'DIYLC Version 3.41.1',
 }');
 
 -- Version 3.42.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.42.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.42.0', 
 '{
   "version": "3.42.0",
@@ -1817,7 +1866,8 @@ VALUES ('History', 'DIYLC Version 3.42.0',
 }');
 
 -- Version 3.42.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.42.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.42.1', 
 '{
   "version": "3.42.1",
@@ -1831,7 +1881,8 @@ VALUES ('History', 'DIYLC Version 3.42.1',
 }');
 
 -- Version 3.43.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.43.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.43.0', 
 '{
   "version": "3.43.0",
@@ -1853,7 +1904,8 @@ VALUES ('History', 'DIYLC Version 3.43.0',
 }');
 
 -- Version 3.44.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.44.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.44.0', 
 '{
   "version": "3.44.0",
@@ -1883,7 +1935,8 @@ VALUES ('History', 'DIYLC Version 3.44.0',
 }');
 
 -- Version 3.44.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.44.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.44.1', 
 '{
   "version": "3.44.1",
@@ -1897,7 +1950,8 @@ VALUES ('History', 'DIYLC Version 3.44.1',
 }');
 
 -- Version 3.45.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.45.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.45.0', 
 '{
   "version": "3.45.0",
@@ -1923,7 +1977,8 @@ VALUES ('History', 'DIYLC Version 3.45.0',
 }');
 
 -- Version 3.46.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.46.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.46.0', 
 '{
   "version": "3.46.0",
@@ -1961,7 +2016,8 @@ VALUES ('History', 'DIYLC Version 3.46.0',
 }');
 
 -- Version 3.46.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.46.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.46.1', 
 '{
   "version": "3.46.1",
@@ -1975,7 +2031,8 @@ VALUES ('History', 'DIYLC Version 3.46.1',
 }');
 
 -- Version 3.47.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.47.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.47.0', 
 '{
   "version": "3.47.0",
@@ -2017,7 +2074,8 @@ VALUES ('History', 'DIYLC Version 3.47.0',
 }');
 
 -- Version 3.48.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.48.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.48.0', 
 '{
   "version": "3.48.0",
@@ -2083,7 +2141,8 @@ VALUES ('History', 'DIYLC Version 3.48.0',
 }');
 
 -- Version 3.49.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.49.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.49.0', 
 '{
   "version": "3.49.0",
@@ -2133,7 +2192,8 @@ VALUES ('History', 'DIYLC Version 3.49.0',
 }');
 
 -- Version 3.50.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.50.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.50.0', 
 '{
   "version": "3.50.0",
@@ -2199,7 +2259,8 @@ VALUES ('History', 'DIYLC Version 3.50.0',
 }');
 
 -- Version 3.51.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.51.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.51.0', 
 '{
   "version": "3.51.0",
@@ -2229,7 +2290,8 @@ VALUES ('History', 'DIYLC Version 3.51.0',
 }');
 
 -- Version 3.52.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.52.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.52.0', 
 '{
   "version": "3.52.0",
@@ -2263,7 +2325,8 @@ VALUES ('History', 'DIYLC Version 3.52.0',
 }');
 
 -- Version 3.53.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.53.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.53.0', 
 '{
   "version": "3.53.0",
@@ -2337,7 +2400,8 @@ VALUES ('History', 'DIYLC Version 3.53.0',
 }');
 
 -- Version 3.54.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.54.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.54.0', 
 '{
   "version": "3.54.0",
@@ -2379,7 +2443,8 @@ VALUES ('History', 'DIYLC Version 3.54.0',
 }');
 
 -- Version 3.55.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.55.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.55.0', 
 '{
   "version": "3.55.0",
@@ -2425,7 +2490,8 @@ VALUES ('History', 'DIYLC Version 3.55.0',
 }');
 
 -- Version 3.55.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.55.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.55.1', 
 '{
   "version": "3.55.1",
@@ -2439,7 +2505,8 @@ VALUES ('History', 'DIYLC Version 3.55.1',
 }');
 
 -- Version 3.56.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.56.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.56.0', 
 '{
   "version": "3.56.0",
@@ -2489,7 +2556,8 @@ VALUES ('History', 'DIYLC Version 3.56.0',
 }');
 
 -- Version 3.57.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 3.57.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 3.57.0', 
 '{
   "version": "3.57.0",
@@ -2563,7 +2631,8 @@ VALUES ('History', 'DIYLC Version 3.57.0',
 }');
 
 -- Version 4.0.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.0.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.0.1', 
 '{
   "version": "4.0.1",
@@ -2629,7 +2698,8 @@ VALUES ('History', 'DIYLC Version 4.0.1',
 }');
 
 -- Version 4.1.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.1.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.1.0', 
 '{
   "version": "4.1.0",
@@ -2699,7 +2769,8 @@ VALUES ('History', 'DIYLC Version 4.1.0',
 }');
 
 -- Version 4.2.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.2.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.2.0', 
 '{
   "version": "4.2.0",
@@ -2745,7 +2816,8 @@ VALUES ('History', 'DIYLC Version 4.2.0',
 }');
 
 -- Version 4.3.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.3.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.3.0', 
 '{
   "version": "4.3.0",
@@ -2783,7 +2855,8 @@ VALUES ('History', 'DIYLC Version 4.3.0',
 }');
 
 -- Version 4.4.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.4.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.4.0', 
 '{
   "version": "4.4.0",
@@ -2845,7 +2918,8 @@ VALUES ('History', 'DIYLC Version 4.4.0',
 }');
 
 -- Version 4.5.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.5.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.5.0', 
 '{
   "version": "4.5.0",
@@ -2887,7 +2961,8 @@ VALUES ('History', 'DIYLC Version 4.5.0',
 }');
 
 -- Version 4.6.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.6.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.6.0', 
 '{
   "version": "4.6.0",
@@ -2929,7 +3004,8 @@ VALUES ('History', 'DIYLC Version 4.6.0',
 }');
 
 -- Version 4.7.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.7.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.7.0', 
 '{
   "version": "4.7.0",
@@ -2967,7 +3043,8 @@ VALUES ('History', 'DIYLC Version 4.7.0',
 }');
 
 -- Version 4.8.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.8.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.8.0', 
 '{
   "version": "4.8.0",
@@ -3005,7 +3082,8 @@ VALUES ('History', 'DIYLC Version 4.8.0',
 }');
 
 -- Version 4.9.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.9.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.9.0', 
 '{
   "version": "4.9.0",
@@ -3055,7 +3133,8 @@ VALUES ('History', 'DIYLC Version 4.9.0',
 }');
 
 -- Version 4.10.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.10.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.10.0', 
 '{
   "version": "4.10.0",
@@ -3085,7 +3164,8 @@ VALUES ('History', 'DIYLC Version 4.10.0',
 }');
 
 -- Version 4.11.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.11.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.11.0', 
 '{
   "version": "4.11.0",
@@ -3111,7 +3191,8 @@ VALUES ('History', 'DIYLC Version 4.11.0',
 }');
 
 -- Version 4.12.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.12.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.12.0', 
 '{
   "version": "4.12.0",
@@ -3185,7 +3266,8 @@ VALUES ('History', 'DIYLC Version 4.12.0',
 }');
 
 -- Version 4.13.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.13.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.13.0', 
 '{
   "version": "4.13.0",
@@ -3223,7 +3305,8 @@ VALUES ('History', 'DIYLC Version 4.13.0',
 }');
 
 -- Version 4.14.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.14.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.14.0', 
 '{
   "version": "4.14.0",
@@ -3245,7 +3328,8 @@ VALUES ('History', 'DIYLC Version 4.14.0',
 }');
 
 -- Version 4.15.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.15.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.15.0', 
 '{
   "version": "4.15.0",
@@ -3295,7 +3379,8 @@ VALUES ('History', 'DIYLC Version 4.15.0',
 }');
 
 -- Version 4.15.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.15.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.15.1', 
 '{
   "version": "4.15.1",
@@ -3309,7 +3394,8 @@ VALUES ('History', 'DIYLC Version 4.15.1',
 }');
 
 -- Version 4.16.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.16.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.16.0', 
 '{
   "version": "4.16.0",
@@ -3347,7 +3433,8 @@ VALUES ('History', 'DIYLC Version 4.16.0',
 }');
 
 -- Version 4.17.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.17.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.17.0', 
 '{
   "version": "4.17.0",
@@ -3373,7 +3460,8 @@ VALUES ('History', 'DIYLC Version 4.17.0',
 }');
 
 -- Version 4.18.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.18.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.18.0', 
 '{
   "version": "4.18.0",
@@ -3395,7 +3483,8 @@ VALUES ('History', 'DIYLC Version 4.18.0',
 }');
 
 -- Version 4.19.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.19.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.19.0', 
 '{
   "version": "4.19.0",
@@ -3413,7 +3502,8 @@ VALUES ('History', 'DIYLC Version 4.19.0',
 }');
 
 -- Version 4.20.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.20.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.20.0', 
 '{
   "version": "4.20.0",
@@ -3427,7 +3517,8 @@ VALUES ('History', 'DIYLC Version 4.20.0',
 }');
 
 -- Version 4.21.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.0', 
 '{
   "version": "4.21.0",
@@ -3457,7 +3548,8 @@ VALUES ('History', 'DIYLC Version 4.21.0',
 }');
 
 -- Version 4.21.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.1', 
 '{
   "version": "4.21.1",
@@ -3475,7 +3567,8 @@ VALUES ('History', 'DIYLC Version 4.21.1',
 }');
 
 -- Version 4.21.2
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.2' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.2', 
 '{
   "version": "4.21.2",
@@ -3489,7 +3582,8 @@ VALUES ('History', 'DIYLC Version 4.21.2',
 }');
 
 -- Version 4.21.3
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.3' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.3', 
 '{
   "version": "4.21.3",
@@ -3503,7 +3597,8 @@ VALUES ('History', 'DIYLC Version 4.21.3',
 }');
 
 -- Version 4.21.4
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.4' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.4', 
 '{
   "version": "4.21.4",
@@ -3521,7 +3616,8 @@ VALUES ('History', 'DIYLC Version 4.21.4',
 }');
 
 -- Version 4.21.5
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.21.5' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.21.5', 
 '{
   "version": "4.21.5",
@@ -3535,7 +3631,8 @@ VALUES ('History', 'DIYLC Version 4.21.5',
 }');
 
 -- Version 4.22.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.22.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.22.0', 
 '{
   "version": "4.22.0",
@@ -3565,7 +3662,8 @@ VALUES ('History', 'DIYLC Version 4.22.0',
 }');
 
 -- Version 4.22.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.22.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.22.1', 
 '{
   "version": "4.22.1",
@@ -3587,7 +3685,8 @@ VALUES ('History', 'DIYLC Version 4.22.1',
 }');
 
 -- Version 4.22.2
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.22.2' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.22.2', 
 '{
   "version": "4.22.2",
@@ -3605,7 +3704,8 @@ VALUES ('History', 'DIYLC Version 4.22.2',
 }');
 
 -- Version 4.23.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.23.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.23.0', 
 '{
   "version": "4.23.0",
@@ -3631,7 +3731,8 @@ VALUES ('History', 'DIYLC Version 4.23.0',
 }');
 
 -- Version 4.24.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.24.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.24.0', 
 '{
   "version": "4.24.0",
@@ -3649,7 +3750,8 @@ VALUES ('History', 'DIYLC Version 4.24.0',
 }');
 
 -- Version 4.25.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.25.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.25.0', 
 '{
   "version": "4.25.0",
@@ -3683,7 +3785,8 @@ VALUES ('History', 'DIYLC Version 4.25.0',
 }');
 
 -- Version 4.26.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.26.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.26.0', 
 '{
   "version": "4.26.0",
@@ -3713,7 +3816,8 @@ VALUES ('History', 'DIYLC Version 4.26.0',
 }');
 
 -- Version 4.27.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.27.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.27.0', 
 '{
   "version": "4.27.0",
@@ -3731,7 +3835,8 @@ VALUES ('History', 'DIYLC Version 4.27.0',
 }');
 
 -- Version 4.28.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.28.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.28.0', 
 '{
   "version": "4.28.0",
@@ -3757,7 +3862,8 @@ VALUES ('History', 'DIYLC Version 4.28.0',
 }');
 
 -- Version 4.29.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.29.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.29.0', 
 '{
   "version": "4.29.0",
@@ -3783,7 +3889,8 @@ VALUES ('History', 'DIYLC Version 4.29.0',
 }');
 
 -- Version 4.30.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.30.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.30.0', 
 '{
   "version": "4.30.0",
@@ -3825,7 +3932,8 @@ VALUES ('History', 'DIYLC Version 4.30.0',
 }');
 
 -- Version 4.30.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.30.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.30.1', 
 '{
   "version": "4.30.1",
@@ -3839,7 +3947,8 @@ VALUES ('History', 'DIYLC Version 4.30.1',
 }');
 
 -- Version 4.31.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.31.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.31.0', 
 '{
   "version": "4.31.0",
@@ -3885,7 +3994,8 @@ VALUES ('History', 'DIYLC Version 4.31.0',
 }');
 
 -- Version 4.32.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.32.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.32.0', 
 '{
   "version": "4.32.0",
@@ -3927,7 +4037,8 @@ VALUES ('History', 'DIYLC Version 4.32.0',
 }');
 
 -- Version 4.33.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.33.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.33.0', 
 '{
   "version": "4.33.0",
@@ -3957,7 +4068,8 @@ VALUES ('History', 'DIYLC Version 4.33.0',
 }');
 
 -- Version 4.34.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.34.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.34.0', 
 '{
   "version": "4.34.0",
@@ -4003,7 +4115,8 @@ VALUES ('History', 'DIYLC Version 4.34.0',
 }');
 
 -- Version 4.35.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.35.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.35.0', 
 '{
   "version": "4.35.0",
@@ -4085,7 +4198,8 @@ VALUES ('History', 'DIYLC Version 4.35.0',
 }');
 
 -- Version 4.36.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.36.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.36.0', 
 '{
   "version": "4.36.0",
@@ -4123,7 +4237,8 @@ VALUES ('History', 'DIYLC Version 4.36.0',
 }');
 
 -- Version 4.37.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.37.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.37.0', 
 '{
   "version": "4.37.0",
@@ -4141,7 +4256,8 @@ VALUES ('History', 'DIYLC Version 4.37.0',
 }');
 
 -- Version 4.38.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.38.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.38.0', 
 '{
   "version": "4.38.0",
@@ -4175,7 +4291,8 @@ VALUES ('History', 'DIYLC Version 4.38.0',
 }');
 
 -- Version 4.39.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.39.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.39.0', 
 '{
   "version": "4.39.0",
@@ -4193,7 +4310,8 @@ VALUES ('History', 'DIYLC Version 4.39.0',
 }');
 
 -- Version 4.40.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.40.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.40.0', 
 '{
   "version": "4.40.0",
@@ -4275,7 +4393,8 @@ VALUES ('History', 'DIYLC Version 4.40.0',
 }');
 
 -- Version 4.41.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.41.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.41.0', 
 '{
   "version": "4.41.0",
@@ -4325,7 +4444,8 @@ VALUES ('History', 'DIYLC Version 4.41.0',
 }');
 
 -- Version 4.41.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 4.41.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 4.41.1', 
 '{
   "version": "4.41.1",
@@ -4343,7 +4463,8 @@ VALUES ('History', 'DIYLC Version 4.41.1',
 }');
 
 -- Version 5.0.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 5.0.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 5.0.0', 
 '{
   "version": "5.0.0",
@@ -4369,7 +4490,8 @@ VALUES ('History', 'DIYLC Version 5.0.0',
 }');
 
 -- Version 5.1.0
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 5.1.0' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 5.1.0', 
 '{
   "version": "5.1.0",
@@ -4423,7 +4545,8 @@ VALUES ('History', 'DIYLC Version 5.1.0',
 }');
 
 -- Version 5.1.1
-INSERT INTO diylc_knowledge (category, section, content)
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Version 5.1.1' and category = 'History';
+INSERT INTO diylc_knowledge_base (category, section, content)
 VALUES ('History', 'DIYLC Version 5.1.1', 
 '{
   "version": "5.1.1",
