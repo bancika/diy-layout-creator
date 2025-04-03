@@ -36,6 +36,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
+import org.diylc.netlist.Node;
 import org.diylc.plugins.chatbot.model.IChatbotAPI;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
@@ -117,14 +118,17 @@ public class ChatbotPresenter {
 
   private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
 
+  @SuppressWarnings("unchecked")
   private String extractNetlists() throws NetlistException {
     List<Netlist> netlists = plugInPort.extractNetlists(true);
 
     StringBuilder sb = new StringBuilder();
     sb.append("Components: ");
 
-    Set<? extends IDIYComponent<?>> components = netlists.stream().flatMap(n -> n.getGroups().stream()
-            .flatMap(g -> g.getNodes().stream().map(node -> node.getComponent())))
+    Set<? extends IDIYComponent<?>> components = netlists.stream()
+        .flatMap(n -> n.getGroups().stream()
+            .flatMap(g -> g.getNodes().stream().
+                map(Node::getComponent)))
         .collect(Collectors.toSet());
 
     List<Map<String, Object>> componentDescriptors = new ArrayList<>();
