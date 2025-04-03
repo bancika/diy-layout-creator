@@ -50,11 +50,10 @@ public interface INetlistAnalyzer {
    * Summarizes all {@link Netlist}s provided. 
    * 
    * @param netlists
-   * @param preferredOutput optional, needed only where there's more than one possible output node.
    * @return
    * @throws TreeException 
    */
-  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException;
+  List<Summary> summarize(List<Netlist> netlists) throws TreeException;
   
   /**   
    * @return name of the font to be used for display.

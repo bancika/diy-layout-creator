@@ -69,7 +69,7 @@ public class SpiceAnalyzer extends AbstractNetlistAnalyzer implements INetlistAn
     return EnumSet.allOf(NetlistSwitchPreference.class);
   }
   
-  protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
+  protected Summary summarize(Netlist netlist) throws TreeException {
     // grab all components that are in the netlist
     List<Group> groups = netlist.getSortedGroups();
 

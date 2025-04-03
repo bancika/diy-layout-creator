@@ -51,7 +51,7 @@ public class MultimeterAnalyzer extends AbstractNetlistAnalyzer implements INetl
     return EnumSet.allOf(NetlistSwitchPreference.class);
   }
 
-  protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
+  protected Summary summarize(Netlist netlist) throws TreeException {
     Tree tree = constructTree(netlist);
 
     if (tree == null) {

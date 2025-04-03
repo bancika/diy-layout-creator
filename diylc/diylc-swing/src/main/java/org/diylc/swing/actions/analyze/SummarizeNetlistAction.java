@@ -53,7 +53,7 @@ public class SummarizeNetlistAction extends AbstractAction {
           throw new Exception("The generated netlist is empty, nothing to show.");
         }
 
-        return summarizer.summarize(netlists, null);
+        return summarizer.summarize(netlists);
       }
 
       @Override

@@ -30,10 +30,10 @@ public abstract class AbstractNetlistAnalyzer {
 
   public AbstractNetlistAnalyzer() {}
   
-  public List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException {    
+  public List<Summary> summarize(List<Netlist> netlists) throws TreeException {
     Map<String, Summary> summaries = new HashMap<String, Summary>();
     for (Netlist n : netlists) {
-      Summary s = summarize(n, preferredOutput);
+      Summary s = summarize(n);
       if (summaries.containsKey(s.getSummary()))
         summaries.get(s.getSummary()).append(n);
       else
@@ -46,7 +46,7 @@ public abstract class AbstractNetlistAnalyzer {
     return res;
   }
   
-  protected abstract Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException;
+  protected abstract Summary summarize(Netlist netlist) throws TreeException;
 
   public Tree constructTreeBetween(Netlist netlist, Node nodeA, Node nodeB) {
     Tree tree = new Tree(TreeConnectionType.Parallel);
