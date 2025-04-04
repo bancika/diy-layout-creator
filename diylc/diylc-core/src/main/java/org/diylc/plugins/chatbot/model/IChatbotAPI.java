@@ -23,6 +23,8 @@ package org.diylc.plugins.chatbot.model;
 
 import com.diyfever.httpproxy.ParamName;
 
+import java.util.List;
+
 public interface IChatbotAPI {
 
   /**
@@ -39,4 +41,13 @@ public interface IChatbotAPI {
   String promptChatbot(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("project") String project,
       @ParamName("netlist") String netlist, @ParamName("prompt") String prompt);
+
+  SubscriptionEntity getSubscriptionInfo(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId);
+
+  String deleteChatHistory(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("project") String project);
+
+  List<ChatMessageEntity> getChatHistory(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("project") String project);
 }

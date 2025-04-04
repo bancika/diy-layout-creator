@@ -26,15 +26,11 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.Project;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 
 import javax.swing.*;
 import java.util.EnumSet;
-import java.util.Set;
 
 public class ChatbotPlugin implements IPlugIn {
 
@@ -47,31 +43,44 @@ public class ChatbotPlugin implements IPlugIn {
   public ChatbotPlugin(ISwingUI swingUI) {
     super();
     this.swingUI = swingUI;
+
+    // Delay a test of logged in state to give it time to complete
+    Timer timer = new Timer(2000, e -> {
+      if (!plugInPort.getCloudService().isLoggedIn()) {
+        getChatbotPane().refreshChat();
+      }
+    });
+    timer.setRepeats(false); // Make it one-shot
+    timer.start();
   }
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.of(EventType.FILE_STATUS_CHANGED, EventType.PROJECT_LOADED,
-        EventType.PROJECT_MODIFIED, EventType.SELECTION_CHANGED);
+        EventType.PROJECT_MODIFIED, EventType.SELECTION_CHANGED, EventType.CLOUD_LOGGED_IN,
+        EventType.CLOUD_LOGGED_OUT);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void processMessage(EventType eventType, Object... params) {
-//    switch (eventType) {
-//      case PROJECT_MODIFIED:
+    switch (eventType) {
+      case PROJECT_MODIFIED:
 //        getChatbotPane().setComponents(((Project) params[1]).getComponents(),
 //            plugInPort.getSelectedComponents());
-//        break;
-//      case PROJECT_LOADED:
-//        getChatbotPane().setComponents(((Project) params[0]).getComponents(),
-//            plugInPort.getSelectedComponents());
-//        break;
-//      case SELECTION_CHANGED:
+        break;
+      case SELECTION_CHANGED:
 //        getChatbotPane().setSelection((Set<IDIYComponent<?>>) params[0]);
-//      default:
-//        break;
-//    }
+        break;
+      case FILE_STATUS_CHANGED:
+      case PROJECT_LOADED:
+      case CLOUD_LOGGED_IN:
+      case CLOUD_LOGGED_OUT:
+        getChatbotPane().refreshChat();
+        break;
+      default:
+        break;
+    }
   }
 
   @Override

@@ -19,15 +19,12 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.plugins.chatbot.presenter;
+package org.diylc.plugins.chatbot.service;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.log4j.Logger;
-import org.checkerframework.checker.units.qual.C;
-import org.checkerframework.checker.units.qual.N;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
@@ -37,28 +34,15 @@ import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
 import org.diylc.netlist.Node;
+import org.diylc.plugins.chatbot.model.ChatMessageEntity;
 import org.diylc.plugins.chatbot.model.IChatbotAPI;
-import org.diylc.plugins.cloud.model.CommentEntity;
+import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
-import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.model.UserEntity;
-import org.diylc.plugins.cloud.presenter.CloudException;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.plugins.cloud.presenter.NotLoggedInException;
-import org.diylc.presenter.ComparatorFactory;
+import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.utils.FileUtils;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,29 +50,30 @@ import java.util.stream.Collectors;
 import static org.diylc.utils.FileUtils.extractFileName;
 
 /**
- * Contains all the back-end logic for using the cloud and manipulating projects on the cloud.
+ * Contains all the back-end logic for using the chatbot.
  * 
  * @author Branislav Stojkovic
  */
-public class ChatbotPresenter {
+public class ChatbotService {
 
-  private static String ERROR = "Error";
+  public static final String LOG_IN_MESSAGE =
+      "Please log into your DIYLC Cloud account in order to use the AI Assistant";
 
-  private final static Logger LOG = Logger.getLogger(ChatbotPresenter.class);
-  private static final Object SUCCESS = "Success";
-  private final IPlugInPort plugInPort;
+  private final static Logger LOG = Logger.getLogger(ChatbotService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+  public static final String WELCOME_MESSAGE = "Welcome to the DIYLC AI Assistant!";
+
+  private final IPlugInPort plugInPort;
 
   private IChatbotAPI service;
-  private String serviceUrl;
 
-  public ChatbotPresenter(IPlugInPort plugInPort) {
+  public ChatbotService(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
   }
 
   private IChatbotAPI getService() {
     if (service == null) {
-      serviceUrl =
+      String serviceUrl =
           ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1/ai");
       ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
       service = factory.createProxy(IChatbotAPI.class, serviceUrl);
@@ -97,7 +82,7 @@ public class ChatbotPresenter {
   }
 
   public String promptChatbot(String prompt) throws NotLoggedInException {
-    if (!CloudPresenter.Instance.isLoggedIn())
+    if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
     String currentFile = plugInPort.getCurrentFileName();
@@ -111,9 +96,10 @@ public class ChatbotPresenter {
       netlist = null;
     }
 
-    return getService().promptChatbot(CloudPresenter.Instance.getCurrentUsername(),
-        CloudPresenter.Instance.getCurrentToken(),
-        CloudPresenter.Instance.getMachineId(), fileName, netlist, prompt);
+    return getService().promptChatbot(
+        plugInPort.getCloudService().getCurrentUsername(),
+        plugInPort.getCloudService().getCurrentToken(),
+        plugInPort.getCloudService().getMachineId(), fileName, netlist, prompt);
   }
 
   private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
@@ -122,6 +108,10 @@ public class ChatbotPresenter {
   private String extractNetlists() throws NetlistException {
     List<Netlist> netlists = plugInPort.extractNetlists(true);
 
+    if (netlists == null) {
+      return null;
+    }
+    
     StringBuilder sb = new StringBuilder();
     sb.append("Components: ");
 
@@ -183,7 +173,7 @@ public class ChatbotPresenter {
     Random r = new Random();
 
     String chatHtml =
-        "<div class='system'>Welcome to the DIYLC AI Assistant!</div><br><br>\n" +
+        "<div class='system'>" + WELCOME_MESSAGE + "</div><br><br>\n" +
             "<div class='assistant'>I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:</div><br>\n" +
             //            "<ul>\n" +
             "\n" +
@@ -195,11 +185,33 @@ public class ChatbotPresenter {
             "<br>\n" +
             "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>\n";
 
-    if (!CloudPresenter.Instance.isLoggedIn()) {
-      chatHtml = chatHtml + "<div class='system' id='login'>Please log into your DIYLC Cloud account in order to use the AI Assistant.</div><br>\n";
-    }
-
     return chatHtml;
+  }
+
+  public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {
+    if (!plugInPort.getCloudService().isLoggedIn())
+      throw new NotLoggedInException();
+
+    return getService().getSubscriptionInfo(plugInPort.getCloudService().getCurrentUsername(),
+        plugInPort.getCloudService().getCurrentToken(), plugInPort.getCloudService().getMachineId());
+  }
+
+  public void deleteChatHistory() throws NotLoggedInException {
+    if (!plugInPort.getCloudService().isLoggedIn())
+      throw new NotLoggedInException();
+
+    getService().deleteChatHistory(plugInPort.getCloudService().getCurrentUsername(),
+        plugInPort.getCloudService().getCurrentToken(), plugInPort.getCloudService().getMachineId(),
+        FileUtils.extractFileName(plugInPort.getCurrentFileName()));
+  }
+
+  public List<ChatMessageEntity> getChatHistory() throws NotLoggedInException {
+    if (!plugInPort.getCloudService().isLoggedIn())
+      throw new NotLoggedInException();
+
+    return getService().getChatHistory(plugInPort.getCloudService().getCurrentUsername(),
+        plugInPort.getCloudService().getCurrentToken(), plugInPort.getCloudService().getMachineId(),
+        FileUtils.extractFileName(plugInPort.getCurrentFileName()));
   }
 
   public static final String ASSISTANT = "assistant";

@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.plugins.cloud.presenter;
+package org.diylc.plugins.cloud.service;
 
 public class NotExistsException extends Exception {
 

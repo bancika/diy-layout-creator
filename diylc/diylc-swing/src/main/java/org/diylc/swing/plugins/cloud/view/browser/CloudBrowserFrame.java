@@ -45,8 +45,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.plugins.cloud.presenter.SearchSession;
+import org.diylc.plugins.cloud.service.SearchSession;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -84,7 +83,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
     this.setIconImage(IconLoader.Cloud.getImage());
     this.setPreferredSize(new Dimension(700, 640));
     this.plugInPort = plugInPort;
-    this.searchSession = new SearchSession();
+    this.searchSession = new SearchSession(plugInPort);
 
     setContentPane(getSearchPanel());
     this.pack();
@@ -103,7 +102,9 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
 
         @Override
         public Pair<String[], String[]> doInBackground() throws Exception {
-          return new Pair<String[], String[]>(CloudPresenter.Instance.getCategories(), CloudPresenter.Instance.getSortings());
+          return new Pair<String[], String[]>(
+              plugInPort.getCloudService().getCategories(),
+              plugInPort.getCloudService().getSortings());
         }
 
         @Override

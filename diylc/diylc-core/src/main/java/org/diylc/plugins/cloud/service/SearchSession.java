@@ -19,10 +19,11 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.plugins.cloud.presenter;
+package org.diylc.plugins.cloud.service;
 
 import java.util.List;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.plugins.cloud.model.ProjectEntity;
 
 /**
@@ -34,7 +35,8 @@ import org.diylc.plugins.cloud.model.ProjectEntity;
  * @author Branislav Stojkovic
  */
 public class SearchSession {
-  
+
+  private final IPlugInPort plugInPort;
   private String searchFor;
   private String category;
   private String sort;
@@ -43,7 +45,8 @@ public class SearchSession {
   private int currentPage;
   private List<ProjectEntity> currentResults;
 
-  public SearchSession() {
+  public SearchSession(IPlugInPort plugInPort) {
+    this.plugInPort = plugInPort;
   }
 
   public List<ProjectEntity> startSession(String searchFor, String category, String sort) throws CloudException {
@@ -52,7 +55,7 @@ public class SearchSession {
     this.sort = sort;
     this.currentPage = 1;
 
-    return currentResults = CloudPresenter.Instance.search(searchFor, category, sort, currentPage, itemsPerPage);
+    return currentResults = plugInPort.getCloudService().search(searchFor, category, sort, currentPage, itemsPerPage);
   }
 
   public boolean hasMoreData() {
@@ -61,6 +64,6 @@ public class SearchSession {
 
   public List<ProjectEntity> requestMoreData() throws CloudException {
     currentPage++;
-    return currentResults = CloudPresenter.Instance.search(searchFor, category, sort, currentPage, itemsPerPage);
+    return currentResults = plugInPort.getCloudService().search(searchFor, category, sort, currentPage, itemsPerPage);
   }
 }

@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.plugins.cloud.service.CloudService;
 import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.EventType;
@@ -38,8 +39,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
-import org.diylc.plugins.cloud.presenter.CloudException;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.plugins.cloud.service.CloudException;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -63,6 +63,7 @@ public class CloudPlugIn implements IPlugIn {
   private IPlugInPort plugInPort;
   private IPlugInPort thumbnailPresenter;
   private ThumbnailGenerator thumbnailGenerator;
+  private CloudService cloudService;
 
   private LibraryAction libraryAction;
 
@@ -106,6 +107,7 @@ public class CloudPlugIn implements IPlugIn {
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
+    this.cloudService = plugInPort.getCloudService();
 
     initialize();
   }
@@ -115,7 +117,7 @@ public class CloudPlugIn implements IPlugIn {
 
       @Override
       public Boolean doInBackground() throws Exception {
-        return CloudPresenter.Instance.tryLogInWithToken();
+        return cloudService.tryLogInWithToken();
       }
 
       @Override
@@ -244,7 +246,7 @@ public class CloudPlugIn implements IPlugIn {
         dialog.setVisible(true);
         if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
           try {
-            if (CloudPresenter.Instance.logIn(dialog.getUserName(), dialog.getPassword())) {
+            if (plugInPort.getCloudService().logIn(dialog.getUserName(), dialog.getPassword())) {
               swingUI
                   .showMessage(
                       "You have successfully logged into the system. You will remain logged in from this machine until logged out.",
@@ -277,7 +279,7 @@ public class CloudPlugIn implements IPlugIn {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      CloudPresenter.Instance.logOut();
+      cloudService.logOut();
       loggedOut();
     }
   }
@@ -301,7 +303,7 @@ public class CloudPlugIn implements IPlugIn {
 
           @Override
           public Void doInBackground() throws Exception {
-            CloudPresenter.Instance.createUserAccount(dialog.getUserName(), dialog.getPassword(), dialog.getEmail(),
+            cloudService.createUserAccount(dialog.getUserName(), dialog.getPassword(), dialog.getEmail(),
                 dialog.getWebsite(), dialog.getBio());
             return null;
           }
@@ -335,14 +337,14 @@ public class CloudPlugIn implements IPlugIn {
     public void actionPerformed(ActionEvent e) {
       try {
         final UserEditDialog dialog =
-            DialogFactory.getInstance().createUserEditDialog(CloudPresenter.Instance.getUserDetails());
+            DialogFactory.getInstance().createUserEditDialog(plugInPort.getCloudService().getUserDetails());
         dialog.setVisible(true);
         if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
           swingUI.executeBackgroundTask(new ITask<Void>() {
 
             @Override
             public Void doInBackground() throws Exception {
-              CloudPresenter.Instance.updateUserDetails(dialog.getEmail(), dialog.getWebsite(), dialog.getBio());
+              cloudService.updateUserDetails(dialog.getEmail(), dialog.getWebsite(), dialog.getBio());
               return null;
             }
 
@@ -384,7 +386,7 @@ public class CloudPlugIn implements IPlugIn {
 
           @Override
           public Void doInBackground() throws Exception {
-            CloudPresenter.Instance.updatePassword(dialog.getOldPassword(), dialog.getNewPassword());
+            cloudService.updatePassword(dialog.getOldPassword(), dialog.getNewPassword());
             return null;
           }
 
@@ -431,7 +433,7 @@ public class CloudPlugIn implements IPlugIn {
             public String[] doInBackground() throws Exception {
               LOG.debug("Uploading from " + file.getAbsolutePath());
               thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());
-              return CloudPresenter.Instance.getCategories();
+              return cloudService.getCategories();
             }
 
             @Override
@@ -448,7 +450,7 @@ public class CloudPlugIn implements IPlugIn {
 
                       @Override
                       public Void doInBackground() throws Exception {
-                        CloudPresenter.Instance.uploadProject(dialog.getName(), dialog.getCategory(), dialog
+                        cloudService.uploadProject(dialog.getName(), dialog.getCategory(), dialog
                             .getDescription(), dialog.getKeywords(), plugInPort.getCurrentVersionNumber().toString(),
                             thumbnailFile, file, null);
                         return null;

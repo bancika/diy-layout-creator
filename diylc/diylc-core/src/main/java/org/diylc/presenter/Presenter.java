@@ -47,7 +47,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -78,6 +77,8 @@ import org.diylc.netlist.Netlist;
 import org.diylc.netlist.AbstractNetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
+import org.diylc.plugins.chatbot.service.ChatbotService;
+import org.diylc.plugins.cloud.service.CloudService;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
@@ -2810,7 +2811,27 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.STATUS_MESSAGE_CHANGED);
   }
 
-  protected MessageDispatcher<EventType> getMessageDispatcher() {
+  private CloudService cloudService;
+
+  @Override
+  public CloudService getCloudService() {
+    if (cloudService == null) {
+      cloudService = new CloudService(this);
+    }
+    return cloudService;
+  }
+
+  private ChatbotService chatbotService;
+
+  @Override
+  public ChatbotService getChatbotService() {
+    if (chatbotService == null) {
+      chatbotService = new ChatbotService(this);
+    }
+    return chatbotService;
+  }
+
+  public MessageDispatcher<EventType> getMessageDispatcher() {
     return messageDispatcher;
   }
 }

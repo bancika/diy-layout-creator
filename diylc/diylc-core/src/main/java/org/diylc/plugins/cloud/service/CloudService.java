@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.plugins.cloud.presenter;
+package org.diylc.plugins.cloud.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,6 +37,8 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 
+import org.diylc.common.EventType;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
@@ -50,17 +52,16 @@ import org.diylc.presenter.ComponentProcessor;
  * 
  * @author Branislav Stojkovic
  */
-public class CloudPresenter {
+public class CloudService {
   
-  public static final CloudPresenter Instance = new CloudPresenter();
-
   private static String USERNAME_KEY = "cloud.Username";
   private static String TOKEN_KEY = "cloud.token";
 
   private static String ERROR = "Error";
 
-  private final static Logger LOG = Logger.getLogger(CloudPresenter.class);
+  private final static Logger LOG = Logger.getLogger(CloudService.class);
   private static final Object SUCCESS = "Success";
+  private final IPlugInPort plugInPort;
 
   private IServiceAPI service;
   private String serviceUrl;
@@ -69,7 +70,9 @@ public class CloudPresenter {
 
   private boolean loggedIn = false;
   
-  private CloudPresenter() {}
+  public CloudService(IPlugInPort plugInPort) {
+    this.plugInPort = plugInPort;
+  }
 
   private IServiceAPI getService() {
     if (service == null) {
@@ -99,6 +102,7 @@ public class CloudPresenter {
       ConfigurationManager.getInstance().writeValue(USERNAME_KEY, username);
       ConfigurationManager.getInstance().writeValue(TOKEN_KEY, res);
       this.loggedIn = true;
+      this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN);
       return true;
     }
   }
@@ -121,6 +125,7 @@ public class CloudPresenter {
       } else {
         LOG.info("Login success");
         this.loggedIn = true;
+        this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN);
         return true;
       }
     } else
@@ -130,6 +135,7 @@ public class CloudPresenter {
   public void logOut() {
     LOG.info("Logged out");
     ConfigurationManager.getInstance().writeValue(TOKEN_KEY, null);
+    this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_OUT);
     this.loggedIn = false;
   }
 

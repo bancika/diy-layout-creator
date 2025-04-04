@@ -3,14 +3,16 @@ package org.diylc.swing.plugins.chatbot;
 import org.apache.log4j.Logger;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
-import org.diylc.plugins.chatbot.presenter.ChatbotPresenter;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
+import org.diylc.plugins.chatbot.model.ChatMessageEntity;
+import org.diylc.plugins.chatbot.model.SubscriptionEntity;
+import org.diylc.plugins.chatbot.service.ChatbotService;
+import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.Random;
+import java.util.List;
+import java.util.Objects;
 
 public class ChatbotPane extends JPanel {
 
@@ -22,22 +24,32 @@ public class ChatbotPane extends JPanel {
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
   private static final Color TERMINAL_BG = new Color(40, 40, 40);
   private static final Color TERMINAL_FG = new Color(200, 200, 200);
+  public static final String HTML_STYLE = String.format(
+      "<style>" + "body { font-family: %s; font-size: %dpt; color: rgb(%d,%d,%d); background-color: rgb(%d,%d,%d); padding: 0px; margin: 0; }" + "pre { white-space: pre-wrap; margin: 0; }" + ".user { color: #98C379; }" +      // Softer green that's easier on the eyes
+          ".assistant { color: #61AFEF; }" +  // Lighter, more vibrant blue
+          ".system { color: #E5C07B; }" +     // Warmer, muted yellow
+          ".temporary { color: #555555; }" + "</style>", MONOSPACED_FONT.getFamily(),
+      MONOSPACED_FONT.getSize(), TERMINAL_FG.getRed(), TERMINAL_FG.getGreen(),
+      TERMINAL_FG.getBlue(), TERMINAL_BG.getRed(), TERMINAL_BG.getGreen(), TERMINAL_BG.getBlue());
   private static final Color PROMPT_BG = new Color(60, 60, 60);  // Slightly brighter than TERMINAL_BG
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
-  private ChatbotPresenter chatbotPresenter;
+  private ChatbotService chatbotService;
 
   private JTextArea promptArea;
   private JEditorPane chatEditorPane;
   private JButton askButton;
   private JButton clearButton;
 
+  private boolean loggedIn = false;
+  private String projectFileName = null;
+
   public ChatbotPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
     this.swingUI = swingUI;
     this.plugInPort = plugInPort;
-    this.chatbotPresenter = new ChatbotPresenter(plugInPort);
+    this.chatbotService = new ChatbotService(plugInPort);
     setName("AI Assistant");
 
     // Set panel background color
@@ -134,7 +146,7 @@ public class ChatbotPane extends JPanel {
       promptArea.setPreferredSize(new Dimension(200, desiredHeight));
 
       // Add placeholder text behavior
-      final String placeholder = "Type your question here...";
+      final String placeholder = "Ask me anything";
       promptArea.setText(placeholder);
       promptArea.setForeground(new Color(128, 128, 128));  // Dimmer text for placeholder
 
@@ -188,6 +200,41 @@ public class ChatbotPane extends JPanel {
     return promptArea;
   }
 
+  public void refreshChat() {
+    boolean currentLoggedIn = plugInPort.getCloudService().isLoggedIn();
+    String currentProjectFileName = plugInPort.getCurrentFileName();
+
+    if (this.loggedIn == currentLoggedIn && Objects.equals(currentProjectFileName, this.projectFileName))
+      return;
+
+    this.loggedIn = currentLoggedIn;
+    this.projectFileName = currentProjectFileName;
+
+    resetChat();
+    try {
+      SubscriptionEntity subscriptionInfo = plugInPort.getChatbotService().getSubscriptionInfo();
+      appendSection(ChatbotService.SYSTEM, "Subscribed to " + subscriptionInfo.getTier() +
+          " tier with " + subscriptionInfo.getRemainingCredits() + " remaining credits.");
+    } catch (NotLoggedInException e) {
+      LOG.error("Error getting subscription info", e);
+      appendSection(ChatbotService.SYSTEM, "Error getting subscription info");
+    }
+    fetchChatHistory();
+    getAskButton().setEnabled(true);
+  }
+
+  private void fetchChatHistory() {
+    try {
+      List<ChatMessageEntity> chatHistory = plugInPort.getChatbotService().getChatHistory();
+      chatHistory.forEach(message -> {
+        appendSection(ChatbotService.USER, message.getPrompt());
+        appendSection(ChatbotService.ASSISTANT, message.getResponse());
+      });
+    } catch (NotLoggedInException e) {
+      appendSection(ChatbotService.SYSTEM, "Failed to retrieve chat history.");
+    }
+  }
+
   public JEditorPane getChatEditorPane() {
     if (chatEditorPane == null) {
       chatEditorPane = new JEditorPane("text/html", "<html></html>");
@@ -196,28 +243,18 @@ public class ChatbotPane extends JPanel {
       chatEditorPane.setBackground(TERMINAL_BG);
       chatEditorPane.setForeground(TERMINAL_FG);
       chatEditorPane.setCaretColor(TERMINAL_FG);  // Make the cursor visible on dark background
-      
-      // Set up HTML styling
-      String htmlStyle = String.format(
-          "<style>" +
-          "body { font-family: %s; font-size: %dpt; color: rgb(%d,%d,%d); background-color: rgb(%d,%d,%d); padding: 0px; margin: 0; }" +
-          "pre { white-space: pre-wrap; margin: 0; }" +
-          ".user { color: #98C379; }" +      // Softer green that's easier on the eyes
-          ".assistant { color: #61AFEF; }" +  // Lighter, more vibrant blue
-          ".system { color: #E5C07B; }" +     // Warmer, muted yellow
-          ".temporary { color: #555555; }" +
-          "</style>",
-          MONOSPACED_FONT.getFamily(),
-          MONOSPACED_FONT.getSize(),
-          TERMINAL_FG.getRed(), TERMINAL_FG.getGreen(), TERMINAL_FG.getBlue(),
-          TERMINAL_BG.getRed(), TERMINAL_BG.getGreen(), TERMINAL_BG.getBlue());
-
-      String sampleChat = chatbotPresenter.getInitialChatContents();
 
       chatEditorPane.setContentType("text/html");
-      chatEditorPane.setText(htmlStyle + "<body><pre>" + sampleChat + "</pre></body>");
+      chatEditorPane.setText(HTML_STYLE + "<body></body>");
     }
     return chatEditorPane;
+  }
+
+  private void resetChat() {
+    String sampleChat = chatbotService.getInitialChatContents();
+
+    chatEditorPane.setContentType("text/html");
+    chatEditorPane.setText(HTML_STYLE + "<body>" + sampleChat + "</body>");
   }
 
   public JButton getAskButton() {
@@ -229,8 +266,8 @@ public class ChatbotPane extends JPanel {
       askButton.setBorderPainted(true);
       askButton.addActionListener(e -> {
         final String prompt = getPromptArea().getText();
-        appendSection(ChatbotPresenter.USER, prompt);
-        appendSection(ChatbotPresenter.TEMPORARY, "Waiting for the response...");
+        appendSection(ChatbotService.USER, prompt);
+        appendSection(ChatbotService.TEMPORARY, "Waiting for the response...");
         getPromptArea().setText(null);
 
 
@@ -240,19 +277,19 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public String doInBackground() throws Exception {
-            return chatbotPresenter.promptChatbot(prompt);
+            return chatbotService.promptChatbot(prompt);
           }
 
           @Override
           public void failed(Exception e) {
-            appendSection(ChatbotPresenter.SYSTEM, "Failed to retrieve the response from the server. Error: " + e.getMessage());
+            appendSection(ChatbotService.SYSTEM, "Failed to retrieve the response from the server.");
             LOG.error("Failed to retrieve the response from the server", e);
             getClearButton().setEnabled(true);
           }
 
           @Override
           public void complete(String result) {
-            appendSection(ChatbotPresenter.ASSISTANT, result);
+            appendSection(ChatbotService.ASSISTANT, result);
             getClearButton().setEnabled(true);
           }
         }, false);
@@ -261,7 +298,7 @@ public class ChatbotPane extends JPanel {
     return askButton;
   }
 
-  private void appendSection(String style, String insertText) {
+  void appendSection(String style, String insertText) {
     String text = getChatEditorPane().getText();
     // remove any temporary divs
     String regex = "(?s)<div\\s+class=[\"']temporary[\"'][^>]*>.*?</div>\\s*<br>\\s*";
@@ -281,6 +318,29 @@ public class ChatbotPane extends JPanel {
       clearButton.setForeground(TERMINAL_FG);
       clearButton.setFocusPainted(false);
       clearButton.setBorderPainted(true);
+      clearButton.addActionListener(e -> {
+
+        swingUI.executeBackgroundTask(new ITask<Void>() {
+
+          @Override
+          public Void doInBackground() throws Exception {
+            chatbotService.deleteChatHistory();
+            return null;
+          }
+
+          @Override
+          public void failed(Exception e) {
+            appendSection(ChatbotService.SYSTEM, "Failed to delete chat history from the server.");
+            LOG.error("Failed to delete chat history from the server", e);
+            getClearButton().setEnabled(true);
+          }
+
+          @Override
+          public void complete(Void result) {
+            resetChat();
+          }
+        }, false);
+      });
     }
     return clearButton;
   }

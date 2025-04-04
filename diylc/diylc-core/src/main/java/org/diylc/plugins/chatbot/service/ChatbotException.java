@@ -19,10 +19,18 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.plugins.cloud.presenter;
+package org.diylc.plugins.chatbot.service;
 
-public class NotLoggedInException extends Exception {
+public class ChatbotException extends Exception {
 
   private static final long serialVersionUID = 1L;
+
+  public ChatbotException(Exception e) {
+    super(e);
+  }
+
+  public ChatbotException(String string) {
+    super(string);
+  }
 
 }

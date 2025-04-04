@@ -57,7 +57,7 @@ import org.diylc.test.ITestProcessor;
  * @see EventType
  */
 public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyProcessor, IVariantProcessor,
-    IBlockProcessor, INetlistProcessor, ITestProcessor {
+    IBlockProcessor, INetlistProcessor, ITestProcessor, IServiceManager {
 
   public static final String ANTI_ALIASING_KEY = "antiAliasing";
   public static final String HI_QUALITY_RENDER_KEY = "hiQualityRender";
