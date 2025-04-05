@@ -18,7 +18,7 @@
 - [Using the status bar](#using-the-status-bar)
 - [Using 'Highlight Connected Areas' Feature](#using-highlight-connected-areas-feature)
 - [Drawing and Analyzing Guitar Wiring Diagrams](#drawing-and-analyzing-guitar-wiring-diagrams)
-
+- [DIYLC Cloud](#diylc-cloud)
 
 ### System requirements ###
 
@@ -357,3 +357,13 @@ Parallel/Series connectivity tree is basically how our circuit looks like in thi
 Below the connectivity tree, DIYLC will list the notes that it was able to deduce by analyzing the connectivity tree. That's where all the magic happens.
 
 For the full output follow this [link](https://htmlpreview.github.io/?https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/files/travelcaster_analysis.html)
+
+### DIYLC Cloud ###
+
+DIYLC Cloud set of feature connects to the central hub and opens up some very cool possibilities
+
+- Search and download existing projects uploaded by other users.
+- Upload your projects and share them with the community. Once a project is upload it is possible to update or remove it.
+- Use the AI Assistant to help with using the app, designing and troubleshooting of circuits.
+
+Cloud feature is open to everyone but requires creating an account with a correct email address. The email is used for logging purposes only and will not be shared with anyone or used for any other purpose. The only way to create and access your account and to use the project sharing feature is via the "Cloud" tab in the main menu of DIYLC application.
