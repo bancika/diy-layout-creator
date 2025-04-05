@@ -230,7 +230,7 @@ INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manua
 The Cloud feature is open to all users but requires creating an account with a valid email address. Your email is used only for login purposes and will never be shared or used for any other reason.
 The only way to create and access a DIYLC Cloud account is through the "Cloud" tab in the main menu of the DIYLC application.');
 
-DELETE FROM diylc_knowledge_base WHERE section = 'AI Assistant';
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT';
 INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT',
 'DIYLC AI Assistant is an integrated feature that allows users to interact with DIY Layout Creator (DIYLC) using natural language. It functions as a chatbot powered by the OpenAI API to generate helpful responses. The AI Assistant is available only while logged into the DIYLC Cloud with an active account and requires an internet connection.
 There are two subscription tiers for using the AI Assistant:
@@ -238,10 +238,20 @@ There are two subscription tiers for using the AI Assistant:
 -Premium Tier: Offers up to 1000 requests per month using more advanced AI models. The Premium subscription is exclusively available to Patreon supporters with the "Premium AI" tier.
 ');
 
-DELETE FROM diylc_knowledge_base WHERE section = 'AI Assistant - Using the AI Assistant';
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT - Using the AI Assistant';
 INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT - Using the AI Assistant',
 'DIYLC AI Assistant can assist users with a wide variety of tasks, including:
 - General Electronics Questions: Ask about electronics theory, parts, components, guitars, and related topics.
--Circuit Design Assistance: Describe the type of circuit you want to build, and the AI Assistant will suggest design ideas and possible circuit layouts.
+- Circuit Design Assistance: Describe the type of circuit you want to build, and the AI Assistant will suggest design ideas and possible circuit layouts.
 - Circuit Troubleshooting: Get help with specific questions or troubleshoot problems with your circuit. The AI Assistant can read your project file, analyze all components and connections, and provide detailed explanations of the circuit’s behavior.
 - Learning DIYLC Features: Ask questions about DIY Layout Creator (DIYLC). The AI Assistant is trained on the complete DIYLC user manual and can explain software features, tools, and workflows.');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT - Tips';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT - Tips',
+'Below are some tips for using the DIYLC AI Assistant:
+- Be specific and detailed in your questions.
+- If you are asking about a specific component, make sure to include the component name and any relevant details.
+- If you are asking about a DIYLC feature, make sure to include the words "DIYLC" or "DIY Layout Creator" and the feature in question to ensure that the AI assistant understands the context of the question.
+- Use simple language and avoid complex technical terms.
+- Ask follow-up questions if needed.
+- Use the "Clear" button to reset the conversation.');
