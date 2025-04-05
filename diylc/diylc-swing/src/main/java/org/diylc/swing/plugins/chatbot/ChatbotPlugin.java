@@ -43,35 +43,18 @@ public class ChatbotPlugin implements IPlugIn {
   public ChatbotPlugin(ISwingUI swingUI) {
     super();
     this.swingUI = swingUI;
-
-    // Delay a test of logged in state to give it time to complete
-    Timer timer = new Timer(2000, e -> {
-      if (!plugInPort.getCloudService().isLoggedIn()) {
-        getChatbotPane().refreshChat();
-      }
-    });
-    timer.setRepeats(false); // Make it one-shot
-    timer.start();
   }
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.of(EventType.FILE_STATUS_CHANGED, EventType.PROJECT_LOADED,
-        EventType.PROJECT_MODIFIED, EventType.SELECTION_CHANGED, EventType.CLOUD_LOGGED_IN,
-        EventType.CLOUD_LOGGED_OUT);
+        EventType.CLOUD_LOGGED_IN, EventType.CLOUD_LOGGED_OUT);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void processMessage(EventType eventType, Object... params) {
     switch (eventType) {
-      case PROJECT_MODIFIED:
-//        getChatbotPane().setComponents(((Project) params[1]).getComponents(),
-//            plugInPort.getSelectedComponents());
-        break;
-      case SELECTION_CHANGED:
-//        getChatbotPane().setSelection((Set<IDIYComponent<?>>) params[0]);
-        break;
       case FILE_STATUS_CHANGED:
       case PROJECT_LOADED:
       case CLOUD_LOGGED_IN:

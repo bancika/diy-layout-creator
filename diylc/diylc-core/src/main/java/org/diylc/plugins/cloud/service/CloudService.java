@@ -21,9 +21,8 @@
 */
 package org.diylc.plugins.cloud.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.lang.management.RuntimeMXBean;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.URL;
@@ -33,10 +32,12 @@ import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import java.lang.management.ManagementFactory;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
 
+import org.diylc.appframework.miscutils.Utils;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
@@ -47,6 +48,14 @@ import org.diylc.plugins.cloud.model.UserEntity;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 
+import javax.swing.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+
 /**
  * Contains all the back-end logic for using the cloud and manipulating projects on the cloud.
  * 
@@ -54,17 +63,21 @@ import org.diylc.presenter.ComponentProcessor;
  */
 public class CloudService {
   
-  private static String USERNAME_KEY = "cloud.Username";
-  private static String TOKEN_KEY = "cloud.token";
-
-  private static String ERROR = "Error";
-
-  private final static Logger LOG = Logger.getLogger(CloudService.class);
+  private static final Logger LOG = Logger.getLogger(CloudService.class);
+  private static final String MACHINE_ID_FILE = "machine.id";
+  private static final String MACHINE_ID_KEY = "cloud.machineId";
+  private static final String USERNAME_KEY = "cloud.Username";
+  private static final String TOKEN_KEY = "cloud.token";
+  private static final String ERROR = "Error";
   private static final Object SUCCESS = "Success";
+  private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+
   private final IPlugInPort plugInPort;
 
   private IServiceAPI service;
   private String serviceUrl;
+  private UserEntity currentUser;
+  private String currentToken;
   private String machineId;
   private String[] categories;
 
@@ -72,6 +85,22 @@ public class CloudService {
   
   public CloudService(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
+    
+    serviceUrl = ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY,
+        "http://www.diy-fever.com/diylc/api/v1");
+    ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
+    service = factory.createProxy(IServiceAPI.class, serviceUrl);
+
+    // Delay a test of logged in state to give it time to complete
+    Timer timer = new Timer(1000, e -> {
+      try {
+        tryLogInWithToken();
+      } catch (Exception ex) {
+        LOG.error("Background login attempt failed", ex);
+      }
+    });
+    timer.setRepeats(false); // Make it one-shot
+    timer.start();
   }
 
   private IServiceAPI getService() {
@@ -107,7 +136,7 @@ public class CloudService {
     }
   }
 
-  public boolean tryLogInWithToken() throws CloudException {
+  private void tryLogInWithToken() throws CloudException {
     String username = ConfigurationManager.getInstance().readString(USERNAME_KEY, null);
     String token = ConfigurationManager.getInstance().readString(TOKEN_KEY, null);
 
@@ -121,22 +150,19 @@ public class CloudService {
       }
       if (res == null || res.equals(ERROR)) {
         LOG.info("Login failed");
-        return false;
       } else {
         LOG.info("Login success");
         this.loggedIn = true;
         this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN);
-        return true;
       }
-    } else
-      return false;
+    }
   }
 
   public void logOut() {
     LOG.info("Logged out");
     ConfigurationManager.getInstance().writeValue(TOKEN_KEY, null);
-    this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_OUT);
     this.loggedIn = false;
+    this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_OUT);
   }
 
   public boolean isLoggedIn() {
@@ -428,22 +454,67 @@ public class CloudService {
 
   public String getMachineId() {
     if (machineId == null) {
-      try {
-        InetAddress ip = InetAddress.getLocalHost();
-
-        NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-
-        byte[] mac = network.getHardwareAddress();
-
-        StringBuilder sb = new StringBuilder(18);
-        for (byte b : mac) {
-          if (sb.length() > 0)
-            sb.append(':');
-          sb.append(String.format("%02x", b));
+      if (Utils.isWindows()) {
+        machineId = System.getenv("COMPUTERNAME");
+      } else {
+        try {
+          Runtime r = Runtime.getRuntime();
+          Process p = r.exec("uname -a");
+          BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+          machineId = reader.readLine();
+        } catch (Exception e) {
+          LOG.error("Error getting machineId from uname", e);
         }
+      }
+      if (machineId == null) {
+        try {
+          // Generate a unique identifier based on hardware information
+          List<String> identifiers = new ArrayList<>();
 
-        machineId = sb.toString();
-      } catch (Exception e) {
+          // Get MAC addresses
+          Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+          while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = networkInterfaces.nextElement();
+            byte[] mac = networkInterface.getHardwareAddress();
+            if (mac != null) {
+              StringBuilder sb = new StringBuilder();
+              for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X", mac[i]));
+              }
+              identifiers.add(sb.toString());
+            }
+          }
+
+          // Get hostname
+          String hostname = InetAddress.getLocalHost().getHostName();
+          identifiers.add(hostname);
+
+          // Sort to ensure consistent order
+          Collections.sort(identifiers);
+
+          // Create a single string from all identifiers
+          StringBuilder combined = new StringBuilder();
+          for (String id : identifiers) {
+            combined.append(id);
+          }
+
+          // Create a hash of the combined string
+          MessageDigest md = MessageDigest.getInstance("SHA-256");
+          byte[] hash = md.digest(combined.toString().getBytes());
+
+          // Convert to hex string
+          StringBuilder hexString = new StringBuilder();
+          for (byte b : hash) {
+            hexString.append(String.format("%02x", b));
+          }
+
+          machineId = hexString.toString();
+
+        } catch (Exception e) {
+          LOG.error("Failed to generate machine ID", e);
+        }
+      }
+      if (machineId == null) {
         machineId = "Generic";
       }
     }

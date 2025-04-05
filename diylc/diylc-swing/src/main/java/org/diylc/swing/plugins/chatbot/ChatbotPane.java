@@ -8,11 +8,13 @@ import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.chatbot.service.ChatbotService;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
+import org.diylc.utils.FileUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class ChatbotPane extends JPanel {
 
@@ -43,7 +45,7 @@ public class ChatbotPane extends JPanel {
   private JButton clearButton;
 
   private boolean loggedIn = false;
-  private String projectFileName = null;
+  private String projectFileName = "initial";
 
   public ChatbotPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
@@ -202,7 +204,7 @@ public class ChatbotPane extends JPanel {
 
   public void refreshChat() {
     boolean currentLoggedIn = plugInPort.getCloudService().isLoggedIn();
-    String currentProjectFileName = plugInPort.getCurrentFileName();
+    String currentProjectFileName = FileUtils.extractFileName(plugInPort.getCurrentFileName());
 
     if (this.loggedIn == currentLoggedIn && Objects.equals(currentProjectFileName, this.projectFileName))
       return;
@@ -210,17 +212,26 @@ public class ChatbotPane extends JPanel {
     this.loggedIn = currentLoggedIn;
     this.projectFileName = currentProjectFileName;
 
-    resetChat();
-    try {
-      SubscriptionEntity subscriptionInfo = plugInPort.getChatbotService().getSubscriptionInfo();
-      appendSection(ChatbotService.SYSTEM, "Subscribed to " + subscriptionInfo.getTier() +
-          " tier with " + subscriptionInfo.getRemainingCredits() + " remaining credits.");
-    } catch (NotLoggedInException e) {
-      LOG.error("Error getting subscription info", e);
-      appendSection(ChatbotService.SYSTEM, "Error getting subscription info");
+    clearChat();
+    if (!currentLoggedIn) {
+      appendSection(ChatbotService.SYSTEM, "Please log into your cloud account to use the AI assistant");
+      getAskButton().setEnabled(false);
+      getClearButton().setEnabled(false);
+    } else {
+      try {
+        SubscriptionEntity subscriptionInfo = plugInPort.getChatbotService().getSubscriptionInfo();
+        appendSection(ChatbotService.SYSTEM,
+            "Your current subscription tier is " + subscriptionInfo.getTier() +
+                " expiring on " + subscriptionInfo.getEndDate() + " with " +
+                subscriptionInfo.getRemainingCredits() + " credits remaining.");
+      } catch (NotLoggedInException e) {
+        LOG.error("Error getting subscription info", e);
+        appendSection(ChatbotService.SYSTEM, "Error getting subscription info");
+      }
+      fetchChatHistory();
+      getAskButton().setEnabled(true);
+      getClearButton().setEnabled(true);
     }
-    fetchChatHistory();
-    getAskButton().setEnabled(true);
   }
 
   private void fetchChatHistory() {
@@ -250,11 +261,30 @@ public class ChatbotPane extends JPanel {
     return chatEditorPane;
   }
 
-  private void resetChat() {
-    String sampleChat = chatbotService.getInitialChatContents();
+  private void clearChat() {
+    String sampleChat = getInitialChatContents();
 
     chatEditorPane.setContentType("text/html");
     chatEditorPane.setText(HTML_STYLE + "<body>" + sampleChat + "</body>");
+  }
+
+  private String getInitialChatContents() {
+    Random r = new Random();
+
+    String chatHtml =
+        "<div class='system'>" + ChatbotService.WELCOME_MESSAGE + "</div><br><br>\n" +
+            "<div class='assistant'>I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:</div><br>\n" +
+            //            "<ul>\n" +
+            "\n" +
+            "- <b>Electronics theory or concepts:</b> <i>e.g.,</i> '<span class='user'>" +ChatbotService.electronicsQuestions[r.nextInt(
+            ChatbotService.electronicsQuestions.length)] + "</span>'<br>\n" +
+            "- <b>DIYLC features and usage:</b> <i>e.g.,</i> '<span class='user'>" + ChatbotService.diylcQuestions[r.nextInt(ChatbotService.diylcQuestions.length)] + "</span>'<br>\n" +
+            "- <b>Your current circuit project:</b> <i>e.g.,</i> '<span class='user'>" + ChatbotService.circuitQuestions[r.nextInt(ChatbotService.circuitQuestions.length)] + "</span>'<br>\n" +
+            //            "</ul><br>\n" +
+            "<br>\n" +
+            "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>\n";
+
+    return chatHtml;
   }
 
   public JButton getAskButton() {
@@ -337,7 +367,7 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public void complete(Void result) {
-            resetChat();
+            clearChat();
           }
         }, false);
       });

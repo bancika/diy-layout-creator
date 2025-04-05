@@ -108,33 +108,6 @@ public class CloudPlugIn implements IPlugIn {
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     this.cloudService = plugInPort.getCloudService();
-
-    initialize();
-  }
-
-  private void initialize() {
-    this.swingUI.executeBackgroundTask(new ITask<Boolean>() {
-
-      @Override
-      public Boolean doInBackground() throws Exception {
-        return cloudService.tryLogInWithToken();
-      }
-
-      @Override
-      public void failed(Exception e) {
-        LOG.error("Error while trying to login using token");
-      }
-
-      @Override
-      public void complete(Boolean result) {
-        try {
-          if (result)
-            loggedIn();
-        } catch (Exception e) {
-          LOG.error("Error while trying to login with token", e);
-        }
-      }
-    }, false);
   }
 
   public CloudBrowserFrame getCloudBrowser() {
@@ -206,11 +179,20 @@ public class CloudPlugIn implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return null;
+    return EnumSet.of(EventType.CLOUD_LOGGED_IN, EventType.CLOUD_LOGGED_OUT);
   }
 
   @Override
-  public void processMessage(EventType eventType, Object... params) {}
+  public void processMessage(EventType eventType, Object... params) {
+    switch (eventType) {
+      case CLOUD_LOGGED_IN:
+        loggedIn();
+        break;
+      case CLOUD_LOGGED_OUT:
+        loggedOut();
+        break;
+    }
+  }
 
   class LibraryAction extends AbstractAction {
 

@@ -111,7 +111,7 @@ public class ChatbotService {
     if (netlists == null) {
       return null;
     }
-    
+
     StringBuilder sb = new StringBuilder();
     sb.append("Components: ");
 
@@ -169,25 +169,6 @@ public class ChatbotService {
     return sb.toString();
   }
 
-  public String getInitialChatContents() {
-    Random r = new Random();
-
-    String chatHtml =
-        "<div class='system'>" + WELCOME_MESSAGE + "</div><br><br>\n" +
-            "<div class='assistant'>I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:</div><br>\n" +
-            //            "<ul>\n" +
-            "\n" +
-            "- <b>Electronics theory or concepts:</b> <i>e.g.,</i> '<span class='user'>" + electronicsQuestions[r.nextInt(
-            electronicsQuestions.length)] + "</span>'<br>\n" +
-            "- <b>DIYLC features and usage:</b> <i>e.g.,</i> '<span class='user'>" + diylcQuestions[r.nextInt(diylcQuestions.length)] + "</span>'<br>\n" +
-            "- <b>Your current circuit project:</b> <i>e.g.,</i> '<span class='user'>" + circuitQuestions[r.nextInt(circuitQuestions.length)] + "</span>'<br>\n" +
-            //            "</ul><br>\n" +
-            "<br>\n" +
-            "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>\n";
-
-    return chatHtml;
-  }
-
   public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
@@ -219,7 +200,7 @@ public class ChatbotService {
   public static final String USER = "user";
   public static final String TEMPORARY = "temporary";
 
-  String[] electronicsQuestions = {
+  public static final String[] electronicsQuestions = {
       "What is Ohm's Law, and how do voltage, current, and resistance relate to each other?",
       "Why are resistors important in circuits, and what happens if the resistor value is incorrect?",
       "What is a capacitor, and how does it behave differently from a resistor?",
@@ -247,7 +228,7 @@ public class ChatbotService {
       "How can you determine if components in your circuit are properly rated for the voltage and current they're experiencing?"
   };
 
-  String[] diylcQuestions = {
+  public static final String[] diylcQuestions = {
       "How do I add a component to my layout in DIYLC?",
       "How can I quickly find a specific component in DIYLC?s component toolbox?",
       "How do I move or reposition components on the canvas in DIYLC?",
@@ -270,7 +251,7 @@ public class ChatbotService {
       "What is the DIYLC cloud feature and how can I share or download projects using it?"
   };
 
-  String[] circuitQuestions = {
+  public static final String[] circuitQuestions = {
       "What's the purpose of this specific resistor in my circuit?",
       "How do I correctly determine capacitor values for my power supply?",
       "How should I route wiring to reduce interference and noise?",
