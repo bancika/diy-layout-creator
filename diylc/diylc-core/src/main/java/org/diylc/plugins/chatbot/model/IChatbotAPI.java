@@ -23,6 +23,7 @@ package org.diylc.plugins.chatbot.model;
 
 import com.diyfever.httpproxy.ParamName;
 
+import java.io.File;
 import java.util.List;
 
 public interface IChatbotAPI {
@@ -40,7 +41,7 @@ public interface IChatbotAPI {
    */
   String promptChatbot(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("project") String project,
-      @ParamName("netlist") String netlist, @ParamName("prompt") String prompt);
+      @ParamName("netlist") File netlist, @ParamName("prompt") String prompt);
 
   SubscriptionEntity getSubscriptionInfo(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId);

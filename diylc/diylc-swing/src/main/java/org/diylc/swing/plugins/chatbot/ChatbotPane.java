@@ -21,7 +21,9 @@ public class ChatbotPane extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(ChatbotPane.class);
-  
+  public static final String ME = "Me: ";
+  public static final String AI_ASSISTANT = "AI Assistant: ";
+
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
   private static final Color TERMINAL_BG = new Color(40, 40, 40);
@@ -45,7 +47,7 @@ public class ChatbotPane extends JPanel {
   private JButton clearButton;
 
   private boolean loggedIn = false;
-  private String projectFileName = "initial";
+  private String projectFileName = null;
 
   public ChatbotPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
@@ -221,8 +223,8 @@ public class ChatbotPane extends JPanel {
       try {
         SubscriptionEntity subscriptionInfo = plugInPort.getChatbotService().getSubscriptionInfo();
         appendSection(ChatbotService.SYSTEM,
-            "Your current subscription tier is " + subscriptionInfo.getTier() +
-                " expiring on " + subscriptionInfo.getEndDate() + " with " +
+            "Your are currently subscribed to the '" + subscriptionInfo.getTier() +
+                "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " +
                 subscriptionInfo.getRemainingCredits() + " credits remaining.");
       } catch (NotLoggedInException e) {
         LOG.error("Error getting subscription info", e);
@@ -238,8 +240,8 @@ public class ChatbotPane extends JPanel {
     try {
       List<ChatMessageEntity> chatHistory = plugInPort.getChatbotService().getChatHistory();
       chatHistory.forEach(message -> {
-        appendSection(ChatbotService.USER, message.getPrompt());
-        appendSection(ChatbotService.ASSISTANT, message.getResponse());
+        appendSection(ChatbotService.USER, ME + message.getPrompt());
+        appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + message.getResponse());
       });
     } catch (NotLoggedInException e) {
       appendSection(ChatbotService.SYSTEM, "Failed to retrieve chat history.");
@@ -257,6 +259,8 @@ public class ChatbotPane extends JPanel {
 
       chatEditorPane.setContentType("text/html");
       chatEditorPane.setText(HTML_STYLE + "<body></body>");
+
+      refreshChat();
     }
     return chatEditorPane;
   }
@@ -296,7 +300,7 @@ public class ChatbotPane extends JPanel {
       askButton.setBorderPainted(true);
       askButton.addActionListener(e -> {
         final String prompt = getPromptArea().getText();
-        appendSection(ChatbotService.USER, prompt);
+        appendSection(ChatbotService.USER, ME + prompt);
         appendSection(ChatbotService.TEMPORARY, "Waiting for the response...");
         getPromptArea().setText(null);
 
@@ -319,7 +323,7 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public void complete(String result) {
-            appendSection(ChatbotService.ASSISTANT, result);
+            appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + result);
             getClearButton().setEnabled(true);
           }
         }, false);
@@ -328,7 +332,7 @@ public class ChatbotPane extends JPanel {
     return askButton;
   }
 
-  void appendSection(String style, String insertText) {
+  private void appendSection(String style, String insertText) {
     String text = getChatEditorPane().getText();
     // remove any temporary divs
     String regex = "(?s)<div\\s+class=[\"']temporary[\"'][^>]*>.*?</div>\\s*<br>\\s*";

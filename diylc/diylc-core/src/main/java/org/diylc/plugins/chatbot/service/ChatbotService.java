@@ -30,6 +30,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
@@ -43,6 +44,9 @@ import org.diylc.presenter.ComponentProcessor;
 import org.diylc.utils.FileUtils;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,17 +93,36 @@ public class ChatbotService {
     String fileName = extractFileName(currentFile);
 
     String netlist;
+    File netlistFile = null;
     try {
       netlist = extractNetlists();
-    } catch (NetlistException e) {
-      LOG.error("Error extracting netlist", e);
+      if (netlist != null) {
+        netlistFile = File.createTempFile("diylc_netlist_", ".txt");
+        try (FileWriter writer = new FileWriter(netlistFile)) {
+          writer.write(netlist);
+        }
+        // Make sure the temp file is deleted when the JVM exits
+        netlistFile.deleteOnExit();
+      }
+    } catch (NetlistException | IOException e) {
+      LOG.error("Error extracting or saving netlist", e);
       netlist = null;
     }
 
-    return getService().promptChatbot(
-        plugInPort.getCloudService().getCurrentUsername(),
-        plugInPort.getCloudService().getCurrentToken(),
-        plugInPort.getCloudService().getMachineId(), fileName, netlist, prompt);
+    try {
+      return getService().promptChatbot(
+          plugInPort.getCloudService().getCurrentUsername(),
+          plugInPort.getCloudService().getCurrentToken(),
+          plugInPort.getCloudService().getMachineId(),
+          fileName,
+          netlistFile,
+          prompt);
+    } finally {
+      // Clean up the temp file immediately after use
+      if (netlistFile != null && netlistFile.exists()) {
+        netlistFile.delete();
+      }
+    }
   }
 
   private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
@@ -108,12 +131,11 @@ public class ChatbotService {
   private String extractNetlists() throws NetlistException {
     List<Netlist> netlists = plugInPort.extractNetlists(true);
 
-    if (netlists == null) {
+    if (netlists == null || netlists.isEmpty()) {
       return null;
     }
 
     StringBuilder sb = new StringBuilder();
-    sb.append("Components: ");
 
     Set<? extends IDIYComponent<?>> components = netlists.stream()
         .flatMap(n -> n.getGroups().stream()
@@ -121,8 +143,45 @@ public class ChatbotService {
                 map(Node::getComponent)))
         .collect(Collectors.toSet());
 
+    if (!components.isEmpty()) {
+      sb.append(
+          "Components (each element of the JSON array represents one component with all the relevant properties): ");
+      outputComponents(components, sb);
+    }
+
+    Set<? extends IDIYComponent<?>> switches = plugInPort.getCurrentProject().getComponents()
+        .stream().filter(x -> x instanceof ISwitch)
+        .collect(Collectors.toSet());;
+
+    if (!switches.isEmpty()) {
+      sb.append(
+          "Switches (each element of the JSON array represents one switch with all the relevant properties): ");
+      outputComponents(switches, sb);
+    }
+
+    for (Netlist netlist : netlists) {
+      sb.append("\n");
+      if (!netlist.getSwitchSetup().isEmpty()) {
+        sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append(". ");
+      }
+      sb.append("Each line below represents one JSON array that lists all the nodes that are connected together. Nodes are labeled as (component name).(node name):\n\n");
+      for (Group v : netlist.getSortedGroups()) {
+//        sb.append(v.getSortedNodes()).append("\n");
+        List<String> nodeList = v.getSortedNodes().stream().map(x -> x.getComponent().getName() + "." + x.getDisplayName()).toList();
+        try {
+          String json = MAPPER.writeValueAsString(nodeList);
+          sb.append(json).append("\n");
+        } catch (Exception e) {
+          LOG.error("Failed to serialize component descriptors to JSON", e);
+        }
+      }
+    }
+    return sb.toString();
+  }
+
+  private static void outputComponents(Set<? extends IDIYComponent<?>> components, StringBuilder sb) {
     List<Map<String, Object>> componentDescriptors = new ArrayList<>();
-    
+
     components.forEach(c -> {
       ComponentType componentType = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
@@ -148,7 +207,7 @@ public class ChatbotService {
           LOG.warn("Error extracting properties", e);
         }
       });
-      
+
       componentDescriptors.add(componentDescriptorMap);
     });
 
@@ -158,15 +217,6 @@ public class ChatbotService {
     } catch (Exception e) {
       LOG.error("Failed to serialize component descriptors to JSON", e);
     }
-
-    for (Netlist netlist : netlists) {
-      sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append("\n\n")
-          .append("Connected node groups:\n\n");
-      for (Group v : netlist.getSortedGroups()) {
-        sb.append(v.getSortedNodes()).append("\n");
-      }
-    }
-    return sb.toString();
   }
 
   public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {
