@@ -271,21 +271,21 @@ public abstract class AbstractNetlistAnalyzer {
     return res;
   }
   
-  protected int find(Node node, List<Group> groups) {
+  public static int find(Node node, List<Group> groups) {
     for (int i = 0; i < groups.size(); i++)
       if (groups.get(i).getNodes().contains(node))
         return i;
     return -1;
   }
 
-  protected boolean intersect(List<Group> groups, Node node) {
+  public static boolean intersect(List<Group> groups, Node node) {
     for (Group g : groups)
       if (g.getNodes().contains(node))
         return true;
     return false;
   }
 
-  protected Node intersect(List<Group> groups, Group group) {
+  public static Node intersect(List<Group> groups, Group group) {
     for (Group g : groups)
       for (Node node : group.getNodes())
         if (g.getNodes().contains(node))

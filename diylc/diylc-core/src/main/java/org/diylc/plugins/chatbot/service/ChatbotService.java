@@ -31,10 +31,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
-import org.diylc.netlist.Group;
-import org.diylc.netlist.Netlist;
-import org.diylc.netlist.NetlistException;
-import org.diylc.netlist.Node;
+import org.diylc.netlist.*;
 import org.diylc.plugins.chatbot.model.ChatMessageEntity;
 import org.diylc.plugins.chatbot.model.IChatbotAPI;
 import org.diylc.plugins.chatbot.model.SubscriptionEntity;
@@ -127,7 +124,6 @@ public class ChatbotService {
 
   private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
 
-  @SuppressWarnings("unchecked")
   private String extractNetlists() throws NetlistException {
     List<Netlist> netlists = plugInPort.extractNetlists(true);
 
@@ -137,26 +133,27 @@ public class ChatbotService {
 
     StringBuilder sb = new StringBuilder();
 
-    Set<? extends IDIYComponent<?>> components = netlists.stream()
-        .flatMap(n -> n.getGroups().stream()
-            .flatMap(g -> g.getNodes().stream().
-                map(Node::getComponent)))
-        .collect(Collectors.toSet());
+//    Set<? extends IDIYComponent<?>> components = netlists.stream()
+//        .flatMap(n -> n.getGroups().stream()
+//            .flatMap(g -> g.getNodes().stream().
+//                map(Node::getComponent)))
+//        .collect(Collectors.toSet());
+//
+//    if (!components.isEmpty()) {
+//      sb.append(
+//          "Components (each element of the JSON array represents one component with all the relevant properties): ");
+//      outputComponents(components, sb);
+//    }
 
-    if (!components.isEmpty()) {
-      sb.append(
-          "Components (each element of the JSON array represents one component with all the relevant properties): ");
-      outputComponents(components, sb);
-    }
-
-    Set<? extends IDIYComponent<?>> switches = plugInPort.getCurrentProject().getComponents()
+    Set<? extends ISwitch> switches = plugInPort.getCurrentProject().getComponents()
         .stream().filter(x -> x instanceof ISwitch)
+        .map(x -> (ISwitch)x)
         .collect(Collectors.toSet());;
 
     if (!switches.isEmpty()) {
       sb.append(
-          "Switches (each element of the JSON array represents one switch with all the relevant properties): ");
-      outputComponents(switches, sb);
+          "Switches (each row represents one switch, starts with the switch name and lists key properties of a switch):\n\n");
+      outputSwitches(switches, sb);
     }
 
     for (Netlist netlist : netlists) {
@@ -164,19 +161,28 @@ public class ChatbotService {
       if (!netlist.getSwitchSetup().isEmpty()) {
         sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append(". ");
       }
-      sb.append("Each line below represents one JSON array that lists all the nodes that are connected together. Nodes are labeled as (component name).(node name):\n\n");
-      for (Group v : netlist.getSortedGroups()) {
-//        sb.append(v.getSortedNodes()).append("\n");
-        List<String> nodeList = v.getSortedNodes().stream().map(x -> x.getComponent().getName() + "." + x.getDisplayName()).toList();
-        try {
-          String json = MAPPER.writeValueAsString(nodeList);
-          sb.append(json).append("\n");
-        } catch (Exception e) {
-          LOG.error("Failed to serialize component descriptors to JSON", e);
-        }
+      sb.append("Effective circuit netlist")
+          .append(netlist.getSwitchSetup().isEmpty() ? "" : " in this switch configuration")
+          .append(":\n\n");
+      try {
+        sb.append(SpiceSumarizer.summarize(netlist, false));
+      } catch (TreeException e) {
+        LOG.error("Error exporting netlist to Spice", e);
       }
     }
     return sb.toString();
+  }
+
+  private static void outputSwitches(Set<? extends ISwitch> switches, StringBuilder sb) {
+    for (ISwitch sw : switches) {
+      IDIYComponent<?> component = (IDIYComponent<?>) sw;
+      ComponentType componentType = ComponentProcessor.getInstance()
+          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+      sb.append(component.getName())
+          .append(" ").append(component.getValueForDisplay()).append(" ")
+          .append(componentType.getName())
+          .append(" [").append(componentType.getCategory()).append("]\n");
+    }
   }
 
   private static void outputComponents(Set<? extends IDIYComponent<?>> components, StringBuilder sb) {
