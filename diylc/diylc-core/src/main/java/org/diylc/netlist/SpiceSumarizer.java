@@ -75,14 +75,9 @@ public class SpiceSumarizer {
         sb.append(" ");
       }
 
-      String comment = outputComponentValue(c, sb);
+      outputComponentValue(c, sb);
 
-      if (c instanceof ISpiceMapper) {
-        String spiceComment = ((ISpiceMapper)c).getComment();
-        if (spiceComment != null)
-          comment += spiceComment;
-      }
-      sb.append(" ; ").append(comment);
+      outputComment(c, sb);
       if (useHTML)
         sb.append("<br>");
       lines.add(sb.toString());
@@ -94,7 +89,20 @@ public class SpiceSumarizer {
         .collect(Collectors.joining("\n"));
   }
 
-  private static String outputComponentValue(IDIYComponent<?> c, StringBuilder sb) {
+  private static void outputComment(IDIYComponent<?> c, StringBuilder sb) {
+    ComponentType componentType = ComponentProcessor.getInstance()
+        .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
+
+    String comment = componentType.getName() + " [" + componentType.getCategory() + "]";
+    if (c instanceof ISpiceMapper) {
+      String spiceComment = ((ISpiceMapper) c).getComment();
+      if (spiceComment != null)
+        comment = spiceComment + " " + comment;
+    }
+    sb.append(" ; ").append(comment);
+  }
+
+  private static void outputComponentValue(IDIYComponent<?> c, StringBuilder sb) {
     ComponentType componentType = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
@@ -117,7 +125,6 @@ public class SpiceSumarizer {
         sb.append(c.getValue());
       }
     }
-    return componentType.getName() + " [" + componentType.getCategory() + "]";
   }
 
   private static String formatSpiceNode(int i) {

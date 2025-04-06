@@ -293,7 +293,7 @@ public class ChatbotPane extends JPanel {
 
   public JButton getAskButton() {
     if (askButton == null) {
-      askButton = new JButton("Ask");
+      askButton = new JButton("<html>Send &#9166;</html>");
       askButton.setBackground(TERMINAL_BG);
       askButton.setForeground(TERMINAL_FG);
       askButton.setFocusPainted(false);

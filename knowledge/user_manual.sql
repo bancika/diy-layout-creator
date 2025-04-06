@@ -254,4 +254,5 @@ INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manua
 - If you are asking about a DIYLC feature, make sure to include the words "DIYLC" or "DIY Layout Creator" and the feature in question to ensure that the AI assistant understands the context of the question.
 - Use simple language and avoid complex technical terms.
 - Ask follow-up questions if needed.
-- Use the "Clear" button to reset the conversation.');
+- Use the "Clear" button to reset the conversation.
+- Each chat conversation is associated with the current project and is saved in the cloud and will be automatically downloaded when that project is opened.');

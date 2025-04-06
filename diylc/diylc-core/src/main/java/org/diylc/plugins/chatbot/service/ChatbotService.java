@@ -161,7 +161,7 @@ public class ChatbotService {
       if (!netlist.getSwitchSetup().isEmpty()) {
         sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append(". ");
       }
-      sb.append("Effective circuit netlist")
+      sb.append("Circuit netlist")
           .append(netlist.getSwitchSetup().isEmpty() ? "" : " in this switch configuration")
           .append(":\n\n");
       try {
