@@ -1,8 +1,10 @@
 package org.diylc.swing.plugins.chatbot;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.lang.LangUtil;
 import org.diylc.plugins.chatbot.model.ChatMessageEntity;
 import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.chatbot.service.ChatbotService;
@@ -23,6 +25,7 @@ public class ChatbotPane extends JPanel {
   private static final Logger LOG = Logger.getLogger(ChatbotPane.class);
   public static final String ME = "Me: ";
   public static final String AI_ASSISTANT = "AI Assistant: ";
+  public static final String FREE_TIER = "Free";
 
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
@@ -45,6 +48,7 @@ public class ChatbotPane extends JPanel {
   private JEditorPane chatEditorPane;
   private JButton askButton;
   private JButton clearButton;
+  private JButton premiumButton;
 
   private boolean loggedIn = false;
   private String projectFileName = null;
@@ -102,11 +106,29 @@ public class ChatbotPane extends JPanel {
     gbc.gridwidth = 2;  // Span both columns
     add(promptScrollPane, gbc);
 
-    // Button panel for Clear and Ask buttons
-    JPanel buttonPanel = new JPanel(new BorderLayout(5, 0));
+    // Button panel for Clear, Premium, and Ask buttons
+    JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));  // 10px horizontal gap between components
     buttonPanel.setBackground(TERMINAL_BG);
-    buttonPanel.add(getClearButton(), BorderLayout.WEST);
-    buttonPanel.add(getAskButton(), BorderLayout.EAST);
+    
+    // Left panel for Clear button
+    JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    leftPanel.setBackground(TERMINAL_BG);
+    leftPanel.add(getClearButton());
+    
+    // Center panel for Premium button
+    JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+    centerPanel.setBackground(TERMINAL_BG);
+    centerPanel.add(getPremiumButton());
+    
+    // Right panel for Ask button
+    JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+    rightPanel.setBackground(TERMINAL_BG);
+    rightPanel.add(getAskButton());
+    
+    // Add all panels to the main button panel
+    buttonPanel.add(leftPanel, BorderLayout.WEST);
+    buttonPanel.add(centerPanel, BorderLayout.CENTER);
+    buttonPanel.add(rightPanel, BorderLayout.EAST);
 
     gbc.gridx = 0;  // Start from first column
     gbc.gridy = 4;
@@ -204,7 +226,7 @@ public class ChatbotPane extends JPanel {
     return promptArea;
   }
 
-  public void refreshChat() {
+  public void refreshChat(SubscriptionEntity subscriptionInfo) {
     boolean currentLoggedIn = plugInPort.getCloudService().isLoggedIn();
     String currentProjectFileName = FileUtils.extractFileName(plugInPort.getCurrentFileName());
 
@@ -219,16 +241,12 @@ public class ChatbotPane extends JPanel {
       appendSection(ChatbotService.SYSTEM, "Please log into your cloud account to use the AI assistant");
       getAskButton().setEnabled(false);
       getClearButton().setEnabled(false);
+      getPremiumButton().setVisible(false);
     } else {
-      try {
-        SubscriptionEntity subscriptionInfo = plugInPort.getChatbotService().getSubscriptionInfo();
+      if (subscriptionInfo != null) {
+        getPremiumButton().setVisible(FREE_TIER.equals(subscriptionInfo.getTier()));
         appendSection(ChatbotService.SYSTEM,
-            "Your are currently subscribed to the '" + subscriptionInfo.getTier() +
-                "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " +
-                subscriptionInfo.getRemainingCredits() + " credits remaining.");
-      } catch (NotLoggedInException e) {
-        LOG.error("Error getting subscription info", e);
-        appendSection(ChatbotService.SYSTEM, "Error getting subscription info");
+            "Your are currently subscribed to the '" + subscriptionInfo.getTier() + "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " + subscriptionInfo.getRemainingCredits() + " credits remaining.");
       }
       fetchChatHistory();
       getAskButton().setEnabled(true);
@@ -260,7 +278,7 @@ public class ChatbotPane extends JPanel {
       chatEditorPane.setContentType("text/html");
       chatEditorPane.setText(HTML_STYLE + "<body></body>");
 
-      refreshChat();
+      refreshChat(null);
     }
     return chatEditorPane;
   }
@@ -293,14 +311,21 @@ public class ChatbotPane extends JPanel {
 
   public JButton getAskButton() {
     if (askButton == null) {
-      askButton = new JButton("<html>Send &#9166;</html>");
+      askButton = new JButton(LangUtil.translate("Send"));
       askButton.setBackground(TERMINAL_BG);
       askButton.setForeground(TERMINAL_FG);
       askButton.setFocusPainted(false);
       askButton.setBorderPainted(true);
       askButton.addActionListener(e -> {
-        final String prompt = getPromptArea().getText();
+        String prompt = getPromptArea().getText();
         appendSection(ChatbotService.USER, ME + prompt);
+
+        String lang = ConfigurationManager.getInstance()
+            .readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
+        if (!IPlugInPort.LANGUAGE_DEFAULT.equals(lang)) {
+          prompt += ". Respond in " + lang + " language.";
+        }
+        String finalPrompt = prompt;
         appendSection(ChatbotService.TEMPORARY, "Waiting for the response...");
         getPromptArea().setText(null);
 
@@ -311,7 +336,7 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public String doInBackground() throws Exception {
-            return chatbotService.promptChatbot(prompt);
+            return chatbotService.promptChatbot(finalPrompt);
           }
 
           @Override
@@ -347,7 +372,7 @@ public class ChatbotPane extends JPanel {
 
   public JButton getClearButton() {
     if (clearButton == null) {
-      clearButton = new JButton("Clear");
+      clearButton = new JButton(LangUtil.translate("Clear"));
       clearButton.setBackground(TERMINAL_BG);
       clearButton.setForeground(TERMINAL_FG);
       clearButton.setFocusPainted(false);
@@ -377,5 +402,27 @@ public class ChatbotPane extends JPanel {
       });
     }
     return clearButton;
+  }
+
+  public JButton getPremiumButton() {
+    if (premiumButton == null) {
+      premiumButton = new JButton(LangUtil.translate("Get Premium"));
+      premiumButton.setBackground(TERMINAL_BG);
+      premiumButton.setForeground(TERMINAL_FG);
+      premiumButton.setFocusPainted(false);
+      premiumButton.setBorderPainted(true);
+      premiumButton.setVisible(false);
+      premiumButton.addActionListener(e -> {
+
+        try {
+          java.awt.Desktop.getDesktop().browse(new java.net.URI("http://diy-fever.com/get-premium"));
+        } catch (Exception ex) {
+          LOG.error("Failed to open premium subscription page", ex);
+          swingUI.showMessage("Failed to open premium subscription page. Please visit http://diy-fever.com/get-premium manually.", "Error",
+              ISwingUI.ERROR_MESSAGE);
+        }
+      });
+    }
+    return premiumButton;
   }
 }

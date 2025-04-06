@@ -26,6 +26,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.config.ConfigPlugin;
 
@@ -59,7 +60,11 @@ public class ChatbotPlugin implements IPlugIn {
       case PROJECT_LOADED:
       case CLOUD_LOGGED_IN:
       case CLOUD_LOGGED_OUT:
-        getChatbotPane().refreshChat();
+        SubscriptionEntity subscriptionInfo = null;
+        if (params.length > 0) {
+          subscriptionInfo = (SubscriptionEntity) params[0];
+        }
+        getChatbotPane().refreshChat(subscriptionInfo);
         break;
       default:
         break;

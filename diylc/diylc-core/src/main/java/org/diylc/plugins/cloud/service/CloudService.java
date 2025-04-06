@@ -131,7 +131,12 @@ public class CloudService {
       ConfigurationManager.getInstance().writeValue(USERNAME_KEY, username);
       ConfigurationManager.getInstance().writeValue(TOKEN_KEY, res);
       this.loggedIn = true;
-      this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN);
+      try {
+        this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN,
+            plugInPort.getChatbotService().getSubscriptionInfo());
+      } catch (NotLoggedInException e) {
+        LOG.error("Could not get subscription info", e);
+      }
       return true;
     }
   }
@@ -153,7 +158,11 @@ public class CloudService {
       } else {
         LOG.info("Login success");
         this.loggedIn = true;
-        this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN);
+        try {
+          this.plugInPort.getMessageDispatcher().dispatchMessage(EventType.CLOUD_LOGGED_IN, plugInPort.getChatbotService().getSubscriptionInfo());
+        } catch (NotLoggedInException e) {
+          LOG.error("Could not get subscription info", e);
+        }
       }
     }
   }
