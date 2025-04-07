@@ -58,10 +58,12 @@ public class ChatbotPlugin implements IPlugIn {
     switch (eventType) {
       case FILE_STATUS_CHANGED:
       case PROJECT_LOADED:
+        getChatbotPane().refreshChat(null);
+        break;
       case CLOUD_LOGGED_IN:
       case CLOUD_LOGGED_OUT:
         SubscriptionEntity subscriptionInfo = null;
-        if (params.length > 0) {
+        if (params.length > 0 && params[0] instanceof SubscriptionEntity) {
           subscriptionInfo = (SubscriptionEntity) params[0];
         }
         getChatbotPane().refreshChat(subscriptionInfo);

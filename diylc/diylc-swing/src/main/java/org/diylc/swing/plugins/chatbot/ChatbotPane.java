@@ -13,6 +13,8 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.utils.FileUtils;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class ChatbotPane extends JPanel {
   public static final String ME = "Me: ";
   public static final String AI_ASSISTANT = "AI Assistant: ";
   public static final String FREE_TIER = "Free";
+  public static final String GET_PREMIUM_URL = "www.diy-fever.com/get-premium";
 
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
@@ -35,7 +38,10 @@ public class ChatbotPane extends JPanel {
       "<style>" + "body { font-family: %s; font-size: %dpt; color: rgb(%d,%d,%d); background-color: rgb(%d,%d,%d); padding: 0px; margin: 0; }" + "pre { white-space: pre-wrap; margin: 0; }" + ".user { color: #98C379; }" +      // Softer green that's easier on the eyes
           ".assistant { color: #61AFEF; }" +  // Lighter, more vibrant blue
           ".system { color: #E5C07B; }" +     // Warmer, muted yellow
-          ".temporary { color: #555555; }" + "</style>", MONOSPACED_FONT.getFamily(),
+          ".temporary { color: #555555; }" + 
+          "a { color: #C678DD; text-decoration: none; }" +  // Purple link color
+          "a:hover { color: #E06C75; text-decoration: underline; }" +  // Red hover color
+          "</style>", MONOSPACED_FONT.getFamily(),
       MONOSPACED_FONT.getSize(), TERMINAL_FG.getRed(), TERMINAL_FG.getGreen(),
       TERMINAL_FG.getBlue(), TERMINAL_BG.getRed(), TERMINAL_BG.getGreen(), TERMINAL_BG.getBlue());
   private static final Color PROMPT_BG = new Color(60, 60, 60);  // Slightly brighter than TERMINAL_BG
@@ -245,13 +251,25 @@ public class ChatbotPane extends JPanel {
     } else {
       if (subscriptionInfo != null) {
         getPremiumButton().setVisible(FREE_TIER.equals(subscriptionInfo.getTier()));
-        appendSection(ChatbotService.SYSTEM,
-            "Your are currently subscribed to the '" + subscriptionInfo.getTier() + "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " + subscriptionInfo.getRemainingCredits() + " credits remaining.");
+        String subscriptionInfoText = "Your are currently subscribed to the '" + subscriptionInfo.getTier() + "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " + subscriptionInfo.getRemainingCredits() + " credits remaining.";
+
+        if (FREE_TIER.equals(subscriptionInfo.getTier())) {
+          subscriptionInfoText +=
+              " To subscribe to the Premium tier, unlock advanced AI models and virtually limitless usage, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a>.";
+        }
+        appendSection(ChatbotService.SYSTEM, subscriptionInfoText);
       }
       fetchChatHistory();
       getAskButton().setEnabled(true);
       getClearButton().setEnabled(true);
     }
+
+    // Scroll to the end of the chat pane
+    SwingUtilities.invokeLater(() -> {
+      JScrollPane scrollPane = (JScrollPane) getChatEditorPane().getParent().getParent();
+      JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+      verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+    });
   }
 
   private void fetchChatHistory() {
@@ -277,6 +295,22 @@ public class ChatbotPane extends JPanel {
 
       chatEditorPane.setContentType("text/html");
       chatEditorPane.setText(HTML_STYLE + "<body></body>");
+
+      chatEditorPane.addHyperlinkListener(new HyperlinkListener() {
+
+        @Override
+        public void hyperlinkUpdate(HyperlinkEvent hle) {
+          if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+            System.out.println(hle.getURL());
+            Desktop desktop = Desktop.getDesktop();
+            try {
+              desktop.browse(hle.getURL().toURI());
+            } catch (Exception ex) {
+              LOG.error("Could not open link: " + hle.getURL(), ex);
+            }
+          }
+        }
+      });
 
       refreshChat(null);
     }
