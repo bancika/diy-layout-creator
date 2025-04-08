@@ -322,12 +322,16 @@
 				<minor>2</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-03-20 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-04-20 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>'Virtual Multimeter' from 'Analyze' menu traces the circuit finding all possible paths of electricity between two points designated by the probe symbol.</description>
+					<description>Added 'AI Assistant' that can help with general electronics questions, questions about DIYLC usage and circuit-related questions</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Virtual Multimeter' from 'Analyze' menu traces the circuit finding all possible paths of electricity between two points designated by the probe symbol</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
