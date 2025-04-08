@@ -21,8 +21,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -44,7 +42,6 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
-import org.diylc.utils.UIScalingUtil;
 
 /**
  * Main class that runs DIYLC.
@@ -99,21 +96,7 @@ public class DIYLCStarter {
 
 		initializeConfiguration();
 
-      try {
-        SwingUtilities.invokeAndWait(new Runnable() {
-            @Override
-            public void run() {
-                UIScalingUtil.initialize();
-
-            }
-        });
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      } catch (InvocationTargetException e) {
-        throw new RuntimeException(e);
-      }
-
-      if (exportMode) {
+      	if (exportMode) {
 		  LOG.info("Running in export mode with params: " + String.join(", ", args));
 		}
 
