@@ -74,6 +74,7 @@ public class CloudPlugIn implements IPlugIn {
   private UploadAction uploadAction;
   private ChangePasswordAction changePasswordAction;
   private ManageProjectsAction manageProjectsAction;
+  private ConnectPatreonAction connectPatreonAction;
 
   private CloudBrowserFrame cloudBrowser;
 
@@ -83,6 +84,12 @@ public class CloudPlugIn implements IPlugIn {
     this.swingUI = swingUI;
     this.thumbnailPresenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
     this.thumbnailGenerator = new ThumbnailGenerator(thumbnailPresenter);
+  }
+
+  @Override
+  public void connect(IPlugInPort plugInPort) {
+    this.plugInPort = plugInPort;
+    this.cloudService = plugInPort.getCloudService();
 
     // Initialize actions
     this.libraryAction = new LibraryAction(this);
@@ -93,6 +100,7 @@ public class CloudPlugIn implements IPlugIn {
     this.uploadAction = new UploadAction(this);
     this.changePasswordAction = new ChangePasswordAction(this);
     this.manageProjectsAction = new ManageProjectsAction(this);
+    this.connectPatreonAction = new ConnectPatreonAction(plugInPort, swingUI);
 
     swingUI.injectMenuAction(getLibraryAction(), ONLINE_TITLE);
     swingUI.injectMenuAction(null, ONLINE_TITLE);
@@ -104,6 +112,7 @@ public class CloudPlugIn implements IPlugIn {
     swingUI.injectMenuAction(null, ONLINE_TITLE);
     swingUI.injectMenuAction(getManageAccountAction(), ONLINE_TITLE);
     swingUI.injectMenuAction(getChangePasswordAction(), ONLINE_TITLE);
+    swingUI.injectMenuAction(getConnectPatreonAction(), ONLINE_TITLE);
     swingUI.injectMenuAction(getLogOutAction(), ONLINE_TITLE);
 
     // default state
@@ -112,12 +121,6 @@ public class CloudPlugIn implements IPlugIn {
     getManageAccountAction().setEnabled(false);
     getChangePasswordAction().setEnabled(false);
     getLogOutAction().setEnabled(false);
-  }
-
-  @Override
-  public void connect(IPlugInPort plugInPort) {
-    this.plugInPort = plugInPort;
-    this.cloudService = plugInPort.getCloudService();
   }
 
   public CloudBrowserFrame getCloudBrowser() {
@@ -149,6 +152,10 @@ public class CloudPlugIn implements IPlugIn {
 
   public ManageAccountAction getManageAccountAction() {
     return manageAccountAction;
+  }
+
+  public ConnectPatreonAction getConnectPatreonAction() {
+    return connectPatreonAction;
   }
 
   public UploadAction getUploadAction() {
