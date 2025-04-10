@@ -220,3 +220,39 @@ INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manua
 * Docker (only for building the deployment packages)
 
 Note: Unlike DIYLC v2, versions 3 and higher components require actual Java coding for custom appearance and behavior. This raises the bar for non-programmers but gives greater flexibility and performance.');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'DIYLC Cloud';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'DIYLC Cloud',
+'The DIYLC Cloud feature connects users to a central hub and offers several powerful capabilities:
+- Upload and Share Projects: Save your DIYLC projects online and share them with the community.
+- Search and Download Projects: Access a library of existing projects uploaded by other users.
+- Access AI Assistant: Use the AI Assistant to get help with using the app, designing circuits, and troubleshooting projects.
+The Cloud feature is open to all users but requires creating an account with a valid email address. Your email is used only for login purposes and will never be shared or used for any other reason.
+The only way to create and access a DIYLC Cloud account is through the "Cloud" tab in the main menu of the DIYLC application.');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT',
+'DIYLC AI Assistant is an integrated feature that allows users to interact with DIY Layout Creator (DIYLC) using natural language. It functions as a chatbot powered by the OpenAI API to generate helpful responses. The AI Assistant is available only while logged into the DIYLC Cloud with an active account and requires an internet connection.
+There are two subscription tiers for using the AI Assistant:
+- Free Tier: Provides limited monthly usage and access to basic AI models. This option is automatically available to all registered DIYLC Cloud users.
+- Premium Tier: Offers up to 1000 requests per month using more advanced AI models. The Premium subscription can be purchased at http://www.diy-fever.com/get-premium. If your email used to subscribe to the premium tier is different from the email used to login to the DIYLC Cloud, please reach out to bancika@gmail.com to manually activate your premium status.
+');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT - Using the AI Assistant';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT - Using the AI Assistant',
+'DIYLC AI Assistant can assist users with a wide variety of tasks, including:
+- General Electronics Questions: Ask about electronics theory, parts, components, guitars, and related topics.
+- Circuit Design Assistance: Describe the type of circuit you want to build, and the AI Assistant will suggest design ideas and possible circuit layouts.
+- Circuit Troubleshooting: Get help with specific questions or troubleshoot problems with your circuit. The AI Assistant can read your project file, analyze all components and connections, and provide detailed explanations of the circuit’s behavior.
+- Learning DIYLC Features: Ask questions about DIY Layout Creator (DIYLC). The AI Assistant is trained on the complete DIYLC user manual and can explain software features, tools, and workflows.');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT - Tips';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'AI Assitant/Chatbot/ChatGPT/GPT - Tips',
+'Below are some tips for using the DIYLC AI Assistant:
+- Be specific and detailed in your questions.
+- If you are asking about a specific component, make sure to include the component name and any relevant details.
+- If you are asking about a DIYLC feature, make sure to include the words "DIYLC" or "DIY Layout Creator" and the feature in question to ensure that the AI assistant understands the context of the question.
+- Use simple language and avoid complex technical terms.
+- Ask follow-up questions if needed.
+- Use the "Clear" button to reset the conversation.
+- Each chat conversation is associated with the current project and is saved in the cloud and will be automatically downloaded when that project is opened.');

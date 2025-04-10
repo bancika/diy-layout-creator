@@ -5,9 +5,15 @@ import static org.mockito.Mockito.*;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import com.thoughtworks.xstream.XStream;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.PropertyWrapper;

@@ -19,15 +19,7 @@ package org.diylc.netlist;
 
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
@@ -77,7 +69,7 @@ public class NetlistBuilder {
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
       // extract nodes
-      if (!(c instanceof IContinuity) && !(c instanceof ICommonNode)) {
+      if (!(c instanceof IContinuity && !(c instanceof ISwitch)) && !(c instanceof ICommonNode)) {
         // regular components, create a node per control point
         for (int i = 0; i < c.getControlPointCount(); i++) {
           String nodeName = c.getControlPointNodeName(i);
@@ -191,8 +183,27 @@ public class NetlistBuilder {
     // sort everything alphabetically
     List<Netlist> netlists = new ArrayList<Netlist>(result.keySet());
     Collections.sort(netlists);
+    netlists.forEach(netlist -> cleanupRedundantSwitches(netlist.getSwitchSetup()));
 
     return netlists;
+  }
+
+  public static void cleanupRedundantSwitches(List<SwitchSetup> switchSetups) {
+    Map<ISwitch, Set<Integer>> positionCountMap = new HashMap<>();
+    switchSetups.forEach(s -> s.getPositions().forEach(pos -> {
+      positionCountMap.computeIfAbsent(pos.getSwitch(), k -> new HashSet<Integer>()).add(pos.getPosition());
+    }));
+    // find switches that are here in all the positions, meaning that they don't affect the circuit
+    Set<ISwitch> switchesToPrune = positionCountMap.entrySet().stream()
+        .filter(e -> e.getKey().getPositionCount() == e.getValue().size())
+        .map(x -> x.getKey())
+        .collect(Collectors.toSet());
+    switchSetups.forEach(s -> s.getPositions().removeIf(x -> switchesToPrune.contains(x.getSwitch())));
+    switchSetups.removeIf(x -> x.getPositions().isEmpty());
+    HashSet<SwitchSetup> uniqueSetups = new HashSet<>(switchSetups);
+    switchSetups.clear();
+    switchSetups.addAll(uniqueSetups);
+    switchSetups.sort(Comparator.comparing(x -> x.toString()));
   }
 
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
@@ -404,8 +415,10 @@ public class NetlistBuilder {
       IDIYComponent<?> c = project.getComponents().get(z);
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      // handle direct connections
-      if (c instanceof IContinuity) {
+      // handle direct connections or connections through a switch
+      // when not using "includeSwitches" flag
+      if (c instanceof IContinuity &&
+          (!(c instanceof ISwitch) || switchPositions.isEmpty())) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))

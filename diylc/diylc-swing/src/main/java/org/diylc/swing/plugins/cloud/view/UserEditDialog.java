@@ -170,7 +170,8 @@ public class UserEditDialog extends ButtonDialog {
     this.website = getWebsiteField().getText();
     this.bio = getBioArea().getText();
     JButton okButton = getButton(OK);
-    okButton.setEnabled((this.userName.length() > 0)
+    okButton.setEnabled(!this.userName.isEmpty()
+        && !this.email.isEmpty() && this.email.contains("@")
         && (this.existingEntity != null || ((this.password != null) && (this.password.length() > 0))));
   }
 
@@ -253,8 +254,10 @@ public class UserEditDialog extends ButtonDialog {
   private JTextField getEmailField() {
     if (emailField == null) {
       emailField = new JTextField();
-      if (existingEntity != null)
+      if (existingEntity != null) {
         emailField.setText(existingEntity.getEmail());
+        emailField.setEditable(false);
+      }
       emailField.getDocument().addDocumentListener(new DocumentListener() {
 
         @Override

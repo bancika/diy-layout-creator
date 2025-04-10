@@ -61,6 +61,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String PROJECT_EXPLORER = "projectExplorer";
+  public static final String CHATBOT = "chatbot";
   public static final String SEARCHABLE_TREE = "Searchable Tree";
   public static final String TABBED_TOOLBAR = "Tabbed Toolbar";
   private static final String LANGUAGE_MENU = LangUtil.translate("Language");
@@ -107,13 +108,10 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Hi-Quality Rendering",
             IPlugInPort.HI_QUALITY_RENDER_KEY, false), CONFIG_MENU);
-    swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Highlight Connected Areas", IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, 
-            false), CONFIG_MENU);
     
     try {
       List<Language> languages = LangUtil.getAvailableLanguages(); 
-      if (languages != null && languages.size() > 0) {
+      if (languages != null && !languages.isEmpty()) {
         swingUI.injectSubmenu(LANGUAGE_MENU, IconLoader.Earth.getIcon(), CONFIG_MENU);
         for(Language language : languages) {
           Icon icon = null;
@@ -146,11 +144,15 @@ public class ConfigPlugin implements IPlugIn {
         RULER_MENU); 
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createToggleAction(IPlugInPort.RULER_IN_SUBDIVISION_2, IPlugInPort.RULER_IN_SUBDIVISION_KEY, RULER_MENU, IPlugInPort.RULER_IN_SUBDIVISION_DEFAULT),
-        RULER_MENU); 
+        RULER_MENU);
+
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show AI Assistant",
+            ConfigPlugin.CHATBOT, true), CONFIG_MENU);
     
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Project Explorer",
-            ConfigPlugin.PROJECT_EXPLORER, true), CONFIG_MENU);
+            ConfigPlugin.PROJECT_EXPLORER, false), CONFIG_MENU);
     
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),

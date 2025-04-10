@@ -26,21 +26,11 @@ import org.diylc.components.misc.Label;
 import org.diylc.components.misc.PCBText;
 import org.diylc.core.IDIYComponent;
 
-public class TextTransformer implements IComponentTransformer {
+public class TextTransformer extends SimpleComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
     return component.getClass().equals(Label.class) || component.getClass().equals(PCBText.class);
-  }
-
-  @Override
-  public boolean canMirror(IDIYComponent<?> component) {
-    return false;
-  }
-
-  @Override
-  public boolean mirroringChangesCircuit() {
-    return false;
   }
 
   @Override
@@ -75,10 +65,5 @@ public class TextTransformer implements IComponentTransformer {
       o = Orientation.values()[oValue];
       snap.setOrientation(o);
     }
-  }
-
-  @Override
-  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
-    throw new RuntimeException("Unexpected call to mirror() in LabelTransformer");
   }
 }

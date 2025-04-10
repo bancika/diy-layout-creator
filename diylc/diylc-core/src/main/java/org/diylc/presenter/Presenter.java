@@ -47,7 +47,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -59,17 +58,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import org.diylc.clipboard.ComponentTransferable;
-import org.diylc.common.ComponentType;
-import org.diylc.common.DrawOption;
-import org.diylc.common.EventType;
-import org.diylc.common.IComponentFilter;
-import org.diylc.common.IComponentTransformer;
-import org.diylc.common.IKeyProcessor;
-import org.diylc.common.INetlistAnalyzer;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.IProjectEditor;
-import org.diylc.common.PropertyWrapper;
+import org.diylc.common.*;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
@@ -85,9 +74,11 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
-import org.diylc.netlist.NetlistAnalyzer;
+import org.diylc.netlist.AbstractNetlistAnalyzer;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
+import org.diylc.plugins.chatbot.service.ChatbotService;
+import org.diylc.plugins.cloud.service.CloudService;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
@@ -99,7 +90,7 @@ import org.diylc.utils.ReflectionUtils;
  * 
  * @author Branislav Stojkovic
  */
-public class Presenter implements IPlugInPort, IConfigListener {
+public class Presenter implements IPlugInPort {
 
   private static final String REACHED_BOTTOM =
       LangUtil.translate("Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?");
@@ -182,36 +173,38 @@ public class Presenter implements IPlugInPort, IConfigListener {
   private Point2D previousScaledPoint;
   
   private DIYTest test = null;
+
+  private OperationMode operationMode;
   
   public Presenter(IView view, IConfigurationManager<?> configManager) {
     this(view, configManager, false);
   }
 
   public Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks) {
+    this(view, configManager, importVariantsAndBlocks, new MessageDispatcher<EventType>(true));
+  }
+
+  // New constructor for testing
+  protected Presenter(IView view, IConfigurationManager<?> configManager, boolean importVariantsAndBlocks, MessageDispatcher<EventType> messageDispatcher) {
     super();
     this.view = view;
     this.configManager = configManager;
+    this.messageDispatcher = messageDispatcher;
     plugIns = new ArrayList<IPlugIn>();
-    messageDispatcher = new MessageDispatcher<EventType>(true);
     selectedComponents = new HashSet<IDIYComponent<?>>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
     currentProject = new Project();
-    // cloner = new Cloner();
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
 
-    // lockedLayers = EnumSet.noneOf(ComponentLayer.class);
-    // visibleLayers = EnumSet.allOf(ComponentLayer.class);
     if (importVariantsAndBlocks) {
       variantManager.upgradeVariants(getComponentTypes());
       variantManager.importDefaultVariants();
       buildingBlockManager.importDefaultBlocks();
     }
-    
-    this.configManager.addConfigListener(HIGHLIGHT_CONTINUITY_AREA, this);
   }
 
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
@@ -256,7 +249,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
   @Override
   public Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     // Only change the cursor if we're not making a new component.
-    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown)
+    if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown)
       return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     if (instantiationManager.getComponentTypeSlot() == null) {
       // Scale point to remove zoom factor.
@@ -266,7 +259,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
       }
       for (IDIYComponent<?> component : currentProject.getComponents()) {
         if (!isComponentLocked(component) && isComponentVisible(component)
-            && !configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+            && operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
           ComponentArea area = drawingManager.getComponentArea(component);
           if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
@@ -608,7 +601,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
           default:
             LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
         }
-      } else if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false) || altDown) {
+      } else if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown) {
         drawingManager.findContinuityAreaAtPoint(scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
@@ -1082,8 +1075,8 @@ public class Presenter implements IPlugInPort, IConfigListener {
           dragAction == DnDConstants.ACTION_LINK, dragAction == DnDConstants.ACTION_MOVE, 1);
       return;
     }
-    if (configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
-      LOG.debug("Cannot start drag in hightlight continuity mode.");
+    if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
+      LOG.debug("Cannot start drag in highlight continuity mode.");
       return;
     }
     this.dragInProgress = true;
@@ -1241,7 +1234,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
       test.addStep(DIYTest.DRAG_OVER, params);
     }    
     
-    if (point == null || configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false)) {
+    if (point == null || operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
       return false;
     }
     Point2D scaledPoint = scalePoint(point);
@@ -1556,7 +1549,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
             new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));;
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
-      if (!configManager.readBoolean(HIGHLIGHT_CONTINUITY_AREA, false))
+      if (operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS)
         for (IDIYComponent<?> component : currentProject.getComponents()) {
           if (!isComponentLocked(component) && isComponentVisible(component)) {
             ComponentArea area = drawingManager.getComponentArea(component);
@@ -1984,7 +1977,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
       if (netlists == null)
         return;
       
-      List<Set<IDIYComponent<?>>> allGroups = NetlistAnalyzer.extractComponentGroups(netlists);
+      List<Set<IDIYComponent<?>>> allGroups = AbstractNetlistAnalyzer.extractComponentGroups(netlists);
       // Find control points of all selected components and all types
       Set<String> selectedNamePrefixes = new HashSet<String>();
       if (expansionMode == ExpansionMode.SAME_TYPE) {
@@ -2746,7 +2739,7 @@ public class Presenter implements IPlugInPort, IConfigListener {
         }
       }
 
-      Collections.sort(result, new Comparator<INetlistAnalyzer>() {
+      result.sort(new Comparator<INetlistAnalyzer>() {
 
         @Override
         public int compare(INetlistAnalyzer o1, INetlistAnalyzer o2) {
@@ -2801,17 +2794,44 @@ public class Presenter implements IPlugInPort, IConfigListener {
   public List<Area> checkContinuityAreaProximity(Size threshold) {
     return drawingManager.getContinuityAreaProximity((float)threshold.convertToPixels());    
   }
-  
-  // IConfigListener
 
   @Override
-  public void valueChanged(String configKey, Object value) {
-    if (HIGHLIGHT_CONTINUITY_AREA.equalsIgnoreCase(configKey)) {
-      drawingManager.clearContinuityArea();
-      if (Boolean.TRUE.equals(value)) {
-        drawingManager.clearComponentAreaMap();
-      }
-      messageDispatcher.dispatchMessage(EventType.REPAINT);
+  public OperationMode getOperationMode() {
+    return operationMode;
+  }
+
+  @Override
+  public void setOperationMode(OperationMode operationMode) {
+    this.operationMode = operationMode;
+    drawingManager.clearContinuityArea();
+    if (OperationMode.HIGHLIGHT_CONNECTED_AREAS == operationMode) {
+      drawingManager.clearComponentAreaMap();
     }
+    messageDispatcher.dispatchMessage(EventType.REPAINT);
+    messageDispatcher.dispatchMessage(EventType.STATUS_MESSAGE_CHANGED);
+  }
+
+  private CloudService cloudService;
+
+  @Override
+  public CloudService getCloudService() {
+    if (cloudService == null) {
+      cloudService = new CloudService(this);
+    }
+    return cloudService;
+  }
+
+  private ChatbotService chatbotService;
+
+  @Override
+  public ChatbotService getChatbotService() {
+    if (chatbotService == null) {
+      chatbotService = new ChatbotService(this);
+    }
+    return chatbotService;
+  }
+
+  public MessageDispatcher<EventType> getMessageDispatcher() {
+    return messageDispatcher;
   }
 }

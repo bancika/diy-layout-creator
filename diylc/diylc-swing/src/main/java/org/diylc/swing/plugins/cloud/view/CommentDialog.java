@@ -37,11 +37,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 
@@ -57,6 +57,7 @@ public class CommentDialog extends JDialog {
 
   private static final long serialVersionUID = 1L;
 
+  private final IPlugInPort plugInPort;
   private ProjectEntity project;
   private List<CommentEntity> comments;
 
@@ -69,8 +70,9 @@ public class CommentDialog extends JDialog {
 
   private ISimpleView cloudUI;
 
-  public CommentDialog(ISimpleView cloudUI, ProjectEntity project, List<CommentEntity> comments) {
+  public CommentDialog(ISimpleView cloudUI, IPlugInPort plugInPort, ProjectEntity project, List<CommentEntity> comments) {
     super(cloudUI.getOwnerFrame(), "Comments on " + project.getName());
+    this.plugInPort = plugInPort;
     this.project = project;
     this.comments = comments;
     this.cloudUI = cloudUI;
@@ -79,7 +81,7 @@ public class CommentDialog extends JDialog {
     pack();
     setLocationRelativeTo(cloudUI.getOwnerFrame());
     setModal(true);
-    if (!CloudPresenter.Instance.isLoggedIn()) {
+    if (!plugInPort.getCloudService().isLoggedIn()) {
       getReplyArea().setEnabled(false);
       getReplyArea().setText("Must be logged in to reply.");
       getSendButton().setEnabled(false);
@@ -162,7 +164,7 @@ public class CommentDialog extends JDialog {
 
             @Override
             public Void doInBackground() throws Exception {
-              CloudPresenter.Instance.postComment(project.getId(), comment);
+              plugInPort.getCloudService().postComment(project.getId(), comment);
               return null;
             }
 
@@ -176,7 +178,7 @@ public class CommentDialog extends JDialog {
               getReplyArea().setText("");
               CommentEntity newComment = new CommentEntity();
               newComment.setPostedAt(JUST_NOW);
-              newComment.setUsername(CloudPresenter.Instance.getCurrentUsername());
+              newComment.setUsername(plugInPort.getCloudService().getCurrentUsername());
               newComment.setComment(comment);
               addComment(newComment).requestFocusInWindow();
               getListPanel().revalidate();

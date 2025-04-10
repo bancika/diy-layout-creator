@@ -54,6 +54,7 @@ import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.update.UpdateChecker;
 import org.diylc.appframework.update.Version;
+import org.diylc.common.*;
 import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
 import org.diylc.swingframework.update.UpdateDialog;
@@ -61,12 +62,6 @@ import org.diylc.swingframework.update.UpdateLabel;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import org.diylc.announcements.AnnouncementProvider;
-import org.diylc.common.BadPositionException;
-import org.diylc.common.ComponentType;
-import org.diylc.common.EventType;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
@@ -190,14 +185,6 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public void valueChanged(String key, Object value) {
         refreshPosition((Boolean)value);
-      }
-    });
-    
-    ConfigurationManager.getInstance().addConfigListener(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, new IConfigListener() {
-      
-      @Override
-      public void valueChanged(String key, Object value) {
-        refreshStatusText();
       }
     });
   }
@@ -494,7 +481,7 @@ public class StatusBar extends JPanel implements IPlugIn {
         refreshStatusText();
         break;
       case STATUS_MESSAGE_CHANGED:
-        statusMessage = (String) params[0];
+        statusMessage = params.length > 0 ? (String) params[0] : null;
         refreshStatusText();
         break;
       case MOUSE_MOVED:
@@ -569,8 +556,7 @@ public class StatusBar extends JPanel implements IPlugIn {
     }
     
     // override any other status with this when in highlight mode, as we cannot do anything else
-    Boolean highlightConnectedAreasMode = ConfigurationManager.getInstance().readBoolean(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
-    if (highlightConnectedAreasMode)
+    if (plugInPort.getOperationMode() == OperationMode.HIGHLIGHT_CONNECTED_AREAS)
       statusText = HIGHLIGHT_CONNECTED_TIP;
     
     final String finalStatus = statusText;

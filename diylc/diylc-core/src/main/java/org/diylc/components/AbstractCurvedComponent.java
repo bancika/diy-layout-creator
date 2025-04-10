@@ -201,6 +201,9 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
 
   public void setPointCount(PointCount pointCount) {
+    if (this.pointCount == pointCount)
+      return;
+
     Point2D[] p = getControlPoints();
     Point2D[] newPoints = new Point2D[pointCount.count];
     newPoints[0] = p[0];

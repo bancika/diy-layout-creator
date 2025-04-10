@@ -26,6 +26,9 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -33,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.common.IPlugInPort;
 
 public class ConfigToolbar extends JPanel {
   
@@ -73,7 +77,33 @@ public class ConfigToolbar extends JPanel {
       }
     });
   }
-  
+
+  public Consumer<Boolean> add(String title, Icon icon, boolean defaultState, Runnable toggleAction) {
+    final JLabel label = new JLabel();
+    label.setText(defaultState ? CHECK : UNCHECK);
+    label.setIcon(icon);
+    label.setToolTipText(title);
+    label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    label.addMouseListener(new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        toggleAction.run();
+      }
+    });
+    add(label);
+
+//    ConfigurationManager.getInstance().addConfigListener(configKey, new IConfigListener() {
+//
+//      @Override
+//      public void valueChanged(String key, Object value) {
+//        boolean checked = (boolean) value;
+//        label.setText(checked ? CHECK : UNCHECK);
+//      }
+//    });
+    return (checked) -> label.setText(checked ? CHECK : UNCHECK);
+  }
+
   public void addToggleLabel(String text, String configKey, String defaultValue, List<ToggleItem> items) {
     ToggleConfigLabel label = new ToggleConfigLabel(text, configKey, defaultValue, items);
     add(label);

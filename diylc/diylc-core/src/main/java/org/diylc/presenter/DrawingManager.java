@@ -191,7 +191,7 @@ public class DrawingManager {
     Map<IBoard, List<IDIYComponent<?>>> boardMap = project.getComponents().stream()
             .filter(IBoard.class::isInstance)
             .map(IBoard.class::cast)
-            .filter(b -> b.getBoardUndersideDisplay() != BoardUndersideDisplay.NONE)
+            .filter(b -> b.getUndersideDisplay() != BoardUndersideDisplay.NONE)
             .collect(Collectors.toMap(x -> x, x -> new ArrayList<IDIYComponent<?>>()));
     Map<IDIYComponent<?>, Set<IBoard>> componentBoardMap = new HashMap<IDIYComponent<?>, Set<IBoard>>();
 
@@ -201,10 +201,10 @@ public class DrawingManager {
         if (c == board) {
           continue;
         }
-        boolean include = true;
+        boolean include = false;
         for (int i = 0; i < c.getControlPointCount(); i++) {
-          if (!boardRect.contains(c.getControlPoint(i))) {
-            include = false;
+          if (boardRect.contains(c.getControlPoint(i))) {
+            include = true;
             break;
           }
         }
@@ -333,27 +333,35 @@ public class DrawingManager {
           lastDrawnStateMap.put(component, state);
         }
 
-        // Mirror components that belong to boards that need to be mirrored
-        if (componentBoardMap.containsKey(component)) {
-          @SuppressWarnings("unchecked")
-          ComponentType componentType = ComponentProcessor.getInstance()
-                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-          if (componentType.getTransformer() != null) {
-            Set<IBoard> boards = componentBoardMap.get(component);
-            for (IBoard board : boards) {
-              drawMirroredComponent(project, board, component, componentType, g2dWrapper, state, outlineMode);
+        try {
+          // Mirror components that belong to boards that need to be mirrored
+          if (componentBoardMap.containsKey(component)) {
+            @SuppressWarnings("unchecked")
+            ComponentType componentType = ComponentProcessor.getInstance()
+                .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+            if (componentType.getTransformer() != null) {
+              Set<IBoard> boards = componentBoardMap.get(component);
+              for (IBoard board : boards) {
+                drawMirroredComponent(project, board, component, componentType, g2dWrapper, state,
+                    outlineMode);
+              }
             }
           }
-        }
 
-        // if a component itself is a board that needs to be mirrored, do it
-        if (IBoard.class.isInstance(component) && componentBoardMap.values().stream()
-                .anyMatch(boards -> boards.contains(component))) {
-          ComponentType componentType = ComponentProcessor.getInstance()
-                  .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-          if (componentType.getTransformer() != null) {
-            drawMirroredComponent(project, (IBoard) component, component, componentType, g2dWrapper, state, outlineMode);
+          // if a component itself is a board that needs to be mirrored, do it
+          if (IBoard.class.isInstance(component) && componentBoardMap.values().stream()
+              .anyMatch(boards -> boards.contains(component))) {
+            ComponentType componentType = ComponentProcessor.getInstance()
+                .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+            if (componentType.getTransformer() != null) {
+              drawMirroredComponent(project, (IBoard) component, component, componentType,
+                  g2dWrapper, state, outlineMode);
+            }
           }
+        } finally {
+          // revert composite
+          g2d.setComposite(oldComposite);
+          g2d.setFont(oldFont);
         }
       }
     }
@@ -524,7 +532,7 @@ public class DrawingManager {
         IDIYComponent<?> clonedComponent = component.clone();
         int direction = 0;
         Point2D pivotPoint = new Point2D.Double();
-        switch (board.getBoardUndersideDisplay()) {
+        switch (board.getUndersideDisplay()) {
           case ABOVE:
             direction = IComponentTransformer.VERTICAL;
             pivotPoint.setLocation(boardRectangle.getMinX(), boardRectangle.getMinY() - offset / 2);
@@ -543,7 +551,7 @@ public class DrawingManager {
             break;
         }
       componentType.getTransformer().mirror(clonedComponent, pivotPoint, direction);
-      if (AbstractTransparentComponent.class.isInstance(clonedComponent)) {
+      if (board.getUndersideTransparency() && AbstractTransparentComponent.class.isInstance(clonedComponent)) {
         AbstractTransparentComponent<?> transparentComponent = (AbstractTransparentComponent<?>) clonedComponent;
         transparentComponent.setAlpha(MIRROR_ALPHA);
       }

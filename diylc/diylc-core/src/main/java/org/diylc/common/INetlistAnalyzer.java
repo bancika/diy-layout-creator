@@ -22,6 +22,7 @@
 package org.diylc.common;
 
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Node;
@@ -49,14 +50,18 @@ public interface INetlistAnalyzer {
    * Summarizes all {@link Netlist}s provided. 
    * 
    * @param netlists
-   * @param preferredOutput optional, needed only where there's more than one possible output node.
    * @return
    * @throws TreeException 
    */
-  List<Summary> summarize(List<Netlist> netlists, Node preferredOutput) throws TreeException;
+  List<Summary> summarize(List<Netlist> netlists) throws TreeException;
   
   /**   
    * @return name of the font to be used for display.
    */
   String getFontName();
+
+  /**
+   * @return ability to process netlists with or without switches included.
+   */
+  Set<NetlistSwitchPreference> getSwitchPreference();
 }

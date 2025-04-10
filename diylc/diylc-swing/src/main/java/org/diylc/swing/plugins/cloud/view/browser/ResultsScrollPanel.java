@@ -59,8 +59,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.CommentEntity;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
-import org.diylc.plugins.cloud.presenter.SearchSession;
+import org.diylc.plugins.cloud.service.SearchSession;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
@@ -234,7 +233,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
           @Override
           public List<CommentEntity> doInBackground() throws Exception {
-            return CloudPresenter.Instance.getComments(project.getId());
+            return plugInPort.getCloudService().getComments(project.getId());
           }
 
           @Override
@@ -245,7 +244,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
           @Override
           public void complete(List<CommentEntity> result) {
-            CommentDialog dialog = new CommentDialog(cloudUI, project, result);
+            CommentDialog dialog = new CommentDialog(cloudUI, plugInPort, project, result);
             dialog.setVisible(true);
           }
 
@@ -343,7 +342,7 @@ public class ResultsScrollPanel extends JScrollPane {
     editButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        List<PropertyWrapper> projectProperties = CloudPresenter.Instance.getProjectProperties(project);
+        List<PropertyWrapper> projectProperties = plugInPort.getCloudService().getProjectProperties(project);
         PropertyEditorDialog editor =
             DialogFactory.getInstance().createPropertyEditorDialog(cloudUI.getOwnerFrame(), projectProperties,
                 "Edit Published Project", true);
@@ -364,8 +363,8 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public ProjectEntity doInBackground() throws Exception {
-              CloudPresenter.Instance.updateProjectDetails(project, plugInPort.getCurrentVersionNumber().toString());
-              return CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0);
+              plugInPort.getCloudService().updateProjectDetails(project, plugInPort.getCurrentVersionNumber().toString());
+              return plugInPort.getCloudService().fetchUserUploads(project.getId()).get(0);
             }
 
             @Override
@@ -418,11 +417,11 @@ public class ResultsScrollPanel extends JScrollPane {
                 thumbnailPresenter.loadProjectFromFile(file.getAbsolutePath());               
                 final File thumbnailFile = File.createTempFile("upload-thumbnail", ".png");
                 if (ImageIO.write(thumbnailGenerator.getThumbnail(), "png", thumbnailFile)) {
-                  CloudPresenter.Instance.replaceProjectFile(
+                  plugInPort.getCloudService().replaceProjectFile(
                       plugInPort.getCurrentVersionNumber().toString(), thumbnailFile, file,
                       project.getId());
                   return new Pair<BufferedImage, ProjectEntity>(thumbnailGenerator.getThumbnail(),
-                      CloudPresenter.Instance.fetchUserUploads(project.getId()).get(0));
+                      plugInPort.getCloudService().fetchUserUploads(project.getId()).get(0));
                 } else {
                   cloudUI.showMessage(
                       "Could not prepare temporary files to be uploaded to the cloud.",
@@ -478,7 +477,7 @@ public class ResultsScrollPanel extends JScrollPane {
 
             @Override
             public Void doInBackground() throws Exception {
-              CloudPresenter.Instance.deleteProject(project.getId());
+              plugInPort.getCloudService().deleteProject(project.getId());
               return null;
             }
 
