@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.diylc.components.electromechanical.SlideSwitch;
 import org.diylc.components.electromechanical.SlideSwitchType;
 
-public abstract class SlideSwitchTests extends AbstractSwitchTests {
+public class SlideSwitchTests extends AbstractSwitchTests {
 
   @Test
   public void testSlideSwitchSPDT() {
@@ -19,7 +19,10 @@ public abstract class SlideSwitchTests extends AbstractSwitchTests {
   public void testSlideSwitchDPDT() {
     SlideSwitch slideSwitch = new SlideSwitch();
     slideSwitch.setValue(SlideSwitchType.DPDT);
-    String[] validCombinations = new String[] {"0,0,2", "0,1,3", "1,2,4", "1,3,5"};
+    String[] validCombinations = new String[] {
+      "0,0,1", "0,3,4",  // Position 1 connections
+      "1,1,2", "1,4,5"   // Position 2 connections
+    };
     testSwitch(slideSwitch, validCombinations);
   }
   
@@ -27,7 +30,11 @@ public abstract class SlideSwitchTests extends AbstractSwitchTests {
   public void testSlideSwitchDP3T() {
     SlideSwitch slideSwitch = new SlideSwitch();
     slideSwitch.setValue(SlideSwitchType.DP3T);
-    String[] validCombinations = new String[] {"0,0,2", "0,1,3", "1,2,4", "1,3,5", "2,4,6", "2,5,7"};
+    String[] validCombinations = new String[] {
+      "0,0,1", "0,4,5",  // Position 1 connections
+      "1,1,2", "1,5,6",  // Position 2 connections
+      "2,2,3", "2,6,7"   // Position 3 connections
+    };
     testSwitch(slideSwitch, validCombinations);
   }
 }

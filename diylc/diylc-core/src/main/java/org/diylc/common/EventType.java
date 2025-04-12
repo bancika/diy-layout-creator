@@ -106,5 +106,13 @@ public enum EventType {
   /**
    * Signals the listeners to scroll to selection.
    */
-  SCROLL_TO;
+  SCROLL_TO,
+  /**
+   * Signals that the Cloud account is logged in.
+   */
+  CLOUD_LOGGED_IN,
+  /**
+   * Signals that the Cloud account is logged out.
+   */
+  CLOUD_LOGGED_OUT;
 }

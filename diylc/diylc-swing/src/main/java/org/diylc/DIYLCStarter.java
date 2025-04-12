@@ -21,7 +21,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -96,13 +95,10 @@ public class DIYLCStarter {
 		}
 
 		initializeConfiguration();
-		
-		if (exportMode) {
+
+      	if (exportMode) {
 		  LOG.info("Running in export mode with params: " + String.join(", ", args));
 		}
-
-		// disable HIGHLIGHT_CONTINUITY_AREA config, keep it transient
-		ConfigurationManager.getInstance().writeValue(IPlugInPort.HIGHLIGHT_CONTINUITY_AREA, false);
 
 		LOG.info("Loading languages...");
 

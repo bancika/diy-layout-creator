@@ -24,13 +24,9 @@ import java.util.EnumSet;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.*;
 import org.diylc.swing.IDynamicSubmenuHandler;
 
-import org.diylc.common.EventType;
-import org.diylc.common.INetlistAnalyzer;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ITask;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -48,7 +44,6 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private static final String FILE_TITLE = "File";
   private static final String TRACE_MASK_TITLE = "Trace Mask";
   private static final String INTEGRATION_TITLE = "Integration";
-  private static final String ANALYZE_TITLE = "Analyze";
   private static final String EXPORT_TITLE = "Export";
 
   private ProjectDrawingProvider drawingProvider;
@@ -96,23 +91,6 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createPrintAction(traceMaskDrawingProvider, swingUI,
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
         TRACE_MASK_TITLE);
-
-    swingUI.injectSubmenu(ANALYZE_TITLE, IconLoader.Scientist.getIcon(), FILE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createCheckProximityAction(plugInPort, swingUI),
-        ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createBomAction(plugInPort), ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, false),
-        ANALYZE_TITLE);
-    swingUI.injectMenuAction(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, true),
-        ANALYZE_TITLE);
-
-    List<INetlistAnalyzer> summarizers = plugInPort.getNetlistAnalyzers();
-    if (summarizers != null) {
-      for (INetlistAnalyzer summarizer : summarizers)
-        swingUI.injectMenuAction(
-            actionFactory.createSummarizeNetlistAction(plugInPort, swingUI, summarizer),
-            ANALYZE_TITLE);
-    }
 
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);

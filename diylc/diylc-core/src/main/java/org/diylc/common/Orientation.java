@@ -35,19 +35,9 @@ public enum Orientation {
   }
   
   public double toDegrees() {
-    switch (this) {
-      case DEFAULT:
-        return 0;
-      case _180:
-        return 180;
-      case _270:
-        return 270;
-      case _90:
-        return 90;
-      default:
-        break;      
-    }
-    return 0;
+    if (this == DEFAULT)
+      return 0;
+    return Integer.parseInt(name().replace("_", ""));
   }
   
   public double toRadians() {

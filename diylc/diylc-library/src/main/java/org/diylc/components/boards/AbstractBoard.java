@@ -79,6 +79,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   protected BoardUndersideDisplay boardUndersideDisplay = BoardUndersideDisplay.NONE;
   protected Size undersideOffset = DEFAULT_UNDERSIDE_OFFSET;
+  private Boolean undersideTransparency = true;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -372,14 +373,14 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   @EditableProperty(name = "Underside Display")
   @Override
-  public BoardUndersideDisplay getBoardUndersideDisplay() {
+  public BoardUndersideDisplay getUndersideDisplay() {
     if (this.boardUndersideDisplay == null) {
       this.boardUndersideDisplay = BoardUndersideDisplay.NONE;
     }
     return this.boardUndersideDisplay;
   }
 
-  public void setBoardUndersideDisplay(BoardUndersideDisplay boardUndersideDisplay) {
+  public void setUndersideDisplay(BoardUndersideDisplay boardUndersideDisplay) {
     this.boardUndersideDisplay = boardUndersideDisplay;
   }
 
@@ -394,6 +395,19 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setUndersideOffset(Size undersideOffset) {
     this.undersideOffset = undersideOffset;
+  }
+
+  @EditableProperty(name = "Underside Transparency")
+  @Override
+  public Boolean getUndersideTransparency() {
+    if (undersideTransparency == null) {
+      undersideTransparency = true;
+    }
+    return undersideTransparency;
+  }
+
+  public void setUndersideTransparency(Boolean undersideTransparency) {
+    this.undersideTransparency = undersideTransparency;
   }
 
   @Override

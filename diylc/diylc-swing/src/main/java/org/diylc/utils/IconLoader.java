@@ -71,7 +71,8 @@ public enum IconLoader {
       SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png"), TraceProximity("trace_proximity.png"),
       ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png"), SplashIC("splash_ic.png"), 
       ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png"),
-      DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png");
+      DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png"), Multimeter("multimeter.png"),
+      Patreon("patreon.png");
 
   protected String name;
 

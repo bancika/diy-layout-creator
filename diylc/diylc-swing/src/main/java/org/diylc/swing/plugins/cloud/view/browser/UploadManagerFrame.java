@@ -33,7 +33,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.model.ProjectEntity;
-import org.diylc.plugins.cloud.presenter.CloudPresenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -80,7 +79,7 @@ public class UploadManagerFrame extends JFrame implements ISimpleView {
 
       @Override
       public List<ProjectEntity> doInBackground() throws Exception {
-        return CloudPresenter.Instance.fetchUserUploads(null);
+        return plugInPort.getCloudService().fetchUserUploads(null);
       }
 
       @Override

@@ -32,6 +32,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -41,6 +44,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.guitar.RotarySwitchOpenPositionPropertyValueSource;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.Angle;
 import org.diylc.core.ComponentState;
@@ -51,6 +55,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -58,6 +63,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
+import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Rotary Switch (Open)", author = "Branislav Stojkovic",
     category = "Electro-Mechanical", instanceNamePrefix = "SW",
@@ -98,6 +104,8 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private double[] pointAngles;
+
+  private Integer selectedPosition;
 
   public RotarySwitchOpen() {
     super();
@@ -246,7 +254,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
 
       bodyList.add(bodyArea);
 
-
       int pinWidth = getClosestOdd(PIN_WIDTH.convertToPixels());
       int pinThickness = getClosestOdd(PIN_THICKNESS.convertToPixels());
 
@@ -391,7 +398,10 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     // StringUtils.drawCenteredText(g2d, name, controlPoints[0].getX(), controlPoints[0].getY(),
     // HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-    if (showMarkers) {
+    String[] switchingMarkers =
+        SwitchUtils.getSwitchingMarkers(this, this.getControlPointCount(), false);
+
+    if (getShowMarkers()) {
       g2d.setColor(labelColor);
       int innerPinSpacing = getClosestOdd(INNER_PIN_SPACING.convertToPixels());
       int innerCommonPinSpacing = getClosestOdd(INNER_COMMON_PIN_SPACING.convertToPixels());
@@ -403,7 +413,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
             + Math.cos(pointAngles[i + 1]) * relativeLabelLocation * innerPinSpacing / 2);
         int y = (int) (firstPoint.getY()
             + Math.sin(pointAngles[i + 1]) * relativeLabelLocation * innerPinSpacing / 2);
-        StringUtils.drawCenteredText(g2d, getControlPointNodeNameForRender(i + 1), x, y,
+        StringUtils.drawCenteredText(g2d, switchingMarkers[i + 1], x, y,
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
       relativeLabelLocation = 0.65;
@@ -412,7 +422,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
             * relativeLabelLocation * innerCommonPinSpacing / 2);
         int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + outerPinCount + 1])
             * relativeLabelLocation * innerCommonPinSpacing / 2);
-        StringUtils.drawCenteredText(g2d, getControlPointNodeNameForRender(i + outerPinCount + 1),
+        StringUtils.drawCenteredText(g2d, switchingMarkers[i + outerPinCount + 1],
             x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
 
@@ -427,7 +437,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
           int y = (int) (firstPoint.getY() + Math.sin(pointAngles[i + 1 + secondLevelStart])
               * relativeLabelLocation * outerPinSpacing / 2);
           StringUtils.drawCenteredText(g2d,
-              getControlPointNodeNameForRender(i + 1 + secondLevelStart), x, y,
+              switchingMarkers[i + secondLevelStart + 1], x, y,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
         // relativeLabelLocation = 0.90;
@@ -439,7 +449,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
               + Math.sin(pointAngles[i + outerPinCount + 1 + secondLevelStart])
                   * relativeLabelLocation * outerCommonPinSpacing / 2);
           StringUtils.drawCenteredText(g2d,
-              getControlPointNodeNameForRender(i + outerPinCount + 1 + secondLevelStart), x, y,
+              switchingMarkers[i + outerPinCount + secondLevelStart + 1], x, y,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
       }
@@ -562,6 +572,17 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     body = null;
   }
 
+  @DynamicEditableProperty(source = RotarySwitchOpenPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+  }
+
   @Override
   public Rectangle2D getCachingBounds() {
     Shape[] body = getBody();
@@ -605,60 +626,6 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
   @Override
   public String getPositionName(int position) {
     return Integer.toString(position + 1);
-  }
-
-  public String getControlPointNodeNameForRender(int index) {
-    int commonPinCount = 2;
-    int positionCount = configuration.getPositionCount();
-
-    if (index <= positionCount) {
-      return Integer.toString(positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount) {
-      return Integer.toString(2 * positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount + commonPinCount) {
-      return Character.toString((char) ('A' + (index - 2 * positionCount - 1)));
-    }
-    int secondLevelStart = 2 * positionCount + commonPinCount;
-    if (index <= positionCount + secondLevelStart) {
-      return Integer.toString(positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + secondLevelStart) {
-      return Integer.toString(2 * positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + commonPinCount + secondLevelStart) {
-      return Character.toString((char) ('C' + (index - 2 * positionCount - 1 - secondLevelStart)));
-    }
-    return null;
-  }
-
-  @Override
-  public String getControlPointNodeName(int index) {
-    int commonPinCount = 2;
-    int positionCount = configuration.getPositionCount();
-
-    if (index <= positionCount) {
-      return "A" + (positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount) {
-      return "B" + (2 * positionCount + 1 - index);
-    }
-    if (index <= 2 * positionCount + commonPinCount) {
-      return Character.toString((char) ('A' + (index - 2 * positionCount - 1)));
-    }
-
-    int secondLevelStart = 2 * positionCount + commonPinCount;
-    if (index <= positionCount + secondLevelStart) {
-      return "C" + (positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + secondLevelStart) {
-      return "D" + (2 * positionCount + 1 - index + secondLevelStart);
-    }
-    if (index <= 2 * positionCount + commonPinCount + secondLevelStart) {
-      return Character.toString((char) ('C' + (index - 2 * positionCount - 1 - secondLevelStart)));
-    }
-    return null;
   }
 
   @Override

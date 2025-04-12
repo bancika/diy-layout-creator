@@ -68,7 +68,7 @@ public class InfoDialog extends ButtonDialog {
     super.setVisible(b);
   }
 
-  private static String[] tipKeys = new String[] {IPlugInPort.HIGHLIGHT_CONTINUITY_AREA};
+  private static String[] tipKeys = new String[] {"HIGHLIGHT_CONTINUITY_AREA"};
   private static String[] messages =
       new String[] {"Click on a component to highlight continuity area directly or indirectly connected to it.<br>In this mode components cannot be moved or edited. In order to continue editing,<br>this mode needs to be switched OFF."};
 }

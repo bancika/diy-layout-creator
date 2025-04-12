@@ -21,6 +21,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
+import org.diylc.swing.actions.analyze.HighlightConnectedAreasAction;
 import org.diylc.swingframework.IDrawingProvider;
 
 import org.diylc.common.INetlistAnalyzer;
@@ -34,9 +35,9 @@ import org.diylc.swing.actions.ExportGerberAction;
 import org.diylc.swing.actions.ExportPNGAction;
 import org.diylc.swing.actions.FindAction;
 import org.diylc.swing.actions.FlexibleLeadsAction;
-import org.diylc.swing.actions.GenerateNetlistAction;
+import org.diylc.swing.actions.analyze.GenerateNetlistAction;
 import org.diylc.swing.actions.RenumberAction;
-import org.diylc.swing.actions.SummarizeNetlistAction;
+import org.diylc.swing.actions.analyze.SummarizeNetlistAction;
 import org.diylc.swing.actions.ThemeAction;
 import org.diylc.swing.actions.ToggleAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
@@ -247,11 +248,6 @@ public class ActionFactory {
     return new ConfigAction(plugInPort, title, configKey, defaultValue);
   }
 
-  public ConfigAction createConfigAction(IPlugInPort plugInPort, String title, String configKey,
-      boolean defaultValue, String tipKey) {
-    return new ConfigAction(plugInPort, title, configKey, defaultValue, tipKey);
-  }
-
   public ToggleAction createToggleAction(String title, String configKey, String groupName,
       String defaultValue) {
     return new ToggleAction(title, configKey, groupName, defaultValue, null);
@@ -280,11 +276,15 @@ public class ActionFactory {
   }
 
   public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,
-      ISwingUI swingUI, INetlistAnalyzer summarizer) {
-    return new SummarizeNetlistAction(plugInPort, swingUI, summarizer);
+      ISwingUI swingUI, INetlistAnalyzer summarizer, boolean includeSwitches) {
+    return new SummarizeNetlistAction(plugInPort, swingUI, summarizer, includeSwitches);
   }
 
   public CheckProximityAction createCheckProximityAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new CheckProximityAction(plugInPort, swingUI);
+  }
+
+  public HighlightConnectedAreasAction createHighlightConnectedAreasAction(IPlugInPort plugInPort) {
+    return new HighlightConnectedAreasAction(plugInPort);
   }
 }

@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import javax.swing.JLabel;
 
 import org.diylc.common.INetlistAnalyzer;
+import org.diylc.common.NetlistSwitchPreference;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.AbstractGuitarPickup;
@@ -56,7 +57,7 @@ import org.diylc.netlist.TreeException;
 import org.diylc.netlist.TreeLeaf;
 import org.diylc.netlist.Tree.ITreeWalker;
 
-public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
 
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();
@@ -89,6 +90,10 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     RC_TYPES.addAll(RESISTOR_TYPES);
   }
 
+  private int positiveCount;
+  private int negativeCount;
+  private int noiseCount;
+
   @Override
   public String getName() {
     return "Analyze Guitar Diagrams";
@@ -109,12 +114,12 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
     return new JLabel().getFont().getName();
   }
 
+  @Override
+  public Set<NetlistSwitchPreference> getSwitchPreference() {
+    return Set.of(NetlistSwitchPreference.WITH);
+  }
 
-  private int positiveCount;
-  private int negativeCount;
-  private int noiseCount;
-
-  protected Summary summarize(Netlist netlist, Node preferredOutput) throws TreeException {
+  protected Summary summarize(Netlist netlist) throws TreeException {
     List<String> notes = new ArrayList<String>();
 
     Tree tree = constructTree(netlist);
@@ -123,6 +128,28 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
       return new Summary(netlist, "No pickups are connected to the output jack");
     }
 
+    processTree(tree, notes);
+
+    StringBuilder sb = new StringBuilder();
+    
+    String asciiTree = tree.toAsciiString();
+
+    sb.append("<br><br>")
+      .append("<font face='Courier New'>")
+      .append(asciiTree)
+      .append("</font>");
+    if (!notes.isEmpty()) {
+      Collections.sort(notes);
+      sb.append("<br><br>");
+      for (String v : notes) {
+        sb.append(v).append("<br>");
+      }
+    }
+
+    return new Summary(netlist, sb.toString());
+  }
+
+  private void processTree(Tree tree, List<String> notes) {
     Tree pickupTree = tree.filter(PICKUP_TYPES);
 
     if (pickupTree == null || pickupTree.getChildren().isEmpty()) {
@@ -237,165 +264,177 @@ public class GuitarDiagramAnalyzer extends NetlistAnalyzer implements INetlistAn
 
       Set<IDIYComponent<?>> pots = tree.extractComponents(POT_TYPES);
       for (IDIYComponent<?> pot : pots) {
-        TreeLeaf leaf1 = new TreeLeaf(pot, 0, 1);
-        TreeLeaf leaf2 = new TreeLeaf(pot, 1, 2);
-        Tree tree1 = tree.locate(leaf1, false);
-        Tree tree2 = tree.locate(leaf2, false);
-
-        if ((tree1 == null && tree2 != null) || (tree1 != null && tree2 == null)) {
-          boolean tonePotReversed = tree1 != null;
-          Tree t = tree1 == null ? tree2 : tree1;
-          Tree p = tree.findParent(t);
-          if (p != null && p.getChildren().size() == 2) {
-            Set<IDIYComponent<?>> caps = p.extractComponents(CAP_TYPES);
-            if (caps != null && caps.size() == 1) {
-              for (Map.Entry<IDIYComponent<?>, Tree> r : pickupRoots.entrySet()) {
-                Tree toneParent = tree.findCommonParent(p, r.getValue());
-                if (toneParent != null
-                    && toneParent.getConnectionType() == TreeConnectionType.Parallel) {
-                  if (tonePotReversed) {
-                    List<IDIYComponent<?>> pickupList = tonePotPickupReverseMap.get(pot);
-                    if (pickupList == null) {
-                      pickupList = new ArrayList<IDIYComponent<?>>();
-                      tonePotPickupReverseMap.put(pot, pickupList);
-                    }
-                    pickupList.add(r.getKey());
-                  } else {
-                    List<IDIYComponent<?>> pickupList = tonePotPickupMap.get(pot);
-                    if (pickupList == null) {
-                      pickupList = new ArrayList<IDIYComponent<?>>();
-                      tonePotPickupMap.put(pot, pickupList);
-                    }
-                    pickupList.add(r.getKey());
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // volume
-        if (tree1 == null || tree2 == null)
-          continue;
-        for (Map.Entry<IDIYComponent<?>, Tree> r : pickupRoots.entrySet()) {
-          Tree commonParent1 = tree.findCommonParent(tree1, r.getValue());
-          Tree commonParent2 = tree.findCommonParent(tree2, r.getValue());
-          locateTrebleBleed(tree, volPotTrebleBleedMap, pot, tree1);
-          
-          if (commonParent1 != null && commonParent2 != null
-              && commonParent1.getConnectionType() == TreeConnectionType.Series
-              && commonParent2.getConnectionType() == TreeConnectionType.Parallel) {
-            List<IDIYComponent<?>> pickupList = volPotPickupMap.get(pot);
-            if (pickupList == null) {
-              pickupList = new ArrayList<IDIYComponent<?>>();
-              volPotPickupMap.put(pot, pickupList);
-            }
-            pickupList.add(r.getKey());
-          } else if (commonParent1 != null && commonParent2 != null
-              && commonParent1.getConnectionType() == TreeConnectionType.Parallel
-              && commonParent2.getConnectionType() == TreeConnectionType.Series) {
-            List<IDIYComponent<?>> pickupList = volPotPickupReverseMap.get(pot);
-            if (pickupList == null) {
-              pickupList = new ArrayList<IDIYComponent<?>>();
-              volPotPickupReverseMap.put(pot, pickupList);
-            }
-            pickupList.add(r.getKey());
-          }
-        }
+        processPotentiometer(pot, tree, pickupRoots, tonePotPickupReverseMap, tonePotPickupMap,
+            volPotTrebleBleedMap, volPotPickupMap, volPotPickupReverseMap);
       }
 
       for (Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e : volPotPickupMap.entrySet()) {
-        StringBuilder sb = new StringBuilder(
-            "'" + e.getKey().getName() + "' potentiometer acts as a volume control for ");
-        boolean first = true;
-        List<String> pickupNames =
-            e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
-        for (String pickupName : pickupNames) {
-          if (!first)
-            sb.append(pickupNames.size() == 2 ? " and " : ", ");
-          first = false;
-          sb.append("'").append(pickupName).append("'");
-        }
-        notes.add(sb.toString());
-        
-        Set<IDIYComponent<?>> trebleBleedComponents = volPotTrebleBleedMap.get(e.getKey());
-        if (trebleBleedComponents != null && trebleBleedComponents.size() > 0) {
-
-          String trebleBleadNote = trebleBleedComponents.stream()
-            .sorted(Comparator.comparing(c -> c.getName()))
-            .map(c ->  "'" + c.getName() + "'")
-            .collect(Collectors.joining(", ")) + " form a treble bleed network on the '" + e.getKey().getName() + "' volume control";
-          notes.add(trebleBleadNote);
-        }
+        outputVolumePotentiometer(e, notes, volPotTrebleBleedMap);
       }
 
       for (Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e : volPotPickupReverseMap
           .entrySet()) {
-        StringBuilder sb = new StringBuilder(
-            "'" + e.getKey().getName() + "' potentiometer acts as a volume control for ");
-        boolean first = true;
-        List<String> pickupNames =
-            e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
-        for (String pickupName : pickupNames) {
-          if (!first)
-            sb.append(pickupNames.size() == 2 ? " and " : ", ");
-          first = false;
-          sb.append("'").append(pickupName).append("'");
-        }
-        sb.append(", but is wired in REVERSE!");
-        notes.add(sb.toString());
+        outputVolumePotReversed(e, notes);
       }
 
       for (Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e : tonePotPickupMap.entrySet()) {
-        StringBuilder sb = new StringBuilder(
-            "'" + e.getKey().getName() + "' potentiometer acts as a tone control for ");
-        boolean first = true;
-        List<String> pickupNames =
-            e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
-        for (String pickupName : pickupNames) {
-          if (!first)
-            sb.append(pickupNames.size() == 2 ? " and " : ", ");
-          first = false;
-          sb.append("'").append(pickupName).append("'");
-        }
-        notes.add(sb.toString());
+        outputTonePotentiometer(e, notes);
       }
 
       for (Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e : tonePotPickupReverseMap
           .entrySet()) {
-        StringBuilder sb = new StringBuilder(
-            "'" + e.getKey().getName() + "' potentiometer acts as a tone control for ");
-        boolean first = true;
-        List<String> pickupNames =
-            e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
-        for (String pickupName : pickupNames) {
-          if (!first)
-            sb.append(pickupNames.size() == 2 ? " and " : ", ");
-          first = false;
-          sb.append("'").append(pickupName).append("'");
+        outputTonePotentiometerReversed(e, notes);
+      }
+    }
+  }
+
+  private static void outputTonePotentiometerReversed(Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e,
+      List<String> notes) {
+    StringBuilder sb = new StringBuilder(
+        "'" + e.getKey().getName() + "' potentiometer acts as a tone control for ");
+    boolean first = true;
+    List<String> pickupNames =
+        e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
+    for (String pickupName : pickupNames) {
+      if (!first)
+        sb.append(pickupNames.size() == 2 ? " and " : ", ");
+      first = false;
+      sb.append("'").append(pickupName).append("'");
+    }
+    sb.append(", but is wired in REVERSE!");
+    notes.add(sb.toString());
+  }
+
+  private static void outputTonePotentiometer(Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e,
+      List<String> notes) {
+    StringBuilder sb = new StringBuilder(
+        "'" + e.getKey().getName() + "' potentiometer acts as a tone control for ");
+    boolean first = true;
+    List<String> pickupNames =
+        e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
+    for (String pickupName : pickupNames) {
+      if (!first)
+        sb.append(pickupNames.size() == 2 ? " and " : ", ");
+      first = false;
+      sb.append("'").append(pickupName).append("'");
+    }
+    notes.add(sb.toString());
+  }
+
+  private static void outputVolumePotReversed(Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e,
+      List<String> notes) {
+    StringBuilder sb = new StringBuilder(
+        "'" + e.getKey().getName() + "' potentiometer acts as a volume control for ");
+    boolean first = true;
+    List<String> pickupNames =
+        e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
+    for (String pickupName : pickupNames) {
+      if (!first)
+        sb.append(pickupNames.size() == 2 ? " and " : ", ");
+      first = false;
+      sb.append("'").append(pickupName).append("'");
+    }
+    sb.append(", but is wired in REVERSE!");
+    notes.add(sb.toString());
+  }
+
+  private static void outputVolumePotentiometer(Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e,
+      List<String> notes, Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap) {
+    StringBuilder sb = new StringBuilder(
+        "'" + e.getKey().getName() + "' potentiometer acts as a volume control for ");
+    boolean first = true;
+    List<String> pickupNames =
+        e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
+    for (String pickupName : pickupNames) {
+      if (!first)
+        sb.append(pickupNames.size() == 2 ? " and " : ", ");
+      first = false;
+      sb.append("'").append(pickupName).append("'");
+    }
+    notes.add(sb.toString());
+
+    Set<IDIYComponent<?>> trebleBleedComponents = volPotTrebleBleedMap.get(e.getKey());
+    if (trebleBleedComponents != null && trebleBleedComponents.size() > 0) {
+
+      String trebleBleadNote = trebleBleedComponents.stream()
+        .sorted(Comparator.comparing(c -> c.getName()))
+        .map(c ->  "'" + c.getName() + "'")
+        .collect(Collectors.joining(", ")) + " form a treble bleed network on the '" + e.getKey().getName() + "' volume control";
+      notes.add(trebleBleadNote);
+    }
+  }
+
+  private void processPotentiometer(IDIYComponent<?> pot, Tree tree, Map<IDIYComponent<?>, Tree> pickupRoots,
+      Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupReverseMap,
+      Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupMap,
+      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap,
+      Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupMap,
+      Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupReverseMap) {
+    TreeLeaf leaf1 = new TreeLeaf(pot, 0, 1);
+    TreeLeaf leaf2 = new TreeLeaf(pot, 1, 2);
+    Tree tree1 = tree.locate(leaf1, false);
+    Tree tree2 = tree.locate(leaf2, false);
+
+    if ((tree1 == null && tree2 != null) || (tree1 != null && tree2 == null)) {
+      boolean tonePotReversed = tree1 != null;
+      Tree t = tree1 == null ? tree2 : tree1;
+      Tree p = tree.findParent(t);
+      if (p != null && p.getChildren().size() == 2) {
+        Set<IDIYComponent<?>> caps = p.extractComponents(CAP_TYPES);
+        if (caps != null && caps.size() == 1) {
+          for (Map.Entry<IDIYComponent<?>, Tree> r : pickupRoots.entrySet()) {
+            Tree toneParent = tree.findCommonParent(p, r.getValue());
+            if (toneParent != null
+                && toneParent.getConnectionType() == TreeConnectionType.Parallel) {
+              if (tonePotReversed) {
+                List<IDIYComponent<?>> pickupList = tonePotPickupReverseMap.get(pot);
+                if (pickupList == null) {
+                  pickupList = new ArrayList<IDIYComponent<?>>();
+                  tonePotPickupReverseMap.put(pot, pickupList);
+                }
+                pickupList.add(r.getKey());
+              } else {
+                List<IDIYComponent<?>> pickupList = tonePotPickupMap.get(pot);
+                if (pickupList == null) {
+                  pickupList = new ArrayList<IDIYComponent<?>>();
+                  tonePotPickupMap.put(pot, pickupList);
+                }
+                pickupList.add(r.getKey());
+              }
+            }
+          }
         }
-        sb.append(", but is wired in REVERSE!");
-        notes.add(sb.toString());
       }
     }
 
-    StringBuilder sb = new StringBuilder();
-    
-    String asciiTree = tree.toAsciiString();
+    // volume
+    if (tree1 == null || tree2 == null)
+      return;
+    for (Map.Entry<IDIYComponent<?>, Tree> r : pickupRoots.entrySet()) {
+      Tree commonParent1 = tree.findCommonParent(tree1, r.getValue());
+      Tree commonParent2 = tree.findCommonParent(tree2, r.getValue());
+      locateTrebleBleed(tree, volPotTrebleBleedMap, pot, tree1);
 
-    sb.append("<br><br>")
-      .append("<font face='Courier New'>")
-      .append(asciiTree)
-      .append("</font>");
-    if (!notes.isEmpty()) {
-      Collections.sort(notes);
-      sb.append("<br><br>");
-      for (String v : notes) {
-        sb.append(v).append("<br>");
+      if (commonParent1 != null && commonParent2 != null
+          && commonParent1.getConnectionType() == TreeConnectionType.Series
+          && commonParent2.getConnectionType() == TreeConnectionType.Parallel) {
+        List<IDIYComponent<?>> pickupList = volPotPickupMap.get(pot);
+        if (pickupList == null) {
+          pickupList = new ArrayList<IDIYComponent<?>>();
+          volPotPickupMap.put(pot, pickupList);
+        }
+        pickupList.add(r.getKey());
+      } else if (commonParent1 != null && commonParent2 != null
+          && commonParent1.getConnectionType() == TreeConnectionType.Parallel
+          && commonParent2.getConnectionType() == TreeConnectionType.Series) {
+        List<IDIYComponent<?>> pickupList = volPotPickupReverseMap.get(pot);
+        if (pickupList == null) {
+          pickupList = new ArrayList<IDIYComponent<?>>();
+          volPotPickupReverseMap.put(pot, pickupList);
+        }
+        pickupList.add(r.getKey());
       }
     }
-
-    return new Summary(netlist, sb.toString());
   }
 
   private void locateTrebleBleed(Tree tree,

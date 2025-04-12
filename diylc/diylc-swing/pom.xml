@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.1.1</version>
+        <version>5.2.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -112,6 +112,12 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
+        <!-- Jackson for JSON processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>appbundler</artifactId>
@@ -159,9 +165,9 @@
         <dependency>
             <groupId>org.diylc.local</groupId>
             <artifactId>swing-framework</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/swing-framework-1.0.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/swing-framework-1.1.jar</systemPath>
         </dependency>
     </dependencies>
     
@@ -658,8 +664,8 @@
                                         <copy file="${project.basedir}/deploy/win/diylc-x64.exe" 
                                               tofile="${project.build.directory}/zip-temp/diylc.exe" />
                                         
-                                        <!-- Copy JRE -->
-                                        <copy todir="${project.build.directory}/zip-temp/jre">
+                                        <!-- Copy JRE to jre17 folder instead of jre -->
+                                        <copy todir="${project.build.directory}/zip-temp/jre17">
                                             <fileset dir="${jre.dest.win64}" />
                                         </copy>
                                         
@@ -830,7 +836,7 @@
                                             <option value="-Xdock:name=DIY Layout Creator"/>
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
-
+                                        
                                         <echo message="Creating unsigned zip for distribution..."/>
                                         <!-- Create unsigned zip for distribution -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
@@ -1021,22 +1027,22 @@
                                         <delete dir="${jre.dest.osx}" />
                                         <mkdir dir="${jre.dest.osx}" />
                                         <mkdir dir="${project.build.directory}/downloads" />
-                                        
+
                                         <!-- Download JRE -->
-                                        <get src="${jdk.url.osx}" 
-                                             dest="${project.build.directory}/downloads/${jdk.archive.osx}" 
+                                        <get src="${jdk.url.osx}"
+                                             dest="${project.build.directory}/downloads/${jdk.archive.osx}"
                                              usetimestamp="true" />
-                                        
+
                                         <!-- Extract JRE -->
-                                        <untar src="${project.build.directory}/downloads/${jdk.archive.osx}" 
-                                               dest="${jre.dest.osx}" 
+                                        <untar src="${project.build.directory}/downloads/${jdk.archive.osx}"
+                                               dest="${jre.dest.osx}"
                                                compression="gzip" />
 
                                         <!-- Move files up one level -->
                                         <move todir="${jre.dest.osx}">
                                             <fileset dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
                                         </move>
-                                        
+
                                         <!-- Remove empty top-level folder -->
                                         <delete dir="${jre.dest.osx}/jdk-${jdk.version}-jre" />
                                     </target>
@@ -1144,7 +1150,7 @@
                                             <option value="-Xdock:name=DIY Layout Creator"/>
                                             <option value="-Xdock:icon=Contents/Resources/diylc.icns"/>
                                         </bundleapp>
-
+                                        
                                         <echo message="Creating unsigned zip for distribution..."/>
                                         <!-- Create unsigned zip for distribution -->
                                         <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">

@@ -32,6 +32,10 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import com.kitfox.svg.A;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -41,15 +45,9 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
-import org.diylc.core.Angle;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.ISwitch;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.images.IconLoader;
@@ -67,7 +65,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   private static Color BASE_COLOR = Color.lightGray;
   private static Color WAFER_COLOR = FR4_LIGHT_COLOR;
-  private static Color LUG_COLOR = GOLD_COLOR;
+  private static Color LUG_COLOR = METAL_COLOR;
 
   private static Size BASE_WIDTH = new Size(10d, SizeUnit.mm);
   private static Size BASE_LENGTH = new Size(47.5d, SizeUnit.mm);
@@ -89,6 +87,9 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   private transient Double labelDx = null;
   private transient Double labelDy = null;
+
+  private Integer selectedPosition;
+  private Boolean showMarkers;
 
   public SchallerMegaSwitch() {
     super();
@@ -152,11 +153,12 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     g2d.fill(body[2]);
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
-
-    // g2d.setColor(Color.black);
-    // for(int i = 0; i < getControlPointCount(); i++) {
-    // g2d.drawString(i + "", controlPoints[i].getX(), controlPoints[i].getY());
-    // }
+    for (int i = 3; i < body.length; i++) {
+      g2d.setColor(ISwitch.POLE_COLORS[i - 3]);
+      g2d.fill(body[i]);
+      g2d.setColor(ISwitch.POLE_COLORS[i - 3].darker());
+      g2d.draw(body[i]);
+    }
 
     g2d.setColor(labelColor);
     // g2d.setFont(project.getFont().deriveFont(LABEL_FONT_SIZE));
@@ -200,14 +202,14 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
 
     g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 1.25)));
-    StringUtils.drawCenteredText(g2d, "Schaller Megaswitch� " + type.toString(), x, y,
+    StringUtils.drawCenteredText(g2d, "Schaller Megaswitch " + type.toString(), x, y,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   public Shape[] getBody() {
     if (body == null) {
-      body = new Shape[4];
 
+      body = new Shape[3];
 
       int lastPointIdx =
           type == MegaSwitchType.M ? controlPoints.length / 2 - 1 : controlPoints.length - 1;
@@ -248,10 +250,10 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
           new Area(new Rectangle2D.Double(waferX, waferY, waferThickness, waferLength));
 
       body[1] = waferArea;
+      body[2] = new Area();
 
       double theta = getAngle().getValueRad();
 
-      Area terminalArea = new Area();
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
         Area terminal = new Area(new RoundRectangle2D.Double(point.getX() - terminalSize / 2,
@@ -266,10 +268,9 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
           AffineTransform rotation = AffineTransform.getRotateInstance(theta, point.getX(), point.getY());
           terminal.transform(rotation);
         }
-        
-        terminalArea.add(terminal);
+
+        ((Area)body[2]).add(terminal);
       }
-      body[2] = terminalArea;
 
       // Rotate if needed
       if (theta != 0) {
@@ -293,24 +294,12 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     double terminalWidth = TERMINAL_WIDTH.convertToPixels();
     int waferThickness = (int) WAFER_THICKNESS.convertToPixels();
 
-    int pointCount = 0;
-
-    switch (type) {
-      case E:
-      case P:
-        pointCount = 7;
-        break;
-      case E_PLUS:
-        pointCount = 9;
-        break;
-      case S:
-      case T:
-        pointCount = 8;
-        break;
-      case M:
-        pointCount = 24;
-        break;
-    }
+    int pointCount = switch (type) {
+      case E, P -> 7;
+      case E_PLUS -> 9;
+      case S, T -> 8;
+      case M -> 24;
+    };
 
     controlPoints = new Point2D[pointCount];
     if (pointCount < 12) {
@@ -457,12 +446,19 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   }
 
   public enum MegaSwitchType {
-    E("E"), E_PLUS("E+"), M("M"), P("P"), S("S"), T("T");
+    E("E", 5), E_PLUS("E+", 5), M("M", 5),
+    P("P", 5), S("S", 5), T("T", 3);
 
     private String title;
+    private final int positionCount;
 
-    private MegaSwitchType(String title) {
+    private MegaSwitchType(String title, int positionCount) {
       this.title = title;
+      this.positionCount = positionCount;
+    }
+
+    public int getPositionCount() {
+      return positionCount;
     }
 
     @Override
@@ -481,10 +477,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   @Override
   public int getPositionCount() {
-    if (type == MegaSwitchType.T) {
-      return 3;
-    }
-    return 5;
+    return type.getPositionCount();
   }
 
   @Override
@@ -494,38 +487,22 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
-    List<List<int[]>> connections = null;
-    
-    switch (type) {
-      case E:
-        connections = E_CONNECTIONS;
-        break;
-      case E_PLUS:
-        connections = E_PLUS_CONNECTIONS;
-        break;
-      case S:
-        connections = S_CONNECTIONS;
-        break;
-      case P:
-        connections = P_CONNECTIONS;
-        break;
-      case T:
-        connections = T_CONNECTIONS;
-        break;
-      case M:
-        connections = M_CONNECTIONS;
-        break;
+    List<List<int[]>> connections = switch (type) {
+      case E -> E_CONNECTIONS;
+      case E_PLUS -> E_PLUS_CONNECTIONS;
+      case S -> S_CONNECTIONS;
+      case P -> P_CONNECTIONS;
+      case T -> T_CONNECTIONS;
+      case M -> M_CONNECTIONS;
+    };
+
+    List<int[]> positionConnections = connections.get(position);
+    for (int[] arr : positionConnections) {
+      if (arr[0] == index1 && arr[1] == index2) {
+        return true;
+      }
     }
-    
-    if (connections != null) {
-      List<int[]> positionConnections = connections.get(position);
-      for (int[] arr : positionConnections) {
-        if (arr[0] == index1 && arr[1] == index2) {
-          return true;
-        }
-      }      
-    }
-    
+
     return false;   
   }
   
@@ -541,7 +518,30 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
-  
+
+  @DynamicEditableProperty(source = SchallerMegaSwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
+    this.body = null;
+  }
+
+  @EditableProperty(name = "Markers")
+  public Boolean getShowMarkers() {
+    if (showMarkers == null) {
+      showMarkers = false;
+    }
+    return showMarkers;
+  }
+
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
+  }
 
   private static final List<List<int[]>> E_CONNECTIONS = Arrays.asList(
       Arrays.asList(
