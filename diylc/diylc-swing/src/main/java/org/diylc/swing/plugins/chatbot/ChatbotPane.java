@@ -255,7 +255,11 @@ public class ChatbotPane extends JPanel {
 
         if (FREE_TIER.equals(subscriptionInfo.getTier())) {
           subscriptionInfoText +=
-              " To subscribe to the Premium tier, unlock advanced AI models and virtually limitless usage, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a>.";
+              " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a> and become a Patreon supporter. " +
+                  "All the details about the AI Assistant limits and other benefits will be specified there. " +
+                  "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.";
+        } else {
+          subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
         }
         appendSection(ChatbotService.SYSTEM, subscriptionInfoText);
       }
