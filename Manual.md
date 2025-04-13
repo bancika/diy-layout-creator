@@ -22,9 +22,9 @@
 
 ### System requirements ###
 
-  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 1.8 or newer
-  * 1GB free RAM memory is recommended, 2GB or more is ideal
-  * **Mac OSX** users must allow 3rd party apps before installing DIYLC. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
+  * [Java JRE/JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) 17 or newer
+  * 1GB free RAM memory is recommended, 4GB or more is ideal
+  * **Mac OSX** users must allow 3rd party apps before installing DIYLC or become a [Patreon member](https://www.patreon.com/c/user?u=5213116) and get a notarized version. [This document](https://support.apple.com/en-us/HT202491) covers how to do it.
   
 ### Installing the app ###
 
