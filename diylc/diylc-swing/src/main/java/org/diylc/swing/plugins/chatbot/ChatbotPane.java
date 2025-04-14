@@ -416,27 +416,35 @@ public class ChatbotPane extends JPanel {
       clearButton.setFocusPainted(false);
       clearButton.setBorderPainted(true);
       clearButton.addActionListener(e -> {
+        // Show confirmation dialog
+        int result = swingUI.showConfirmDialog(
+            LangUtil.translate("Are you sure you want to clear the chat history for this project? This action cannot be undone!"),
+            "AI Assistant",
+            ISwingUI.YES_NO_OPTION,
+            ISwingUI.WARNING_MESSAGE);
+            
+        if (result == ISwingUI.YES_OPTION) {
+          swingUI.executeBackgroundTask(new ITask<Void>() {
 
-        swingUI.executeBackgroundTask(new ITask<Void>() {
+            @Override
+            public Void doInBackground() throws Exception {
+              chatbotService.deleteChatHistory();
+              return null;
+            }
 
-          @Override
-          public Void doInBackground() throws Exception {
-            chatbotService.deleteChatHistory();
-            return null;
-          }
+            @Override
+            public void failed(Exception e) {
+              appendSection(ChatbotService.SYSTEM, "Failed to delete chat history from the server.");
+              LOG.error("Failed to delete chat history from the server", e);
+              getClearButton().setEnabled(true);
+            }
 
-          @Override
-          public void failed(Exception e) {
-            appendSection(ChatbotService.SYSTEM, "Failed to delete chat history from the server.");
-            LOG.error("Failed to delete chat history from the server", e);
-            getClearButton().setEnabled(true);
-          }
-
-          @Override
-          public void complete(Void result) {
-            clearChat();
-          }
-        }, false);
+            @Override
+            public void complete(Void result) {
+              clearChat();
+            }
+          }, false);
+        }
       });
     }
     return clearButton;
