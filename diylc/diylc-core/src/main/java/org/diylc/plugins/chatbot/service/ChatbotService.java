@@ -26,7 +26,9 @@ import com.diyfever.httpproxy.ProxyFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.simplemq.IMessageListener;
 import org.diylc.common.ComponentType;
+import org.diylc.common.EventType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
@@ -68,8 +70,37 @@ public class ChatbotService {
 
   private IChatbotAPI service;
 
+  private String currentProjectName;
+
   public ChatbotService(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
+    this.plugInPort.getMessageDispatcher().registerListener(new IMessageListener<EventType>() {
+
+
+      @Override
+      public EnumSet<EventType> getSubscribedEventTypes() {
+        return EnumSet.of(EventType.PROJECT_LOADED, EventType.FILE_STATUS_CHANGED);
+      }
+
+      @Override
+      public void processMessage(EventType eventType, Object... objects) {
+        if (eventType == EventType.PROJECT_LOADED) {
+          ChatbotService.this.currentProjectName = extractFileName((String)objects[2]);
+        } else if (eventType == EventType.FILE_STATUS_CHANGED) {
+          String newProjectName = extractFileName((String)objects[0]);
+          if (!Objects.equals(ChatbotService.this.currentProjectName, newProjectName)) {
+            if (plugInPort.getCloudService().isLoggedIn()) {
+              LOG.info("Migrating project chat history from " + ChatbotService.this.currentProjectName + " to " + newProjectName);
+              getService().updateChatProject(plugInPort.getCloudService().getCurrentUsername(),
+                  plugInPort.getCloudService().getCurrentToken(),
+                  plugInPort.getCloudService().getMachineId(),
+                  ChatbotService.this.currentProjectName, newProjectName);
+            }
+            ChatbotService.this.currentProjectName = newProjectName;
+          }
+        }
+      }
+    });
   }
 
   private IChatbotAPI getService() {

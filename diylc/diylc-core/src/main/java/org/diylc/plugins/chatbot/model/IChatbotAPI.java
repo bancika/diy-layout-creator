@@ -51,4 +51,8 @@ public interface IChatbotAPI {
 
   List<ChatMessageEntity> getChatHistory(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("project") String project);
+
+  String updateChatProject(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("project") String project,
+      @ParamName("newProject") String newProject);
 }

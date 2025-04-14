@@ -263,6 +263,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>When saving a project to the new file, retain all the AI Assistant chat history for the new project file</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Confirmation dialog before deleting AI Assistant chat history</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

@@ -64,7 +64,7 @@ public class ChatbotPane extends JPanel {
     super();
     this.swingUI = swingUI;
     this.plugInPort = plugInPort;
-    this.chatbotService = new ChatbotService(plugInPort);
+    this.chatbotService = plugInPort.getChatbotService();
     setName("AI Assistant");
 
     // Set panel background color
