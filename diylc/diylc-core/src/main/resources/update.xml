@@ -266,6 +266,10 @@
 					<description>Confirmation dialog before deleting AI Assistant chat history</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Output current subscription statistics at the end of the chat for transparency</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Connect to Patreon' option doesn't work if the user name contains a space or another non-alphanumerical character</description>
 				</org.diylc.appframework.update.Change>

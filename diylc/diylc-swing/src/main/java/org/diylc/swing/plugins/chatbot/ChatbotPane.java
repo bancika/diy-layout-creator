@@ -58,6 +58,7 @@ public class ChatbotPane extends JPanel {
 
   private boolean loggedIn = false;
   private String projectFileName = null;
+  private SubscriptionEntity subscriptionInfo;
 
   public ChatbotPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
@@ -235,6 +236,9 @@ public class ChatbotPane extends JPanel {
   public void refreshChat(SubscriptionEntity subscriptionInfo) {
     boolean currentLoggedIn = plugInPort.getCloudService().isLoggedIn();
     String currentProjectFileName = FileUtils.extractFileName(plugInPort.getCurrentFileName());
+    if (subscriptionInfo != null) {
+      this.subscriptionInfo = subscriptionInfo;
+    }
 
     if (this.loggedIn == currentLoggedIn && Objects.equals(currentProjectFileName, this.projectFileName))
       return;
@@ -249,21 +253,12 @@ public class ChatbotPane extends JPanel {
       getClearButton().setEnabled(false);
       getPremiumButton().setVisible(false);
     } else {
-      if (subscriptionInfo != null) {
-        getPremiumButton().setVisible(FREE_TIER.equals(subscriptionInfo.getTier()));
-        String subscriptionInfoText = "Your are currently subscribed to the '" + subscriptionInfo.getTier() + "' tier, expiring on " + subscriptionInfo.getEndDate() + ", with " + subscriptionInfo.getRemainingCredits() + " credits remaining.";
-
-        if (FREE_TIER.equals(subscriptionInfo.getTier())) {
-          subscriptionInfoText +=
-              " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a> and become a Patreon supporter. " +
-                  "All the details about the AI Assistant limits and other benefits will be specified there. " +
-                  "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.";
-        } else {
-          subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
-        }
+      fetchChatHistory();
+      if (this.subscriptionInfo != null) {
+        getPremiumButton().setVisible(FREE_TIER.equals(this.subscriptionInfo.getTier()));
+        String subscriptionInfoText = getSubscriptionInfoText();
         appendSection(ChatbotService.SYSTEM, subscriptionInfoText);
       }
-      fetchChatHistory();
       getAskButton().setEnabled(true);
       getClearButton().setEnabled(true);
     }
@@ -274,6 +269,25 @@ public class ChatbotPane extends JPanel {
       JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
       verticalScrollBar.setValue(verticalScrollBar.getMaximum());
     });
+  }
+
+  private String getSubscriptionInfoText() {
+    String subscriptionInfoText = String.format(
+        "Your are currently subscribed to the '%s' tier, expiring on %s, with %d credits remaining.",
+        this.subscriptionInfo.getTier(),
+        this.subscriptionInfo.getEndDate(),
+        this.subscriptionInfo.getRemainingCredits());
+
+    if (FREE_TIER.equals(this.subscriptionInfo.getTier())) {
+      subscriptionInfoText += String.format(
+          " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://%s'>%s</a> and become a Patreon supporter. " +
+          "All the details about the AI Assistant limits and other benefits will be specified there. " +
+          "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.",
+          GET_PREMIUM_URL, GET_PREMIUM_URL);
+    } else {
+      subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
+    }
+    return subscriptionInfoText;
   }
 
   private void fetchChatHistory() {
