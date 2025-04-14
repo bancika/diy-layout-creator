@@ -235,7 +235,10 @@ INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manua
 'DIYLC AI Assistant is an integrated feature that allows users to interact with DIY Layout Creator (DIYLC) using natural language. It functions as a chatbot powered by the OpenAI API to generate helpful responses. The AI Assistant is available only while logged into the DIYLC Cloud with an active account and requires an internet connection.
 There are two subscription tiers for using the AI Assistant:
 - Free Tier: Provides limited monthly usage and access to basic AI models. This option is automatically available to all registered DIYLC Cloud users.
-- Premium Tier: Offers up to 1000 requests per month using more advanced AI models. The Premium subscription can be purchased at http://www.diy-fever.com/get-premium. If your email used to subscribe to the premium tier is different from the email used to login to the DIYLC Cloud, please reach out to bancika@gmail.com to manually activate your premium status.
+- DIYLC Supporter tier: increases monthly credits to 50 and unlocks a slightly more advanced AI model.
+- DIYLC Pro tier: offers up to 500 requests per month using more advanced AI models.
+The paid subscription can be purchased by becoming a DIYLC Patreon subscriber at http://www.diy-fever.com/get-premium. 
+In order to activate your paid subscription, please make sure to link your DIYLC Cloud account to your Patreon account from DIYLC''s "Cloud" menu.
 ');
 
 DELETE FROM diylc_knowledge_base WHERE section = 'AI Assitant/Chatbot/ChatGPT/GPT - Using the AI Assistant';

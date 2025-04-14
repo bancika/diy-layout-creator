@@ -35,6 +35,8 @@ import org.diylc.utils.IconLoader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class ConnectPatreonAction extends AbstractAction {
   private static final long serialVersionUID = 1L;
@@ -58,7 +60,8 @@ public class ConnectPatreonAction extends AbstractAction {
       return;
     }
     String username = plugInPort.getCloudService().getCurrentUsername();
-    String url = "http://diy-fever.com/diylc/api/v1/ai/patreon_login.php?username=" + username;
+    username ="a b c";
+    String url = "http://diy-fever.com/diylc/api/v1/ai/patreon_login.php?username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
     try {
       java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
     } catch (Exception ex) {
