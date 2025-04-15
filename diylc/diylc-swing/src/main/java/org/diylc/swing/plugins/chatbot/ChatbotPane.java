@@ -368,6 +368,7 @@ public class ChatbotPane extends JPanel {
       askButton.setForeground(TERMINAL_FG);
       askButton.setFocusPainted(false);
       askButton.setBorderPainted(true);
+      askButton.setEnabled(false);
       askButton.addActionListener(e -> {
         String prompt = getPromptArea().getText();
         appendSection(ChatbotService.USER, ME + prompt);
@@ -429,6 +430,7 @@ public class ChatbotPane extends JPanel {
       clearButton.setForeground(TERMINAL_FG);
       clearButton.setFocusPainted(false);
       clearButton.setBorderPainted(true);
+      clearButton.setEnabled(false);
       clearButton.addActionListener(e -> {
         // Show confirmation dialog
         int result = swingUI.showConfirmDialog(
