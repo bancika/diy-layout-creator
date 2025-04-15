@@ -2,7 +2,7 @@
   <configuration default="false" name="DIYLCStarter" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="org.diylc.DIYLCStarter" />
     <module name="diylc-swing" />
-    <option name="VM_PARAMETERS" value="-Xms1024m -Xmx4096m -Dsun.java2d.uiScale=1.5 -Dorg.diylc.scriptRun=true -Dfile.encoding=UTF-8 --add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED --add-exports java.desktop/com.apple.eio=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.desktop/java.awt.geom=ALL-UNNAMED" />
+    <option name="VM_PARAMETERS" value="-Xms1024m -Xmx4096m -Dorg.diylc.scriptRun=true -Dfile.encoding=UTF-8 --add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED --add-exports java.desktop/com.apple.eio=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.desktop/java.awt.geom=ALL-UNNAMED" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.diylc.*" />

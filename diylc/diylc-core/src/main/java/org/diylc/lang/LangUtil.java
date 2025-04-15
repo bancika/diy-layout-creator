@@ -89,8 +89,11 @@ public class LangUtil {
     LOG.info("Loading translation for " + language);
     dict = new HashMap<String, String>();
     try {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(
-              (LangUtil.class.getResourceAsStream("/" + LANG_DIR + File.separator + language + ".txt"))));
+      InputStream inputStream = LangUtil.class.getResourceAsStream('/' + LANG_DIR + '/' + language + ".txt");
+      if (inputStream == null) {
+        throw new RuntimeException("Could not load language file: " + language);
+      }
+      BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
       while(reader.ready()) {
         String s = reader.readLine();
         if (s.contains("|")) {

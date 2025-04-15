@@ -275,6 +275,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Language selection doesn't work on some OSs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>'Connect to Patreon' option doesn't work if the user name contains a space or another non-alphanumerical character</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
