@@ -267,6 +267,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Added ability to be logged into the same DIYLC Cloud account from several machines at the same time</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Confirmation dialog before deleting AI Assistant chat history</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
