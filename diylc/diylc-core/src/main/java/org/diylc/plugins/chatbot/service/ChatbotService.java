@@ -23,6 +23,8 @@ package org.diylc.plugins.chatbot.service;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -34,12 +36,14 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.netlist.*;
+import org.diylc.plugins.chatbot.model.AiProject;
 import org.diylc.plugins.chatbot.model.ChatMessageEntity;
 import org.diylc.plugins.chatbot.model.IChatbotAPI;
 import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.FileUtils;
 
 import java.awt.*;
@@ -48,7 +52,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.diylc.utils.FileUtils.extractFileName;
 
@@ -59,11 +62,11 @@ import static org.diylc.utils.FileUtils.extractFileName;
  */
 public class ChatbotService {
 
-  public static final String LOG_IN_MESSAGE =
-      "Please log into your DIYLC Cloud account in order to use the AI Assistant";
-
   private final static Logger LOG = Logger.getLogger(ChatbotService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+  static {
+    MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+  }
   public static final String WELCOME_MESSAGE = "Welcome to the DIYLC AI Assistant!";
 
   private final IPlugInPort plugInPort;
@@ -153,106 +156,14 @@ public class ChatbotService {
     }
   }
 
-  private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
-
   private String extractNetlists() throws NetlistException {
-    List<Netlist> netlists = plugInPort.extractNetlists(true);
-
-    if (netlists == null || netlists.isEmpty()) {
-      return null;
-    }
-
-    StringBuilder sb = new StringBuilder();
-
-//    Set<? extends IDIYComponent<?>> components = netlists.stream()
-//        .flatMap(n -> n.getGroups().stream()
-//            .flatMap(g -> g.getNodes().stream().
-//                map(Node::getComponent)))
-//        .collect(Collectors.toSet());
-//
-//    if (!components.isEmpty()) {
-//      sb.append(
-//          "Components (each element of the JSON array represents one component with all the relevant properties): ");
-//      outputComponents(components, sb);
-//    }
-
-    Set<? extends ISwitch> switches = plugInPort.getCurrentProject().getComponents()
-        .stream().filter(x -> x instanceof ISwitch)
-        .map(x -> (ISwitch)x)
-        .collect(Collectors.toSet());;
-
-    if (!switches.isEmpty()) {
-      sb.append(
-          "Switches (each row represents one switch, starts with the switch name and lists key properties of a switch):\n\n");
-      outputSwitches(switches, sb);
-    }
-
-    for (Netlist netlist : netlists) {
-      sb.append("\n");
-      if (!netlist.getSwitchSetup().isEmpty()) {
-        sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append(". ");
-      }
-      sb.append("Circuit netlist")
-          .append(netlist.getSwitchSetup().isEmpty() ? "" : " in this switch configuration")
-          .append(":\n\n");
-      try {
-        sb.append(SpiceSumarizer.summarize(netlist, false));
-      } catch (TreeException e) {
-        LOG.error("Error exporting netlist to Spice", e);
-      }
-    }
-    return sb.toString();
-  }
-
-  private static void outputSwitches(Set<? extends ISwitch> switches, StringBuilder sb) {
-    for (ISwitch sw : switches) {
-      IDIYComponent<?> component = (IDIYComponent<?>) sw;
-      ComponentType componentType = ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-      sb.append(component.getName())
-          .append(" ").append(component.getValueForDisplay()).append(" ")
-          .append(componentType.getName())
-          .append(" [").append(componentType.getCategory()).append("]\n");
-    }
-  }
-
-  private static void outputComponents(Set<? extends IDIYComponent<?>> components, StringBuilder sb) {
-    List<Map<String, Object>> componentDescriptors = new ArrayList<>();
-
-    components.forEach(c -> {
-      ComponentType componentType = ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      List<PropertyWrapper> properties =
-          ComponentProcessor.getInstance().extractProperties(c.getClass());
-
-      Map<String, Object> componentDescriptorMap = new HashMap<>();
-      componentDescriptorMap.put("name", c.getName());
-      componentDescriptorMap.put("type", componentType.getName());
-      componentDescriptorMap.put("category", componentType.getCategory());
-
-      properties.forEach(p -> {
-        if (PROPERTY_TYPES_TO_SKIP.contains(p.getType()))
-          return;
-
-        try {
-          p.readFrom(c);
-          if (p.getValue() == null)
-            return;
-
-          componentDescriptorMap.put(p.getName(), p.getValue().toString());
-        } catch (Exception e) {
-          LOG.warn("Error extracting properties", e);
-        }
-      });
-
-      componentDescriptors.add(componentDescriptorMap);
-    });
-
+    List<ContinuityArea> continuityAreas = plugInPort.getDrawingManager().getContinuityAreas();
+    AiProject aiProject = AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
     try {
-      String json = MAPPER.writeValueAsString(componentDescriptors);
-      sb.append(json).append("\n\n");
-    } catch (Exception e) {
-      LOG.error("Failed to serialize component descriptors to JSON", e);
+      return MAPPER.writeValueAsString(aiProject);
+    } catch (JsonProcessingException e) {
+      LOG.error("Could not serialize aiProject to JSON", e);
+      return null;
     }
   }
 

@@ -64,7 +64,7 @@ public class ChatbotPane extends JPanel {
     super();
     this.swingUI = swingUI;
     this.plugInPort = plugInPort;
-    this.chatbotService = plugInPort.getChatbotService();
+    this.chatbotService = new ChatbotService(plugInPort);
     setName("AI Assistant");
 
     // Set panel background color
@@ -256,7 +256,16 @@ public class ChatbotPane extends JPanel {
       fetchChatHistory();
       if (this.subscriptionInfo != null) {
         getPremiumButton().setVisible(FREE_TIER.equals(this.subscriptionInfo.getTier()));
-        String subscriptionInfoText = getSubscriptionInfoText();
+        String subscriptionInfoText = "Your are currently subscribed to the '" + this.subscriptionInfo.getTier() + "' tier, expiring on " + this.subscriptionInfo.getEndDate() + ", with " + this.subscriptionInfo.getRemainingCredits() + " credits remaining.";
+
+        if (FREE_TIER.equals(this.subscriptionInfo.getTier())) {
+          subscriptionInfoText +=
+              " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a> and become a Patreon supporter. " +
+                  "All the details about the AI Assistant limits and other benefits will be specified there. " +
+                  "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.";
+        } else {
+          subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
+        }
         appendSection(ChatbotService.SYSTEM, subscriptionInfoText);
       }
       getAskButton().setEnabled(true);
@@ -269,25 +278,6 @@ public class ChatbotPane extends JPanel {
       JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
       verticalScrollBar.setValue(verticalScrollBar.getMaximum());
     });
-  }
-
-  private String getSubscriptionInfoText() {
-    String subscriptionInfoText = String.format(
-        "Your are currently subscribed to the '%s' tier, expiring on %s, with %d credits remaining.",
-        this.subscriptionInfo.getTier(),
-        this.subscriptionInfo.getEndDate(),
-        this.subscriptionInfo.getRemainingCredits());
-
-    if (FREE_TIER.equals(this.subscriptionInfo.getTier())) {
-      subscriptionInfoText += String.format(
-          " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://%s'>%s</a> and become a Patreon supporter. " +
-          "All the details about the AI Assistant limits and other benefits will be specified there. " +
-          "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.",
-          GET_PREMIUM_URL, GET_PREMIUM_URL);
-    } else {
-      subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
-    }
-    return subscriptionInfoText;
   }
 
   private void fetchChatHistory() {
@@ -368,7 +358,6 @@ public class ChatbotPane extends JPanel {
       askButton.setForeground(TERMINAL_FG);
       askButton.setFocusPainted(false);
       askButton.setBorderPainted(true);
-      askButton.setEnabled(false);
       askButton.addActionListener(e -> {
         String prompt = getPromptArea().getText();
         appendSection(ChatbotService.USER, ME + prompt);
@@ -430,7 +419,6 @@ public class ChatbotPane extends JPanel {
       clearButton.setForeground(TERMINAL_FG);
       clearButton.setFocusPainted(false);
       clearButton.setBorderPainted(true);
-      clearButton.setEnabled(false);
       clearButton.addActionListener(e -> {
         // Show confirmation dialog
         int result = swingUI.showConfirmDialog(
