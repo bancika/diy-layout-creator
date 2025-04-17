@@ -36,10 +36,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.netlist.*;
-import org.diylc.plugins.chatbot.model.AiProject;
-import org.diylc.plugins.chatbot.model.ChatMessageEntity;
-import org.diylc.plugins.chatbot.model.IChatbotAPI;
-import org.diylc.plugins.chatbot.model.SubscriptionEntity;
+import org.diylc.plugins.chatbot.model.*;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
@@ -123,21 +120,36 @@ public class ChatbotService {
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    String netlist;
-    File netlistFile = null;
+    File aiProjectFile = null;
     try {
-      netlist = extractNetlists();
-      if (netlist != null) {
-        netlistFile = File.createTempFile("diylc_netlist_", ".txt");
-        try (FileWriter writer = new FileWriter(netlistFile)) {
-          writer.write(netlist);
+      AiProject aiProject = extractAiProject();
+      String aiProjectStr = null;
+      try {
+        aiProjectStr = MAPPER.writeValueAsString(aiProject);
+      } catch (JsonProcessingException e) {
+        LOG.error("Could not serialize aiProject to JSON", e);
+      }
+      if (aiProjectStr != null) {
+        aiProjectFile = File.createTempFile("diylc_netlist_", ".txt");
+        try (FileWriter writer = new FileWriter(aiProjectFile)) {
+          writer.write("""
+              Below is the JSON describing the circuit in detail. Take these notes into account when analyzing the circuit
+              - Coordinates are represented in pixels assuming 200px/in resolution.
+              - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
+              - Netlists of connected terminals are defined in the 'nets' structure.
+              """);
+          if (aiProject.switches() != null && !aiProject.switches().isEmpty()) {
+            writer.write("""
+              - Switches are defined in the 'switches' structure. Each switch will have a list of available position and the collection of internal terminals that are connected in each of the positions. Take the switching matrix into consideration when analyzing the circuit operation.
+              """);
+          }
+          writer.write(aiProjectStr);
         }
         // Make sure the temp file is deleted when the JVM exits
-        netlistFile.deleteOnExit();
+        aiProjectFile.deleteOnExit();
       }
     } catch (NetlistException | IOException e) {
       LOG.error("Error extracting or saving netlist", e);
-      netlist = null;
     }
 
     try {
@@ -146,25 +158,19 @@ public class ChatbotService {
           plugInPort.getCloudService().getCurrentToken(),
           plugInPort.getCloudService().getMachineId(),
           fileName,
-          netlistFile,
+          aiProjectFile,
           prompt);
     } finally {
       // Clean up the temp file immediately after use
-      if (netlistFile != null && netlistFile.exists()) {
-        netlistFile.delete();
+      if (aiProjectFile != null && aiProjectFile.exists()) {
+        aiProjectFile.delete();
       }
     }
   }
 
-  private String extractNetlists() throws NetlistException {
+  private AiProject extractAiProject() throws NetlistException {
     List<ContinuityArea> continuityAreas = plugInPort.getDrawingManager().getContinuityAreas();
-    AiProject aiProject = AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
-    try {
-      return MAPPER.writeValueAsString(aiProject);
-    } catch (JsonProcessingException e) {
-      LOG.error("Could not serialize aiProject to JSON", e);
-      return null;
-    }
+    return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
   }
 
   public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {

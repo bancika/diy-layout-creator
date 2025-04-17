@@ -1,4 +1,4 @@
 package org.diylc.plugins.chatbot.model;
 
-public record AiPoint(double x, double y) {
+public record AiPoint(int x, int y) {
 }

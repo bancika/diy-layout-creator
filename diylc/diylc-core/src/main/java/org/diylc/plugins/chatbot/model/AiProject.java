@@ -6,6 +6,6 @@ import java.util.Set;
 
 public record AiProject(Map<String, String> metadata,
                         List<AiComponent> components,
-                        List<Set<String>> nets,
+                        Map<String, Set<String>> nets,
                         List<AiSwitch> switches) {
 }

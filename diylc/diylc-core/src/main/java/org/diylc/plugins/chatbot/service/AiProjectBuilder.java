@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -34,12 +35,17 @@ public class AiProjectBuilder {
     List<Set<NetlistBuilder.TerminalRef>> sets =
         NetlistBuilder.buildNets(project.getComponents(), continuityAreas);
 
-    List<Set<String>> nets =
-        sets.stream().map(s -> s.stream().map(AiProjectBuilder::mapTerminal).collect(Collectors.toSet()))
-            .toList();
+    AtomicInteger counter = new AtomicInteger();
+    Map<String, Set<String>> nets =
+        sets.stream().map(s -> s.stream()
+                .map(AiProjectBuilder::mapTerminal)
+                .collect(Collectors.toSet()))
+            .collect(Collectors.toMap(x -> "N" + counter.incrementAndGet(), x -> x));
 
     List<AiSwitch> switches =
-        project.getComponents().stream().filter(x -> x instanceof ISwitch).map(x -> (ISwitch) x)
+        project.getComponents().stream()
+            .filter(x -> x instanceof ISwitch)
+            .map(x -> (ISwitch) x)
             .map(AiProjectBuilder::mapSwitch).toList();
 
     return new AiProject(metadata, components, nets, switches);
@@ -71,21 +77,24 @@ public class AiProjectBuilder {
     List<PropertyWrapper> properties =
         ComponentProcessor.getInstance().extractProperties(component.getClass());
 
-    Map<String, Object> componentDescriptorMap = new HashMap<>();
-    if (!component.isControlPointSticky(0)) {
-      Point2D controlPoint1 = component.getControlPoint(0);
-      if (component.getControlPointCount() > 1 && !component.isControlPointSticky(component.getControlPointCount() - 1)) {
-        Point2D controlPoint2 = component.getControlPoint(component.getControlPointCount() - 1);
-        componentDescriptorMap.put("fromPosition", new AiPoint(controlPoint1.getX(), controlPoint1.getY()));
-        componentDescriptorMap.put("toPosition", new AiPoint(controlPoint2.getX(), controlPoint2.getY()));
-      } else {
-        componentDescriptorMap.put("position", new AiPoint(controlPoint1.getX(), controlPoint1.getY()));
-      }
-    }
-
-    if (component.getValue() != null && !PROPERTY_TYPES_TO_SKIP.contains(component.getValue().getClass())) {
-      componentDescriptorMap.put("value", component.getValue().toString());
-    }
+    AiPoint pos = null;
+    AiPoint fromPos = null;
+    AiPoint toPos = null;
+//    Map<String, Object> componentDescriptorMap = new HashMap<>();
+//    if (!component.isControlPointSticky(0)) {
+//      Point2D controlPoint1 = component.getControlPoint(0);
+//      if (component.getControlPointCount() > 1 && !component.isControlPointSticky(component.getControlPointCount() - 1)) {
+//        Point2D controlPoint2 = component.getControlPoint(component.getControlPointCount() - 1);
+//        fromPos = new AiPoint((int)Math.round(controlPoint1.getX()), (int)Math.round(controlPoint1.getY()));
+//        toPos = new AiPoint((int)Math.round(controlPoint2.getX()), (int)Math.round(controlPoint2.getY()));
+//      } else {
+//        pos = new AiPoint((int)Math.round(controlPoint1.getX()), (int)Math.round(controlPoint1.getY()));
+//      }
+//    }
+//
+//    if (component.getValue() != null && !PROPERTY_TYPES_TO_SKIP.contains(component.getValue().getClass())) {
+//      componentDescriptorMap.put("value", component.getValue().toString());
+//    }
 
 //    properties.forEach(p -> {
 //      if (PROPERTY_TYPES_TO_SKIP.contains(p.getType()))
@@ -109,14 +118,17 @@ public class AiProjectBuilder {
     for (int i = 0; i < component.getControlPointCount(); i++) {
       if (component.isControlPointSticky(i)) {
         Point2D controlPoint = component.getControlPoint(i);
-        AiTerminal terminal = new AiTerminal(i, component.getControlPointNodeName(i), new AiPoint(controlPoint.getX(), controlPoint.getY()));
+        String nodeName = component.getControlPointNodeName(i);
+        AiTerminal terminal = new AiTerminal(i, Integer.toString(i+1).equals(nodeName) ? null : nodeName,
+            new AiPoint((int)Math.round(controlPoint.getX()),
+                (int)Math.round(controlPoint.getY())));
         terminals.add(terminal);
       }
     }
 
     return new AiComponent(component.getName(), componentType.getName(),
-        componentDescriptorMap.isEmpty() ? null : componentDescriptorMap,
-        terminals.isEmpty() ? null : terminals);
+        component.getValue() == null ? null : component.getValue().toString(),
+         fromPos, toPos, pos, terminals.isEmpty() ? null : terminals);
   }
 
   static String mapTerminal(NetlistBuilder.TerminalRef terminalRef) {
