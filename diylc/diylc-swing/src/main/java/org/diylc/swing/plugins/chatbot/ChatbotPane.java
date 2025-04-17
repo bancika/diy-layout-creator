@@ -188,9 +188,11 @@ public class ChatbotPane extends JPanel {
             if (e.isShiftDown()) {
               // Insert newline for Shift+Enter
               promptArea.insert("\n", promptArea.getCaretPosition());
-            } else if (getAskButton().isEnabled()) {
-              e.consume(); // Prevent the newline from being added
-              getAskButton().doClick();
+            } else {
+              e.consume(); // Always consume Enter to prevent multiple newlines
+              if (getAskButton().isEnabled()) {
+                getAskButton().doClick();
+              }
             }
           }
         }
