@@ -19,8 +19,6 @@ import org.diylc.presenter.ContinuityArea;
 
 public class AiProjectBuilder {
 
-  private final static Logger LOG = Logger.getLogger(AiProjectBuilder.class);
-
   public static AiProject build(Project project, List<ContinuityArea> continuityAreas) {
     Map<String, String> metadata = Map.of(
         "title", Optional.ofNullable(project.getTitle()).orElse("n/a"),

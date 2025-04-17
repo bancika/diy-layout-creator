@@ -278,6 +278,10 @@
 					<description>Output current subscription statistics at the end of the chat for transparency</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved styling and usability of chatbot tool</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Language selection doesn't work on some OSs</description>
 				</org.diylc.appframework.update.Change>

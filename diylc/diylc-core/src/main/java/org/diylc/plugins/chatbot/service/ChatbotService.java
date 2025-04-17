@@ -137,6 +137,7 @@ public class ChatbotService {
               - Coordinates are represented in pixels assuming 200px/in resolution.
               - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
               - Netlists of connected terminals are defined in the 'nets' structure.
+              - Analyze labels - they could provide clues about nearby terminals and what they represent.
               """);
           if (aiProject.switches() != null && !aiProject.switches().isEmpty()) {
             writer.write("""

@@ -16,6 +16,8 @@ import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -34,6 +36,10 @@ public class ChatbotPane extends JPanel {
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
   private static final Color TERMINAL_BG = new Color(40, 40, 40);
   private static final Color TERMINAL_FG = new Color(200, 200, 200);
+  private static final Color BUTTON_BG = new Color(70, 70, 70);  // Brighter background for buttons
+  private static final Color BUTTON_FG = new Color(240, 240, 240);  // Bright text for contrast
+  private static final Color BUTTON_BORDER = new Color(100, 100, 100);  // Subtle border
+  private static final Color BUTTON_HOVER = new Color(90, 90, 90);  // Hover state color
   public static final String HTML_STYLE = String.format(
       "<style>" + "body { font-family: %s; font-size: %dpt; color: rgb(%d,%d,%d); background-color: rgb(%d,%d,%d); padding: 0px; margin: 0; }" + "pre { white-space: pre-wrap; margin: 0; }" + ".user { color: #98C379; }" +      // Softer green that's easier on the eyes
           ".assistant { color: #61AFEF; }" +  // Lighter, more vibrant blue
@@ -67,6 +73,18 @@ public class ChatbotPane extends JPanel {
     this.chatbotService = new ChatbotService(plugInPort);
     setName("AI Assistant");
 
+    addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        e.consume();
+      }
+
+      @Override
+      public void mousePressed(MouseEvent e) {
+        e.consume();
+      }
+    });
+
     // Set panel background color
     setBackground(TERMINAL_BG);
 
@@ -99,12 +117,15 @@ public class ChatbotPane extends JPanel {
     int lineHeight = getPromptArea().getFontMetrics(getPromptArea().getFont()).getHeight();
     int desiredHeight = lineHeight * 3 + 10; // 3 lines + padding
     
-    // Set minimum and preferred size for both text area and scroll pane
-    Dimension promptSize = new Dimension(200, desiredHeight);
-    getPromptArea().setMinimumSize(promptSize);
-    getPromptArea().setPreferredSize(promptSize);
-    promptScrollPane.setMinimumSize(new Dimension(200, desiredHeight + 10));
-    promptScrollPane.setPreferredSize(new Dimension(200, desiredHeight + 10));
+    // Set minimum and preferred size for scroll pane
+    promptScrollPane.setMinimumSize(new Dimension(200, desiredHeight));
+    promptScrollPane.setPreferredSize(new Dimension(200, desiredHeight));
+    
+    // Enable vertical scrolling
+    getPromptArea().setLineWrap(true);
+    getPromptArea().setWrapStyleWord(true);
+    getPromptArea().setRows(3);  // Set initial rows
+    promptScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     
     gbc.gridx = 0;
     gbc.gridy = 3;
@@ -163,20 +184,17 @@ public class ChatbotPane extends JPanel {
       promptArea.addKeyListener(new java.awt.event.KeyAdapter() {
         @Override
         public void keyPressed(java.awt.event.KeyEvent e) {
-          if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER && !e.isShiftDown()) {
-            e.consume(); // Prevent the newline from being added
-            if (getAskButton().isEnabled()) {
+          if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            if (e.isShiftDown()) {
+              // Insert newline for Shift+Enter
+              promptArea.insert("\n", promptArea.getCaretPosition());
+            } else if (getAskButton().isEnabled()) {
+              e.consume(); // Prevent the newline from being added
               getAskButton().doClick();
             }
           }
         }
       });
-      
-      // Calculate height based on font metrics
-      int lineHeight = promptArea.getFontMetrics(promptArea.getFont()).getHeight();
-      int desiredHeight = lineHeight * 3 + 10; // 3 lines + padding
-      promptArea.setMinimumSize(new Dimension(200, desiredHeight));
-      promptArea.setPreferredSize(new Dimension(200, desiredHeight));
 
       // Add placeholder text behavior
       final String placeholder = "Ask me anything";
@@ -354,10 +372,7 @@ public class ChatbotPane extends JPanel {
   public JButton getAskButton() {
     if (askButton == null) {
       askButton = new JButton(LangUtil.translate("Send"));
-      askButton.setBackground(TERMINAL_BG);
-      askButton.setForeground(TERMINAL_FG);
-      askButton.setFocusPainted(false);
-      askButton.setBorderPainted(true);
+      styleButton(askButton);
       askButton.addActionListener(e -> {
         String prompt = getPromptArea().getText();
         appendSection(ChatbotService.USER, ME + prompt);
@@ -415,10 +430,7 @@ public class ChatbotPane extends JPanel {
   public JButton getClearButton() {
     if (clearButton == null) {
       clearButton = new JButton(LangUtil.translate("Clear"));
-      clearButton.setBackground(TERMINAL_BG);
-      clearButton.setForeground(TERMINAL_FG);
-      clearButton.setFocusPainted(false);
-      clearButton.setBorderPainted(true);
+      styleButton(clearButton);
       clearButton.addActionListener(e -> {
         // Show confirmation dialog
         int result = swingUI.showConfirmDialog(
@@ -457,10 +469,7 @@ public class ChatbotPane extends JPanel {
   public JButton getPremiumButton() {
     if (premiumButton == null) {
       premiumButton = new JButton(LangUtil.translate("Get Premium"));
-      premiumButton.setBackground(TERMINAL_BG);
-      premiumButton.setForeground(TERMINAL_FG);
-      premiumButton.setFocusPainted(false);
-      premiumButton.setBorderPainted(true);
+      styleButton(premiumButton);
       premiumButton.setVisible(false);
       premiumButton.addActionListener(e -> {
 
@@ -474,5 +483,39 @@ public class ChatbotPane extends JPanel {
       });
     }
     return premiumButton;
+  }
+
+  private void styleButton(JButton button) {
+    button.setBackground(BUTTON_BG);
+    button.setForeground(BUTTON_FG);
+    button.setEnabled(true);  // Reset enabled state to ensure proper color
+    button.setFocusPainted(false);
+    button.setBorderPainted(true);
+    button.setContentAreaFilled(false);
+    button.setOpaque(true);
+    
+    // Create a simple rounded border with padding
+    button.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(BUTTON_BORDER, 1),
+        BorderFactory.createEmptyBorder(4, 8, 4, 8)
+    ));
+    
+    // Add hover effect
+    button.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseEntered(java.awt.event.MouseEvent evt) {
+        if (button.isEnabled()) {
+          button.setBackground(BUTTON_HOVER);
+        }
+      }
+      public void mouseExited(java.awt.event.MouseEvent evt) {
+        if (button.isEnabled()) {
+          button.setBackground(BUTTON_BG);
+        }
+      }
+    });
+    
+    // Set minimum and preferred size
+    button.setMinimumSize(new Dimension(80, 25));
+    button.setPreferredSize(new Dimension(80, 25));
   }
 }
