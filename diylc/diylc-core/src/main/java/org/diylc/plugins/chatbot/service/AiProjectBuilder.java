@@ -20,13 +20,9 @@ import org.diylc.presenter.ContinuityArea;
 public class AiProjectBuilder {
 
   public static AiProject build(Project project, List<ContinuityArea> continuityAreas) {
-    Map<String, String> metadata = Map.of(
-        "title", Optional.ofNullable(project.getTitle()).orElse("n/a"),
-        "author", Optional.ofNullable(project.getAuthor()).orElse("n/a"),
-        "description", Optional.ofNullable(project.getDescription()).orElse("n/a"),
-        "gridSpacing", project.getGridSpacing().toString(),
-        "width", project.getWidth().toString(),
-        "height", project.getHeight().toString());
+
+    Map<String, String> metadata = getMetadata(project);
+    List<String> tags = getTags(project);
 
     List<AiComponent> components = project.getComponents().stream().map(AiProjectBuilder::mapComponent).toList();
 
@@ -46,7 +42,41 @@ public class AiProjectBuilder {
             .map(x -> (ISwitch) x)
             .map(AiProjectBuilder::mapSwitch).toList();
 
-    return new AiProject(metadata, components, nets, switches);
+    return new AiProject(metadata, tags, components, nets, switches);
+  }
+
+  private static Map<String, String> getMetadata(Project project) {
+    Map<String, String> metadata = new HashMap<>();
+    if (project.getTitle() != null) metadata.put("title", project.getTitle());
+    if (project.getAuthor() != null) metadata.put("author", project.getAuthor());
+    if (project.getDescription() != null) metadata.put("description", project.getDescription());
+    metadata.put("gridSpacing", project.getGridSpacing().toString());
+    metadata.put("width", project.getWidth().toString());
+    metadata.put("height", project.getHeight().toString());
+    return metadata;
+  }
+
+  private static List<String> getTags(Project project) {
+
+    List<String> tags = new ArrayList<>();
+    if (project.getComponents().stream().anyMatch(x -> x.getClass().getCanonicalName().toLowerCase().contains("guitar"))) {
+      tags.add("guitar");
+    }
+    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("symbol"))) {
+      tags.add("schematic");
+    }
+    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("board")) &&
+        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("trace")) &&
+        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("pad"))) {
+      tags.add("PCB");
+    }
+    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("tube"))) {
+      tags.add("tube");
+    }
+    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("vero"))) {
+      tags.add("vero/strip");
+    }
+    return tags;
   }
 
   private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);

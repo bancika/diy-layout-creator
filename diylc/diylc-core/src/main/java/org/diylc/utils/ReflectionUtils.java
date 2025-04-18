@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.Utils;
 
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.netlist.IGuitarDiagramAnalyzer;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.presenter.Presenter;
 
@@ -88,5 +89,26 @@ public class ReflectionUtils {
       LOG.error("Could not load INetlistParserDefinition implementations", e);
       return null;
     }
+  }
+
+  public static IGuitarDiagramAnalyzer getGuitarDiagramAnalyzer() throws Exception {
+    Set<Class<?>> classes;
+    classes = Utils.getClasses("org.diylc.netlist");
+    List<IGuitarDiagramAnalyzer> result = new ArrayList<>();
+
+    for (Class<?> clazz : classes) {
+      if (!Modifier.isAbstract(clazz.getModifiers()) && IGuitarDiagramAnalyzer.class.isAssignableFrom(clazz)) {
+        result.add((IGuitarDiagramAnalyzer) clazz.getDeclaredConstructor().newInstance());
+      }
+    }
+
+
+    if (result.isEmpty()) {
+      return null;
+    }
+    if (result.size() > 1) {
+      throw  new RuntimeException("Found more than one IGuitarDiagramAnalyzer");
+    }
+    return result.get(0);
   }
 }

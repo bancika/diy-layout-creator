@@ -42,6 +42,7 @@ import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.FileUtils;
+import org.diylc.utils.ReflectionUtils;
 
 import java.awt.*;
 import java.io.File;
@@ -117,6 +118,8 @@ public class ChatbotService {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
+    LOG.info("Prompting chatbot: " + prompt);
+
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
@@ -133,7 +136,7 @@ public class ChatbotService {
         aiProjectFile = File.createTempFile("diylc_netlist_", ".txt");
         try (FileWriter writer = new FileWriter(aiProjectFile)) {
           writer.write("""
-              Below is the JSON describing the circuit in detail. Take these notes into account when analyzing the circuit
+              Take these notes into account when analyzing the circuit
               - Coordinates are represented in pixels assuming 200px/in resolution.
               - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
               - Netlists of connected terminals are defined in the 'nets' structure.
@@ -144,12 +147,38 @@ public class ChatbotService {
               - Switches are defined in the 'switches' structure. Each switch will have a list of available position and the collection of internal terminals that are connected in each of the positions. Take the switching matrix into consideration when analyzing the circuit operation.
               """);
           }
+          if (aiProject.tags().contains("guitar")) {
+            IGuitarDiagramAnalyzer guitarDiagramAnalyzer =
+                ReflectionUtils.getGuitarDiagramAnalyzer();
+            if (guitarDiagramAnalyzer != null) {
+              try {
+                List<Netlist> netlists = plugInPort.extractNetlists(true);
+                writer.write("""
+                    - The circuit represents a guitar wiring diagram and below are some of the known characteristics in each combination of switch positions:
+                    """);
+                netlists.forEach(netlist -> {
+                  List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
+                  try {
+                    writer.write(netlist.getSwitchSetupString() + ": \n");
+                    for (String note : notes) {
+                      writer.write("  - " + note + "\n");
+                    }
+                  } catch (IOException ex) {
+                    LOG.warn("Could not write guitar diagram notes", ex);
+                  }
+                });
+              } catch (NetlistException | IOException ex) {
+                LOG.warn("Could not extract guitar diagram netlist", ex);
+              }
+            }
+          }
+          writer.write("\nBelow is the JSON describing the circuit in detail.\n");
           writer.write(aiProjectStr);
         }
         // Make sure the temp file is deleted when the JVM exits
         aiProjectFile.deleteOnExit();
       }
-    } catch (NetlistException | IOException e) {
+    } catch (Exception e) {
       LOG.error("Error extracting or saving netlist", e);
     }
 

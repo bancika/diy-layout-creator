@@ -57,7 +57,7 @@ import org.diylc.netlist.TreeException;
 import org.diylc.netlist.TreeLeaf;
 import org.diylc.netlist.Tree.ITreeWalker;
 
-public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer {
+public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements INetlistAnalyzer, IGuitarDiagramAnalyzer {
 
   private static Set<String> JACK_TYPES = new HashSet<String>();
   private static Set<String> POT_TYPES = new HashSet<String>();
@@ -117,6 +117,27 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
   @Override
   public Set<NetlistSwitchPreference> getSwitchPreference() {
     return Set.of(NetlistSwitchPreference.WITH);
+  }
+
+  public List<String> collectNotes(Netlist netlist)  {
+
+    List<String> notes = new ArrayList<String>();
+
+    Tree tree = null;
+    try {
+      tree = constructTree(netlist);
+    } catch (TreeException e) {
+      throw new RuntimeException(e);
+    }
+
+    if (tree == null) {
+      notes.add("No pickups are connected to the output jack");
+      return notes;
+    }
+
+    processTree(tree, notes);
+
+    return notes;
   }
 
   protected Summary summarize(Netlist netlist) throws TreeException {
