@@ -294,6 +294,9 @@ public class ChatbotPane extends JPanel {
 
     // Scroll to the end of the chat pane
     SwingUtilities.invokeLater(() -> {
+      if (getChatEditorPane().getParent() == null) {
+        return;
+      }
       JScrollPane scrollPane = (JScrollPane) getChatEditorPane().getParent().getParent();
       JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
       verticalScrollBar.setValue(verticalScrollBar.getMaximum());
@@ -474,7 +477,6 @@ public class ChatbotPane extends JPanel {
       styleButton(premiumButton);
       premiumButton.setVisible(false);
       premiumButton.addActionListener(e -> {
-
         try {
           java.awt.Desktop.getDesktop().browse(new java.net.URI("http://diy-fever.com/get-premium"));
         } catch (Exception ex) {
@@ -516,8 +518,15 @@ public class ChatbotPane extends JPanel {
       }
     });
     
-    // Set minimum and preferred size
-    button.setMinimumSize(new Dimension(80, 25));
-    button.setPreferredSize(new Dimension(80, 25));
+    // Set minimum and preferred size based on button type
+    if (button == premiumButton) {
+      // Wider size for Premium button
+      button.setMinimumSize(new Dimension(120, 25));
+      button.setPreferredSize(new Dimension(120, 25));
+    } else {
+      // Standard size for other buttons
+      button.setMinimumSize(new Dimension(80, 25));
+      button.setPreferredSize(new Dimension(80, 25));
+    }
   }
 }

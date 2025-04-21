@@ -80,14 +80,14 @@ public class ChatbotService {
 
       @Override
       public EnumSet<EventType> getSubscribedEventTypes() {
-        return EnumSet.of(EventType.PROJECT_LOADED, EventType.FILE_STATUS_CHANGED);
+        return EnumSet.of(EventType.PROJECT_LOADED, EventType.PROJECT_SAVED);
       }
 
       @Override
       public void processMessage(EventType eventType, Object... objects) {
         if (eventType == EventType.PROJECT_LOADED) {
           ChatbotService.this.currentProjectName = extractFileName((String)objects[2]);
-        } else if (eventType == EventType.FILE_STATUS_CHANGED) {
+        } else if (eventType == EventType.PROJECT_SAVED) {
           String newProjectName = extractFileName((String)objects[0]);
           if (!Objects.equals(ChatbotService.this.currentProjectName, newProjectName)) {
             if (plugInPort.getCloudService().isLoggedIn()) {
