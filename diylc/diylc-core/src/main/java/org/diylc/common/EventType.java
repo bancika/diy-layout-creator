@@ -46,6 +46,10 @@ public enum EventType {
    */
   PROJECT_LOADED,
   /**
+   * Called when the current project is saved to a file. The first parameter is the current file name.
+   */
+  PROJECT_SAVED,
+  /**
    * Called when either current file name or modified flag are changed. The first parameter is the
    * current file name, the second one is a boolean modified flag.
    */

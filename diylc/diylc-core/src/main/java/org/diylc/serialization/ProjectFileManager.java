@@ -177,6 +177,7 @@ public class ProjectFileManager {
     if (!isBackup) {
       this.currentFileName = fileName;
       this.modified = false;
+      messageDispatcher.dispatchMessage(EventType.PROJECT_SAVED, getCurrentFileName());
       fireFileStatusChanged();
     }
   }

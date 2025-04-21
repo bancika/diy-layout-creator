@@ -2831,7 +2831,13 @@ public class Presenter implements IPlugInPort {
     return chatbotService;
   }
 
+  @Override
   public MessageDispatcher<EventType> getMessageDispatcher() {
     return messageDispatcher;
+  }
+
+  @Override
+  public DrawingManager getDrawingManager() {
+    return drawingManager;
   }
 }

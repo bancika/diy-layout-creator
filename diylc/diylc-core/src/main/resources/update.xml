@@ -258,9 +258,13 @@
 				<minor>3</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-03-27 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-04-21 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved AI Assistant quality of responses, especially when analyzing a circuit</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>When saving a project to the new file, retain all the AI Assistant chat history for the new project file</description>
@@ -275,7 +279,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Output current subscription statistics at the end of the chat for transparency</description>
+					<description>Output current subscription statistics at the end of the chat for usage transparency</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved styling and usability of chatbot tool</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

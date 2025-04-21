@@ -48,7 +48,7 @@ public class ChatbotPlugin implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.FILE_STATUS_CHANGED, EventType.PROJECT_LOADED,
+    return EnumSet.of(EventType.PROJECT_SAVED, EventType.PROJECT_LOADED,
         EventType.CLOUD_LOGGED_IN, EventType.CLOUD_LOGGED_OUT);
   }
 
@@ -56,7 +56,7 @@ public class ChatbotPlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     switch (eventType) {
-      case FILE_STATUS_CHANGED:
+      case PROJECT_SAVED:
       case PROJECT_LOADED:
       case CLOUD_LOGGED_IN:
       case CLOUD_LOGGED_OUT:

@@ -259,3 +259,32 @@ INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manua
 - Ask follow-up questions if needed.
 - Use the "Clear" button to reset the conversation.
 - Each chat conversation is associated with the current project and is saved in the cloud and will be automatically downloaded when that project is opened.');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'User Manual - Keyboard Shortcuts';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'User Manual - Keyboard Shortcuts','
+- X key: quick jump to the search box in the Project Explorer pane (if visible)
+- Q key: quick jump to the search box in the component toolbox tree
+- ~ key: repeat previously added component
+- Ctrl and drag to "unstick" a component
+- Ctrl (Command on Mac) + Alt (Option on Mac) and drag to move a component with more precision, without snapping to the grid
+- Ctrl (Command on Mac) + G to group components
+- Ctrl (Command on Mac) + U to ungroup components
+- Ctrl (Command on Mac) + H to hide the status bar
+- Ctrl (Command on Mac) + L to lock the status bar
+- Ctrl (Command on Mac) + P to print the current project
+- Arrow keys to move components 1 grid spacing at a time
+- Shift + Arrow keys to move components in 1 px increments
+- Alt (Option on Mac) + Left or Right arrow key to rotate a component by 90 degrees counterclockwise or clockwise respectively
+- Alt (Option on Mac) + Up or Down arrow key to move a component up or down in the Z-order
+- Alt (Option on Mac) + H to mirror the selected components horizontally
+- Alt (Option on Mac) + V to mirror the selected components vertically
+- Ctrl (Command on Mac) + number keys 1 through 6 to toggle the visibility of layers from Chassis, Board, Trace, Component, Wiring, Text
+- ');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'User Manual - Creating a New Component';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'User Manual - Creating a New Component','
+There are several ways to create a new component:
+- if it can be composed of existing components, you can combine multiple components together in a "building block" from the context menu and then easily recall it from the component tree
+- for more complex components that require custom appearance and behavior, you can create a new component from scratch using the Component API, as described in the [Component API](https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md) documentation
+- you can file a component request on the [DIYLC GitHub repository](https://github.com/bancika/diy-layout-creator/issues) and I will implement it if I think it would be useful for other users without guaranteeing if and when it will be implemented
+- you can reach out to me at [bancika@gmail.com](mailto:bancika@gmail.com) to sponsor a custom component for your project and expedite its development');

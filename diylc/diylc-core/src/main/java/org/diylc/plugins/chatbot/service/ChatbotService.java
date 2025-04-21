@@ -23,6 +23,8 @@ package org.diylc.plugins.chatbot.service;
 
 import com.diyfever.httpproxy.PhpFlatProxy;
 import com.diyfever.httpproxy.ProxyFactory;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -34,13 +36,13 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.netlist.*;
-import org.diylc.plugins.chatbot.model.ChatMessageEntity;
-import org.diylc.plugins.chatbot.model.IChatbotAPI;
-import org.diylc.plugins.chatbot.model.SubscriptionEntity;
+import org.diylc.plugins.chatbot.model.*;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.ContinuityArea;
 import org.diylc.utils.FileUtils;
+import org.diylc.utils.ReflectionUtils;
 
 import java.awt.*;
 import java.io.File;
@@ -48,7 +50,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.diylc.utils.FileUtils.extractFileName;
 
@@ -59,11 +60,11 @@ import static org.diylc.utils.FileUtils.extractFileName;
  */
 public class ChatbotService {
 
-  public static final String LOG_IN_MESSAGE =
-      "Please log into your DIYLC Cloud account in order to use the AI Assistant";
-
   private final static Logger LOG = Logger.getLogger(ChatbotService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+  static {
+    MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+  }
   public static final String WELCOME_MESSAGE = "Welcome to the DIYLC AI Assistant!";
 
   private final IPlugInPort plugInPort;
@@ -79,14 +80,14 @@ public class ChatbotService {
 
       @Override
       public EnumSet<EventType> getSubscribedEventTypes() {
-        return EnumSet.of(EventType.PROJECT_LOADED, EventType.FILE_STATUS_CHANGED);
+        return EnumSet.of(EventType.PROJECT_LOADED, EventType.PROJECT_SAVED);
       }
 
       @Override
       public void processMessage(EventType eventType, Object... objects) {
         if (eventType == EventType.PROJECT_LOADED) {
           ChatbotService.this.currentProjectName = extractFileName((String)objects[2]);
-        } else if (eventType == EventType.FILE_STATUS_CHANGED) {
+        } else if (eventType == EventType.PROJECT_SAVED) {
           String newProjectName = extractFileName((String)objects[0]);
           if (!Objects.equals(ChatbotService.this.currentProjectName, newProjectName)) {
             if (plugInPort.getCloudService().isLoggedIn()) {
@@ -117,24 +118,68 @@ public class ChatbotService {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
+    LOG.info("Prompting chatbot: " + prompt);
+
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    String netlist;
-    File netlistFile = null;
+    File aiProjectFile = null;
     try {
-      netlist = extractNetlists();
-      if (netlist != null) {
-        netlistFile = File.createTempFile("diylc_netlist_", ".txt");
-        try (FileWriter writer = new FileWriter(netlistFile)) {
-          writer.write(netlist);
+      AiProject aiProject = extractAiProject();
+      String aiProjectStr = null;
+      try {
+        aiProjectStr = MAPPER.writeValueAsString(aiProject);
+      } catch (JsonProcessingException e) {
+        LOG.error("Could not serialize aiProject to JSON", e);
+      }
+      if (aiProjectStr != null) {
+        aiProjectFile = File.createTempFile("diylc_netlist_", ".txt");
+        try (FileWriter writer = new FileWriter(aiProjectFile)) {
+          writer.write("""
+              Take these notes into account when analyzing the circuit
+              - Coordinates are represented in pixels assuming 200px/in resolution.
+              - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
+              - Netlists of connected terminals are defined in the 'nets' structure.
+              - Analyze labels - they could provide clues about nearby terminals and what they represent.
+              """);
+          if (aiProject.switches() != null && !aiProject.switches().isEmpty()) {
+            writer.write("""
+              - Switches are defined in the 'switches' structure. Each switch will have a list of available position and the collection of internal terminals that are connected in each of the positions. Take the switching matrix into consideration when analyzing the circuit operation.
+              """);
+          }
+          if (aiProject.tags().contains("guitar")) {
+            IGuitarDiagramAnalyzer guitarDiagramAnalyzer =
+                ReflectionUtils.getGuitarDiagramAnalyzer();
+            if (guitarDiagramAnalyzer != null) {
+              try {
+                List<Netlist> netlists = plugInPort.extractNetlists(true);
+                writer.write("""
+                    - The circuit represents a guitar wiring diagram and below are some of the known characteristics in each combination of switch positions:
+                    """);
+                netlists.forEach(netlist -> {
+                  List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
+                  try {
+                    writer.write(netlist.getSwitchSetupString() + ": \n");
+                    for (String note : notes) {
+                      writer.write("  - " + note + "\n");
+                    }
+                  } catch (IOException ex) {
+                    LOG.warn("Could not write guitar diagram notes", ex);
+                  }
+                });
+              } catch (NetlistException | IOException ex) {
+                LOG.warn("Could not extract guitar diagram netlist", ex);
+              }
+            }
+          }
+          writer.write("\nBelow is the JSON describing the circuit in detail.\n");
+          writer.write(aiProjectStr);
         }
         // Make sure the temp file is deleted when the JVM exits
-        netlistFile.deleteOnExit();
+        aiProjectFile.deleteOnExit();
       }
-    } catch (NetlistException | IOException e) {
+    } catch (Exception e) {
       LOG.error("Error extracting or saving netlist", e);
-      netlist = null;
     }
 
     try {
@@ -143,117 +188,19 @@ public class ChatbotService {
           plugInPort.getCloudService().getCurrentToken(),
           plugInPort.getCloudService().getMachineId(),
           fileName,
-          netlistFile,
+          aiProjectFile,
           prompt);
     } finally {
       // Clean up the temp file immediately after use
-      if (netlistFile != null && netlistFile.exists()) {
-        netlistFile.delete();
+      if (aiProjectFile != null && aiProjectFile.exists()) {
+        aiProjectFile.delete();
       }
     }
   }
 
-  private static final Set<Class<?>> PROPERTY_TYPES_TO_SKIP = Set.of(Font.class, Color.class);
-
-  private String extractNetlists() throws NetlistException {
-    List<Netlist> netlists = plugInPort.extractNetlists(true);
-
-    if (netlists == null || netlists.isEmpty()) {
-      return null;
-    }
-
-    StringBuilder sb = new StringBuilder();
-
-//    Set<? extends IDIYComponent<?>> components = netlists.stream()
-//        .flatMap(n -> n.getGroups().stream()
-//            .flatMap(g -> g.getNodes().stream().
-//                map(Node::getComponent)))
-//        .collect(Collectors.toSet());
-//
-//    if (!components.isEmpty()) {
-//      sb.append(
-//          "Components (each element of the JSON array represents one component with all the relevant properties): ");
-//      outputComponents(components, sb);
-//    }
-
-    Set<? extends ISwitch> switches = plugInPort.getCurrentProject().getComponents()
-        .stream().filter(x -> x instanceof ISwitch)
-        .map(x -> (ISwitch)x)
-        .collect(Collectors.toSet());;
-
-    if (!switches.isEmpty()) {
-      sb.append(
-          "Switches (each row represents one switch, starts with the switch name and lists key properties of a switch):\n\n");
-      outputSwitches(switches, sb);
-    }
-
-    for (Netlist netlist : netlists) {
-      sb.append("\n");
-      if (!netlist.getSwitchSetup().isEmpty()) {
-        sb.append("Switch configuration: ").append(netlist.getSwitchSetup()).append(". ");
-      }
-      sb.append("Circuit netlist")
-          .append(netlist.getSwitchSetup().isEmpty() ? "" : " in this switch configuration")
-          .append(":\n\n");
-      try {
-        sb.append(SpiceSumarizer.summarize(netlist, false));
-      } catch (TreeException e) {
-        LOG.error("Error exporting netlist to Spice", e);
-      }
-    }
-    return sb.toString();
-  }
-
-  private static void outputSwitches(Set<? extends ISwitch> switches, StringBuilder sb) {
-    for (ISwitch sw : switches) {
-      IDIYComponent<?> component = (IDIYComponent<?>) sw;
-      ComponentType componentType = ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-      sb.append(component.getName())
-          .append(" ").append(component.getValueForDisplay()).append(" ")
-          .append(componentType.getName())
-          .append(" [").append(componentType.getCategory()).append("]\n");
-    }
-  }
-
-  private static void outputComponents(Set<? extends IDIYComponent<?>> components, StringBuilder sb) {
-    List<Map<String, Object>> componentDescriptors = new ArrayList<>();
-
-    components.forEach(c -> {
-      ComponentType componentType = ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      List<PropertyWrapper> properties =
-          ComponentProcessor.getInstance().extractProperties(c.getClass());
-
-      Map<String, Object> componentDescriptorMap = new HashMap<>();
-      componentDescriptorMap.put("name", c.getName());
-      componentDescriptorMap.put("type", componentType.getName());
-      componentDescriptorMap.put("category", componentType.getCategory());
-
-      properties.forEach(p -> {
-        if (PROPERTY_TYPES_TO_SKIP.contains(p.getType()))
-          return;
-
-        try {
-          p.readFrom(c);
-          if (p.getValue() == null)
-            return;
-
-          componentDescriptorMap.put(p.getName(), p.getValue().toString());
-        } catch (Exception e) {
-          LOG.warn("Error extracting properties", e);
-        }
-      });
-
-      componentDescriptors.add(componentDescriptorMap);
-    });
-
-    try {
-      String json = MAPPER.writeValueAsString(componentDescriptors);
-      sb.append(json).append("\n\n");
-    } catch (Exception e) {
-      LOG.error("Failed to serialize component descriptors to JSON", e);
-    }
+  private AiProject extractAiProject() throws NetlistException {
+    List<ContinuityArea> continuityAreas = plugInPort.getDrawingManager().getContinuityAreas();
+    return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
   }
 
   public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {
@@ -317,23 +264,23 @@ public class ChatbotService {
 
   public static final String[] diylcQuestions = {
       "How do I add a component to my layout in DIYLC?",
-      "How can I quickly find a specific component in DIYLC?s component toolbox?",
+      "How can I quickly find a specific component in DIYLC's component toolbox?",
       "How do I move or reposition components on the canvas in DIYLC?",
-      "How do I edit or change a component?s properties (e.g. value or color) in DIYLC?",
+      "How do I edit or change a component's properties (e.g. value or color) in DIYLC?",
       "Is there a shortcut to duplicate or repeat the last component I placed in DIYLC?",
       "How can I group multiple components so I can move or edit them together in DIYLC?",
-      "What are ?building blocks? in DIYLC and how do I create or use them?",
+      "What are 'building blocks' in DIYLC and how do I create or use them?",
       "How do I save my DIYLC project and reopen it later on?",
       "How do I export my DIYLC layout as an image or PDF file?",
       "Can DIYLC generate a bill of materials (BOM) for my project, and how would I do that?",
       "How can I change or hide different layers in a DIYLC project to manage overlapping components?",
       "Is it possible to view the underside of a board in DIYLC, and how can I enable that?",
-      "What does the ?Highlight Connected Areas? feature do in DIYLC and how do I use it for debugging?",
-      "How can I analyze a guitar wiring diagram using DIYLC?s built-in tools?",
+      "What does the 'Highlight Connected Areas' feature do in DIYLC and how do I use it for debugging?",
+      "How can I analyze a guitar wiring diagram using DIYLC's built-in tools?",
       "How do I assign a custom keyboard shortcut to a component in DIYLC for quick access?",
       "What are component variants in DIYLC and how can I create and apply them?",
       "What is the continuous creation mode in DIYLC and how does it help when adding many components?",
-      "How can I create a custom component to add to DIYLC?s component library?",
+      "How can I create a custom component to add to DIYLC's component library?",
       "Does DIYLC support plug-ins, and how can I add new functionality to the app with them?",
       "What is the DIYLC cloud feature and how can I share or download projects using it?"
   };
