@@ -21,6 +21,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
+import org.diylc.swing.actions.analyze.AiAnalyzeAction;
 import org.diylc.swing.actions.analyze.HighlightConnectedAreasAction;
 import org.diylc.swingframework.IDrawingProvider;
 
@@ -273,6 +274,10 @@ public class ActionFactory {
   public GenerateNetlistAction createGenerateNetlistAction(IPlugInPort plugInPort, ISwingUI swingUI,
       boolean includeSwitches) {
     return new GenerateNetlistAction(plugInPort, swingUI, includeSwitches);
+  }
+
+  public AiAnalyzeAction createAiAnalyzeAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new AiAnalyzeAction(plugInPort, swingUI);
   }
 
   public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,

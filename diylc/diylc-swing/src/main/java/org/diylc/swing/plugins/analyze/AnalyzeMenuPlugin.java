@@ -66,6 +66,7 @@ public class AnalyzeMenuPlugin implements IPlugIn {
     List<Action> menuActions = new ArrayList<>();
 
     // Add all menu actions to the list
+    menuActions.add(actionFactory.createAiAnalyzeAction(plugInPort, swingUI));
     menuActions.add(actionFactory.createCheckProximityAction(plugInPort, swingUI));
     menuActions.add(actionFactory.createBomAction(plugInPort));
     menuActions.add(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, false));

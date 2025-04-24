@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -34,7 +35,8 @@ public class AiProjectBuilder {
         sets.stream().map(s -> s.stream()
                 .map(AiProjectBuilder::mapTerminal)
                 .collect(Collectors.toSet()))
-            .collect(Collectors.toMap(x -> "N" + counter.incrementAndGet(), x -> x));
+            .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
+                Function.identity()));
 
     List<AiSwitch> switches =
         project.getComponents().stream()

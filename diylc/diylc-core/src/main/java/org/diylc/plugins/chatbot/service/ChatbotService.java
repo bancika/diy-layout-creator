@@ -123,9 +123,57 @@ public class ChatbotService {
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    File aiProjectFile = null;
+    File aiProjectFile = getAiProjectFile();
+
     try {
-      AiProject aiProject = extractAiProject();
+      return getService().promptChatbot(
+          plugInPort.getCloudService().getCurrentUsername(),
+          plugInPort.getCloudService().getCurrentToken(),
+          plugInPort.getCloudService().getMachineId(),
+          fileName,
+          aiProjectFile,
+          prompt);
+    } finally {
+      // Clean up the temp file immediately after use
+      if (aiProjectFile != null && aiProjectFile.exists()) {
+        aiProjectFile.delete();
+      }
+    }
+  }
+
+  public String analyzeCircuit() throws NotLoggedInException {
+    if (!plugInPort.getCloudService().isLoggedIn())
+      throw new NotLoggedInException();
+
+    LOG.info("Analyzing circuit...");
+
+    String currentFile = plugInPort.getCurrentFileName();
+    String fileName = extractFileName(currentFile);
+
+    File aiProjectFile = getAiProjectFile();
+
+    try {
+      String jsonResult = getService().analyzeCircuit(plugInPort.getCloudService().getCurrentUsername(),
+          plugInPort.getCloudService().getCurrentToken(),
+          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile);
+      return JsonToHtmlConverter.convertToHtml(jsonResult);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } finally {
+      // Clean up the temp file immediately after use
+      if (aiProjectFile != null && aiProjectFile.exists()) {
+        aiProjectFile.delete();
+      }
+    }
+  }
+
+  private File getAiProjectFile() {
+    File aiProjectFile = null;
+    AiProject aiProject = extractAiProject();
+    if (aiProject == null) {
+      return null;
+    }
+    try {
       String aiProjectStr = null;
       try {
         aiProjectStr = MAPPER.writeValueAsString(aiProject);
@@ -181,24 +229,13 @@ public class ChatbotService {
     } catch (Exception e) {
       LOG.error("Error extracting or saving netlist", e);
     }
-
-    try {
-      return getService().promptChatbot(
-          plugInPort.getCloudService().getCurrentUsername(),
-          plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(),
-          fileName,
-          aiProjectFile,
-          prompt);
-    } finally {
-      // Clean up the temp file immediately after use
-      if (aiProjectFile != null && aiProjectFile.exists()) {
-        aiProjectFile.delete();
-      }
-    }
+    return aiProjectFile;
   }
 
-  private AiProject extractAiProject() throws NetlistException {
+  private AiProject extractAiProject() {
+    if (plugInPort.getCurrentProject().getComponents().isEmpty()) {
+      return null;
+    }
     List<ContinuityArea> continuityAreas = plugInPort.getDrawingManager().getContinuityAreas();
     return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
   }
