@@ -92,7 +92,7 @@ public abstract class NetlistAnalyzer {
           continue;
 
         if (c.getInternalLinkName(targetPoint, sourcePoint) != null) {
-          Node newNodeA = new Node(c, targetPoint, n.getZIndex());
+          Node newNodeA = new Node(c, targetPoint);
           if (pathVisited.contains(newNodeA))
             continue;
 

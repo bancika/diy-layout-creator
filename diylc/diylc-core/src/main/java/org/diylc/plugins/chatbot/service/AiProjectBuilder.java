@@ -14,6 +14,10 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
+import org.diylc.netlist.Netlist;
+import org.diylc.netlist.NetlistBuilder;
+import org.diylc.netlist.NetlistException;
+import org.diylc.netlist.Node;
 import org.diylc.plugins.chatbot.model.*;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.ContinuityArea;
@@ -27,16 +31,31 @@ public class AiProjectBuilder {
 
     List<AiComponent> components = project.getComponents().stream().map(AiProjectBuilder::mapComponent).toList();
 
-    List<Set<NetlistBuilder.TerminalRef>> sets =
-        NetlistBuilder.buildNets(project.getComponents(), continuityAreas);
+//    List<Set<Node>> sets =
+    List<Netlist> netlists = null;
+    try {
+      netlists = NetlistBuilder.extractNetlists(false, project, continuityAreas);
+    } catch (NetlistException e) {
+      throw new RuntimeException(e);
+    }
+    Map<String, Set<String>> nets;
+    if (netlists == null || netlists.isEmpty()) {
+      nets = new HashMap<>();
+    } else {
+      AtomicInteger counter = new AtomicInteger();
+      nets = netlists.get(0).getGroups().stream().map(s -> s.getNodes().stream()
+              .map(AiProjectBuilder::mapTerminal)
+              .collect(Collectors.toSet()))
+          .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
+              Function.identity()));
+    }
 
-    AtomicInteger counter = new AtomicInteger();
-    Map<String, Set<String>> nets =
-        sets.stream().map(s -> s.stream()
-                .map(AiProjectBuilder::mapTerminal)
-                .collect(Collectors.toSet()))
-            .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
-                Function.identity()));
+//    Map<String, Set<String>> nets =
+//        sets.stream().map(s -> s.stream()
+//                .map(AiProjectBuilder::mapTerminal)
+//                .collect(Collectors.toSet()))
+//            .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
+//                Function.identity()));
 
     List<AiSwitch> switches =
         project.getComponents().stream()
@@ -161,7 +180,7 @@ public class AiProjectBuilder {
          fromPos, toPos, pos, terminals.isEmpty() ? null : terminals);
   }
 
-  static String mapTerminal(NetlistBuilder.TerminalRef terminalRef) {
-    return terminalRef.component.getName() + "." + terminalRef.terminalIndex;
+  static String mapTerminal(Node terminalRef) {
+    return terminalRef.getComponent().getName() + "." + terminalRef.getPointIndex();
   }
 }

@@ -75,7 +75,7 @@ public class NetlistBuilder {
           String nodeName = c.getControlPointNodeName(i);
           if (c.isControlPointSticky(i) && nodeName != null
               && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {
-            nodes.add(new Node(c, i, j));
+            nodes.add(new Node(c, i));
           }
         }
       }
@@ -86,7 +86,7 @@ public class NetlistBuilder {
         String label = ((ICommonNode) c).getCommonNodeLabel();
         if (!commonNodes.contains(label)) {
           commonNodes.add(label);
-          nodes.add(new Node(c, 0, j));
+          nodes.add(new Node(c, 0));
         }
       }
 

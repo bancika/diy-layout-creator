@@ -59,7 +59,7 @@ public class SpiceSumarizer {
         if (c instanceof ISpiceMapper)
           pointIndex = ((ISpiceMapper)c).mapToSpiceNode(pointIndex);
 
-        int nodeIndex = find(new Node(c, pointIndex, 0), groups);
+        int nodeIndex = find(new Node(c, pointIndex), groups);
         if (nodeIndex < 0)
           nodeIndex = unconnectedIndex++;
 
