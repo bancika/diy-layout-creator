@@ -288,3 +288,11 @@ There are several ways to create a new component:
 - for more complex components that require custom appearance and behavior, you can create a new component from scratch using the Component API, as described in the [Component API](https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md) documentation
 - you can file a component request on the [DIYLC GitHub repository](https://github.com/bancika/diy-layout-creator/issues) and I will implement it if I think it would be useful for other users without guaranteeing if and when it will be implemented
 - you can reach out to me at [bancika@gmail.com](mailto:bancika@gmail.com) to sponsor a custom component for your project and expedite its development');
+
+DELETE FROM diylc_knowledge_base WHERE section = 'User Manual - Panning/Moving the Screen/Canvas';
+INSERT INTO diylc_knowledge_base(category, section, content) VALUES ('User Manual', 'Panning/Moving the Screen/Canvas','
+There are several ways you can pan the screen/canvas and move around:
+- horizontal and vertical scroll bars
+- touch pad (if available)
+- mouse scroll button (if available) - hold ctrl for horizontal scrolling
+- click on the tiny "Auto-scroll" button in the bottom-right corner of the canvas to open a miniature version of the canvas and quickly jump to any part of it');
