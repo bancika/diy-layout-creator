@@ -161,6 +161,8 @@ public class TransistorTO1 extends AbstractTransistorPackage {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+
+    drawingObserver.stopTracking();
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
@@ -184,7 +186,9 @@ public class TransistorTO1 extends AbstractTransistorPackage {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+    drawingObserver.startTracking();
     g2d.fill(mainArea);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
     

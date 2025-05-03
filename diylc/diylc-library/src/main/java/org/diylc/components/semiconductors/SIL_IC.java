@@ -308,6 +308,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
 
     Color finalBorderColor;

@@ -315,7 +315,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
         Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2,
             point.getY() - pinSize / 2, pinSize, pinSize);
         g2d.setColor(PIN_COLOR);
+        drawingObserver.startTracking();
         g2d.fill(rect);
+        drawingObserver.stopTracking();
         g2d.setColor(PIN_BORDER_COLOR);
         g2d.draw(rect);
       }
@@ -325,7 +327,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
+    drawingObserver.startTracking();
     g2d.fill(mainArea);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
 
     Color finalBorderColor;
@@ -355,8 +359,6 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
         g2d.fill(getBody()[1]);
       }
     }
-
-    drawingObserver.stopTracking();
 
     // Draw label.
     g2d.setFont(project.getFont());

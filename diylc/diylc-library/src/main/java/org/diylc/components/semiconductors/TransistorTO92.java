@@ -187,6 +187,7 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
+    drawingObserver.stopTracking();
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     
@@ -206,7 +207,9 @@ public class TransistorTO92 extends AbstractTransistorPackage {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+    drawingObserver.startTracking();
     g2d.fill(mainArea);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
     if (outlineMode) {
