@@ -107,6 +107,7 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
       g2d.fill(body[1]);
 //    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
 //    g2d.fill(body[2]);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);    
 
     Color finalBorderColor;
@@ -153,7 +154,7 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
 //        VerticalAlignment.CENTER);
     drawMainLabel(g2d, project, outlineMode, componentState);
     
-    drawlTerminalLabels(g2d, finalBorderColor, project);
+    drawTerminalLabels(g2d, finalBorderColor, project);
     // terminal labels
 //    Point[] points = getControlPoints();
 //    g2d.setColor(finalBorderColor);

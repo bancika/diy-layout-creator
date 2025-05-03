@@ -124,6 +124,8 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
       g2d.fill(body[0]);
     else
       g2d.fill(body[3]);
+
+    drawingObserver.stopTracking();
     
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getLugColor());
     g2d.fill(body[1]);
@@ -172,7 +174,7 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
 
     drawMainLabel(g2d, project, outlineMode, componentState);
     
-    drawlTerminalLabels(g2d, finalBorderColor, project);
+    drawTerminalLabels(g2d, finalBorderColor, project);
   }  
   
   @Override

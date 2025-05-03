@@ -34,7 +34,7 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
   private static final long serialVersionUID = 1L;
     
   @Override
-  protected void drawlTerminalLabels(Graphics2D g2d, Color color, Project project) {
+  protected void drawTerminalLabels(Graphics2D g2d, Color color, Project project) {
     Point2D[] points = getControlPoints();
     g2d.setColor(color);
 
