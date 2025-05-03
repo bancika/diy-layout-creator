@@ -93,6 +93,8 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
       g2d.setComposite(oldComposite);
     }
 
+    drawingObserver.stopTracking();
+
     Color finalBorderColor;
 
     if (outlineMode) {
@@ -127,7 +129,9 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
     g2d.setColor(METAL_COLOR);
+    drawingObserver.startTracking();
     g2d.draw(body[2]);
+    drawingObserver.stopTracking();
   }
 
   @SuppressWarnings("incomplete-switch")

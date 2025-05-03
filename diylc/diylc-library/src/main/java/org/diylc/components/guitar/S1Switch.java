@@ -162,6 +162,7 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
       g2d.fill(body);
+      drawingObserver.stopTracking();
       g2d.setComposite(oldComposite);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;

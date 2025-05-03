@@ -115,6 +115,8 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
       g2d.setComposite(oldComposite);
     }
 
+    drawingObserver.stopTracking();
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
@@ -150,12 +152,16 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     g2d.draw(body[1]);
 
     g2d.setColor(LUG_COLOR);
+    drawingObserver.startTracking();
     g2d.fill(body[2]);
+    drawingObserver.stopTracking();
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
     for (int i = 3; i < body.length; i++) {
       g2d.setColor(ISwitch.POLE_COLORS[i - 3]);
+      drawingObserver.startTracking();
       g2d.fill(body[i]);
+      drawingObserver.stopTracking();
       g2d.setColor(ISwitch.POLE_COLORS[i - 3].darker());
       g2d.draw(body[i]);
     }
