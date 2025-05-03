@@ -189,7 +189,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
             // Deep copy point arrays.
             // TODO: something nicer
             if (value != null && value.getClass().isArray()
-                && value.getClass().getComponentType().isAssignableFrom(Point2D.class)) {
+                && Point2D.class.isAssignableFrom(value.getClass().getComponentType())) {
               Object newArray = Array.newInstance(value.getClass().getComponentType(), Array.getLength(value));
               for (int i = 0; i < Array.getLength(value); i++) {
                 Point2D p = (Point2D) Array.get(value, i);

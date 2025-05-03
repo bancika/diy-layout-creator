@@ -317,6 +317,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>'Pilot Lamp Holder' component can sometimes hang the application</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue with some components (e.g. DIP IC) jumping when showing underside of a board</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
