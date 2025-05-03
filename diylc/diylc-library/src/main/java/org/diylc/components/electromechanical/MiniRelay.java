@@ -304,6 +304,8 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
+
+    drawingObserver.stopTracking();
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 

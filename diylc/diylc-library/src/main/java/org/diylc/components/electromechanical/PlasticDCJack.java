@@ -142,6 +142,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> implements
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
     g2d.fill(body[0]);
+    drawingObserver.stopTracking();
     if (!outlineMode) {
       g2d.setColor(PHENOLIC_DARK_COLOR);
       g2d.fill(body[1]);

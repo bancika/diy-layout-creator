@@ -103,6 +103,8 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
               : color.brighter();
     }
 
+    drawingObserver.stopTracking();
+
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
     g2d.setColor(METAL_COLOR.darker());

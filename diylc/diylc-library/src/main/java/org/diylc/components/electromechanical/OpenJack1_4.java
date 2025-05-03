@@ -150,6 +150,8 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
       g2d.setComposite(oldComposite);
 //    }
 
+    drawingObserver.stopTracking();
+
     if (outlineMode) {
       Theme theme =
           (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
@@ -157,8 +159,6 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
     } else {
       finalBorderColor = BASE_COLOR.darker();
     }
-    
-    drawingObserver.stopTracking();
 
     g2d.setColor(finalBorderColor);
     g2d.draw(body[1]);

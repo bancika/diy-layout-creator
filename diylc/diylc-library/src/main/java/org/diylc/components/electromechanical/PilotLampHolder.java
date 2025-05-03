@@ -134,6 +134,7 @@ public class PilotLampHolder extends AbstractMultiPartComponent<String> {
       g2d.fill(body[2]);
       
       drawingObserver.stopTrackingContinuityArea();
+      drawingObserver.stopTracking();
 
       g2d.setComposite(oldComposite);
 //    }

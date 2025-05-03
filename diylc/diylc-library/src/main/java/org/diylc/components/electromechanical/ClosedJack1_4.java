@@ -236,6 +236,8 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implemen
       g2d.setComposite(oldComposite);
 //    }
 
+    drawingObserver.stopTracking();
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme =
