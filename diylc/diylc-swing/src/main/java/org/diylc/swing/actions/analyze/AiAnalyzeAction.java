@@ -26,8 +26,7 @@ public class AiAnalyzeAction extends AbstractAction {
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
     putValue(AbstractAction.NAME, "AI Circuit Analyzer");
-//    putValue(AbstractAction.SMALL_ICON,
-//        Enum.valueOf(IconLoader.class, summarizer.getIconName()).getIcon());
+    putValue(AbstractAction.SMALL_ICON, IconLoader.Brain.getIcon());
   }
 
   @Override
