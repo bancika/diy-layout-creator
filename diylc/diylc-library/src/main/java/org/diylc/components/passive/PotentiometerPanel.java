@@ -308,6 +308,9 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         g2d.draw(shape);
       }
     }
+
+    drawingObserver.stopTracking();
+
     // Draw caption.
     g2d.setFont(project.getFont());
     

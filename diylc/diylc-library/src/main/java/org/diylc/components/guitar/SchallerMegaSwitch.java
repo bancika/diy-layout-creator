@@ -110,6 +110,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
       }
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
       g2d.fill(body[0]);
+      drawingObserver.stopTracking();
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : WAFER_COLOR);
       g2d.fill(body[1]);
       g2d.setComposite(oldComposite);

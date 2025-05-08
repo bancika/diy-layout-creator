@@ -165,8 +165,6 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
     g2d.draw(body[2]);
     if (body[3] != null)
       g2d.draw(body[3]);
-    
-    drawingObserver.startTracking();
 
     // draw labels
     if (showLabels) {

@@ -109,6 +109,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
       g2d.fill(new Rectangle2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
           diameter, diameter));
     }
+    drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
     if (gerberDrawingObserver != null)
       gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
