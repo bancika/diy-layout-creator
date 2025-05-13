@@ -46,7 +46,7 @@ public class NetlistBuilder {
 
   public static final float eps = 4; // consider any nodes closer than this as connected
 
-  public static int MAX_SWITCH_COMBINATIONS = 64;
+  public static int MAX_SWITCH_COMBINATIONS = 256;
 
   private static final String MAX_SWITCH_COMBINATIONS_ERROR = LangUtil
       .translate("Maximum number of switching combinations exceeded. Allowed: %s, actual: %s");

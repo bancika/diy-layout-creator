@@ -302,12 +302,12 @@
 				<minor>4</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-04-21 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-05-13 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>'AI Analyzer' feature added</description>
+					<description>'AI Analyzer' feature added which uses AI to scan the circuit diagram and report issues and suggestions</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -316,6 +316,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>'Open Jack 1/4"' and 'Potentiometer Panel' now tolerate connections anywhere on the lugs instead of dead center only</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased maximum number of switching combinations to 256 for circuit analysis</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
