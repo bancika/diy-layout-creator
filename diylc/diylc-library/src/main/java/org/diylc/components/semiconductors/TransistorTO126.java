@@ -183,6 +183,7 @@ public class TransistorTO126 extends AbstractTransistorPackage {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
+    drawingObserver.stopTracking();
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
     
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
@@ -211,7 +212,9 @@ public class TransistorTO126 extends AbstractTransistorPackage {
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
               line = new Line2D.Double(point.getX(), point.getY(), point.getX() + leadLength - leadThickness / 2, point.getY());
+              drawingObserver.startTracking();
               g2d.draw(line);
+              drawingObserver.stopTracking();
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
               g2d.draw(line);
@@ -220,7 +223,9 @@ public class TransistorTO126 extends AbstractTransistorPackage {
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
               line = new Line2D.Double(point.getX(), point.getY(), point.getX(), point.getY() + leadLength - leadThickness / 2);
+              drawingObserver.startTracking();
               g2d.draw(line);
+              drawingObserver.stopTracking();
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
               g2d.draw(line);
@@ -229,7 +234,9 @@ public class TransistorTO126 extends AbstractTransistorPackage {
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
               line = new Line2D.Double(point.getX(), point.getY(), point.getX() - leadLength - leadThickness / 2, point.getY());
+              drawingObserver.startTracking();
               g2d.draw(line);
+              drawingObserver.stopTracking();
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
               g2d.draw(line);
@@ -238,7 +245,9 @@ public class TransistorTO126 extends AbstractTransistorPackage {
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
               g2d.setColor(finalPinBorderColor);
               line = new Line2D.Double(point.getX(), point.getY(), point.getX(), point.getY() - leadLength);
+              drawingObserver.startTracking();
               g2d.draw(line);
+              drawingObserver.stopTracking();
               g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
               g2d.setColor(finalPinColor);
               g2d.draw(line);
@@ -266,7 +275,9 @@ public class TransistorTO126 extends AbstractTransistorPackage {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-    g2d.fill(mainArea);    
+    drawingObserver.startTracking();
+    g2d.fill(mainArea);
+    drawingObserver.stopTracking();
     
     g2d.setComposite(oldComposite);
     if (!outlineMode) {

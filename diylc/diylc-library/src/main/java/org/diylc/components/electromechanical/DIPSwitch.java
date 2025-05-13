@@ -356,6 +356,8 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
 
+    drawingObserver.stopTracking();
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
@@ -391,8 +393,6 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
         g2d.fill(getBody()[2]);
       }
     }
-
-    drawingObserver.stopTracking();
 
     // Draw label.
     g2d.setFont(project.getFont());

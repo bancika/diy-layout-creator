@@ -63,6 +63,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ZoomableStroke;
 import org.diylc.core.IDrawingObserver;
@@ -79,9 +80,14 @@ import org.diylc.core.IDrawingObserver;
 class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   public static int LINE_SENSITIVITY_MARGIN = 2;
-  public static int CURVE_SENSITIVITY = 6;  
+  public static int CURVE_SENSITIVITY = 6;
+
+  private static final Logger LOG = Logger.getLogger(G2DWrapper.class);
+
+  public static String DEBUG_AREA_PERFORMANCE = "org.diylc.debugAreaPerformance";
 
   private boolean drawingComponent = false;
+  private final boolean debugAreaPerformance;
   private boolean trackingAllowed = true;
   private boolean trackingContinuityAllowed = false;
   private boolean trackingContinuityPositive = true;
@@ -115,6 +121,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public G2DWrapper(Graphics2D canvasGraphics, double zoom) {
     super();
     this.canvasGraphics = canvasGraphics;
+    String debugAreaPerformanceStr = System.getProperty(DEBUG_AREA_PERFORMANCE);
+    debugAreaPerformance = "true".equalsIgnoreCase(debugAreaPerformanceStr);
     this.zoom = zoom;
     currentArea = new Area();
     continuityPositiveAreas = new HashMap<String, Area>();
@@ -236,8 +244,18 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
       Area area = new Area(s);
       area.transform(currentTx);
 
-      if (trackingAllowed)
-        currentArea.add(area);      
+      Area areaBefore = null;
+      if (debugAreaPerformance) {
+        areaBefore = new Area(currentArea);
+      }
+
+      if (trackingAllowed) {
+        currentArea.add(area);
+
+        if (debugAreaPerformance && currentArea.equals(areaBefore)) {
+          LOG.warn("Detected unnecessary shape tracking at", new Throwable());
+        }
+      }
 
       Map<String, Area> toAdd;
       if (trackingContinuityAllowed) {

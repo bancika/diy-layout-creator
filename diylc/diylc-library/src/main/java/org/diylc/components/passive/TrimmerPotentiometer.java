@@ -375,14 +375,13 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     Shape shaftShape = getBody()[1];
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     if (mainShape != null) {
-      g2d.setColor(bodyColor);
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
       Composite oldComposite = g2d.getComposite();
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
-      if (!outlineMode) {
-        g2d.fill(mainShape);
-      }
+      g2d.fill(mainShape);
+      drawingObserver.stopTracking();
       if (!outlineMode && shaftShape != null) {
         g2d.setColor(SHAFT_COLOR);
         g2d.fill(shaftShape);

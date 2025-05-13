@@ -66,7 +66,7 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
     updateControlPoints();
   }
   
-  protected void drawlTerminalLabels(Graphics2D g2d, Color color, Project project) {
+  protected void drawTerminalLabels(Graphics2D g2d, Color color, Project project) {
     Point2D[] points = getControlPoints();    
     g2d.setColor(color);
       

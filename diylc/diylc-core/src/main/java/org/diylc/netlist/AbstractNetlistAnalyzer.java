@@ -92,7 +92,7 @@ public abstract class AbstractNetlistAnalyzer {
       for (int i = 0; i < c.getControlPointCount(); i++) {
         if (i != n.getPointIndex() && c.getInternalLinkName(i, n.getPointIndex()) != null) {
           TreeLeaf l = new TreeLeaf(c, i, n.getPointIndex());
-          Node newNodeA = new Node(c, i, n.getZIndex());
+          Node newNodeA = new Node(c, i);
           if (!visited.contains(newNodeA)) {
             // visited.add(n);
             Tree newCurrentPath = null;

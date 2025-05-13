@@ -247,7 +247,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
 
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
       g2d.fill(body[0]);
-
+      drawingObserver.stopTracking();
       g2d.setComposite(oldComposite);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       Color finalBorderColor;
@@ -269,9 +269,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
       }
       g2d.draw(body[0]);
     }
-    // Do not track these changes because the whole switch has been tracked
-    // so far.
-    drawingObserver.stopTracking();
+
     // Draw lugs.
 
     int lugWidth;

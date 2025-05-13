@@ -129,17 +129,28 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
-      
+
+      g2d.setColor(Constants.TRANSPARENT_COLOR);
       drawingObserver.startTrackingContinuityArea(true);
-      g2d.fill(body[1]);
-      g2d.fill(body[2]);
-      if (body[3] != null)
-        g2d.fill(body[3]);
+      g2d.fill(body[4]);
+      g2d.fill(body[5]);
+      if (body[6] != null)
+        g2d.fill(body[6]);
       drawingObserver.stopTrackingContinuityArea();
+
+      if (!outlineMode) {
+        g2d.setColor(BASE_COLOR);
+
+        g2d.fill(body[1]);
+        g2d.fill(body[2]);
+        if (body[3] != null)
+          g2d.fill(body[3]);
+      }
 
       g2d.setComposite(oldComposite);
 //    }
+
+    drawingObserver.stopTracking();
 
     if (outlineMode) {
       Theme theme =
@@ -148,16 +159,12 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
     } else {
       finalBorderColor = BASE_COLOR.darker();
     }
-    
-    drawingObserver.stopTracking();
 
     g2d.setColor(finalBorderColor);
     g2d.draw(body[1]);
     g2d.draw(body[2]);
     if (body[3] != null)
       g2d.draw(body[3]);
-    
-    drawingObserver.startTracking();
 
     // draw labels
     if (showLabels) {
@@ -193,7 +200,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
 
   public Area[] getBody() {
     if (body == null) {
-      body = new Area[4];
+      body = new Area[7];
 
       double x = controlPoints[0].getX();
       double y = controlPoints[0].getY();
@@ -224,6 +231,13 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
 
       body[1] = tip;
 
+      // no-hole tip for continuity
+      tip =
+          new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength
+              - ringDiameter / 2, springWidth, springWidth));
+        tip.subtract(wafer);
+      body[4] = tip;
+
       Area sleeve =
           new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
               springWidth, springWidth));
@@ -237,6 +251,17 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
 
       body[2] = sleeve;
 
+      // no-hole sleeve for continuity
+      sleeve =
+          new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
+              springWidth, springWidth));
+      sleeve.transform(AffineTransform.getRotateInstance(getValue() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, x, centerY));
+      sleeve.add(new Area(new Ellipse2D.Double(x - ringDiameter / 2, centerY - ringDiameter / 2, ringDiameter,
+          ringDiameter)));
+      sleeve.subtract(new Area(new Ellipse2D.Double(x - innerDiameter / 2, centerY - innerDiameter / 2, innerDiameter,
+          innerDiameter)));
+      body[5] = sleeve;
+
       if (getValue() != OpenJackType.MONO) {
         Area ringOrSwitch =
             new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
@@ -248,6 +273,15 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
             outerDiameter)));
 
         body[3] = ringOrSwitch;
+
+        ringOrSwitch =
+            new Area(new RoundRectangle2D.Double(x - springWidth / 2, y - holeToEdge, springWidth, springLength,
+                springWidth, springWidth));
+        ringOrSwitch.transform(AffineTransform.getRotateInstance(getValue() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, x, centerY));
+        ringOrSwitch.subtract(new Area(new Ellipse2D.Double(x - outerDiameter / 2, centerY - outerDiameter / 2, outerDiameter,
+            outerDiameter)));
+
+        body[6] = ringOrSwitch;
       }
 
       // Rotate if needed

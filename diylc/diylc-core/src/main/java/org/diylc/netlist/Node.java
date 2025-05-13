@@ -22,6 +22,7 @@
 package org.diylc.netlist;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
@@ -35,13 +36,11 @@ public class Node implements Comparable<Node> {
 
   private IDIYComponent<?> component;
   private int pointIndex;
-  private int zIndex;
 
-  public Node(IDIYComponent<?> component, int pointIndex, int zIndex) {
+  public Node(IDIYComponent<?> component, int pointIndex) {
     super();
     this.component = component;
     this.pointIndex = pointIndex;
-    this.zIndex = zIndex;
   }
 
   public IDIYComponent<?> getComponent() {
@@ -50,10 +49,6 @@ public class Node implements Comparable<Node> {
 
   public int getPointIndex() {
     return pointIndex;
-  }
-  
-  public int getZIndex() {
-    return zIndex;
   }
   
   public String getDisplayName() {
@@ -66,31 +61,16 @@ public class Node implements Comparable<Node> {
   }
 
   @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((component == null) ? 0 : component.hashCode());
-    result = prime * result + pointIndex;
-    return result;
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (!(obj instanceof Node)) return false;
+    Node other = (Node) obj;
+    return Objects.equals(component, other.component) && pointIndex == other.pointIndex;
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Node other = (Node) obj;
-    if (component == null) {
-      if (other.component != null)
-        return false;
-    } else if (!component.equals(other.component))
-      return false;
-    if (pointIndex != other.pointIndex)
-      return false;
-    return true;
+  public int hashCode() {
+    return Objects.hash(component, pointIndex);
   }
 
   @Override

@@ -90,6 +90,7 @@ public class PBassPickup extends AbstractSingleOrHumbuckerPickup {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     g2d.fill(body[0]);
     g2d.fill(body[1]);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
 
     Color finalBorderColor;
@@ -135,7 +136,7 @@ public class PBassPickup extends AbstractSingleOrHumbuckerPickup {
 //        VerticalAlignment.CENTER);
     drawMainLabel(g2d, project, outlineMode, componentState);
     
-    drawlTerminalLabels(g2d, finalBorderColor, project);
+    drawTerminalLabels(g2d, finalBorderColor, project);
   }
 
   @SuppressWarnings("incomplete-switch")

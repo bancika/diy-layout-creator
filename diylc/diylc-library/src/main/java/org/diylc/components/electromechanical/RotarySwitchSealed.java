@@ -182,6 +182,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
       g2d.fill(body[0]);
     }
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
     if (outlineMode) {
@@ -197,8 +198,6 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(body[0]);
-    
-    drawingObserver.stopTracking();
     
     // Draw pins
     if (!outlineMode) {      

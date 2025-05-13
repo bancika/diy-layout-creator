@@ -111,6 +111,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
       g2d.setComposite(oldComposite);
     }
 
+    drawingObserver.stopTracking();
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme =
@@ -142,7 +144,9 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     g2d.draw(body[1]);
 
     g2d.setColor(LUG_COLOR);
+    drawingObserver.startTracking();
     g2d.fill(body[2]);
+    drawingObserver.stopTracking();
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(body[2]);
 

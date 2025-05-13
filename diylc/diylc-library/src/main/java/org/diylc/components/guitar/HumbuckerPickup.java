@@ -93,6 +93,8 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+
+    drawingObserver.stopTracking();
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -102,10 +104,16 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
-    if (getType() != HumbuckerType.Filtertron)
+    if (getType() != HumbuckerType.Filtertron) {
+      drawingObserver.startTracking();
       g2d.fill(body[0]);
-    if (body[1] != null)
+      drawingObserver.stopTracking();
+    }
+    if (body[1] != null) {
+      drawingObserver.startTracking();
       g2d.fill(body[1]);
+      drawingObserver.stopTracking();
+    }
 
     if (!outlineMode) {
       if (body[4] != null) {
@@ -120,7 +128,9 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
 
     if (getType() == HumbuckerType.Filtertron) {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
+      drawingObserver.startTracking();
       g2d.fill(body[0]);
+      drawingObserver.stopTracking();
     }
 
     // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
@@ -175,7 +185,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
     
     drawMainLabel(g2d, project, outlineMode, componentState);
     
-    drawlTerminalLabels(g2d, finalBorderColor, project);  
+    drawTerminalLabels(g2d, finalBorderColor, project);
   }
  
   @Override

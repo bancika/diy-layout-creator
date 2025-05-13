@@ -121,7 +121,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     if (body == null) {
       // mandatory: 0, 1, 2 pins, 3 body, 9 wafer
       // optional: 4, 5, 6 lugs, 7 nut, 8 shaft
-      body = new Area[10];
+      body = new Area[13];
 
       // Add lugs.
       int pinWidth = (int) PIN_SIZE.convertToPixels();
@@ -210,6 +210,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
               new Area(new Ellipse2D.Double(controlPoints[i].getX() - lugDiameter / 2, controlPoints[i].getY() - lugDiameter / 2,
                   lugDiameter, lugDiameter));
           body[4 + i] = area;
+          body[10 + i] = new Area(area);
         }
 
         for (int i = 0; i < 3; i++) {
@@ -272,6 +273,11 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
           case 9:
             g2d.setColor(getWaferColor());
             break;
+          case 10:
+          case 11:
+          case 12:
+            g2d.setColor(Constants.TRANSPARENT_COLOR);
+            break;
           default:
             g2d.setColor(getBodyColor());
         }
@@ -281,11 +287,11 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
           g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
         }
         if (!outlineMode) {
-//          if (i >= 3 && i <= 6)
-//            drawingObserver.startTrackingContinuityArea(true);
+          if (i >= 10)
+            drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
-//          if (i >= 3 && i <= 6)
-//            drawingObserver.stopTrackingContinuityArea();
+          if (i >= 10)
+            drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
         Color finalBorderColor;
@@ -302,6 +308,9 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         g2d.draw(shape);
       }
     }
+
+    drawingObserver.stopTracking();
+
     // Draw caption.
     g2d.setFont(project.getFont());
     

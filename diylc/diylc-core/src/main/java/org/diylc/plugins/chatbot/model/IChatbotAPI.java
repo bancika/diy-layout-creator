@@ -43,6 +43,20 @@ public interface IChatbotAPI {
       @ParamName("machineId") String machineId, @ParamName("project") String project,
       @ParamName("netlist") File netlist, @ParamName("prompt") String prompt);
 
+  /**
+   * Analyzes the provided circuit
+   *
+   * @param username
+   * @param token
+   * @param machineId
+   * @param project
+   * @param netlist
+   * @return
+   */
+  String analyzeCircuit(@ParamName("username") String username, @ParamName("token") String token,
+      @ParamName("machineId") String machineId, @ParamName("project") String project,
+      @ParamName("netlist") File netlist);
+
   SubscriptionEntity getSubscriptionInfo(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId);
 

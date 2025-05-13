@@ -232,6 +232,7 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
       g2d.setColor(shroudColor);
       g2d.fill(shroudArea);
     }
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));

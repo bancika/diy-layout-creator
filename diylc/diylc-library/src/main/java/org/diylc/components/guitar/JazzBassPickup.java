@@ -81,6 +81,7 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+
     Shape[] body = getBody();
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -91,7 +92,8 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     g2d.fill(body[0]);
-    g2d.fill(body[1]);    
+    g2d.fill(body[1]);
+    drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
     
     Color finalBorderColor;
@@ -137,7 +139,7 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
 //        VerticalAlignment.CENTER);
     drawMainLabel(g2d, project, outlineMode, componentState);
    
-    drawlTerminalLabels(g2d, finalBorderColor, project);
+    drawTerminalLabels(g2d, finalBorderColor, project);
   }
 
   @SuppressWarnings("incomplete-switch")

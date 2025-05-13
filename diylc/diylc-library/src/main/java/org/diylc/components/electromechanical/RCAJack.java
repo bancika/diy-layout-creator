@@ -93,6 +93,8 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : WAFER_COLOR);
     g2d.fill(body[0]);
 
+    drawingObserver.stopTracking();
+
     g2d.setComposite(oldComposite);
 //    }
 
@@ -116,8 +118,10 @@ public class RCAJack extends AbstractMultiPartComponent<String> {
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BASE_COLOR);
     
     drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startTracking();
     g2d.fill(body[1]);
     g2d.fill(body[2]);
+    drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
     
     if (body[3] != null)

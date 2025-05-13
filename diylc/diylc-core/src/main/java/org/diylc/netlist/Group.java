@@ -53,11 +53,7 @@ public class Group implements Comparable<Group> {
   }
   
   public Group connect(IDIYComponent<?> component, int index) {
-    return connect(component, index, 0);
-  }
-  
-  public Group connect(IDIYComponent<?> component, int index, int zOrder) {
-    getNodes().add(new Node(component, index, zOrder));
+    getNodes().add(new Node(component, index));
     return this;
   }
 

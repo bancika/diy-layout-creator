@@ -234,6 +234,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   public void setData(byte[] data) {
     this.data = data;
+    this.imageIcon = null;
     this.image = null;
     if (getSizingMode() == ImageSizingMode.TwoPoints) {
       ImageIcon imageIcon = getImage();

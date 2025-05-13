@@ -355,39 +355,42 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     if (getDisplay() == Display.BOTH) {
       label = getName() + " " + (getValue() == null ? "" : getValue().toString());
     }
-    Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
-    // Don't offset in outline mode.
-    int offset = outlineMode ? 0 : getLabelOffset((int) length, (int) width, (int) textRect.getWidth());
-    
-    // Adjust label angle if needed to make sure that it's readable.
-    if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
-      g2d.rotate(Math.PI, length / 2, width / 2);
-      theta += Math.PI;
-      offset = -offset;
-    }
-    
-    drawingObserver.startTracking();
-    
-    if (getMoveLabel()) {
-      g2d.setTransform(oldTransform);
-      g2d.translate(getPoints()[2].getX(), getPoints()[2].getY());
-      if (getLabelOriantation() != LabelOriantation.Horizontal) {
-        g2d.rotate(theta);
+    if (!label.isEmpty()) {
+      Rectangle2D textRect = fontMetrics.getStringBounds(label, g2d);
+      // Don't offset in outline mode.
+      int offset = outlineMode ? 0 : getLabelOffset((int) length, (int) width, (int) textRect.getWidth());
+
+      // Adjust label angle if needed to make sure that it's readable.
+      if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
+        g2d.rotate(Math.PI, length / 2, width / 2);
+        theta += Math.PI;
+        offset = -offset;
       }
-      StringUtils.drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      g2d.setTransform(oldTransform);
-    } else {
-      if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
+
+      if (getMoveLabel()) {
+        drawingObserver.startTracking();
         g2d.setTransform(oldTransform);
-        double x = (getPoints()[0].getX() + getPoints()[1].getX() - length) / 2.0;
-        double y = (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2.0;
-        g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
-            (int)(y + calculateLabelYOffset(shapeRect, textRect, fontMetrics)));
+        g2d.translate(getPoints()[2].getX(), getPoints()[2].getY());
+        if (getLabelOriantation() != LabelOriantation.Horizontal) {
+          g2d.rotate(theta);
+        }
+        StringUtils.drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        g2d.setTransform(oldTransform);
       } else {
-        g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
-            calculateLabelYOffset(shapeRect, textRect, fontMetrics));      
-        g2d.setTransform(oldTransform); 
-      }  
+        if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
+          drawingObserver.startTracking();
+          g2d.setTransform(oldTransform);
+          double x = (getPoints()[0].getX() + getPoints()[1].getX() - length) / 2.0;
+          double y = (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2.0;
+          g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
+              (int) (y + calculateLabelYOffset(shapeRect, textRect, fontMetrics)));
+        } else {
+          drawingObserver.stopTracking();
+          g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
+              calculateLabelYOffset(shapeRect, textRect, fontMetrics));
+          g2d.setTransform(oldTransform);
+        }
+      }
     }
 //      if (getLabelOriantation() == LabelOriantation.Horizontal) {        
 //
