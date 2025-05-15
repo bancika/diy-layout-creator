@@ -90,7 +90,9 @@ public class ExplorerPlugin implements IPlugIn {
 
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
-        if (e.getKeyChar() == 'x' && e.getModifiersEx() == 0
+        if (explorerPane != null
+            && (canvasPanel.hasFocus() || explorerPane.hasFocus())
+            && e.getKeyChar() == 'x' && e.getModifiersEx() == 0
             && ConfigurationManager.getInstance()
                 .readBoolean(ConfigPlugin.PROJECT_EXPLORER, true)) {
           explorerPane.getSearchField().requestFocusInWindow();

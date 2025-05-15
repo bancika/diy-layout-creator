@@ -80,12 +80,13 @@ public class ComponentTree implements IPlugIn {
 
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
-        if ((canvasPanel.hasFocus() || treePanel.hasFocus())
-            && e.getKeyChar() == 'q'
+        if (treePanel != null
+            && (canvasPanel.hasFocus() || treePanel.hasFocus())
+            && e.getKeyChar() == 'q' && e.getModifiersEx() == 0
             && ConfigurationManager.getInstance()
                 .readString(ConfigPlugin.COMPONENT_BROWSER, ConfigPlugin.SEARCHABLE_TREE)
                 .equals(ConfigPlugin.SEARCHABLE_TREE)) {
-          getTreePanel().getSearchField().requestFocusInWindow();
+          treePanel.getSearchField().requestFocusInWindow();
           return true;
         }
         return false;
