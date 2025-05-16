@@ -70,7 +70,6 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
   private static Size LIP_HOLE_SPACING = new Size(0.1d, SizeUnit.in);
 
   private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);
-  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SPACING = new Size(0.85d, SizeUnit.in);
   private static Size POLE_SPACING_MINOR = new Size(0.28d, SizeUnit.in);
@@ -95,7 +94,9 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
     g2d.fill(body[1]);
     drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
-    
+
+    markContactPoints(g2d, drawingObserver);
+
     Color finalBorderColor;
     if (outlineMode) {
       Theme theme =
@@ -157,7 +158,6 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
       int pointMargin = (int) POINT_MARGIN.convertToPixels(); 
       int lipRadius = (int) LIP_RADIUS.convertToPixels();
       int lipSpacing = (int) LIP_SPACING.convertToPixels();
-      int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
       int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
       int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
 
@@ -179,8 +179,6 @@ public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {
       ((Area)body[1]).add(lip);
       
       ((Area)body[1]).subtract((Area)body[0]);
-
-      body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
       int poleSize = (int) POLE_SIZE.convertToPixels();
       int poleSpacing = (int) POLE_SPACING.convertToPixels();

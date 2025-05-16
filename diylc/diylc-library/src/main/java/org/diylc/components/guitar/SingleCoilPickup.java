@@ -126,7 +126,9 @@ public class SingleCoilPickup extends AbstractSingleOrHumbuckerPickup {
       g2d.fill(body[3]);
 
     drawingObserver.stopTracking();
-    
+
+    markContactPoints(g2d, drawingObserver);
+
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getLugColor());
     g2d.fill(body[1]);
     g2d.setColor(outlineMode ? theme.getOutlineColor() : darkerOrLighter(LUG_COLOR));

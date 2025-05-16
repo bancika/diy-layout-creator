@@ -75,7 +75,6 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
 
   private static Size LIP_RADIUS = new Size(10d, SizeUnit.mm);
   private static Size POINT_MARGIN = new Size(3.5d, SizeUnit.mm);
-  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2.5d, SizeUnit.mm);
   private static Size LIP_HOLE_SPACING = new Size(97d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
@@ -127,7 +126,9 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
     g2d.draw(body[0]);
     if (body[1] != null)
       g2d.draw(body[1]);
-    
+
+    markContactPoints(g2d, drawingObserver);
+
     if (!outlineMode) {
       g2d.setColor(getPoleColor());
       g2d.fill(body[3]);
@@ -205,7 +206,6 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
       int pointMargin = (int) POINT_MARGIN.convertToPixels();
       int totalLength = (int) TOTAL_LENGTH.convertToPixels();
       int lipRadius = (int) LIP_RADIUS.convertToPixels();
-      int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
       int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
       int lipHoleSpacing = getClosestOdd(LIP_HOLE_SPACING.convertToPixels());
 
@@ -236,8 +236,6 @@ public class P90Pickup extends AbstractSingleOrHumbuckerPickup {
 
         body[1] = lipArea;
       }
-
-      body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
       int poleSize = (int) POLE_SIZE.convertToPixels();
       int poleSpacing = (int) POLE_SPACING.convertToPixels();

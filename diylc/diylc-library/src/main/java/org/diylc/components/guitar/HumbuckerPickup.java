@@ -74,7 +74,6 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
   private static Size EDGE_RADIUS = new Size(4d, SizeUnit.mm);
   private static Size POINT_MARGIN = new Size(1.5d, SizeUnit.mm);  
   private static Size SCREW_LINE = new Size(1d, SizeUnit.mm);
-  private static Size POINT_SIZE = new Size(2d, SizeUnit.mm);
   private static Size LIP_HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size POLE_SIZE = new Size(4d, SizeUnit.mm);
   private static Size POLE_SIZE_FILTERTRON = new Size(5d, SizeUnit.mm);
@@ -133,11 +132,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       drawingObserver.stopTracking();
     }
 
-    // g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : POINT_COLOR);
-    // g2d.fill(body[2]);
-
     g2d.setComposite(oldComposite);
-
 
     Color finalBorderColor;
     if (outlineMode) {
@@ -157,6 +152,8 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       g2d.draw(body[0]);
     if (body[1] != null)
       g2d.draw(body[1]);
+
+    markContactPoints(g2d, drawingObserver);
 
     if (!outlineMode) {
       g2d.setColor(getPoleColor());
@@ -208,7 +205,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
       int lipLength = (int) LIP_LENGTH.convertToPixels();
       int edgeRadius = (int) EDGE_RADIUS.convertToPixels();
       int pointMargin = (int) POINT_MARGIN.convertToPixels();
-      int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
+
       int lipHoleSize = getClosestOdd(LIP_HOLE_SIZE.convertToPixels());
       int poleSize = (int) getType().getPoleSize().convertToPixels();
       int poleSpacing = (int) POLE_SPACING.convertToPixels();
@@ -278,9 +275,6 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
         legArea.subtract(base);
         body[1] = legArea;
       }
-
-      // contact point
-      body[2] = new Area(new Ellipse2D.Double(x - pointSize / 2, y - pointSize / 2, pointSize, pointSize));
 
       Area poleArea = new Area();
       Area poleDecorationArea = new Area();

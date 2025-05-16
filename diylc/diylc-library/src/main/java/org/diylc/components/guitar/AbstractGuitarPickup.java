@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -34,10 +35,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
-import org.diylc.core.ComponentState;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -48,6 +46,7 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
   private static final long serialVersionUID = 1L;
   
   protected static Size POINT_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size POINT_SIZE = new Size(1.5d, SizeUnit.mm);
   
   protected static final int TERMINAL_FONT_SIZE = 11;  
   
@@ -130,6 +129,21 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
     StringUtils.drawCenteredText(g2d, getName(), 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
    
     g2d.setTransform(originalTx);
+  }
+
+  protected void markContactPoints(Graphics2D g2d, IDrawingObserver drawingObserver) {
+    g2d.setColor(Constants.TRANSPARENT_COLOR);
+    int pointSize = getClosestOdd(POINT_SIZE.convertToPixels());
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = 0; i < getControlPointCount(); i++) {
+      if (isControlPointSticky(i)) {
+        Point2D p = getControlPoint(i);
+        g2d.fill(
+            new Ellipse2D.Double(p.getX() - pointSize / 2, p.getY() - pointSize / 2, pointSize,
+                pointSize));
+      }
+    }
+    drawingObserver.stopTrackingContinuityArea();
   }
   
   protected abstract Shape[] getBody();
