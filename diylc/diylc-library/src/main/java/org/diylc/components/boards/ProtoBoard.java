@@ -685,6 +685,13 @@ public class ProtoBoard extends AbstractProtoBoard {
   public String getControlPointNodeName(int index) {
     return null;
   }
+
+  @Override
+  public Rectangle2D getBoardRectangle() {
+    Point2D finalSecondPoint = getControlPoint(1);
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()), Math.min(point.getY(), finalSecondPoint.getY()),
+        Math.abs(finalSecondPoint.getX() - point.getX()), Math.abs(finalSecondPoint.getY() - point.getY()));
+  }
   
   @Override
   public Rectangle2D getCachingBounds() {

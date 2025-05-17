@@ -511,6 +511,21 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   }
 
   @Override
+  public Rectangle2D getBoardRectangle() {
+    double spacing = SPACING.convertToPixels();
+    double offsetX = X_OFFSET.convertToPixels();
+
+    double dx = translateToGrid ? -offsetX : 0;
+    double dy = translateToGrid ? spacing / 2 : 0;
+
+    Point2D finalSecondPoint = getControlPoint(1);
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()) + dx,
+        Math.min(point.getY(), finalSecondPoint.getY()) + dy,
+        Math.abs(finalSecondPoint.getX() - point.getX()),
+        Math.abs(finalSecondPoint.getY() - point.getY()));
+  }
+
+  @Override
   public Rectangle2D getCachingBounds() {
     double spacing = SPACING.convertToPixels();
     double offsetX = X_OFFSET.convertToPixels();

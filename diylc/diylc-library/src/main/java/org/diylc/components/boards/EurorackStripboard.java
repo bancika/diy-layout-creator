@@ -721,6 +721,16 @@ public class EurorackStripboard extends AbstractProtoBoard {
   }
 
   @Override
+  public Rectangle2D getBoardRectangle() {
+    Point2D finalSecondPoint = getControlPoint(1);
+    double offset = BODY_OFFSET_Y.convertToPixels();
+    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()) - offset,
+        Math.min(point.getY(), finalSecondPoint.getY()) - offset,
+        Math.abs(finalSecondPoint.getX() - point.getX()) + offset,
+        Math.abs(finalSecondPoint.getY() - point.getY()) + offset);
+  }
+
+  @Override
   public Rectangle2D getCachingBounds() {
     Point2D finalSecondPoint = getControlPoint(1);
     double offset = BODY_OFFSET_Y.convertToPixels();
