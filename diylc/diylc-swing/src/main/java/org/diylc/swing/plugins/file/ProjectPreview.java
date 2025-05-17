@@ -43,7 +43,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
 import org.diylc.serialization.ProjectFileManager;
-import org.diylc.swing.gui.DummyView;
+import org.diylc.common.DummyView;
 
 /**
  * {@link JComponent} that shows preview of the selected project in {@link JFileChooser}. It's

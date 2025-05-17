@@ -64,7 +64,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.gui.DummyView;
+import org.diylc.common.DummyView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.utils.IconLoader;

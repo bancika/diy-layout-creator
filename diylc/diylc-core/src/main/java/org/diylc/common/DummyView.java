@@ -19,13 +19,12 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.swing.gui;
+package org.diylc.common;
 
 import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 
 public class DummyView implements IView {

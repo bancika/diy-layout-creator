@@ -32,7 +32,7 @@ import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 
 import org.diylc.DIYLCStarter;
 import org.diylc.presenter.Presenter;
-import org.diylc.swing.gui.DummyView;
+import org.diylc.common.DummyView;
 
 public class BatchConverter {
   

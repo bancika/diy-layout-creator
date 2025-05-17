@@ -21,37 +21,20 @@
 */
 package org.diylc.swing.plugins.cloud;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.ListIterator;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
+
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.plugins.cloud.service.CloudService;
-import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.common.ITask;
-import org.diylc.core.IView;
-import org.diylc.plugins.cloud.service.CloudException;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
-import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.gui.DummyView;
-import org.diylc.utils.IconLoader;
-import org.diylc.swing.plugins.cloud.view.ChangePasswordDialog;
-import org.diylc.swing.plugins.cloud.view.LoginDialog;
-import org.diylc.swing.plugins.cloud.view.UploadDialog;
-import org.diylc.swing.plugins.cloud.view.UserEditDialog;
+import org.diylc.common.DummyView;
 import org.diylc.swing.plugins.cloud.view.browser.CloudBrowserFrame;
 import org.diylc.swing.plugins.cloud.view.browser.UploadManagerFrame;
-import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.swing.plugins.cloud.actions.*;
 
 public class CloudPlugIn implements IPlugIn {
