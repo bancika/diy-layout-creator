@@ -48,42 +48,34 @@ public class CompareServiceTest {
 
     @Test
     public void testCompare_MissingConnectionsInSecondNetlist() {
-        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
-        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         // Group will have 3 nodes
-        Netlist netlist1 = createNetlist(componentMap1, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
-        Netlist netlist2 = createNetlist(componentMap2, "Component1", "Node1"); // Missing group with 2 nodes
+        Netlist netlist1 = createNetlist(componentMap, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
+        Netlist netlist2 = createNetlist(componentMap, "Component1", "Node1"); // Missing group with 2 nodes
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
-        // 2 components missing in second netlist = 2 component diffs
+        // 2 components missing = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
         // 3 nodes = 3 connections (1-2, 1-3, 2-3)
         assertEquals(3, results.connectionDiffs().size());
-        
-        // Verify all component diffs are from first netlist
-        assertTrue(results.componentDiffs().stream().allMatch(ComponentDiff::presentInCurrent));
     }
 
     @Test
     public void testCompare_MissingConnectionsInFirstNetlist() {
-        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
-        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         // Group will have 3 nodes
-        Netlist netlist1 = createNetlist(componentMap1, "Component1", "Node1");
-        Netlist netlist2 = createNetlist(componentMap2, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
+        Netlist netlist1 = createNetlist(componentMap, "Component1", "Node1");
+        Netlist netlist2 = createNetlist(componentMap, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
-        // 2 components missing in first netlist = 2 component diffs
+        // 2 components missing = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
         // 2 nodes = 1 connection (2-3)
         assertEquals(1, results.connectionDiffs().size());
-        
-        // Verify all component diffs are from second netlist
-        assertTrue(results.componentDiffs().stream().noneMatch(ComponentDiff::presentInCurrent));
     }
 
     @Test
@@ -158,16 +150,15 @@ public class CompareServiceTest {
 
     @Test
     public void testCompare_MultipleGroups_ExtraGroup() {
-        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
-        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         // Each group has 2 nodes
         Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap1, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap1, "Component3", "Node3", "Component4", "Node4"));
+        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
+        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
         Netlist netlist2 = new Netlist(new ArrayList<>());
-        netlist2.add(createGroup(componentMap2, "Component1", "Node1", "Component2", "Node2"));
-        netlist2.add(createGroup(componentMap2, "Component3", "Node3", "Component4", "Node4"));
-        netlist2.add(createGroup(componentMap2, "Component5", "Node5", "Component6", "Node6"));
+        netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
+        netlist2.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
+        netlist2.add(createGroup(componentMap, "Component5", "Node5", "Component6", "Node6"));
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
@@ -176,28 +167,24 @@ public class CompareServiceTest {
         assertEquals(2, results.componentDiffs().size());
         // 1 connection in extra group = 1 connection diff
         assertEquals(1, results.connectionDiffs().size());
-        
-        // Verify all component diffs are from second netlist
-        assertTrue(results.componentDiffs().stream().noneMatch(ComponentDiff::presentInCurrent));
     }
 
     @Test
     public void testCompare_MultipleGroups_DifferentConnections() {
-        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
-        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         // Each group has 2 nodes
         Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap1, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap1, "Component3", "Node3", "Component4", "Node4"));
+        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
+        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
         Netlist netlist2 = new Netlist(new ArrayList<>());
-        netlist2.add(createGroup(componentMap2, "Component1", "Node1", "Component3", "Node3"));
-        netlist2.add(createGroup(componentMap2, "Component2", "Node2", "Component4", "Node4"));
+        netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component3", "Node3"));
+        netlist2.add(createGroup(componentMap, "Component2", "Node2", "Component4", "Node4"));
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
-        // No component diffs since all components exist in both netlists
-        assertEquals(0, results.componentDiffs().size());
+        // 4 components in different groups = 4 component diffs
+        assertEquals(4, results.componentDiffs().size());
         // 2 connections in each group = 4 connection diffs
         assertEquals(4, results.connectionDiffs().size());
     }

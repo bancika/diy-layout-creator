@@ -14,7 +14,6 @@ import org.diylc.presenter.Presenter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,28 +54,6 @@ public class CompareService {
     java.util.function.Function<Node, String> nodeKey = node ->
         node.getComponent().getName() + ":" + node.getComponent().getControlPointNodeName(node.getPointIndex());
 
-    // Get all component names from both netlists
-    Set<String> components1 = netlist1.getComponents().stream()
-        .map(component -> component.getName())
-        .collect(Collectors.toSet());
-    Set<String> components2 = netlist2.getComponents().stream()
-        .map(component -> component.getName())
-        .collect(Collectors.toSet());
-
-    // Find components that are only in netlist1
-    for (String component : components1) {
-        if (!components2.contains(component)) {
-            componentDiffs.add(new ComponentDiff(component, true));
-        }
-    }
-
-    // Find components that are only in netlist2
-    for (String component : components2) {
-        if (!components1.contains(component)) {
-            componentDiffs.add(new ComponentDiff(component, false));
-        }
-    }
-
     // For each group in netlist1, check if it exists in netlist2
     for (Group group1 : groups1) {
         boolean groupFound = false;
@@ -87,10 +64,16 @@ public class CompareService {
             }
         }
         if (!groupFound) {
-            // If group not found, add connection differences for each pair of nodes
+            // If group not found, all components in this group are different
             List<Node> nodes = new ArrayList<>(group1.getNodes());
             for (int i = 0; i < nodes.size(); i++) {
                 Node node = nodes.get(i);
+                // Add component difference
+                componentDiffs.add(new ComponentDiff(
+                    node.getComponent().getName(),
+                    true));
+                
+                // Add connection differences for each pair of nodes
                 for (int j = i + 1; j < nodes.size(); j++) {
                     Node otherNode = nodes.get(j);
                     connectionDiffs.add(new ConnectionDiff(
@@ -114,10 +97,16 @@ public class CompareService {
             }
         }
         if (!groupFound) {
-            // If group not found, add connection differences for each pair of nodes
+            // If group not found, all components in this group are different
             List<Node> nodes = new ArrayList<>(group2.getNodes());
             for (int i = 0; i < nodes.size(); i++) {
                 Node node = nodes.get(i);
+                // Add component difference
+                componentDiffs.add(new ComponentDiff(
+                    node.getComponent().getName(),
+                    false));
+                
+                // Add connection differences for each pair of nodes
                 for (int j = i + 1; j < nodes.size(); j++) {
                     Node otherNode = nodes.get(j);
                     connectionDiffs.add(new ConnectionDiff(

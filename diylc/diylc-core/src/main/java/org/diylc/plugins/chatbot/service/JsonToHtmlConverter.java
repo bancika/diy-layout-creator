@@ -2,6 +2,7 @@ package org.diylc.plugins.chatbot.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.swing.JLabel;
 
 import java.io.IOException;
 
@@ -24,7 +25,7 @@ public class JsonToHtmlConverter {
         .append("  <meta charset=\"UTF-8\">\n")
         .append("  <title>Validation Report</title>\n")
         .append("  <style>\n")
-        .append("    body { font-family: Arial, sans-serif; }\n")
+        .append("    body { font-family: ").append(new JLabel().getFont().getName()).append(", sans-serif; }\n")
         .append("    h2 { color: #444; }\n")
         .append("    ul { list-style: disc; margin-left: 20px; }\n")
         .append("    li { margin-bottom: 5px; }\n")
