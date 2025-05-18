@@ -19,6 +19,7 @@ public class CompareResultsHtmlReport {
         html.append("    <style>\n");
         html.append("        body { font-family: ").append(new JLabel().getFont().getName()).append(", sans-serif; margin: 10px; color: black; font-size: 12px; }\n");
         html.append("        .result { font-size: 14px; margin-bottom: 8px; }\n");
+        html.append("        .note { font-size: 11px; color: #666; margin-top: 4px; }\n");
         html.append("        .section { margin: 6px 0; }\n");
         html.append("        table { width: 100%; border-collapse: collapse; margin: 4px 0; }\n");
         html.append("        th, td { padding: 4px; text-align: left; border: 1px solid #ddd; font-size: 11px; }\n");
@@ -31,6 +32,9 @@ public class CompareResultsHtmlReport {
 
         // Main result
         html.append("    <p class=\"result\"><strong>The circuits ").append(results.matches() ? "match" : "do not match").append(".</strong></p>\n");
+        if (!results.matches()) {
+            html.append("    <p class=\"note\">Note: The circuits might still be electronically equivalent. Differences could be due to different component labeling or placement. Please review the differences below.</p>\n");
+        }
 
         if (!results.matches()) {
             // Component differences section

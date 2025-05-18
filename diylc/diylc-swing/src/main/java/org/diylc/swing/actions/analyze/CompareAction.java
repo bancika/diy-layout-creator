@@ -27,7 +27,7 @@ public class CompareAction extends AbstractAction {
     this.plugInPort = plugInPort;
     this.swingUI = swingUI;
     putValue(AbstractAction.NAME, "Compare With...");
-    putValue(AbstractAction.SMALL_ICON, IconLoader.Brain.getIcon());
+    putValue(AbstractAction.SMALL_ICON, IconLoader.Tables.getIcon());
   }
 
   @Override
