@@ -24,12 +24,12 @@ package org.diylc.netlist;
 public class Summary implements Comparable<Summary> {
 
   private Netlist netlist;
-  private String summary;
+  private String summaryHtml;
 
-  public Summary(Netlist netlist, String summary) {
+  public Summary(Netlist netlist, String summaryHtml) {
     super();
     this.netlist = netlist;
-    this.summary = summary;
+    this.summaryHtml = summaryHtml;
   }
 
   public Netlist getNetlist() {
@@ -40,8 +40,8 @@ public class Summary implements Comparable<Summary> {
     this.netlist.getSwitchSetup().addAll(netlist.getSwitchSetup());
   }
 
-  public String getSummary() {
-    return summary;
+  public String getSummaryHtml() {
+    return summaryHtml;
   }
 
   @Override
@@ -49,7 +49,7 @@ public class Summary implements Comparable<Summary> {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((netlist == null) ? 0 : netlist.hashCode());
-    result = prime * result + ((summary == null) ? 0 : summary.hashCode());
+    result = prime * result + ((summaryHtml == null) ? 0 : summaryHtml.hashCode());
     return result;
   }
 
@@ -67,17 +67,17 @@ public class Summary implements Comparable<Summary> {
         return false;
     } else if (!netlist.equals(other.netlist))
       return false;
-    if (summary == null) {
-      if (other.summary != null)
+    if (summaryHtml == null) {
+      if (other.summaryHtml != null)
         return false;
-    } else if (!summary.equals(other.summary))
+    } else if (!summaryHtml.equals(other.summaryHtml))
       return false;
     return true;
   }
 
   @Override
   public String toString() {   
-    return summary.toString();
+    return summaryHtml.toString();
   }
 
   @Override

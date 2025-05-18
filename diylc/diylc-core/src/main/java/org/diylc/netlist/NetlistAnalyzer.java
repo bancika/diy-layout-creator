@@ -37,10 +37,10 @@ public abstract class NetlistAnalyzer {
     Map<String, Summary> summaries = new HashMap<String, Summary>();
     for (Netlist n : netlists) {
       Summary s = summarize(n, preferredOutput);
-      if (summaries.containsKey(s.getSummary()))
-        summaries.get(s.getSummary()).append(n);
+      if (summaries.containsKey(s.getSummaryHtml()))
+        summaries.get(s.getSummaryHtml()).append(n);
       else
-        summaries.put(s.getSummary(), s);
+        summaries.put(s.getSummaryHtml(), s);
     }
 
     List<Summary> res = new ArrayList<Summary>(summaries.values());
