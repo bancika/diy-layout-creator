@@ -1,3 +1,24 @@
+/*
+
+    DIY Layout Creator (DIYLC).
+    Copyright (c) 2009-2018 held jointly by the individual authors.
+
+    This file is part of DIYLC.
+
+    DIYLC is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DIYLC is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package org.diylc.swing.actions.analyze;
 
 import java.awt.Dimension;
@@ -12,6 +33,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Summary;
+import org.diylc.netlist.NetlistSummaryHtmlReport;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
 
@@ -68,25 +90,9 @@ public class SummarizeNetlistAction extends AbstractAction {
               summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
           return;
         }
-        StringBuilder sb = new StringBuilder("<html>");
-
-        for (Summary summary : res) {
-          sb.append("<p style=\"font-family: ").append(summarizer.getFontName())
-              .append("; font-size: 9px\">");
-
-          if (res.size() > 1)
-            sb.append("<b>Switch configuration: ").append(summary.getNetlist().getSwitchSetup())
-                .append("</b><br><br>");
-
-          sb.append(summary.getSummary());
-
-          sb.append("</p><br>");
-
-          if (res.size() > 1)
-            sb.append("<hr>");
-        }
-        sb.append("</html>");
-        new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), summarizer.getName(),
+        
+        String html = NetlistSummaryHtmlReport.generateHtml(res, summarizer.getFontName());
+        new TextDialog(swingUI.getOwnerFrame().getRootPane(), html, summarizer.getName(),
             new Dimension(800, 600)).setVisible(true);
       }
     }, true);

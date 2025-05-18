@@ -302,6 +302,10 @@
 					<description>Improved trace proximity calculation to avoid showing false positives</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved the styling of the guitar wiring analysis report</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>If the internet connection is present, but unstable, the application starts but nothing can be clicked until the connection restores</description>
 				</org.diylc.appframework.update.Change>
