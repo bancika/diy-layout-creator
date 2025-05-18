@@ -35,8 +35,10 @@ import org.diylc.presenter.Presenter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -179,6 +181,134 @@ public class CompareService {
         }
     }
 
+    // Try to resolve differences by flipping non-polarized components
+    if (!connectionDiffs.isEmpty()) {
+        // Find all non-polarized components that have nodes in different groups
+        Map<String, List<Group>> componentGroups = new HashMap<>();
+        for (Group group : groups1) {
+            for (Node node : group.getNodes()) {
+                if (!node.getComponent().isPolarized()) {
+                    componentGroups.computeIfAbsent(node.getComponent().getName(), k -> new ArrayList<>())
+                        .add(group);
+                }
+            }
+        }
+
+        // Try swapping nodes for each non-polarized component that appears in multiple groups
+        for (Map.Entry<String, List<Group>> entry : componentGroups.entrySet()) {
+            if (entry.getValue().size() >= 2) {
+                String componentName = entry.getKey();
+                List<Group> groupsWithComponent = entry.getValue();
+                
+                // Get the nodes from the first two groups
+                Group group1 = groupsWithComponent.get(0);
+                Group group2 = groupsWithComponent.get(1);
+                
+                Node node1 = group1.getNodes().stream()
+                    .filter(n -> n.getComponent().getName().equals(componentName))
+                    .findFirst()
+                    .get();
+                Node node2 = group2.getNodes().stream()
+                    .filter(n -> n.getComponent().getName().equals(componentName))
+                    .findFirst()
+                    .get();
+                
+                // Create new groups with swapped nodes
+                Group newGroup1 = new Group();
+                Group newGroup2 = new Group();
+                
+                // Copy all nodes except the ones we're swapping
+                for (Node n : group1.getNodes()) {
+                    if (!n.getComponent().getName().equals(componentName)) {
+                        newGroup1.getNodes().add(n);
+                    }
+                }
+                for (Node n : group2.getNodes()) {
+                    if (!n.getComponent().getName().equals(componentName)) {
+                        newGroup2.getNodes().add(n);
+                    }
+                }
+                
+                // Add the swapped nodes
+                newGroup1.getNodes().add(node2);
+                newGroup2.getNodes().add(node1);
+                
+                // Create a new set of groups with the swapped nodes
+                Set<Group> newGroups1 = new HashSet<>(groups1);
+                newGroups1.remove(group1);
+                newGroups1.remove(group2);
+                newGroups1.add(newGroup1);
+                newGroups1.add(newGroup2);
+                
+                // Check if this resolves ALL differences
+                List<ConnectionDiff> newDiffs = new ArrayList<>();
+                Set<ComponentDiff> newComponentDiffs = new HashSet<>();
+                
+                // Check groups from netlist1 against netlist2
+                for (Group g1 : newGroups1) {
+                    boolean groupFound = false;
+                    for (Group g2 : groups2) {
+                        if (areGroupsEqual(g1, g2)) {
+                            groupFound = true;
+                            break;
+                        }
+                    }
+                    if (!groupFound) {
+                        // Add connection differences for this group
+                        List<Node> nodes = new ArrayList<>(g1.getNodes());
+                        for (int i = 0; i < nodes.size(); i++) {
+                            Node node = nodes.get(i);
+                            for (int j = i + 1; j < nodes.size(); j++) {
+                                Node otherNode = nodes.get(j);
+                                newDiffs.add(new ConnectionDiff(
+                                    node.getComponent().getName(),
+                                    node.getComponent().getControlPointNodeName(node.getPointIndex()),
+                                    otherNode.getComponent().getName(),
+                                    otherNode.getComponent().getControlPointNodeName(otherNode.getPointIndex()),
+                                    true));
+                            }
+                        }
+                    }
+                }
+                
+                // Check groups from netlist2 against netlist1
+                for (Group g2 : groups2) {
+                    boolean groupFound = false;
+                    for (Group g1 : newGroups1) {
+                        if (areGroupsEqual(g1, g2)) {
+                            groupFound = true;
+                            break;
+                        }
+                    }
+                    if (!groupFound) {
+                        // Add connection differences for this group
+                        List<Node> nodes = new ArrayList<>(g2.getNodes());
+                        for (int i = 0; i < nodes.size(); i++) {
+                            Node node = nodes.get(i);
+                            for (int j = i + 1; j < nodes.size(); j++) {
+                                Node otherNode = nodes.get(j);
+                                newDiffs.add(new ConnectionDiff(
+                                    node.getComponent().getName(),
+                                    node.getComponent().getControlPointNodeName(node.getPointIndex()),
+                                    otherNode.getComponent().getName(),
+                                    otherNode.getComponent().getControlPointNodeName(otherNode.getPointIndex()),
+                                    false));
+                            }
+                        }
+                    }
+                }
+                
+                // If this swap resolved all differences, use the new groups
+                if (newDiffs.isEmpty() && newComponentDiffs.isEmpty()) {
+                    groups1 = newGroups1;
+                    connectionDiffs = new ArrayList<>();
+                    componentDiffs = new HashSet<>();
+                    break;
+                }
+            }
+        }
+    }
+
     if (connectionDiffs.isEmpty() && componentDiffs.isEmpty()) {
         return new CompareResults(true, List.of(), List.of());
     }
@@ -194,13 +324,25 @@ public class CompareService {
     java.util.function.Function<Node, String> nodeKey = node ->
         node.getComponent().getName() + ":" + node.getComponent().getControlPointNodeName(node.getPointIndex());
 
-    Set<String> group1Keys = group1.getNodes().stream()
+    // For polarized components, we need to check exact node order
+    List<String> group1Keys = group1.getNodes().stream()
         .map(nodeKey)
-        .collect(Collectors.toSet());
-    Set<String> group2Keys = group2.getNodes().stream()
+        .collect(Collectors.toList());
+    List<String> group2Keys = group2.getNodes().stream()
         .map(nodeKey)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
 
-    return group1Keys.equals(group2Keys);
+    // If any component in the group is polarized, we need exact order match
+    boolean hasPolarizedComponent = group1.getNodes().stream()
+        .anyMatch(node -> node.getComponent().isPolarized()) ||
+        group2.getNodes().stream()
+        .anyMatch(node -> node.getComponent().isPolarized());
+
+    if (hasPolarizedComponent) {
+        return group1Keys.equals(group2Keys);
+    }
+
+    // For non-polarized components, we can use unordered comparison
+    return new HashSet<>(group1Keys).equals(new HashSet<>(group2Keys));
   }
 }
