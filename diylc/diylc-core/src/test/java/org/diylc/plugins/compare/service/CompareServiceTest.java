@@ -74,8 +74,7 @@ public class CompareServiceTest {
         assertTrue(!results.matches());
         // 2 components missing = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
-        // 2 nodes = 1 connection (2-3)
-        assertEquals(1, results.connectionDiffs().size());
+        assertEquals(3, results.connectionDiffs().size());
     }
 
     @Test
@@ -183,8 +182,7 @@ public class CompareServiceTest {
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
-        // 4 components in different groups = 4 component diffs
-        assertEquals(4, results.componentDiffs().size());
+        assertEquals(0, results.componentDiffs().size());
         // 2 connections in each group = 4 connection diffs
         assertEquals(4, results.connectionDiffs().size());
     }

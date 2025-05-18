@@ -71,6 +71,7 @@ public class CompareService {
     // Build lists of differences
     List<ConnectionDiff> connectionDiffs = new ArrayList<>();
     Set<ComponentDiff> componentDiffs = new HashSet<>();
+    Set<String> addedComponentNames = new HashSet<>();
 
     // Helper to get a unique string for a node
     java.util.function.Function<Node, String> nodeKey = node ->
@@ -100,8 +101,20 @@ public class CompareService {
                 Node node = nodes.get(i);
                 String componentName = node.getComponent().getName();
                 
-                // Only add component difference if it doesn't exist in either netlist
-                if (!netlist2Components.contains(componentName)) {
+                // Check if this component exists in any group in netlist2
+                boolean componentExistsInNetlist2 = false;
+                for (Group group2 : groups2) {
+                    for (Node node2 : group2.getNodes()) {
+                        if (node2.getComponent().getName().equals(componentName)) {
+                            componentExistsInNetlist2 = true;
+                            break;
+                        }
+                    }
+                    if (componentExistsInNetlist2) break;
+                }
+                
+                // Add component difference if it doesn't exist in any group in netlist2 and hasn't been added yet
+                if (!componentExistsInNetlist2 && addedComponentNames.add(componentName)) {
                     componentDiffs.add(new ComponentDiff(componentName, true));
                 }
                 
@@ -135,8 +148,20 @@ public class CompareService {
                 Node node = nodes.get(i);
                 String componentName = node.getComponent().getName();
                 
-                // Only add component difference if it doesn't exist in either netlist
-                if (!netlist1Components.contains(componentName)) {
+                // Check if this component exists in any group in netlist1
+                boolean componentExistsInNetlist1 = false;
+                for (Group group1 : groups1) {
+                    for (Node node1 : group1.getNodes()) {
+                        if (node1.getComponent().getName().equals(componentName)) {
+                            componentExistsInNetlist1 = true;
+                            break;
+                        }
+                    }
+                    if (componentExistsInNetlist1) break;
+                }
+                
+                // Add component difference if it doesn't exist in any group in netlist1 and hasn't been added yet
+                if (!componentExistsInNetlist1 && addedComponentNames.add(componentName)) {
                     componentDiffs.add(new ComponentDiff(componentName, false));
                 }
                 
