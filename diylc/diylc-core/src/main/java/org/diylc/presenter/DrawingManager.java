@@ -885,8 +885,13 @@ public class DrawingManager {
     List<ContinuityArea> continuityAreas = getContinuityAreas();
     Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for
                                                                           // approx good results
-    List<Area> expanded = continuityAreas.parallelStream()
-        .map((a) -> new Area(s.createStrokedShape(a.getArea()))).collect(Collectors.toList());
+
+    List<Area> areas = new ArrayList<>(continuityAreas.stream().map(ContinuityArea::getArea).toList());
+    AreaUtils.crunchAreas(areas, null);
+
+    List<Area> expanded = areas.parallelStream()
+        .map((a) -> new Area(s.createStrokedShape(a))).toList();
+
     List<Area> intersections = new ArrayList<Area>();
     for (int i = 0; i < expanded.size() - 1; i++) {
       for (int j = i + 1; j < expanded.size(); j++) {

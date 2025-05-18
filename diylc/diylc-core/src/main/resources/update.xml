@@ -298,6 +298,10 @@
 					<description>Increased tolerance of sticky points on guitar pickup terminals in order to make it easier for leads to make proper contact and for the circuit analyzer to work</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved trace proximity calculation to avoid showing false positives</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>If the internet connection is present, but unstable, the application starts but nothing can be clicked until the connection restores</description>
 				</org.diylc.appframework.update.Change>
