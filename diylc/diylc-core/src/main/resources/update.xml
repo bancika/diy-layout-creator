@@ -303,7 +303,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved the styling of the guitar wiring analysis report</description>
+					<description>Improved the styling of circuit analysis reports</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

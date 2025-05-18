@@ -20,10 +20,10 @@ package org.diylc.netlist;
 
 import java.util.List;
 
-public class NetlistSummaryHtmlReport {
+public class NetlistHtmlReport {
 
-    public static String generateHtml(List<Summary> summaries, String fontName) {
-        if (summaries == null || summaries.isEmpty()) {
+    public static String generateHtml(List<Netlist> netlists, String fontName) {
+        if (netlists == null || netlists.isEmpty()) {
             return "";
         }
 
@@ -33,17 +33,23 @@ public class NetlistSummaryHtmlReport {
         sb.append("h2 { font-size: 12px; margin-top: 10px; margin-bottom: 0px; }");
         sb.append("p { margin: 0; }");
         sb.append("hr { margin-top: 10px; margin-bottom: 0; }");
+        sb.append(".netlist { font-family: 'Courier New', monospace; font-size: 11px; }");
         sb.append("</style></head><body>");
 
-        for (Summary summary : summaries) {
-            if (summaries.size() > 1) {
-                sb.append("<h2>Switch configuration: ").append(summary.getNetlist().getSwitchSetup())
+        for (Netlist netlist : netlists) {
+            if (netlists.size() > 1) {
+                sb.append("<h2>Switch configuration: ").append(netlist.getSwitchSetup())
                     .append("</h2>");
             }
 
-            sb.append(summary.getSummaryHtml());
+            sb.append("<div class=\"netlist\">");
+            sb.append("Connected node groups:<br><br>");
+            for (Group group : netlist.getSortedGroups()) {
+                sb.append("&nbsp;&nbsp;").append(group.getSortedNodes()).append("<br>");
+            }
+            sb.append("</div>");
 
-            if (summaries.size() > 1) {
+            if (netlists.size() > 1) {
                 sb.append("<br><hr>");
             }
         }
@@ -51,4 +57,4 @@ public class NetlistSummaryHtmlReport {
 
         return sb.toString();
     }
-}
+} 

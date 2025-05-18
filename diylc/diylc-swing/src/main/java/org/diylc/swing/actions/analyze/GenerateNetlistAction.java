@@ -10,8 +10,8 @@ import org.diylc.swingframework.TextDialog;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
-import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.NetlistHtmlReport;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -62,23 +62,9 @@ public class GenerateNetlistAction extends AbstractAction {
               ISwingUI.INFORMATION_MESSAGE);
           return;
         }
-        StringBuilder sb = new StringBuilder("<html>");
-
-        for (Netlist netlist : res) {
-          sb.append("<p style=\"font-family: " + new JLabel().getFont().getName()
-              + "; font-size: 9px\">");
-          if (includeSwitches) {
-            sb.append("<b>Switch configuration: ").append(netlist.getSwitchSetup())
-                .append("</b><br><br>");
-          }
-          sb.append("Connected node groups:<br><br>");
-          for (Group v : netlist.getSortedGroups()) {
-            sb.append("&nbsp;&nbsp;").append(v.getSortedNodes()).append("<br>");
-          }
-          sb.append("</p><br><hr>");
-        }
-        sb.append("</html>");
-        new TextDialog(swingUI.getOwnerFrame().getRootPane(), sb.toString(), "DIYLC Netlist",
+        
+        String html = NetlistHtmlReport.generateHtml(res, new JLabel().getFont().getName());
+        new TextDialog(swingUI.getOwnerFrame().getRootPane(), html, "DIYLC Netlist",
             new Dimension(800, 600)).setVisible(true);
       }
     }, true);
