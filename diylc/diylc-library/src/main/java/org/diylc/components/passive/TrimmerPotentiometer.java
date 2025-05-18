@@ -103,6 +103,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx2 = 0;
             dy2 = 2 * spacing;
             break;
+          case FLAT_XSMALL2:
+            dx1 = spacing;
+            dy1 = spacing;
+            dx2 = 0;
+            dy2 = spacing;
+            break;
           case FLAT_SMALL2:
             dx1 = 4 * spacing;
             dy1 = spacing;
@@ -148,6 +154,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx1 = -spacing;
             dy1 = 2 * spacing;
             dx2 = -2 * spacing;
+            dy2 = 0;
+            break;
+          case FLAT_XSMALL2:
+            dx1 = -spacing;
+            dy1 = spacing;
+            dx2 = -spacing;
             dy2 = 0;
             break;
           case FLAT_SMALL2:
@@ -197,6 +209,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx2 = 0;
             dy2 = -2 * spacing;
             break;
+          case FLAT_XSMALL2:
+            dx1 = -spacing;
+            dy1 = -spacing;
+            dx2 = 0;
+            dy2 = -spacing;
+            break;
           case FLAT_SMALL2:
             dx1 = -4 * spacing;
             dy1 = -spacing;
@@ -242,6 +260,12 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
             dx1 = spacing;
             dy1 = -2 * spacing;
             dx2 = 2 * spacing;
+            dy2 = 0;
+            break;
+          case FLAT_XSMALL2:
+            dx1 = spacing;
+            dy1 = -spacing;
+            dx2 = spacing;
             dy2 = 0;
             break;
           case FLAT_SMALL2:
@@ -309,9 +333,10 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
         case FLAT_LARGE:
         case FLAT_SMALL:
         case FLAT_XSMALL:
+        case FLAT_XSMALL2:
         case FLAT_XLARGE:
         case FLAT_SMALL2:
-          if (getType() == TrimmerType.FLAT_XSMALL)
+          if (getType() == TrimmerType.FLAT_XSMALL || getType() == TrimmerType.FLAT_XSMALL2)
             length = getClosestOdd(FLAT_SMALL_BODY_SIZE.convertToPixels());
           else if (getType() == TrimmerType.FLAT_XLARGE)
             length = getClosestOdd(FLAT_LARGE_BODY_SIZE.convertToPixels());
@@ -540,10 +565,16 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     return false;
   }
 
-  public static enum TrimmerType {
-    FLAT_SMALL("Horizontal Small 1"), FLAT_SMALL2("Horizontal Small 2"), FLAT_XSMALL("Horizontal X-Small"), FLAT_LARGE(
-        "Horizontal Medium"), FLAT_XLARGE("Horizontal Large"), VERTICAL_INLINE("Vertical Inline"), VERTICAL_OFFSET(
-        "Vertical Offset 1"), VERTICAL_OFFSET_BIG_GAP("Vertical Offset 2");
+  public enum TrimmerType {
+    FLAT_SMALL("Horizontal Small 1"),
+    FLAT_SMALL2("Horizontal Small 2"),
+    FLAT_XSMALL("Horizontal X-Small 1"),
+    FLAT_XSMALL2("Horizontal X-Small 2"),
+    FLAT_LARGE("Horizontal Medium"),
+    FLAT_XLARGE("Horizontal Large"),
+    VERTICAL_INLINE("Vertical Inline"),
+    VERTICAL_OFFSET("Vertical Offset 1"),
+    VERTICAL_OFFSET_BIG_GAP("Vertical Offset 2");
 
     String label;
 
