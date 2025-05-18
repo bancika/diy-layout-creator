@@ -160,6 +160,11 @@ public class ResistorSymbol extends AbstractSchematicLeadedSymbol<Resistance> {
   public enum DrawStyle {
 		ANSI, IEC 
 	}
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }
 
 

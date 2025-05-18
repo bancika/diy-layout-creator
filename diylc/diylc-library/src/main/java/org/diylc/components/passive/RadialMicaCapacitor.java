@@ -147,4 +147,9 @@ public class RadialMicaCapacitor extends AbstractRadialComponent<Capacitance> im
     a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
     return a;
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }

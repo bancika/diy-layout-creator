@@ -199,4 +199,13 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
    * @param project
    */
   void createdIn(Project project);
+
+  /**
+   * Returns whether this component is polarized (direction matters for electronic function).
+   * Default implementation returns true, components that are not polarized should override this.
+   * @return true if the component is polarized, false otherwise
+   */
+  default boolean isPolarized() {
+    return true;
+  }
 }

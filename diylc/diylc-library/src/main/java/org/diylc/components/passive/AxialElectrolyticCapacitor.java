@@ -280,4 +280,9 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
 
     return new Color((int) r, (int) g, (int) b, (int) a);
   }
+
+  @Override
+  public boolean isPolarized() {
+    return polarized;
+  }
 }

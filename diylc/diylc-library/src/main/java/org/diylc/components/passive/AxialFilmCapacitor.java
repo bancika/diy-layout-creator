@@ -104,4 +104,9 @@ public class AxialFilmCapacitor extends AbstractFilmCapacitor implements IDatash
   public boolean getFlipStanding() {
     return super.getFlipStanding();
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }

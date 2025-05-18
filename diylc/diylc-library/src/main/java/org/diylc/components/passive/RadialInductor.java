@@ -219,4 +219,9 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
   public void setLip(Size lip) {
     this.lip = lip;
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }

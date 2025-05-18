@@ -350,4 +350,9 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }

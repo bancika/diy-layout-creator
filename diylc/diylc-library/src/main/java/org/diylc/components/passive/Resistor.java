@@ -221,6 +221,11 @@ public class Resistor extends AbstractLeadedComponent<Resistance> implements IGe
     return super.getFlipStanding();
   }
 
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
+
   public enum ResistorShape {
     Tubular, Tubular_Beveled, Standard;
     

@@ -116,4 +116,9 @@ public class RadialCeramicDiskCapacitor extends AbstractRadialComponent<Capacita
   protected Shape getBodyShape() {
     return new Ellipse2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }

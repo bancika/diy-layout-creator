@@ -244,4 +244,9 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
     }
     return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
   }
+
+  @Override
+  public boolean isPolarized() {
+    return true;
+  }
 }

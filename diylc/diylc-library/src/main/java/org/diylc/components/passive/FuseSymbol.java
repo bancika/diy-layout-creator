@@ -109,4 +109,9 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
   protected boolean useShapeRectAsPosition() {
     return false;
   }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
+  }
 }
