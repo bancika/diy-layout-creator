@@ -565,6 +565,17 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     return false;
   }
 
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 > index2)
+      return getInternalLinkName(index2, index1);
+
+    if (index2 - index1 == 1)
+      return (index1 + 1) + "-" + (index2 + 1);
+
+    return null;
+  }
+
   public enum TrimmerType {
     FLAT_SMALL("Horizontal Small 1"),
     FLAT_SMALL2("Horizontal Small 2"),

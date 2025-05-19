@@ -40,12 +40,7 @@ import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.guitar.StingrayBassPickup;
-import org.diylc.components.passive.AxialFilmCapacitor;
-import org.diylc.components.passive.PotentiometerPanel;
-import org.diylc.components.passive.RadialCeramicDiskCapacitor;
-import org.diylc.components.passive.RadialFilmCapacitor;
-import org.diylc.components.passive.RadialMicaCapacitor;
-import org.diylc.components.passive.Resistor;
+import org.diylc.components.passive.*;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
@@ -71,6 +66,7 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
     JACK_TYPES.add(ClosedJack1_4.class.getCanonicalName());
 
     POT_TYPES.add(PotentiometerPanel.class.getCanonicalName());
+    POT_TYPES.add(TrimmerPotentiometer.class.getCanonicalName());
 
     PICKUP_TYPES.add(SingleCoilPickup.class.getCanonicalName());
     PICKUP_TYPES.add(HumbuckerPickup.class.getCanonicalName());
