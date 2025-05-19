@@ -387,8 +387,10 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
       Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupReverseMap) {
+
     TreeLeaf leaf1 = new TreeLeaf(pot, 0, 1);
     TreeLeaf leaf2 = new TreeLeaf(pot, 1, 2);
+
     Tree tree1 = tree.locate(leaf1, false);
     Tree tree2 = tree.locate(leaf2, false);
 

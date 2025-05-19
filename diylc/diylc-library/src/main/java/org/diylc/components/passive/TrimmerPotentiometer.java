@@ -376,10 +376,33 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     return body;
   }
 
+  // in all methods that deal with point index we need to flip the indices to treat 2 as 0 and 0 and 2
+  // this is because controlPoints in TrimmerPotentiometer are made in the opposite order than
+  // PotentiometerPanel and opposite of how the actual pins are ordered on a trimmer
+
+  @Override
+  public Point2D getControlPoint(int index) {
+    return super.getControlPoint(2 - index);
+  }
+
   @Override
   public void setControlPoint(Point2D point, int index) {
-    super.setControlPoint(point, index);
+    super.setControlPoint(point, 2 - index);
     body = null;
+  }
+
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 < index2)
+      return getInternalLinkName(index2, index1);
+
+    index1 = 2 - index1;
+    index2 = 2 - index2;
+
+    if (index2 - index1 == 1)
+      return (index1 + 1) + "-" + (index2 + 1);
+
+    return null;
   }
 
   @Override
@@ -563,17 +586,6 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
-  }
-
-  @Override
-  public String getInternalLinkName(int index1, int index2) {
-    if (index1 > index2)
-      return getInternalLinkName(index2, index1);
-
-    if (index2 - index1 == 1)
-      return (index1 + 1) + "-" + (index2 + 1);
-
-    return null;
   }
 
   public enum TrimmerType {
