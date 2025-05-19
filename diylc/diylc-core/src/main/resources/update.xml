@@ -294,6 +294,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Trimmer Potentiometer' is now recognized the same as 'Panel Potentiometer' in the guitar diagram analyzer tool</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased tolerance of sticky points on guitar pickup terminals in order to make it easier for leads to make proper contact and for the circuit analyzer to work</description>
 				</org.diylc.appframework.update.Change>
