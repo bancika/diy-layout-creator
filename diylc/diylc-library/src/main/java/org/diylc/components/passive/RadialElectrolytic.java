@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 
@@ -322,5 +322,10 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> imp
           getClosestOdd(diameter), getClosestOdd(height), EDGE_RADIUS.convertToPixels(), EDGE_RADIUS.convertToPixels());
     }
     return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return polarized;
   }
 }

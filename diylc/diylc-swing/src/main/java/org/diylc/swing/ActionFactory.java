@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -21,8 +21,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
-import org.diylc.swing.actions.analyze.AiAnalyzeAction;
-import org.diylc.swing.actions.analyze.HighlightConnectedAreasAction;
+import org.diylc.swing.actions.analyze.*;
 import org.diylc.swingframework.IDrawingProvider;
 
 import org.diylc.common.INetlistAnalyzer;
@@ -36,9 +35,7 @@ import org.diylc.swing.actions.ExportGerberAction;
 import org.diylc.swing.actions.ExportPNGAction;
 import org.diylc.swing.actions.FindAction;
 import org.diylc.swing.actions.FlexibleLeadsAction;
-import org.diylc.swing.actions.analyze.GenerateNetlistAction;
 import org.diylc.swing.actions.RenumberAction;
-import org.diylc.swing.actions.analyze.SummarizeNetlistAction;
 import org.diylc.swing.actions.ThemeAction;
 import org.diylc.swing.actions.ToggleAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
@@ -278,6 +275,10 @@ public class ActionFactory {
 
   public AiAnalyzeAction createAiAnalyzeAction(IPlugInPort plugInPort, ISwingUI swingUI) {
     return new AiAnalyzeAction(plugInPort, swingUI);
+  }
+
+  public CompareAction createCompareAction(IPlugInPort plugInPort, ISwingUI swingUI) {
+    return new CompareAction(plugInPort, swingUI);
   }
 
   public SummarizeNetlistAction createSummarizeNetlistAction(IPlugInPort plugInPort,

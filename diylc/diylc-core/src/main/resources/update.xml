@@ -294,6 +294,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Compare With...' tool in the 'Analyze' menu that compares the content of two DIY files electronically and reports differences. Can be useful to compare two versions of the same circuit or validate a layout against the schematics file.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increased tolerance of sticky points on guitar pickup terminals in order to make it easier for leads to make proper contact and for the circuit analyzer to work</description>
 				</org.diylc.appframework.update.Change>

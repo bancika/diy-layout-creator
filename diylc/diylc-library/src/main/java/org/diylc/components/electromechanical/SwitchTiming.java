@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 

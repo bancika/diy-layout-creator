@@ -1,6 +1,6 @@
 /*
  * 
-l * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+l * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -79,6 +79,7 @@ import org.diylc.netlist.NetlistBuilder;
 import org.diylc.netlist.NetlistException;
 import org.diylc.plugins.chatbot.service.ChatbotService;
 import org.diylc.plugins.cloud.service.CloudService;
+import org.diylc.plugins.compare.service.CompareService;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.test.DIYTest;
 import org.diylc.test.Snapshot;
@@ -2829,6 +2830,16 @@ public class Presenter implements IPlugInPort {
       chatbotService = new ChatbotService(this);
     }
     return chatbotService;
+  }
+
+  private CompareService compareService;
+
+  @Override
+  public CompareService getCompareService() {
+    if (compareService == null) {
+      compareService = new CompareService(this);
+    }
+    return compareService;
   }
 
   @Override
