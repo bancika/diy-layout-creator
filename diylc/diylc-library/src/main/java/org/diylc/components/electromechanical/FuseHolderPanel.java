@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 
@@ -349,5 +349,10 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
     int margin = 20;    
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
   }
 }

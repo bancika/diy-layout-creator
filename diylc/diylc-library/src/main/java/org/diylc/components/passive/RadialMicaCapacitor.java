@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -146,5 +146,10 @@ public class RadialMicaCapacitor extends AbstractRadialComponent<Capacitance> im
     a.add(new Area(new Ellipse2D.Double(0, 0, width, width)));
     a.add(new Area(new Ellipse2D.Double(length - width, 0, width, width)));
     return a;
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
   }
 }

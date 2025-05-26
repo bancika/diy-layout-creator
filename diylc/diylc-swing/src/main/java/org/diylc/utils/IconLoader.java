@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 
@@ -72,7 +72,7 @@ public enum IconLoader {
       ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png"), SplashIC("splash_ic.png"), 
       ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png"),
       DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png"), Multimeter("multimeter.png"),
-      Patreon("patreon.png"), Brain("brain.png");
+      Patreon("patreon.png"), Brain("brain.png"), Tables("tables.png");
 
   protected String name;
 

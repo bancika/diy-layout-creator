@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 
@@ -115,5 +115,10 @@ public class RadialCeramicDiskCapacitor extends AbstractRadialComponent<Capacita
   @Override
   protected Shape getBodyShape() {
     return new Ellipse2D.Double(0f, 0f, getLength().convertToPixels(), getClosestOdd(getWidth().convertToPixels()));
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
   }
 }

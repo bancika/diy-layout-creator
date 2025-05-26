@@ -1,7 +1,7 @@
 /*
 
     DIY Layout Creator (DIYLC).
-    Copyright (c) 2009-2018 held jointly by the individual authors.
+    Copyright (c) 2009-2025 held jointly by the individual authors.
 
     This file is part of DIYLC.
 
@@ -243,5 +243,10 @@ public class TantalumCapacitor extends AbstractRadialComponent<Capacitance> {
           getClosestOdd(diameter), getClosestOdd(height), diameter / 2, diameter / 2);
     }
     return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return true;
   }
 }

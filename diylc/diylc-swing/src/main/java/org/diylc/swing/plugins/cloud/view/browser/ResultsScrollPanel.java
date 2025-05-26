@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -64,7 +64,7 @@ import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISimpleView;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
-import org.diylc.swing.gui.DummyView;
+import org.diylc.common.DummyView;
 import org.diylc.swing.gui.components.HTMLTextArea;
 import org.diylc.swing.gui.editor.PropertyEditorDialog;
 import org.diylc.utils.IconLoader;

@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -279,5 +279,10 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     double a = Math.max(c0.getAlpha(), c1.getAlpha());
 
     return new Color((int) r, (int) g, (int) b, (int) a);
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return polarized;
   }
 }

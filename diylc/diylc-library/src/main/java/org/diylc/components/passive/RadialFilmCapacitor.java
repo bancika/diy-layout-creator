@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -150,5 +150,10 @@ public class RadialFilmCapacitor extends AbstractFilmCapacitor implements IDatas
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase();
     }
+  }
+
+  @Override
+  public boolean isPolarized() {
+    return false;
   }
 }

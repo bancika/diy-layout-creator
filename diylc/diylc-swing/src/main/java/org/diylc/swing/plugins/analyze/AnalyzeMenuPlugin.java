@@ -1,6 +1,6 @@
 /*
  * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2018 held jointly by the individual authors.
+ * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
  * 
  * This file is part of DIYLC.
  * 
@@ -68,6 +68,7 @@ public class AnalyzeMenuPlugin implements IPlugIn {
     // Add all menu actions to the list
     menuActions.add(actionFactory.createAiAnalyzeAction(plugInPort, swingUI));
     menuActions.add(actionFactory.createCheckProximityAction(plugInPort, swingUI));
+    menuActions.add(actionFactory.createCompareAction(plugInPort, swingUI));
     menuActions.add(actionFactory.createBomAction(plugInPort));
     menuActions.add(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, false));
     menuActions.add(actionFactory.createGenerateNetlistAction(plugInPort, swingUI, true));
