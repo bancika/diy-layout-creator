@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "FH", autoEdit = false, enableCache = true)
+    instanceNamePrefix = "FH", enableCache = true)
 public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  

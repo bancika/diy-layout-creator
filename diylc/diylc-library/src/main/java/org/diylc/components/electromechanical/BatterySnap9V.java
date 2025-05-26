@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "9V Battery Snap", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR",
-    autoEdit = false, transformer = BatterySnapTransformer.class)
+    transformer = BatterySnapTransformer.class)
 public class BatterySnap9V extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;

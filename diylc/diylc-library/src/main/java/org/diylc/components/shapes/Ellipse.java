@@ -36,7 +36,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 
 @ComponentDescriptor(name = "Ellipse", author = "Branislav Stojkovic", category = "Shapes", instanceNamePrefix = "ELL",
     description = "Elliptical area", zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true,
-    bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false, transformer = SimpleComponentTransformer.class)
+    bomPolicy = BomPolicy.SHOW_ALL_NAMES, transformer = SimpleComponentTransformer.class)
 public class Ellipse extends AbstractShapeWithDimensions {
 
   private static final long serialVersionUID = 1L;

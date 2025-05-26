@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted IEC power socket", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "IEC", autoEdit = false, enableCache = true)
+    instanceNamePrefix = "IEC", enableCache = true)
 public class IECSocket extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  

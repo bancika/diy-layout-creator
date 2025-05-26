@@ -42,7 +42,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Eyelet Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with eyelets",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,  keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     transformer = AbstractBoardTransformer.class, enableCache = true)
 public class EyeletBoard extends AbstractBoard {
 

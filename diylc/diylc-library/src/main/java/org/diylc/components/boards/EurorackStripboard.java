@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
     author = "Branislav Stojkovic",
     description = "David Haillant's eurorack format stripboard for prototyping and building simple modules",
     instanceNamePrefix = "BB", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true,
     transformer = ProtoBoardTransformer.class)
 public class EurorackStripboard extends AbstractProtoBoard {

@@ -41,7 +41,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
         zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
-        bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, transformer = SimpleComponentTransformer.class)
+        bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, transformer = SimpleComponentTransformer.class)
 public class BlankBoard extends AbstractBoard {
 
   private static final long serialVersionUID = 1L;

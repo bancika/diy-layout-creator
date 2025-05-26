@@ -53,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Tape Measure", author = "Branislav Stojkovic", category = "Misc",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "TM", description = "Measures distance between the two points",
-    zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW,
     transformer = SimpleComponentTransformer.class)
 public class TapeMeasure extends AbstractLeadedComponent<String> {
 

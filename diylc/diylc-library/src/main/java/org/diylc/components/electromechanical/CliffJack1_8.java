@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Cliff 1/8\" Jack", category = "Electro-Mechanical",
     author = "Branislav Stojkovic", description = "Cliff-style closed 1/8\" phono jack",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J",
     transformer = CliffJackTransformer.class, enableCache = true)
 public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple {
 

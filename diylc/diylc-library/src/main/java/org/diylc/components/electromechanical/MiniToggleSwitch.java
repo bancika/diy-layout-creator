@@ -59,7 +59,7 @@ import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW", autoEdit = false, enableCache = true, transformer = MiniToggleSwitchTransformer.class)
+    instanceNamePrefix = "SW", enableCache = true, transformer = MiniToggleSwitchTransformer.class)
 public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchType> implements ISwitch, ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;

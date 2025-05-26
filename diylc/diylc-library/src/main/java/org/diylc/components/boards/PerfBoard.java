@@ -44,7 +44,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Perf Board w/ Pads", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Perforated board with solder pads",
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false, keywordPolicy = KeywordPolicy.SHOW_TAG,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TAG,
     keywordTag = "Perf Board", transformer = AbstractBoardTransformer.class, enableCache = true)
 public class PerfBoard extends AbstractBoard implements ILayeredComponent {
 

@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Jazz Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Single coil pickup for Jazz Bass and similar guitars",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
     transformer = GuitarPickupTransformer.class)
 public class JazzBassPickup extends AbstractSingleOrHumbuckerPickup {

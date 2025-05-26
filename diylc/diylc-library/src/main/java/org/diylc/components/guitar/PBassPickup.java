@@ -52,7 +52,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "P- Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Split-coil pickup for P-Bass and similar guitars", 
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
     transformer = GuitarPickupTransformer.class)
 public class PBassPickup extends AbstractSingleOrHumbuckerPickup {

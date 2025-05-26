@@ -39,7 +39,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Rectangle", author = "Branislav Stojkovic", category = "Shapes",
     instanceNamePrefix = "RECT", description = "Ractangular area, with or withouth rounded edges",
-    zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES, autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES,
     transformer = SimpleComponentTransformer.class)
 public class Rectangle extends AbstractShapeWithDimensions {
 

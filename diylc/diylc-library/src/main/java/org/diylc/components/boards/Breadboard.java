@@ -50,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
     description = "Prototyping solderless breadboard", instanceNamePrefix = "BB",
-    zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
+    zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true, transformer = ProtoBoardTransformer.class)
 public class Breadboard extends AbstractProtoBoard {
 

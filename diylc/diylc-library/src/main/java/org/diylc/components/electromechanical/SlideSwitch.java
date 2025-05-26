@@ -59,7 +59,7 @@ import org.diylc.utils.SwitchUtils;
 
 @ComponentDescriptor(name = "Slide Switch", category = "Electro-Mechanical",
     author = "Branislav Stojkovic", description = "Panel mounted slide switch",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     enableCache = true, transformer = MiniToggleSwitchTransformer.class)
 public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> implements ISwitch, IGerberComponentSimple {
 

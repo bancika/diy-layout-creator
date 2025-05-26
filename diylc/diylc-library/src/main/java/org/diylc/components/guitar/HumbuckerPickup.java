@@ -51,7 +51,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", enableCache = true,
     transformer = GuitarPickupTransformer.class)
 public class HumbuckerPickup extends AbstractGuitarPickup {

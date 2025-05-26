@@ -46,7 +46,7 @@ import org.diylc.core.measures.SizeUnit;
     author = "Branislav Stojkovic",
     description = "Prototyping board similar to Radio Shack 276-168B or MPJA 33304",
     instanceNamePrefix = "BB", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true,
     transformer = ProtoBoardTransformer.class)
 public class ProtoBoard780 extends AbstractProtoBoard {

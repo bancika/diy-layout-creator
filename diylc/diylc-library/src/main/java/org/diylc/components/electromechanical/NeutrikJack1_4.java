@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Neutrik 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "1/4\" mono/stereo phono jack based on Neutrik NMJx series, PCB or Panel-mount",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", autoEdit = false, transformer = NeutrikJack1_4Transformer.class,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = NeutrikJack1_4Transformer.class,
     enableCache = true)
 public class NeutrikJack1_4 extends AbstractMultiPartComponent<JackType> {
 

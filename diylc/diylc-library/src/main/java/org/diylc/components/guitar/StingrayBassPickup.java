@@ -40,7 +40,7 @@ import java.awt.geom.*;
 
 @ComponentDescriptor(name = "Stingray Bass Pickup", category = "Guitar", author = "JD",
     description = "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP", autoEdit = false,
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram",
     enableCache = true, transformer = GuitarPickupTransformer.class)
 

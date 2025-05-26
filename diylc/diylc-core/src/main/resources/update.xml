@@ -290,7 +290,7 @@
 				<minor>5</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-05-13 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-05-26 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -312,6 +312,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>X or Q keys sometimes do not register in secondary dialogs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Auto-Edit Mode' doesn't do what it's supposed to</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
