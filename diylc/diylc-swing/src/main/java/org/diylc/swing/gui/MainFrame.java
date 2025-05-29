@@ -324,7 +324,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void injectGUIComponent(JComponent component, int position, boolean collapsible, String visibilityConfigKey) throws BadPositionException {
-    LOG.info(String.format("injectGUIComponent(%s, %s, %s, %s)", component.getClass().getName(), position, collapsible, visibilityConfigKey));
+//    LOG.info(String.format("injectGUIComponent(%s, %s, %s, %s)", component.getClass().getName(), position, collapsible, visibilityConfigKey));
     if (collapsible) {
       CollapsiblePanel panel = new CollapsiblePanel(position, visibilityConfigKey);
       panel.add(component);
@@ -354,8 +354,8 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void injectMenuAction(Action action, String menuName) {
-    LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action.getValue(Action.NAME),
-        menuName));
+//    LOG.info(String.format("injectMenuAction(%s, %s)", action == null ? "Separator" : action.getValue(Action.NAME),
+//        menuName));
     if (menuName != null)
       menuName = LangUtil.translate(menuName);
     
