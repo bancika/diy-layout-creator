@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.5.0</version>
+        <version>5.6.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -317,12 +317,49 @@
             </properties>
             <build>
                 <plugins>
-                    <!-- Create AppDir structure and copy files -->
+                    <!-- Download and extract JRE -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>3.1.0</version>
                         <executions>
+                            <execution>
+                                <id>download-extract-jre</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Clean old jre folder -->
+                                        <delete dir="${jre.dest.linux}" />
+                                        
+                                        <!-- Create folder to hold extracted JRE -->
+                                        <mkdir dir="${jre.dest.linux}" />
+                                        
+                                        <!-- Download JRE for Linux -->
+                                        <mkdir dir="${project.build.directory}/downloads" />
+                                        <get src="${jdk.url.linux}" 
+                                             dest="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                             usetimestamp="true" />
+                                        
+                                        <!-- Extract JRE -->
+                                        <untar src="${project.build.directory}/downloads/${jdk.archive.linux}" 
+                                               dest="${jre.dest.linux}" 
+                                               compression="gzip" />
+                                               
+                                        <!-- Move files up one level -->
+                                        <move todir="${jre.dest.linux}">
+                                            <fileset dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
+                                        </move>
+                                        
+                                        <!-- Remove empty top-level folder -->
+                                        <delete dir="${jre.dest.linux}/jdk-${jdk.version}-jre" />
+                                    </target>
+                                </configuration>
+                            </execution>
+                            
+                            <!-- Create AppDir structure and copy files -->
                             <execution>
                                 <id>create-appdir</id>
                                 <phase>package</phase>
@@ -339,7 +376,22 @@
                                         
                                         <!-- Copy app files -->
                                         <copy file="${project.build.directory}/diylc.jar" todir="${appdir.dir}/usr/lib" />
-                            
+                                        
+                                        <!-- Copy JRE -->
+                                        <copy todir="${appdir.dir}/usr/lib/jre">
+                                            <fileset dir="${jre.dest.linux}" />
+                                        </copy>
+                                        
+                                        <!-- Make JRE files executable -->
+                                        <chmod perm="755">
+                                            <fileset dir="${appdir.dir}/usr/lib/jre/bin" includes="**/*" />
+                                        </chmod>
+                                        
+                                        <!-- Ensure JRE binaries are executable in the source directory too -->
+                                        <chmod perm="755">
+                                            <fileset dir="${jre.dest.linux}/bin" includes="**/*" />
+                                        </chmod>
+                                        
                                         <!-- Copy AppImage specific files -->
                                         <copy file="${project.basedir}/deploy/linux/appimage/diylc.sh" tofile="${appdir.dir}/usr/bin/diylc.sh" />
                                         <copy file="${project.basedir}/deploy/linux/appimage/AppRun" tofile="${appdir.dir}/AppRun" />
