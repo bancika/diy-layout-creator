@@ -633,7 +633,7 @@
                                         <argument>${project.basedir}:/workspace</argument>
                                         <argument>amake/innosetup</argument>
                                         <argument>/Ddiylcver=${project.version}</argument>
-                                        <argument>/Darch=x64</argument>
+                                        <!--<argument>/Darch=win64 arm64</argument>-->
                                         <argument>/workspace/deploy/win/install.iss</argument>
                                     </arguments>
                                 </configuration>
@@ -891,11 +891,11 @@
                                         
                                         <echo message="Creating unsigned zip for distribution..."/>
                                         <!-- Create unsigned zip for distribution -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip">
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-intel-unsigned.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                             <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
                                         </zip>
-                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-x86-unsigned.zip"/>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-intel-unsigned.zip"/>
 
                                         <!-- First remove existing signatures -->
                                         <echo message="Removing any existing signatures..."/>
@@ -1036,10 +1036,10 @@
 
                                         <echo message="Creating final signed and notarized zip package..."/>
                                         <!-- Create final signed and notarized zip package -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-x86.zip">
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-intel.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
-                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-x86.zip"/>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-intel.zip"/>
                                         <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>
@@ -1205,11 +1205,11 @@
                                         
                                         <echo message="Creating unsigned zip for distribution..."/>
                                         <!-- Create unsigned zip for distribution -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip">
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-silicon-unsigned.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                             <zipfileset dir="${project.basedir}/deploy/mac" includes="README.txt" />
                                         </zip>
-                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-arm-unsigned.zip"/>
+                                        <echo message="Unsigned zip created at: ${project.build.directory}/diylc-${project.version}-osx-silicon-unsigned.zip"/>
 
                                         <!-- First remove existing signatures -->
                                         <echo message="Removing any existing signatures..."/>
@@ -1350,10 +1350,10 @@
 
                                         <echo message="Creating final signed and notarized zip package..."/>
                                         <!-- Create final signed and notarized zip package -->
-                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-arm.zip">
+                                        <zip destfile="${project.build.directory}/diylc-${project.version}-osx-silicon.zip">
                                             <zipfileset filemode="755" dir="${project.build.directory}/DIYLC.app" prefix="DIYLC.app" />
                                         </zip>
-                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-arm.zip"/>
+                                        <echo message="Final package created at: ${project.build.directory}/diylc-${project.version}-osx-silicon.zip"/>
                                         <echo message="Mac build process completed successfully!"/>
                                     </target>
                                 </configuration>

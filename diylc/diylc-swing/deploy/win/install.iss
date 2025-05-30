@@ -12,11 +12,11 @@ ChangesAssociations=yes
 AlwaysShowDirOnReadyPage=yes
 ; Only allow the installer to run on x64-compatible systems,
 ; and enable 64-bit install mode.
-ArchitecturesAllowed={#arch}
-ArchitecturesInstallIn64BitMode={#arch}
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 
 [Files]
-Source: "diylc-{#arch}.exe"; DestDir: "{app}"; DestName: "diylc.exe"
+Source: "diylc-x64.exe"; DestDir: "{app}"; DestName: "diylc.exe"
 Source: "..\..\src\main\resources\icons\diylc_file.ico"; DestDir: "{app}"
 Source: "..\..\target\diylc.jar"; DestDir: "{app}"
 Source: "..\..\target\jre_win\*"; DestDir: "{app}\jre17"; Flags: ignoreversion recursesubdirs

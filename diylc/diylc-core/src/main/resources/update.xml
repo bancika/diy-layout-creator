@@ -337,6 +337,14 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Bundle Java JRE with Linux AppImage to avoid having to install it</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Updated naming conventions Mac build packages to replace 'arm' with 'silicon' and 'x86' to 'intel' for clarity</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow Windows 64 bit installer to run on ARM-based Windows machine (through emulation)</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
