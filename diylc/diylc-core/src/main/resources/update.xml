@@ -335,6 +335,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Simplify zoom in/out keyboard shortcuts to only plus/minus keys and zero numerical key for zoom reset to 100</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Bundle Java JRE with Linux AppImage to avoid having to install it</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
