@@ -37,6 +37,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.UIManager;
 
 import org.diylc.swingframework.ButtonDialog;
 
@@ -46,6 +47,14 @@ import org.diylc.swing.gui.components.HTMLTextArea;
 public class UserEditDialog extends ButtonDialog {
 
   private static final long serialVersionUID = 1L;
+
+  private static final String BULLET = "&nbsp;&nbsp;&nbsp;&#8226;&nbsp;";
+  private static final String PASSWORD_RULES_HTML = "<html>" + BULLET
+      + "Password must be at least 8 characters long<br>" + BULLET
+      + "Password must contain at least one letter<br>" + BULLET
+      + "Password must contain at least one number<br>" + BULLET
+      + "Passwords must match exactly<br>"
+      + "</html>";
 
   private JPanel mainPanel;
 
@@ -64,6 +73,8 @@ public class UserEditDialog extends ButtonDialog {
   private String bio;
 
   private UserEntity existingEntity;
+
+  private JLabel passwordRulesLabel;
 
   public UserEditDialog(JFrame owner, UserEntity existingEntity) {
     super(owner, existingEntity == null ? "New Account" : "Manage Account", new String[] {OK, CANCEL});
@@ -117,16 +128,33 @@ public class UserEditDialog extends ButtonDialog {
 
         gbc.gridy = 2;
         mainPanel.add(new JLabel("Confirm Password:"), gbc);
+        
+        // Add password rules hint pane
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(4, 2, 4, 2);  // Add more vertical padding
+        mainPanel.add(getPasswordRulesLabel(), gbc);
+        
+        // Reset gridwidth and gridx for remaining fields
+        gbc.gridwidth = 1;
+        gbc.gridx = 1;
+        gbc.insets = new Insets(2, 2, 2, 2);  // Reset insets
+        gbc.gridy = 4;
       }
 
-      gbc.gridy = 3;
+      gbc.gridy = existingEntity == null ? 4 : 3;
+      gbc.gridx = 0;
       mainPanel.add(new JLabel("eMail:"), gbc);
 
-      gbc.gridy = 4;
-      mainPanel.add(new JLabel("Website:"), gbc);
+      gbc.gridy = existingEntity == null ? 5 : 4;
+      gbc.gridx = 0;
+      mainPanel.add(new JLabel("Website (optional):"), gbc);
 
-      gbc.gridy = 5;
-      mainPanel.add(new JLabel("Short Bio:"), gbc);
+      gbc.gridy = existingEntity == null ? 6 : 5;
+      gbc.gridx = 0;
+      mainPanel.add(new JLabel("Short Bio (optional):"), gbc);
 
       gbc.gridx = 1;
       gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -144,13 +172,13 @@ public class UserEditDialog extends ButtonDialog {
         mainPanel.add(getConfirmPasswordField(), gbc);
       }
 
-      gbc.gridy = 3;
+      gbc.gridy = existingEntity == null ? 4 : 3;
       mainPanel.add(getEmailField(), gbc);
 
-      gbc.gridy = 4;
+      gbc.gridy = existingEntity == null ? 5 : 4;
       mainPanel.add(getWebsiteField(), gbc);
 
-      gbc.gridy = 5;
+      gbc.gridy = existingEntity == null ? 6 : 5;
       gbc.fill = GridBagConstraints.BOTH;
       mainPanel.add(getBioPane(), gbc);
     }
@@ -161,7 +189,16 @@ public class UserEditDialog extends ButtonDialog {
     this.userName = getUserNameField().getText();
     String password = new String(getPasswordField().getPassword());
     String confirmPassword = new String(getConfirmPasswordField().getPassword());
-    if (password.equals(confirmPassword)) {
+    
+    // Password validation
+    boolean hasValidPassword = true;
+    if (existingEntity == null) {
+      hasValidPassword = password.length() >= 8 && 
+                        password.matches(".*[a-zA-Z].*") && // at least one letter
+                        password.matches(".*\\d.*");        // at least one number
+    }
+    
+    if (password.equals(confirmPassword) && hasValidPassword) {
       this.password = password;
     } else {
       this.password = null;
@@ -341,5 +378,17 @@ public class UserEditDialog extends ButtonDialog {
       });
     }
     return bioArea;
+  }
+
+  private JLabel getPasswordRulesLabel() {
+    if (passwordRulesLabel == null) {
+      passwordRulesLabel = new JLabel();
+      passwordRulesLabel.setOpaque(true);
+      passwordRulesLabel.setBackground(UIManager.getColor("ToolTip.background"));
+      passwordRulesLabel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
+          BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+      passwordRulesLabel.setText(PASSWORD_RULES_HTML);
+    }
+    return passwordRulesLabel;
   }
 }
