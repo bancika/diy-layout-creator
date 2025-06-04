@@ -63,10 +63,11 @@ public class HelpMenuPlugin implements IPlugIn {
   public static String PLUGIN_URL = "https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md";
   public static String BUG_URL = "https://github.com/bancika/diy-layout-creator/issues";
   public static String DONATE_URL = "http://diy-fever.com/donate";
+  public static String PATREON_URL = "http://diy-fever.com/patreon";
 
   private IPlugInPort plugInPort;
   private AboutDialog aboutDialog;
-  private ISwingUI swingUI;
+  private final ISwingUI swingUI;
 
   public HelpMenuPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;

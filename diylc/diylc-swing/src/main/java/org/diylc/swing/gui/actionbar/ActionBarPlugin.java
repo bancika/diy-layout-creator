@@ -55,6 +55,21 @@ public class ActionBarPlugin implements IPlugIn {
   
   private static final Logger LOG = Logger.getLogger(ActionBarPlugin.class);
 
+  private static final SupportOption[] SUPPORT_OPTIONS = new SupportOption[] {
+    new SupportOption(
+      "Enjoying DIYLC? Click here to buy me a coffee :)",
+      "Donate",
+      IconLoader.Donate,
+      HelpMenuPlugin.DONATE_URL
+    ),
+    new SupportOption(
+      "Become a Patreon and enjoy perks",
+      "Join Patreon",
+      IconLoader.Patreon,
+      HelpMenuPlugin.PATREON_URL
+    )
+  };
+
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
 
@@ -62,13 +77,12 @@ public class ActionBarPlugin implements IPlugIn {
   private ActionToolbar contextActionToolbar;
   private ConfigToolbar configToolbar;
   private JLabel donateLabel;
-  
-  private static final String DONATE_HTML = LangUtil.translate("Enjoying DIYLC? Click here to buy me a coffee :)");
-  private static final String DONATE_HTML_SHORT = LangUtil.translate("Donate");
+  private SupportOption selectedOption;
   private Consumer<Boolean> highlightConnectedAreasUpdateAction;
 
   public ActionBarPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
+    this.selectedOption = SUPPORT_OPTIONS[(int)(Math.random() * SUPPORT_OPTIONS.length)];
   }
 
   public JPanel getActionPanel() {
@@ -110,12 +124,9 @@ public class ActionBarPlugin implements IPlugIn {
   
   public JLabel getDonateLabel() {
     if (donateLabel == null) {
-      donateLabel = new JLabel(DONATE_HTML);
-//      Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
-//      fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-//      donateLabel.setFont(donateLabel.getFont().deriveFont(fontAttributes));
+      donateLabel = new JLabel(selectedOption.longText);
       donateLabel.setForeground(Color.blue);
-      donateLabel.setIcon(IconLoader.Donate.getIcon());
+      donateLabel.setIcon(selectedOption.icon.getIcon());
       donateLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
       this.swingUI.getOwnerFrame().addComponentListener(new ComponentAdapter() {
         
@@ -126,11 +137,15 @@ public class ActionBarPlugin implements IPlugIn {
             @Override
             public void componentResized(ComponentEvent e) {
               if (rootPane.getWidth() < 940) {
-                if (!DONATE_HTML_SHORT.equals(donateLabel.getText()))
-                    donateLabel.setText(DONATE_HTML_SHORT);
+                if (!selectedOption.shortText.equals(donateLabel.getText())) {
+                  donateLabel.setText(selectedOption.shortText);
+                  donateLabel.setIcon(selectedOption.icon.getIcon());
+                }
               } else {
-                if (!DONATE_HTML.equals(donateLabel.getText()))
-                  donateLabel.setText(DONATE_HTML);
+                if (!selectedOption.longText.equals(donateLabel.getText())) {
+                  donateLabel.setText(selectedOption.longText);
+                  donateLabel.setIcon(selectedOption.icon.getIcon());
+                }
               }
             }
           });
@@ -140,9 +155,11 @@ public class ActionBarPlugin implements IPlugIn {
         @Override
         public void mouseClicked(MouseEvent e) {
           try {
-            Utils.openURL(HelpMenuPlugin.DONATE_URL);
+            Utils.openURL(selectedOption.url);
           } catch (Exception e1) {
-            swingUI.showMessage("Web browser launching failed. Please visit " + HelpMenuPlugin.DONATE_URL + " to donate. Thank you!", "Error", ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage("Web browser launching failed. Please visit " + 
+                selectedOption.url + 
+                " to support DIYLC. Thank you!", "Error", ISwingUI.INFORMATION_MESSAGE);
           }
         }
       });
@@ -223,6 +240,18 @@ public class ActionBarPlugin implements IPlugIn {
     } else if (eventType == EventType.STATUS_MESSAGE_CHANGED) {
       highlightConnectedAreasUpdateAction.accept(plugInPort.getOperationMode() ==
           OperationMode.HIGHLIGHT_CONNECTED_AREAS);
+    }
+  }
+
+  private record SupportOption(
+    String longText,
+    String shortText,
+    IconLoader icon,
+    String url
+  ) {
+    public SupportOption {
+      longText = LangUtil.translate(longText);
+      shortText = LangUtil.translate(shortText);
     }
   }
 }
