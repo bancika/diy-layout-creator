@@ -104,6 +104,7 @@ public class CloudPlugIn implements IPlugIn {
     getManageAccountAction().setEnabled(false);
     getChangePasswordAction().setEnabled(false);
     getLogOutAction().setEnabled(false);
+    getConnectPatreonAction().setEnabled(false);
   }
 
   public CloudBrowserFrame getCloudBrowser() {
@@ -179,6 +180,7 @@ public class CloudPlugIn implements IPlugIn {
     getUploadAction().setEnabled(true);
     getManageProjectsAction().setEnabled(true);
     getChangePasswordAction().setEnabled(true);
+    getConnectPatreonAction().setEnabled(true);
   }
 
   public void loggedOut() {
@@ -190,6 +192,7 @@ public class CloudPlugIn implements IPlugIn {
     getUploadAction().setEnabled(false);
     getManageProjectsAction().setEnabled(false);
     getChangePasswordAction().setEnabled(false);
+    getConnectPatreonAction().setEnabled(false);
   }
 
   // Getters for action classes
