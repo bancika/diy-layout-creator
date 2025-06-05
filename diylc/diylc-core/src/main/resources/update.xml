@@ -353,6 +353,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>More intuitive user account creation dialog for DIYLC Cloud - showing exact requirements for password and marking optional entries</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved project search algorithm in DIYLC cloud</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
