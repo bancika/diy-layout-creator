@@ -357,6 +357,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved project search algorithm in DIYLC cloud</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When a switch position is selected (i.e. set to a value other than None), DIYLC will treat the terminals that are internally connected in that switching logic as connected in analysis tools</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

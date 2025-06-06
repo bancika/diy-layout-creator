@@ -101,23 +101,7 @@ public class NetlistBuilder {
 
     // if there are no switches, make one with 1 position so we get 1 result back
     if (switches.isEmpty())
-      switches.add(new ISwitch() {
-
-        @Override
-        public String getPositionName(int position) {
-          return "Default";
-        }
-
-        @Override
-        public int getPositionCount() {
-          return 1;
-        }
-
-        @Override
-        public boolean arePointsConnected(int index1, int index2, int position) {
-          return false;
-        }
-      });
+      switches.add(new TrivialSwitch());
 
     // construct all possible combinations
     int[] positions = new int[switches.size()];
@@ -418,7 +402,9 @@ public class NetlistBuilder {
       // handle direct connections or connections through a switch
       // when not using "includeSwitches" flag
       if (c instanceof IContinuity &&
-          (!(c instanceof ISwitch) || switchPositions.isEmpty())) {
+          // ugly way to check if running in "exclude switches" mode.
+          (!(c instanceof ISwitch) || (switchPositions.size() == 1 &&
+              switchPositions.keySet().stream().findFirst().get() instanceof TrivialSwitch))) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))
@@ -491,6 +477,25 @@ public class NetlistBuilder {
 
     public ContinuityArea getArea() {
       return area;
+    }
+  }
+
+
+  private static class TrivialSwitch implements ISwitch {
+
+    @Override
+    public String getPositionName(int position) {
+      return "Default";
+    }
+
+    @Override
+    public int getPositionCount() {
+      return 1;
+    }
+
+    @Override
+    public boolean arePointsConnected(int index1, int index2, int position) {
+      return false;
     }
   }
 }
