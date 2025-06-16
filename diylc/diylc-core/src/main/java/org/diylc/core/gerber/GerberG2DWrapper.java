@@ -300,7 +300,7 @@ public class GerberG2DWrapper extends Graphics2D
 
   @Override
   public AffineTransform getTransform() {
-    return tx;
+    return new AffineTransform(tx);
   }
 
   @Override

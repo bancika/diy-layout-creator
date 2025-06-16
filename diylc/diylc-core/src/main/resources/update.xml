@@ -361,6 +361,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>When a switch position is selected (i.e. set to a value other than None), DIYLC will treat the terminals that are internally connected in that switching logic as connected in analysis tools</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Alignment issues of some visual elements in the resulting Gerber files, e.g. DIL IC pin designators</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
