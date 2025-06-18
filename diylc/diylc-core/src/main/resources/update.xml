@@ -362,6 +362,10 @@
 					<description>When a switch position is selected (i.e. set to a value other than None), DIYLC will treat the terminals that are internally connected in that switching logic as connected in analysis tools</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increase maximum size of the backup folder from 64MB to 1GB for deeper history</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Alignment issues of some visual elements in the resulting Gerber files, e.g. DIL IC pin designators</description>
 				</org.diylc.appframework.update.Change>

@@ -45,7 +45,7 @@ public class AutoSavePlugin implements IPlugIn {
   private static final Logger LOG = Logger.getLogger(AutoSavePlugin.class);
 
   public static long BACKUP_FREQ_MS = 60 * 1000;
-  public static int MAX_TOTAL_SIZE_MB = 64;
+  public static int MAX_TOTAL_SIZE_MB = 1024;
 
   private ExecutorService executor;
 
