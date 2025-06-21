@@ -334,6 +334,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Drill Hole' component that can be used for board mounting holes, chassis holes, faceplace holes, etc</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Simplify zoom in/out keyboard shortcuts to only plus/minus keys and zero numerical key for zoom reset to 100</description>
 				</org.diylc.appframework.update.Change>
