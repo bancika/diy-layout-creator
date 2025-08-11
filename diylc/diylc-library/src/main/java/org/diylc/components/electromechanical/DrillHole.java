@@ -43,7 +43,7 @@ import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Drill Hole", category = "Electromechanical", author = "Branislav Stojkovic",
+@ComponentDescriptor(name = "Drill Hole", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Drill hole marker for PCB, chassis or faceplate", instanceNamePrefix = "Hole",
     zOrder = IDIYComponent.BOARD + 0.1, bomPolicy = BomPolicy.NEVER_SHOW,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
