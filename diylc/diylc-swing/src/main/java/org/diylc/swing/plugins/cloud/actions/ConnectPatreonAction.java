@@ -60,7 +60,6 @@ public class ConnectPatreonAction extends AbstractAction {
       return;
     }
     String username = plugInPort.getCloudService().getCurrentUsername();
-    username ="a b c";
     String url = "http://diy-fever.com/diylc/api/v1/ai/patreon_login.php?username=" + URLEncoder.encode(username, StandardCharsets.UTF_8);
     try {
       java.awt.Desktop.getDesktop().browse(new java.net.URI(url));

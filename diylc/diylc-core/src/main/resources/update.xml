@@ -330,7 +330,7 @@
 				<minor>6</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-05-26 00:00:00.000 CET</releaseDate>
+			<releaseDate>2025-08-11 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -372,6 +372,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Alignment issues of some visual elements in the resulting Gerber files, e.g. DIL IC pin designators</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Connect to Patreon' option says that it connected account with username 'a b c' but doesn't do anything</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
