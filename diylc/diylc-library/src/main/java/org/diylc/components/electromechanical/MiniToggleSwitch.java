@@ -502,10 +502,17 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   }
 
   @Override
-  public String getPositionName(int position) {    
-    if (switchType.name().endsWith("_off") && position == 2)
-      return "OFF";
-    return "ON" + Integer.toString(position + 1);
+  public String getPositionName(int position) {
+    int pos = position;
+    if (switchType.name().endsWith("_off")) {
+      int midPosition = (getPositionCount() - 1) / 2;
+      if (position == midPosition) {
+        return "OFF";
+      } else if (position > midPosition) {
+        --pos;
+      }
+    }
+    return "ON" + Integer.toString(pos + 1);
   }
 
   @DynamicEditableProperty(source = ToggleSwitchPositionPropertyValueSource.class)
