@@ -43,6 +43,19 @@ public class LeverSwitchTests extends AbstractSwitchTests {
     leverSwitch.setValue(LeverSwitchType._6P5T);
     testSwitch(leverSwitch, validCombinations);
   }
+
+  @Test
+  public void testLeverSwitch4P3T() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+
+    String[] validCombinations = new String[] {
+            "0,0,1", "0,4,7", "0,8,9", "0,12,15",
+            "1,0,2", "1,5,7", "1,8,10", "1,13,15",
+            "2,0,3", "2,6,7", "2,8,11", "2,14,15",
+    };
+    leverSwitch.setValue(LeverSwitchType._4P3T);
+    testSwitch(leverSwitch, validCombinations);
+  }
   
   @Test
   public void testLeverSwitchImport() {
