@@ -182,6 +182,7 @@ DP3T (Standard 5-Position Strat)
 DP4T (4-Position Tele)
 DP4T (6-Position Oak Grigsby)
 DP5T
+6P5T
 DPDT
 DPDT (On/Off/On)
 DPDT (On/On)
