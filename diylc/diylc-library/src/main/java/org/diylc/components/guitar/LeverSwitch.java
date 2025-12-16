@@ -570,12 +570,12 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
 
   private static final List<List<int[]>> DP3T_5pos_2502N_CONNECTIONS = Arrays.asList(
           Arrays.asList(
-                  new int[] { 2, 3 },
-                  new int[] { 6, 7 }
+                  new int[] { 0, 3 }
           ), // position 1
           Arrays.asList(
+                  new int[] { 0, 3 },
                   new int[] { 1, 3 },
-                  new int[] { 2, 3 },
+                  new int[] { 4, 7 },
                   new int[] { 5, 7 }
           ), // position 2
           Arrays.asList(
@@ -584,13 +584,13 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
                   new int[] { 6, 7 }
           ), // position 3
           Arrays.asList(
-                  new int[] { 0, 3 },
                   new int[] { 1, 3 },
-                  new int[] { 4, 7 },
+                  new int[] { 2, 3 },
                   new int[] { 5, 7 }
           ), // position 4
           Arrays.asList(
-                  new int[] { 0, 3 }
+                  new int[] { 2, 3 },
+                  new int[] { 6, 7 }
           ) // position 5
   );
 
