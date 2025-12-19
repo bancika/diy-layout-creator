@@ -226,10 +226,15 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
               - (waferLength - terminalSpacing * yOffset) / 2, waferThickness,
               waferLength));
 
-      if (type == LeverSwitchType._4P5T) {
+      if (type == LeverSwitchType._4P5T || type == LeverSwitchType._6P5T) {
         waferArea.add(new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2 + waferSpacing, y
             - (waferLength - terminalSpacing * 12) / 2, waferThickness,
             waferLength)));
+      }
+      if (type == LeverSwitchType._6P5T) {
+        waferArea.add(new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2 + waferSpacing * 2, y
+                - (waferLength - terminalSpacing * 12) / 2, waferThickness,
+                waferLength)));
       }
 
       double theta = getAngle().getValueRad();
@@ -317,6 +322,14 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
         for (int i = 0; i < controlPoints.length / 2; i++) {
           controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
           controlPoints[i + 12] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+        }
+        break;
+      case _6P5T:
+        controlPoints = new Point2D[36];
+        for (int i = 0; i < controlPoints.length / 3; i++) {
+          controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+          controlPoints[i + 12] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+          controlPoints[i + 24] = new Point2D.Double(x + waferSpacing * 2, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
         }
         break;
     }
@@ -447,7 +460,10 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
             || (index2 == 11 && index2 - index1 == 5 - position);
       case _4P5T:
         return ((index1 == 0 || index1 == 12) && index2 - index1 == position + 1)
-            || ((index2 == 11 || index2 == 23) && index2 - index1 == 5 - position);     
+            || ((index2 == 11 || index2 == 23) && index2 - index1 == 5 - position);
+      case _6P5T:
+        return ((index1 == 0 || index1 == 12 || index1 == 24) && index2 - index1 == position + 1)
+            || ((index2 == 11 || index2 == 23 || index2 == 35) && index2 - index1 == 5 - position);
     }
     
     if (positionConnections != null) {
@@ -559,7 +575,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     _4P5T("4P5T (Super/Mega)", 5),
     DP4T("DP4T (4-Position Tele)", 4),
     _6_WAY_OG("DP4T (6-Position Oak Grigsby)", 6),
-    DP5T("DP5T", 5);
+    DP5T("DP5T", 5),
+    _6P5T("6P5T (5-Position 6 Pole AxLabs)", 5);
 
     private final int positionCount;
     private String title;
