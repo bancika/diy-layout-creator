@@ -208,9 +208,9 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
       
       double dy = 0;
       if (i % 3 == 1) {
-        dy = -1;
-      } else if (i % 3 == 0) {
         dy = 1;
+      } else if (i % 3 == 0) {
+        dy = -1;
       }
       
       Stroke stroke = g2d.getStroke();
