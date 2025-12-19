@@ -66,18 +66,12 @@ public class DrillHole extends AbstractTransparentComponent<Void>
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
       Project project, IDrawingObserver drawingObserver,
       IGerberDrawingObserver gerberDrawingObserver) {
+
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
     double holeDiameter = getDiameter().convertToPixels();
     double borderWidth = STROKE_WIDTH.convertToPixels(); // Use constant stroke width
-    
-    g2d.setColor(
-        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-            ? SELECTION_COLOR
-            : color);
-    
-    drawingObserver.startTrackingContinuityArea(true);
     
     // Export to Gerber drill layer
     if (gerberDrawingObserver != null) {
@@ -96,7 +90,10 @@ public class DrillHole extends AbstractTransparentComponent<Void>
         holeDiameter, holeDiameter));
     
     // Draw colored border
-    g2d.setColor(color);
+    g2d.setColor(
+        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+            ? SELECTION_COLOR
+            : color);
     g2d.setStroke(new BasicStroke((float) borderWidth));
     g2d.draw(new Ellipse2D.Double(point.getX() - holeDiameter / 2, point.getY() - holeDiameter / 2,
         holeDiameter, holeDiameter));
@@ -118,8 +115,7 @@ public class DrillHole extends AbstractTransparentComponent<Void>
         point.getX(), point.getY() + crosshairLength / 2));
     
     drawingObserver.stopTracking();
-    drawingObserver.stopTrackingContinuityArea();
-    
+
     if (gerberDrawingObserver != null) {
       gerberDrawingObserver.stopGerberOutput();
     }

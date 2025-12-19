@@ -401,6 +401,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Corrected 'Mini Toggle Switch' position names for center-OFF variants to be in the correct order (thank you mm-rnd)</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Drill Hole' changes color to red when selected</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
