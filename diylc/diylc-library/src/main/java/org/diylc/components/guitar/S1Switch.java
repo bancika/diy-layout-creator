@@ -280,9 +280,9 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
   @Override
   public String getPositionName(int position) {    
     if (position == 0) {
-      return "Up";
+      return "Down";
     }
-    return "Down";
+    return "Up";
   }
   
   @EditableProperty(name = "Markers")
