@@ -380,5 +380,29 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>7</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-12-21 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added '6P5T (5-Position 6 Pole AxLabs)' lever switch (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Corrected 'S1 Switch' up/down position designators (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Corrected 'Mini Toggle Switch' position names for center-OFF variants to be in the correct order (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
