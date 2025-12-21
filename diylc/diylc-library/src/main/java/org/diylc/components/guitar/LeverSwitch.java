@@ -629,7 +629,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     _6_WAY_OG("DP4T (6-Position Oak Grigsby)", 6),
     DP5T("DP5T", 5),
     _6P5T("6P5T (5-Position 6 Pole AxLabs)", 5),
-    _4P3T("4P3T (3-Position 3 Pole AxLabs)", 3),
+    _4P3T("4P3T (3-Position 4 Pole AxLabs)", 3),
     DP3T_5pos_2502N("DP3T (Import 5-Position 2502N)", 5);
 
     private final int positionCount;

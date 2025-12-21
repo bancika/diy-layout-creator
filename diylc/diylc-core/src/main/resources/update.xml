@@ -391,7 +391,15 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added '6P5T (5-Position 6 Pole AxLabs)' lever switch (thank you mm-rnd)</description>
+					<description>Added '6P5T (5-Position 6 Pole AxLabs)' lever switch type (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added '4P3T (3-Position 4 Pole AxLabs)' lever switch type (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'DP3T (Import 5-Position 2502N)' lever switch type (thank you mm-rnd)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
