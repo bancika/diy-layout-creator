@@ -43,6 +43,19 @@ public class LeverSwitchTests extends AbstractSwitchTests {
     leverSwitch.setValue(LeverSwitchType._6P5T);
     testSwitch(leverSwitch, validCombinations);
   }
+
+  @Test
+  public void testLeverSwitch4P3T() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+
+    String[] validCombinations = new String[] {
+            "0,0,1", "0,4,7", "0,8,9", "0,12,15",
+            "1,0,2", "1,5,7", "1,8,10", "1,13,15",
+            "2,0,3", "2,6,7", "2,8,11", "2,14,15",
+    };
+    leverSwitch.setValue(LeverSwitchType._4P3T);
+    testSwitch(leverSwitch, validCombinations);
+  }
   
   @Test
   public void testLeverSwitchImport() {
@@ -63,6 +76,22 @@ public class LeverSwitchTests extends AbstractSwitchTests {
         "3,2,8", "3,4,8", "3,1,7", "4,4,8", "4,1,7", "4,1,9", "5,4,8", "5,6,8", "5,1,9"};
     
     leverSwitch.setValue(LeverSwitchType._6_WAY_OG);
+    testSwitch(leverSwitch, validCombinations);
+  }
+
+  @Test
+  public void testLeverSwitchImport2502N() {
+    LeverSwitch leverSwitch = new LeverSwitch();
+
+    String[] validCombinations = new String[] {
+            "0,0,3",
+            "1,0,3", "1,1,3", "1,4,7", "1,5,7",
+            "2,0,3", "2,2,3", "2,6,7",
+            "3,1,3", "3,2,3", "3,5,7",
+            "4,2,3", "4,6,7",
+    };
+
+    leverSwitch.setValue(LeverSwitchType.DP3T_5pos_2502N);
     testSwitch(leverSwitch, validCombinations);
   }
 }

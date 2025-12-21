@@ -129,7 +129,7 @@ INSERT INTO diylc_knowledge_base (category, section, content) ('Component Types'
     "type" : "java.lang.Boolean"
   }, {
     "name" : "Type",
-    "type" : "org.diylc.components.guitar.LeverSwitch$LeverSwitchType(DP3T (Standard 3-Position Strat),DP3T (Standard 5-Position Strat),DP3T (Import 5-Position Strat),4P5T (Super/Mega),DP4T (4-Position Tele),DP4T (6-Position Oak Grigsby),DP5T,6P5T (5-Position 6 Pole AxLabs))"
+    "type" : "org.diylc.components.guitar.LeverSwitch$LeverSwitchType(DP3T (Standard 3-Position Strat),DP3T (Standard 5-Position Strat),DP3T (Import 5-Position Strat),4P5T (Super/Mega),DP4T (4-Position Tele),DP4T (6-Position Oak Grigsby),DP5T,6P5T (5-Position 6 Pole AxLabs)),4P3T (3-Position 3 Pole AxLabs),DP3T (Import 5-Position 2502N)"
   }, {
     "name" : "Angle",
     "type" : "org.diylc.core.Angle"

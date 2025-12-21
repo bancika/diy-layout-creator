@@ -151,8 +151,13 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     g2d.draw(body[2]);
 
     if (getShowMarkers()) {
-      String[] markers =
-          SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
+      String[] markers;
+      if(type == LeverSwitchType.DP3T_5pos_2502N) {
+        markers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
+      } else {
+        markers = SwitchUtils.getSwitchingMarkers(this, getControlPointCount(), false);
+      }
+
       double theta = getAngle().getValueRad();
       g2d.setColor(MARKER_COLOR);
 
@@ -203,10 +208,12 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           || type == LeverSwitchType.DP3T_5pos) {
         x += terminalLength;
         yOffset = 7;
-      } else if (type == LeverSwitchType.DP3T_5pos_Import) {
+      } else if (type == LeverSwitchType.DP3T_5pos_Import || type == LeverSwitchType.DP3T_5pos_2502N) {
         yOffset = 10;
       } else if (type == LeverSwitchType._6_WAY_OG) {
         x += terminalLength;
+        yOffset = 8;
+      } else if (type == LeverSwitchType._4P3T) {
         yOffset = 8;
       } else {
         yOffset = 12;
@@ -234,6 +241,11 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
       if (type == LeverSwitchType._6P5T) {
         waferArea.add(new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2 + waferSpacing * 2, y
                 - (waferLength - terminalSpacing * 12) / 2, waferThickness,
+                waferLength)));
+      }
+      if (type == LeverSwitchType._4P3T) {
+        waferArea.add(new Area(new Rectangle2D.Double(x - terminalLength / 2 - waferThickness / 2 + waferSpacing, y
+                - (waferLength - terminalSpacing * 8) / 2, waferThickness,
                 waferLength)));
       }
 
@@ -299,6 +311,7 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
         }
         break;
       case DP3T_5pos_Import:
+      case DP3T_5pos_2502N:
         controlPoints = new Point2D[8];
         terminalSpacing *= 1.5;
         for (int i = 0; i < controlPoints.length; i++) {
@@ -330,6 +343,13 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
           controlPoints[i + 12] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
           controlPoints[i + 24] = new Point2D.Double(x + waferSpacing * 2, y + i * terminalSpacing + (i >= 6 ? terminalSpacing : 0));
+        }
+        break;
+      case _4P3T:
+        controlPoints = new Point2D[16];
+        for (int i = 0; i < controlPoints.length / 2; i++) {
+          controlPoints[i] = new Point2D.Double(x, y + i * terminalSpacing + (i >= 4 ? terminalSpacing : 0));
+          controlPoints[i + 8] = new Point2D.Double(x + waferSpacing, y + i * terminalSpacing + (i >= 4 ? terminalSpacing : 0));
         }
         break;
     }
@@ -464,6 +484,12 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
       case _6P5T:
         return ((index1 == 0 || index1 == 12 || index1 == 24) && index2 - index1 == position + 1)
             || ((index2 == 11 || index2 == 23 || index2 == 35) && index2 - index1 == 5 - position);
+      case _4P3T:
+        return ((index1 == 0 || index1 == 8) && index2 - index1 == position + 1)
+                || ((index2 == 7 || index2 == 15) && index2 - index1 == 3 - position);
+      case DP3T_5pos_2502N:
+        positionConnections = DP3T_5pos_2502N_CONNECTIONS.get(position);
+        break;
     }
     
     if (positionConnections != null) {
@@ -542,6 +568,32 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
           ) // position 6      
       );
 
+  private static final List<List<int[]>> DP3T_5pos_2502N_CONNECTIONS = Arrays.asList(
+          Arrays.asList(
+                  new int[] { 0, 3 }
+          ), // position 1
+          Arrays.asList(
+                  new int[] { 0, 3 },
+                  new int[] { 1, 3 },
+                  new int[] { 4, 7 },
+                  new int[] { 5, 7 }
+          ), // position 2
+          Arrays.asList(
+                  new int[] { 0, 3 },
+                  new int[] { 2, 3 },
+                  new int[] { 6, 7 }
+          ), // position 3
+          Arrays.asList(
+                  new int[] { 1, 3 },
+                  new int[] { 2, 3 },
+                  new int[] { 5, 7 }
+          ), // position 4
+          Arrays.asList(
+                  new int[] { 2, 3 },
+                  new int[] { 6, 7 }
+          ) // position 5
+  );
+
   @DynamicEditableProperty(source = LeverSwitchPositionPropertyValueSource.class)
   @EditableProperty(name = "Selected Position")
   @Override
@@ -576,7 +628,9 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
     DP4T("DP4T (4-Position Tele)", 4),
     _6_WAY_OG("DP4T (6-Position Oak Grigsby)", 6),
     DP5T("DP5T", 5),
-    _6P5T("6P5T (5-Position 6 Pole AxLabs)", 5);
+    _6P5T("6P5T (5-Position 6 Pole AxLabs)", 5),
+    _4P3T("4P3T (3-Position 3 Pole AxLabs)", 3),
+    DP3T_5pos_2502N("DP3T (Import 5-Position 2502N)", 5);
 
     private final int positionCount;
     private String title;
