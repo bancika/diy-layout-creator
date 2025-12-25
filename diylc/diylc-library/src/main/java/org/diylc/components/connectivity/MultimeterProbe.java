@@ -28,21 +28,20 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation45;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Multimeter Probe", category = "Connectivity",
     author = "Branislav Stojkovic", description = "Multimeter Probe", instanceNamePrefix = "Probe",
@@ -59,6 +58,7 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
   public static Size HANDLE_DIAMETER = new Size(0.2d, SizeUnit.in);
   public static Size HANDLE_LENGTH = new Size(0.4d, SizeUnit.in);
   public static Color HANDLE_COLOR = Color.red;
+  public static Size SENSITIVITY = new Size(0.05d, SizeUnit.in);
 
   private Point2D.Double point = new Point2D.Double(0, 0);
   private Color handleColor = HANDLE_COLOR;
@@ -77,27 +77,49 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
     Shape[] shapes = getBody();
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
-    if (!outlineMode) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(
-            AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
-      g2d.setColor(PROBE_COLOR);
-      g2d.fill(shapes[0]);
-      g2d.setColor(handleColor);
-      g2d.fill(shapes[1]);
-      g2d.setComposite(oldComposite);
+    // draw an invisible conductive circle around the point to increase sensitivity
+    g2d.setColor(Constants.TRANSPARENT_COLOR);
+    drawingObserver.startTrackingContinuityArea(true);
+    double sensitivity = SENSITIVITY.convertToPixels();
+    g2d.fillOval((int) (point.getX() - sensitivity), (int) (point.getY() - sensitivity),
+        (int) (sensitivity * 2), (int) (sensitivity * 2));
+    drawingObserver.stopTrackingContinuityArea();
+
+    Composite oldComposite = g2d.getComposite();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(
+          AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
-    g2d.setColor(
-        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-            ? SELECTION_COLOR
-            : handleColor.darker());
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : PROBE_COLOR);
+    g2d.fill(shapes[0]);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : handleColor);
+    g2d.fill(shapes[1]);
+    g2d.setComposite(oldComposite);
+    drawingObserver.stopTracking();
+
+    Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
+        Constants.DEFAULT_THEME);
+
+    Color handleBorderColor;
+    if (outlineMode) {
+      handleBorderColor = theme.getOutlineColor();
+    } else {
+      handleBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : handleColor.darker();
+    }
+    g2d.setColor(handleBorderColor);
     g2d.draw(shapes[1]);
-    g2d.setColor(
-        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-            ? SELECTION_COLOR
-            : PROBE_COLOR.darker());
+
+    Color probeBorderColor;
+    if (outlineMode) {
+      probeBorderColor = theme.getOutlineColor();
+    } else {
+      probeBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : PROBE_COLOR.darker();
+    }
+    g2d.setColor(probeBorderColor);
     g2d.draw(shapes[0]);
   }
 

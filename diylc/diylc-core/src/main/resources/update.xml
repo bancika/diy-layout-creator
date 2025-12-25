@@ -426,6 +426,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved sensitivity of 'Multimeter Probe' that required pixel-level precision to detect connectivity; improved rendering of the probe in outline mode</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed underside rendering and mirroring position issues that affected only SPDT 'Mini Toggle Switch' types</description>
 				</org.diylc.appframework.update.Change>
