@@ -27,6 +27,7 @@ import java.awt.geom.Point2D;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.electromechanical.MiniToggleSwitch;
+import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.core.IDIYComponent;
 
 public class MiniToggleSwitchTransformer implements IComponentTransformer {
@@ -107,7 +108,8 @@ public class MiniToggleSwitchTransformer implements IComponentTransformer {
     MiniToggleSwitch sw = (MiniToggleSwitch) component;
 
     if (direction == IComponentTransformer.HORIZONTAL) {
-      double dx = 2 * (center.getX() - sw.getControlPoint(1).getX());
+      double dx = 2 * (center.getX() -
+          (sw.getControlPoint(0).getX() + sw.getControlPoint(sw.getControlPointCount() - 1).getX()) / 2);
       double dy = 0;
      
       for (int i = 0; i < sw.getControlPointCount(); i++) {
@@ -116,7 +118,8 @@ public class MiniToggleSwitchTransformer implements IComponentTransformer {
       }
     } else {
       double dx = 0;
-      double dy = 2 * (center.getY() - sw.getControlPoint(1).getY());
+      double dy = 2 * (center.getY() -
+          (sw.getControlPoint(0).getY() + sw.getControlPoint(sw.getControlPointCount() - 1).getY()) / 2);
     
       for (int i = 0; i < sw.getControlPointCount(); i++) {
         Point2D p = sw.getControlPoint(i);
