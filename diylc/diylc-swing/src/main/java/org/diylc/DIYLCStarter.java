@@ -33,6 +33,7 @@ import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
+import org.diylc.utils.ThemeUtils;
 import com.thoughtworks.xstream.XStream;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
@@ -71,6 +72,9 @@ public class DIYLCStarter {
 	}
 
 	public static void runDIYLC(String[] args) {
+		// Apply OS dark theme settings before creating any UI components
+		ThemeUtils.applyOSDarkTheme();
+		
 		// Initialize splash screen
 		DIYLCSplash splash = null;
 		Exception splashException = null;
@@ -137,6 +141,8 @@ public class DIYLCStarter {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// Apply dark theme colors if dark mode is detected
+			ThemeUtils.applyDarkThemeColors();
 		} catch (Exception e) {
 			LOG.error("Could not set Look&Feel", e);
 		}
