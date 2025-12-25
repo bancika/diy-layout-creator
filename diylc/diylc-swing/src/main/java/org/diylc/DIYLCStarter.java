@@ -33,6 +33,7 @@ import org.diylc.appframework.miscutils.PropertyInjector;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.swingframework.export.DrawingExporter;
 import org.diylc.swingframework.fonts.FontOptimizer;
+import org.diylc.utils.DPIScalingUtils;
 import com.thoughtworks.xstream.XStream;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IView;
@@ -137,6 +138,12 @@ public class DIYLCStarter {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			// Scale all UIManager font defaults for high DPI displays
+			// This applies globally to all Swing components, fixing font scaling
+			// issues on Windows with high DPI displays where HTML rendering may
+			// not properly scale fonts.
+			DPIScalingUtils.scaleUIManagerFonts();
 		} catch (Exception e) {
 			LOG.error("Could not set Look&Feel", e);
 		}
