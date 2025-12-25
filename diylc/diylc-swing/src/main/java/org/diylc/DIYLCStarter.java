@@ -137,6 +137,9 @@ public class DIYLCStarter {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			// Apply configurable font scaling from VM argument: -Dorg.diylc.fontScaleFactor=X
+			org.diylc.utils.FontScalingUtils.applyFontScaling();
 		} catch (Exception e) {
 			LOG.error("Could not set Look&Feel", e);
 		}

@@ -427,6 +427,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; just pass -Dorg.diylc.fontScaleFactor=X as a parameter</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved sensitivity of 'Multimeter Probe' that required pixel-level precision to detect connectivity; improved rendering of the probe in outline mode</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
