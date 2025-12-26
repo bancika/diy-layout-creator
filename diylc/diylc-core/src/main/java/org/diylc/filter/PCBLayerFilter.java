@@ -19,11 +19,10 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.presenter;
+package org.diylc.filter;
 
 import java.lang.reflect.Method;
 
-import org.diylc.common.IComponentFilter;
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
 

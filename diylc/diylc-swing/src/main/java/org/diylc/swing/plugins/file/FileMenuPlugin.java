@@ -43,11 +43,13 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
 
   private static final String FILE_TITLE = "File";
   private static final String TRACE_MASK_TITLE = "Trace Mask";
+  private static final String SILK_SCREEN_TITLE = "Silkscreen";
   private static final String INTEGRATION_TITLE = "Integration";
   private static final String EXPORT_TITLE = "Export";
 
   private ProjectDrawingProvider drawingProvider;
   private TraceMaskDrawingProvider traceMaskDrawingProvider;
+  private SilkScreenDrawingProvider silkScreenDrawingProvider;
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;
@@ -62,6 +64,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     this.plugInPort = plugInPort;
     this.drawingProvider = new ProjectDrawingProvider(plugInPort, false, true, false);
     this.traceMaskDrawingProvider = new TraceMaskDrawingProvider(plugInPort);
+    this.silkScreenDrawingProvider = new SilkScreenDrawingProvider(plugInPort);
 
     ActionFactory actionFactory = ActionFactory.getInstance();
     swingUI.injectMenuAction(actionFactory.createNewAction(plugInPort), FILE_TITLE);
@@ -82,6 +85,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createExportGerberAction(plugInPort, swingUI), EXPORT_TITLE);
     swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider, swingUI,
         Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), FILE_TITLE);
+
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort,
         traceMaskDrawingProvider, swingUI, " (mask)"), TRACE_MASK_TITLE);
@@ -91,6 +95,17 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         actionFactory.createPrintAction(traceMaskDrawingProvider, swingUI,
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
         TRACE_MASK_TITLE);
+
+    swingUI.injectSubmenu(SILK_SCREEN_TITLE, IconLoader.Silkscreen.getIcon(), FILE_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort,
+        silkScreenDrawingProvider, swingUI, " (silkscreen)"), SILK_SCREEN_TITLE);
+    swingUI.injectMenuAction(actionFactory.createExportPNGAction(plugInPort,
+        silkScreenDrawingProvider, swingUI, " (silkscreen)"), SILK_SCREEN_TITLE);
+    swingUI.injectMenuAction(
+        actionFactory.createPrintAction(silkScreenDrawingProvider, swingUI,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
+        SILK_SCREEN_TITLE);
+
 
     swingUI.injectMenuAction(null, FILE_TITLE);
     swingUI.injectSubmenu(INTEGRATION_TITLE, IconLoader.Node.getIcon(), FILE_TITLE);

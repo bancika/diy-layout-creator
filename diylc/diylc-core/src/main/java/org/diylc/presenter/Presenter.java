@@ -71,6 +71,7 @@ import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.gerber.GerberExporter;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.filter.IComponentFilter;
 import org.diylc.lang.LangUtil;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
@@ -427,7 +428,7 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, Double externalZoom, 
+  public void draw(Graphics2D g2d, Set<DrawOption> drawOptions, final IComponentFilter filter, Double externalZoom,
       Double scaleFactor, Rectangle2D visibleRect) {
     if (currentProject == null) {
       return;

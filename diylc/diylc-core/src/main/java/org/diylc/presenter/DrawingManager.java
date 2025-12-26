@@ -54,6 +54,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.*;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.filter.IComponentFilter;
 import org.diylc.netlist.ContinuityGraph;
 import org.diylc.netlist.NetlistBuilder;
 import org.diylc.utils.Constants;

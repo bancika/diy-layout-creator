@@ -42,6 +42,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
 import org.diylc.core.measures.Size;
+import org.diylc.filter.IComponentFilter;
 import org.diylc.test.ITestProcessor;
 
 /**

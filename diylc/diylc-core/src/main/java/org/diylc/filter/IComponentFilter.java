@@ -19,7 +19,7 @@
     along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-package org.diylc.common;
+package org.diylc.filter;
 
 import org.diylc.core.IDIYComponent;
 
