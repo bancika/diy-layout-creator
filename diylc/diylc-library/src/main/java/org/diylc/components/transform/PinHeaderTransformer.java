@@ -70,6 +70,20 @@ public class PinHeaderTransformer implements IComponentTransformer {
   @Override
   public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     PinHeader header = (PinHeader) component;
+    int controlPointCount = header.getControlPointCount();
+
+    // Handle single-pin case
+    if (controlPointCount == 1) {
+      Point2D p = header.getControlPoint(0);
+      if (direction == IComponentTransformer.HORIZONTAL) {
+        double dx = 2 * (center.getX() - p.getX());
+        header.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY()), 0);
+      } else {
+        double dy = 2 * (center.getY() - p.getY());
+        header.setControlPoint(new Point2D.Double(p.getX(), p.getY() + dy), 0);
+      }
+      return;
+    }
 
     if (direction == IComponentTransformer.HORIZONTAL) {
       double dx = 2 * (center.getX() - header.getControlPoint(1).getX());
