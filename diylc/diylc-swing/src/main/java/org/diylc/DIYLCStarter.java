@@ -42,6 +42,7 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+import org.diylc.utils.SwingUtils;
 
 /**
  * Main class that runs DIYLC.
@@ -137,6 +138,9 @@ public class DIYLCStarter {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			// Fix tooltip colors for Linux systems where they may be unreadable
+			SwingUtils.fixTooltipColors();
 			
 			// Apply configurable font scaling from VM argument: -Dorg.diylc.fontScaleFactor=X
 			org.diylc.utils.FontScalingUtils.applyFontScaling();
