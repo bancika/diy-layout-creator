@@ -329,7 +329,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
       return;
     }
     Area mainArea = getBody()[0];
-    
+
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     if (!outlineMode) {
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
@@ -428,7 +428,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
     drawingObserver.stopTracking();
-    
+
     // Draw heat sink tab
     Area tabArea = getBody()[1];
     Color finalTabColor;
@@ -444,7 +444,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     g2d.fill(tabArea);
     drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
-    
+
     if (!outlineMode) {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.setColor(tabBorderColor);
@@ -502,27 +502,75 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    int radius = 3 * width / 32;
+    int margin = 2;
     int pinSize = 2 * width / 32;
-    int leftPinX = width / 6;
+    int leftPinX = width / 6 + 9; // Move left pins 9px to the right (4px + 3px + 2px)
     int rightPinX = 5 * width / 6;
-    int bodyX = leftPinX + pinSize;
-    int bodyWidth = rightPinX - bodyX - pinSize; // Thin body between pin rows
-    int pinSpacing = height / 6;
+    int leadOffset = (int) (LEAD_OFFSET.convertToPixels() * width / 100); // Scale lead offset for icon
+    int bodyX = leftPinX + pinSize - leadOffset + 2; // Offset body to the left, then move 2px to the right
+    int bodyWidth = (rightPinX - bodyX - pinSize) / 2 + 2; // Thinner body, make 2px thicker
+    int bodyHeight = height - 2 * margin;
+    int bodyY = margin;
+    
+    // Calculate pin spacing to use all vertical space
+    // Use same spacing for both rows, with front row offset by half spacing
+    int backPins = 4;
+    int frontPins = 3;
+    // Use the spacing that fits the back row (more pins)
+    int pinSpacing = (bodyHeight - pinSize) / (backPins - 1);
+    int backStartY = margin + pinSize / 2 + 1; // Move pins 1px down
+    // Front pins start with half spacing offset for staggered effect
+    int frontStartY = margin + pinSize / 2 + pinSpacing / 2 + 1; // Move pins 1px down
     
     // Draw thin body between pin rows
     g2d.setColor(BODY_COLOR);
-    g2d.fillRoundRect(bodyX, 2, bodyWidth, height - 6, radius, radius);
+    g2d.fillRect(bodyX, bodyY, bodyWidth, bodyHeight);
     g2d.setColor(BORDER_COLOR);
-    g2d.drawRoundRect(bodyX, 2, bodyWidth, height - 6, radius, radius);
+    g2d.drawRect(bodyX, bodyY, bodyWidth, bodyHeight);
     
-    // Draw staggered pins (left and right rows) as squares
+    // Draw heat sink tab on left side (where there are more pins)
+    int tabWidth = pinSize * 2;
+    g2d.setColor(TAB_COLOR);
+    g2d.fillRect(bodyX, bodyY, tabWidth, bodyHeight);
+    g2d.setColor(TAB_BORDER_COLOR);
+    g2d.drawRect(bodyX, bodyY, tabWidth, bodyHeight);
+    
+    // Draw 4 pins in the back (left row, more pins) as squares - inside body
     g2d.setColor(PIN_COLOR);
-    for (int i = 0; i < 4; i++) {
-      // Left row pins
-      g2d.fillRect(leftPinX - pinSize, (height / 5) * (i + 1) - pinSize / 2, pinSize, pinSize);
-      // Right row pins, offset by half spacing for staggered effect
-      g2d.fillRect(rightPinX, (height / 5) * (i + 1) - pinSize / 2 + pinSpacing / 2, pinSize, pinSize);
+    for (int i = 0; i < backPins; i++) {
+      int pinY = backStartY + i * pinSpacing - pinSize / 2;
+      g2d.fillRect(leftPinX - pinSize, pinY, pinSize, pinSize);
+      g2d.setColor(PIN_BORDER_COLOR);
+      g2d.drawRect(leftPinX - pinSize, pinY, pinSize, pinSize);
+      g2d.setColor(PIN_COLOR);
+    }
+    
+    // Draw 3 pins in the front (right row, fewer pins) with leads going left to body
+    // Use same spacing as back row, just offset by half spacing
+    g2d.setColor(PIN_COLOR);
+    for (int i = 0; i < frontPins; i++) {
+      int pinY = frontStartY + i * pinSpacing;
+      int pinX = rightPinX;
+      int bodyRightEdge = bodyX + bodyWidth;
+      
+      // Draw lead from body edge to pin (horizontal lead going left)
+      if (pinX > bodyRightEdge) {
+        int leadX = bodyRightEdge;
+        int leadY = pinY - pinSize / 2;
+        int leadWidth = pinX - bodyRightEdge;
+        int leadHeight = pinSize;
+        
+        g2d.fillRect(leadX, leadY, leadWidth, leadHeight);
+        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.drawRect(leadX, leadY, leadWidth, leadHeight);
+        g2d.setColor(PIN_COLOR);
+      }
+      
+      // Draw pin at the end of the lead
+      g2d.fillRect(pinX - pinSize / 2, pinY - pinSize / 2, pinSize, pinSize);
+      g2d.setColor(PIN_BORDER_COLOR);
+      g2d.drawRect(pinX - pinSize / 2, pinY - pinSize / 2, pinSize, pinSize);
+      g2d.setColor(PIN_COLOR);
     }
   }
 
