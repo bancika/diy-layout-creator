@@ -28,6 +28,7 @@ import com.bancika.gerberwriter.GerberFunctions;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.LineEndingStyle;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
@@ -58,6 +59,7 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
 
   private Size thickness = THICKNESS;
   private PCBLayer layer = PCBLayer._1;
+  private LineEndingStyle endingStyle = LineEndingStyle.Round;
 
   public CopperTrace() {
     super();
@@ -200,6 +202,16 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
   public boolean getMoveLabel() {
     // override to disable edit
     return false;
+  }
+
+  @EditableProperty(name = "Ending Style")
+  @Override
+  public LineEndingStyle getEndingStyle() {
+    return endingStyle;
+  }
+
+  public void setEndingStyle(LineEndingStyle endingStyle) {
+    this.endingStyle = endingStyle;
   }
 
   @Override

@@ -43,7 +43,6 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -434,7 +433,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     Stroke stroke = null;
     switch (getStyle()) {
       case SOLID:
-        stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
+        stroke = ObjectCache.getInstance().fetchStroke(thickness, getEndingStyle() == LineEndingStyle.Round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT);
         break;
       case DASHED:
         stroke =
@@ -746,6 +745,10 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     if (hideShortLeads == null)
       hideShortLeads = false;
     return hideShortLeads;
+  }
+
+  protected LineEndingStyle getEndingStyle() {
+    return LineEndingStyle.Round;
   }
   
   public void setHideShortLeads(Boolean hideShortLeads) {

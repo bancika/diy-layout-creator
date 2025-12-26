@@ -17,8 +17,7 @@
  */
 package org.diylc.components.connectivity;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.EnumSet;
 import java.util.Set;
@@ -29,6 +28,8 @@ import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractCurvedComponent;
+import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.LineEndingStyle;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -58,6 +59,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
 
   protected Size size = SIZE;
   private PCBLayer layer = PCBLayer._1;
+  private LineEndingStyle endingStyle = LineEndingStyle.Round;
 
   @Override
   protected Color getDefaultColor() {
@@ -67,7 +69,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     float thickness = (float) size.convertToPixels();
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
+    g2d.setStroke(ObjectCache.getInstance().fetchStroke(thickness, getEndingStyle() == LineEndingStyle.Round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT));
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color;
@@ -96,6 +98,15 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
 
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
+  }
+
+  @EditableProperty(name = "Ending Style")
+  public LineEndingStyle getEndingStyle() {
+    return endingStyle;
+  }
+
+  public void setEndingStyle(LineEndingStyle endingStyle) {
+    this.endingStyle = endingStyle;
   }
   
   @Override
