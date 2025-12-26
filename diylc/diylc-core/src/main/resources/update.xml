@@ -427,6 +427,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Multiwatt IC' package with 11 and 15 pin varieties</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Ending Style' property to 'Copper Trace' and 'Curved Trace' to allow choosing round or flat style</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
