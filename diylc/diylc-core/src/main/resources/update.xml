@@ -427,6 +427,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added Silkscreen export to PDF/PNG and print capabilities</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Multiwatt IC' package with 11 and 15 pin varieties</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
