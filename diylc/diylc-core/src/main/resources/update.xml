@@ -427,7 +427,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; just pass -Dorg.diylc.fontScaleFactor=X as a parameter</description>
+					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; requires adding a configuration property to confix.xml with key 'fontScaleFactor' and a desired float value</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

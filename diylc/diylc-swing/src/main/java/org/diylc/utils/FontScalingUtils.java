@@ -25,47 +25,81 @@ import java.awt.Font;
 import java.util.Enumeration;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
 
 /**
  * Utility class for applying a configurable font scaling factor to all UI components.
  * 
- * The scaling factor can be set via the VM argument: -Dorg.diylc.fontScaleFactor=1.5
+ * The scaling factor is stored in the application configuration and can be set
+ * programmatically or through the configuration system.
  * For example, a factor of 1.5 will make all fonts 50% larger.
  * 
  * @author Branislav Stojkovic
  */
 public class FontScalingUtils {
 
-  private static final String FONT_SCALE_FACTOR_PROPERTY = "org.diylc.fontScaleFactor";
-  private static Double fontScaleFactor = null;
+  private static final double DEFAULT_FONT_SCALE_FACTOR = 1.0;
+  private static final double MIN_FONT_SCALE_FACTOR = 0.5;
+  private static final double MAX_FONT_SCALE_FACTOR = 3.0;
 
   /**
-   * Gets the font scaling factor from the VM argument.
+   * Gets the font scaling factor from ConfigurationManager.
    * 
    * @return The scaling factor (defaults to 1.0 if not set or invalid)
    */
   public static double getFontScaleFactor() {
-    if (fontScaleFactor == null) {
-      String factorStr = System.getProperty(FONT_SCALE_FACTOR_PROPERTY);
-      if (factorStr != null && !factorStr.trim().isEmpty()) {
+    try {
+      Object factorObj = ConfigurationManager.getInstance().readObject(
+          IPlugInPort.FONT_SCALE_FACTOR_KEY, DEFAULT_FONT_SCALE_FACTOR);
+      
+      if (factorObj instanceof Number) {
+        double factor = ((Number) factorObj).doubleValue();
+        // Validate the factor is reasonable (between 0.5 and 3.0)
+        if (factor >= MIN_FONT_SCALE_FACTOR && factor <= MAX_FONT_SCALE_FACTOR) {
+          return factor;
+        } else {
+          System.err.println("Warning: Font scale factor " + factor + " is out of range ("
+              + MIN_FONT_SCALE_FACTOR + "-" + MAX_FONT_SCALE_FACTOR + "). Using default "
+              + DEFAULT_FONT_SCALE_FACTOR);
+          return DEFAULT_FONT_SCALE_FACTOR;
+        }
+      } else if (factorObj instanceof String) {
+        // Handle string values (for backward compatibility or manual config editing)
         try {
-          double factor = Double.parseDouble(factorStr.trim());
-          // Validate the factor is reasonable (between 0.5 and 3.0)
-          if (factor >= 0.5 && factor <= 3.0) {
-            fontScaleFactor = factor;
-          } else {
-            System.err.println("Warning: Font scale factor " + factor + " is out of range (0.5-3.0). Using default 1.0");
-            fontScaleFactor = 1.0;
+          double factor = Double.parseDouble((String) factorObj);
+          if (factor >= MIN_FONT_SCALE_FACTOR && factor <= MAX_FONT_SCALE_FACTOR) {
+            return factor;
           }
         } catch (NumberFormatException e) {
-          System.err.println("Warning: Invalid font scale factor '" + factorStr + "'. Using default 1.0");
-          fontScaleFactor = 1.0;
+          // Invalid string format, use default
         }
-      } else {
-        fontScaleFactor = 1.0;
       }
+    } catch (Exception e) {
+      System.err.println("Warning: Could not read font scale factor from configuration: " + e.getMessage());
     }
-    return fontScaleFactor;
+    
+    return DEFAULT_FONT_SCALE_FACTOR;
+  }
+
+  /**
+   * Sets the font scaling factor in ConfigurationManager.
+   * 
+   * @param factor The scaling factor (must be between 0.5 and 3.0)
+   * @return true if the factor was set successfully, false if invalid
+   */
+  public static boolean setFontScaleFactor(double factor) {
+    if (factor < MIN_FONT_SCALE_FACTOR || factor > MAX_FONT_SCALE_FACTOR) {
+      return false;
+    }
+    
+    try {
+      ConfigurationManager.getInstance().writeValue(IPlugInPort.FONT_SCALE_FACTOR_KEY, factor);
+      return true;
+    } catch (Exception e) {
+      System.err.println("Warning: Could not write font scale factor to configuration: " + e.getMessage());
+      return false;
+    }
   }
 
   /**
@@ -73,8 +107,10 @@ public class FontScalingUtils {
    * This should be called once during application initialization, after setting the
    * Look and Feel but before creating any UI components.
    * 
-   * The scaling factor is read from the VM argument: -Dorg.diylc.fontScaleFactor=X
-   * where X is a number between 0.5 and 3.0 (e.g., 1.5 for 50% larger fonts).
+   * The scaling factor is read from ConfigurationManager using the key
+   * IPlugInPort.FONT_SCALE_FACTOR_KEY. The factor should be a number between 0.5 and 3.0
+   * (e.g., 1.5 for 50% larger fonts). Use setFontScaleFactor() to change the value
+   * programmatically.
    */
   public static void applyFontScaling() {
     double scaleFactor = getFontScaleFactor();
@@ -93,8 +129,7 @@ public class FontScalingUtils {
         Object value = defaults.get(key);
         
         // Check if this is a font property
-        if (value instanceof Font) {
-          Font font = (Font) value;
+        if (value instanceof Font font) {
           float newSize = (float) (font.getSize() * scaleFactor);
           Font scaledFont = font.deriveFont(newSize);
           defaults.put(key, scaledFont);

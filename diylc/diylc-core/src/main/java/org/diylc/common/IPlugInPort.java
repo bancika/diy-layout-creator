@@ -84,6 +84,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String RENUMBER_ON_PASTE_KEY = "renumberOnPaste";
   public static final String RULER_IN_SUBDIVISION_KEY = "rulerInSubdivision";
   public static final String CACHING_ENABLED_KEY = "cachingEnabled";
+  public static final String FONT_SCALE_FACTOR_KEY = "fontScaleFactor";
   
   public static final String RULER_IN_SUBDIVISION_2 = "base of 2";
   public static final String RULER_IN_SUBDIVISION_10 = "base of 10";
