@@ -3,6 +3,7 @@ package org.diylc.presenter;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.Arrays;
 import java.util.List;
@@ -141,5 +142,108 @@ public class CalcUtilsTest {
         // Test y coordinate outside delta
         point2.setLocation(10.0, 21.0);
         assertFalse(CalcUtils.pointsMatch(point1, point2, 0.5));
+    }
+
+    @Test
+    public void testCalculateLuminance() {
+        // Test pure black
+        assertEquals(0.0, CalcUtils.calculateLuminance(Color.BLACK), 0.001);
+        
+        // Test pure white
+        assertEquals(255.0, CalcUtils.calculateLuminance(Color.WHITE), 0.001);
+        
+        // Test pure red
+        double redLuminance = CalcUtils.calculateLuminance(Color.RED);
+        assertEquals(76.245, redLuminance, 0.001); // 0.299 * 255
+        
+        // Test pure green
+        double greenLuminance = CalcUtils.calculateLuminance(Color.GREEN);
+        assertEquals(149.685, greenLuminance, 0.001); // 0.587 * 255
+        
+        // Test pure blue
+        double blueLuminance = CalcUtils.calculateLuminance(Color.BLUE);
+        assertEquals(29.07, blueLuminance, 0.001); // 0.114 * 255
+        
+        // Test middle gray (128, 128, 128)
+        Color gray = new Color(128, 128, 128);
+        double grayLuminance = CalcUtils.calculateLuminance(gray);
+        assertEquals(128.0, grayLuminance, 0.001);
+        
+        // Test null color
+        assertEquals(0.0, CalcUtils.calculateLuminance(null), 0.001);
+        
+        // Test custom color
+        Color custom = new Color(100, 150, 200);
+        double customLuminance = CalcUtils.calculateLuminance(custom);
+        double expected = 0.299 * 100 + 0.587 * 150 + 0.114 * 200;
+        assertEquals(expected, customLuminance, 0.001);
+    }
+
+    @Test
+    public void testConvertToMonochrome() {
+        // Test pure black -> should stay black
+        Color result = CalcUtils.convertToMonochrome(Color.BLACK);
+        assertEquals(Color.BLACK, result);
+        
+        // Test pure white -> should stay white
+        result = CalcUtils.convertToMonochrome(Color.WHITE);
+        assertEquals(Color.WHITE, result);
+        
+        // Test dark color -> should become black
+        Color darkBlue = new Color(0, 0, 50);
+        result = CalcUtils.convertToMonochrome(darkBlue);
+        assertEquals(Color.BLACK, result);
+        
+        // Test light color -> should become white
+        Color lightYellow = new Color(255, 255, 200);
+        result = CalcUtils.convertToMonochrome(lightYellow);
+        assertEquals(Color.WHITE, result);
+        
+        // Test middle gray -> should become white (threshold is 128, gray is exactly 128)
+        Color gray = new Color(128, 128, 128);
+        result = CalcUtils.convertToMonochrome(gray);
+        assertEquals(Color.WHITE, result);
+        
+        // Test color just below threshold -> should become black
+        Color darkGray = new Color(127, 127, 127);
+        result = CalcUtils.convertToMonochrome(darkGray);
+        assertEquals(Color.BLACK, result);
+        
+        // Test color just above threshold -> should become white
+        Color lightGray = new Color(129, 129, 129);
+        result = CalcUtils.convertToMonochrome(lightGray);
+        assertEquals(Color.WHITE, result);
+        
+        // Test with custom threshold
+        Color mediumColor = new Color(100, 100, 100);
+        result = CalcUtils.convertToMonochrome(mediumColor, 50.0);
+        assertEquals(Color.WHITE, result); // Luminance ~100, threshold 50, so white
+        
+        result = CalcUtils.convertToMonochrome(mediumColor, 150.0);
+        assertEquals(Color.BLACK, result); // Luminance ~100, threshold 150, so black
+        
+        // Test null color
+        assertNull(CalcUtils.convertToMonochrome(null));
+    }
+
+    @Test
+    public void testConvertToMonochromeWithAlpha() {
+        // Test color with alpha channel - alpha should be preserved
+        Color transparentRed = new Color(255, 0, 0, 128);
+        Color result = CalcUtils.convertToMonochrome(transparentRed);
+        assertEquals(Color.WHITE.getRed(), result.getRed());
+        assertEquals(Color.WHITE.getGreen(), result.getGreen());
+        assertEquals(Color.WHITE.getBlue(), result.getBlue());
+        assertEquals(128, result.getAlpha());
+        
+        // Test fully transparent color
+        Color transparent = new Color(100, 150, 200, 0);
+        result = CalcUtils.convertToMonochrome(transparent);
+        assertEquals(0, result.getAlpha());
+        
+        // Test opaque color - alpha should remain 255
+        Color opaque = new Color(50, 50, 50);
+        result = CalcUtils.convertToMonochrome(opaque);
+        assertEquals(255, result.getAlpha());
     }
 }

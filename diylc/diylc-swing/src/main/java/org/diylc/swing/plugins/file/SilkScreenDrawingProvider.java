@@ -52,7 +52,7 @@ public class SilkScreenDrawingProvider implements IDrawingProvider {
 
   @Override
   public void draw(int page, Graphics g, double zoomFactor) {
-    plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING, DrawOption.OUTLINE_MODE),
+    plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING, DrawOption.OUTLINE_MODE, DrawOption.MONOCHROMATIC),
         new SilkScreenFilter(), zoomFactor, null, null);
   }
 

@@ -18,6 +18,7 @@
  */
 package org.diylc.presenter;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -70,5 +71,53 @@ public class CalcUtils {
     if (Math.abs(point1.getY() - point2.getY()) > delta)
       return false;
     return true;
+  }
+
+  /**
+   * Calculates the relative luminance (perceived brightness) of a color.
+   * Uses the standard formula: L = 0.299*R + 0.587*G + 0.114*B
+   * 
+   * @param color the color to calculate luminance for
+   * @return the luminance value between 0 and 255
+   */
+  public static double calculateLuminance(Color color) {
+    if (color == null) {
+      return 0.0;
+    }
+    return 0.299 * color.getRed() + 0.587 * color.getGreen() + 0.114 * color.getBlue();
+  }
+
+  /**
+   * Converts a color to monochrome (black or white) based on its luminance.
+   * Colors with luminance below the threshold (128) are converted to black,
+   * otherwise to white. The alpha channel is preserved if present.
+   * 
+   * @param color the color to convert
+   * @param threshold the luminance threshold (default 128 for middle gray)
+   * @return black or white color, preserving alpha channel
+   */
+  public static Color convertToMonochrome(Color color, double threshold) {
+    if (color == null) {
+      return null;
+    }
+    double luminance = calculateLuminance(color);
+    Color monochromeColor = (luminance < threshold) ? Color.BLACK : Color.WHITE;
+    // Preserve alpha channel if present
+    if (color.getAlpha() < 255) {
+      monochromeColor = new Color(monochromeColor.getRed(), monochromeColor.getGreen(), 
+          monochromeColor.getBlue(), color.getAlpha());
+    }
+    return monochromeColor;
+  }
+
+  /**
+   * Converts a color to monochrome (black or white) based on its luminance.
+   * Uses the default threshold of 128 (middle gray).
+   * 
+   * @param color the color to convert
+   * @return black or white color, preserving alpha channel
+   */
+  public static Color convertToMonochrome(Color color) {
+    return convertToMonochrome(color, 128.0);
   }
 }

@@ -53,17 +53,11 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.AttributedCharacterIterator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.diylc.common.DrawOption;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.ZoomableStroke;
 import org.diylc.core.IDrawingObserver;
@@ -96,7 +90,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   
   private int uniqueCounter = 0;
 
-  private Graphics2D canvasGraphics;
+  private final Graphics2D canvasGraphics;
+  private final Set<DrawOption> drawOptions;
+
   private Stroke originalStroke;
   private Color originalColor;
   private Composite originalComposite;
@@ -115,12 +111,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   /**
    * Creates a wrapper around specified {@link Graphics2D} object.
-   * 
+   *
    * @param canvasGraphics
+   * @param drawOptions
    */
-  public G2DWrapper(Graphics2D canvasGraphics, double zoom) {
+  public G2DWrapper(Graphics2D canvasGraphics, double zoom, Set<DrawOption> drawOptions) {
     super();
     this.canvasGraphics = canvasGraphics;
+    this.drawOptions = drawOptions;
     String debugAreaPerformanceStr = System.getProperty(DEBUG_AREA_PERFORMANCE);
     debugAreaPerformance = "true".equalsIgnoreCase(debugAreaPerformanceStr);
     this.zoom = zoom;
@@ -758,7 +756,11 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void setColor(Color c) {
-    canvasGraphics.setColor(c);
+    if (drawOptions.contains(DrawOption.MONOCHROMATIC) && c != null) {
+      canvasGraphics.setColor(CalcUtils.convertToMonochrome(c));
+    } else {
+      canvasGraphics.setColor(c);
+    }
   }
 
   @Override

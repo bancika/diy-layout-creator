@@ -184,7 +184,7 @@ public class DrawingManager {
     if (externalZoom != null)
       zoom *= externalZoom;
 
-    G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom);
+    G2DWrapper g2dWrapper = new G2DWrapper(g2d, zoom, drawOptions);
 
     configureRenderingHints(g2d, drawOptions);
 
@@ -268,7 +268,7 @@ public class DrawingManager {
 
     // give the cache a chance to prepare all the components in multiple threads
     if (drawOptions.contains(DrawOption.ENABLE_CACHING)) {
-      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom, scaleFactor);
+      DrawingCache.Instance.bulkPrepare(componentForRenderList, g2dWrapper, outlineMode, project, zoom, scaleFactor, drawOptions);
     }
 
     // componentAreaMap.clear();
@@ -562,10 +562,12 @@ public class DrawingManager {
     }
   }
 
-  private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor, Rectangle2D visibleRect, IDIYComponent<?> component, G2DWrapper g2dWrapper, ComponentState state, double zoom, int i, boolean outlineMode) {
+  private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,
+      Rectangle2D visibleRect, IDIYComponent<?> component, G2DWrapper g2dWrapper, ComponentState state,
+      double zoom, int i, boolean outlineMode) {
     if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
       DrawingCache.Instance.draw(component, g2dWrapper, state,
-          drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect);
+          drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect, drawOptions);
     else // go straight to the wrapper
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
   }

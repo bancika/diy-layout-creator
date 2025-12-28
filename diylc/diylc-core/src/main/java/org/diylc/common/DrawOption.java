@@ -68,5 +68,9 @@ public enum DrawOption {
   /**
    * Whether locked components should be rendered as transparent or not.
    */
-  LOCKED_ALPHA;
+  LOCKED_ALPHA,
+  /**
+   * When applied, all colors will be converted to blackest black or whitest white
+   */
+  MONOCHROMATIC;
 }
