@@ -296,6 +296,7 @@ Power Rating|Puissance nominale
 Power Strip|Multiprise
 Primary CT|Prise centrale primaire
 Print...|Imprimer...
+Project|Projet
 Project Cloud|Projet Cloud
 Public Announcement|Annonce publique
 Radius|Rayon

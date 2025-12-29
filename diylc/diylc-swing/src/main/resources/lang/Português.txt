@@ -299,6 +299,7 @@ Power Rating|Potência Nominal
 Power Strip|Listra Eletrificada
 Primary CT|CT Primário
 Print...|Imprimir...
+Project|Projeto
 Project Cloud|Projetos na Núvem
 Public Announcement|Anúncio Público
 Radius|Raio

@@ -309,6 +309,7 @@ Power Rating|Potenza nominale
 Power Strip|Ciabatta
 Primary CT|CT primario
 Print...|Stampa ...
+Project|Progetto
 Project Cloud|Progetto Cloud
 Public Announcement|Annuncio pubblico
 Radius|raggio

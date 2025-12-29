@@ -299,6 +299,7 @@ Power Rating|Potencia Nominal
 Power Strip|Regleta
 Primary CT|Toma Central en primario
 Print...|Imprimir...
+Project|Proyecto
 Project Cloud|Proyectos en la Nube
 Public Announcement|Anuncio Público
 Radius|Radio

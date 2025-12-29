@@ -300,6 +300,7 @@ Power Rating|功率
 Power Strip|电源条
 Primary CT|初级中心抽头
 Print...|打印...
+Project|项目
 Project Cloud|项目云
 Public Announcement|公告
 Radius|半径

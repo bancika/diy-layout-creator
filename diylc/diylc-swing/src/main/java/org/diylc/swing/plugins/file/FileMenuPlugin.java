@@ -45,7 +45,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
   private static final String TRACE_MASK_TITLE = "Trace Mask";
   private static final String SILK_SCREEN_TITLE = "Silkscreen";
   private static final String INTEGRATION_TITLE = "Integration";
-  private static final String EXPORT_TITLE = "Export";
+  private static final String PROJECT_TITLE = "Project";
 
   private ProjectDrawingProvider drawingProvider;
   private TraceMaskDrawingProvider traceMaskDrawingProvider;
@@ -76,15 +76,16 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
     swingUI.injectMenuAction(actionFactory.createSaveAsAction(plugInPort, swingUI), FILE_TITLE);
     swingUI.injectDynamicSubmenu("Recent Files", IconLoader.History.getIcon(), FILE_TITLE, this);
     swingUI.injectMenuAction(null, FILE_TITLE);
-    swingUI.injectSubmenu(EXPORT_TITLE, IconLoader.Export.getIcon(), FILE_TITLE);
+
+    swingUI.injectSubmenu(PROJECT_TITLE, IconLoader.Project.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), EXPORT_TITLE);
+        actionFactory.createExportPDFAction(plugInPort, drawingProvider, swingUI, ""), PROJECT_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), EXPORT_TITLE);
+        actionFactory.createExportPNGAction(plugInPort, drawingProvider, swingUI, ""), PROJECT_TITLE);
     swingUI.injectMenuAction(
-        actionFactory.createExportGerberAction(plugInPort, swingUI), EXPORT_TITLE);
+        actionFactory.createExportGerberAction(plugInPort, swingUI), PROJECT_TITLE);
     swingUI.injectMenuAction(actionFactory.createPrintAction(drawingProvider, swingUI,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), FILE_TITLE);
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), PROJECT_TITLE);
 
     swingUI.injectSubmenu(TRACE_MASK_TITLE, IconLoader.TraceMask.getIcon(), FILE_TITLE);
     swingUI.injectMenuAction(actionFactory.createExportPDFAction(plugInPort,
@@ -103,7 +104,7 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
         silkScreenDrawingProvider, swingUI, " (silkscreen)"), SILK_SCREEN_TITLE);
     swingUI.injectMenuAction(
         actionFactory.createPrintAction(silkScreenDrawingProvider, swingUI,
-            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK),
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK),
         SILK_SCREEN_TITLE);
 
 
