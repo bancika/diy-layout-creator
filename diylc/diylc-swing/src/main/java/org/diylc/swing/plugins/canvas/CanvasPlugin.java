@@ -361,35 +361,40 @@ public class CanvasPlugin implements IPlugIn{
       double extraSpace = plugInPort.getExtraSpace();
       scrollPane.setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
 
-      // disable built-in scrolling mechanism, we'll do it manually
-      scrollPane.setWheelScrollingEnabled(false);
+      // Enable built-in wheel scrolling to support horizontal scroll from tilt wheels on Windows/Linux
+      // The scroll pane's native handling supports horizontal scrolling from tilt wheels
+      scrollPane.setWheelScrollingEnabled(true);
 
       scrollPane.addMouseWheelListener(new MouseWheelListener() {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-          final JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-          final JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-
           boolean wheelZoom =
               configManager.readBoolean(IPlugInPort.WHEEL_ZOOM_KEY, false);
 
+          // Handle zoom - consume to prevent default scrolling
           if (wheelZoom || (Utils.isMac() ? e.isMetaDown() : e.isControlDown())) {
+            e.consume();
             CanvasPlugin.this.zoom(e.getWheelRotation());            
+            return;
           }
+          
+          // For Shift+wheel (horizontal scroll), handle manually to maintain existing behavior
           if (e.isShiftDown()) {
+            e.consume(); // Consume to prevent default handling
+            final JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
             int iScrollAmount = e.getScrollAmount();
             int iNewValue = horizontalScrollBar.getValue()
                 + horizontalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
-            if (iNewValue <= horizontalScrollBar.getMaximum())
+            if (iNewValue >= horizontalScrollBar.getMinimum() && iNewValue <= horizontalScrollBar.getMaximum())
               horizontalScrollBar.setValue(iNewValue);
-          } else {
-            int iScrollAmount = e.getScrollAmount();
-            int iNewValue = verticalScrollBar.getValue()
-                + verticalScrollBar.getBlockIncrement() * iScrollAmount * e.getWheelRotation();
-            if (iNewValue <= verticalScrollBar.getMaximum())
-              verticalScrollBar.setValue(iNewValue);
+            return;
           }
+          
+          // For regular vertical scrolling and horizontal scrolling from tilt wheels,
+          // let the scroll pane handle it natively. The scroll pane's built-in handling
+          // supports horizontal scroll events from tilt wheels on Windows/Linux.
+          // We don't consume the event, so the scroll pane can process it.
         }
       });
     }
