@@ -300,6 +300,7 @@ Power Rating|पावर रेटिंग
 Power Strip|पावर स्ट्रिप
 Primary CT|प्राइमरी CT
 Print...|प्रिंट...
+Project|प्रोजेक्ट
 Project Cloud|प्रोजेक्ट क्लाउड
 Public Announcement|सार्वजनिक घोषणा
 Radius|त्रिज्या

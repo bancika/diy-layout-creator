@@ -305,6 +305,7 @@ Power Rating|Nennleistung
 Power Strip|Steckdosenleiste
 Primary CT|Primärer Mittelabgriff
 Print...|Drucken...
+Project|Projekt
 Project Cloud|Projekt Cloud
 Public Announcement|Öffentliche Ankündigung
 Radius|Radius

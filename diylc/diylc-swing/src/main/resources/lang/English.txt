@@ -300,6 +300,7 @@ Power Rating
 Power Strip
 Primary CT
 Print...
+Project
 Project Cloud
 Public Announcement
 Radius

@@ -305,6 +305,7 @@ Power Rating|Nominale vermogen
 Power Strip|Voedingslijn
 Primary CT|Primaire middenaftakking
 Print...|Afdrukken...
+Project|Project
 Project Cloud|Project cloud
 Public Announcement|Openbare aankondiging 
 Radius|Straal 

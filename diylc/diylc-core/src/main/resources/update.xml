@@ -466,6 +466,10 @@
 					<description>Honor label color settings for 'Tape Measure' component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Reorganized export and print related items in the File menu to reduce clutter</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed underside rendering and mirroring position issues that affected only SPDT 'Mini Toggle Switch' types</description>
 				</org.diylc.appframework.update.Change>

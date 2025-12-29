@@ -293,6 +293,7 @@ Power Rating|Snaga
 Power Strip|Naponska Magistrala
 Primary CT|Primarni Srednji Izvod
 Print...|Štampa...
+Project|Projekat
 Project Cloud|Projektni Oblak
 Public Announcement|Javna Objava
 Radius|Poluprečnik
