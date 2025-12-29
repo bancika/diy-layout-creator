@@ -435,6 +435,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added new property in 'LP Switch' that allows having the middle terminals connected (as they were) or disconnected to allow more flexibility</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Ending Style' property to 'Copper Trace' and 'Curved Trace' to allow choosing round or flat style</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

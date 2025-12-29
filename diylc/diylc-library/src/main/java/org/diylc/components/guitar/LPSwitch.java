@@ -63,15 +63,18 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   private static Size LENGTH = new Size(1.3d, SizeUnit.in);
   private static Size BASE_LENGTH = new Size(18d, SizeUnit.mm);
   private static Size WAFER_THICKNESS = new Size(0.05d, SizeUnit.in);
-  private static Size TERMINAL_SPACING = new Size(0.2d, SizeUnit.in);
+  private static Size TERMINAL_SPACING_CONNECTED = new Size(0.2d, SizeUnit.in);
+  private static Size TERMINAL_SPACING_DISCONNECTED = new Size(0.1d, SizeUnit.in);
 
   private String value = "";
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
+  private MiddleTerminalConfiguration middleTerminalConfiguration;
 
   public LPSwitch() {
     super();
+    middleTerminalConfiguration = MiddleTerminalConfiguration.Connected;
     updateControlPoints();
   }
 
@@ -127,7 +130,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
     g2d.setColor(finalBorderColor);
     g2d.draw(body[1]);
 
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2));
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
     g2d.setColor(METAL_COLOR);
     drawingObserver.startTracking();
     g2d.draw(body[2]);
@@ -178,24 +181,44 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
         }
       }
 
-      int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
 
       GeneralPath terminalPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-      terminalPath.moveTo(x - waferThickness * 3 / 2, bodyY + 1);
-      terminalPath.lineTo(x - waferThickness * 3 / 2, bodyY + baseLength);
-      terminalPath.lineTo(x, y + length);
 
-      terminalPath.moveTo(x + waferThickness * 3 / 2, bodyY + 1);
-      terminalPath.lineTo(x + waferThickness * 3 / 2, bodyY + baseLength);
-      terminalPath.lineTo(x, y + length);
+      if (getMiddleTerminalConfiguration() == MiddleTerminalConfiguration.Connected) {
+        int terminalSpacing = (int) TERMINAL_SPACING_CONNECTED.convertToPixels();
+        terminalPath.moveTo(x - waferThickness * 3 / 2, bodyY + 1);
+        terminalPath.lineTo(x - waferThickness * 3 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x, y + length);
 
-      terminalPath.moveTo(x - waferThickness * 5 / 2, bodyY + 1);
-      terminalPath.lineTo(x - waferThickness * 5 / 2, bodyY + baseLength);
-      terminalPath.lineTo(x - terminalSpacing, y + length);
+        terminalPath.moveTo(x + waferThickness * 3 / 2, bodyY + 1);
+        terminalPath.lineTo(x + waferThickness * 3 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x, y + length);
 
-      terminalPath.moveTo(x + waferThickness * 5 / 2, bodyY + 1);
-      terminalPath.lineTo(x + waferThickness * 5 / 2, bodyY + baseLength);
-      terminalPath.lineTo(x + terminalSpacing, y + length);
+        terminalPath.moveTo(x - waferThickness * 5 / 2, bodyY + 1);
+        terminalPath.lineTo(x - waferThickness * 5 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x - terminalSpacing, y + length);
+
+        terminalPath.moveTo(x + waferThickness * 5 / 2, bodyY + 1);
+        terminalPath.lineTo(x + waferThickness * 5 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x + terminalSpacing, y + length);
+      } else {
+        int terminalSpacing = (int) TERMINAL_SPACING_DISCONNECTED.convertToPixels();
+        terminalPath.moveTo(x - waferThickness * 3 / 2, bodyY + 1);
+        terminalPath.lineTo(x - waferThickness * 3 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x- terminalSpacing, y + length);
+
+        terminalPath.moveTo(x + waferThickness * 3 / 2, bodyY + 1);
+        terminalPath.lineTo(x + waferThickness * 3 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x + terminalSpacing, y + length);
+
+        terminalPath.moveTo(x - waferThickness * 5 / 2, bodyY + 1);
+        terminalPath.lineTo(x - waferThickness * 5 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x - terminalSpacing * 2, y + length);
+
+        terminalPath.moveTo(x + waferThickness * 5 / 2, bodyY + 1);
+        terminalPath.lineTo(x + waferThickness * 5 / 2, bodyY + baseLength);
+        terminalPath.lineTo(x + terminalSpacing * 2, y + length);
+      }
       body[2] = terminalPath;
 
       // Rotate if needed
@@ -219,14 +242,37 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   @SuppressWarnings("incomplete-switch")
   private void updateControlPoints() {
+
+    Point2D[] newControlPoints = null;
+    if (getMiddleTerminalConfiguration() == MiddleTerminalConfiguration.Connected && controlPoints.length == 5) {
+      newControlPoints = new Point2D[4];
+    } else if (getMiddleTerminalConfiguration() == MiddleTerminalConfiguration.Disconnected && controlPoints.length == 4) {
+      newControlPoints = new Point2D[5];
+      newControlPoints[4] = new Point2D.Double();
+    }
+    if (newControlPoints != null) {
+      for (int i = 0; i < newControlPoints.length && i < controlPoints.length; i++) {
+        newControlPoints[i] = controlPoints[i];
+      }
+      controlPoints = newControlPoints;
+    }
+
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
-    int terminalSpacing = (int) TERMINAL_SPACING.convertToPixels();
     int length = (int) LENGTH.convertToPixels();
 
-    controlPoints[1].setLocation(x - terminalSpacing, y + length);
-    controlPoints[2].setLocation(x, y + length);
-    controlPoints[3].setLocation(x + terminalSpacing, y + length);
+    if (getMiddleTerminalConfiguration() == MiddleTerminalConfiguration.Connected) {
+      int terminalSpacing = (int) TERMINAL_SPACING_CONNECTED.convertToPixels();
+      controlPoints[1].setLocation(x - terminalSpacing, y + length);
+      controlPoints[2].setLocation(x, y + length);
+      controlPoints[3].setLocation(x + terminalSpacing, y + length);
+    } else {
+      int terminalSpacing = (int) TERMINAL_SPACING_DISCONNECTED.convertToPixels();
+      controlPoints[1].setLocation(x - terminalSpacing * 2, y + length);
+      controlPoints[2].setLocation(x - terminalSpacing, y + length);
+      controlPoints[3].setLocation(x + terminalSpacing, y + length);
+      controlPoints[4].setLocation(x + terminalSpacing * 2, y + length);
+    }
 
     // Rotate if needed
     if (orientation != Orientation.DEFAULT) {
@@ -331,8 +377,21 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
     // Invalidate the body
     body = null;
   }
-  
-//  @Override
+
+  @EditableProperty(name = "Middle Terminals")
+  public MiddleTerminalConfiguration getMiddleTerminalConfiguration() {
+    return middleTerminalConfiguration;
+  }
+
+  public void setMiddleTerminalConfiguration(
+      MiddleTerminalConfiguration middleTerminalConfiguration) {
+    this.middleTerminalConfiguration = middleTerminalConfiguration;
+    updateControlPoints();
+    // Invalidate the body
+    body = null;
+  }
+
+  //  @Override
 //  public String getControlPointNodeName(int index) {
 //    // we don't want the switch to produce any nodes, it just makes connections
 //    return null;
@@ -347,27 +406,34 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   @Override
   public String getPositionName(int position) {
-    switch (position) {
-      case 0:
-        return "Treble";
-      case 1:
-        return "Middle";
-      case 2:
-        return "Rhythm";
-    }
-    return null;
+    return switch (position) {
+      case 0 -> "Treble";
+      case 1 -> "Middle";
+      case 2 -> "Rhythm";
+      default -> null;
+    };
   }
 
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
-    switch (position) {
-      case 0:
-        return index1 == 1 && index2 == 2;
-      case 1:
-        return index1 > 0 && index2 > 0 && index1 < index2;
-      case 2:
-        return index1 == 2 && index2 == 3;
+    if (getMiddleTerminalConfiguration() == MiddleTerminalConfiguration.Connected) {
+      return switch (position) {
+        case 0 -> index1 == 1 && index2 == 2;
+        case 1 -> index1 > 0 && index2 > 0 && index1 < index2;
+        case 2 -> index1 == 2 && index2 == 3;
+        default -> false;
+      };
+    } else {
+      return switch (position) {
+        case 0 -> index1 == 1 && index2 == 2;
+        case 1 -> (index1 == 1 && index2 == 2) || (index1 == 3 && index2 == 4);
+        case 2 -> index1 == 3 && index2 == 4;
+        default -> false;
+      };
     }
-    return false;
+  }
+
+  public enum MiddleTerminalConfiguration {
+    Connected, Disconnected
   }
 }
