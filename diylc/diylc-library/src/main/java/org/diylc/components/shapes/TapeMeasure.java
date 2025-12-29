@@ -77,7 +77,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     g2d.setColor(COLOR);
     g2d.drawLine(1, height - 2, width / 4, height * 3 / 4 - 1);
     g2d.drawLine(width * 3 / 4, height / 4 - 1, width - 2, 1);
-    g2d.setBackground(Color.black);
+    g2d.setColor(Color.black);
     g2d.fillPolygon(new int[] {1, 1, 4}, new int[] {height - 4, height - 1, height - 1}, 3);
     g2d.fillPolygon(new int[] {width - 4, width - 1, width - 1}, new int[] {1, 1, 4}, 3);
     g2d.rotate(-Math.PI / 4, width / 2, height / 2);

@@ -480,7 +480,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void setComposite(Composite comp) {
-    canvasGraphics.setComposite(comp);
+    if (!drawOptions.contains(DrawOption.OUTLINE_MODE)) {
+      canvasGraphics.setComposite(comp);
+    }
     // FIXME: check this.
   }
 
