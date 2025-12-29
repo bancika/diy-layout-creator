@@ -477,6 +477,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Application freezes when using underside rendering or mirroring on 'Pin Header' when sized at 1x1</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Rotary Switch (Open)' cannot be selected by clicking on the wafer for 4-pole variations</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
