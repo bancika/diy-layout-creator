@@ -30,7 +30,7 @@ public enum FileFilterEnum {
       "Excel Workbooks (*.xls)", "xls"), CSV("Comma Separated Files (*.csv)", "csv"), HTML("HTML Files (*.html)",
       "html"), IMAGES("Image Files (*.png, *.jpg, *.gif)", "png", "jpg", "gif"), XML("XML Files (*.xml)", "xml"), 
       TEST("Test Files (*.tst)", "tst"), CRV("Curve Files (*.crv)", "crv"), SVG("SVG Files (*.svg)", "svg"), 
-      GBR("Gerber Files (*.gbr)", "gbr"), ALL_FILES("All Files (*.*)", "*");
+      GBR("Gerber Files (*.gbr)", "gbr"), DXF("CAD Files (*.dxf)", "gbr"), ALL_FILES("All Files (*.*)", "*");
 
   FileFilter filter;
   String[] extensions;

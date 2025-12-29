@@ -22,6 +22,7 @@ import java.awt.datatransfer.ClipboardOwner;
 import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.diylc.swing.actions.analyze.*;
+import org.diylc.swing.actions.file.*;
 import org.diylc.swingframework.IDrawingProvider;
 
 import org.diylc.common.INetlistAnalyzer;
@@ -56,20 +57,6 @@ import org.diylc.swing.actions.edit.SaveAsTemplateAction;
 import org.diylc.swing.actions.edit.SelectAllAction;
 import org.diylc.swing.actions.edit.SendToBackAction;
 import org.diylc.swing.actions.edit.UngroupAction;
-import org.diylc.swing.actions.file.CreateBomAction;
-import org.diylc.swing.actions.file.ExitAction;
-import org.diylc.swing.actions.file.ExportBlocksAction;
-import org.diylc.swing.actions.file.ExportPDFAction;
-import org.diylc.swing.actions.file.ExportVariantsAction;
-import org.diylc.swing.actions.file.ImportAction;
-import org.diylc.swing.actions.file.ImportBlocksAction;
-import org.diylc.swing.actions.file.ImportNetlistAction;
-import org.diylc.swing.actions.file.ImportVariantsAction;
-import org.diylc.swing.actions.file.NewAction;
-import org.diylc.swing.actions.file.OpenAction;
-import org.diylc.swing.actions.file.PrintAction;
-import org.diylc.swing.actions.file.SaveAction;
-import org.diylc.swing.actions.file.SaveAsAction;
 
 public class ActionFactory {
 
@@ -119,6 +106,11 @@ public class ActionFactory {
   public ExportPDFAction createExportPDFAction(IPlugInPort plugInPort,
       IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
     return new ExportPDFAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
+  }
+
+  public ExportDXFAction createExportXDFAction(IPlugInPort plugInPort,
+      IDrawingProvider drawingProvider, ISwingUI swingUI, String defaultSuffix) {
+    return new ExportDXFAction(plugInPort, drawingProvider, swingUI, defaultSuffix);
   }
   
   public ExportGerberAction createExportGerberAction(IPlugInPort plugInPort, ISwingUI swingUI) {
