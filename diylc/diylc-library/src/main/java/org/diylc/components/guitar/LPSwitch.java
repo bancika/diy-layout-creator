@@ -380,6 +380,9 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   @EditableProperty(name = "Middle Terminals")
   public MiddleTerminalConfiguration getMiddleTerminalConfiguration() {
+    if (middleTerminalConfiguration == null) {
+      middleTerminalConfiguration = MiddleTerminalConfiguration.Connected;
+    }
     return middleTerminalConfiguration;
   }
 
