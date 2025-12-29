@@ -143,6 +143,13 @@
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
+            <artifactId>jdxf</artifactId>
+            <version>2.1.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/jdxf.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc.local</groupId>
             <artifactId>java-http-proxy</artifactId>
             <version>1.0</version>
             <scope>system</scope>
