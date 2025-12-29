@@ -193,6 +193,7 @@ Image|Image
 Immediate Only|Immédiatement proches seulement
 Import|Importer
 Import Building Blocks|Importer des blocs de construction
+Import Netlist|Importer la liste de connexions
 Import Variants|Importer des variantes
 In-Line D-44|En ligne D-44
 In-line|En ligne
@@ -226,6 +227,7 @@ Light|Lumière
 Lock|Verrouiller
 Log In|Se connecter
 Log Out|Se déconnecter
+Look for|Rechercher
 Lug Size|Taille des cosses
 Lugs|Cosses
 Make a Donation|Faire un don
@@ -440,17 +442,48 @@ Zoom|Zoom
 base of 10|base de 10
 base of 2|base de 2
 hold %s and drag to unstick from|maintenez %s et faites glisser pour décoller
-Add a Curve
-Clear
-Insert Image
-Load From File
-Loadline Editor
-Max Current (mA)
-Max Dissipation (W)
-Max Voltage (V)
-Save To File
-Update Axis
-Apply Variant
-Save as Building Block
-Select
-Unlock
+Add a Curve|Ajouter une courbe
+Clear|Effacer
+Insert Image|Insérer une image
+Load From File|Charger depuis un fichier
+Loadline Editor|Éditeur de ligne de charge
+Max Current (mA)|Courant maximum (mA)
+Max Dissipation (W)|Dissipation maximale (W)
+Max Voltage (V)|Tension maximale (V)
+Save To File|Enregistrer dans un fichier
+Update Axis|Mettre à jour les axes
+Apply Variant|Appliquer la variante
+Save as Building Block|Enregistrer comme bloc de construction
+Select|Sélectionner
+Unlock|Déverrouiller
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|Êtes-vous sûr de vouloir effacer l'historique de chat de ce projet? Cette action ne peut pas être annulée!
+Component reordering is possible only when Project Explorer is sorted by z-index.|Le réordonnancement des composants n'est possible que lorsque l'Explorateur de projet est trié par z-index.
+Could not apply changes. Check the log for details.|Impossible d'appliquer les modifications. Consultez le journal pour plus de détails.
+Exporting outline for board %s to file %s|Exportation du contour de la carte %s vers le fichier %s
+Failed to export the project to gerber. Please check the log for details|Échec de l'exportation du projet vers gerber. Veuillez consulter le journal pour plus de détails
+Forgot Password?|Mot de passe oublié?
+Gerber Export|Export Gerber
+Gerber export completed successfully. The following files were created:%s|L'export Gerber a été complété avec succès. Les fichiers suivants ont été créés:%s
+Get Premium|Obtenir Premium
+Netlist files|Fichiers de liste de connexions
+No proximity issues detected.|Aucun problème de proximité détecté.
+Nothing to export.|Rien à exporter.
+Password|Mot de passe
+Send|Envoyer
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|Il y a des composants qui sont en dehors des limites des cartes.%sIls seront ignorés sauf si vous ajoutez un composant de carte en dessous.%sVoulez-vous continuer?
+User Name|Nom d'utilisateur
+AI Circuit Analyzer|Analyseur de circuit IA
+Cloud|Cloud
+Compare With...|Comparer avec...
+Connect to Patreon|Se connecter à Patreon
+Export|Exporter
+Export to Gerber|Exporter vers Gerber
+Generate DIYLC Netlist (excl. Switches)|Générer la Netlist DIYLC (sans commutateurs)
+Generate DIYLC Netlist (incl. Switches)|Générer la Netlist DIYLC (avec commutateurs)
+Generate Spice Netlist (excl. Switches)|Générer la Netlist Spice (sans commutateurs)
+Generate Spice Netlist (incl. Switches)|Générer la Netlist Spice (avec commutateurs)
+Silkscreen|Sérigraphie
+Virtual Multimeter (excl. Switches)|Multimètre virtuel (sans commutateurs)
+Virtual Multimeter (incl. Switches)|Multimètre virtuel (avec commutateurs)
+Become a Patreon and enjoy perks|Devenez un Patreon et profitez d'avantages
+Join Patreon|Rejoindre Patreon

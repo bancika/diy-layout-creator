@@ -193,6 +193,7 @@ Image|Imagem
 Immediate Only|Apenas Imediato
 Import|Importar
 Import Building Blocks|Importar Blocos
+Import Netlist|Importar Lista de Redes
 Import Variants|Importar variações
 In-Line D-44|Em linha D-44
 In-line|Em linha
@@ -358,7 +359,7 @@ Size|Tamanho
 Sizing Mode|Modo de Dimensionamento
 Small-button B7G|Botão pequeno B7G
 Smooth|Suave
-Snap To...|Ajustarse a...
+Snap To|Ajustar a
 Soap Bar|Soap Bar
 Solid|Sólido
 South|Sul
@@ -458,3 +459,34 @@ Apply Variant|Aplicar Variante
 Save as Building Block|Salvar como Bloco 
 Select|Selecionar
 Unlock|Desbloquear
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|Tem certeza de que deseja limpar o histórico de chat deste projeto? Esta ação não pode ser desfeita!
+Component reordering is possible only when Project Explorer is sorted by z-index.|A reordenação de componentes só é possível quando o Explorador de Projetos está ordenado por z-index.
+Could not apply changes. Check the log for details.|Não foi possível aplicar as alterações. Verifique o registro para mais detalhes.
+Exporting outline for board %s to file %s|Exportando o contorno da placa %s para o arquivo %s
+Failed to export the project to gerber. Please check the log for details|Falha ao exportar o projeto para gerber. Por favor, verifique o registro para mais detalhes
+Forgot Password?|Esqueceu a Senha?
+Gerber Export|Exportar Gerber
+Gerber export completed successfully. The following files were created:%s|A exportação Gerber foi concluída com sucesso. Os seguintes arquivos foram criados:%s
+Get Premium|Obter Premium
+Netlist files|Arquivos de lista de rede
+No proximity issues detected.|Nenhum problema de proximidade detectado.
+Nothing to export.|Nada para exportar.
+Password|Senha
+Send|Enviar
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|Há alguns componentes que estão fora dos limites das placas.%sEles serão ignorados a menos que você adicione um componente de placa abaixo deles.%sDeseja continuar?
+User Name|Nome de Usuário
+AI Circuit Analyzer|Analisador de Circuito IA
+Cloud|Nuvem
+Compare With...|Comparar com...
+Connect to Patreon|Conectar ao Patreon
+Export|Exportar
+Export to Gerber|Exportar para Gerber
+Generate DIYLC Netlist (excl. Switches)|Gerar Lista de Redes DIYLC (sem interruptores)
+Generate DIYLC Netlist (incl. Switches)|Gerar Lista de Redes DIYLC (com interruptores)
+Generate Spice Netlist (excl. Switches)|Gerar Lista Especial de Redes (sem interruptores)
+Generate Spice Netlist (incl. Switches)|Gerar Lista Especial de Redes (com interruptores)
+Silkscreen|Serigrafia
+Virtual Multimeter (excl. Switches)|Multímetro Virtual (sem interruptores)
+Virtual Multimeter (incl. Switches)|Multímetro Virtual (com interruptores)
+Become a Patreon and enjoy perks|Torne-se um Patreon e aproveite benefícios
+Join Patreon|Juntar-se ao Patreon

@@ -442,6 +442,10 @@
 					<description>Added 'Ending Style' property to 'Copper Trace' and 'Curved Trace' to allow choosing round or flat style</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Chinese simplified (thank you chenjingyuanku) and Hindi UI translation and updated all other languages with new translations</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; requires adding a configuration property to confix.xml with key 'fontScaleFactor' and a desired float value</description>
 				</org.diylc.appframework.update.Change>

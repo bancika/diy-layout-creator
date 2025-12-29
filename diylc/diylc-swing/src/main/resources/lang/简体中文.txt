@@ -1,0 +1,497 @@
+#start-internal
+icon=china
+#end-internal
+(Building Blocks)|(构建块)
+(Favorites)|(收藏)
+(Recently Used)|(最近使用)
+180 degrees clockwise|顺时针180度
+270 degrees clockwise|顺时针270度
+90 degrees clockwise|顺时针90度
+A variant with that name already exists. Overwrite?|已存在同名变体。是否覆盖？
+About|关于
+Above|上方
+Access User Files|访问用户文件
+Add Flexible Leads|添加柔性引线
+Add Validation Step|添加验证步骤
+All Connected|全部连接
+Alpha|透明度
+Analyze|分析
+Analyze Guitar Diagrams|分析吉他图表
+Angle|角度
+Anti-Aliasing|抗锯齿
+Arrow Size|箭头大小
+Author|作者
+Auto-Create Pads|自动创建焊盘
+Auto-Edit Mode|自动编辑模式
+Base|基座
+Below|下方
+Blueprint|蓝图
+Board|电路板
+Boards|电路板
+Board Color|电路板颜色
+Board Width|电路板宽度
+Bobbin 1|线轴1
+Bobbin 2|线轴2
+Body|主体
+Border|边框
+Border Thickness|边框厚度
+Both|两者
+Both Sides|两侧
+Bottom|底部
+Bottom Left|左下
+Bottom Right|右下
+Bracket|支架
+Bring Forward|前移一层
+Bring Selection to Front|将选择移到最前
+Buffer|缓冲区
+Center|中心
+Center Negative|中心负极
+Center Positive|中心正极
+Center Terminal|中心端子
+Central|中央
+Change Password|更改密码
+Channel|通道
+Chassis|机箱
+Check Trace Proximity|检查走线间距
+Circular|圆形
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|点击元件以高亮显示与光标下方区域直接或间接连接的区域。要继续编辑，需要关闭此模式
+Click on the canvas to create a new %s or press %s to cancel|在画布上点击以创建新的%s或按%s取消
+Click on the canvas to set the %s control point of a new %s or press %s to cancel|在画布上点击以设置新%s的%s控制点或按%s取消
+Click the lightbulb icon in the bottom-right corner of the window for more info.|点击窗口右下角的灯泡图标以获取更多信息。
+Click to fetch the most recent public announcement|点击获取最新公告
+Click to show recent changes and updates|点击显示最近的更改和更新
+Click to toggle to the next option|点击切换到下一个选项
+Coil|线圈
+Coil Border|线圈边框
+Coil Length|线圈长度
+Coil Width|线圈宽度
+Color|颜色
+Color 1|颜色1
+Color 2|颜色2
+Color code|颜色代码
+Column Spacing|列间距
+Columns|列
+Component|元件
+Component API|元件API
+Components|元件
+Config|配置
+Connector|连接器
+Connector (Mirrored)|连接器（镜像）
+Connectivity|连接器
+Contacts|触点
+Continuous Creation|连续创建
+Coordinate Color|坐标颜色
+Coordinate Origin|坐标原点
+Coordinates|坐标
+Copy|复制
+Core|核心
+Core Border|核心边框
+Core Thickness|核心厚度
+Core Width|核心宽度
+Could not create a new file. Check the log for details.|无法创建新文件。请查看日志了解详情。
+Could not create component. Check log for details.|无法创建元件。请查看日志了解详情。
+Could not fetch public announcements.|无法获取公告。
+Could not save the project to file. Check the log for details.|无法将项目保存到文件。请查看日志了解详情。
+Could not set component type slot. Check log for details.|无法设置元件类型插槽。请查看日志了解详情。
+Cover|盖子
+Create B.O.M.|创建物料清单
+Create New Account|创建新账户
+Current|当前
+Cut|剪切
+Cut Between Holes|在孔之间切割
+Cut Orientation|切割方向
+DIP (Mirrored)|DIP（镜像）
+DP3T (Standard 3-Position Strat)|DP3T（标准3档Strat）
+DP3T (Standard 5-Position Strat)|DP3T（标准5档Strat）
+DP4T (4-Position Tele)|DP4T（4档Tele）
+Dark|深色
+Dashed|虚线
+Decimals|小数
+Default|默认
+Default Font|默认字体
+Default Font Size|默认字体大小
+Delete Selection|删除选择
+Description|描述
+Diameter|直径
+Directional|定向
+Directly heated|直接加热
+Display|显示
+Display Pin #s|显示引脚编号
+Dog Ear|狗耳
+Dot Spacing|点间距
+Donate|捐赠
+Dotted|点线
+Drag control point(s) of|拖动控制点
+Drag the mouse over the canvas to place a new|在画布上拖动鼠标以放置新的
+Dual Rail Humbucker|双轨拾音器
+Dual Rods|双杆
+Duodecar B12C|Duodecar B12C
+Duplicate|复制
+Edges|边缘
+Edit|编辑
+Edit Project Settings|编辑项目设置
+Edit Selection|编辑选择
+Electrode Labels|电极标签
+Electro-Mechanical|机电
+Enable Cache Boost|启用缓存加速
+End Arrow|结束箭头
+Enjoying DIYLC? Click here to buy me a coffee :)|喜欢DIYLC？点击这里请我喝杯咖啡 :)
+Error|错误
+Error occurred while editing selection. Check the log for details.|编辑选择时发生错误。请查看日志了解详情。
+Exit|退出
+Expand Selection|扩展选择
+Explicit Dimensions|显式尺寸
+Explicit Length|显式长度
+Explicit Width|显式宽度
+Export Building Blocks|导出构建块
+Export Grid|导出网格
+Export Variants|导出变体
+Export to PDF|导出为PDF
+Export to PNG|导出为PNG
+Extra Working Area|额外工作区
+Eyelet color|孔眼颜色
+FAQ|常见问题
+File|文件
+Filtertron|Filtertron
+Find|查找
+Five|五
+Flip|翻转
+Folded|折叠
+Font|字体
+Font Bold|粗体
+Font Italic|斜体
+Font Size|字体大小
+Font Size Override|字体大小覆盖
+Four|四
+Full|完整
+Fuse|保险丝
+Generate DIYLC Netlist|生成DIYLC网表
+Generate Spice Netlist|生成Spice网表
+Grid|网格
+Grid Spacing|网格间距
+Group Selection|组合选择
+Guitar|吉他
+Half|一半
+Hardware Acceleration|硬件加速
+Heaters|加热器
+Height|高度
+Help|帮助
+Hi-Quality Rendering|高质量渲染
+Highlight Connected Areas|高亮连接区域
+Hole|孔
+Hole Size|孔径
+Hole Spacing|孔间距
+Hole size|孔径
+Holes per strip|每条带孔数
+Horizontal|水平
+Horizontal Alignment|水平对齐
+Horizontal Large|水平大
+Horizontal Medium|水平中
+Horizontal Small 1|水平小1
+Horizontal Small 2|水平小2
+Horizontal X-Small|水平超小
+Humbucking|降噪
+If this box is checked application will use the current value as a<br>default when creating new components of the same type|如果选中此框，应用程序将在创建相同类型的新元件时使用当前值作为<br>默认值
+Image|图像
+Immediate Only|仅立即
+Import|导入
+Import Building Blocks|导入构建块
+Import Netlist|导入网表
+Import Variants|导入变体
+In-Line D-44|直插D-44
+In-line|直插
+Indent|缩进
+Information|信息
+Inline|内联
+Input error for "%s": %s|"%s"的输入错误：%s
+Inside color|内部颜色
+Integration|集成
+Invert polarity|反转极性
+Label|标签
+Label Color|标签颜色
+Label Orientation|标签方向
+Label Position|标签位置
+Labels|标签
+Language|语言
+Language selection will be applied after the application is restarted.|语言选择将在应用程序重启后生效。
+Layer|图层
+Layers|图层
+Lead Color|引线颜色
+Lead Count|引线数量
+Lead Length|引线长度
+Lead Spacing|引线间距
+Left|左
+Left-to-Right|从左到右
+Left click to instantiate this component, right click for more options|左键点击以实例化此元件，右键点击以获取更多选项
+Legs|引脚
+Length|长度
+Letters|字母
+Light|浅色
+Lock|锁定
+Log In|登录
+Log Out|登出
+Look for|查找
+Lug Size|焊片尺寸
+Lugs|焊片
+Make a Donation|捐赠
+Manage Account|管理账户
+Manage My Uploads|管理我的上传
+Mark Common Lugs|标记公共焊片
+Marker|标记
+Marker Size|标记大小
+Mini|迷你
+Miniature|微型
+Mirror Horizontally|水平镜像
+Mirror Selection|镜像选择
+Mirror Vertically|垂直镜像
+Mirroring operation will change the circuit. Do you want to continue?|镜像操作将改变电路。是否继续？
+Misc|杂项
+Model|型号
+Mono|单声道
+Mount|安装
+Mounting Lugs|安装焊片
+Mouse Wheel Zoom|鼠标滚轮缩放
+Moveable Label|可移动标签
+Name|名称
+Negative|负
+New|新建
+New version available|新版本可用
+No new public announcements available.|没有新的公告。
+No|否
+None|无
+North|北
+Noval B9A|Noval B9A
+Nudge|微调
+Numbers|数字
+Nut|螺母
+Octal|八脚
+Offset|偏移
+One Side|一侧
+Open|打开
+Opposing Points|相对点
+Orientation|方向
+Outer Foil|外层箔
+Outer Foil Mark|外层箔标记
+Outline Mode|轮廓模式
+Outside|外部
+Oval horizontal|水平椭圆
+Oval vertical|垂直椭圆
+Pad Color|焊盘颜色
+Panel|面板
+Passive|被动元件
+Paste|粘贴
+Pin Arrangement|引脚排列
+Pin Color|引脚颜色
+Pin Spacing|引脚间距
+Pinout|引脚排列
+Pins|引脚
+Play Test|播放测试
+Plugin API|插件API
+Point Count|点数
+Polarity|极性
+Polarized|极性
+Pole Color|极颜色
+Pole Pieces|极片
+Pole Pieces 1|极片1
+Pole Pieces 2|极片2
+Positions|位置
+Positive|正
+Power Rating|功率
+Power Strip|电源条
+Primary CT|初级中心抽头
+Print...|打印...
+Project Cloud|项目云
+Public Announcement|公告
+Radius|半径
+Rail|轨道
+Recent Files|最近文件
+Recent Updates|最近更新
+Redo|重做
+Renumber On Paste|粘贴时重新编号
+Renumber Selection|重新编号选择
+Resistance|电阻
+Reverse (standing)|反向（立式）
+Right|右
+Rim|边缘
+Rods|杆
+Rotate Clockwise|顺时针旋转
+Rotate Counterclockwise|逆时针旋转
+Rotate Selection|旋转选择
+Round|圆形
+Round WOG A|圆形WOG A
+Round WOG B|圆形WOG B
+Row Spacing|行间距
+Rows|行
+Ruler Inch Subdivision...|标尺英寸细分...
+Same Type Only|仅相同类型
+Save|保存
+Save As|另存为
+Save as Variant|另存为变体
+Scale|比例
+Schematic Symbols|原理图符号
+Screws|螺丝
+Selection|选择
+Selection Size|选择大小
+Selection is empty.|选择为空。
+Search The Cloud|搜索云
+Searchable Tree|可搜索树
+Secondary CT|次级中心抽头
+Select All|全选
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|所选元件已到达其图层的底部。是否强制将选择移到后面？
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|所选元件已到达其图层的顶部。是否强制将选择移到前面？
+Selection contains components that cannot be mirrored. Do you want to exclude them?|选择包含无法镜像的元件。是否排除它们？
+Selection contains components that cannot be rotated. Do you want to exclude them?|选择包含无法旋转的元件。是否排除它们？
+Semiconductors|半导体
+Send Backward|后移一层
+Send Selection to Back|将选择移到后面
+Seven|七
+Shaft Down|轴向下
+Shaft Up|轴向上
+Shape|形状
+Shapes|形状
+Show Bracket|显示支架
+Show Grid|显示网格
+Show Rulers|显示标尺
+Shroud|护罩
+Shrouded|带护罩
+Single Rail|单轨
+Single Rods|单杆
+Size|大小
+Sizing Mode|大小模式
+Small-button B7G|小按钮B7G
+Smooth|平滑
+Snap To|对齐到
+Soap Bar|肥皂条
+Solid|实线
+South|南
+Spacing|间距
+Square|方形
+Square BR-3|方形BR-3
+Standard|标准
+Start Arrow|开始箭头
+Start Recording|开始录制
+Stereo|立体声
+Sticky Points|吸附点
+Stop Recording|停止录制
+Stratocaster|Stratocaster
+Strip Color|条带颜色
+Stripe|条纹
+Stripe 1|条纹1
+Stripe 2|条纹2
+Stripe Color|条纹颜色
+Stripe Color 1|条纹颜色1
+Stripe Color 2|条纹颜色2
+Style|样式
+Submit a Bug|提交错误报告
+Suppressor grid|抑制栅极
+Switched|开关
+Switches|开关
+Tab|标签
+Tab Border|标签边框
+Tabbed Toolbar|标签工具栏
+Taper|锥度
+Telecaster|Telecaster
+Terminal Spacing|端子间距
+Terminals|端子
+Test|测试
+Text|文本
+Text Color|文本颜色
+Theme|主题
+There are unsaved changes. Would you like to save them?|有未保存的更改。是否保存？
+Thickness|厚度
+Three|三
+Through Hole|通孔
+Tick|刻度
+Tick Width|刻度宽度
+Ticks|刻度
+Title|标题
+Toolbox|工具箱
+Top|顶部
+Top Lead|顶部引线
+Top Left|左上
+Top Right|右上
+Top-to-Bottom|从上到下
+Trace|走线
+Trace Color|走线颜色
+Trace Mask|走线掩膜
+Transform Selection|变换选择
+Triangle|三角形
+Tubular|管状
+Tubes|电子管
+Two|二
+Type|类型
+Ultra-miniature|超微型
+Underside Pad Color|底面焊盘颜色
+Underside Trace Color|底面走线颜色
+Undo|撤销
+Ungroup Selection|取消组合
+Unit|单位
+Upload A Project|上传项目
+User Manual|用户手册
+Value|值
+Version history is not available.|版本历史不可用。
+Vertical|垂直
+Vertical Alignment|垂直对齐
+Vertical Inline|垂直内联
+Vertical Offset 1|垂直偏移1
+Vertical Offset 2|垂直偏移2
+View|视图
+Visible|可见
+Voltage|电压
+Wafer|晶圆
+Warning|警告
+Width|宽度
+Winding Spacing|绕组间距
+Wiring|布线
+X-axis|X轴
+Y-axis|Y轴
+Zoom|缩放
+base of 10|10进制
+base of 2|2进制
+hold %s and drag to unstick from|按住%s并拖动以从...脱离
+Add a Curve|添加曲线
+Clear|清除
+Insert Image|插入图像
+Load From File|从文件加载
+Loadline Editor|负载线编辑器
+Max Current (mA)|最大电流(mA)
+Max Dissipation (W)|最大功耗(W)
+Max Voltage (V)|最大电压(V)
+Save To File|保存到文件
+Update Axis|更新轴
+Apply Variant|应用变体
+Save as Building Block|另存为构建块
+Select|选择
+Unlock|解锁
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|您确定要清除此项目的聊天历史记录吗？此操作无法撤销！
+Component reordering is possible only when Project Explorer is sorted by z-index.|只有在项目资源管理器按z-index排序时才能重新排序元件。
+Could not apply changes. Check the log for details.|无法应用更改。请查看日志了解详情。
+Exporting outline for board %s to file %s|正在将电路板%s的轮廓导出到文件%s
+Failed to export the project to gerber. Please check the log for details|无法将项目导出为gerber格式。请查看日志了解详情
+Forgot Password?|忘记密码？
+Gerber Export|Gerber导出
+Gerber export completed successfully. The following files were created:%s|Gerber导出成功完成。已创建以下文件：%s
+Get Premium|获取高级版
+Netlist files|网表文件
+No proximity issues detected.|未检测到间距问题。
+Nothing to export.|没有可导出的内容。
+Password|密码
+Send|发送
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|有些元件超出了电路板的边界。%s除非您在它们下方添加电路板元件，否则它们将被忽略。%s是否继续？
+User Name|用户名
+AI Circuit Analyzer|AI电路分析器
+Cloud|云
+Compare With...|与...比较
+Connect to Patreon|连接到Patreon
+Export|导出
+Export to Gerber|导出为Gerber
+Generate DIYLC Netlist (excl. Switches)|生成DIYLC网表（不含开关）
+Generate DIYLC Netlist (incl. Switches)|生成DIYLC网表（含开关）
+Generate Spice Netlist (excl. Switches)|生成Spice网表（不含开关）
+Generate Spice Netlist (incl. Switches)|生成Spice网表（含开关）
+Silkscreen|丝印
+Virtual Multimeter (excl. Switches)|虚拟万用表（不含开关）
+Virtual Multimeter (incl. Switches)|虚拟万用表（含开关）
+Become a Patreon and enjoy perks|成为Patreon支持者，享受特权
+Join Patreon|加入Patreon
+

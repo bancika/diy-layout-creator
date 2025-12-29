@@ -1,0 +1,497 @@
+#start-internal
+icon=india
+#end-internal
+(Building Blocks)|(बिल्डिंग ब्लॉक्स)
+(Favorites)|(पसंदीदा)
+(Recently Used)|(हाल ही में उपयोग किए गए)
+180 degrees clockwise|दक्षिणावर्त 180 डिग्री
+270 degrees clockwise|दक्षिणावर्त 270 डिग्री
+90 degrees clockwise|दक्षिणावर्त 90 डिग्री
+A variant with that name already exists. Overwrite?|उस नाम का एक वेरिएंट पहले से मौजूद है। अधिलेखित करें?
+About|के बारे में
+Above|ऊपर
+Access User Files|उपयोगकर्ता फ़ाइलें एक्सेस करें
+Add Flexible Leads|लचीली लीड जोड़ें
+Add Validation Step|सत्यापन चरण जोड़ें
+All Connected|सभी जुड़े हुए
+Alpha|अल्फा
+Analyze|विश्लेषण करें
+Analyze Guitar Diagrams|गिटार आरेखों का विश्लेषण करें
+Angle|कोण
+Anti-Aliasing|एंटी-अलियासिंग
+Arrow Size|तीर का आकार
+Author|लेखक
+Auto-Create Pads|ऑटो-क्रिएट पैड
+Auto-Edit Mode|ऑटो-एडिट मोड
+Base|आधार
+Below|नीचे
+Blueprint|ब्लूप्रिंट
+Board|बोर्ड
+Boards|बोर्ड
+Board Color|बोर्ड का रंग
+Board Width|बोर्ड की चौड़ाई
+Bobbin 1|बॉबिन 1
+Bobbin 2|बॉबिन 2
+Body|शरीर
+Border|बॉर्डर
+Border Thickness|बॉर्डर की मोटाई
+Both|दोनों
+Both Sides|दोनों तरफ
+Bottom|नीचे
+Bottom Left|नीचे बाएं
+Bottom Right|नीचे दाएं
+Bracket|ब्रैकेट
+Bring Forward|आगे लाएं
+Bring Selection to Front|चयन को सामने लाएं
+Buffer|बफर
+Center|केंद्र
+Center Negative|केंद्र नकारात्मक
+Center Positive|केंद्र सकारात्मक
+Center Terminal|केंद्र टर्मिनल
+Central|केंद्रीय
+Change Password|पासवर्ड बदलें
+Channel|चैनल
+Chassis|चेसिस
+Check Trace Proximity|ट्रेस निकटता जांचें
+Circular|गोलाकार
+Click on a component to highlight area directly or indirectly connected to the area below the cursor. To continue editing, this mode needs to be switched OFF|कर्सर के नीचे के क्षेत्र से सीधे या अप्रत्यक्ष रूप से जुड़े क्षेत्र को हाइलाइट करने के लिए एक घटक पर क्लिक करें। संपादन जारी रखने के लिए, इस मोड को बंद करना होगा
+Click on the canvas to create a new %s or press %s to cancel|एक नया %s बनाने के लिए कैनवास पर क्लिक करें या रद्द करने के लिए %s दबाएं
+Click on the canvas to set the %s control point of a new %s or press %s to cancel|एक नए %s के %s कंट्रोल पॉइंट सेट करने के लिए कैनवास पर क्लिक करें या रद्द करने के लिए %s दबाएं
+Click the lightbulb icon in the bottom-right corner of the window for more info.|अधिक जानकारी के लिए विंडो के निचले दाएं कोने में लाइटबल्ब आइकन पर क्लिक करें।
+Click to fetch the most recent public announcement|सबसे हाल का सार्वजनिक घोषणा प्राप्त करने के लिए क्लिक करें
+Click to show recent changes and updates|हाल के परिवर्तन और अपडेट दिखाने के लिए क्लिक करें
+Click to toggle to the next option|अगले विकल्प पर जाने के लिए क्लिक करें
+Coil|कुंडली
+Coil Border|कुंडली बॉर्डर
+Coil Length|कुंडली की लंबाई
+Coil Width|कुंडली की चौड़ाई
+Color|रंग
+Color 1|रंग 1
+Color 2|रंग 2
+Color code|रंग कोड
+Column Spacing|कॉलम स्पेसिंग
+Columns|कॉलम
+Component|घटक
+Component API|घटक API
+Components|घटक
+Config|कॉन्फ़िग
+Connector|कनेक्टर
+Connector (Mirrored)|कनेक्टर (मिरर किया गया)
+Connectivity|कनेक्टिविटी
+Contacts|संपर्क
+Continuous Creation|निरंतर निर्माण
+Coordinate Color|निर्देशांक रंग
+Coordinate Origin|निर्देशांक मूल
+Coordinates|निर्देशांक
+Copy|कॉपी करें
+Core|कोर
+Core Border|कोर बॉर्डर
+Core Thickness|कोर की मोटाई
+Core Width|कोर की चौड़ाई
+Could not create a new file. Check the log for details.|नई फ़ाइल नहीं बना सके। विवरण के लिए लॉग जांचें।
+Could not create component. Check log for details.|घटक नहीं बना सके। विवरण के लिए लॉग जांचें।
+Could not fetch public announcements.|सार्वजनिक घोषणाएं प्राप्त नहीं कर सके।
+Could not save the project to file. Check the log for details.|प्रोजेक्ट को फ़ाइल में सहेज नहीं सके। विवरण के लिए लॉग जांचें।
+Could not set component type slot. Check log for details.|घटक प्रकार स्लॉट सेट नहीं कर सके। विवरण के लिए लॉग जांचें।
+Cover|कवर
+Create B.O.M.|B.O.M. बनाएं
+Create New Account|नया खाता बनाएं
+Current|वर्तमान
+Cut|काटें
+Cut Between Holes|छेदों के बीच काटें
+Cut Orientation|कट ओरिएंटेशन
+DIP (Mirrored)|DIP (मिरर किया गया)
+DP3T (Standard 3-Position Strat)|DP3T (स्टैंडर्ड 3-पोजीशन Strat)
+DP3T (Standard 5-Position Strat)|DP3T (स्टैंडर्ड 5-पोजीशन Strat)
+DP4T (4-Position Tele)|DP4T (4-पोजीशन Tele)
+Dark|डार्क
+Dashed|डैश किया गया
+Decimals|दशमलव
+Default|डिफ़ॉल्ट
+Default Font|डिफ़ॉल्ट फ़ॉन्ट
+Default Font Size|डिफ़ॉल्ट फ़ॉन्ट साइज़
+Delete Selection|चयन हटाएं
+Description|विवरण
+Diameter|व्यास
+Directional|दिशात्मक
+Directly heated|सीधे गर्म
+Display|डिस्प्ले
+Display Pin #s|पिन #s दिखाएं
+Dog Ear|डॉग ईयर
+Dot Spacing|डॉट स्पेसिंग
+Donate|दान करें
+Dotted|बिंदीदार
+Drag control point(s) of|कंट्रोल पॉइंट खींचें
+Drag the mouse over the canvas to place a new|एक नया रखने के लिए कैनवास पर माउस खींचें
+Dual Rail Humbucker|ड्यूल रेल हम्बकर
+Dual Rods|ड्यूल रॉड्स
+Duodecar B12C|Duodecar B12C
+Duplicate|डुप्लिकेट
+Edges|किनारे
+Edit|संपादित करें
+Edit Project Settings|प्रोजेक्ट सेटिंग्स संपादित करें
+Edit Selection|चयन संपादित करें
+Electrode Labels|इलेक्ट्रोड लेबल
+Electro-Mechanical|इलेक्ट्रो-मैकेनिकल
+Enable Cache Boost|कैश बूस्ट सक्षम करें
+End Arrow|अंत तीर
+Enjoying DIYLC? Click here to buy me a coffee :)|DIYLC का आनंद ले रहे हैं? मुझे कॉफी खरीदने के लिए यहां क्लिक करें :)
+Error|त्रुटि
+Error occurred while editing selection. Check the log for details.|चयन संपादित करते समय त्रुटि हुई। विवरण के लिए लॉग जांचें।
+Exit|बाहर निकलें
+Expand Selection|चयन विस्तारित करें
+Explicit Dimensions|स्पष्ट आयाम
+Explicit Length|स्पष्ट लंबाई
+Explicit Width|स्पष्ट चौड़ाई
+Export Building Blocks|बिल्डिंग ब्लॉक्स निर्यात करें
+Export Grid|ग्रिड निर्यात करें
+Export Variants|वेरिएंट निर्यात करें
+Export to PDF|PDF में निर्यात करें
+Export to PNG|PNG में निर्यात करें
+Extra Working Area|अतिरिक्त कार्य क्षेत्र
+Eyelet color|आईलेट रंग
+FAQ|अक्सर पूछे जाने वाले प्रश्न
+File|फ़ाइल
+Filtertron|Filtertron
+Find|खोजें
+Five|पांच
+Flip|फ्लिप करें
+Folded|तह किया गया
+Font|फ़ॉन्ट
+Font Bold|फ़ॉन्ट बोल्ड
+Font Italic|फ़ॉन्ट इटैलिक
+Font Size|फ़ॉन्ट साइज़
+Font Size Override|फ़ॉन्ट साइज़ ओवरराइड
+Four|चार
+Full|पूर्ण
+Fuse|फ्यूज
+Generate DIYLC Netlist|DIYLC नेटलिस्ट जेनरेट करें
+Generate Spice Netlist|Spice नेटलिस्ट जेनरेट करें
+Grid|ग्रिड
+Grid Spacing|ग्रिड स्पेसिंग
+Group Selection|चयन समूहित करें
+Guitar|गिटार
+Half|आधा
+Hardware Acceleration|हार्डवेयर एक्सेलेरेशन
+Heaters|हीटर
+Height|ऊंचाई
+Help|मदद
+Hi-Quality Rendering|उच्च गुणवत्ता रेंडरिंग
+Highlight Connected Areas|जुड़े क्षेत्र हाइलाइट करें
+Hole|छेद
+Hole Size|छेद का आकार
+Hole Spacing|छेद स्पेसिंग
+Hole size|छेद का आकार
+Holes per strip|प्रति स्ट्रिप छेद
+Horizontal|क्षैतिज
+Horizontal Alignment|क्षैतिज संरेखण
+Horizontal Large|क्षैतिज बड़ा
+Horizontal Medium|क्षैतिज मध्यम
+Horizontal Small 1|क्षैतिज छोटा 1
+Horizontal Small 2|क्षैतिज छोटा 2
+Horizontal X-Small|क्षैतिज एक्स-छोटा
+Humbucking|हम्बकिंग
+If this box is checked application will use the current value as a<br>default when creating new components of the same type|यदि यह बॉक्स चेक किया गया है, तो एप्लिकेशन समान प्रकार के नए घटक बनाते समय वर्तमान मान को <br>डिफ़ॉल्ट के रूप में उपयोग करेगा
+Image|छवि
+Immediate Only|केवल तत्काल
+Import|आयात करें
+Import Building Blocks|बिल्डिंग ब्लॉक्स आयात करें
+Import Netlist|नेटलिस्ट आयात करें
+Import Variants|वेरिएंट आयात करें
+In-Line D-44|इन-लाइन D-44
+In-line|इन-लाइन
+Indent|इंडेंट
+Information|जानकारी
+Inline|इनलाइन
+Input error for "%s": %s|"%s" के लिए इनपुट त्रुटि: %s
+Inside color|अंदर का रंग
+Integration|एकीकरण
+Invert polarity|ध्रुवता उलटें
+Label|लेबल
+Label Color|लेबल रंग
+Label Orientation|लेबल ओरिएंटेशन
+Label Position|लेबल स्थिति
+Labels|लेबल
+Language|भाषा
+Language selection will be applied after the application is restarted.|भाषा चयन एप्लिकेशन रीस्टार्ट होने के बाद लागू होगा।
+Layer|लेयर
+Layers|लेयर
+Lead Color|लीड रंग
+Lead Count|लीड संख्या
+Lead Length|लीड लंबाई
+Lead Spacing|लीड स्पेसिंग
+Left|बाएं
+Left-to-Right|बाएं से दाएं
+Left click to instantiate this component, right click for more options|इस घटक को इंस्टेंट करने के लिए बाएं क्लिक करें, अधिक विकल्पों के लिए दाएं क्लिक करें
+Legs|पैर
+Length|लंबाई
+Letters|अक्षर
+Light|लाइट
+Lock|लॉक करें
+Log In|लॉग इन करें
+Log Out|लॉग आउट करें
+Look for|खोजें
+Lug Size|लग साइज़
+Lugs|लग्स
+Make a Donation|दान करें
+Manage Account|खाता प्रबंधित करें
+Manage My Uploads|मेरे अपलोड प्रबंधित करें
+Mark Common Lugs|सामान्य लग्स चिह्नित करें
+Marker|मार्कर
+Marker Size|मार्कर साइज़
+Mini|मिनी
+Miniature|लघु
+Mirror Horizontally|क्षैतिज रूप से मिरर करें
+Mirror Selection|चयन मिरर करें
+Mirror Vertically|ऊर्ध्वाधर रूप से मिरर करें
+Mirroring operation will change the circuit. Do you want to continue?|मिररिंग ऑपरेशन सर्किट को बदल देगा। क्या आप जारी रखना चाहते हैं?
+Misc|विविध
+Model|मॉडल
+Mono|मोनो
+Mount|माउंट
+Mounting Lugs|माउंटिंग लग्स
+Mouse Wheel Zoom|माउस व्हील ज़ूम
+Moveable Label|स्थानांतरणीय लेबल
+Name|नाम
+Negative|नकारात्मक
+New|नया
+New version available|नया संस्करण उपलब्ध है
+No new public announcements available.|कोई नई सार्वजनिक घोषणाएं उपलब्ध नहीं हैं।
+No|नहीं
+None|कोई नहीं
+North|उत्तर
+Noval B9A|Noval B9A
+Nudge|नज
+Numbers|संख्या
+Nut|नट
+Octal|ऑक्टल
+Offset|ऑफसेट
+One Side|एक तरफ
+Open|खोलें
+Opposing Points|विपरीत बिंदु
+Orientation|ओरिएंटेशन
+Outer Foil|बाहरी फॉइल
+Outer Foil Mark|बाहरी फॉइल मार्क
+Outline Mode|आउटलाइन मोड
+Outside|बाहर
+Oval horizontal|क्षैतिज अंडाकार
+Oval vertical|ऊर्ध्वाधर अंडाकार
+Pad Color|पैड रंग
+Panel|पैनल
+Passive|निष्क्रिय
+Paste|पेस्ट करें
+Pin Arrangement|पिन व्यवस्था
+Pin Color|पिन रंग
+Pin Spacing|पिन स्पेसिंग
+Pinout|पिनआउट
+Pins|पिन्स
+Play Test|टेस्ट प्ले करें
+Plugin API|प्लगइन API
+Point Count|बिंदु संख्या
+Polarity|ध्रुवता
+Polarized|ध्रुवीकृत
+Pole Color|पोल रंग
+Pole Pieces|पोल पीस
+Pole Pieces 1|पोल पीस 1
+Pole Pieces 2|पोल पीस 2
+Positions|स्थितियां
+Positive|सकारात्मक
+Power Rating|पावर रेटिंग
+Power Strip|पावर स्ट्रिप
+Primary CT|प्राइमरी CT
+Print...|प्रिंट...
+Project Cloud|प्रोजेक्ट क्लाउड
+Public Announcement|सार्वजनिक घोषणा
+Radius|त्रिज्या
+Rail|रेल
+Recent Files|हाल की फ़ाइलें
+Recent Updates|हाल के अपडेट
+Redo|रीडू
+Renumber On Paste|पेस्ट पर री-नंबर करें
+Renumber Selection|चयन री-नंबर करें
+Resistance|प्रतिरोध
+Reverse (standing)|रिवर्स (खड़ा)
+Right|दाएं
+Rim|रिम
+Rods|रॉड्स
+Rotate Clockwise|दक्षिणावर्त घुमाएं
+Rotate Counterclockwise|वामावर्त घुमाएं
+Rotate Selection|चयन घुमाएं
+Round|गोल
+Round WOG A|राउंड WOG A
+Round WOG B|राउंड WOG B
+Row Spacing|पंक्ति स्पेसिंग
+Rows|पंक्तियां
+Ruler Inch Subdivision...|रूलर इंच सबडिवीजन...
+Same Type Only|केवल समान प्रकार
+Save|सहेजें
+Save As|इस रूप में सहेजें
+Save as Variant|वेरिएंट के रूप में सहेजें
+Scale|स्केल
+Schematic Symbols|स्कीमैटिक प्रतीक
+Screws|स्क्रू
+Selection|चयन
+Selection Size|चयन साइज़
+Selection is empty.|चयन खाली है।
+Search The Cloud|क्लाउड खोजें
+Searchable Tree|खोज योग्य ट्री
+Secondary CT|सेकेंडरी CT
+Select All|सभी चुनें
+Selected component(s) have reached the bottom of their layer. Do you want to force the selection to the back?|चयनित घटक अपनी लेयर के नीचे पहुंच गए हैं। क्या आप चयन को पीछे जबरदस्ती करना चाहते हैं?
+Selected component(s) have reached the top of their layer. Do you want to force the selection to the top?|चयनित घटक अपनी लेयर के ऊपर पहुंच गए हैं। क्या आप चयन को ऊपर जबरदस्ती करना चाहते हैं?
+Selection contains components that cannot be mirrored. Do you want to exclude them?|चयन में ऐसे घटक हैं जिन्हें मिरर नहीं किया जा सकता। क्या आप उन्हें बाहर करना चाहते हैं?
+Selection contains components that cannot be rotated. Do you want to exclude them?|चयन में ऐसे घटक हैं जिन्हें घुमाया नहीं जा सकता। क्या आप उन्हें बाहर करना चाहते हैं?
+Semiconductors|सेमीकंडक्टर्स
+Send Backward|पीछे भेजें
+Send Selection to Back|चयन को पीछे भेजें
+Seven|सात
+Shaft Down|शाफ्ट नीचे
+Shaft Up|शाफ्ट ऊपर
+Shape|आकार
+Shapes|आकार
+Show Bracket|ब्रैकेट दिखाएं
+Show Grid|ग्रिड दिखाएं
+Show Rulers|रूलर दिखाएं
+Shroud|श्राउड
+Shrouded|श्राउडेड
+Single Rail|सिंगल रेल
+Single Rods|सिंगल रॉड्स
+Size|साइज़
+Sizing Mode|साइज़िंग मोड
+Small-button B7G|स्मॉल-बटन B7G
+Smooth|स्मूथ
+Snap To|स्नैप टू
+Soap Bar|सोप बार
+Solid|ठोस
+South|दक्षिण
+Spacing|स्पेसिंग
+Square|वर्ग
+Square BR-3|स्क्वायर BR-3
+Standard|स्टैंडर्ड
+Start Arrow|शुरुआत तीर
+Start Recording|रिकॉर्डिंग शुरू करें
+Stereo|स्टीरियो
+Sticky Points|स्टिकी पॉइंट्स
+Stop Recording|रिकॉर्डिंग रोकें
+Stratocaster|Stratocaster
+Strip Color|स्ट्रिप रंग
+Stripe|स्ट्राइप
+Stripe 1|स्ट्राइप 1
+Stripe 2|स्ट्राइप 2
+Stripe Color|स्ट्राइप रंग
+Stripe Color 1|स्ट्राइप रंग 1
+Stripe Color 2|स्ट्राइप रंग 2
+Style|स्टाइल
+Submit a Bug|बग सबमिट करें
+Suppressor grid|सप्रेसर ग्रिड
+Switched|स्विच किया गया
+Switches|स्विच
+Tab|टैब
+Tab Border|टैब बॉर्डर
+Tabbed Toolbar|टैब्ड टूलबार
+Taper|टेपर
+Telecaster|Telecaster
+Terminal Spacing|टर्मिनल स्पेसिंग
+Terminals|टर्मिनल
+Test|टेस्ट
+Text|टेक्स्ट
+Text Color|टेक्स्ट रंग
+Theme|थीम
+There are unsaved changes. Would you like to save them?|असहेजित परिवर्तन हैं। क्या आप उन्हें सहेजना चाहते हैं?
+Thickness|मोटाई
+Three|तीन
+Through Hole|थ्रू होल
+Tick|टिक
+Tick Width|टिक चौड़ाई
+Ticks|टिक्स
+Title|शीर्षक
+Toolbox|टूलबॉक्स
+Top|ऊपर
+Top Lead|टॉप लीड
+Top Left|ऊपर बाएं
+Top Right|ऊपर दाएं
+Top-to-Bottom|ऊपर से नीचे
+Trace|ट्रेस
+Trace Color|ट्रेस रंग
+Trace Mask|ट्रेस मास्क
+Transform Selection|चयन ट्रांसफॉर्म करें
+Triangle|त्रिभुज
+Tubular|ट्यूबुलर
+Tubes|ट्यूब्स
+Two|दो
+Type|प्रकार
+Ultra-miniature|अल्ट्रा-मिनिएचर
+Underside Pad Color|अंडरसाइड पैड रंग
+Underside Trace Color|अंडरसाइड ट्रेस रंग
+Undo|अनडू
+Ungroup Selection|चयन अनग्रुप करें
+Unit|यूनिट
+Upload A Project|एक प्रोजेक्ट अपलोड करें
+User Manual|उपयोगकर्ता मैनुअल
+Value|मान
+Version history is not available.|संस्करण इतिहास उपलब्ध नहीं है।
+Vertical|ऊर्ध्वाधर
+Vertical Alignment|ऊर्ध्वाधर संरेखण
+Vertical Inline|ऊर्ध्वाधर इनलाइन
+Vertical Offset 1|ऊर्ध्वाधर ऑफसेट 1
+Vertical Offset 2|ऊर्ध्वाधर ऑफसेट 2
+View|व्यू
+Visible|दृश्यमान
+Voltage|वोल्टेज
+Wafer|वेफर
+Warning|चेतावनी
+Width|चौड़ाई
+Winding Spacing|वाइंडिंग स्पेसिंग
+Wiring|वायरिंग
+X-axis|X-अक्ष
+Y-axis|Y-अक्ष
+Zoom|ज़ूम
+base of 10|10 का आधार
+base of 2|2 का आधार
+hold %s and drag to unstick from|%s दबाए रखें और खींचकर अलग करें
+Add a Curve|एक कर्व जोड़ें
+Clear|साफ करें
+Insert Image|छवि सम्मिलित करें
+Load From File|फ़ाइल से लोड करें
+Loadline Editor|लोडलाइन एडिटर
+Max Current (mA)|अधिकतम करंट (mA)
+Max Dissipation (W)|अधिकतम डिसिपेशन (W)
+Max Voltage (V)|अधिकतम वोल्टेज (V)
+Save To File|फ़ाइल में सहेजें
+Update Axis|अक्ष अपडेट करें
+Apply Variant|वेरिएंट लागू करें
+Save as Building Block|बिल्डिंग ब्लॉक के रूप में सहेजें
+Select|चुनें
+Unlock|अनलॉक करें
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|क्या आप वाकई इस प्रोजेक्ट की चैट हिस्ट्री साफ करना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती!
+Component reordering is possible only when Project Explorer is sorted by z-index.|घटक पुन: क्रमबद्धता केवल तभी संभव है जब प्रोजेक्ट एक्सप्लोरर z-index द्वारा क्रमबद्ध हो।
+Could not apply changes. Check the log for details.|परिवर्तन लागू नहीं कर सके। विवरण के लिए लॉग जांचें।
+Exporting outline for board %s to file %s|बोर्ड %s का आउटलाइन फ़ाइल %s में निर्यात कर रहे हैं
+Failed to export the project to gerber. Please check the log for details|प्रोजेक्ट को gerber में निर्यात करने में विफल। कृपया विवरण के लिए लॉग जांचें
+Forgot Password?|पासवर्ड भूल गए?
+Gerber Export|Gerber निर्यात
+Gerber export completed successfully. The following files were created:%s|Gerber निर्यात सफलतापूर्वक पूर्ण हुआ। निम्नलिखित फ़ाइलें बनाई गईं:%s
+Get Premium|प्रीमियम प्राप्त करें
+Netlist files|नेटलिस्ट फ़ाइलें
+No proximity issues detected.|कोई निकटता समस्या का पता नहीं चला।
+Nothing to export.|निर्यात करने के लिए कुछ नहीं है।
+Password|पासवर्ड
+Send|भेजें
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|कुछ घटक बोर्ड की सीमाओं के बाहर हैं।%sजब तक आप उनके नीचे एक बोर्ड घटक नहीं जोड़ते, तब तक उन्हें अनदेखा किया जाएगा।%sक्या आप जारी रखना चाहते हैं?
+User Name|उपयोगकर्ता नाम
+AI Circuit Analyzer|AI सर्किट विश्लेषक
+Cloud|क्लाउड
+Compare With...|के साथ तुलना करें...
+Connect to Patreon|Patreon से कनेक्ट करें
+Export|निर्यात करें
+Export to Gerber|Gerber में निर्यात करें
+Generate DIYLC Netlist (excl. Switches)|DIYLC नेटलिस्ट जेनरेट करें (स्विच के बिना)
+Generate DIYLC Netlist (incl. Switches)|DIYLC नेटलिस्ट जेनरेट करें (स्विच के साथ)
+Generate Spice Netlist (excl. Switches)|Spice नेटलिस्ट जेनरेट करें (स्विच के बिना)
+Generate Spice Netlist (incl. Switches)|Spice नेटलिस्ट जेनरेट करें (स्विच के साथ)
+Silkscreen|सिल्कस्क्रीन
+Virtual Multimeter (excl. Switches)|वर्चुअल मल्टीमीटर (स्विच के बिना)
+Virtual Multimeter (incl. Switches)|वर्चुअल मल्टीमीटर (स्विच के साथ)
+Become a Patreon and enjoy perks|Patreon बनें और लाभ उठाएं
+Join Patreon|Patreon में शामिल हों
+
