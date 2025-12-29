@@ -446,8 +446,12 @@
 					<description>Added Chinese simplified (thank you chenjingyuanku) and Hindi UI translation and updated all other languages with new translations</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; requires adding a configuration property to config.xml with key 'fontScaleFactor' and a desired float value</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; requires adding a configuration property to confix.xml with key 'fontScaleFactor' and a desired float value</description>
+					<description>Improved behavior of mouse cursor during drag operations; this should also fix behavior on some linux machines that show a "forbidden" cursor while dragging</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

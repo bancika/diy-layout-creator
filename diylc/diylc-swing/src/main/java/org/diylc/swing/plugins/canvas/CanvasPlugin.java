@@ -271,6 +271,8 @@ public class CanvasPlugin implements IPlugIn{
         public void mouseMoved(MouseEvent e) {
           if (scrollPane.isMouseScrollMode())
             return;
+          // if needed uncomment this code, it forces the cursor to refresh when it's stuck
+//          canvasPanel.setCursor(null);
           canvasPanel.setCursor(plugInPort.getCursorAt(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
               e.isShiftDown(), e.isAltDown()));
           plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),

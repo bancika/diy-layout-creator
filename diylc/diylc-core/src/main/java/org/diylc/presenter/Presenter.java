@@ -251,8 +251,10 @@ public class Presenter implements IPlugInPort {
   @Override
   public Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     // Only change the cursor if we're not making a new component.
-    if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown)
+    if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown) {
       return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+    }
+
     if (instantiationManager.getComponentTypeSlot() == null) {
       // Scale point to remove zoom factor.
       Point2D scaledPoint = scalePoint(point);
@@ -269,6 +271,7 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
+
     return Cursor.getDefaultCursor();
   }
 
@@ -1581,6 +1584,7 @@ public class Presenter implements IPlugInPort {
       drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();
     }
+
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     dragInProgress = false;
   }

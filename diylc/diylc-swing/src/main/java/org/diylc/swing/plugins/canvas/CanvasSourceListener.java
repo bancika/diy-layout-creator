@@ -21,11 +21,16 @@
 */
 package org.diylc.swing.plugins.canvas;
 
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.SwingUtilities;
 
 import org.diylc.common.IPlugInPort;
 
@@ -50,13 +55,16 @@ class CanvasSourceListener implements DragSourceListener {
   }
 
   @Override
-  public void dragEnter(DragSourceDragEvent dsde) {}
+  public void dragEnter(DragSourceDragEvent dsde) {
+    updateCursor(dsde);
+  }
 
   @Override
   public void dragExit(DragSourceEvent dse) {}
 
   @Override
   public void dragOver(DragSourceDragEvent dsde) {
+    updateCursor(dsde);
     Point p = dsde.getDragSourceContext().getComponent().getMousePosition();
     if (p != null) {
       dsde.getDragSourceContext().getComponent().firePropertyChange("dragPoint", p.x, p.y);
@@ -64,5 +72,26 @@ class CanvasSourceListener implements DragSourceListener {
   }
 
   @Override
-  public void dropActionChanged(DragSourceDragEvent dsde) {}
+  public void dropActionChanged(DragSourceDragEvent dsde) {
+    updateCursor(dsde);
+  }
+
+  /**
+   * Updates the cursor during drag operations using the presenter as the single source of truth.
+   * If the presenter returns DEFAULT_CURSOR, uses MOVE_CURSOR to prevent "No" cursor issues.
+   */
+  private void updateCursor(DragSourceDragEvent dsde) {
+    Point mousePos = dsde.getDragSourceContext().getComponent().getMousePosition();
+    if (mousePos != null) {
+      // Use presenter as single source of truth for cursor
+      Cursor requestedCursor = presenter.getCursorAt(mousePos, false, false, false);
+      Cursor dragCursor = requestedCursor;
+      // If DEFAULT_CURSOR, use MOVE_CURSOR to prevent "No" cursor during drag operations
+      if (requestedCursor.getType() == Cursor.DEFAULT_CURSOR) {
+        dragCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+      }
+      dsde.getDragSourceContext().setCursor(null);
+      dsde.getDragSourceContext().setCursor(dragCursor);
+    }
+  }
 }
