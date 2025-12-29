@@ -101,7 +101,9 @@ public class CalcUtils {
       return null;
     }
     double luminance = calculateLuminance(color);
-    Color monochromeColor = (luminance < threshold) ? Color.BLACK : Color.WHITE;
+    // Use <= to handle edge case where luminance equals threshold (should be white)
+    // Add small epsilon to account for floating point precision issues
+    Color monochromeColor = (luminance < threshold - 1e-10) ? Color.BLACK : Color.WHITE;
     // Preserve alpha channel if present
     if (color.getAlpha() < 255) {
       monochromeColor = new Color(monochromeColor.getRed(), monochromeColor.getGreen(), 

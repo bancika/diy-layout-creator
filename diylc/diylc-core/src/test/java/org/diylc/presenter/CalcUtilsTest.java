@@ -229,8 +229,17 @@ public class CalcUtilsTest {
     @Test
     public void testConvertToMonochromeWithAlpha() {
         // Test color with alpha channel - alpha should be preserved
+        // Red (255, 0, 0) has luminance ~76, which is < 128, so it becomes BLACK
         Color transparentRed = new Color(255, 0, 0, 128);
         Color result = CalcUtils.convertToMonochrome(transparentRed);
+        assertEquals(Color.BLACK.getRed(), result.getRed());
+        assertEquals(Color.BLACK.getGreen(), result.getGreen());
+        assertEquals(Color.BLACK.getBlue(), result.getBlue());
+        assertEquals(128, result.getAlpha());
+        
+        // Test light color with alpha - should become WHITE
+        Color transparentLight = new Color(255, 255, 200, 128);
+        result = CalcUtils.convertToMonochrome(transparentLight);
         assertEquals(Color.WHITE.getRed(), result.getRed());
         assertEquals(Color.WHITE.getGreen(), result.getGreen());
         assertEquals(Color.WHITE.getBlue(), result.getBlue());
