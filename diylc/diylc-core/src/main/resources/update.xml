@@ -451,7 +451,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improve contrast of tooltips on some Linux machines that show white text against yellow ballon</description>
+					<description>Improve contrast of tooltips on some Linux machines that show white text against yellow balloon</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Honor label color settings for 'Tape Measure' component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

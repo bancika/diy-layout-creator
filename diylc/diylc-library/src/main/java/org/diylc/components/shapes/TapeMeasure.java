@@ -174,6 +174,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     g2d.rotate(theta);
     
     g2d.setFont(font);
+    g2d.setColor(componentState == ComponentState.SELECTED ? SELECTION_COLOR : labelColor);
     g2d.drawString(text, x, y);
   }
   
