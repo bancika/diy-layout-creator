@@ -57,17 +57,48 @@ for profile in "${PROFILES[@]}"; do
     
     echo "✓ Profile ${profile} built successfully"
     
-    # Copy zip files immediately after each build (before next clean)
+    # Copy zip and exe files immediately after each build (before next clean)
     if [ -d "${TARGET_DIR}" ]; then
-        echo "Copying zip files from ${profile}..."
+        echo "Looking for artifacts in ${TARGET_DIR}..."
+        PROFILE_FILE_COUNT=0
+        
+        # Find all zip files in target directory (excluding DIYLC-notarize.zip)
         while IFS= read -r -d '' zipfile; do
             filename=$(basename "${zipfile}")
-            dest="${DEPLOY_DIR}/${filename}"
-            
-            echo "  → ${filename}"
-            cp "${zipfile}" "${dest}"
-            TOTAL_ZIP_COUNT=$((TOTAL_ZIP_COUNT + 1))
+            # Skip DIYLC-notarize.zip files
+            if [[ "${filename}" != "DIYLC-notarize.zip" ]] && [ -f "${zipfile}" ]; then
+                dest="${DEPLOY_DIR}/${filename}"
+                
+                echo "  → Copying: ${filename}"
+                cp "${zipfile}" "${dest}"
+                TOTAL_ZIP_COUNT=$((TOTAL_ZIP_COUNT + 1))
+                PROFILE_FILE_COUNT=$((PROFILE_FILE_COUNT + 1))
+            fi
         done < <(find "${TARGET_DIR}" -maxdepth 1 -type f -name "*.zip" -print0 2>/dev/null)
+        
+        # Find all exe files in target directory
+        while IFS= read -r -d '' exefile; do
+            if [ -f "${exefile}" ]; then
+                filename=$(basename "${exefile}")
+                dest="${DEPLOY_DIR}/${filename}"
+                
+                echo "  → Copying: ${filename}"
+                cp "${exefile}" "${dest}"
+                TOTAL_ZIP_COUNT=$((TOTAL_ZIP_COUNT + 1))
+                PROFILE_FILE_COUNT=$((PROFILE_FILE_COUNT + 1))
+            fi
+        done < <(find "${TARGET_DIR}" -maxdepth 1 -type f -name "*.exe" -print0 2>/dev/null)
+        
+        if [ ${PROFILE_FILE_COUNT} -eq 0 ]; then
+            echo "  ⚠ Warning: No artifacts found for profile ${profile}"
+            # List what's actually in the target directory for debugging
+            echo "  Debug: Files in target directory:"
+            ls -la "${TARGET_DIR}"/*.{zip,exe} 2>/dev/null | head -5 || echo "    (no zip/exe files found)"
+        else
+            echo "  ✓ Copied ${PROFILE_FILE_COUNT} file(s) from ${profile}"
+        fi
+    else
+        echo "  ⚠ Warning: Target directory ${TARGET_DIR} does not exist"
     fi
     
     echo ""
@@ -77,9 +108,9 @@ echo "=========================================="
 echo "Copying summary"
 echo "=========================================="
 if [ ${TOTAL_ZIP_COUNT} -eq 0 ]; then
-    echo "No zip files were copied"
+    echo "No artifacts were copied"
 else
-    echo "✓ Copied ${TOTAL_ZIP_COUNT} zip file(s) total to ${DEPLOY_DIR}"
+    echo "✓ Copied ${TOTAL_ZIP_COUNT} file(s) total to ${DEPLOY_DIR}"
 fi
 
 echo ""
@@ -88,5 +119,5 @@ echo "Build and deployment complete!"
 echo "=========================================="
 echo "Deployment folder: ${DEPLOY_DIR}"
 echo "Files:"
-ls -lh "${DEPLOY_DIR}"/*.zip 2>/dev/null || echo "  (no zip files found)"
+ls -lh "${DEPLOY_DIR}"/*.{zip,exe} 2>/dev/null || echo "  (no zip/exe files found)"
 
