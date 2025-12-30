@@ -53,7 +53,6 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.Presenter;
@@ -68,6 +67,8 @@ public class CanvasPlugin implements IPlugIn{
   private RulerScrollPane scrollPane;
   private CanvasPanel canvasPanel;
   private ComponentPopupMenu popupMenu;
+  private ResizeInfoTooltip resizeInfoTooltip;
+  private boolean resizingInProgress = false;
 
   private IPlugInPort plugInPort;
   private ISwingUI swingUI;
@@ -193,6 +194,7 @@ public class CanvasPlugin implements IPlugIn{
   public CanvasPanel getCanvasPanel() {
     if (canvasPanel == null) {
       canvasPanel = new CanvasPanel(plugInPort, configManager);
+      resizeInfoTooltip = new ResizeInfoTooltip(canvasPanel, configManager);
       canvasPanel.addMouseListener(new MouseAdapter() {
 
         private MouseEvent pressedEvent;
@@ -277,6 +279,15 @@ public class CanvasPlugin implements IPlugIn{
               e.isShiftDown(), e.isAltDown()));
           plugInPort.mouseMoved(e.getPoint(), Utils.isMac() ? e.isMetaDown() : e.isControlDown(),
               e.isShiftDown(), e.isAltDown());
+          
+          // Update tooltip position if resizing is in progress and tooltip is enabled, otherwise hide it
+          if (resizeInfoTooltip != null) {
+            if (resizingInProgress && configManager.readBoolean(IPlugInPort.SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY, true)) {
+              resizeInfoTooltip.updatePosition(e.getPoint());
+            } else {
+              resizeInfoTooltip.hideTooltip();
+            }
+          }
         }
       });
       
@@ -505,11 +516,13 @@ public class CanvasPlugin implements IPlugIn{
         canvasPanel.repaint();
         // Refresh selection bounds after we're done with painting to ensure we have traced the
         // component areas
+        boolean panToSelection = params.length > 0 && Boolean.TRUE.equals(params[0]);
+        this.resizingInProgress = params.length > 1 && Boolean.TRUE.equals(params[1]);
         SwingUtilities.invokeLater(new Runnable() {
 
           @Override
           public void run() {
-            if (params.length > 0 && Boolean.TRUE.equals(params[0])) {
+            if (panToSelection) {
               Rectangle2D selectionBounds = plugInPort.getSelectionBounds(true);
               if (selectionBounds != null) {
                 Rectangle visibleRect = scrollPane.getVisibleRect();
@@ -519,8 +532,28 @@ public class CanvasPlugin implements IPlugIn{
                     );
               }
             }
-            if (configManager.readBoolean(IPlugInPort.SHOW_RULERS_KEY, true))
+            if (configManager.readBoolean(IPlugInPort.SHOW_RULERS_KEY, true)) {
               scrollPane.setSelectionRectangle(plugInPort.getSelectionBounds(true));
+            }
+            if (CanvasPlugin.this.resizingInProgress && getCanvasPanel().getMousePosition() != null) {
+              // Only show tooltip if enabled in configuration
+              if (configManager.readBoolean(IPlugInPort.SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY, true)) {
+                Dimension resizeDimensions = plugInPort.getResizeDimensions(getCanvasPanel().getMousePosition());
+                if (resizeInfoTooltip != null) {
+                  resizeInfoTooltip.update(resizeDimensions, getCanvasPanel().getMousePosition());
+                }
+              } else {
+                // Hide tooltip if disabled
+                if (resizeInfoTooltip != null) {
+                  resizeInfoTooltip.hideTooltip();
+                }
+              }
+            } else {
+              // Hide tooltip when not resizing
+              if (resizeInfoTooltip != null) {
+                resizeInfoTooltip.hideTooltip();
+              }
+            }
           }
         });
         break;
@@ -562,26 +595,5 @@ public class CanvasPlugin implements IPlugIn{
   private void updateZeroLocation() {
     double extraSpace = CanvasPlugin.this.plugInPort.getExtraSpace();
     getScrollPane().setZeroLocation(new Point2D.Double(extraSpace, extraSpace));
-  }
-  
-  class LockAction extends AbstractAction {
-
-    private static final long serialVersionUID = 1L;
-
-    private IDIYComponent<?> component;
-    private boolean locked;
-
-    public LockAction(IDIYComponent<?> component, boolean locked) {
-      super();
-      this.locked = locked;
-      this.component = component;
-      putValue(AbstractAction.NAME, component.getName());      
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-     plugInPort.lockComponent(component, locked); 
-    } 
-  
   }
 }

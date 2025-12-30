@@ -49,9 +49,9 @@ import org.diylc.test.ITestProcessor;
  * Interface for communication between plug-ins and the application. Plug-ins may acquire
  * information or make changes through this interface. Application events are dispatched to plug-ins
  * through {@link MessageDispatcher}
- * 
+ *
  * @author Branislav Stojkovic
- * 
+ *
  * @see IPlugIn
  * @see MessageDispatcher
  * @see IMessageListener
@@ -86,18 +86,19 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String RULER_IN_SUBDIVISION_KEY = "rulerInSubdivision";
   public static final String CACHING_ENABLED_KEY = "cachingEnabled";
   public static final String FONT_SCALE_FACTOR_KEY = "fontScaleFactor";
-  
+  public static final String SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY = "showResizeDimensionsTooltip";
+
   public static final String RULER_IN_SUBDIVISION_2 = "base of 2";
   public static final String RULER_IN_SUBDIVISION_10 = "base of 10";
   public static final String RULER_IN_SUBDIVISION_DEFAULT = RULER_IN_SUBDIVISION_10;
-  
+
   public static final String SNAP_TO_NONE = "None";
   public static final String SNAP_TO_GRID = "Grid";
   public static final String SNAP_TO_COMPONENTS = "Components";
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
-  
+
   public static final String LOCKED_ALPHA = "lockedAlpha";
-  
+
   public static final String LANGUAGE = "language";
   public static final String LANGUAGE_DEFAULT = "English";
 
@@ -110,25 +111,25 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final int NOBUTTON = 0;
   public static final int BUTTON1 = 1;
   public static final int BUTTON2 = 2;
-  public static final int BUTTON3 = 3;  
+  public static final int BUTTON3 = 3;
 
   /**
    * Returns size of the canvas that takes project dimensions into account as well as zoom level.
    * Each dimension is calculated as the product of the actual size and the number of pixels per
    * unit. If <code>useZoom</code> is set to true, the result is scaled by zoom factor.
-   * 
+   *
    * @param useZoom
    * @param includeExtraSpace
-   * 
+   *
    * @return canvas dimensions
    */
   Dimension getCanvasDimensions(boolean useZoom, boolean includeExtraSpace);
 
   /**
    * Returns an instance of {@link Cursor} that should be used at the specified location.
-   * 
+   *
    * Note: point coordinates are scaled for zoom factor.
-   * 
+   *
    * @param point
    * @param ctrlDown
    * @param shiftDown
@@ -139,14 +140,14 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Returns an instance of currently loaded project.
-   * 
+   *
    * @return
    */
   Project getCurrentProject();
 
   /**
    * Loads specified {@link Project}.
-   * 
+   *
    * @param project
    * @param freshStart
    * @param filename file name when loading from a file
@@ -160,22 +161,22 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Loads a project from the specified file.
-   * 
+   *
    * @param fileName
    */
   void loadProjectFromFile(String fileName);
 
   /**
    * Saves the current project into the specified file.
-   * 
+   *
    * @param fileName
    * @param isBackup
    */
   void saveProjectToFile(String fileName, boolean isBackup);
-  
+
   /**
    * Exports the current project into one or more files - one per layer and potentially drill layer.
-   * 
+   *
    * @param fileNameBase
    * @param g2d
    */
@@ -193,7 +194,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Shows a user dialog if there are changes to confirm that it's safe to proceed.
-   * 
+   *
    * @return true, if file actions (new, open, close) can be taken
    */
   boolean allowFileAction();
@@ -202,7 +203,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Returns all available {@link ComponentType}s classified by category. Result is a {@link Map}
    * between category name to a {@link List} of all {@link ComponentType}s that share that category
    * name.
-   * 
+   *
    * @return
    */
   Map<String, List<ComponentType>> getComponentTypes();
@@ -210,7 +211,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   /**
    * Draws project on the provided {@link Graphics2D}. If the provided filter is not null, it will
    * be used to filter the components that are shown.
-   * 
+   *
    * @param g2d
    * @param drawOptions specific drawing options
    * @param filter
@@ -224,35 +225,35 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Returns current zoom level where <code>zoomLevel = 1.0d</code> means 100%.
-   * 
+   *
    * @return current zoom level
    */
   double getZoomLevel();
 
   /**
    * Changes current zoom level where <code>zoomLevel = 1.0d</code> means 100%
-   * 
+   *
    * @param zoomLevel new zoom leve
    */
   void setZoomLevel(double zoomLevel);
 
   /**
    * Returns current version number.
-   * 
+   *
    * @return
    */
   VersionNumber getCurrentVersionNumber();
-  
+
   /**
-   * Returns few most recent versions. 
-   * 
+   * Returns few most recent versions.
+   *
    * @return
    */
   List<Version> getRecentUpdates();
 
   /**
    * Adds a list of components to the project.
-   * 
+   *
    * @param componentTransferable
    * @param autoGroup
    * @param assignNewNames
@@ -271,7 +272,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Sets default value for the specified property name for currently selected component types.
-   * 
+   *
    * @param propertyName display name for property
    * @param value new default value, must not be null
    */
@@ -279,7 +280,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   /**
    * Sets default value for the specified property name for projects.
-   * 
+   *
    * @param clazz class to set defaults to
    * @param propertyName display name for property
    * @param value new default value, must not be null
@@ -292,6 +293,15 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    *         selection is empty.
    */
   List<PropertyWrapper> getMutualSelectionProperties();
+
+  /**
+   * Available only during resizing, returns the dimensions of the component being resized.
+   * Otherwise returns null.
+   *
+   * @param point the mouse point
+   * @return Dimension with width and height in pixels, or null if not resizing
+   */
+  Dimension getResizeDimensions(Point point);
 
   void editSelection();
 

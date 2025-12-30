@@ -928,16 +928,19 @@ public class Presenter implements IPlugInPort {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  @Override
   public Rectangle2D getSelectionBounds(boolean applyZoom) {
-    if (selectedComponents == null || selectedComponents.isEmpty())
+    return getComponentBounds(selectedComponents, applyZoom);
+  }
+
+  private Rectangle2D getComponentBounds(Collection<IDIYComponent<?>> components, boolean applyZoom) {
+    if (components == null || components.isEmpty())
       return null;
 
     int minX = Integer.MAX_VALUE;
     int maxX = Integer.MIN_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxY = Integer.MIN_VALUE;
-    for (IDIYComponent<?> c : selectedComponents) {
+    for (IDIYComponent<?> c : components) {
       ComponentArea compArea = drawingManager.getComponentArea(c);
       if (compArea != null && compArea.getOutlineArea() != null) {
         Rectangle rect = compArea.getOutlineArea().getBounds();
@@ -1237,11 +1240,14 @@ public class Presenter implements IPlugInPort {
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("point", point);
       test.addStep(DIYTest.DRAG_OVER, params);
-    }    
-    
+    }
+
     if (point == null || operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
       return false;
     }
+
+    boolean resizeInProgress = false;
+
     Point2D scaledPoint = scalePoint(point);
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
@@ -1251,6 +1257,13 @@ public class Presenter implements IPlugInPort {
       Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
       if (actualD == null)
         return true;
+
+      // if there's at least one component with only one control point being dragged it means that we are resizing
+      if (controlPointMap.size() == 1 && controlPointMap.entrySet().stream()
+          .anyMatch(entry -> entry.getValue().size() == 1
+              && entry.getKey().getControlPointCount() > 1)) {
+        resizeInProgress = true;
+      }
 
       previousDragPoint.setLocation(previousDragPoint.getX() + actualD.getX(), previousDragPoint.getY() + actualD.getY());
     } else if (selectedComponents.isEmpty() && instantiationManager.getComponentTypeSlot() == null
@@ -1269,8 +1282,20 @@ public class Presenter implements IPlugInPort {
       this.previousScaledPoint = scalePoint(point);
       instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(), currentProject.getGridSpacing());
     }
-    messageDispatcher.dispatchMessage(EventType.REPAINT);
+
+    messageDispatcher.dispatchMessage(EventType.REPAINT, false, resizeInProgress);
     return true;
+  }
+
+  public Dimension getResizeDimensions(Point point) {
+    if (controlPointMap.entrySet().stream()
+        .anyMatch(entry -> entry.getValue().size() == 1
+            && entry.getKey().getControlPointCount() > 1)) {
+
+      Rectangle2D componentBounds = getComponentBounds(controlPointMap.keySet(), false);
+      return new Dimension((int) componentBounds.getWidth(), (int) componentBounds.getHeight());
+    }
+    return null;
   }
 
   private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
