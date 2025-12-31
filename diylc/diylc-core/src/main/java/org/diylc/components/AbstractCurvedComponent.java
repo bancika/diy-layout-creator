@@ -37,16 +37,14 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> {
+public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComponent<T> implements
+    IHaveLength {
 
   private static final long serialVersionUID = 1L;
   
@@ -337,8 +335,8 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     // }
   }
   
-  @EditableProperty
-  public Size getLength() {
+  @EditableProperty(name = "Length")
+  public Size calculateLength() {
     double d = 0;
       try {
       Point2D[] p = getControlPoints();

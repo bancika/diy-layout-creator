@@ -33,8 +33,8 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
-import org.diylc.presenter.Presenter;
-import org.diylc.utils.Constants;
+import org.diylc.core.measures.ResizeDimensions;
+import org.diylc.core.measures.Size;
 
 /**
  * A lightweight tooltip window that displays resize dimensions and tracks the mouse cursor.
@@ -48,12 +48,10 @@ public class ResizeInfoTooltip {
   private JWindow tooltipWindow;
   private JLabel tooltipLabel;
   private Component parentComponent;
-  private IConfigurationManager<?> configManager;
-  private Dimension currentDimensions;
+  private ResizeDimensions currentDimensions;
 
   public ResizeInfoTooltip(Component parentComponent, IConfigurationManager<?> configManager) {
     this.parentComponent = parentComponent;
-    this.configManager = configManager;
     initializeTooltip();
   }
 
@@ -103,7 +101,7 @@ public class ResizeInfoTooltip {
   /**
    * Updates the tooltip with new dimensions and mouse position.
    */
-  public void update(Dimension dimensions, Point mousePosition) {
+  public void update(ResizeDimensions dimensions, Point mousePosition) {
     this.currentDimensions = dimensions;
 
     if (dimensions == null || mousePosition == null) {
@@ -180,24 +178,28 @@ public class ResizeInfoTooltip {
     tooltipWindow.setLocation(x, y);
   }
 
-  private String formatDimensions(Dimension dimensions) {
-    boolean metric = configManager.readBoolean(Presenter.METRIC_KEY, true);
-
-    // Convert pixels to the selected unit
-    double widthInPixels = dimensions.width;
-    double heightInPixels = dimensions.height;
-
-    // Convert to inches first, then to the target unit
-    double widthInInches = widthInPixels / Constants.PIXELS_PER_INCH;
-    double heightInInches = heightInPixels / Constants.PIXELS_PER_INCH;
-
-    double width = metric ? widthInInches * 25.4 : widthInInches;
-    double height = metric ? heightInInches * 25.4 : heightInInches;
-
-    String unitStr = metric ? "mm" : "in";
-    return String.format("<html>W: %s %s<br>H: %s %s</html>",
-        SIZE_FORMAT.format(width), unitStr,
-        SIZE_FORMAT.format(height), unitStr);
+  private String formatDimensions(ResizeDimensions dimensions) {
+    StringBuilder sb = new StringBuilder("<html>");
+    
+    // Format width
+    Size width = dimensions.width();
+    String widthUnit = width.getUnit().toString();
+    sb.append(String.format("W: %s %s", SIZE_FORMAT.format(width.getValue()), widthUnit));
+    
+    // Format height
+    Size height = dimensions.height();
+    String heightUnit = height.getUnit().toString();
+    sb.append(String.format("<br>H: %s %s", SIZE_FORMAT.format(height.getValue()), heightUnit));
+    
+    // Format length if available
+    Size length = dimensions.length();
+    if (length != null) {
+      String lengthUnit = length.getUnit().toString();
+      sb.append(String.format("<br>L: %s %s", SIZE_FORMAT.format(length.getValue()), lengthUnit));
+    }
+    
+    sb.append("</html>");
+    return sb.toString();
   }
 
   /**

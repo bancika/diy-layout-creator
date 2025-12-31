@@ -59,16 +59,10 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.*;
-import org.diylc.core.ExpansionMode;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDatasheetSupport;
-import org.diylc.core.IView;
-import org.diylc.core.Project;
-import org.diylc.core.Template;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.IAutoCreator;
 import org.diylc.core.gerber.GerberExporter;
+import org.diylc.core.measures.ResizeDimensions;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.filter.IComponentFilter;
@@ -1292,19 +1286,43 @@ public class Presenter implements IPlugInPort {
     return true;
   }
 
-  public Dimension getResizeDimensions(Point point) {
+  public ResizeDimensions getResizeDimensions() {
 
-    if (controlPointMap.entrySet().stream()
-        .anyMatch(entry -> entry.getValue().size() == 1
-            && entry.getKey().getControlPointCount() > 1)) {
-
-      Rectangle2D componentBounds = getComponentBounds(controlPointMap.keySet(), false);
-      if (componentBounds == null) {
-        return null;
-      }
-      return new Dimension((int) componentBounds.getWidth(), (int) componentBounds.getHeight());
+    if (controlPointMap == null || controlPointMap.isEmpty()) {
+      return null;
     }
-    return null;
+
+    // Find the component being resized (one with a single control point being dragged)
+    IDIYComponent<?> resizingComponent = null;
+    for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+      if (entry.getValue().size() == 1 && entry.getKey().getControlPointCount() > 1) {
+        resizingComponent = entry.getKey();
+        break;
+      }
+    }
+
+    if (resizingComponent == null) {
+      return null;
+    }
+
+    Rectangle2D componentBounds = getComponentBounds(controlPointMap.keySet(), false);
+    if (componentBounds == null) {
+      return null;
+    }
+
+    // Convert pixel dimensions to Size (mm or in based on configuration)
+    boolean metric = configManager.readBoolean(METRIC_KEY, true);
+    SizeUnit unit = metric ? SizeUnit.mm : SizeUnit.in;
+    Size width = Size.fromPixels(componentBounds.getWidth(), unit);
+    Size height = Size.fromPixels(componentBounds.getHeight(), unit);
+
+    // Get length if component implements IHaveLength
+    Size length = null;
+    if (resizingComponent instanceof IHaveLength iHaveLength) {
+      length = iHaveLength.calculateLength();
+    }
+
+    return new ResizeDimensions(width, height, length);
   }
 
   private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {

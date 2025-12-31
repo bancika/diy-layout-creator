@@ -41,6 +41,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Template;
 import org.diylc.core.Theme;
+import org.diylc.core.measures.ResizeDimensions;
 import org.diylc.core.measures.Size;
 import org.diylc.filter.IComponentFilter;
 import org.diylc.test.ITestProcessor;
@@ -298,10 +299,10 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * Available only during resizing, returns the dimensions of the component being resized.
    * Otherwise returns null.
    *
-   * @param point the mouse point
-   * @return Dimension with width and height in pixels, or null if not resizing
+   * @return ResizeDimensions with width, height (in mm or in depending on configuration), 
+   *         and length (if component implements IHaveLength), or null if not resizing
    */
-  Dimension getResizeDimensions(Point point);
+  ResizeDimensions getResizeDimensions();
 
   void editSelection();
 

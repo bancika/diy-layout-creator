@@ -41,6 +41,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.core.measures.ResizeDimensions;
 import org.diylc.swingframework.ruler.IRulerListener;
 import org.diylc.swingframework.ruler.Ruler.InchSubdivision;
 import org.diylc.swingframework.ruler.RulerScrollPane;
@@ -538,7 +539,7 @@ public class CanvasPlugin implements IPlugIn{
             if (CanvasPlugin.this.resizingInProgress && getCanvasPanel().getMousePosition() != null) {
               // Only show tooltip if enabled in configuration
               if (configManager.readBoolean(IPlugInPort.SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY, true)) {
-                Dimension resizeDimensions = plugInPort.getResizeDimensions(getCanvasPanel().getMousePosition());
+                ResizeDimensions resizeDimensions = plugInPort.getResizeDimensions();
                 if (resizeInfoTooltip != null) {
                   resizeInfoTooltip.update(resizeDimensions, getCanvasPanel().getMousePosition());
                 }
