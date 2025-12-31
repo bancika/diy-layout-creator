@@ -352,6 +352,7 @@ Shape|आकार
 Shapes|आकार
 Show Bracket|ब्रैकेट दिखाएं
 Show Grid|ग्रिड दिखाएं
+Show Resize Dimensions|आकार बदलने के आयाम दिखाएं
 Show Rulers|रूलर दिखाएं
 Shroud|श्राउड
 Shrouded|श्राउडेड

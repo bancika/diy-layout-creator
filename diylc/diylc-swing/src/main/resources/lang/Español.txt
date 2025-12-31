@@ -351,6 +351,7 @@ Shaft Up|Eje Arriba
 Shape|Forma
 Shapes|Formas
 Show Grid|Mostrar Cuadrícula
+Show Resize Dimensions|Mostrar Dimensiones de Redimensionamiento
 Show Rulers|Mostrar Reglas
 Shroud|Envoltura
 Shrouded|Con Envoltura

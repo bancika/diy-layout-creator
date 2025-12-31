@@ -352,6 +352,7 @@ Shape|形状
 Shapes|形状
 Show Bracket|显示支架
 Show Grid|显示网格
+Show Resize Dimensions|显示调整大小尺寸
 Show Rulers|显示标尺
 Shroud|护罩
 Shrouded|带护罩

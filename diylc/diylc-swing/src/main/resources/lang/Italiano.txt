@@ -363,6 +363,7 @@ Shaft Up|Shaft Up
 Shape|forma
 Shapes|forme
 Show Grid|Mostra griglia
+Show Resize Dimensions|Mostra dimensioni ridimensionamento
 Show Rulers|Mostra righelli
 Shroud|Copri
 Shrouded|Coperto

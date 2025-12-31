@@ -351,6 +351,7 @@ Shaft Up|Jogar para cima
 Shape|Forma
 Shapes|Formas
 Show Grid|Mostrar Grid
+Show Resize Dimensions|Mostrar Dimensões de Redimensionamento
 Show Rulers|Mostrar Réguas
 Shroud|Envoltura
 Shrouded|Envolto

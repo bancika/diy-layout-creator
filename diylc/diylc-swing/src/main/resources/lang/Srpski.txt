@@ -344,6 +344,7 @@ Shaft Up|Osovina Gore
 Shape|Oblik
 Shapes|Oblici
 Show Grid|Prikaz Rešetke
+Show Resize Dimensions|Prikaz Dimenzija Promene Veličine
 Show Rulers|Prikaz Lenjira
 Shroud|Kućište
 Shrouded|Sa Kućištem
