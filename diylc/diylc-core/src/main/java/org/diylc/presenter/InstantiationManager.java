@@ -24,13 +24,7 @@ package org.diylc.presenter;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -335,15 +329,14 @@ public class InstantiationManager {
    * account.
    * 
    * @param componentType
-   * @param currentProject
-   * @param additionalComponents
+   * @param components
    * @return
    */
   public String createUniqueName(ComponentType componentType, List<IDIYComponent<?>> components) {
     boolean exists = true;
    
     Set<String> takenNames = components.stream()
-      .map(x -> x.getName())
+      .map(IDIYComponent::getName)
       .filter(Objects::nonNull)
       .collect(Collectors.toSet());
     int i = 0;
