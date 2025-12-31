@@ -940,20 +940,24 @@ public class Presenter implements IPlugInPort {
     int maxX = Integer.MIN_VALUE;
     int minY = Integer.MAX_VALUE;
     int maxY = Integer.MIN_VALUE;
+
     for (IDIYComponent<?> c : components) {
+
       ComponentArea compArea = drawingManager.getComponentArea(c);
-      if (compArea != null && compArea.getOutlineArea() != null) {
-        Rectangle rect = compArea.getOutlineArea().getBounds();
-        if (rect.x < minX)
-          minX = rect.x;
-        if (rect.x + rect.width > maxX)
-          maxX = rect.x + rect.width;
-        if (rect.y < minY)
-          minY = rect.y;
-        if (rect.y + rect.height > maxY)
-          maxY = rect.y + rect.height;
-      } else if (currentProject.getComponents().contains(c))
+      if (compArea == null || compArea.getOutlineArea() == null) {
         LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
+        return null;
+      }
+
+      Rectangle rect = compArea.getOutlineArea().getBounds();
+      if (rect.x < minX)
+        minX = rect.x;
+      if (rect.x + rect.width > maxX)
+        maxX = rect.x + rect.width;
+      if (rect.y < minY)
+        minY = rect.y;
+      if (rect.y + rect.height > maxY)
+        maxY = rect.y + rect.height;
     }
 
     if (configManager.readBoolean(EXTRA_SPACE_KEY, true)) {
@@ -1022,8 +1026,9 @@ public class Presenter implements IPlugInPort {
     }
     updateSelection(matching);    
     messageDispatcher.dispatchMessage(EventType.REPAINT, true);
-    if (matching.size() > 0)
+    if (!matching.isEmpty()) {
       messageDispatcher.dispatchMessage(EventType.SCROLL_TO, getSelectionBounds(true));
+    }
   }
 
   @Override
@@ -1288,11 +1293,15 @@ public class Presenter implements IPlugInPort {
   }
 
   public Dimension getResizeDimensions(Point point) {
+
     if (controlPointMap.entrySet().stream()
         .anyMatch(entry -> entry.getValue().size() == 1
             && entry.getKey().getControlPointCount() > 1)) {
 
       Rectangle2D componentBounds = getComponentBounds(controlPointMap.keySet(), false);
+      if (componentBounds == null) {
+        return null;
+      }
       return new Dimension((int) componentBounds.getWidth(), (int) componentBounds.getHeight());
     }
     return null;
@@ -2195,6 +2204,10 @@ public class Presenter implements IPlugInPort {
       return null;
     }
     Rectangle2D rect = getSelectionBounds(false);
+
+    if (rect == null) {
+      return null;
+    }
 
     double width = rect.getWidth();
     double height = rect.getHeight();
