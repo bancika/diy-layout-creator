@@ -25,7 +25,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
-import java.util.UUID;
 
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -55,8 +54,6 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
   public static final int COMPONENT = 4;
   public static final int WIRING = 5;
   public static final int TEXT = 6;
-
-  UUID getId();
 
   /**
    * @return component instance name.
