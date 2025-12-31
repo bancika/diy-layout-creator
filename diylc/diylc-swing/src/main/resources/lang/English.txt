@@ -352,6 +352,7 @@ Shape
 Shapes
 Show Bracket
 Show Grid
+Show Resize Dimensions
 Show Rulers
 Shroud
 Shrouded

@@ -158,6 +158,10 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
         CONFIG_MENU);
     
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Resize Dimensions",
+            IPlugInPort.SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY, true), CONFIG_MENU);
+    
     swingUI.injectSubmenu(SNAP_MENU, IconLoader.GraphEdgeDirected.getIcon(), CONFIG_MENU);    
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createToggleAction(IPlugInPort.SNAP_TO_NONE, IPlugInPort.SNAP_TO_KEY, SNAP_MENU, IPlugInPort.SNAP_TO_DEFAULT),

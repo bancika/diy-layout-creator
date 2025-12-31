@@ -348,6 +348,7 @@ Shaft Up|Tige vers le haut
 Shape|Forme
 Shapes|Formes
 Show Grid|Afficher la grille
+Show Resize Dimensions|Afficher les dimensions de redimensionnement
 Show Rulers|Afficher les règles
 Shroud|Enveloppe
 Shrouded|Enveloppé

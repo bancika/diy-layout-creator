@@ -21,7 +21,6 @@
 */
 package org.diylc.common;
 
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 import org.diylc.core.Project;

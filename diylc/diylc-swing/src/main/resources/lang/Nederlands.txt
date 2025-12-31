@@ -363,6 +363,7 @@ Shaft Up|As omhoog
 Shape|Vorm
 Shapes|Vormen
 Show Grid|Raster weergeven
+Show Resize Dimensions|Grootte-aanpassingsafmetingen weergeven
 Show Rulers|Linialen weergeven
 Shroud|Beschermrand
 Shrouded|Afgeschermd

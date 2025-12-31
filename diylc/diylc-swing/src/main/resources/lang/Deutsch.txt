@@ -363,6 +363,7 @@ Shaft Up|Achse nach oben
 Shape|Form 
 Shapes|Formen 
 Show Grid|Raster anzeigen
+Show Resize Dimensions|Größenänderungsdimensionen anzeigen
 Show Rulers|Lineale anzeigen
 Shroud|Wanne
 Shrouded|Abgeschirmt
