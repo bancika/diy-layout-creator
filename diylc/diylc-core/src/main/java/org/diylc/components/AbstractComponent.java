@@ -30,8 +30,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.diylc.core.IDIYComponent;
@@ -55,7 +53,6 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   private static final long serialVersionUID = 1L;
 
   protected String name = "";
-  protected UUID id;
 
   public static Color SELECTION_COLOR = Color.red;
   public static Color LABEL_COLOR = Color.black;
@@ -69,14 +66,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   public static Color FR4_LIGHT_COLOR = Color.decode("#BABE71");
   public static Color PHENOLIC_COLOR = Color.decode("#F8EBB3");
   public static Color PHENOLIC_DARK_COLOR = Color.decode("#CD8500");
-
-  public UUID getId() {
-    if (id == null) {
-      id = UUID.randomUUID();
-    }
-    return id;
-  }
-
+  
   @EditableProperty(defaultable = false)
   @Override
   public String getName() {
@@ -123,7 +113,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   /**
    * Returns the closest odd number, i.e. x when x is odd, or x + 1 when x is even.
    * 
-   * @param s
+   * @param x
    * @return
    */
   protected int getClosestOdd(Size s) {
@@ -227,14 +217,53 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
   @Override
   public boolean equalsTo(IDIYComponent<?> other) {
-    return Objects.equals(getId(), other.getId());
+    if (other == null)
+      return false;
+    if (!other.getClass().equals(this.getClass()))
+      return false;
+    Class<?> clazz = this.getClass();
+    while (AbstractComponent.class.isAssignableFrom(clazz)) {
+      Field[] fields = clazz.getDeclaredFields();
+      clazz = clazz.getSuperclass();
+      // fields = this.getClass().getDeclaredFields();
+      // Copy over all non-static, non-final and non-transient fields that are declared
+      // in
+      // AbstractComponent or one of it's child classes
+      for (Field field : fields) {
+        if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers()) &&
+            !Modifier.isTransient(field.getModifiers())) {
+          field.setAccessible(true);
+          try {
+            Object value = field.get(this);
+            Object otherValue = field.get(other);
+            if (!compareObjects(value, otherValue))
+              return false;
+          } catch (Exception e) {
+            throw new RuntimeException(e);
+          }
+        }
+      }
+    }
+    return true;
   }
 
-  @Override
-  public int hashCode() {
-    return getId().hashCode();
+  private boolean compareObjects(Object o1, Object o2) {
+    if (o1 == null && o2 == null)
+      return true;
+    if (o1 == null || o2 == null)
+      return false;
+    if (o1.getClass().isArray()) {
+      if (o1.getClass().getComponentType() == byte.class)
+        return Arrays.equals((byte[]) o1, (byte[]) o2);
+      if (o1.getClass().getComponentType() == double.class)
+        return Arrays.equals((double[]) o1, (double[]) o2);
+      if (o1.getClass().getComponentType() == int.class)
+        return Arrays.equals((int[]) o1, (int[]) o2);      
+      return Arrays.equals((Object[]) o1, (Object[]) o2);
+    }
+    return o1.equals(o2);
   }
-
+  
   @Override
   public String getControlPointNodeName(int index) {
     return Integer.toString(index + 1);
