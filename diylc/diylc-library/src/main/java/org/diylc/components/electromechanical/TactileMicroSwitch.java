@@ -244,7 +244,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
     }
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
-    drawingObserver.stopTracking();
+    drawingObserver.startTracking();
     g2d.fill(mainArea);
     drawingObserver.stopTracking();
 
