@@ -57,18 +57,16 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
   private static final long serialVersionUID = 1L;
 
-  public static Color BODY_COLOR = Color.lightGray;
-  public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-  public static Color INDENT_COLOR = Color.gray.darker();
-  public static Color LABEL_COLOR = Color.white;
-  public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
-  public static int PIN_COUNT = 4;
-  public static Size CASE_SIZE = new Size(6d, SizeUnit.mm);
-  public static Size INDENT_SIZE = new Size(3d, SizeUnit.mm);
-  private static Size PIN_SPACING = new Size(4.5d, SizeUnit.mm);
-  private static Size ROW_SPACING = new Size(6.5d, SizeUnit.mm);
+  private static final Color BODY_COLOR = Color.lightGray;
+  private static final Color BORDER_COLOR = Color.gray.darker();
+  private static final Color PIN_COLOR = METAL_COLOR;
+  private static final Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+  private static final Color INDENT_COLOR = Color.gray.darker();
+  private static final Color LABEL_COLOR = Color.white;
+  private static final Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
+  private static final Size CASE_SIZE = new Size(6d, SizeUnit.mm);
+  private static final Size PIN_SPACING = new Size(4.5d, SizeUnit.mm);
+  private static final Size ROW_SPACING = new Size(6.5d, SizeUnit.mm);
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
@@ -79,6 +77,11 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
   transient private Area[] body;
+
+  private Size caseSize;
+  private Size pinSpacing;
+  private Size rowSpacing;
+  private PinPairingMode pinPairingMode;
 
   public TactileMicroSwitch() {
     super();
@@ -146,10 +149,11 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
   private void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
+    int PIN_COUNT = 4;
     controlPoints = new Point2D[PIN_COUNT];
     controlPoints[0] = firstPoint;
-    double pinSpacing = PIN_SPACING.convertToPixels();
-    double rowSpacing = ROW_SPACING.convertToPixels();
+    double pinSpacing = getPinSpacing().convertToPixels();
+    double rowSpacing = getRowSpacing().convertToPixels();
     // Update control points.
     double dx1;
     double dy1;
@@ -198,8 +202,8 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
       double y = controlPoints[0].getY();
       double width;
       double height;
-      double caseSize = CASE_SIZE.convertToPixels();
-      double indentSize = INDENT_SIZE.convertToPixels();
+      double caseSize = getCaseSize().convertToPixels();
+      double actuatorSize = caseSize / 2;
 
       width = height = caseSize;
       x = (controlPoints[0].getX() + controlPoints[3].getX() - width) / 2;
@@ -207,7 +211,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
       body[0] = new Area(new Rectangle2D.Double(x, y, width, height));
 
-      width = height = indentSize;
+      width = height = actuatorSize;
       x = (controlPoints[0].getX() + controlPoints[3].getX() - width) / 2;
       y = (controlPoints[0].getY() + controlPoints[3].getY() - height) / 2;
 
@@ -391,6 +395,59 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
     this.labelColor = labelColor;
   }
 
+  @EditableProperty(name = "Case")
+  public Size getCaseSize() {
+    if (caseSize == null) {
+      caseSize = CASE_SIZE;
+    }
+    return caseSize;
+  }
+
+  public void setCaseSize(Size caseSize) {
+    this.caseSize = caseSize;
+    this.body = null;
+  }
+
+  @EditableProperty(name = "Spacing Y")
+  public Size getPinSpacing() {
+    if (pinSpacing == null) {
+      pinSpacing = PIN_SPACING;
+    }
+    return pinSpacing;
+  }
+
+  public void setPinSpacing(Size pinSpacing) {
+    this.pinSpacing = pinSpacing;
+    this.body = null;
+    updateControlPoints();
+  }
+
+  @EditableProperty(name = "Spacing X")
+  public Size getRowSpacing() {
+    if (rowSpacing == null) {
+      rowSpacing = ROW_SPACING;
+    }
+    return rowSpacing;
+  }
+
+  public void setRowSpacing(Size rowSpacing) {
+    this.rowSpacing = rowSpacing;
+    this.body = null;
+    updateControlPoints();
+  }
+
+  @EditableProperty(name = "Pin Pairing Mode")
+  public PinPairingMode getPinPairingMode() {
+    if (pinPairingMode == null) {
+      pinPairingMode = PinPairingMode.Opposite;
+    }
+    return pinPairingMode;
+  }
+
+  public void setPinPairingMode(PinPairingMode pinPairingMode) {
+    this.pinPairingMode = pinPairingMode;
+  }
+
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
@@ -417,5 +474,9 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
         maxY - minY + 2 * margin);
+  }
+
+  public enum PinPairingMode {
+    Opposite, Diagonal, Adjacent;
   }
 }

@@ -4128,4 +4128,204 @@
       </org.diylc.core.Template>
     </list>
   </entry>
+  <entry>
+    <string>org.diylc.components.electromechanical.TactileMicroSwitch</string>
+    <list>
+      <org.diylc.core.Template>
+        <name>6x6 (e.g. Omron B3F-1000)</name>
+        <values>
+          <entry>
+            <string>Spacing X</string>
+            <org.diylc.core.measures.Size value="6.5" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Spacing Y</string>
+            <org.diylc.core.measures.Size value="4.5" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color hex="ffffff"/>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Case</string>
+            <org.diylc.core.measures.Size value="6.0" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Name</string>
+            <string>SW2</string>
+          </entry>
+          <entry>
+            <string>Font Size Override</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color hex="c0c0c0"/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color hex="595959"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Pin Pairing Mode</string>
+            <diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>Opposite</diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>
+          </entry>
+        </values>
+        <points>
+          <point x="0.0" y="0.0"/>
+          <point x="0.0" y="0.175"/>
+          <point x="0.255" y="0.0"/>
+          <point x="0.255" y="0.175"/>
+        </points>
+        <defaultFlag>false</defaultFlag>
+        <createdOn>2026-01-02T10:01:17.805688</createdOn>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>12x12 (e.g. Omron B3F-4000)</name>
+        <values>
+          <entry>
+            <string>Spacing X</string>
+            <org.diylc.core.measures.Size value="12.6" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Spacing Y</string>
+            <org.diylc.core.measures.Size value="5.0" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color hex="ffffff"/>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Case</string>
+            <org.diylc.core.measures.Size value="12.0" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Name</string>
+            <string>SW1</string>
+          </entry>
+          <entry>
+            <string>Font Size Override</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color hex="c0c0c0"/>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color hex="595959"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Pin Pairing Mode</string>
+            <diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>Opposite</diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>
+          </entry>
+        </values>
+        <points>
+          <point x="0.0" y="0.0"/>
+          <point x="0.0" y="0.195"/>
+          <point x="0.495" y="0.0"/>
+          <point x="0.495" y="0.195"/>
+        </points>
+        <defaultFlag>false</defaultFlag>
+        <createdOn>2026-01-02T10:00:31.950676</createdOn>
+      </org.diylc.core.Template>
+      <org.diylc.core.Template>
+        <name>5x5 Low Profile SMD (e.g. Alps SKQG)</name>
+        <values>
+          <entry>
+            <string>Spacing X</string>
+            <org.diylc.core.measures.Size value="5.2" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Spacing Y</string>
+            <org.diylc.core.measures.Size value="3.7" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Label</string>
+            <awt-color hex="ffffff"/>
+          </entry>
+          <entry>
+            <string>Orientation</string>
+            <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
+          </entry>
+          <entry>
+            <string>Case</string>
+            <org.diylc.core.measures.Size value="5.0" unit="mm"/>
+          </entry>
+          <entry>
+            <string>Name</string>
+            <string>SW2</string>
+          </entry>
+          <entry>
+            <string>Font Size Override</string>
+            <null/>
+          </entry>
+          <entry>
+            <string>Value</string>
+            <string></string>
+          </entry>
+          <entry>
+            <string>Alpha</string>
+            <byte>127</byte>
+          </entry>
+          <entry>
+            <string>Border</string>
+            <awt-color hex="595959"/>
+          </entry>
+          <entry>
+            <string>Body</string>
+            <awt-color hex="c0c0c0"/>
+          </entry>
+          <entry>
+            <string>Display</string>
+            <org.diylc.common.Display>BOTH</org.diylc.common.Display>
+          </entry>
+          <entry>
+            <string>Pin Pairing Mode</string>
+            <diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>Diagonal</diylc.electromechanical.TactileMicroSwitch_-PinPairingMode>
+          </entry>
+        </values>
+        <points>
+          <point x="0.0" y="0.0"/>
+          <point x="0.0" y="0.145"/>
+          <point x="0.2" y="0.0"/>
+          <point x="0.2" y="0.145"/>
+        </points>
+        <defaultFlag>false</defaultFlag>
+        <createdOn>2026-01-02T10:04:33.795741</createdOn>
+      </org.diylc.core.Template>
+    </list>
+  </entry>
   </map>

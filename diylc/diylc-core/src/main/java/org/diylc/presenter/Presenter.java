@@ -2569,7 +2569,7 @@ public class Presenter implements IPlugInPort {
       }
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(
-            "import-defaults/variants.xml"));
+            "pending-variants.xml"));
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
         ProjectFileManager.xStreamSerializer.toXML(defaultVariantMap, out);

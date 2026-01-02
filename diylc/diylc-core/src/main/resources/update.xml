@@ -498,6 +498,10 @@
 					<description>Added balloon tooltip next to cursor showing component width, height and length (where available) while resizing; can be disabled from Config menu</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Configurable 'Tactile Micro Switch' dimensions and added a few most commonly used variants</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Clicking on 'Tactile Micro Switch' body doesn't register</description>
 				</org.diylc.appframework.update.Change>

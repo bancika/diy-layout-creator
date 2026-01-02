@@ -5,13 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import javax.swing.AbstractAction;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.swingframework.CheckBoxListDialog;
@@ -73,7 +67,7 @@ public class ExportVariantsAction extends AbstractAction {
           ActionFactory.LOG.warn("Could not find type for: " + className);
       }
 
-      Collections.sort(types, new Comparator<ComponentType>() {
+      types.sort(new Comparator<ComponentType>() {
 
         @Override
         public int compare(ComponentType o1, ComponentType o2) {
@@ -86,7 +80,7 @@ public class ExportVariantsAction extends AbstractAction {
 
       dialog.setVisible(true);
 
-      if (dialog.getSelectedButtonCaption() != "OK")
+      if (!Objects.equals(dialog.getSelectedButtonCaption(), "OK"))
         return;
 
       Object[] selected = dialog.getSelectedOptions();
@@ -131,7 +125,7 @@ public class ExportVariantsAction extends AbstractAction {
             BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
             ProjectFileManager.xStreamSerializer.toXML(variantPkg, out);
             out.close();
-            ActionFactory.LOG.info("Exported variants succesfully");
+            ActionFactory.LOG.info("Exported variants successfully");
           } catch (IOException e) {
             ActionFactory.LOG.error("Could not export variants", e);
           }
