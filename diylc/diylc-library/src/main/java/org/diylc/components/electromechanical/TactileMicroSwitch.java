@@ -394,7 +394,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
     this.labelColor = labelColor;
   }
 
-  @EditableProperty(name = "Case")
+  @EditableProperty(name = "Case Size")
   public Size getCaseSize() {
     if (caseSize == null) {
       caseSize = CASE_SIZE;
@@ -407,7 +407,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
     this.body = null;
   }
 
-  @EditableProperty(name = "Spacing Y")
+  @EditableProperty(name = "Pin Spacing")
   public Size getPinSpacing() {
     if (pinSpacing == null) {
       pinSpacing = PIN_SPACING;
@@ -421,7 +421,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
     updateControlPoints();
   }
 
-  @EditableProperty(name = "Spacing X")
+  @EditableProperty(name = "Row Spacing")
   public Size getRowSpacing() {
     if (rowSpacing == null) {
       rowSpacing = ROW_SPACING;
