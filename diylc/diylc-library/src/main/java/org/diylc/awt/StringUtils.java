@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.VerticalAlignment;
@@ -72,13 +71,18 @@ public class StringUtils {
    * @return a non-empty list of strings
    */
   public static List<String> wrap(String str, FontMetrics fm, int maxWidth) {
-    String[] split = str.split("\\<br\\>");
-    List<String> lines = Arrays.stream(split).flatMap(s -> splitIntoLines(s).stream()).collect(Collectors.toList());
-    if (lines.size() == 0)
-      return lines;
+    // First split by actual newlines to honor them, then split by <br> tags
+    List<String> lines = splitIntoLines(str);
+    List<String> allLines = new ArrayList<String>();
+    for (String line : lines) {
+      String[] split = line.split("\\<br\\>");
+      allLines.addAll(Arrays.asList(split));
+    }
+    if (allLines.size() == 0)
+      return allLines;
 
     ArrayList<String> strings = new ArrayList<String>();
-    for (Iterator<String> iter = lines.iterator(); iter.hasNext();)
+    for (Iterator<String> iter = allLines.iterator(); iter.hasNext();)
       wrapLineInto((String) iter.next(), strings, fm, maxWidth);
     return strings;
   }
@@ -126,8 +130,8 @@ public class StringUtils {
       line = line.substring(pos).trim();
       len = line.length();
     }
-    if (len > 0)
-      list.add(line);
+    // Always add the line, even if empty, to preserve empty lines from newlines
+    list.add(line);
   }
 
   /**

@@ -506,6 +506,10 @@
 					<description>Exposed the most common pin pairing modes and added switching logic for 'Tactile Micro Switch' to allow using it for analysis</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Auto-Wrap Label' retains line breaks from the input text</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Clicking on 'Tactile Micro Switch' body doesn't register</description>
 				</org.diylc.appframework.update.Change>
