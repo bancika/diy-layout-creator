@@ -35,13 +35,10 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractLabeledComponent;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.components.guitar.LeverSwitchPositionPropertyValueSource;
+import org.diylc.core.*;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -53,7 +50,8 @@ import org.diylc.utils.Constants;
     category = "Electro-Mechanical", instanceNamePrefix = "SW",
     description = "4-pin tactile momentary switch", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class TactileMicroSwitch extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
+public class TactileMicroSwitch extends AbstractLabeledComponent<String> implements IGerberComponentSimple,
+    ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -82,6 +80,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
   private Size pinSpacing;
   private Size rowSpacing;
   private PinPairingMode pinPairingMode;
+  private int selectedPosition;
 
   public TactileMicroSwitch() {
     super();
@@ -474,6 +473,54 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
         maxY - minY + 2 * margin);
+  }
+
+  @Override
+  public int getPositionCount() {
+    return 2;
+  }
+
+  @Override
+  public String getPositionName(int position) {
+    return position == 0 ? "Released" : "Pressed";
+  }
+
+  @Override
+  public boolean arePointsConnected(int index1, int index2, int position) {
+    // Only connect pins when switch is pressed (position = 1)
+    if (position != 1) {
+      return false;
+    }
+    
+    PinPairingMode mode = getPinPairingMode();
+    
+    switch (mode) {
+      case Opposite:
+        // Pins on opposite sides (same row): 0-2 and 1-3
+        return (index1 == 0 && index2 == 2) || (index1 == 2 && index2 == 0) ||
+               (index1 == 1 && index2 == 3) || (index1 == 3 && index2 == 1);
+      case Diagonal:
+        // Diagonally opposite pins: 0-3 and 1-2
+        return (index1 == 0 && index2 == 3) || (index1 == 3 && index2 == 0) ||
+               (index1 == 1 && index2 == 2) || (index1 == 2 && index2 == 1);
+      case Adjacent:
+        // Pins next to each other (same column): 0-1 and 2-3
+        return (index1 == 0 && index2 == 1) || (index1 == 1 && index2 == 0) ||
+               (index1 == 2 && index2 == 3) || (index1 == 3 && index2 == 2);
+      default:
+        return false;
+    }
+  }
+
+  @DynamicEditableProperty(source = TactileMicroSwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 
   public enum PinPairingMode {
