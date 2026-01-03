@@ -25,13 +25,8 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Shape;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
+import java.io.Serial;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -58,6 +53,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, transformer = org.diylc.components.transform.BoxTrimmerTransformer.class)
 public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
 
+  @Serial
   private static final long serialVersionUID = 1L;
   
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
@@ -143,28 +139,28 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
       
       // Position screw based on orientation and flip state
       // The screw should be in the corner near pin 0, but can flip horizontally or vertically
-      switch (orientation) {
-        case DEFAULT:  // Horizontal, pins go right from pin 0
-          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
-          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
-          break;
-        case _90:  // Vertical, pins go down from pin 0
-          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
-          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
-          break;
-        case _180:  // Horizontal, pins go left from pin 0
-          screwX = screwFlippedHorizontally ? bodyX : bodyX + bodyW - screwDiameter;
-          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
-          break;
-        case _270:  // Vertical, pins go up from pin 0
-          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
-          screwY = screwFlippedVertically ? bodyY + bodyH - screwDiameter : bodyY;
-          break;
-        default:
-          screwX = bodyX;
-          screwY = bodyY + bodyH - screwDiameter;
-          break;
-      }
+        screwY = switch (orientation) {
+            case DEFAULT -> {
+                screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+                yield screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+            }
+            case _90 -> {
+                screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+                yield screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+            }
+            case _180 -> {
+                screwX = screwFlippedHorizontally ? bodyX : bodyX + bodyW - screwDiameter;
+                yield screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+            }
+            case _270 -> {
+                screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+                yield screwFlippedVertically ? bodyY + bodyH - screwDiameter : bodyY;
+            }
+            default -> {
+                screwX = bodyX;
+                yield bodyY + bodyH - screwDiameter;
+            }
+        };
       
       // Draw screw head circle
       g2d.setColor(brassColor);
