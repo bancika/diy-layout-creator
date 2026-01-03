@@ -25,7 +25,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -47,16 +53,16 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Box Style Multi-turn Trimmer", author = "Clive Hayward", category = "Passive",
-    instanceNamePrefix = "VR", description = "Box-style PCB trimmer",
-    zOrder = IDIYComponent.COMPONENT)
+@ComponentDescriptor(name = "Box Multi-Turn Pot", author = "Clive", category = "Passive",
+    instanceNamePrefix = "VR", description = "Box style multi-turn potentiometer (e.g. Bourns PV36)",
+    zOrder = IDIYComponent.COMPONENT, transformer = org.diylc.components.transform.BoxTrimmerTransformer.class)
 public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
 
   private static final long serialVersionUID = 1L;
   
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
-  public static Size BODY_WIDTH = new Size(0.19d, SizeUnit.in);  // 2x 2.41 mm = 4.82 mm ≈ 0.19"
-  public static Size BODY_LENGTH = new Size(0.375d, SizeUnit.in); // 9.53 mm from datasheet
+  public static Size BODY_WIDTH = new Size(0.19d, SizeUnit.in);  // 2x 2.41mm = 4.82mm ≈ 0.19"
+  public static Size BODY_LENGTH = new Size(0.375d, SizeUnit.in); // 9.53mm from datasheet
   public static Color BODY_COLOR = Color.decode("#4477BB");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
   public static Color PIN_COLOR = Color.decode("#CCCCCC");
@@ -67,6 +73,8 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
   protected String name;
+  private boolean screwFlippedHorizontally = false;  // Track if screw flipped left-right
+  private boolean screwFlippedVertically = false;    // Track if screw flipped top-bottom
   
   private Point2D[] controlPoints = new Point2D[3];
 
@@ -81,7 +89,8 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(
         IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-
+    
+    int pinSpacing = (int) PIN_SPACING.convertToPixels();
     int bodyWidth = (int) BODY_WIDTH.convertToPixels();
     int bodyLength = (int) BODY_LENGTH.convertToPixels();
     
@@ -124,7 +133,7 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.drawRoundRect(bodyX, bodyY, bodyW, bodyH, bodyW / 10, bodyH / 10);
     
-    // Draw adjustment screw (slotted screw head) - positioned tangent to lower left corner
+    // Draw adjustment screw (slotted screw head) - position based on orientation
     if (!outlineMode) {
       // Brass/gold color for screw head
       Color brassColor = new Color(184, 134, 11); // Dark goldenrod
@@ -132,9 +141,30 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
       int screwDiameter = Math.min(bodyW, bodyH) / 3;
       int screwX, screwY;
       
-      // Position tangent to left and bottom edges
-      screwX = bodyX; // Tangent to left edge
-      screwY = bodyY + bodyH - screwDiameter; // Tangent to bottom edge
+      // Position screw based on orientation and flip state
+      // The screw should be in the corner near pin 0, but can flip horizontally or vertically
+      switch (orientation) {
+        case DEFAULT:  // Horizontal, pins go right from pin 0
+          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+          break;
+        case _90:  // Vertical, pins go down from pin 0
+          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+          break;
+        case _180:  // Horizontal, pins go left from pin 0
+          screwX = screwFlippedHorizontally ? bodyX : bodyX + bodyW - screwDiameter;
+          screwY = screwFlippedVertically ? bodyY : bodyY + bodyH - screwDiameter;
+          break;
+        case _270:  // Vertical, pins go up from pin 0
+          screwX = screwFlippedHorizontally ? bodyX + bodyW - screwDiameter : bodyX;
+          screwY = screwFlippedVertically ? bodyY + bodyH - screwDiameter : bodyY;
+          break;
+        default:
+          screwX = bodyX;
+          screwY = bodyY + bodyH - screwDiameter;
+          break;
+      }
       
       // Draw screw head circle
       g2d.setColor(brassColor);
@@ -193,7 +223,7 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    // Side profile view of Box trimmer
+    // Side profile view of PV36 trimmer
     int bodyWidth = width - 8;
     int bodyHeight = height - 10;
     int bodyX = 4;
@@ -244,6 +274,22 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
     updateControlPoints();
+  }
+
+  public boolean getScrewFlippedHorizontally() {
+    return screwFlippedHorizontally;
+  }
+
+  public void setScrewFlippedHorizontally(boolean flipped) {
+    this.screwFlippedHorizontally = flipped;
+  }
+
+  public boolean getScrewFlippedVertically() {
+    return screwFlippedVertically;
+  }
+
+  public void setScrewFlippedVertically(boolean flipped) {
+    this.screwFlippedVertically = flipped;
   }
 
   @EditableProperty
@@ -304,12 +350,25 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     
     controlPoints[0] = new Point2D.Double(x, y);
     
-    if (orientation == Orientation.DEFAULT || orientation == Orientation._180) {
-      controlPoints[1] = new Point2D.Double(x + pinSpacing, y);
-      controlPoints[2] = new Point2D.Double(x + 2 * pinSpacing, y);
-    } else {
-      controlPoints[1] = new Point2D.Double(x, y + pinSpacing);
-      controlPoints[2] = new Point2D.Double(x, y + 2 * pinSpacing);
+    // Pin arrangement depends on orientation
+    // Pin 0 is always CCW, Pin 1 is Wiper, Pin 2 is CW
+    switch (orientation) {
+      case DEFAULT:  // Horizontal, pins go right from pin 0
+        controlPoints[1] = new Point2D.Double(x + pinSpacing, y);
+        controlPoints[2] = new Point2D.Double(x + 2 * pinSpacing, y);
+        break;
+      case _90:  // Vertical, pins go down from pin 0
+        controlPoints[1] = new Point2D.Double(x, y + pinSpacing);
+        controlPoints[2] = new Point2D.Double(x, y + 2 * pinSpacing);
+        break;
+      case _180:  // Horizontal mirrored, pins go left from pin 0
+        controlPoints[1] = new Point2D.Double(x - pinSpacing, y);
+        controlPoints[2] = new Point2D.Double(x - 2 * pinSpacing, y);
+        break;
+      case _270:  // Vertical mirrored, pins go up from pin 0
+        controlPoints[1] = new Point2D.Double(x, y - pinSpacing);
+        controlPoints[2] = new Point2D.Double(x, y - 2 * pinSpacing);
+        break;
     }
   }
 
