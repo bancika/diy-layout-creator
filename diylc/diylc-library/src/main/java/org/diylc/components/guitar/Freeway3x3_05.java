@@ -49,8 +49,8 @@ import java.util.Random;
 
 import static org.diylc.core.measures.SizeUnit.px;
 
-@ComponentDescriptor(name = "Freeway 3X3-05 Toggle", category = "Guitar",
-    author = "Martin Morrell", description = "Freeway 3X3-05 Toggle Switch",
+@ComponentDescriptor(name = "Freeway 3X3-05 (Ultra) Switch", category = "Guitar",
+    author = "Martin Morrell", description = "Freeway 3X3-05 (Ultra) Toggle Switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram",
     transformer = Freeway3x3_03Transformer.class, enableCache = false)

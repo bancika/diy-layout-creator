@@ -59,8 +59,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
-@ComponentDescriptor(name = "Freeway 3X3-03 Toggle", category = "Guitar",
-    author = "Branislav Stojkovic", description = "Freeway 3X3-03 Toggle Switch",
+@ComponentDescriptor(name = "Freeway 3X3-03 Switch", category = "Guitar",
+    author = "Branislav Stojkovic", description = "Freeway 3X3-03 (Standard) Toggle Switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram",
     transformer = Freeway3x3_03Transformer.class, enableCache = true)

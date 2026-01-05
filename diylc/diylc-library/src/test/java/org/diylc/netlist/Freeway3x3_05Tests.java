@@ -3,7 +3,7 @@ package org.diylc.netlist;
 import org.diylc.components.guitar.Freeway3x3_05;
 import org.junit.Test;
 
-public class FreewayUltraTests extends AbstractSwitchTests {
+public class Freeway3x3_05Tests extends AbstractSwitchTests {
 
   @Test
   public void testFreeway3x3_05() {

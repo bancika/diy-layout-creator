@@ -499,6 +499,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Freeway 3x3-05 (Ultra) Switch' (thank you mm-rnd)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Configurable 'Tactile Micro Switch' dimensions and added a few most commonly used variants</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
