@@ -27,18 +27,19 @@ import java.awt.geom.Point2D;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
 import org.diylc.components.electromechanical.CliffJack1_4;
+import org.diylc.components.electromechanical.CliffJack1_8;
 import org.diylc.core.IDIYComponent;
 
 public class CliffJackTransformer implements IComponentTransformer {
 
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
-    return component.getClass().equals(CliffJack1_4.class);
+    return component.getClass().equals(CliffJack1_4.class) || component.getClass().equals(CliffJack1_8.class);
   }
 
   @Override
   public boolean canMirror(IDIYComponent<?> component) {
-    return component.getClass().equals(CliffJack1_4.class);
+    return component.getClass().equals(CliffJack1_4.class) || component.getClass().equals(CliffJack1_8.class);
   }
 
   @Override
@@ -55,8 +56,15 @@ public class CliffJackTransformer implements IComponentTransformer {
       component.setControlPoint(p, index);
     }
 
-    CliffJack1_4 jack = (CliffJack1_4) component;
-    Orientation o = jack.getOrientation();
+    Orientation o;
+    if (component instanceof CliffJack1_4) {
+      o = ((CliffJack1_4) component).getOrientation();
+    } else if (component instanceof CliffJack1_8) {
+      o = ((CliffJack1_8) component).getOrientation();
+    } else {
+      return;
+    }
+    
     int oValue = o.ordinal();
     oValue += direction;
     if (oValue < 0)
@@ -64,18 +72,33 @@ public class CliffJackTransformer implements IComponentTransformer {
     if (oValue >= Orientation.values().length)
       oValue = 0;
     o = Orientation.values()[oValue];
-    jack.setOrientation(o);
+    
+    if (component instanceof CliffJack1_4) {
+      ((CliffJack1_4) component).setOrientation(o);
+    } else if (component instanceof CliffJack1_8) {
+      ((CliffJack1_8) component).setOrientation(o);
+    }
   }
 
   @Override
   public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
-    CliffJack1_4 ic = (CliffJack1_4) component;
+    if (!(component instanceof CliffJack1_4) && !(component instanceof CliffJack1_8)) {
+      return;
+    }
+
+    IDIYComponent<?> ic = component;
 
     if (direction == IComponentTransformer.HORIZONTAL) {
       double dx = 2 * (center.getX() - ic.getControlPoint(1).getX());
       double dy = 0;
 
-      Orientation o = ic.getOrientation();
+      Orientation o;
+      if (component instanceof CliffJack1_4) {
+        o = ((CliffJack1_4) component).getOrientation();
+      } else {
+        o = ((CliffJack1_8) component).getOrientation();
+      }
+      
       switch (o) {
         case DEFAULT:
           dy += (ic.getControlPoint(0).getY() - ic.getControlPoint(ic.getControlPointCount() - 1).getY());
@@ -98,12 +121,22 @@ public class CliffJackTransformer implements IComponentTransformer {
         ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
-      ic.setOrientation(o);
+      if (component instanceof CliffJack1_4) {
+        ((CliffJack1_4) component).setOrientation(o);
+      } else {
+        ((CliffJack1_8) component).setOrientation(o);
+      }
     } else {
       double dx = 0;
       double dy = 2 * (center.getY() - ic.getControlPoint(1).getY());
 
-      Orientation o = ic.getOrientation();
+      Orientation o;
+      if (component instanceof CliffJack1_4) {
+        o = ((CliffJack1_4) component).getOrientation();
+      } else {
+        o = ((CliffJack1_8) component).getOrientation();
+      }
+      
       switch (o) {
         case DEFAULT:
           // dx += ic.getControlPoint(0).getX() - ic.getControlPoint(ic.getControlPointCount() - 1).getX();
@@ -128,7 +161,11 @@ public class CliffJackTransformer implements IComponentTransformer {
         ic.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
       }
 
-      ic.setOrientation(o);
+      if (component instanceof CliffJack1_4) {
+        ((CliffJack1_4) component).setOrientation(o);
+      } else {
+        ((CliffJack1_8) component).setOrientation(o);
+      }
     }
   }
 }
