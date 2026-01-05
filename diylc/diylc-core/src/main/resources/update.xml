@@ -515,7 +515,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>'Cliff 1/8" Jack' can be rotated</description>
+					<description>'Cliff 1/8" Jack', 'Open 1/8" Jack' and 'Open 1/4" Jack' can be rotated</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

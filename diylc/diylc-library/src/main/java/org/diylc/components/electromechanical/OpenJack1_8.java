@@ -42,6 +42,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.electromechanical.OpenJack1_8.OpenJackType;
+import org.diylc.components.transform.OpenJackTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -56,7 +57,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Open 1/8\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Switchcraft-style open panel mount 1/8\" phono jack, stereo and mono",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", enableCache = true)
+    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = OpenJackTransformer.class, enableCache = true)
 public class OpenJack1_8 extends AbstractMultiPartComponent<OpenJackType> {
 
   private static final float FONT_SCALE = 0.6f;
