@@ -213,12 +213,24 @@ public class StringUtils {
     if (text == null)
       return;
     
-    String[] parts = text.split("\\<br\\>");
+    // Use -1 limit to preserve trailing empty strings so we can filter them out
+    String[] parts = text.split("\\<br\\>", -1);
     if (parts.length > 1) {
+      // Remove trailing empty strings to avoid rendering extra blank lines
+      int lastNonEmpty = parts.length - 1;
+      while (lastNonEmpty >= 0 && parts[lastNonEmpty].trim().isEmpty()) {
+        lastNonEmpty--;
+      }
+      // If all parts are empty, don't render anything
+      if (lastNonEmpty < 0) {
+        return;
+      }
+      
       FontMetrics fontMetrics = g2d.getFontMetrics();
       Rectangle stringBounds = fontMetrics.getStringBounds(parts[0], g2d).getBounds();
-      for (int i = 0; i < parts.length; i++)
-        drawCenteredText(g2d, parts[i], x, (int)(y - stringBounds.height * (parts.length - 1) / 2d + i * stringBounds.height), horizontalAlignment, verticalAlignment);
+      int actualLength = lastNonEmpty + 1;
+      for (int i = 0; i < actualLength; i++)
+        drawCenteredText(g2d, parts[i], x, (int)(y - stringBounds.height * (actualLength - 1) / 2d + i * stringBounds.height), horizontalAlignment, verticalAlignment);
       return;
     }
     

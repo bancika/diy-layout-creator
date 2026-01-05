@@ -517,6 +517,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Clicking on 'Tactile Micro Switch' body doesn't register</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>New lines at the end of the 'Label' text get erroneously rendered as br HTML tags</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
