@@ -321,7 +321,8 @@ public class LeverSwitch extends AbstractAngledComponent<LeverSwitch.LeverSwitch
       case DP4T:
         controlPoints = new Point2D[10];
         for (int i = 0; i < controlPoints.length; i++) {
-          controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), y + i * terminalSpacing);
+          double yPos = i % 2 == 1 ? y + (i - 2) * terminalSpacing : y + i * terminalSpacing;
+          controlPoints[i] = new Point2D.Double(x + (i % 2 == 1 ? terminalLength : 0), yPos);
         }
         break;
       case DP5T:
