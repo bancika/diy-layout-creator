@@ -157,6 +157,6 @@ public class TransformerCore extends AbstractComponent<Void> {
   
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
-    return false;
+    return true;
   }
 }
