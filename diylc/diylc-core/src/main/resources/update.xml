@@ -526,6 +526,10 @@
 					<description>Make the label of schematic symbols (e.g. 'Resistor Symbol') clickable as well</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to resize 'Transformer Core' schematic symbol after it's already placed</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Clicking on 'Tactile Micro Switch' body doesn't register</description>
 				</org.diylc.appframework.update.Change>
