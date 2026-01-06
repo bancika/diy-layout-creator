@@ -522,6 +522,10 @@
 					<description>Fixed the offset of terminals on a DP4T Tele type of 'Lever Switch' to be aligned with the physical switch (attention - this will break existing diagrams and will require adjusting leads to match the new terminal positions)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Make the label of schematic symbols (e.g. 'Resistor Symbol') clickable as well</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Clicking on 'Tactile Micro Switch' body doesn't register</description>
 				</org.diylc.appframework.update.Change>
