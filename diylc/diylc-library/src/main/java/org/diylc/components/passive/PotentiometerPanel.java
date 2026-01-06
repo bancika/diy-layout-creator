@@ -35,9 +35,12 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.transform.PotentiometerTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
@@ -66,10 +69,12 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected static Size PIN_SIZE = new Size(0.05d, SizeUnit.in);
   protected static Size NUT_SIZE = new Size(0.4d, SizeUnit.in);
   protected static Size SHAFT_SIZE = new Size(1 / 4d, SizeUnit.in);
+  protected static Size MARKER_OFFSET = new Size(0.05d, SizeUnit.in);
   protected static Color BODY_COLOR = Color.lightGray;
   protected static Color WAFER_COLOR = Color.decode("#CD8500");
   protected static Color BORDER_COLOR = Color.gray;
   protected static Color NUT_COLOR = Color.decode("#CBD5DB");
+  protected static Color MARKER_COLOR_DEFAULT = Color.gray;
 
 
   protected Size bodyDiameter = BODY_DIAMETER;
@@ -83,6 +88,8 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   @Deprecated
   protected boolean showShaft = false;
   protected View view;
+  private Boolean showMarkers;
+  private Color markerColor;
   // Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
   transient protected Area[] body = null;
 
@@ -353,6 +360,50 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     y = panelHeight / 2 + fontMetrics.getAscent();
 
     g2d.drawString(getValueForDisplay(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+
+    // Draw markers if enabled.
+    if (getShowMarkers()) {
+      g2d.setColor(outlineMode ? theme.getOutlineColor() : getMarkerColor());
+      
+      // Get circle center and radius
+      Rectangle2D circleBounds = body[3].getBounds2D();
+      double centerX = circleBounds.getCenterX();
+      double centerY = circleBounds.getCenterY();
+      double radius = getBodyDiameter().convertToPixels() / 2;
+      
+      // Fixed distance from circle edge (inside the circle)
+      double markerOffset = MARKER_OFFSET.convertToPixels() + 2;
+      double markerDistance = radius - markerOffset;
+      
+      // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
+      // Reverse numbering when view is ShaftDown
+      boolean reverseOrder = getView() == View.ShaftDown;
+      
+      for (int i = 0; i < 3; i++) {
+        Point2D lugPoint = controlPoints[i];
+        
+        // Calculate direction from center to lug
+        double dx = lugPoint.getX() - centerX;
+        double dy = lugPoint.getY() - centerY;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 0) {
+          // Normalize direction vector
+          double unitX = dx / distance;
+          double unitY = dy / distance;
+          
+          // Position marker at fixed distance from circle edge along radial line
+          double markerX = centerX + unitX * markerDistance;
+          double markerY = centerY + unitY * markerDistance;
+          
+          // Determine marker number based on view
+          int markerNumber = reverseOrder ? (3 - i) : (i + 1);
+          
+          StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), markerX, markerY,
+              HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        }
+      }
+    }
   }
 
   @Override
@@ -473,6 +524,30 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
 
   public void setWaferColor(Color waferColor) {
     this.waferColor = waferColor;
+  }
+
+  @EditableProperty(name = "Markers")
+  public Boolean getShowMarkers() {
+    if (showMarkers == null) {
+      showMarkers = false;
+    }
+    return showMarkers;
+  }
+
+  public void setShowMarkers(Boolean showMarkers) {
+    this.showMarkers = showMarkers;
+  }
+
+  @EditableProperty(name = "Marker Color")
+  public Color getMarkerColor() {
+    if (markerColor == null) {
+      markerColor = MARKER_COLOR_DEFAULT;
+    }
+    return markerColor;
+  }
+
+  public void setMarkerColor(Color markerColor) {
+    this.markerColor = markerColor;
   }
   
   @Override
