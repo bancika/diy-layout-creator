@@ -31,7 +31,7 @@ import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.Size;
 
-public interface ISelectionProcessor {
+public interface ISelectionProcessor extends IGroupProcessor {
 
   /**
    * Returns the current {@link ComponentTransferable}.
@@ -88,16 +88,6 @@ public interface ISelectionProcessor {
    * @param direction 1 for clockwise, -1 for counter-clockwise
    */
   void rotateSelection(int direction);
-
-  /**
-   * Groups all selected components.
-   */
-  void groupSelectedComponents();
-
-  /**
-   * Ungroups all selected components.
-   */
-  void ungroupSelectedComponents();
 
   /**
    * Mirrors selected components in the given axis.

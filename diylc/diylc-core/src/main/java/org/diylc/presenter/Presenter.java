@@ -2912,4 +2912,9 @@ public class Presenter implements IPlugInPort {
   public DrawingManager getDrawingManager() {
     return drawingManager;
   }
+  
+  @Override
+  public Set<Set<IDIYComponent<?>>> getComponentGroups() {
+    return currentProject.getGroups();
+  }
 }
