@@ -17,15 +17,11 @@
  */
 package org.diylc.clipboard;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
+import org.diylc.core.ComponentGroup;
 import org.diylc.core.IDIYComponent;
 
 public class ComponentTransferableFactory {
@@ -40,13 +36,19 @@ public class ComponentTransferableFactory {
     return instance;
   }
   
-  public ComponentTransferable build(Collection<IDIYComponent<?>> selectedComponents, Set<Set<IDIYComponent<?>>> groups) {
-    Set<IDIYComponent<?>> originalComponentSet = new HashSet<IDIYComponent<?>>(selectedComponents);
+  public ComponentTransferable build(Collection<IDIYComponent<?>> selectedComponents, Set<ComponentGroup> groups) {
+
     List<IDIYComponent<?>> originalComponents = new ArrayList<IDIYComponent<?>>(selectedComponents);
+
+    Map<UUID, UUID> idMap = new HashMap<>();
+
     List<IDIYComponent<?>> clonedComponents = originalComponents.stream(
         ).map(x -> {
           try {
-            return x.clone();
+            IDIYComponent<?> clone = x.clone();
+            clone.setId(UUID.randomUUID());
+            idMap.put(x.getId(), clone.getId());
+            return clone;
           } catch (CloneNotSupportedException e) {
             LOG.error(e);
             return null;
@@ -54,22 +56,11 @@ public class ComponentTransferableFactory {
         })
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
-    Set<Set<IDIYComponent<?>>> clonedGroups = new HashSet<Set<IDIYComponent<?>>>();
-    
-    for (Set<IDIYComponent<?>> group : groups) {
-      if (group.isEmpty())
-        continue;
-      
-      if (originalComponentSet.contains(group.iterator().next())) {
-        Set<IDIYComponent<?>> clonedGroup = new HashSet<IDIYComponent<?>>();
-        clonedGroups.add(clonedGroup);
-        for (int i = 0; i < originalComponents.size(); i++) {
-          if (group.contains(originalComponents.get(i))) {
-            clonedGroup.add(clonedComponents.get(i));
-          }
-        }
-      }
-    }
+
+    Set<ComponentGroup> clonedGroups = groups.stream().map(group ->
+        new ComponentGroup(group.getComponentIds().stream()
+            .map(idMap::get).collect(Collectors.toSet()), group.getName()))
+        .collect(Collectors.toSet());
     
     return new ComponentTransferable(clonedComponents, clonedGroups);
   }

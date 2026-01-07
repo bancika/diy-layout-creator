@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListCellRenderer;
@@ -36,6 +37,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.ComponentGroup;
 import org.diylc.core.IDIYComponent;
 import org.diylc.lang.LangUtil;
 import org.diylc.swing.ISwingUI;
@@ -347,12 +349,23 @@ public class ExplorerPane extends JPanel {
         list.clearSelection();
       } else {
         // Build a map from component to its group (if any)
-        Set<Set<IDIYComponent<?>>> groups = plugInPort.getComponentGroups();
+        Set<ComponentGroup> groups = plugInPort.getComponentGroups();
         Map<IDIYComponent<?>, Set<IDIYComponent<?>>> componentToGroup = new java.util.HashMap<>();
         if (groups != null && !groups.isEmpty()) {
-          for (Set<IDIYComponent<?>> group : groups) {
-            for (IDIYComponent<?> component : group) {
-              componentToGroup.put(component, group);
+          // Build a map from UUID to component for quick lookup
+          List<IDIYComponent<?>> allComponents = plugInPort.getCurrentProject().getComponents();
+          Map<UUID, IDIYComponent<?>> idToComponent = allComponents.stream()
+              .collect(Collectors.toMap(IDIYComponent::getId, comp -> comp));
+          
+          for (ComponentGroup group : groups) {
+            // Convert ComponentGroup (with UUIDs) to Set<IDIYComponent<?>>
+            Set<IDIYComponent<?>> componentSet = group.getComponentIds().stream()
+                .map(idToComponent::get)
+                .filter(java.util.Objects::nonNull)
+                .collect(Collectors.toSet());
+            
+            for (IDIYComponent<?> component : componentSet) {
+              componentToGroup.put(component, componentSet);
             }
           }
         }
@@ -488,14 +501,31 @@ public class ExplorerPane extends JPanel {
      * For ungrouped components, creates a ComponentGroupItem with a single component.
      */
     private List<ComponentGroupItem> buildComponentListWithGroups(List<IDIYComponent<?>> sortedComponents) {
-      Set<Set<IDIYComponent<?>>> groups = plugInPort.getComponentGroups();
+      Set<ComponentGroup> groups = plugInPort.getComponentGroups();
       
-      // Build a map from component to its group (if any)
+      // Build a map from component to its group (if any) and group name
       Map<IDIYComponent<?>, Set<IDIYComponent<?>>> componentToGroup = new java.util.HashMap<>();
+      Map<Set<IDIYComponent<?>>, String> groupToName = new java.util.HashMap<>();
       if (groups != null && !groups.isEmpty()) {
-        for (Set<IDIYComponent<?>> group : groups) {
-          for (IDIYComponent<?> component : group) {
-            componentToGroup.put(component, group);
+        // Build a map from UUID to component for quick lookup
+        List<IDIYComponent<?>> allComponents = plugInPort.getCurrentProject().getComponents();
+        Map<UUID, IDIYComponent<?>> idToComponent = allComponents.stream()
+            .collect(Collectors.toMap(IDIYComponent::getId, comp -> comp));
+        
+        for (ComponentGroup group : groups) {
+          // Convert ComponentGroup (with UUIDs) to Set<IDIYComponent<?>>
+          Set<IDIYComponent<?>> componentSet = group.getComponentIds().stream()
+              .map(idToComponent::get)
+              .filter(java.util.Objects::nonNull)
+              .collect(Collectors.toSet());
+          
+          for (IDIYComponent<?> component : componentSet) {
+            componentToGroup.put(component, componentSet);
+          }
+          
+          // Store the group name
+          if (group.getName() != null && !group.getName().isEmpty()) {
+            groupToName.put(componentSet, group.getName());
           }
         }
       }
@@ -510,12 +540,13 @@ public class ExplorerPane extends JPanel {
           // Component is not in any group, create a ComponentGroupItem with just this component
           Set<IDIYComponent<?>> singleComponentGroup = new HashSet<>();
           singleComponentGroup.add(component);
-          result.add(new ComponentGroupItem(singleComponentGroup));
+          result.add(new ComponentGroupItem(singleComponentGroup, null));
         } else {
           // Component is in a group
           if (!addedGroups.contains(group)) {
             // This is the first component from this group we've seen, add the group item
-            result.add(new ComponentGroupItem(group));
+            String groupName = groupToName.get(group);
+            result.add(new ComponentGroupItem(group, groupName));
             addedGroups.add(group);
           }
           // Otherwise, skip this component as we already have a group item for it
@@ -604,7 +635,9 @@ public class ExplorerPane extends JPanel {
           }
         }
         
-        String text = "Group of " + groupItem.getComponentCount() + " components";
+        String text = groupItem.getGroupName() != null && !groupItem.getGroupName().isEmpty()
+            ? groupItem.getGroupName()
+            : "Group of " + groupItem.getComponentCount() + " components";
         if (isSelected) {
           renderer.setText(String.format("<html>[L%s] <b>%s</b></html>", maxLayerId, text));
         } else {
@@ -636,9 +669,11 @@ public class ExplorerPane extends JPanel {
    */
   public static class ComponentGroupItem {
     private final Set<IDIYComponent<?>> group;
+    private final String groupName;
     
-    public ComponentGroupItem(Set<IDIYComponent<?>> group) {
+    public ComponentGroupItem(Set<IDIYComponent<?>> group, String groupName) {
       this.group = group;
+      this.groupName = groupName;
     }
     
     public Set<IDIYComponent<?>> getGroup() {
@@ -649,8 +684,15 @@ public class ExplorerPane extends JPanel {
       return group.size();
     }
     
+    public String getGroupName() {
+      return groupName;
+    }
+    
     @Override
     public String toString() {
+      if (groupName != null && !groupName.isEmpty()) {
+        return groupName;
+      }
       return "Group of " + group.size() + " components";
     }
     

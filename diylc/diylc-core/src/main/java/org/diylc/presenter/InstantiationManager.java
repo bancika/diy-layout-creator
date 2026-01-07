@@ -224,7 +224,7 @@ public class InstantiationManager {
     
     // copy group information if available
     if (componentTransferable.getGroups() != null) {
-      currentProject.getGroups().addAll(componentTransferable.getGroups());
+      currentProject.getGroupsEx().addAll(componentTransferable.getGroups());
     }
   }
   

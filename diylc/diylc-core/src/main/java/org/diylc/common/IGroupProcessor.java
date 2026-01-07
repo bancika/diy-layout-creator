@@ -21,7 +21,8 @@
 package org.diylc.common;
 
 import java.util.Set;
-import org.diylc.core.IDIYComponent;
+
+import org.diylc.core.ComponentGroup;
 
 /**
  * Interface for component grouping operations.
@@ -31,12 +32,12 @@ import org.diylc.core.IDIYComponent;
 public interface IGroupProcessor {
 
   /**
-   * Returns the set of component groups in the current project.
-   * Each group is a set of components that are grouped together.
-   * 
+   * Returns the set of component groups in the current project. Each group is a set of components
+   * that are grouped together.
+   *
    * @return set of component groups
    */
-  Set<Set<IDIYComponent<?>>> getComponentGroups();
+  Set<ComponentGroup> getComponentGroups();
 
   /**
    * Groups all selected components.

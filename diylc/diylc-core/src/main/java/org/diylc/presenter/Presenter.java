@@ -32,17 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
@@ -553,7 +543,7 @@ public class Presenter implements IPlugInPort {
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
-                this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
+                this.currentProject.getGroupsEx().add(ComponentGroup.from(componentSlot));
               }
               
               notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
@@ -1731,7 +1721,7 @@ public class Presenter implements IPlugInPort {
     // First remove the selected components from other groups.
     ungroupComponents(selectedComponents);
     // Then group them together.
-    currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(selectedComponents));
+    currentProject.getGroupsEx().add(ComponentGroup.from(selectedComponents));
     // Notify the listeners.
     notifyProjectModifiedIfNeeded(oldProject, "Group", false, true);
   }
@@ -2186,11 +2176,11 @@ public class Presenter implements IPlugInPort {
    * @param components
    */
   private void ungroupComponents(Collection<IDIYComponent<?>> components) {
-    Iterator<Set<IDIYComponent<?>>> groupIterator = currentProject.getGroups().iterator();
+    Set<UUID> componentIds = components.stream().map(IDIYComponent::getId).collect(Collectors.toSet());
+    Iterator<ComponentGroup> groupIterator = currentProject.getGroupsEx().iterator();
     while (groupIterator.hasNext()) {
-      Set<IDIYComponent<?>> group = groupIterator.next();
-      group.removeAll(components);
-      if (group.isEmpty()) {
+      ComponentGroup group = groupIterator.next();
+      if (group.getComponentIds().stream().anyMatch(id -> componentIds.contains(componentIds))) {
         groupIterator.remove();
       }
     }
@@ -2205,15 +2195,16 @@ public class Presenter implements IPlugInPort {
    *         the minimum, set contains that single component.
    */
   private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
-    Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
-    components.add(component);
-    for (Set<IDIYComponent<?>> group : currentProject.getGroups()) {
-      if (group.contains(component)) {
-        components.addAll(group);
-        break;
+
+    for (ComponentGroup group : currentProject.getGroupsEx()) {
+      if (group.getComponentIds().stream().anyMatch(id -> id.equals(component.getId()))) {
+        return currentProject.getComponents().stream()
+            .filter(comp -> group.getComponentIds().contains(comp.getId()))
+            .collect(Collectors.toSet());
       }
     }
-    return components;
+
+    return new HashSet<>();
   }
 
   @Override
@@ -2914,7 +2905,7 @@ public class Presenter implements IPlugInPort {
   }
   
   @Override
-  public Set<Set<IDIYComponent<?>>> getComponentGroups() {
-    return currentProject.getGroups();
+  public Set<ComponentGroup> getComponentGroups() {
+    return currentProject.getGroupsEx();
   }
 }

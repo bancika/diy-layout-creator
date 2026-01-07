@@ -112,6 +112,7 @@ public class ProjectFileManager {
     xStream.autodetectAnnotations(true);
     xStream.alias("point", java.awt.geom.Point2D.class);
     xStream.alias("point", java.awt.geom.Point2D.Double.class);
+    xStream.alias("group", org.diylc.core.ComponentGroup.class);
     xStream.alias("font", java.awt.Font.class);
     xStream.alias("project", Project.class);
     xStream.aliasPackage("diylc", "org.diylc.components");

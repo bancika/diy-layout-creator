@@ -36,7 +36,7 @@ public class CopyAction extends AbstractAction {
   public void actionPerformed(ActionEvent e) {
     ActionFactory.LOG.info("Copy triggered");
     clipboard.setContents(ComponentTransferableFactory.getInstance()
-        .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),
+        .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroupsEx()),
         clipboardOwner);
   }
 }
