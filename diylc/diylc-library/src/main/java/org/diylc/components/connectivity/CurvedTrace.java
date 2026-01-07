@@ -102,6 +102,9 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
 
   @EditableProperty(name = "Ending Style")
   public LineEndingStyle getEndingStyle() {
+    if (endingStyle == null) {
+      endingStyle = LineEndingStyle.Round;
+    }
     return endingStyle;
   }
 

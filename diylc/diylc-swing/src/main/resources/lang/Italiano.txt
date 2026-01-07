@@ -196,6 +196,7 @@ Image|Immagine
 Immediate Only|Solo immediato
 Import|Importa
 Import Building Blocks|Importa blocchi di costruzione
+Import Netlist|Importa netlist
 Import Variants|Importa varianti
 In-Line D-44|In linea D-44
 In-line|In linea
@@ -235,6 +236,7 @@ Lock|Blocco
 Log|Accesso
 Log In|Accedi
 Log Out|Esci
+Look for|Cerca
 Lug Size|Dimensione dell'aletta
 Lugs|Alette
 Make a Donation|Fai una donazione
@@ -307,6 +309,7 @@ Power Rating|Potenza nominale
 Power Strip|Ciabatta
 Primary CT|CT primario
 Print...|Stampa ...
+Project|Progetto
 Project Cloud|Progetto Cloud
 Public Announcement|Annuncio pubblico
 Radius|raggio
@@ -360,6 +363,7 @@ Shaft Up|Shaft Up
 Shape|forma
 Shapes|forme
 Show Grid|Mostra griglia
+Show Resize Dimensions|Mostra dimensioni ridimensionamento
 Show Rulers|Mostra righelli
 Shroud|Copri
 Shrouded|Coperto
@@ -457,3 +461,34 @@ Zoom|Ingrandimento
 base of 10|base di 10
 base of 2|base di 2
 hold %s and drag to unstick from|tieni premuto %s e trascina per sbloccare da
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|Sei sicuro di voler cancellare la cronologia della chat per questo progetto? Questa azione non può essere annullata!
+Component reordering is possible only when Project Explorer is sorted by z-index.|Il riordinamento dei componenti è possibile solo quando Project Explorer è ordinato per z-index.
+Could not apply changes. Check the log for details.|Impossibile applicare le modifiche. Controlla il registro per i dettagli.
+Exporting outline for board %s to file %s|Esportazione del contorno per la scheda %s nel file %s
+Failed to export the project to gerber. Please check the log for details|Impossibile esportare il progetto in gerber. Controlla il registro per i dettagli
+Forgot Password?|Password dimenticata?
+Gerber Export|Esporta Gerber
+Gerber export completed successfully. The following files were created:%s|Esportazione Gerber completata con successo. Sono stati creati i seguenti file:%s
+Get Premium|Ottieni Premium
+Netlist files|File netlist
+No proximity issues detected.|Nessun problema di prossimità rilevato.
+Nothing to export.|Niente da esportare.
+Password|Password
+Send|Invia
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|Ci sono alcuni componenti che sono al di fuori dei limiti delle schede.%sVerranno ignorati a meno che non aggiungi un componente scheda sotto di loro.%sVuoi continuare?
+User Name|Nome utente
+AI Circuit Analyzer|Analizzatore di Circuiti IA
+Cloud|Cloud
+Compare With...|Confronta con...
+Connect to Patreon|Connetti a Patreon
+Export|Esporta
+Export to Gerber|Esporta in Gerber
+Generate DIYLC Netlist (excl. Switches)|Genera netlist DIYLC (escl. interruttori)
+Generate DIYLC Netlist (incl. Switches)|Genera netlist DIYLC (incl. interruttori)
+Generate Spice Netlist (excl. Switches)|Genera netlist Spice (escl. interruttori)
+Generate Spice Netlist (incl. Switches)|Genera netlist Spice (incl. interruttori)
+Silkscreen|Serigrafia
+Virtual Multimeter (excl. Switches)|Multimetro Virtuale (escl. interruttori)
+Virtual Multimeter (incl. Switches)|Multimetro Virtuale (incl. interruttori)
+Become a Patreon and enjoy perks|Diventa un Patreon e goditi i vantaggi
+Join Patreon|Unisciti a Patreon

@@ -191,6 +191,7 @@ Image|Slika
 Immediate Only|Samo Neposredne
 Import|Uvoz
 Import Building Blocks|Uvezi Blokove za Gradnju
+Import Netlist|Uvezi Netlistu
 Import Variants|Uvezi Varijacije
 In-Line D-44|U Redu D-44
 In-line|U Redu
@@ -224,6 +225,7 @@ Light|Svetla
 Lock|Zaključaj
 Log In|Prijava
 Log Out|Odjava
+Look for|Traži
 Lug Size|Veličina Ušica
 Lugs|Ušice
 Make a Donation|Doniraj
@@ -291,6 +293,7 @@ Power Rating|Snaga
 Power Strip|Naponska Magistrala
 Primary CT|Primarni Srednji Izvod
 Print...|Štampa...
+Project|Projekat
 Project Cloud|Projektni Oblak
 Public Announcement|Javna Objava
 Radius|Poluprečnik
@@ -341,6 +344,7 @@ Shaft Up|Osovina Gore
 Shape|Oblik
 Shapes|Oblici
 Show Grid|Prikaz Rešetke
+Show Resize Dimensions|Prikaz Dimenzija Promene Veličine
 Show Rulers|Prikaz Lenjira
 Shroud|Kućište
 Shrouded|Sa Kućištem
@@ -450,3 +454,34 @@ Apply Variant|Primeni Varijaciju
 Save as Building Block|Sačuvaj Kao Blok
 Select|Izaberi
 Unlock|Otključaj
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|Da li ste sigurni da želite da obrišete istoriju četa za ovaj projekat? Ova akcija se ne može poništiti!
+Component reordering is possible only when Project Explorer is sorted by z-index.|Preuređivanje komponenti je moguće samo kada je Project Explorer sortiran po z-index-u.
+Could not apply changes. Check the log for details.|Nije moguće primeniti izmene. Proverite log za više informacija.
+Exporting outline for board %s to file %s|Izvoz obrisa za pločicu %s u datoteku %s
+Failed to export the project to gerber. Please check the log for details|Neuspelo izvoženje projekta u gerber. Proverite log za više informacija
+Forgot Password?|Zaboravili ste lozinku?
+Gerber Export|Gerber Izvoz
+Gerber export completed successfully. The following files were created:%s|Gerber izvoz je uspešno završen. Sledeće datoteke su kreirane:%s
+Get Premium|Dobij Premium
+Netlist files|Netlist datoteke
+No proximity issues detected.|Nisu detektovani problemi sa blizinom.
+Nothing to export.|Nema ništa za izvoz.
+Password|Lozinka
+Send|Pošalji
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|Postoje neke komponente koje su van granica pločica.%sOne će biti ignorisane osim ako ne dodate komponentu pločice ispod njih.%sDa li želite da nastavite?
+User Name|Korisničko Ime
+AI Circuit Analyzer|AI Analizator Kola
+Cloud|Oblak
+Compare With...|Uporedi sa...
+Connect to Patreon|Poveži sa Patreon-om
+Export|Izvoz
+Export to Gerber|Izvoz u Gerber
+Generate DIYLC Netlist (excl. Switches)|Generiši DIYLC Netlistu (bez prekidača)
+Generate DIYLC Netlist (incl. Switches)|Generiši DIYLC Netlistu (sa prekidačima)
+Generate Spice Netlist (excl. Switches)|Generiši Spice Netlistu (bez prekidača)
+Generate Spice Netlist (incl. Switches)|Generiši Spice Netlistu (sa prekidačima)
+Silkscreen|Serigrafija
+Virtual Multimeter (excl. Switches)|Virtuelni Multimetar (bez prekidača)
+Virtual Multimeter (incl. Switches)|Virtuelni Multimetar (sa prekidačima)
+Become a Patreon and enjoy perks|Postanite Patreon i uživajte u prednostima
+Join Patreon|Pridružite se Patreon-u

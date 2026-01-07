@@ -300,6 +300,7 @@ Power Rating
 Power Strip
 Primary CT
 Print...
+Project
 Project Cloud
 Public Announcement
 Radius
@@ -351,6 +352,7 @@ Shape
 Shapes
 Show Bracket
 Show Grid
+Show Resize Dimensions
 Show Rulers
 Shroud
 Shrouded
@@ -463,3 +465,34 @@ Apply Variant
 Save as Building Block
 Select
 Unlock
+Are you sure you want to clear the chat history for this project? This action cannot be undone!
+Component reordering is possible only when Project Explorer is sorted by z-index.
+Could not apply changes. Check the log for details.
+Exporting outline for board %s to file %s
+Failed to export the project to gerber. Please check the log for details
+Forgot Password?
+Gerber Export
+Gerber export completed successfully. The following files were created:%s
+Get Premium
+Netlist files
+No proximity issues detected.
+Nothing to export.
+Password
+Send
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?
+User Name
+AI Circuit Analyzer
+Cloud
+Compare With...
+Connect to Patreon
+Export
+Export to Gerber
+Generate DIYLC Netlist (excl. Switches)
+Generate DIYLC Netlist (incl. Switches)
+Generate Spice Netlist (excl. Switches)
+Generate Spice Netlist (incl. Switches)
+Silkscreen
+Virtual Multimeter (excl. Switches)
+Virtual Multimeter (incl. Switches)
+Become a Patreon and enjoy perks
+Join Patreon

@@ -21,6 +21,7 @@
 */
 package org.diylc.swing.plugins.canvas;
 
+import java.awt.Cursor;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.event.InputEvent;
@@ -54,7 +55,17 @@ class CanvasDragGestureListener implements DragGestureListener {
     }
     canvasPanel.setClickInProgress(false);
     presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction(), forceReSelection);
-    dge.startDrag(presenter.getCursorAt(dge.getDragOrigin(), false, false, false), new EmptyTransferable(), new CanvasSourceListener(
+    // Get the appropriate cursor from the presenter (e.g., HAND_CURSOR over components)
+    // Preserve the cursor context (HAND_CURSOR, CROSSHAIR_CURSOR, etc.) for drag operations
+    // On Linux, DEFAULT_CURSOR during drag can show "No" cursor, so use MOVE_CURSOR as fallback
+    Cursor requestedCursor = presenter.getCursorAt(dge.getDragOrigin(), false, false, false);
+    Cursor dragCursor = requestedCursor;
+    // Only replace DEFAULT_CURSOR with MOVE_CURSOR on Linux to prevent "No" cursor issue
+    // Preserve HAND_CURSOR, CROSSHAIR_CURSOR, etc. as they are appropriate for drag operations
+    if (requestedCursor.getType() == Cursor.DEFAULT_CURSOR) {
+      dragCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+    }
+    dge.startDrag(dragCursor, new EmptyTransferable(), new CanvasSourceListener(
         presenter));
   }
 }

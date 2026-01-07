@@ -5,11 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.swing.AbstractAction;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.swingframework.CheckBoxListDialog;
@@ -69,7 +65,7 @@ public class ExportBlocksAction extends AbstractAction {
 
       dialog.setVisible(true);
 
-      if (dialog.getSelectedButtonCaption() != "OK")
+      if (!Objects.equals(dialog.getSelectedButtonCaption(), "OK"))
         return;
 
       Object[] selected = dialog.getSelectedOptions();

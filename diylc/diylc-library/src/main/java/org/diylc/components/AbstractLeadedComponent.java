@@ -43,11 +43,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
-import org.diylc.core.Theme;
-import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.*;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
@@ -62,7 +58,8 @@ import org.diylc.utils.Constants;
  * 
  * @author Branislav Stojkovic
  */
-public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponent<T> {
+public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponent<T> implements
+    IHaveLength {
 
   private static final long serialVersionUID = 1L;
 
@@ -366,8 +363,8 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
         offset = -offset;
       }
 
+      drawingObserver.startTracking();
       if (getMoveLabel()) {
-        drawingObserver.startTracking();
         g2d.setTransform(oldTransform);
         g2d.translate(getPoints()[2].getX(), getPoints()[2].getY());
         if (getLabelOriantation() != LabelOriantation.Horizontal) {
@@ -377,19 +374,18 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
         g2d.setTransform(oldTransform);
       } else {
         if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
-          drawingObserver.startTracking();
           g2d.setTransform(oldTransform);
           double x = (getPoints()[0].getX() + getPoints()[1].getX() - length) / 2.0;
           double y = (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2.0;
           g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
               (int) (y + calculateLabelYOffset(shapeRect, textRect, fontMetrics)));
         } else {
-          drawingObserver.stopTracking();
           g2d.drawString(label, (int) (length - textRect.getWidth()) / 2 + offset,
               calculateLabelYOffset(shapeRect, textRect, fontMetrics));
           g2d.setTransform(oldTransform);
         }
       }
+      drawingObserver.stopTracking();
     }
 //      if (getLabelOriantation() == LabelOriantation.Horizontal) {        
 //
@@ -638,6 +634,32 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
 
   public void setLength(Size length) {
     this.length = length;
+  }
+
+  @Override
+  public Size calculateLength() {
+
+    try {
+      Point2D[] points = getPoints();
+      if (points.length < 2) {
+        return null;
+      }
+      
+      // Calculate distance between ending points
+      double distanceInPixels = points[0].distance(points[1]);
+      
+      // Convert to Size with appropriate unit (mm or in based on configuration)
+      SizeUnit unit;
+      if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true)) {
+        unit = SizeUnit.mm;
+      } else {
+        unit = SizeUnit.in;
+      }
+      
+      return Size.fromPixels(distanceInPixels, unit);
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class, sortOrder = 102)

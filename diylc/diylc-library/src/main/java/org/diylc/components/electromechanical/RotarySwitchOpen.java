@@ -374,13 +374,13 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     // Draw body
     if (componentState != ComponentState.DRAGGING) {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
+      drawingObserver.startTracking();
       g2d.fill(body[0]);
+      drawingObserver.stopTracking();
     }
 
     g2d.setColor(finalBorderColor);
-    drawingObserver.startTracking();
     g2d.draw(body[0]);
-    drawingObserver.stopTracking();
 
     // Draw pins
     for (int i = 1; i <= secondLevelStart; i++) {

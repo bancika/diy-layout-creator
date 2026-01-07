@@ -207,6 +207,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
   @EditableProperty(name = "Ending Style")
   @Override
   public LineEndingStyle getEndingStyle() {
+    if (endingStyle == null) {
+      endingStyle = LineEndingStyle.Round;
+    }
     return endingStyle;
   }
 

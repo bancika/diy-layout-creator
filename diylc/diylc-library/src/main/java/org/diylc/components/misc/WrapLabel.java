@@ -45,7 +45,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Auto-Wrap Label", author = "Branislav Stojkovic", category = "Misc",
-description = "User defined label with auto-wrapped text", instanceNamePrefix = "L", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
+description = "User defined label with auto-wrapped text", instanceNamePrefix = "LAB", zOrder = IDIYComponent.TEXT, flexibleZOrder = true,
 bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
 public class WrapLabel extends AbstractComponent<String> {
 

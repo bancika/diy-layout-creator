@@ -21,7 +21,6 @@
 */
 package org.diylc.common;
 
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 import org.diylc.core.Project;
@@ -55,12 +54,7 @@ public enum EventType {
    */
   FILE_STATUS_CHANGED,
   /**
-   * Called when selection rectangle is changed. Object of type {@link Rectangle} is the only
-   * parameter and it contains the new selection rectangle.
-   */
-  SELECTION_RECT_CHANGED,
-  /**
-   * Called when component selection is changed. New {@link ComponentSelection} is attached as a
+   * Called when component selection is changed. New list of components and control point map is attached as a
    * parameter.
    */
   SELECTION_CHANGED,

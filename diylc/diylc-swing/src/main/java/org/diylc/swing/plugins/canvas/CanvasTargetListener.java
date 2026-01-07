@@ -21,14 +21,12 @@
 */
 package org.diylc.swing.plugins.canvas;
 
-import java.awt.Point;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+import java.awt.*;
+import java.awt.dnd.*;
 
 import org.diylc.common.IPlugInPort;
+
+import javax.swing.*;
 
 
 /**
@@ -106,10 +104,35 @@ class CanvasTargetListener implements DropTargetListener {
   @Override
   public void drop(DropTargetDropEvent dtde) {
     presenter.dragEnded(dtde.getLocation());
+    updateCursor(dtde);
   }
 
   @Override
   public void dropActionChanged(DropTargetDragEvent dtde) {
     presenter.dragActionChanged(dtde.getDropAction());
+  }
+
+  /**
+   * Updates the cursor during drag operations using the presenter as the single source of truth.
+   * If the presenter returns DEFAULT_CURSOR, uses MOVE_CURSOR to prevent "No" cursor issues.
+   */
+  private void updateCursor(DropTargetDropEvent dsde) {
+    SwingUtilities.invokeLater(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                   Point mousePos = dsde.getDropTargetContext().getComponent().getMousePosition();
+                                   if (mousePos != null) {
+                                     // Use presenter as single source of truth for cursor
+                                     Cursor requestedCursor = presenter.getCursorAt(mousePos, false, false, false);
+                                     Cursor dragCursor = requestedCursor;
+                                     // If DEFAULT_CURSOR, use MOVE_CURSOR to prevent "No" cursor during drag operations
+                                     if (requestedCursor.getType() == Cursor.DEFAULT_CURSOR) {
+                                       dragCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+                                     }
+                                     dsde.getDropTargetContext().getComponent().setCursor(null);
+                                     dsde.getDropTargetContext().getComponent().setCursor(dragCursor);
+                                   }
+                                 }
+                               });
   }
 }

@@ -195,6 +195,7 @@ Image|Afbeelding
 Immediate Only|Alleen direct 
 Import|Importeren
 Import Building Blocks|Bouwstenen importeren
+Import Netlist|Netlist importeren
 Import Variants|Varianten importeren
 In-Line D-44|Inline D-44
 In-line|Inline
@@ -232,6 +233,7 @@ Lock|Vastpinnen
 Log|Logaritmisch
 Log In|Inloggen
 Log Out|Uitloggen
+Look for|Zoeken
 Lug Size|Solderooggrootte
 Lugs|Solderogen
 Make a Donation|Doneren
@@ -303,6 +305,7 @@ Power Rating|Nominale vermogen
 Power Strip|Voedingslijn
 Primary CT|Primaire middenaftakking
 Print...|Afdrukken...
+Project|Project
 Project Cloud|Project cloud
 Public Announcement|Openbare aankondiging 
 Radius|Straal 
@@ -360,6 +363,7 @@ Shaft Up|As omhoog
 Shape|Vorm
 Shapes|Vormen
 Show Grid|Raster weergeven
+Show Resize Dimensions|Grootte-aanpassingsafmetingen weergeven
 Show Rulers|Linialen weergeven
 Shroud|Beschermrand
 Shrouded|Afgeschermd
@@ -457,3 +461,34 @@ Zoom|Zoom
 base of 10|Tienden 
 base of 2|Achtsten
 hold %s and drag to unstick from|houd %s vast en sleep, om los te maken van
+Are you sure you want to clear the chat history for this project? This action cannot be undone!|Weet u zeker dat u de chatgeschiedenis voor dit project wilt wissen? Deze actie kan niet ongedaan worden gemaakt!
+Component reordering is possible only when Project Explorer is sorted by z-index.|Het opnieuw ordenen van componenten is alleen mogelijk wanneer Project Explorer is gesorteerd op z-index.
+Could not apply changes. Check the log for details.|Wijzigingen konden niet worden toegepast. Controleer het logbestand voor details.
+Exporting outline for board %s to file %s|Omtrek exporteren voor printplaat %s naar bestand %s
+Failed to export the project to gerber. Please check the log for details|Het exporteren van het project naar gerber is mislukt. Controleer het logbestand voor details
+Forgot Password?|Wachtwoord vergeten?
+Gerber Export|Gerber Export
+Gerber export completed successfully. The following files were created:%s|Gerber export succesvol voltooid. De volgende bestanden zijn aangemaakt:%s
+Get Premium|Premium krijgen
+Netlist files|Netlist bestanden
+No proximity issues detected.|Geen nabijheidsproblemen gedetecteerd.
+Nothing to export.|Niets te exporteren.
+Password|Wachtwoord
+Send|Verzenden
+There are some components that are outside of the bounds of boards.%sThey will be ignored unless you add a board component underneath them.%sDo you want to continue?|Er zijn enkele componenten die buiten de grenzen van printplaten liggen.%sZe worden genegeerd tenzij u een printplaatcomponent eronder toevoegt.%sWilt u doorgaan?
+User Name|Gebruikersnaam
+AI Circuit Analyzer|AI Circuit Analysator
+Cloud|Cloud
+Compare With...|Vergelijken met...
+Connect to Patreon|Verbinden met Patreon
+Export|Exporteren
+Export to Gerber|Exporteren naar Gerber
+Generate DIYLC Netlist (excl. Switches)|DIYLC netlist genereren (zonder schakelaars)
+Generate DIYLC Netlist (incl. Switches)|DIYLC netlist genereren (met schakelaars)
+Generate Spice Netlist (excl. Switches)|Spice netlist genereren (zonder schakelaars)
+Generate Spice Netlist (incl. Switches)|Spice netlist genereren (met schakelaars)
+Silkscreen|Zijdezeefdruk
+Virtual Multimeter (excl. Switches)|Virtuele Multimeter (zonder schakelaars)
+Virtual Multimeter (incl. Switches)|Virtuele Multimeter (met schakelaars)
+Become a Patreon and enjoy perks|Word een Patreon en geniet van voordelen
+Join Patreon|Lid worden van Patreon
