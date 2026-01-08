@@ -635,13 +635,18 @@ public class ExplorerPane extends JPanel {
           }
         }
         
-        String text = groupItem.getGroupName() != null && !groupItem.getGroupName().isEmpty()
+        // Format: name (component count), similar to regular components showing name (value)
+        String groupName = groupItem.getGroupName() != null && !groupItem.getGroupName().isEmpty()
             ? groupItem.getGroupName()
-            : "Group of " + groupItem.getComponentCount() + " components";
+            : "Group";
+        String componentCount = String.valueOf(groupItem.getComponentCount());
+        
         if (isSelected) {
-          renderer.setText(String.format("<html>[L%s] <b>%s</b></html>", maxLayerId, text));
+          renderer.setText(String.format("<html>[L%s] <b>%s</b> (<b>%s</b>)</html>", maxLayerId, groupName, componentCount));
         } else {
-          renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s</html>", maxLayerId, text));
+          renderer.setText(String.format(
+              "<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>",
+              maxLayerId, groupName, componentCount));
         }
       }
 

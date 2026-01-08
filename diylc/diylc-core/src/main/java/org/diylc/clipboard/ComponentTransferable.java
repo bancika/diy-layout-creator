@@ -46,14 +46,16 @@ public class ComponentTransferable implements Transferable, Serializable {
   
   private List<IDIYComponent<?>> components;
   private Set<ComponentGroup> groups;
+  private String name;
 
   public ComponentTransferable() {
     super();
   }
   
-  public ComponentTransferable(List<IDIYComponent<?>> components) {
+  public ComponentTransferable(List<IDIYComponent<?>> components, String name) {
     super();
     this.components = components;
+    this.name = name;
     this.groups = null;
   }
 
@@ -87,5 +89,9 @@ public class ComponentTransferable implements Transferable, Serializable {
   
   public Set<ComponentGroup> getGroups() {
     return groups;
+  }
+
+  public String getName() {
+    return name;
   }
 }

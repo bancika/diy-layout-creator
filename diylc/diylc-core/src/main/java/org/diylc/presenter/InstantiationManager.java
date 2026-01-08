@@ -24,13 +24,7 @@ package org.diylc.presenter;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -68,9 +62,9 @@ public class InstantiationManager {
   public static final ComponentType clipboardType = new ComponentType("Clipboard contents",
       "Components from the clipboard", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
       false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0);
-  public static final ComponentType blockType = new ComponentType("Building block",
-	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
-	      false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0);
+//  public static final ComponentType blockType = new ComponentType("Building block",
+//	      "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
+//	      false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0);
 
   public InstantiationManager() {}
 
@@ -213,7 +207,10 @@ public class InstantiationManager {
 
     // Update the component type slot so the app knows that something's
     // being instantiated.
-    this.componentTypeSlot = autoGroup ? blockType : clipboardType;
+    String slotName = Optional.ofNullable(componentTransferable.getName()).orElse("Building Block");
+    this.componentTypeSlot = autoGroup ? new ComponentType(slotName,
+        "Components from the building block", CreationMethod.SINGLE_CLICK, "Multi", "", "", null, null, 0, false, null,
+        false, null, KeywordPolicy.NEVER_SHOW, null, false, null, 0) : clipboardType;
 
     if (snapToGrid) {
       scaledPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());

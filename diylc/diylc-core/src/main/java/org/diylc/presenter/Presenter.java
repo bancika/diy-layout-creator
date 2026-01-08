@@ -543,7 +543,7 @@ public class Presenter implements IPlugInPort {
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
-                this.currentProject.getGroupsEx().add(ComponentGroup.from(componentSlot));
+                this.currentProject.getGroupsEx().add(ComponentGroup.from(componentSlot, componentTypeSlot.getName()));
               }
               
               notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
@@ -1717,11 +1717,32 @@ public class Presenter implements IPlugInPort {
   @Override
   public void groupSelectedComponents() {
     LOG.info("groupSelectedComponents()");
+    
+    // Prompt user for group name
+    String groupName = view.showInputDialog("Enter group name:", "Group Components");
+    
+    // If user cancelled, don't create the group
+    if (groupName == null) {
+      return;
+    }
+    
     Project oldProject = currentProject.clone();
-    // First remove the selected components from other groups.
+    // First break any existing groups that contain any of the selected components.
+    // This ensures that if components A and B are in a group, and the user selects
+    // A, B, and C to group together, the old group of A and B is deleted and replaced
+    // with a new group containing A, B, and C.
     ungroupComponents(selectedComponents);
-    // Then group them together.
-    currentProject.getGroupsEx().add(ComponentGroup.from(selectedComponents));
+    // Then create a new group containing all selected components with the provided name.
+    // Filter out any null IDs to prevent creating groups with null component IDs.
+    Set<UUID> componentIds = selectedComponents.stream()
+        .map(IDIYComponent::getId)
+        .filter(id -> id != null)
+        .collect(Collectors.toSet());
+    
+    // Only create the group if there are valid component IDs
+    if (!componentIds.isEmpty()) {
+      currentProject.getGroupsEx().add(new ComponentGroup(componentIds, groupName));
+    }
     // Notify the listeners.
     notifyProjectModifiedIfNeeded(oldProject, "Group", false, true);
   }
@@ -2180,7 +2201,20 @@ public class Presenter implements IPlugInPort {
     Iterator<ComponentGroup> groupIterator = currentProject.getGroupsEx().iterator();
     while (groupIterator.hasNext()) {
       ComponentGroup group = groupIterator.next();
-      if (group.getComponentIds().stream().anyMatch(id -> componentIds.contains(componentIds))) {
+      // Remove the group if it contains any of the specified components
+      if (group.getComponentIds() != null && 
+          group.getComponentIds().stream().anyMatch(id -> id != null && componentIds.contains(id))) {
+        groupIterator.remove();
+      }
+    }
+    
+    // Clean up any groups with null or empty component IDs
+    groupIterator = currentProject.getGroupsEx().iterator();
+    while (groupIterator.hasNext()) {
+      ComponentGroup group = groupIterator.next();
+      if (group.getComponentIds() == null || 
+          group.getComponentIds().isEmpty() ||
+          group.getComponentIds().stream().anyMatch(id -> id == null)) {
         groupIterator.remove();
       }
     }
@@ -2197,14 +2231,14 @@ public class Presenter implements IPlugInPort {
   private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
 
     for (ComponentGroup group : currentProject.getGroupsEx()) {
-      if (group.getComponentIds().stream().anyMatch(id -> id.equals(component.getId()))) {
+      if (group.getComponentIds().stream().anyMatch(id -> Objects.equals(id, component.getId()))) {
         return currentProject.getComponents().stream()
             .filter(comp -> group.getComponentIds().contains(comp.getId()))
             .collect(Collectors.toSet());
       }
     }
 
-    return new HashSet<>();
+    return new HashSet<>(Set.of(component));
   }
 
   @Override
@@ -2738,7 +2772,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public void loadBlock(String blockName) throws InvalidBlockException { 
     List<IDIYComponent<?>> components = buildingBlockManager.loadBlock(blockName, currentProject.getComponents());
-    pasteComponents(new ComponentTransferable(components), true, true);    
+    pasteComponents(new ComponentTransferable(components, blockName), true, true);
   }
 
   @Override

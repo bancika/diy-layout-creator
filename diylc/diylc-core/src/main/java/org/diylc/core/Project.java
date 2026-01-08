@@ -164,7 +164,7 @@ public class Project implements Serializable, Cloneable {
 
       if (groups != null && !groups.isEmpty()) {
         for (Set<IDIYComponent<?>> group : groups) {
-          ComponentGroup newGroup = ComponentGroup.from(group);
+          ComponentGroup newGroup = ComponentGroup.from(group, null);
           groupsEx.add(newGroup);
         }
         groups.clear();
@@ -295,6 +295,11 @@ public class Project implements Serializable, Cloneable {
       if (other.groups != null)
         return false;
     } else if (!groups.equals(other.groups))
+      return false;
+    if (groupsEx == null) {
+      if (other.groupsEx != null)
+        return false;
+    } else if (!groupsEx.equals(other.groupsEx))
       return false;
     if (lockedLayers == null) {
       if (other.lockedLayers != null)
