@@ -113,7 +113,7 @@ public class ImportNetlistAction extends AbstractAction {
               if (!outputWarnings.isEmpty())
                 ActionFactory.LOG.warn("Component creation produced warnings:\n"
                     + String.join("\n", outputWarnings));
-              plugInPort.pasteComponents(new ComponentTransferable(components), false, false);
+              plugInPort.pasteComponents(new ComponentTransferable(components, "Imported Netlist"), false, false);
             }
           } catch (Exception e) {
             swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",

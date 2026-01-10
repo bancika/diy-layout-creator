@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.diylc.core.IDIYComponent;
@@ -52,6 +53,7 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
 
   private static final long serialVersionUID = 1L;
 
+  protected UUID id = UUID.randomUUID();
   protected String name = "";
 
   public static Color SELECTION_COLOR = Color.red;
@@ -76,6 +78,19 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   @Override
   public void setName(String name) {
     this.name = name;
+  }
+
+  @Override
+  public UUID getId() {
+    if (id == null) {
+      id = UUID.randomUUID();
+    }
+    return id;
+  }
+
+  @Override
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   @Override
@@ -185,6 +200,10 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
           if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers())) {
             field.setAccessible(true);
             Object value = field.get(this);
+
+            if (field.getName().equalsIgnoreCase("id")) {
+              value = getId();
+            }
 
             // Deep copy point arrays.
             // TODO: something nicer

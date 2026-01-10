@@ -36,7 +36,7 @@ public class CutAction extends AbstractAction {
   public void actionPerformed(ActionEvent e) {
     ActionFactory.LOG.info("Cut triggered");
     clipboard.setContents(ComponentTransferableFactory.getInstance()
-        .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroups()),
+        .build(plugInPort.getSelectedComponents(), plugInPort.getCurrentProject().getGroupsEx()),
         clipboardOwner);
     plugInPort.deleteSelectedComponents();
   }

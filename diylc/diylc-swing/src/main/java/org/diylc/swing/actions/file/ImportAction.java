@@ -88,7 +88,7 @@ public class ImportAction extends AbstractAction {
           // presenter
           plugInPort.pasteComponents(ComponentTransferableFactory.getInstance().build(
               presenter.getCurrentProject().getComponents(),
-              presenter.getCurrentProject().getGroups()), false, false);
+              presenter.getCurrentProject().getGroupsEx()), false, false);
           // Cleanup components in the temp presenter, don't need
           // them anymore
           presenter.selectAll(0);

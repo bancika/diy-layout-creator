@@ -23,13 +23,9 @@ package org.diylc.core;
 
 import java.awt.Font;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.diylc.appframework.update.VersionNumber;
 
 import org.diylc.core.annotations.EditableProperty;
@@ -67,6 +63,7 @@ public class Project implements Serializable, Cloneable {
   private Integer dotSpacing;
   private List<IDIYComponent<?>> components;
   private Set<Set<IDIYComponent<?>>> groups;
+  private Set<ComponentGroup> groupsEx;
   private Set<Integer> lockedLayers;
   private Set<IDIYComponent<?>> lockedComponents;
   private Set<Integer> hiddenLayers;
@@ -75,6 +72,7 @@ public class Project implements Serializable, Cloneable {
   public Project() {
     components = new ArrayList<IDIYComponent<?>>();
     groups = new HashSet<Set<IDIYComponent<?>>>();
+    groupsEx = new HashSet<>();
     lockedLayers = new HashSet<Integer>();
     hiddenLayers = new HashSet<Integer>();
     lockedComponents = new HashSet<IDIYComponent<?>>();
@@ -153,22 +151,28 @@ public class Project implements Serializable, Cloneable {
 
   /**
    * List of components sorted by z-order ascending.
-   * 
+   * s
    * @return
    */
   public List<IDIYComponent<?>> getComponents() {
     return components;
   }
 
-  /**
-   * Set of grouped components.
-   * 
-   * @return
-   */
-  public Set<Set<IDIYComponent<?>>> getGroups() {
-    return groups;
+  public Set<ComponentGroup> getGroupsEx() {
+    if (groupsEx == null) {
+      groupsEx = new HashSet<>();
+
+      if (groups != null && !groups.isEmpty()) {
+        for (Set<IDIYComponent<?>> group : groups) {
+          ComponentGroup newGroup = ComponentGroup.from(group, null);
+          groupsEx.add(newGroup);
+        }
+        groups.clear();
+      }
+    }
+    return groupsEx;
   }
-  
+
   public Set<IDIYComponent<?>> getLockedComponents() {
     if (lockedComponents == null)
       lockedComponents = new HashSet<IDIYComponent<?>>();
@@ -292,6 +296,11 @@ public class Project implements Serializable, Cloneable {
         return false;
     } else if (!groups.equals(other.groups))
       return false;
+    if (groupsEx == null) {
+      if (other.groupsEx != null)
+        return false;
+    } else if (!groupsEx.equals(other.groupsEx))
+      return false;
     if (lockedLayers == null) {
       if (other.lockedLayers != null)
         return false;
@@ -356,12 +365,8 @@ public class Project implements Serializable, Cloneable {
       }
     }
 
-    for (Set<IDIYComponent<?>> group : this.groups) {
-      Set<IDIYComponent<?>> cloneGroup = new HashSet<IDIYComponent<?>>();
-      for (IDIYComponent<?> component : group) {
-        cloneGroup.add(cloneMap.get(component));
-      }
-      project.groups.add(cloneGroup);
+    for (ComponentGroup group : this.getGroupsEx()) {
+      project.getGroupsEx().add(new ComponentGroup(group.getComponentIds(), group.getName()));
     }
     
     for (IDIYComponent<?> component : this.getLockedComponents()) {

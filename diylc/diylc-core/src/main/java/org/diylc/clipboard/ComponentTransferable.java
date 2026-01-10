@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import org.diylc.core.ComponentGroup;
 import org.diylc.core.IDIYComponent;
 
 /**
@@ -44,19 +45,21 @@ public class ComponentTransferable implements Transferable, Serializable {
   public static final DataFlavor listFlavor = new DataFlavor(ComponentTransferable.class, "application/diylc");
   
   private List<IDIYComponent<?>> components;
-  private Set<Set<IDIYComponent<?>>> groups;
+  private Set<ComponentGroup> groups;
+  private String name;
 
   public ComponentTransferable() {
     super();
   }
   
-  public ComponentTransferable(List<IDIYComponent<?>> components) {
+  public ComponentTransferable(List<IDIYComponent<?>> components, String name) {
     super();
     this.components = components;
+    this.name = name;
     this.groups = null;
   }
 
-  public ComponentTransferable(List<IDIYComponent<?>> components, Set<Set<IDIYComponent<?>>> groups) {
+  public ComponentTransferable(List<IDIYComponent<?>> components, Set<ComponentGroup> groups) {
     super();
     this.components = components;
     this.groups = groups;
@@ -84,7 +87,11 @@ public class ComponentTransferable implements Transferable, Serializable {
     return components;
   }
   
-  public Set<Set<IDIYComponent<?>>> getGroups() {
+  public Set<ComponentGroup> getGroups() {
     return groups;
+  }
+
+  public String getName() {
+    return name;
   }
 }

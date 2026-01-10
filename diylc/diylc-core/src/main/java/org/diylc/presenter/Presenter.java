@@ -32,17 +32,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
@@ -553,7 +543,7 @@ public class Presenter implements IPlugInPort {
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
-                this.currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(componentSlot));
+                this.currentProject.getGroupsEx().add(ComponentGroup.from(componentSlot, componentTypeSlot.getName()));
               }
               
               notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
@@ -1727,11 +1717,32 @@ public class Presenter implements IPlugInPort {
   @Override
   public void groupSelectedComponents() {
     LOG.info("groupSelectedComponents()");
+    
+    // Prompt user for group name
+    String groupName = view.showInputDialog("Enter group name:", "Group Components");
+    
+    // If user cancelled, don't create the group
+    if (groupName == null) {
+      return;
+    }
+    
     Project oldProject = currentProject.clone();
-    // First remove the selected components from other groups.
+    // First break any existing groups that contain any of the selected components.
+    // This ensures that if components A and B are in a group, and the user selects
+    // A, B, and C to group together, the old group of A and B is deleted and replaced
+    // with a new group containing A, B, and C.
     ungroupComponents(selectedComponents);
-    // Then group them together.
-    currentProject.getGroups().add(new HashSet<IDIYComponent<?>>(selectedComponents));
+    // Then create a new group containing all selected components with the provided name.
+    // Filter out any null IDs to prevent creating groups with null component IDs.
+    Set<UUID> componentIds = selectedComponents.stream()
+        .map(IDIYComponent::getId)
+        .filter(id -> id != null)
+        .collect(Collectors.toSet());
+    
+    // Only create the group if there are valid component IDs
+    if (!componentIds.isEmpty()) {
+      currentProject.getGroupsEx().add(new ComponentGroup(componentIds, groupName));
+    }
     // Notify the listeners.
     notifyProjectModifiedIfNeeded(oldProject, "Group", false, true);
   }
@@ -2186,14 +2197,11 @@ public class Presenter implements IPlugInPort {
    * @param components
    */
   private void ungroupComponents(Collection<IDIYComponent<?>> components) {
-    Iterator<Set<IDIYComponent<?>>> groupIterator = currentProject.getGroups().iterator();
-    while (groupIterator.hasNext()) {
-      Set<IDIYComponent<?>> group = groupIterator.next();
-      group.removeAll(components);
-      if (group.isEmpty()) {
-        groupIterator.remove();
-      }
-    }
+    Set<UUID> componentIds = components.stream().map(IDIYComponent::getId).collect(Collectors.toSet());
+    // Remove the group if it contains any of the specified components
+    currentProject.getGroupsEx().removeIf(
+        group -> group.getComponentIds() != null && group.getComponentIds().stream()
+            .anyMatch(id -> id != null && componentIds.contains(id)));
   }
 
   /**
@@ -2205,15 +2213,16 @@ public class Presenter implements IPlugInPort {
    *         the minimum, set contains that single component.
    */
   private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
-    Set<IDIYComponent<?>> components = new HashSet<IDIYComponent<?>>();
-    components.add(component);
-    for (Set<IDIYComponent<?>> group : currentProject.getGroups()) {
-      if (group.contains(component)) {
-        components.addAll(group);
-        break;
+
+    for (ComponentGroup group : currentProject.getGroupsEx()) {
+      if (group.getComponentIds().stream().anyMatch(id -> Objects.equals(id, component.getId()))) {
+        return currentProject.getComponents().stream()
+            .filter(comp -> group.getComponentIds().contains(comp.getId()))
+            .collect(Collectors.toSet());
       }
     }
-    return components;
+
+    return new HashSet<>(Set.of(component));
   }
 
   @Override
@@ -2747,7 +2756,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public void loadBlock(String blockName) throws InvalidBlockException { 
     List<IDIYComponent<?>> components = buildingBlockManager.loadBlock(blockName, currentProject.getComponents());
-    pasteComponents(new ComponentTransferable(components), true, true);    
+    pasteComponents(new ComponentTransferable(components, blockName), true, true);
   }
 
   @Override
@@ -2911,5 +2920,10 @@ public class Presenter implements IPlugInPort {
   @Override
   public DrawingManager getDrawingManager() {
     return drawingManager;
+  }
+  
+  @Override
+  public Set<ComponentGroup> getComponentGroups() {
+    return currentProject.getGroupsEx();
   }
 }
