@@ -490,9 +490,17 @@
 				<minor>9</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2025-12-30 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-01-10 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to name groups of components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Show groups of components as single items in the Project Explorer list</description>
+				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added balloon tooltip next to cursor showing component width, height and length (where available) while resizing; can be disabled from Config menu</description>

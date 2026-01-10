@@ -2198,26 +2198,10 @@ public class Presenter implements IPlugInPort {
    */
   private void ungroupComponents(Collection<IDIYComponent<?>> components) {
     Set<UUID> componentIds = components.stream().map(IDIYComponent::getId).collect(Collectors.toSet());
-    Iterator<ComponentGroup> groupIterator = currentProject.getGroupsEx().iterator();
-    while (groupIterator.hasNext()) {
-      ComponentGroup group = groupIterator.next();
-      // Remove the group if it contains any of the specified components
-      if (group.getComponentIds() != null && 
-          group.getComponentIds().stream().anyMatch(id -> id != null && componentIds.contains(id))) {
-        groupIterator.remove();
-      }
-    }
-    
-    // Clean up any groups with null or empty component IDs
-    groupIterator = currentProject.getGroupsEx().iterator();
-    while (groupIterator.hasNext()) {
-      ComponentGroup group = groupIterator.next();
-      if (group.getComponentIds() == null || 
-          group.getComponentIds().isEmpty() ||
-          group.getComponentIds().stream().anyMatch(id -> id == null)) {
-        groupIterator.remove();
-      }
-    }
+    // Remove the group if it contains any of the specified components
+    currentProject.getGroupsEx().removeIf(
+        group -> group.getComponentIds() != null && group.getComponentIds().stream()
+            .anyMatch(id -> id != null && componentIds.contains(id)));
   }
 
   /**
