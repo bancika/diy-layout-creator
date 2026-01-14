@@ -8,17 +8,17 @@ To download the source, you can use GitHub's download option:
 
 You can then unzip it and continue to the [build](Building.md) document.
 
-However if you wish to contribute, it is more convenient to fork the repository and use git to clone from your fork.
+However if you wish to contribute, it is more convenient to fork the repository and use Git to clone from your fork.
 
 Click the fork button and follow the steps:
 
 ![](images/forking.png)
 
-From the new fork repo on your account, copy the git clone link:
+From the new fork repo on your account, copy the clone link:
 
 ![](images/clone-link.png)
 
-The next instructions are dependent on your working environment. Your chosen editor/IDE may have built in utilities to manage git repositorys that may be preferable to you. However they all use Git underneath, to do so directly (presuming you have Git installed) you may simply issue:
+The next instructions are dependent on your working environment. Your chosen editor/IDE may have built in utilities to manage Git repositorys that may be preferable to you. However they all use Git underneath, to do so directly (presuming you have Git installed) you may simply issue:
 
 `git clone <YOUR-GIT-URL>`
 
