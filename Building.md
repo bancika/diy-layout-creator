@@ -1,55 +1,26 @@
-### Building the Project ###
+# Building
 
-This tutorial assumes that you have a newer version of Eclipse with working Ant and Java 1.6.0_45 installed. It also assumes that you have pulled the latest version of the code from the main Git repository. Read <a href="https://github.com/bancika/diy-layout-creator/blob/wiki/DownloadingSource.md">this document</a> if you need help with getting the source code.
+DIY Layout Creator 5 has updated the build system to Maven. 
+Your IDE may already bundle the tools required to work on DIYLC, so try opening via the pom.xml file in the *diylc* directory.
 
-DIYLC consists of three main projects:
+Otherwise, you may be able to get everything you need to build and run from your package manager, e.g. on Debian systems you can:
 
-- **diylc-core** contains all the logic of the application without the knowledge of the GUI or specific components.
-- **diylc-library** contains all the components that come with DIYLC. Depends on diylc-core project.
-- **diylc-swing** contains all the GUI code. Depends on diylc-core project and references diylc-library as a JAR.
+`sudo apt install default-jre default-jdk maven`
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_9.png' /></p>
+Installation on Windows is a bit more complicated. For the JDK you can use Adoptium's OpenJDK: <https://adoptium.net/>
 
-##### Step 0: configure Ant #####
+Maven must be downloaded and added to the path manually which can be quite involved, but there is a guide here: <https://www.geeksforgeeks.org/installation-guide/how-to-install-apache-maven-on-windows/> 
 
-Go to "Window" -> "Preferences" -> "Ant" -> "Runtime" and add these three files to the "Ant Home Entries" library, using the "Add JARS..." button, then Apply them: 
+Once everything is installed, you can build DIYLC. All of the main DIYLC source code is inside the *diylc* folder, so move inside it and tell maven to build the project. Unlike before, all of the sub-projects are built from the one command:
 
-"diylc-swing/tools/ant-lib/appbundler-1.0.1.jar" <br>
-"diylc-swing/tools/ant-lib/jarbundler-core-3.3.0.jar" <br>
-"diylc-swing/tools/ant-lib/commons-net-3.6.jar" <br>
+`mvn package`
 
-<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler.png' /></p>
+If the build went fine, you should see something like this in the console. There may be a few warnings, but it is okay to ignore them.
 
-You might get a warning, you can select yes to ignore the problem.
+![](images/build_success.png)
 
-<p align='center'><img src='https://raw.githubusercontent.com/M0JXD/diy-layout-creator/wiki/images/ant_bundler_problem.png' /></p>
+This will build the diylc.jar file under the *target* directory. You can run this directly using `java -jar diylc.jar`, although you may get complaints that you did not use the proper startup exectuable/script, which can usually be ignored.
 
-##### Step 1: build diylc-core #####
+There is a script that will automatically build the deployed versions for all platforms, as it is a Bash script it will only work in *nix environments, and the success of the build depends on whether you have the required build tooling already installed.
 
-Find build.xml file directly in the diylc-core project folder, right click and select "Run As" -> "Ant Build"
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/build_ant.png' /></p>
-
-If the build went fine, you should see something like this in the console.
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/build_success.png' /></p>
-
-One common error occurrs when there are multiple Java versions installed and Ant is not configured to use the correct one. In that case, instead of "Run As" -> "Ant Build", click on "Run As" -> "Ant Build..." to open Ant configuration before running the build and make sure that JDK 1.6.0_45 is selected.
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/ant_jre.png' /></p>
-
-##### Step 2: build diylc-library #####
-
-Repeat the Step 1, but for diylc-library
-
-##### Step 3: build diylc-swing #####
-
-Repeat the Step 1, but for diylc-swing
-
-You may need to change the default target in build.xml for your OS.
-
-##### Step 4: run diylc-swing #####
-
-Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
-
-If everything went well, the application should start.
+`./build-all-profiles.sh`
