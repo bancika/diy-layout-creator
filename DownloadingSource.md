@@ -8,7 +8,7 @@ To download the source, you can use GitHub's download option:
 
 You can then unzip it and continue to the [build](Building.md) document.
 
-However if you wish to contribute, it is more convienient to fork the repository and use git to clone from your fork.
+However if you wish to contribute, it is more convenient to fork the repository and use git to clone from your fork.
 
 Click the fork button and follow the steps:
 
