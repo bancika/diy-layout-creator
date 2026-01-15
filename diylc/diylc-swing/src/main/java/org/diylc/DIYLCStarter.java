@@ -88,7 +88,21 @@ public class DIYLCStarter {
 		}
 
 		Properties properties = new Properties();
-		try (InputStream inputStream = DIYLCStarter.class.getResourceAsStream("/log4j.properties")) {
+		
+		String resourcePath = "/log4j.properties";
+		if (Utils.getUserDataDirectory("diylc").contains(".diylc")) {
+			resourcePath = "/log4j_hidden.properties";
+
+			// At startup, it'll create a log in the non-hidden place because log4j hunts for a log4j.properties file.
+			// Now we're about to override those settings with the hidden preference, we should delete it.
+			// (If we reach this point it'll be empty anyways)
+			LOG.info("User has specified hidden logs/backup directory. Deleting the empty startup log directory...");
+			File startup_log = new File(System.getProperty("user.home") + File.separator + "diylc");
+			Utils.deleteDirectory(startup_log);
+			startup_log.delete();
+		}
+
+		try (InputStream inputStream = DIYLCStarter.class.getResourceAsStream(resourcePath)) {
 			properties.load(inputStream);
 			PropertyConfigurator.configure(properties);
 		} catch (Exception e) {
