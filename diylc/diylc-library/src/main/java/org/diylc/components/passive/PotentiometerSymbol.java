@@ -35,6 +35,7 @@ import org.diylc.components.semiconductors.SymbolFlipping;
 import org.diylc.components.transform.ThreeLegTransformer;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
 @ComponentDescriptor(name = "Potentiometer", author = "MCbx", category = "Schematic Symbols",
@@ -44,9 +45,22 @@ import org.diylc.core.annotations.KeywordPolicy;
 public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
+  private DrawStyle draw_style = DrawStyle.ANSI;
 
   public PotentiometerSymbol() {
     this.color = Color.blue;
+  }
+
+  @EditableProperty(name = "Draw Standard")
+  public DrawStyle getDrawStandard() {
+	  if (draw_style == null) {
+		  draw_style = DrawStyle.ANSI;
+	  }
+	  return draw_style;
+  }
+  
+  public void setDrawStandard(DrawStyle draw_style) {
+	  this.draw_style = draw_style;
   }
 
   public Shape[] getBody() {
@@ -55,39 +69,54 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
     double x = controlPoints[0].getX();
     double y = controlPoints[0].getY();
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
-
     GeneralPath polyline = new GeneralPath();
+
+    // Draw lead in
     polyline.moveTo(x + pinSpacing * 2, y - pinSpacing * 2);
     polyline.lineTo(x + pinSpacing * 2, y - pinSpacing * 2 + pinSpacing / 2);
-    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + pinSpacing / 2 + pinSpacing / 4);
-    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 2 * pinSpacing / 2);
-    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 3 * pinSpacing / 2 - pinSpacing / 8);
-    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 4 * pinSpacing / 2 - pinSpacing / 4);
-    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 5 * pinSpacing / 2 - pinSpacing / 3
-        - pinSpacing / 16);
-    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 6 * pinSpacing / 2 - pinSpacing / 2
-        + pinSpacing / 16);
-    polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
-        - pinSpacing / 16);
-    polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
-        + pinSpacing / 4);
-    polyline.lineTo(x + pinSpacing * 2, (y - pinSpacing * 2) + 7 * pinSpacing / 2);
-    polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
+
+    if (getDrawStandard() == DrawStyle.ANSI) {
+      // Draw ZigZag and lead out
+      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + pinSpacing / 2 + pinSpacing / 4);
+      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 2 * pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 3 * pinSpacing / 2 - pinSpacing / 8);
+      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 4 * pinSpacing / 2 - pinSpacing / 4);
+      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 5 * pinSpacing / 2 - pinSpacing / 3
+          - pinSpacing / 16);
+      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 6 * pinSpacing / 2 - pinSpacing / 2
+      + pinSpacing / 16);
+      polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
+      - pinSpacing / 16);
+      polyline.lineTo(x + pinSpacing * 2 + pinSpacing / 4, (y - pinSpacing * 2) + 7 * pinSpacing / 2 - pinSpacing / 2
+      + pinSpacing / 4);
+      polyline.lineTo(x + pinSpacing * 2, (y - pinSpacing * 2) + 7 * pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
+    } else {
+      // Draw a rect and lead out
+      polyline.moveTo(x + pinSpacing * 1.7, y - pinSpacing * 2 + pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 2.3, y - pinSpacing * 2 + pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 2.3, y + pinSpacing * 2 - pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 1.7, y + pinSpacing * 2 - pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 1.7, y - pinSpacing * 2 + pinSpacing / 2);
+
+      polyline.moveTo(x + pinSpacing * 2, y + pinSpacing * 2 - pinSpacing / 2);
+      polyline.lineTo(x + pinSpacing * 2, y + pinSpacing * 2);
+    }
+    // The control line
     polyline.moveTo(x, y);
     polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 2, y);
-
     body[1] = polyline;
+
     polyline = new GeneralPath();
-
     body[0] = polyline;
-
+    
+    // Arrow
     polyline = new GeneralPath();
     polyline.moveTo(x + pinSpacing * 2 - pinSpacing / 3, y);
     polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y - pinSpacing / 3);
     polyline.lineTo(x + pinSpacing * 2 - pinSpacing * 2 / 3, y + pinSpacing / 3);
     polyline.lineTo(x + pinSpacing * 2 - pinSpacing / 3, y);
     body[2] = polyline;
-    
     return body;
   }
 
@@ -146,4 +175,7 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
         height / 2 + 6, height / 2 + 2}, 3));
   }
 
+  public enum DrawStyle {
+		ANSI, IEC 
+	}
 }
