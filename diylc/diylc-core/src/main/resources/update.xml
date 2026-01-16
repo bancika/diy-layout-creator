@@ -563,6 +563,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added Box style multi-turn potentiometer component (thank you chayward)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'M' and 'N' potentiometer taper options (thank you mm-rnd)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
