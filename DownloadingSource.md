@@ -20,6 +20,6 @@ From the new fork repo on your account, copy the clone link:
 
 The next instructions are dependent on your working environment. Your chosen editor/IDE may have built in utilities to manage Git repositorys that may be preferable to you. However they all use Git underneath, to do so directly (presuming you have Git installed) you may simply issue:
 
-`git clone <YOUR-GIT-URL>`
+`git clone https://github.com/<YOUR-GITHUB-USERNAME>/diy-layout-creator.git`
 
 Details on installing/using Git are outside the scope of this manual, but there are many tutorials online. As said, it's possible your editor/IDE will handle many things for you. For pushing your changes back to GitHub, you may want to authenticate Git using [GitHub's CLI tool](https://cli.github.com/).
