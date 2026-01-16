@@ -23,7 +23,7 @@ package org.diylc.components.passive;
 
 public enum Taper {
 
-  LIN, LOG, REV_LOG, W, S;
+  LIN, LOG, REV_LOG, W, S, M, N;
 
   @Override
   public String toString() {
