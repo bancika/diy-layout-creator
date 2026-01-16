@@ -48,7 +48,7 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   public static Size DEFAULT_LENGTH = new Size(0.3, SizeUnit.in);
   public static Size DEFAULT_WIDTH = new Size(0.12, SizeUnit.in);
-  private DrawStyle draw_style = DrawStyle.ANSI;
+  private DrawStyle drawStyle = DrawStyle.ANSI;
 
 
   private Current value = null;
@@ -64,14 +64,14 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   @EditableProperty(name = "Draw Standard")
   public DrawStyle getDrawStandard() {
-    if (draw_style == null) {
-      draw_style = DrawStyle.ANSI;
+    if (drawStyle == null) {
+      drawStyle = DrawStyle.ANSI;
     }
-    return draw_style;
+    return drawStyle;
   }
   
-  public void setDrawStandard(DrawStyle draw_style) {
-    this.draw_style = draw_style;
+  public void setDrawStandard(DrawStyle drawStyle) {
+    this.drawStyle = drawStyle;
   }
 
   @Override

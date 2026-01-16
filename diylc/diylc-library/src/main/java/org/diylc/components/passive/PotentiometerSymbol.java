@@ -45,7 +45,7 @@ import org.diylc.core.annotations.KeywordPolicy;
 public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   private static final long serialVersionUID = 1L;
-  private DrawStyle draw_style = DrawStyle.ANSI;
+  private DrawStyle drawStyle = DrawStyle.ANSI;
 
   public PotentiometerSymbol() {
     this.color = Color.blue;
@@ -53,14 +53,14 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   @EditableProperty(name = "Draw Standard")
   public DrawStyle getDrawStandard() {
-    if (draw_style == null) {
-      draw_style = DrawStyle.ANSI;
+    if (drawStyle == null) {
+      drawStyle = DrawStyle.ANSI;
     }
-    return draw_style;
+    return drawStyle;
   }
   
-  public void setDrawStandard(DrawStyle draw_style) {
-    this.draw_style = draw_style;
+  public void setDrawStandard(DrawStyle drawStyle) {
+    this.drawStyle = drawStyle;
     body = null;
   }
 
