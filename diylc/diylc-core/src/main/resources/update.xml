@@ -570,6 +570,10 @@
 					<description>Added 'M' and 'N' potentiometer taper options (thank you mm-rnd)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added E-C-B BJT pinout to TO-92 transistor package</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Tactile Micro Switch' editor doesn't show up on double click</description>
 				</org.diylc.appframework.update.Change>
