@@ -53,14 +53,14 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
 
   @EditableProperty(name = "Draw Standard")
   public DrawStyle getDrawStandard() {
-	  if (draw_style == null) {
-		  draw_style = DrawStyle.ANSI;
-	  }
-	  return draw_style;
+    if (draw_style == null) {
+      draw_style = DrawStyle.ANSI;
+    }
+    return draw_style;
   }
   
   public void setDrawStandard(DrawStyle draw_style) {
-	  this.draw_style = draw_style;
+    this.draw_style = draw_style;
     body = null;
   }
 
@@ -177,6 +177,6 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
   }
 
   public enum DrawStyle {
-		ANSI, IEC 
-	}
+    ANSI, IEC 
+  }
 }

@@ -64,14 +64,14 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   @EditableProperty(name = "Draw Standard")
   public DrawStyle getDrawStandard() {
-	  if (draw_style == null) {
-		  draw_style = DrawStyle.ANSI;
-	  }
-	  return draw_style;
+    if (draw_style == null) {
+      draw_style = DrawStyle.ANSI;
+    }
+    return draw_style;
   }
   
   public void setDrawStandard(DrawStyle draw_style) {
-	  this.draw_style = draw_style;
+    this.draw_style = draw_style;
   }
 
   @Override
@@ -121,11 +121,11 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
       return polyline;
     } else {
       GeneralPath fuseshape = new GeneralPath();
-		  fuseshape.moveTo(0f, 0f);
-		  fuseshape.lineTo(0f, width);
-		  fuseshape.lineTo(length, width);
-		  fuseshape.lineTo(length, 0f);
-		  fuseshape.lineTo(0f, 0f);
+      fuseshape.moveTo(0f, 0f);
+      fuseshape.lineTo(0f, width);
+      fuseshape.lineTo(length, width);
+      fuseshape.lineTo(length, 0f);
+      fuseshape.lineTo(0f, 0f);
       if (getDrawStandard() == DrawStyle.IEEE) {
         fuseshape.moveTo(0f, width / 2);
         fuseshape.lineTo(length, width / 2);
@@ -145,8 +145,8 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
   }
 
   public enum DrawStyle {
-		ANSI, IEC, IEEE 
-	}
+    ANSI, IEC, IEEE 
+  }
 
   @Override
   public boolean isPolarized() {
