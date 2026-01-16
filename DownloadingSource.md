@@ -1,63 +1,25 @@
-### Downloading the Source ###
+# Downloading Source
 
-This tutorial assumes that you are using newer version of Eclipse that comes with a Git client. To learn how to build DIYLC, go to this page.
+DIYLC's build system has changed, and Eclipse is no longer recommended for development.
 
-##### Step 1 #####
+To download the source, you can use GitHub's download option:
 
-In "Package Explorer" right click and select "Import" from the context menu. That will bring up the "Import" dialog with many possible sources for projects. 
+![](images/download-zip.png)
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_1.png' /></p>
+You can then unzip it and continue to the [build](Building.md) document.
 
-##### Step 2 #####
+However if you wish to contribute, it is more convenient to fork the repository and use Git to clone from your fork.
 
-Select "Git" folder and then "Projects from Git" and click "Next >"
+Click the fork button and follow the steps:
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_2.png' /></p>
+![](images/forking.png)
 
-##### Step 3 #####
+From the new fork repo on your account, copy the clone link:
 
-Then select "Clone URI" and click "Next >"
+![](images/clone-link.png)
 
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_3.png' /></p>
+The next instructions are dependent on your working environment. Your chosen editor/IDE may have built in utilities to manage Git repositorys that may be preferable to you. However they all use Git underneath, to do so directly (presuming you have Git installed) you may simply issue:
 
-##### Step 4 #####
+`git clone https://github.com/<YOUR-GITHUB-USERNAME>/diy-layout-creator.git`
 
-Paste the address (excluding the quotes) into the "URI" field "https://github.com/bancika/diy-layout-creator.git" and type in your GitHub username and password. Click "Next >"
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_4.png' /></p>
-
-##### Step 5 #####
-
-The next screen will show all available branches. The latest version of the code is always on "master" branch, so make sure that it's selected. The others are optional. Click "Next >"
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_5.png' /></p>
-
-##### Step 6 #####
-
-Chose local desctination directory where Git will copy all the source code. In most cases, the default directory is fine. Click "Next >"
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_6.png' /></p>
-
-##### Step 7 #####
-
-It will take a few moments for Git to pull all the source from the remote repository and create a local repository and on the next screen just leave "Import existing projects" selected and click "Next >"
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_7.png' /></p>
-
-##### Step 8 #####
-
-On "Import Project" screen you will see all projects available in the repository. **diylc-server-api** is the PHP/MySql back end project and is not needed in most cases, so we can leave it out. Click "Finish" to add the remaining three projects to the Eclipse workspace.
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_8.png' /></p>
-
-##### Step 9 #####
-
-Voila, you're done! Your "Project Explorer" should show the three projects we just downloaded from the repository.
-
-<p align='center'><img src='https://raw.githubusercontent.com/bancika/diy-layout-creator/wiki/images/eclipse_import_9.png' /></p>
-
-##### Step 10: run diylc-swing #####
-
-Now we can run the application. Find "DIYLCStarter.launch" file in diylc-swing project. Right click and select "Run As" -> "DIYLCStarter".
-
-If everything went well, the application should start.
+Details on installing/using Git are outside the scope of this manual, but there are many tutorials online. As said, it's possible your editor/IDE will handle many things for you. For pushing your changes back to GitHub, you may want to authenticate Git using [GitHub's CLI tool](https://cli.github.com/).
