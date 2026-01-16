@@ -61,6 +61,7 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
   
   public void setDrawStandard(DrawStyle draw_style) {
 	  this.draw_style = draw_style;
+    body = null;
   }
 
   public Shape[] getBody() {
