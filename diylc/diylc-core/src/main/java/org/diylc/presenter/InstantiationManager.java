@@ -34,6 +34,7 @@ import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.*;
 
 import org.diylc.core.Angle;
+import org.diylc.core.ComponentGroup;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
@@ -219,9 +220,14 @@ public class InstantiationManager {
     // Update the location according to mouse location
     updateSingleClick(scaledPoint, snapToGrid, gridSpacing);
     
-    // copy group information if available
+    // copy group information if available, but filter out invalid groups
     if (componentTransferable.getGroups() != null) {
-      currentProject.getGroupsEx().addAll(componentTransferable.getGroups());
+      for (ComponentGroup group : componentTransferable.getGroups()) {
+        if (group.getComponentIds() != null && !group.getComponentIds().isEmpty() &&
+            group.getComponentIds().stream().anyMatch(id -> id != null)) {
+          currentProject.getGroupsEx().add(group);
+        }
+      }
     }
   }
   

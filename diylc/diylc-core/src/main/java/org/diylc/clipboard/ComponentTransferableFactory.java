@@ -57,9 +57,16 @@ public class ComponentTransferableFactory {
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
 
-    Set<ComponentGroup> clonedGroups = groups.stream().map(group ->
-        new ComponentGroup(group.getComponentIds().stream()
-            .map(idMap::get).collect(Collectors.toSet()), group.getName()))
+    Set<ComponentGroup> clonedGroups = groups.stream()
+        .map(group -> {
+          Set<UUID> newIds = group.getComponentIds().stream()
+              .map(idMap::get)
+              .filter(Objects::nonNull)
+              .collect(Collectors.toSet());
+          // Only create group if it has at least one valid ID
+          return newIds.isEmpty() ? null : new ComponentGroup(newIds, group.getName());
+        })
+        .filter(Objects::nonNull)
         .collect(Collectors.toSet());
     
     return new ComponentTransferable(clonedComponents, clonedGroups);

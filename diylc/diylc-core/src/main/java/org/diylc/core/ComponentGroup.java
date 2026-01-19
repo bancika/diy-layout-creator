@@ -22,8 +22,11 @@ public class ComponentGroup implements Serializable {
   }
 
   public static ComponentGroup from(Collection<IDIYComponent<?>> components, String name) {
-    return new ComponentGroup(components.stream()
-        .map(IDIYComponent::getId).collect(Collectors.toSet()), name);
+    Set<UUID> componentIds = components.stream()
+        .map(IDIYComponent::getId)
+        .filter(id -> id != null)
+        .collect(Collectors.toSet());
+    return new ComponentGroup(componentIds, name);
   }
 
   public Set<UUID> getComponentIds() {

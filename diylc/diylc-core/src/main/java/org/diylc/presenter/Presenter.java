@@ -278,6 +278,8 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearContinuityArea();
     DrawingCache.Instance.clear();
     updateSelection(EMPTY_SELECTION);
+    // Clean up any invalid groups that may have been loaded
+    cleanupInvalidGroups();
     messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart, filename);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
@@ -543,7 +545,11 @@ public class Presenter implements IPlugInPort {
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
               if (componentSlot.size() > 1 && !componentTypeSlot.getName().toLowerCase().contains("clipboard")) {
-                this.currentProject.getGroupsEx().add(ComponentGroup.from(componentSlot, componentTypeSlot.getName()));
+                ComponentGroup group = ComponentGroup.from(componentSlot, componentTypeSlot.getName());
+                // Only add group if it has valid component IDs
+                if (group.getComponentIds() != null && !group.getComponentIds().isEmpty()) {
+                  this.currentProject.getGroupsEx().add(group);
+                }
               }
               
               notifyProjectModifiedIfNeeded(oldProject, "Add " + componentTypeSlot.getName(), true, true);
@@ -1717,6 +1723,10 @@ public class Presenter implements IPlugInPort {
   @Override
   public void groupSelectedComponents() {
     LOG.info("groupSelectedComponents()");
+
+    if (selectedComponents == null || selectedComponents.size() < 2) {
+      return;
+    }
     
     // Prompt user for group name
     String groupName = view.showInputDialog("Enter group name:", "Group Components");
@@ -1739,9 +1749,11 @@ public class Presenter implements IPlugInPort {
         .filter(id -> id != null)
         .collect(Collectors.toSet());
     
-    // Only create the group if there are valid component IDs
+      // Only create the group if there are valid component IDs
     if (!componentIds.isEmpty()) {
       currentProject.getGroupsEx().add(new ComponentGroup(componentIds, groupName));
+    } else {
+      LOG.warn("Cannot create group: all selected components have null IDs");
     }
     // Notify the listeners.
     notifyProjectModifiedIfNeeded(oldProject, "Group", false, true);
@@ -2197,11 +2209,30 @@ public class Presenter implements IPlugInPort {
    * @param components
    */
   private void ungroupComponents(Collection<IDIYComponent<?>> components) {
-    Set<UUID> componentIds = components.stream().map(IDIYComponent::getId).collect(Collectors.toSet());
+    Set<UUID> componentIds = components.stream()
+        .map(IDIYComponent::getId)
+        .filter(id -> id != null)
+        .collect(Collectors.toSet());
     // Remove the group if it contains any of the specified components
     currentProject.getGroupsEx().removeIf(
         group -> group.getComponentIds() != null && group.getComponentIds().stream()
             .anyMatch(id -> id != null && componentIds.contains(id)));
+  }
+  
+  /**
+   * Removes invalid groups (groups with null IDs or empty sets) from the project.
+   * This should be called periodically to clean up corrupted groups.
+   */
+  private void cleanupInvalidGroups() {
+    int initialSize = currentProject.getGroupsEx().size();
+    currentProject.getGroupsEx().removeIf(group -> 
+        group.getComponentIds() == null || 
+        group.getComponentIds().isEmpty() ||
+        group.getComponentIds().stream().allMatch(id -> id == null));
+    int removed = initialSize - currentProject.getGroupsEx().size();
+    if (removed > 0) {
+      LOG.warn("Removed " + removed + " invalid group(s) with null or empty component IDs");
+    }
   }
 
   /**

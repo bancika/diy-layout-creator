@@ -575,6 +575,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Fixed the performance issue that happens when groups of components are copy-pasted and the project size grows uncontrollably</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>'Tactile Micro Switch' editor doesn't show up on double click</description>
 				</org.diylc.appframework.update.Change>
 			</changes>

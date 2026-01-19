@@ -366,7 +366,14 @@ public class Project implements Serializable, Cloneable {
     }
 
     for (ComponentGroup group : this.getGroupsEx()) {
-      project.getGroupsEx().add(new ComponentGroup(group.getComponentIds(), group.getName()));
+      // Filter out null IDs when cloning groups
+      Set<UUID> validIds = group.getComponentIds().stream()
+          .filter(id -> id != null)
+          .collect(Collectors.toSet());
+      // Only add group if it has valid component IDs
+      if (!validIds.isEmpty()) {
+        project.getGroupsEx().add(new ComponentGroup(validIds, group.getName()));
+      }
     }
     
     for (IDIYComponent<?> component : this.getLockedComponents()) {
