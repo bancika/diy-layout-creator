@@ -278,8 +278,6 @@ public class Presenter implements IPlugInPort {
     drawingManager.clearContinuityArea();
     DrawingCache.Instance.clear();
     updateSelection(EMPTY_SELECTION);
-    // Clean up any invalid groups that may have been loaded
-    cleanupInvalidGroups();
     messageDispatcher.dispatchMessage(EventType.PROJECT_LOADED, project, freshStart, filename);
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
@@ -2217,22 +2215,6 @@ public class Presenter implements IPlugInPort {
     currentProject.getGroupsEx().removeIf(
         group -> group.getComponentIds() != null && group.getComponentIds().stream()
             .anyMatch(id -> id != null && componentIds.contains(id)));
-  }
-  
-  /**
-   * Removes invalid groups (groups with null IDs or empty sets) from the project.
-   * This should be called periodically to clean up corrupted groups.
-   */
-  private void cleanupInvalidGroups() {
-    int initialSize = currentProject.getGroupsEx().size();
-    currentProject.getGroupsEx().removeIf(group -> 
-        group.getComponentIds() == null || 
-        group.getComponentIds().isEmpty() ||
-        group.getComponentIds().stream().allMatch(id -> id == null));
-    int removed = initialSize - currentProject.getGroupsEx().size();
-    if (removed > 0) {
-      LOG.warn("Removed " + removed + " invalid group(s) with null or empty component IDs");
-    }
   }
 
   /**

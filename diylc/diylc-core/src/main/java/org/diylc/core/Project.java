@@ -164,8 +164,12 @@ public class Project implements Serializable, Cloneable {
 
       if (groups != null && !groups.isEmpty()) {
         for (Set<IDIYComponent<?>> group : groups) {
-          ComponentGroup newGroup = ComponentGroup.from(group, null);
-          groupsEx.add(newGroup);
+          Set<IDIYComponent<?>> nonNullIds =
+              group.stream().filter(Objects::nonNull).collect(Collectors.toSet());
+          if (!nonNullIds.isEmpty()) {
+            ComponentGroup newGroup = ComponentGroup.from(group, null);
+            groupsEx.add(newGroup);
+          }
         }
         groups.clear();
       }
