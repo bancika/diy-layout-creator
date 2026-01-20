@@ -18,13 +18,8 @@
 package org.diylc.presenter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 
@@ -145,6 +140,7 @@ public class BuildingBlockManager {
           clone.setName(instantiationManager.createUniqueName(ComponentProcessor.getInstance()
               .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clone.getClass()),
               testComponents));
+          clone.setId(UUID.randomUUID());
           testComponents.add(clone);
           clones.add(clone);
         } catch (CloneNotSupportedException e) {

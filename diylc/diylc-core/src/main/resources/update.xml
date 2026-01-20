@@ -558,13 +558,9 @@
 				<minor>10</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-01-10 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-01-20 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added Box style multi-turn potentiometer component (thank you chayward)</description>
-				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'M' and 'N' potentiometer taper options (thank you mm-rnd)</description>
@@ -576,6 +572,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the performance issue that happens when groups of components are copy-pasted and the project size grows uncontrollably</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>All building blocks of the same type get added to the same group</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

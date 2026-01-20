@@ -40,11 +40,15 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.io.Serial;
 
-@ComponentDescriptor(name = "Box Multi-Turn Pot", author = "Clive", category = "Passive",
-    instanceNamePrefix = "VR",
-    description = "Box style multi-turn potentiometer (e.g. Bourns PV36)",
-    zOrder = IDIYComponent.COMPONENT,
-    transformer = org.diylc.components.transform.BoxTrimmerTransformer.class)
+//@ComponentDescriptor(name = "Box Multi-Turn Pot", author = "Clive", category = "Passive",
+//    instanceNamePrefix = "VR",
+//    description = "Box style multi-turn potentiometer (e.g. Bourns PV36)",
+//    zOrder = IDIYComponent.COMPONENT,
+//    transformer = org.diylc.components.transform.BoxTrimmerTransformer.class)
+//<org.diylc.appframework.update.Change>
+//					<changeType>NEW_FEATURE</changeType>
+//    <description>Added Box style multi-turn potentiometer component (thank you chayward)</description>
+//				</org.diylc.appframework.update.Change>
 public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
 
   @Serial

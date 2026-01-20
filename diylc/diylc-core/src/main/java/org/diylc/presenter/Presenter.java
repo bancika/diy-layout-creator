@@ -1744,7 +1744,7 @@ public class Presenter implements IPlugInPort {
     // Filter out any null IDs to prevent creating groups with null component IDs.
     Set<UUID> componentIds = selectedComponents.stream()
         .map(IDIYComponent::getId)
-        .filter(id -> id != null)
+        .filter(Objects::nonNull)
         .collect(Collectors.toSet());
     
       // Only create the group if there are valid component IDs

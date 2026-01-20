@@ -174,6 +174,9 @@ public class Project implements Serializable, Cloneable {
         groups.clear();
       }
     }
+    groupsEx.removeAll(groupsEx.stream().
+        filter(x -> x.getComponentIds() == null ||
+          x.getComponentIds().stream().noneMatch(Objects::nonNull)).collect(Collectors.toSet()));
     return groupsEx;
   }
 
