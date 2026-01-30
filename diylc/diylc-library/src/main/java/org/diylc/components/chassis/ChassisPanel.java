@@ -74,10 +74,10 @@ public class ChassisPanel extends AbstractShape {
             (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
       }
       g2d.setComposite(oldComposite);
+      drawingObserver.stopTracking();
     }
     // Do not track any changes that follow because the whole rect has been
     // tracked so far.
-    drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
     if (radius == 0) {

@@ -2,250 +2,6 @@
 	<a class="org.diylc.appframework.update.Version-array">
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
-				<major>4</major>
-				<minor>41</minor>
-				<build>1</build>
-			</versionNumber>
-			<releaseDate>2025-03-08 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Do not mirror bottom layers for Gerber export as fabrication service providers expect a top view for everything</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Selecting components by drawing a rectangle around them works glitchy</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>0</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-03-09 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Switched to AppImage distribution for Linux system, abandoning Flatpak as a means of distribution. DIYLC AppImage will be available alongside with other executables on the official DIYLC GitHub page.</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Upgraded Windows installer version and Windows EXE launcher version</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed alignment issues of round elements (e.g. solder pads and holes) in exported Gerber files</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed the issue with opening DIY files on Mac OS</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>1</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-03-24 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability to render the underside of boards along with the top side for easier validation, building and debugging</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Configurable 'High DPI Rendering' feature which makes the diagram smoother on high-resolution displays but can affect performance</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Significantly improved rendering performance</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Increased initial memory allocation to 1GB for smoother performance</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Upgraded source code structure to modern standards and introduced Maven</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved robustness of series/parallel graph construction code used in circuit analysis</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Omit boards, wires, traces, terminals, etc from Spice netlist output</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Updated the windows installer (hopefully) to avoid false positive anti-virus detection</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Moving selected components with a mouse doesn't register file modification action and doesn't enable Undo action</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Rotating selected components sometimes wacks the alignment off the grid</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Ctrl+X (Command+X) shortcut for Cut action doesn't work because 'Project Explorer' steals the focus on X key press</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>1</minor>
-				<build>1</build>
-			</versionNumber>
-			<releaseDate>2025-03-27 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Include windows ZIP package</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Windows version doesn't start in some cases</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>2</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-04-12 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'AI Assistant' that can help with general electronics questions, questions about DIYLC usage and circuit-related questions</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>'Virtual Multimeter' from 'Analyze' menu traces the circuit finding all possible paths of electricity between two points designated by the probe symbol</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability to display switch lug markings in order to illustrate how it works internally</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added a 'Save' button to all analysis screens which saves results of a circuit analysis to an HTML file</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added ability control if the board underside display should render as transparent or not</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added DIY Cloud password reset page</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Moved 'Analyze' functions from 'File' menu to their own menu for faster access</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Moved 'Highlight Connected Areas' feature from 'Config' menu to 'Analyze' menu</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Fully configurable colors for 'Mini Toggle Switch' components</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Removed 'DP3T' options from 'Mini Toggle Switch' because that is covered by 'Slide Switch' component and does not belong here</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Include components in the underside display that have at least one control point laying in the board, as opposed to all</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Applying a variant to a 'Hookup Wire' or 'Curved Trace' makes it lose its shape</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Copy operation doesn't work when certain component types are selected</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Board underside display does not work if there's a Label or PCB Text component on the board</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Using board underside display sometimes makes other components semi-transparent</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed Windows ZIP package issue with the bundled JRE</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>3</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-04-21 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved AI Assistant quality of responses, especially when analyzing a circuit</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>When saving a project to the new file, retain all the AI Assistant chat history for the new project file</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Added ability to be logged into the same DIYLC Cloud account from several machines at the same time</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Confirmation dialog before deleting AI Assistant chat history</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Output current subscription statistics at the end of the chat for usage transparency</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved styling and usability of chatbot tool</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Language selection doesn't work on some OSs</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>'Connect to Patreon' option doesn't work if the user name contains a space or another non-alphanumerical character</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
 				<major>5</major>
 				<minor>4</minor>
 				<build>0</build>
@@ -580,6 +336,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Tactile Micro Switch' editor doesn't show up on double click</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>11</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-01-20 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Resize dimensions do not show for 'Chassis Panel' component when dragging a corner point</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
