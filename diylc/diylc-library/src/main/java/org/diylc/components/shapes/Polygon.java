@@ -40,7 +40,7 @@ import org.diylc.core.annotations.EditableProperty;
 
 @ComponentDescriptor(name = "Polygon", author = "Branislav Stojkovic", category = "Shapes",
     instanceNamePrefix = "POLY", description = "Polygonal area", zOrder = IDIYComponent.COMPONENT,
-    flexibleZOrder = true, bomPolicy = BomPolicy.SHOW_ALL_NAMES,
+    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
     transformer = SimpleComponentTransformer.class)
 public class Polygon extends AbstractShape {
 
