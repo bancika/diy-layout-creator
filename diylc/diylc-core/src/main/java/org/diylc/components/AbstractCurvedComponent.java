@@ -336,6 +336,10 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
   
   @EditableProperty(name = "Length")
+  public Size getLength() {
+    return calculateLength();
+  }
+
   public Size calculateLength() {
     double d = 0;
       try {
