@@ -32,7 +32,7 @@ public class NudgeAction extends AbstractAction {
     putValue(AbstractAction.NAME, "Nudge");
     putValue(AbstractAction.SMALL_ICON, IconLoader.FitToSize.getIcon());
     putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Q,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+        ActionEvent.ALT_MASK));
   }
 
   @Override

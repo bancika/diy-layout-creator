@@ -350,6 +350,18 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Shape components shouldn't appear in the BOM</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Consolidate a few keyboard shortcuts for consistency</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Calculated length disappeared from Hookup Wire and similar curved components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Resize dimensions do not show for 'Chassis Panel' component when dragging a corner point</description>
 				</org.diylc.appframework.update.Change>

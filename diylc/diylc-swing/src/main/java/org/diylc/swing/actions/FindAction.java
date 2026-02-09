@@ -1,7 +1,9 @@
 package org.diylc.swing.actions;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
@@ -26,7 +28,7 @@ public class FindAction extends AbstractAction {
     putValue(AbstractAction.NAME, "Find");
     putValue(AbstractAction.SMALL_ICON, IconLoader.SearchBox.getIcon());
     putValue(AbstractAction.ACCELERATOR_KEY,
-        KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
   }
 
   @Override
@@ -35,10 +37,10 @@ public class FindAction extends AbstractAction {
     FindDialog dialog = DialogFactory.getInstance().createFindDialog();
     dialog.setVisible(true);
 
-    if (dialog.getSelectedButtonCaption() == FindDialog.OK) {
+    if (Objects.equals(dialog.getSelectedButtonCaption(), FindDialog.OK)) {
       String criteria = dialog.getCriteria();
       plugInPort.selectMatching(criteria);
-      if (plugInPort.getSelectedComponents().size() == 0) {
+      if (plugInPort.getSelectedComponents().isEmpty()) {
         swingUI.showMessage("No matching components found.", "Find",
             ISwingUI.INFORMATION_MESSAGE);
       }

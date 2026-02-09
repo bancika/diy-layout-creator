@@ -65,8 +65,8 @@ public class ImportAction extends AbstractAction {
       }
     }, InMemoryConfigurationManager.getInstance());
     putValue(AbstractAction.NAME, "Import");
-    putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
-        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+//    putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I,
+//        Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
     putValue(AbstractAction.SMALL_ICON, IconLoader.ElementInto.getIcon());
   }
 
