@@ -28,6 +28,10 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
@@ -62,6 +66,8 @@ import static org.reflections.scanners.Scanners.TypesAnnotated;
 public class ComponentProcessor {
 
   private static final Logger LOG = Logger.getLogger(ComponentProcessor.class);
+
+  private static final boolean LOG_COMPONENT_TYPE_DETAILS = false;
 
   private static ComponentProcessor instance;
 
@@ -219,6 +225,18 @@ public class ComponentProcessor {
     return cloneProperties(properties);
   }
 
+  private static String formatPropertyType(Class<?> type) {
+    return type == null ? null : type.getSimpleName();
+  }
+
+  private static List<String> getPossibleValues(Class<?> type) {
+    if (type == null || !type.isEnum())
+      return null;
+    return Arrays.stream(type.getEnumConstants())
+        .map(Object::toString)
+        .collect(Collectors.toList());
+  }
+
   private List<PropertyWrapper> cloneProperties(List<PropertyWrapper> properties) {
     List<PropertyWrapper> result = new ArrayList<PropertyWrapper>(properties.size());
     for (PropertyWrapper propertyWrapper : properties) {
@@ -243,6 +261,7 @@ public class ComponentProcessor {
       Set<Class<?>> componentTypeClasses = null;
       try {
         componentTypeClasses = reflections.getTypesAnnotatedWith(ComponentDescriptor.class, false);
+        List<Map<String, Object>> componentSnapshots = LOG_COMPONENT_TYPE_DETAILS ? new ArrayList<>() : null;
 
         for (Class<?> clazz : componentTypeClasses) {
           if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
@@ -262,6 +281,42 @@ public class ComponentProcessor {
               componentTypes.put(componentType.getCategory(), nestedList);
             }
             nestedList.add(componentType);
+
+            if (LOG_COMPONENT_TYPE_DETAILS) {
+              try {
+                Map<String, Object> snapshot = new LinkedHashMap<>();
+                snapshot.put("name", componentType.getName());
+                snapshot.put("description", componentType.getDescription());
+                snapshot.put("creationMethod", componentType.getCreationMethod());
+                snapshot.put("category", componentType.getCategory());
+                List<PropertyWrapper> props = propertyCache.get(clazz.getName());
+                snapshot.put("properties", props != null ? props.stream()
+                    .map(p -> {
+                      Map<String, Object> prop = new LinkedHashMap<>();
+                      prop.put("name", p.getName());
+                      prop.put("type", formatPropertyType(p.getType()));
+                      List<String> possibleValues = getPossibleValues(p.getType());
+                      if (possibleValues != null) {
+                        prop.put("possibleValues", possibleValues);
+                      }
+                      return prop;
+                    })
+                    .collect(Collectors.toList()) : Collections.emptyList());
+                componentSnapshots.add(snapshot);
+              } catch (Exception e) {
+                LOG.warn("Failed to log component type details for " + clazz.getName(), e);
+              }
+            }
+          }
+        }
+
+        if (LOG_COMPONENT_TYPE_DETAILS && componentSnapshots != null && !componentSnapshots.isEmpty()) {
+          try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            LOG.info("Component types: " + mapper.writeValueAsString(componentSnapshots));
+          } catch (Exception e) {
+            LOG.warn("Failed to log component types JSON", e);
           }
         }
 
