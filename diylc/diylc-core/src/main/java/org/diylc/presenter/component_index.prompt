@@ -1,0 +1,131 @@
+You are helping me generate Appendix A ? Component Model Reference for an ebook about DIY Layout Creator (DIYLC).
+
+I will provide you with a JSON file that defines all component types used by DIYLC.
+
+Your task
+
+Convert the JSON into a single DOCX appendix that documents all components defined in the JSON, with no omissions and no inferred or invented information.
+
+Structure rules (must follow exactly)
+1. Document structure
+
+Output format: DOCX
+
+Document title (H1):
+Appendix A ? Component Model Reference
+
+Group components by category
+
+Each category is an H2 heading
+
+Category order: alphabetical
+
+Component order within category: alphabetical
+
+2. Component entry format
+
+Do NOT use H3 or any heading for component names.
+
+For each component, render the following:
+
+Component Name (bold, normal paragraph)
+Description: <exact description text from JSON>
+Creation method: <human-friendly label>
+
+
+Creation method mapping:
+
+POINT_BY_POINT ? Point-by-point
+
+SINGLE_CLICK ? Single-click
+
+Missing value ? (not specified)
+
+3. Properties table
+
+If the component defines properties, render a table immediately after the metadata:
+
+| Property | Type | Possible values |
+
+Table formatting requirements:
+
+No visible borders (markdown-style look)
+
+Column widths:
+
+Property: 30%
+
+Type: 30%
+
+Possible values: 40%
+
+Header row:
+
+Bold text
+
+Very light gray background (#EEEEEE)
+
+Data rows:
+
+Alternating row background
+
+Very very light gray (#F7F7F7) on every second row
+
+Row height:
+
+As compact as possible
+
+No extra vertical padding
+
+Content rules:
+
+Property name ? JSON name
+
+Type ? JSON type
+
+Possible values:
+
+Populate only if the JSON defines an enum/list
+
+Leave empty otherwise
+
+If a component has no properties, write:
+
+This component has no configurable properties.
+
+4. Styling consistency
+
+Font: Calibri
+
+Base text size: 11 pt
+
+Match the visual style of previously generated ebook chapters
+
+No decorative elements
+
+Clean, technical, reference-style layout
+
+Strict constraints
+
+? Do NOT summarize components
+
+? Do NOT invent descriptions, properties, or values
+
+? Do NOT rename properties or types
+
+? Do NOT add commentary or interpretation
+
+? Do NOT introduce additional columns
+
+Everything must come directly from the JSON.
+
+Final output
+
+Produce one DOCX file
+
+File name:
+Appendix A ? Component Model Reference.docx
+
+When finished, provide a download link to the DOCX file.
+
+Acknowledge when you are ready to receive the JSON file.
