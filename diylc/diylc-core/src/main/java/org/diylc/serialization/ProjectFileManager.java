@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,6 +55,7 @@ import com.thoughtworks.xstream.mapper.MapperWrapper;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import org.diylc.common.EventType;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
 import org.diylc.test.DIYTest;
@@ -279,8 +281,28 @@ public class ProjectFileManager {
       LOG.warn("The opened file is missing the following properties: " + String.join(", ", missingFields));
       warnings.add("The project references unknown component properties, most likely because it was created with a newer version of DIYLC.");
     }
+    ensureUniqueComponentIds(project);
     fis.close();
     return project;
+  }
+
+  /**
+   * Ensures no two components share the same identifier. Assigns a new UUID to any
+   * component that has a null id or an id already seen (duplicate).
+   */
+  private void ensureUniqueComponentIds(Project project) {
+    if (project == null || project.getComponents() == null) {
+      return;
+    }
+    Set<UUID> seenIds = new HashSet<UUID>();
+    for (IDIYComponent<?> component : project.getComponents()) {
+      UUID id = component.getId();
+      if (id == null || seenIds.contains(id)) {
+        component.setId(UUID.randomUUID());
+        LOG.warn("Detected duplicated componentId: " + id);
+      }
+      seenIds.add(component.getId());
+    }
   }
   
   private VersionNumber readV3Version(String fileName) throws Exception {

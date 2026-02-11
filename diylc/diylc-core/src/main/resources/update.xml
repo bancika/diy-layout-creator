@@ -359,6 +359,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>Using "Duplicate Selection" results in duplicates of component ids, breaking Project Explorer panel and causing other issues downstream</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Calculated length disappeared from Hookup Wire and similar curved components</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
