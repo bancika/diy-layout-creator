@@ -1664,6 +1664,7 @@ public class Presenter implements IPlugInPort {
             ComponentProcessor.getInstance().extractComponentTypeFrom(
                 (Class<? extends IDIYComponent<?>>) cloned.getClass());
         cloned.setName(instantiationManager.createUniqueName(componentType, currentProject.getComponents()));
+        cloned.setId(UUID.randomUUID());
         newSelection.add(cloned);
         for (int i = 0; i < component.getControlPointCount(); i++) {
           Point2D p = component.getControlPoint(i);

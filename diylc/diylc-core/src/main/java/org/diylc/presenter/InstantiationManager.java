@@ -276,7 +276,7 @@ public class InstantiationManager {
   private List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Point2D point,
       Project currentProject) throws InstantiationException, IllegalAccessException, NoSuchMethodException, 
           SecurityException, IllegalArgumentException, InvocationTargetException {
-    LOG.info("Instatiating component of type: " + componentType.getInstanceClass().getName());
+    LOG.info("Instantiating component of type: " + componentType.getInstanceClass().getName());
 
     // Instantiate the component.
     IDIYComponent<?> component;
