@@ -110,8 +110,8 @@ public class SwitchLatchingSymbol
         offsetX = terminalSize;
         offsetY = 0;
       } else {
-        offsetX = terminalSize * 2 / 3;
-        offsetY = terminalSize / 2;
+        offsetX = terminalSize / 3;
+        offsetY = terminalSize / 3;
       }
 
       Point2D endPoint = new Point2D.Double(

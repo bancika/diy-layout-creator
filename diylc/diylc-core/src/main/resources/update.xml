@@ -355,6 +355,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved rendering of 'Switch (Latching)' symbol to clearly make visual contact between the terminals</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Consolidate a few keyboard shortcuts for consistency</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
