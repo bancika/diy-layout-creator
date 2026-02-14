@@ -351,6 +351,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded AI models for AI-powered tools and improved overall quality of the responses</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Shape components shouldn't appear in the BOM</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
