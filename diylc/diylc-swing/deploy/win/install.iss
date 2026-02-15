@@ -1,7 +1,12 @@
+; Default installation directory (user can change on "Select Destination Location" page).
+; Override at compile time: iscc /DDefaultInstallDir="D:\Apps\DIYLC" install.iss
+; Silent install: install.exe /S /D=C:\MyPath\DIYLC
+#define DefaultInstallDir "{pf}\DIYLC"
+
 [Setup]
 AppName=DIY Layout Creator
 AppVersion={#diylcver}
-DefaultDirName={pf}\DIYLC
+DefaultDirName={#DefaultInstallDir}
 DefaultGroupName=DIY Layout Creator
 UninstallDisplayIcon={app}\diylc.exe
 Compression=zip
@@ -9,7 +14,11 @@ SolidCompression=yes
 OutputDir=..\..\target
 OutputBaseFilename=diylc-{#diylcver}-win64
 ChangesAssociations=yes
+; Show directory selection so user can choose install folder
+DisableDirPage=no
 AlwaysShowDirOnReadyPage=yes
+; Suggest previous install path when upgrading
+UsePreviousAppDir=yes
 ; Only allow the installer to run on x64-compatible systems,
 ; and enable 64-bit install mode.
 ArchitecturesAllowed=x64compatible
