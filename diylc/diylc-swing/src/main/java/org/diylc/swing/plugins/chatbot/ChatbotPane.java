@@ -10,6 +10,8 @@ import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.chatbot.service.ChatbotService;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.DialogFactory;
+import org.diylc.swing.plugins.file.FileFilterEnum;
 import org.diylc.utils.FileUtils;
 
 import javax.swing.*;
@@ -18,6 +20,11 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -60,6 +67,7 @@ public class ChatbotPane extends JPanel {
   private JEditorPane chatEditorPane;
   private JButton askButton;
   private JButton clearButton;
+  private JButton exportButton;
   private JButton premiumButton;
 
   private boolean loggedIn = false;
@@ -138,19 +146,22 @@ public class ChatbotPane extends JPanel {
     JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));  // 10px horizontal gap between components
     buttonPanel.setBackground(TERMINAL_BG);
     
-    // Left panel for Clear button
+    // Left panel for Clear and Export (10px only between them; Clear flush left)
     JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
     leftPanel.setBackground(TERMINAL_BG);
     leftPanel.add(getClearButton());
+    leftPanel.add(Box.createHorizontalStrut(10));
+    leftPanel.add(getExportButton());
     
     // Center panel for Premium button
     JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
     centerPanel.setBackground(TERMINAL_BG);
     centerPanel.add(getPremiumButton());
     
-    // Right panel for Ask button
+    // Right panel for Premium and Ask buttons
     JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     rightPanel.setBackground(TERMINAL_BG);
+    rightPanel.add(getPremiumButton());
     rightPanel.add(getAskButton());
     
     // Add all panels to the main button panel
@@ -486,6 +497,33 @@ public class ChatbotPane extends JPanel {
       });
     }
     return clearButton;
+  }
+
+  public JButton getExportButton() {
+    if (exportButton == null) {
+      exportButton = new JButton(LangUtil.translate("Export"));
+      styleButton(exportButton);
+      exportButton.addActionListener(e -> {
+        String projectName = FileUtils.extractFileName(plugInPort.getCurrentFileName());
+        File initialFile = new File(projectName + " - chat history.html");
+        File file = DialogFactory.getInstance().showSaveDialog(swingUI.getOwnerFrame(),
+            FileFilterEnum.HTML.getFilter(), initialFile,
+            FileFilterEnum.HTML.getExtensions()[0], null);
+        if (file != null) {
+          try {
+            String content = getChatEditorPane().getText();
+            Files.writeString(Paths.get(file.getAbsolutePath()), content);
+            swingUI.showMessage(LangUtil.translate("Chat history exported successfully."), "Export",
+                ISwingUI.INFORMATION_MESSAGE);
+          } catch (IOException ex) {
+            LOG.error("Failed to export chat history to file", ex);
+            swingUI.showMessage("Could not save to file. " + ex.getMessage(), "Error",
+                ISwingUI.ERROR_MESSAGE);
+          }
+        }
+      });
+    }
+    return exportButton;
   }
 
   public JButton getPremiumButton() {

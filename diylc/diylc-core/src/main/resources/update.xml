@@ -350,6 +350,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to export chat history from 'AI Assistant' to a HTML file</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded AI models for AI-powered tools and improved overall quality of the responses</description>
 				</org.diylc.appframework.update.Change>
