@@ -57,14 +57,21 @@ if [ ! -d "${DEPLOY_DIR}" ]; then
     exit 1
 fi
 
-# Collect zip and exe files
+# Collect zip and exe files; skip *intel.zip and *silicon.zip (keep unsigned Mac zips only)
 shopt -s nullglob
 ZIPS=("${DEPLOY_DIR}"/*.zip)
 EXES=("${DEPLOY_DIR}"/*.exe)
-ARTIFACTS=("${ZIPS[@]}" "${EXES[@]}")
+ARTIFACTS=()
+for f in "${ZIPS[@]}" "${EXES[@]}"; do
+    name=$(basename "$f")
+    if [[ "$name" == *intel.zip || "$name" == *silicon.zip ]]; then
+        continue
+    fi
+    ARTIFACTS+=("$f")
+done
 
 if [ ${#ARTIFACTS[@]} -eq 0 ]; then
-    echo "ERROR: No .zip or .exe files found in ${DEPLOY_DIR}"
+    echo "ERROR: No .zip or .exe files found in ${DEPLOY_DIR} (after excluding *intel.zip and *silicon.zip)"
     exit 1
 fi
 
