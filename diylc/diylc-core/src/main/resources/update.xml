@@ -346,7 +346,7 @@
 				<minor>11</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-01-20 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-02-15 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -356,6 +356,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Upgraded AI models for AI-powered tools and improved overall quality of the responses</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Windows installer prompts for installation folder instead of forcing one</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

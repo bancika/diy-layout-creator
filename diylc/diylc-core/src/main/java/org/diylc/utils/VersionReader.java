@@ -46,8 +46,8 @@ public class VersionReader {
         sbHtml.append("    </release>\n");
         
         System.out.println(sbMd.toString());
-        System.out.println();
-        System.out.println(sbHtml.toString());
+//        System.out.println();
+//        System.out.println(sbHtml.toString());
         in.close();
       }
     } catch (Exception e) {
