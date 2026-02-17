@@ -22,6 +22,7 @@ Anti-Aliasing
 Arrow Size|Veličina Strelice
 Author|Autor
 Auto-Create Pads|Auto-Kreiranje Pad
+Auto-Convert Units|Automatska konverzija jedinica
 Auto-Edit Mode|Automatsko Editovanje
 Base|Osnova
 Below|Ispod

@@ -24,6 +24,7 @@ Anti-Aliasing|Anti-Aliasing
 Arrow Size|Pfeilgröße
 Author|Verfasser
 Auto-Create Pads|Automatische Erstellung von Lötpads
+Auto-Convert Units|Automatische Umrechnung der Einheiten
 Auto-Edit Mode|Automatischer Bearbeitungsmodus
 Base|Basis
 Below|Unter

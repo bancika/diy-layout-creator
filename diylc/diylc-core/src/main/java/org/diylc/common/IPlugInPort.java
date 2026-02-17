@@ -88,6 +88,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String CACHING_ENABLED_KEY = "cachingEnabled";
   public static final String FONT_SCALE_FACTOR_KEY = "fontScaleFactor";
   public static final String SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY = "showResizeDimensionsTooltip";
+  public static final String AUTO_UNIT_CONVERSION_KEY = "autoUnitConversion";
+
 
   public static final String RULER_IN_SUBDIVISION_2 = "base of 2";
   public static final String RULER_IN_SUBDIVISION_10 = "base of 10";

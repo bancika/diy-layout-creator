@@ -22,6 +22,7 @@ Anti-Aliasing|Suavizado
 Arrow Size|Tamanho da Flecha
 Author|Autor
 Auto-Create Pads|Criação Automática de Pads
+Auto-Convert Units|Conversão automática de unidades
 Auto-Edit Mode|Modo de Edição Automática
 Base|Base
 Below|Abaixo

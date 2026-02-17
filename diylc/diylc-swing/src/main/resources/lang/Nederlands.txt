@@ -24,6 +24,7 @@ Anti-Aliasing|Anti-aliasing
 Arrow Size|Pijlgrootte 
 Author|Ontwerper
 Auto-Create Pads|Automatisch aanmaken van soldeereilandjes 
+Auto-Convert Units|Automatische eenheidsconversie
 Auto-Edit Mode|Automatisch bewerken modus
 Base|Basis
 Below|Onder

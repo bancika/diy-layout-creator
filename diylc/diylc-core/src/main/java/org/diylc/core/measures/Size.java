@@ -46,11 +46,21 @@ public class Size extends AbstractMeasure<SizeUnit> implements Comparable<Size> 
     return getValue() * getUnit().getFactor() / SizeUnit.in.getFactor() * Constants.PIXELS_PER_INCH;
   }
   
-  public double convertToUnits(SizeUnit unit) {
+  /**
+   * Converts this size to the given unit. Returns a new Size with the same
+   * physical length expressed in the target unit.
+   */
+  public Size convertToUnits(SizeUnit unit) {
     if (unit == getUnit()) {
-      return this.getValue();
+      return new Size(roundTo4Decimals(getValue()), unit);
     }
-    return convertToPixels() * SizeUnit.px.getFactor();
+    double lengthInBase = getValue() * getUnit().getFactor();
+    double valueInTargetUnit = lengthInBase / unit.getFactor();
+    return new Size(roundTo4Decimals(valueInTargetUnit), unit);
+  }
+
+  private static double roundTo4Decimals(double value) {
+    return Math.round(value * 10000) / 10000.0;
   }
 
   @Override

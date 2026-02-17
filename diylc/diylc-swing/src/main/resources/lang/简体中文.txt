@@ -22,6 +22,7 @@ Anti-Aliasing|抗锯齿
 Arrow Size|箭头大小
 Author|作者
 Auto-Create Pads|自动创建焊盘
+Auto-Convert Units|自动转换单位
 Auto-Edit Mode|自动编辑模式
 Base|基座
 Below|下方

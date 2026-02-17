@@ -3,46 +3,6 @@
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>5</major>
-				<minor>4</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-05-13 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>'AI Analyzer' feature added which uses AI to scan the circuit diagram and report issues and suggestions</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Significantly improve rendering performance of most components</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>'Open Jack 1/4"' and 'Potentiometer Panel' now tolerate connections anywhere on the lugs instead of dead center only</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Increased maximum number of switching combinations to 256 for circuit analysis</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>'Pilot Lamp Holder' component can sometimes hang the application</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed the issue with embedding image files into DIY projects</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed the issue with some components (e.g. DIP IC) jumping when showing underside of a board</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
 				<minor>5</minor>
 				<build>0</build>
 			</versionNumber>
@@ -384,6 +344,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Resize dimensions do not show for 'Chassis Panel' component when dragging a corner point</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>12</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-02-15 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Auto-Unit Conversion' configuration which automatically converts between metric and imperial units based on the ruler unit preference</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

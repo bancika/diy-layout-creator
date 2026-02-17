@@ -85,6 +85,9 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Create Pads",
             SolderPadAutoCreator.AUTO_PADS_KEY, false), CONFIG_MENU);
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Convert Units",
+            IPlugInPort.AUTO_UNIT_CONVERSION_KEY, true), CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true),
         CONFIG_MENU);    
     swingUI.injectMenuAction(

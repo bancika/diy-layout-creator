@@ -22,6 +22,7 @@ Anti-Aliasing|एंटी-अलियासिंग
 Arrow Size|तीर का आकार
 Author|लेखक
 Auto-Create Pads|ऑटो-क्रिएट पैड
+Auto-Convert Units|स्वचालित इकाई रूपांतरण
 Auto-Edit Mode|ऑटो-एडिट मोड
 Base|आधार
 Below|नीचे

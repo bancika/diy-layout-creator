@@ -24,6 +24,7 @@ Apply Variant|Applica variante
 Arrow Size|Dimensione Freccia
 Author|Autore
 Auto-Create Pads|Creazione Automatica dei Pad
+Auto-Convert Units|Conversione automatica delle unità
 Auto-Edit Mode|Modalità di Editaggio Automatica
 Base|Base
 Below|Sotto
