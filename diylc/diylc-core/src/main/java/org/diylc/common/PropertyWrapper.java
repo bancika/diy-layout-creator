@@ -69,28 +69,7 @@ public class PropertyWrapper implements Cloneable {
       InvocationTargetException, SecurityException, NoSuchMethodException {
     this.ownerObject = object;
     Object value = getGetter().invoke(object);
-    value = convertUnitsIfNeeded(value);
     this.value = value;
-  }
-
-  private static Object convertUnitsIfNeeded(Object value) {
-    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_UNIT_CONVERSION_KEY, true)
-        && value instanceof Size sizeValue) {
-      SizeUnit preferredUnit;
-      if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true)) {
-        preferredUnit = SizeUnit.mm;
-      }
-      else {
-        preferredUnit = SizeUnit.in;
-      }
-      if (preferredUnit.getType() != sizeValue.getUnit().getType()) {
-        SizeUnit targetUnit = SizeUnit.ConversionMapping.get(sizeValue.getUnit());
-        if (targetUnit != null) {
-          value = sizeValue.convertToUnits(targetUnit);
-        }
-      }
-    }
-    return value;
   }
 
   // public void readUniqueFrom(IDIYComponent component)

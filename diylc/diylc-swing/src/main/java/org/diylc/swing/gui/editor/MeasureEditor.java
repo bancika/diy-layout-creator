@@ -35,6 +35,10 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import javax.swing.JComboBox;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.IPlugInPort;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.swingframework.DoubleTextField;
 
 import org.diylc.common.PropertyWrapper;
@@ -55,7 +59,8 @@ public class MeasureEditor extends Container {
   @SuppressWarnings("unchecked")
   public MeasureEditor(final PropertyWrapper property) {
     setLayout(new BorderLayout());
-    final AbstractMeasure<?> measure = ((AbstractMeasure<?>) property.getValue());    
+    AbstractMeasure<?> measure = ((AbstractMeasure<?>) property.getValue());
+    measure = convertUnitsIfNeeded(measure);
     valueField = new DoubleTextField(measure == null ? null : measure.getValue());
     oldBg = valueField.getBackground();
     valueField.addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
@@ -120,6 +125,26 @@ public class MeasureEditor extends Container {
     } catch (Exception e) {
       LOG.error("Error while creating the editor", e);
     }
+  }
+
+  private AbstractMeasure<?> convertUnitsIfNeeded(AbstractMeasure<?> value) {
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.AUTO_UNIT_CONVERSION_KEY, true)
+        && value instanceof Size sizeValue) {
+      SizeUnit preferredUnit;
+      if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.METRIC_KEY, true)) {
+        preferredUnit = SizeUnit.mm;
+      }
+      else {
+        preferredUnit = SizeUnit.in;
+      }
+      if (preferredUnit.getType() != sizeValue.getUnit().getType()) {
+        SizeUnit targetUnit = SizeUnit.ConversionMapping.get(sizeValue.getUnit());
+        if (targetUnit != null) {
+          value = sizeValue.convertToUnits(targetUnit);
+        }
+      }
+    }
+    return value;
   }
 
   @Override
