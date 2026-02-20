@@ -33,6 +33,7 @@ public class JsonToHtmlConverter {
         .append("</head>\n<body>\n");
 
     // Process each section
+    processSection(root, "analysis", html, "#008000");
     processSection(root, "critical", html, "#c00");
     processSection(root, "warnings", html, "#e65c00");
     processSection(root, "optimizations", html, "#0066c0");
