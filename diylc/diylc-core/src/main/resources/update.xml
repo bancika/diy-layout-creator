@@ -365,6 +365,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added a new section in the output of 'AI Circuit Analyzer' which provides insights into the operation of the circuit and individual components</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Better error handling for AI tools</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

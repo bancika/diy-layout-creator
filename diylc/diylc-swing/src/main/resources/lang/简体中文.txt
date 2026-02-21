@@ -346,6 +346,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|半导体
 Send Backward|后移一层
 Send Selection to Back|将选择移到后面
+Server error, please try again.|服务器错误，请重试。
 Seven|七
 Shaft Down|轴向下
 Shaft Up|轴向上

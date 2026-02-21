@@ -358,6 +358,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|Halbleiter
 Send Backward|Absenken
 Send Selection to Back|Auswahl nach den Boden senden
+Server error, please try again.|Serverfehler, bitte versuchen Sie es erneut.
 Seven|Sieben
 Shaft Down|Achse nach unten
 Shaft Up|Achse nach oben

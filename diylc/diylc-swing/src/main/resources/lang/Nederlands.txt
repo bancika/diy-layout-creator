@@ -358,6 +358,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|Transistors
 Send Backward|Verlagen
 Send Selection to Back|Selectie naar bodem zenden
+Server error, please try again.|Serverfout, probeer het opnieuw.
 Seven|Zeven
 Shaft Down|As naar beneden
 Shaft Up|As omhoog

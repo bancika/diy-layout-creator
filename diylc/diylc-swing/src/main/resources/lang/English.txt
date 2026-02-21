@@ -346,6 +346,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors
 Send Backward
 Send Selection to Back
+Server error, please try again.
 Seven
 Shaft Down
 Shaft Up

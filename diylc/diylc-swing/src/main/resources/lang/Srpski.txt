@@ -339,6 +339,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|Poluprovodnici
 Send Backward|Pošalji Nazad
 Send Selection to Back|Pošalji Izabrane Nazad
+Server error, please try again.|Greška servera, pokušajte ponovo.
 Seven|Sedam
 Shaft Down|Osovina Dole
 Shaft Up|Osovina Gore

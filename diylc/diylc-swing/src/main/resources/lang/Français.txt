@@ -343,6 +343,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|Semi-conducteurs
 Send Backward|Envoyer vers l'arrière
 Send Selection to Back|Envoyer la sélection vers l'arrière
+Server error, please try again.|Erreur du serveur, veuillez réessayer.
 Seven|Sept
 Shaft Down|Tige vers le bas
 Shaft Up|Tige vers le haut

@@ -346,6 +346,7 @@ Selection contains components that cannot be rotated. Do you want to exclude the
 Semiconductors|सेमीकंडक्टर्स
 Send Backward|पीछे भेजें
 Send Selection to Back|चयन को पीछे भेजें
+Server error, please try again.|सर्वर त्रुटि, कृपया पुनः प्रयास करें।
 Seven|सात
 Shaft Down|शाफ्ट नीचे
 Shaft Up|शाफ्ट ऊपर

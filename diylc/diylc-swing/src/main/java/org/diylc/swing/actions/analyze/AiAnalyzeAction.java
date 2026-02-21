@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Optional;
 
 public class AiAnalyzeAction extends AbstractAction {
 
@@ -41,7 +42,9 @@ public class AiAnalyzeAction extends AbstractAction {
 
       @Override
       public void failed(Exception e) {
-        swingUI.showMessage(e.getMessage(), "AI Circuit Analyzer", ISwingUI.ERROR_MESSAGE);
+        String message =
+            Optional.ofNullable(e.getCause()).map(Throwable::getMessage).orElse(e.getMessage());
+        swingUI.showMessage(message, "AI Circuit Analyzer", ISwingUI.ERROR_MESSAGE);
       }
 
       @Override

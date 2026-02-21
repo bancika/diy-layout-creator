@@ -38,6 +38,7 @@ import org.diylc.core.ISwitch;
 import org.diylc.netlist.*;
 import org.diylc.plugins.chatbot.model.*;
 import org.diylc.plugins.cloud.model.IServiceAPI;
+import org.diylc.plugins.cloud.service.CloudException;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.ContinuityArea;
@@ -62,6 +63,8 @@ public class ChatbotService {
 
   private final static Logger LOG = Logger.getLogger(ChatbotService.class);
   private static final ObjectMapper MAPPER = new ObjectMapper();
+  public static final String SERVER_ERROR_PLEASE_TRY_AGAIN = "Server error, please try again.";
+
   static {
     MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
   }
@@ -114,7 +117,7 @@ public class ChatbotService {
     return service;
   }
 
-  public String promptChatbot(String prompt) throws NotLoggedInException {
+  public String promptChatbot(String prompt) throws NotLoggedInException, CloudException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
@@ -126,13 +129,13 @@ public class ChatbotService {
     File aiProjectFile = getAiProjectFile();
 
     try {
-      return getService().promptChatbot(
-          plugInPort.getCloudService().getCurrentUsername(),
+      String response = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(),
-          fileName,
-          aiProjectFile,
-          prompt);
+          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile, prompt);
+      return Optional.ofNullable(response).orElse(SERVER_ERROR_PLEASE_TRY_AGAIN);
+    } catch (Exception e) {
+      LOG.error("Chatbot error", e);
+      throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
       // Clean up the temp file immediately after use
       if (aiProjectFile != null && aiProjectFile.exists()) {
@@ -141,7 +144,7 @@ public class ChatbotService {
     }
   }
 
-  public String analyzeCircuit() throws NotLoggedInException {
+  public String analyzeCircuit() throws NotLoggedInException, CloudException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
@@ -156,9 +159,15 @@ public class ChatbotService {
       String jsonResult = getService().analyzeCircuit(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
           plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile);
+
+      if (jsonResult == null || jsonResult.trim().isEmpty()) {
+        throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
+      }
+
       return JsonToHtmlConverter.convertToHtml(jsonResult);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    } catch (Exception e) {
+      LOG.error("AI Analyzer error", e);
+      throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
       // Clean up the temp file immediately after use
       if (aiProjectFile != null && aiProjectFile.exists()) {
