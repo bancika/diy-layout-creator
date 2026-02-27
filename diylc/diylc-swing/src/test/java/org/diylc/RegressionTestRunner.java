@@ -39,7 +39,7 @@ public class RegressionTestRunner {
 
   public static void main(String[] args) {
     if (args.length < 2) {
-      System.out.println("No path and command provided");
+      System.out.println("No inputs provided. Expected format is: {path} PREPARE|TEST {optional filter}");
       return;
     }
     //

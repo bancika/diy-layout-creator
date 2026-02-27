@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
@@ -38,7 +39,7 @@ public class DatasheetService {
 
   private static DatasheetService instance;
 
-  private static Map<String, List<String[]>> datasheetCache = new HashMap<String, List<String[]>>();
+  private static Map<String, List<String[]>> datasheetCache = new ConcurrentHashMap<>();
   private static Map<String, Map<String, List<String[]>>> lookupCache =
       new HashMap<String, Map<String, List<String[]>>>();
 
