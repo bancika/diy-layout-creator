@@ -96,6 +96,13 @@ public class TreePanel extends JPanel {
 
   private JPopupMenu popup;
 
+  /**
+   * When the selection listener already ran the leaf action for this path, the following
+   * left-button {@code mouseReleased} must not run it again. Cleared after that release or on the
+   * next EDT tick (keyboard-only selection).
+   */
+  private TreePath suppressLeafActivationForPath;
+
   @SuppressWarnings("unchecked")
   public TreePanel(IPlugInPort plugInPort, ISwingUI swingUI) {
     this.plugInPort = plugInPort;
@@ -220,7 +227,14 @@ public class TreePanel extends JPanel {
           if (node != null && node instanceof TreeNode) {
             TreeNode payload = (TreeNode) node;
             if (payload.getClickListener() != null) {
+              final TreePath path = e.getPath();
+              suppressLeafActivationForPath = path;
               payload.getClickListener().mouseClicked(null);
+              SwingUtilities.invokeLater(() -> {
+                if (suppressLeafActivationForPath != null && suppressLeafActivationForPath.equals(path)) {
+                  suppressLeafActivationForPath = null;
+                }
+              });
             }
           }
         }
@@ -230,21 +244,49 @@ public class TreePanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-          if (e.getClickCount() != 1)
+          if (e.getClickCount() != 1 || !SwingUtilities.isRightMouseButton(e))
             return;
 
-          if (SwingUtilities.isRightMouseButton(e)) {
-            int row = tree.getClosestRowForLocation(e.getX(), e.getY());
-            tree.setSelectionRow(row);
-            getPopup().show(e.getComponent(), e.getX(), e.getY());
-          } else {
-            TreePath path = tree.getClosestPathForLocation(e.getX(), e.getY());
-            Object node = path.getLastPathComponent();
-            if (node != null && node instanceof TreeNode) {
-              TreeNode payload = (TreeNode) node;
-              if (payload.getClickListener() != null) {
-                payload.getClickListener().mouseClicked(e);
-              }
+          int row = tree.getClosestRowForLocation(e.getX(), e.getY());
+          tree.setSelectionRow(row);
+          getPopup().show(e.getComponent(), e.getX(), e.getY());
+        }
+
+        /**
+         * Prefer release over click: {@code mouseClicked} is not posted if the cursor moves
+         * between press and release (common with DnD or hand jitter), while selection may still
+         * change — then re-clicks on the same row fire no selection event.
+         */
+        @Override
+        public void mouseReleased(MouseEvent e) {
+          if (SwingUtilities.isRightMouseButton(e) || e.isPopupTrigger()) {
+            return;
+          }
+          if (e.getClickCount() != 1) {
+            return;
+          }
+
+          TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+          if (path == null) {
+            path = tree.getClosestPathForLocation(e.getX(), e.getY());
+          }
+          if (path == null) {
+            return;
+          }
+
+          if (path.equals(suppressLeafActivationForPath)) {
+            suppressLeafActivationForPath = null;
+            return;
+          }
+          if (!path.equals(tree.getSelectionPath())) {
+            return;
+          }
+
+          Object node = path.getLastPathComponent();
+          if (node instanceof TreeNode) {
+            TreeNode payload = (TreeNode) node;
+            if (payload.getClickListener() != null) {
+              payload.getClickListener().mouseClicked(e);
             }
           }
         }

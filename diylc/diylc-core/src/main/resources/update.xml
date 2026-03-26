@@ -377,6 +377,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Right click (or two finger tap on mac) after selecting a component with a regular click opens editor dialog in addition to the context menu</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Clicking on a component type in the left-hand component tree sometimes does not register and does not instantiate the component</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
