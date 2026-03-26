@@ -516,7 +516,10 @@ public class Presenter implements IPlugInPort {
     }    
       
     Point2D scaledPoint = scalePoint(point);
-    if (clickCount >= 2) {
+    // Only primary-button multi-clicks open the editor. On some platforms (e.g. macOS)
+    // getClickCount() can be >= 2 for a secondary click that follows a primary click
+    // within the multi-click interval, which must not be treated as double-click.
+    if (clickCount >= 2 && button == IPlugInPort.BUTTON1) {
       editSelection();
     } else {
       if (instantiationManager.getComponentTypeSlot() != null) {

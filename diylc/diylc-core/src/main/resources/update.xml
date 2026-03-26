@@ -369,6 +369,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Better error handling for AI tools</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Right click (or two finger tap on mac) after selecting a component with a regular click opens editor dialog in addition to the context menu</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
