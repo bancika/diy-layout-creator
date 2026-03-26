@@ -320,14 +320,23 @@ public class ChatbotPane extends JPanel {
       }, false);
     }
 
-    // Scroll to the end of the chat pane
+    // Scroll to the end of the chat pane. Do not drive the vertical scrollbar directly:
+    // setValue triggers BasicScrollPaneUI layout while the HTML FlowView can still have a
+    // null viewBuffer (NPE in FlowView$FlowStrategy.layoutRow), e.g. when the chatbot
+    // panel is not the active tab or not yet fully laid out.
     SwingUtilities.invokeLater(() -> {
-      if (getChatEditorPane().getParent() == null) {
+      JEditorPane editor = getChatEditorPane();
+      if (editor.getParent() == null || !editor.isDisplayable()) {
         return;
       }
-      JScrollPane scrollPane = (JScrollPane) getChatEditorPane().getParent().getParent();
-      JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
-      verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+      try {
+        int len = editor.getDocument().getLength();
+        if (len >= 0) {
+          editor.setCaretPosition(len);
+        }
+      } catch (RuntimeException ex) {
+        LOG.debug("Could not scroll chat view to end", ex);
+      }
     });
   }
 
