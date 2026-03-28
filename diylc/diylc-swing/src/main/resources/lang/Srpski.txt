@@ -398,6 +398,9 @@ Thickness|Debljinja
 Three|Tri
 Through Hole|Kroz Rupu
 Tick|Crtica
+Ticks|Crtice
+Ticks (Uniform)|Ravnomerne crtice
+Ticks + Numeric (0/5.5/11)|Crtice + numerički (0/5.5/11)
 Title|Naslov
 Toolbox|Kutija sa Alatima
 Top|Vrh

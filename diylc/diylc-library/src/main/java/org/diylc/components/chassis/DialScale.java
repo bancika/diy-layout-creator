@@ -125,6 +125,36 @@ public class DialScale extends AbstractComponent<String> {
           g2d.setStroke(tickStroke);
           g2d.drawLine((int)x, (int)y, (int)x1, (int)y1);
           break;
+        case Ticks_Mixed:
+        case Ticks_0_5_5_11: {
+          boolean majorTick = (i == 2 || i == 5 || i == 8);
+          double tickLen = majorTick ? marker : marker * 0.8;
+          x1 = x0 + Math.cos(alpha) * (r - tickLen);
+          y1 = y0 + Math.sin(alpha) * (r - tickLen);
+          g2d.setStroke(tickStroke);
+          g2d.drawLine((int)x, (int)y, (int)x1, (int)y1);
+          if (type == DialScaleType.Ticks_0_5_5_11) {
+            String label = null;
+            VerticalAlignment vAlign = VerticalAlignment.CENTER;
+            if (i == 0) {
+              label = "0";
+              vAlign = VerticalAlignment.TOP;
+            } else if (i == 5) {
+              label = "5.5";
+              vAlign = VerticalAlignment.BOTTOM;
+            } else if (i == 10) {
+              label = "11";
+              vAlign = VerticalAlignment.TOP;
+            }
+            if (label != null) {
+              double labelPad = marker * 0.95;
+              double lx = x0 + Math.cos(alpha) * (r + labelPad);
+              double ly = y0 + Math.sin(alpha) * (r + labelPad);
+              StringUtils.drawCenteredText(g2d, label, lx, ly, HorizontalAlignment.CENTER, vAlign);
+            }
+          }
+          break;
+        }
         case Numeric_Even:
           if (i % 2 == 0) {
             StringUtils.drawCenteredText(g2d, Integer.toString(i), x, y, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -273,7 +303,7 @@ public class DialScale extends AbstractComponent<String> {
   }
   
   public enum DialScaleType {
-    Ticks("Ticks"), Dots("Dots (Uniform)"), Dots_Gradual("Dots (Gradual)"), Numeric_0_10("Numeric (0-10)"), Numeric_1_11("Numeric (1-11)"), 
+    Ticks_Mixed("Ticks"), Ticks("Ticks (Uniform)"), Ticks_0_5_5_11("Ticks + Numeric (0/5.5/11)"), Dots("Dots (Uniform)"), Dots_Gradual("Dots (Gradual)"), Numeric_0_10("Numeric (0-10)"), Numeric_1_11("Numeric (1-11)"),
     Numeric_1_10("Numeric (1-10)"), Numeric_1_12("Numeric (1-12)"), Numeric_Even("Numeric (Even, No Ticks)"), Numeric_Even_Ticks("Numeric (Even, With Ticks)");
     
     private String label;

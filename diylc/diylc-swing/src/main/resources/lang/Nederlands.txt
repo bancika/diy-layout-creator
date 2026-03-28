@@ -417,6 +417,9 @@ Thickness|Breedte
 Three|Drie
 Through Hole|THT
 Tick|Maatstreep
+Ticks|Streepjes
+Ticks (Uniform)|Streepjes (gelijk)
+Ticks + Numeric (0/5.5/11)|Streepjes + Numeriek (0/5.5/11)
 Title|Titel
 Toolbox|Gereedschapskist
 Top|Bovenkant

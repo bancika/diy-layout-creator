@@ -572,6 +572,8 @@ Through Hole
 Tick
 Tick Width
 Ticks
+Ticks (Uniform)
+Ticks + Numeric (0/5.5/11)
 Timing
 Title
 Title Block

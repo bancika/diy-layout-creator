@@ -417,6 +417,9 @@ Thickness|Dicke
 Three|Drei
 Through Hole|Durchsteckmontage
 Tick|Abstufung
+Ticks|Striche
+Ticks (Uniform)|Striche (gleichmäßig)
+Ticks + Numeric (0/5.5/11)|Striche + Numerisch (0/5.5/11)
 Title|Titel
 Toolbox|Werkzeugkasten
 Top|Oben

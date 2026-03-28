@@ -417,6 +417,9 @@ Thickness|spessore
 Three|tre
 Through Hole|Foro passante
 Tick|Spunto
+Ticks|Tacche
+Ticks (Uniform)|Tacche (uniformi)
+Ticks + Numeric (0/5.5/11)|Tacche + Numerico (0/5.5/11)
 Title|titolo
 Toolbox|cassetta degli attrezzi
 Top|top

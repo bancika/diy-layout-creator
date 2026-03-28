@@ -5057,5 +5057,101 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>5</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-05-26 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Compare With...' tool in the 'Analyze' menu that compares the content of two DIY files electronically and reports differences. Can be useful to compare two versions of the same circuit or validate a layout against the schematics file.</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increased tolerance of sticky points on guitar pickup terminals in order to make it easier for leads to make proper contact and for the circuit analyzer to work</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved trace proximity calculation to avoid showing false positives</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved the styling of circuit analysis reports</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>X or Q keys sometimes do not register in secondary dialogs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Auto-Edit Mode' doesn't do what it's supposed to</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>If the internet connection is present, but unstable, the application starts but nothing can be clicked until the connection restores</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>6</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2025-08-11 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Drill Hole' component that can be used for board mounting holes, chassis holes, faceplace holes, etc</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Simplify zoom in/out keyboard shortcuts to only plus/minus keys and zero numerical key for zoom reset to 100</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Bundle Java JRE with Linux AppImage to avoid having to install it</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Updated naming conventions Mac build packages to replace 'arm' with 'silicon' and 'x86' to 'intel' for clarity</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Allow Windows 64 bit installer to run on ARM-based Windows machine (through emulation)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>More intuitive user account creation dialog for DIYLC Cloud - showing exact requirements for password and marking optional entries</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved project search algorithm in DIYLC cloud</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When a switch position is selected (i.e. set to a value other than None), DIYLC will treat the terminals that are internally connected in that switching logic as connected in analysis tools</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Increase maximum size of the backup folder from 64MB to 1GB for deeper history</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Alignment issues of some visual elements in the resulting Gerber files, e.g. DIL IC pin designators</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Connect to Patreon' option says that it connected account with username 'a b c' but doesn't do anything</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

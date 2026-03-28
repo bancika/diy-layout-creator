@@ -408,6 +408,8 @@ Through Hole|通孔
 Tick|刻度
 Tick Width|刻度宽度
 Ticks|刻度
+Ticks (Uniform)|刻度（均匀）
+Ticks + Numeric (0/5.5/11)|刻度 + 数字 (0/5.5/11)
 Title|标题
 Toolbox|工具箱
 Top|顶部

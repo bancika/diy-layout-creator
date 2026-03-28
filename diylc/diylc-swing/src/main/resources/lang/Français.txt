@@ -402,6 +402,9 @@ Thickness|Épaisseur
 Three|Trois
 Through Hole|Trou traversant
 Tick|Cocher
+Ticks|Graduations
+Ticks (Uniform)|Graduations (uniformes)
+Ticks + Numeric (0/5.5/11)|Graduations + Numérique (0/5.5/11)
 Title|Titre
 Toolbox|Boîte à outils
 Top|Haut

@@ -405,6 +405,9 @@ Thickness|Grosor
 Three|Tres
 Through Hole|Terminales para Soldar 
 Tick|Indicador
+Ticks|Marcas
+Ticks (Uniform)|Marcas (uniformes)
+Ticks + Numeric (0/5.5/11)|Marcas + Numérico (0/5.5/11)
 Title|Tí­tulo
 Toolbox|Caja de Herramientas
 Top|Arriba

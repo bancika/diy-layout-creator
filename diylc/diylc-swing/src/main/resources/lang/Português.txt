@@ -405,6 +405,9 @@ Thickness|Espessura
 Three|Três
 Through Hole|Terminal de Solda 
 Tick|Indicador
+Ticks|Traços
+Ticks (Uniform)|Traços (uniformes)
+Ticks + Numeric (0/5.5/11)|Traços + Numérico (0/5.5/11)
 Title|Título
 Toolbox|Caixa de Ferramentas
 Top|Acima

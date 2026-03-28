@@ -408,6 +408,8 @@ Through Hole|थ्रू होल
 Tick|टिक
 Tick Width|टिक चौड़ाई
 Ticks|टिक्स
+Ticks (Uniform)|टिक्स (समान)
+Ticks + Numeric (0/5.5/11)|टिक्स + संख्यात्मक (0/5.5/11)
 Title|शीर्षक
 Toolbox|टूलबॉक्स
 Top|ऊपर
