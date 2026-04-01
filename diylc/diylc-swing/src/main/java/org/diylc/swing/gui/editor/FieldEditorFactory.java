@@ -115,10 +115,6 @@ public class FieldEditorFactory {
       IntEditor editor = new IntEditor(property);
       return editor;
     }
-    if (LoadlineEntity.class.isAssignableFrom(property.getType())) {
-      LoadlineEditor editor = new LoadlineEditor(property);
-      return editor;
-    }
     if (Angle.class.isAssignableFrom(property.getType())) {
       AngleEditor editor = new AngleEditor(property);
       return editor;
