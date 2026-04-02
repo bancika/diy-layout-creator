@@ -299,6 +299,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added new 'Heat Sink Resistor' component with a bunch of factory variants covering the most common types</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added new 'Dial Scale' variations - 'Ticks + Numeric (0/5.5/11)' a'la Friedman and another variation of 'Ticks' with more pronounced 9/12/3 o'clock indices</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

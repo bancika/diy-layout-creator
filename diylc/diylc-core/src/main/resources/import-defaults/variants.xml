@@ -4328,4 +4328,179 @@
       </org.diylc.core.Template>
     </list>
   </entry>
+    <entry>
+      <string>org.diylc.components.passive.HeatSinkResistor</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>HS10</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="10.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="15.9" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="16.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="7.05" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="4.1" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>TWO_DIAGONAL</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="11.3" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="2.4" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="2.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="1.181" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS15</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="15.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="19.9" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="21.0" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="8.3" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="5.1" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>TWO_DIAGONAL</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="14.3" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="2.4" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="2.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="1.437" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS25</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="25.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="27.3" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="28.0" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="11.85" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="8.2" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>TWO_DIAGONAL</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="18.3" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="3.2" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="2.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="2.008" y="0.0"/></points>
+          <defaultFlag>true</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS50</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="50.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="49.1" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="29.7" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="11.7" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="8.3" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>TWO_DIAGONAL</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="39.7" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="3.2" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="2.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="2.854" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS75</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="75.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="48.7" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="47.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="11.65" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="10.5" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>FOUR</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="29.0" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="4.4" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="3.2" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="2.835" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS100</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="100.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="65.2" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="47.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="11.4" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="10.5" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>FOUR</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="35.0" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="4.4" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="3.2" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="3.465" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS150</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="150.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="97.7" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="47.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="11.65" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="10.5" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>SIX</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="29.0" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="4.4" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="3.2" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="4.764" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS200</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="200.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="89.7" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="72.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="28.0" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="15.3" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>SIX</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="35.0" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="5.1" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="6.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="5.736" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS250</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="250.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="109.7" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="72.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="28.65" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="15.3" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>SIX</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="44.5" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="5.1" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="6.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="6.575" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>HS300</name>
+          <values>
+            <entry><string>Value</string><null/></entry>
+            <entry><string>Power Rating</string><org.diylc.core.measures.Power value="300.0" unit="W"/></entry>
+            <entry><string>Length</string><org.diylc.core.measures.Size value="127.7" unit="mm"/></entry>
+            <entry><string>Width</string><org.diylc.core.measures.Size value="72.5" unit="mm"/></entry>
+            <entry><string>Lead Length</string><org.diylc.core.measures.Size value="28.35" unit="mm"/></entry>
+            <entry><string>Lip Width</string><org.diylc.core.measures.Size value="13.5" unit="mm"/></entry>
+            <entry><string>Mounting Holes</string><diylc.passive.HeatSinkResistor_-MountingHoleCount>SIX</diylc.passive.HeatSinkResistor_-MountingHoleCount></entry>
+            <entry><string>Hole Spacing</string><org.diylc.core.measures.Size value="52.0" unit="mm"/></entry>
+            <entry><string>Hole Diameter</string><org.diylc.core.measures.Size value="6.6" unit="mm"/></entry>
+            <entry><string>Lead Diameter</string><org.diylc.core.measures.Size value="6.0" unit="mm"/></entry>
+          </values>
+          <points><point x="0.0" y="0.0"/><point x="7.260" y="0.0"/></points>
+          <defaultFlag>false</defaultFlag>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
   </map>
