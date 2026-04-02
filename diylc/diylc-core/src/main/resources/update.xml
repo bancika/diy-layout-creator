@@ -306,6 +306,10 @@
 					<description>Added new 'Dial Scale' variations - 'Ticks + Numeric (0/5.5/11)' a'la Friedman and another variation of 'Ticks' with more pronounced 9/12/3 o'clock indices</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added more ceramic resistor variants to 'Resistor' component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Decommission 'Loadline Editor' option from the File menu</description>
 				</org.diylc.appframework.update.Change>

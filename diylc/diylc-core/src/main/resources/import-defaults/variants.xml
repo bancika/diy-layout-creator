@@ -669,7 +669,70 @@
           <createdOn>2022-10-30T13:25:15.3894874</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
-          <name>5W Ceramic</name>
+          <name>Ceramic 2W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="18.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="7.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="1.0" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 3W</name>
           <values>
             <entry>
               <string>Shape</string>
@@ -709,7 +772,7 @@
             </entry>
             <entry>
               <string>Color code</string>
-              <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
             </entry>
             <entry>
               <string>Border</string>
@@ -717,7 +780,7 @@
             </entry>
             <entry>
               <string>Width</string>
-              <org.diylc.core.measures.Size value="10.0" unit="mm"/>
+              <org.diylc.core.measures.Size value="8.0" unit="mm"/>
             </entry>
             <entry>
               <string>Display</string>
@@ -729,10 +792,10 @@
             <point x="1.1" y="0.0"/>
           </points>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
-          <name>10W Ceramic</name>
+          <name>Ceramic 5W</name>
           <values>
             <entry>
               <string>Shape</string>
@@ -740,7 +803,7 @@
             </entry>
             <entry>
               <string>Color</string>
-              <awt-color hex="d2d7db"/>
+              <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
               <string>Power rating</string>
@@ -760,7 +823,7 @@
             </entry>
             <entry>
               <string>Length</string>
-              <org.diylc.core.measures.Size value="38.0" unit="mm"/>
+              <org.diylc.core.measures.Size value="22.0" unit="mm"/>
             </entry>
             <entry>
               <string>Value</string>
@@ -772,15 +835,15 @@
             </entry>
             <entry>
               <string>Color code</string>
-              <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
             </entry>
             <entry>
               <string>Border</string>
-              <awt-color hex="b2b7bb"/>
+              <awt-color hex="cccccc"/>
             </entry>
             <entry>
               <string>Width</string>
-              <org.diylc.core.measures.Size value="4.0" unit="mm"/>
+              <org.diylc.core.measures.Size value="9.5" unit="mm"/>
             </entry>
             <entry>
               <string>Display</string>
@@ -789,10 +852,514 @@
           </values>
           <points>
             <point x="0.0" y="0.0"/>
-            <point x="2.2" y="0.0"/>
+            <point x="1.1" y="0.0"/>
           </points>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 7W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="35.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="9.5" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="1.6" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 10W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="48.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="9.5" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="2.1" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 15W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="48.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="13.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="2.1" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 20W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="63.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="13.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="2.7" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 30W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="75.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="19.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="3.2" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 50W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="90.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="19.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="3.8" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 80W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="109.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="19.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="4.5" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Ceramic 100W</name>
+          <values>
+            <entry>
+              <string>Shape</string>
+              <diylc.passive.Resistor_-ResistorShape>Tubular</diylc.passive.Resistor_-ResistorShape>
+            </entry>
+            <entry>
+              <string>Color</string>
+              <awt-color hex="f6f5f5"/>
+            </entry>
+            <entry>
+              <string>Power rating</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Reverse (standing)</string>
+              <boolean>false</boolean>
+            </entry>
+            <entry>
+              <string>Lead color</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Label color</string>
+              <awt-color hex="000000"/>
+            </entry>
+            <entry>
+              <string>Length</string>
+              <org.diylc.core.measures.Size value="135.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Value</string>
+              <null/>
+            </entry>
+            <entry>
+              <string>Alpha</string>
+              <byte>127</byte>
+            </entry>
+            <entry>
+              <string>Color code</string>
+              <org.diylc.common.ResistorColorCode>NONE</org.diylc.common.ResistorColorCode>
+            </entry>
+            <entry>
+              <string>Border</string>
+              <awt-color hex="cccccc"/>
+            </entry>
+            <entry>
+              <string>Width</string>
+              <org.diylc.core.measures.Size value="22.0" unit="mm"/>
+            </entry>
+            <entry>
+              <string>Display</string>
+              <org.diylc.common.Display>NAME</org.diylc.common.Display>
+            </entry>
+          </values>
+          <points>
+            <point x="0.0" y="0.0"/>
+            <point x="5.5" y="0.0"/>
+          </points>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T20:39:46.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1W Metal Oxide</name>
@@ -4347,6 +4914,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="1.181" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS15</name>
@@ -4364,6 +4932,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="1.437" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS25</name>
@@ -4381,6 +4950,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="2.008" y="0.0"/></points>
           <defaultFlag>true</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS50</name>
@@ -4398,6 +4968,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="2.854" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS75</name>
@@ -4415,6 +4986,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="2.835" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS100</name>
@@ -4432,6 +5004,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="3.465" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS150</name>
@@ -4449,6 +5022,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="4.764" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS200</name>
@@ -4466,6 +5040,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="5.736" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS250</name>
@@ -4483,6 +5058,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="6.575" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>HS300</name>
@@ -4500,6 +5076,7 @@
           </values>
           <points><point x="0.0" y="0.0"/><point x="7.260" y="0.0"/></points>
           <defaultFlag>false</defaultFlag>
+          <createdOn>2026-04-02T18:38:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
