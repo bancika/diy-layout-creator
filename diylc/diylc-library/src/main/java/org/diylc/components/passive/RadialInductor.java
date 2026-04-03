@@ -23,7 +23,7 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Area;
@@ -42,6 +42,7 @@ import org.diylc.core.measures.Inductance;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Inductor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
@@ -50,6 +51,7 @@ import org.diylc.core.measures.SizeUnit;
 public class RadialInductor extends AbstractRadialComponent<Inductance> {
 
   private static final long serialVersionUID = 1L;
+  public static final int LAYER_COUNT = 20;
 
   public static Size DEFAULT_SIZE = new Size(1d / 4, SizeUnit.in);
   public static Color BODY_COLOR = Color.darkGray;
@@ -66,6 +68,8 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
   private boolean folded = false;
   private Size height = HEIGHT;
   private Size lip = LIP;
+  private InductorCore core = InductorCore.Ferrite;
+  private Size innerDiameter = new Size(1d / 8, SizeUnit.in);
 
   public RadialInductor() {
     super();
@@ -82,22 +86,48 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
   
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-    if (!getFolded())
+    if (!getFolded()) {
+      if (core == InductorCore.Air) {
+        double diameter = getClosestOdd(getLength().convertToPixels());
+        double innerDiam = getInnerDiameter().convertToPixels();
+        
+        double rIn = innerDiam / 2.0;
+        double rOut = diameter / 2.0;
+        double radialStep = (rOut - rIn) / 19.8;
+        double strokeWidth = radialStep * 0.8;
+        
+        Stroke stroke = ObjectCache.getInstance().fetchBasicStroke((float) strokeWidth);
+        Area copper = new Area();
+        
+        for (int i = 0; i < LAYER_COUNT; i++) {
+            double rCenter = rIn + 0.4 * radialStep + i * radialStep;
+            double currentDiam = rCenter * 2;
+            Shape circle = stroke.createStrokedShape(new Ellipse2D.Double((diameter - currentDiam) / 2, (diameter - currentDiam) / 2, currentDiam, currentDiam));
+            copper.add(new Area(circle));
+        }
+        g2d.setColor(COPPER_COLOR);
+        g2d.fill(copper);
+        g2d.setColor(COPPER_COLOR.darker());
+        g2d.draw(copper);
+      }
       return;
+    }
     
     Area body = new Area(getBodyShape());
-    int leadThickness = (int) getLeadThickness();
-    double lip = getLip().convertToPixels();
-    Stroke stroke = ObjectCache.getInstance().fetchBasicStroke(leadThickness / 2);
-    Rectangle rect = body.getBounds();
+    double lip = core == InductorCore.Ferrite ? getLip().convertToPixels() : 0;
+    Rectangle2D rect = body.getBounds2D();
+    
+    double h = rect.getHeight() - 2 * lip;
+    double step = h / 19.8;
+    double strokeWidth = step * 0.8;
+    Stroke stroke = ObjectCache.getInstance().fetchBasicStroke((float) strokeWidth);
+    
     Area copper = new Area();
-    for (double y = lip + leadThickness / 2; y < rect.height - lip - leadThickness; y += leadThickness * 0.9d) {
-      double margin;
-      if (y < leadThickness || y > rect.height - leadThickness)
-        margin = -leadThickness / 4;
-      else 
-        margin = leadThickness / 4;
-      Line2D line = new Line2D.Double(-margin + lip, y - rect.height / 2, rect.width - lip + margin, y - rect.height / 2);
+    for (int i = 0; i < 20; i++) {
+      double y = lip + 0.4 * step + i * step;
+      double margin = step / 4;
+      double yOffset = rect.getHeight() / 2 + LEAD_THICKNESS.convertToPixels() / 2;
+      Line2D line = new Line2D.Double(-margin + lip, y - yOffset, rect.getWidth() - lip + margin, y - yOffset);
       Shape s = stroke.createStrokedShape(line);
       copper.add(new Area(s));
     }
@@ -154,6 +184,45 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
   }
 
   @EditableProperty
+  public InductorCore getCore() {
+    return core;
+  }
+
+  public void setCore(InductorCore core) {
+    this.core = core;
+  }
+
+  @EditableProperty(name = "Inner Diameter")
+  public Size getInnerDiameter() {
+    if (innerDiameter == null) {
+      innerDiameter = new Size(1d / 8, SizeUnit.in);
+    }
+    return innerDiameter;
+  }
+
+  public void setInnerDiameter(Size innerDiameter) {
+    this.innerDiameter = innerDiameter;
+  }
+
+  @EditableProperty(name = "Color")
+  @Override
+  public Color getBodyColor() {
+    if (core == InductorCore.Air) {
+      return Constants.TRANSPARENT_COLOR;
+    }
+    return super.getBodyColor();
+  }
+
+  @EditableProperty(name = "Border")
+  @Override
+  public Color getBorderColor() {
+    if (core == InductorCore.Air) {
+      return Constants.TRANSPARENT_COLOR;
+    }
+    return super.getBorderColor();
+  }
+
+  @EditableProperty
   public boolean getFolded() {
     return folded;
   }
@@ -178,17 +247,28 @@ public class RadialInductor extends AbstractRadialComponent<Inductance> {
   protected Shape getBodyShape() {
     double height = (int) getHeight().convertToPixels();
     double diameter = (int) getLength().convertToPixels();
-    double lip = getLip().convertToPixels();
+    double lip = core == InductorCore.Ferrite ? getLip().convertToPixels() : 0;
     if (folded) {
       Area body = new Area(new RoundRectangle2D.Double(0f, -height / 2 - LEAD_THICKNESS.convertToPixels() / 2,
           getClosestOdd(diameter), getClosestOdd(height), EDGE_RADIUS.convertToPixels(), EDGE_RADIUS.convertToPixels()));
-      body.subtract(new Area(new Rectangle2D.Double(0f, -height / 2 + lip - LEAD_THICKNESS.convertToPixels() / 2,
-          lip, height - 2 * lip)));
-      body.subtract(new Area(new Rectangle2D.Double(diameter - lip, -height / 2 + lip - LEAD_THICKNESS.convertToPixels() / 2,
-          lip * 2, height - 2 * lip)));
+      if (lip > 0) {
+        body.subtract(new Area(new Rectangle2D.Double(0f, -height / 2 + lip - LEAD_THICKNESS.convertToPixels() / 2,
+            lip, height - 2 * lip)));
+        body.subtract(new Area(new Rectangle2D.Double(diameter - lip, -height / 2 + lip - LEAD_THICKNESS.convertToPixels() / 2,
+            lip * 2, height - 2 * lip)));
+      }
       return body;
     }
-    return new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
+    Shape outer = new Ellipse2D.Double(0f, 0f, getClosestOdd(diameter), getClosestOdd(diameter));
+    if (core == InductorCore.Air) {
+      double innerDiam = getInnerDiameter().convertToPixels();
+      double od = getClosestOdd(diameter);
+      Shape inner = new Ellipse2D.Double((od - innerDiam) / 2, (od - innerDiam) / 2, innerDiam, innerDiam);
+      Area donut = new Area(outer);
+      donut.subtract(new Area(inner));
+      return donut;
+    }
+    return outer;
   }
 
   @EditableProperty

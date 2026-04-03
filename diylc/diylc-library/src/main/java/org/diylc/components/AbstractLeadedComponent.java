@@ -259,15 +259,15 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       if (alpha < MAX_ALPHA) {
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
       }
-      if (bodyColor != null) {
-        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);    
+      if (getBodyColor() != null) {
+        g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
         
         drawingObserver.startTracking();
         
         if (!outlineMode && ConfigurationManager.getInstance().readBoolean(IPlugInPort.HI_QUALITY_RENDER_KEY, false)) {
           Point2D p1 = new Point2D.Double(length / 2, 0);
           Point2D p2 = new Point2D.Double(length / 2, width);
-          ShadedPaint paint = theta > 0 && theta < Math.PI ? new ShadedPaint(p2, p1, bodyColor) : new ShadedPaint(p1, p2, bodyColor);
+          ShadedPaint paint = theta > 0 && theta < Math.PI ? new ShadedPaint(p2, p1, getBodyColor()) : new ShadedPaint(p1, p2, getBodyColor());
           Paint oldPaint = g2d.getPaint();
           g2d.setPaint(paint);
           g2d.fill(shape);
@@ -299,17 +299,17 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       } else {
         finalBorderColor =
             componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-                : borderColor;
+                : getBorderColor();
       }
       g2d.setColor(finalBorderColor);
       
       // if we are not filling the shape with color we need to ensure that we track the outline (e.g. with schematic symbols)
-      if (bodyColor == null)
+      if (getBodyColor() == null)
         drawingObserver.startTracking();
         
       g2d.draw(shape);
       
-      if (bodyColor == null)
+      if (getBodyColor() == null)
         drawingObserver.stopTracking();
       
       if (decorateAboveBorder()) {

@@ -307,6 +307,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Core' property to 'Radial Inductor' component that allows selection between Ferrite and Air core inductor models'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Envelope' property to tube symbol components which can be used to display one side of the outer envelope dashed indicating section A or section B of a tube</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
