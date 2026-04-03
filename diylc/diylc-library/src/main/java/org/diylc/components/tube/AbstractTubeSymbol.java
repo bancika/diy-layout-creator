@@ -63,6 +63,7 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   protected Orientation orientation = Orientation.DEFAULT;
   protected SymbolFlipping flip = SymbolFlipping.NONE;
   protected Point2D[] controlPoints;
+  protected TubeEnvelope envelope = TubeEnvelope.FULL;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -92,7 +93,16 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(body[1]);
 
-    if (body[2] != null) {
+    if (body.length > 3) {
+      if (body[3] != null) {
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(body[3]);
+      }
+      if (body[4] != null) {
+        g2d.setStroke(new java.awt.BasicStroke(1f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] {4f}, 6f));
+        g2d.draw(body[4]);
+      }
+    } else if (body.length > 2 && body[2] != null) {
       g2d.draw(body[2]);
     }
 
@@ -213,6 +223,19 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
     this.body = null;
   }
 
+  @EditableProperty(name = "Envelope")
+  public TubeEnvelope getEnvelope() {
+    if (envelope == null) {
+      envelope = TubeEnvelope.FULL;
+    }
+    return envelope;
+  }
+
+  public void setEnvelope(TubeEnvelope envelope) {
+    this.envelope = envelope;
+    this.body = null;
+  }
+
   /**
    * Returns transistor shape consisting of 3 parts, in this order: electrodes, connectors, bulb.
    * 
@@ -223,6 +246,26 @@ public abstract class AbstractTubeSymbol extends AbstractComponent<String> {
   protected Shape[] getBody() {
     if (this.body == null) {
       Shape[] newBody = initializeBody();
+      
+      if (this.envelope != TubeEnvelope.FULL && newBody.length >= 3 && newBody[2] != null) {
+        java.awt.geom.Rectangle2D bounds = newBody[2].getBounds2D();
+        Shape[] splitBody = new Shape[5];
+        splitBody[0] = newBody[0];
+        splitBody[1] = newBody[1];
+        splitBody[2] = newBody[2];
+        
+        double bx = bounds.getX();
+        double by = bounds.getY();
+        double bsz = bounds.getWidth();
+        if (this.envelope == TubeEnvelope.SECTION_A) {
+          splitBody[3] = new java.awt.geom.Arc2D.Double(bx, by, bsz, bsz, 90, 180, java.awt.geom.Arc2D.OPEN);
+          splitBody[4] = new java.awt.geom.Arc2D.Double(bx, by, bsz, bsz, 270, 180, java.awt.geom.Arc2D.OPEN);
+        } else {
+          splitBody[3] = new java.awt.geom.Arc2D.Double(bx, by, bsz, bsz, 270, 180, java.awt.geom.Arc2D.OPEN);
+          splitBody[4] = new java.awt.geom.Arc2D.Double(bx, by, bsz, bsz, 90, 180, java.awt.geom.Arc2D.OPEN);
+        }
+        newBody = splitBody;
+      }
       
 //      int pinSpacing = (int) PIN_SPACING.convertToPixels();
       double centerX = this.controlPoints[0].getX();// + pinSpacing * 3;
