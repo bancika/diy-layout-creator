@@ -319,6 +319,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved logic when moving component(s) that have other components stuck with them; in case there are non-sticky control points within the included components, they will be moved along retaining component shape (e.g. wires or curved traces)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Decommission 'Loadline Editor' option from the File menu</description>
 				</org.diylc.appframework.update.Change>
 			</changes>

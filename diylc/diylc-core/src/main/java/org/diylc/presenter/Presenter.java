@@ -1212,6 +1212,28 @@ public class Presenter implements IPlugInPort {
       includeStuckComponents(controlPointMap);
     } else {
       LOG.trace("Component count didn't change, done with expanding.");
+      for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
+        IDIYComponent<?> component = entry.getKey();
+        Set<Integer> selectedPoints = entry.getValue();
+        boolean allStickyIncluded = true;
+        boolean hasSticky = false;
+        for (int i = 0; i < component.getControlPointCount(); i++) {
+          if (component.isControlPointSticky(i)) {
+            hasSticky = true;
+            if (!selectedPoints.contains(i)) {
+              allStickyIncluded = false;
+              break;
+            }
+          }
+        }
+        if (hasSticky && allStickyIncluded) {
+          for (int i = 0; i < component.getControlPointCount(); i++) {
+            if (!component.isControlPointSticky(i)) {
+              selectedPoints.add(i);
+            }
+          }
+        }
+      }
     }
   }
 
