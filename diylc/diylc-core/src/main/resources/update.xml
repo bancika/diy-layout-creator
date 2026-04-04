@@ -319,6 +319,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved editing experience of integer properties (e.g. number of terminals on a tag strip) by using the spinner text field</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved logic when moving component(s) that have other components stuck with them; in case there are non-sticky control points within the included components, they will be moved along retaining component shape (e.g. wires or curved traces)</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

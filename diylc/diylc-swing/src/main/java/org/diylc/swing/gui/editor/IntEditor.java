@@ -21,39 +21,45 @@
 */
 package org.diylc.swing.gui.editor;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-import org.diylc.swingframework.DoubleTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.diylc.common.PropertyWrapper;
 import org.diylc.utils.Constants;
 
-public class IntEditor extends DoubleTextField {
+public class IntEditor extends JSpinner {
 
   private static final long serialVersionUID = 1L;
 
-  private Color oldBg = getBackground();
+  private Color oldBg;
 
   public IntEditor(final PropertyWrapper property) {
-    setLayout(new BorderLayout());
+    super(new SpinnerNumberModel());
+    JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
+    oldBg = editor.getTextField().getBackground();
+    
     if (property.isReadOnly())
       setEnabled(false);
+    
     if (property.getValue() != null)
-      setValue((double) (Integer) property.getValue());
-    addPropertyChangeListener(DoubleTextField.VALUE_PROPERTY, new PropertyChangeListener() {
-
+      setValue((Integer) property.getValue());
+      
+    addChangeListener(new ChangeListener() {
       @Override
-      public void propertyChange(PropertyChangeEvent evt) {
+      public void stateChanged(ChangeEvent e) {
         property.setChanged(true);
-        setBackground(oldBg);
-        property.setValue(evt.getNewValue() == null ? null : ((Double) evt.getNewValue()).intValue());
+        editor.getTextField().setBackground(oldBg);
+        property.setValue((Integer) getValue());
       }
     });
+    
     if (!property.isUnique()) {
-      setBackground(Constants.MULTI_VALUE_COLOR);
+      editor.getTextField().setBackground(Constants.MULTI_VALUE_COLOR);
     }
   }
 }
+
