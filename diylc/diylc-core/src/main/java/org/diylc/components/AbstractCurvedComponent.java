@@ -149,7 +149,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
       path.curveTo(p[4].getX(), p[4].getY(), p[5].getX(), p[5].getY(), p[6].getX(), p[6].getY());
     }
 
-    Composite oldComposite = applyAlpha(g2d, componentState);
+    Composite oldComposite = applyAlpha(g2d);
 
     drawCurve(path, g2d, componentState, drawingObserver);
 

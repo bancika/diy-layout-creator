@@ -64,7 +64,7 @@ public class CutLine extends AbstractTransparentComponent<Void> {
         : color);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(w));
 
-    Composite oldComposite = applyAlpha(g2d, componentState);
+    Composite oldComposite = applyAlpha(g2d);
 
     if (getOrientation() == OrientationHV.HORIZONTAL)
       g2d.drawLine((int)point.getX(), (int)point.getY(), (int)point.getX() + l, (int)point.getY());

@@ -41,9 +41,9 @@ import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Toroidal Inductor", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(name = "Inductor (Toroidal)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
-    description = "Ferrite core torroidal inductor mounted vertically", zOrder = IDIYComponent.COMPONENT,
+    description = "Ferrite core toroidal inductor mounted vertically", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
 public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implements IGerberComponentSimple {
 

@@ -319,6 +319,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved rendering of components while being dragged to show only the outline, making it easier to place</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved data model for storing transparency alpha and other properties that are edited using a slider widget; as a result, the editing is more precise and does not randomly change to neighboring values</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
