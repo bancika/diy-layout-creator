@@ -26,6 +26,7 @@ import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JLabel;
 import org.apache.log4j.Logger;
+import org.diylc.common.Percentage;
 import org.diylc.components.misc.LoadlineEntity;
 
 import org.diylc.common.PropertyWrapper;
@@ -99,8 +100,8 @@ public class FieldEditorFactory {
       DynamicValueEditor editor = new DynamicValueEditor(property);
       return editor;
     }
-    if (Byte.class.isAssignableFrom(property.getType()) || byte.class.isAssignableFrom(property.getType())) {
-      ByteEditor editor = new ByteEditor(property);
+    if (Percentage.class.isAssignableFrom(property.getType())) {
+      PercentageEditor editor = new PercentageEditor(property);
       return editor;
     }
     if (Boolean.class.isAssignableFrom(property.getType()) || boolean.class.isAssignableFrom(property.getType())) {

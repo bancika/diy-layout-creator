@@ -349,10 +349,8 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
               : getColor().darker();
     }
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
+    Composite alphaComposite = g2d.getComposite();
 
     int commonPinCount = 2;
     int secondLevelStart = 2 * configuration.getPositionCount() + commonPinCount;
@@ -365,8 +363,10 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
         drawingObserver.startTracking();
         g2d.fill(body[i]);
         drawingObserver.stopTracking();
+        g2d.setComposite(oldComposite);
         g2d.setColor(outlineMode ? finalBorderColor : pinColor.darker());
         g2d.draw(body[i]);
+        g2d.setComposite(alphaComposite);
       }
       drawingObserver.stopTrackingContinuityArea();
     }
@@ -380,7 +380,9 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     }
 
     g2d.setColor(finalBorderColor);
+    g2d.setComposite(oldComposite);
     g2d.draw(body[0]);
+    g2d.setComposite(alphaComposite);
 
     // Draw pins
     for (int i = 1; i <= secondLevelStart; i++) {
@@ -389,8 +391,10 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
       g2d.fill(body[i]);
       drawingObserver.stopTrackingContinuityArea();
       if (!outlineMode) {
-        g2d.setColor(outlineMode ? finalBorderColor : pinColor.darker());
+        g2d.setComposite(oldComposite);
+        g2d.setColor(pinColor.darker());
         g2d.draw(body[i]);
+        g2d.setComposite(alphaComposite);
       }
     }
 

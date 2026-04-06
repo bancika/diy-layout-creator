@@ -107,10 +107,7 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
         svgDiagram.getWidth() * scaleX, svgDiagram.getHeight() * scaleY))) {
       return;
     }
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     double x;
     double y;
@@ -229,7 +226,7 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
     this.svgDiagram = null;
   }
 
-  @PercentEditor(_100PercentValue = 25)
+  @PercentEditor(minValue = 0, maxValue = 1000)
   @EditableProperty(defaultable = false)
   public byte getScale() {
     if (scale != null) {

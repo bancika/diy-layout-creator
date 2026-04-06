@@ -128,10 +128,7 @@ public class Image extends AbstractTransparentComponent<Void> {
         .getIconHeight() * scaleY))) {
       return;
     }
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     
     double x;
     double y;
@@ -242,7 +239,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     }
   }
 
-  @PercentEditor(_100PercentValue = 25)
+  @PercentEditor(minValue = 1, maxValue = 1000)
   @EditableProperty(defaultable = false)
   public byte getScale() {
     if (scale != null) {

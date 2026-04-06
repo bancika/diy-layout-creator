@@ -22,24 +22,46 @@
 package org.diylc.components;
 
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.ComponentState;
+import org.diylc.common.Percentage;
+
+import java.awt.*;
 
 public abstract class AbstractTransparentComponent<T> extends AbstractComponent<T> {
 
   private static final long serialVersionUID = 1L;
 
-  public static byte MAX_ALPHA = 127;
+  public static byte MAX_ALPHA_LEGACY = Byte.MAX_VALUE;
+  public static int MAX_ALPHA = 100;
 
-  protected Byte alpha = MAX_ALPHA;
+  @Deprecated
+  protected Byte alpha;
 
-  @EditableProperty
-  public Byte getAlpha() {
-    if (alpha == null) {
-      alpha = MAX_ALPHA;
+  protected Percentage alphaPercent = new Percentage(100);
+
+  @EditableProperty(name = "Alpha")
+  public Percentage getAlpha() {
+    if (alphaPercent == null) {
+      if (alpha != null) {
+        alphaPercent = new Percentage(Math.round(100f * alpha / MAX_ALPHA_LEGACY));
+        alpha = null;
+      } else {
+        alphaPercent = new Percentage(100);
+      }
     }
-    return alpha;
+    return alphaPercent;
   }
 
-  public void setAlpha(Byte alpha) {
-    this.alpha = alpha;
+  public void setAlpha(Percentage alphaPercent) {
+    this.alphaPercent = alphaPercent;
+  }
+
+  public Composite applyAlpha(Graphics2D g2d, ComponentState componentState) {
+    Composite oldComposite = g2d.getComposite();
+    int alpha = componentState == ComponentState.DRAGGING ? 0 : getAlpha().getValue();
+    if (alpha < MAX_ALPHA) {
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 100f));
+    }
+    return oldComposite;
   }
 }

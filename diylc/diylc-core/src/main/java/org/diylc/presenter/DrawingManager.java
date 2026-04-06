@@ -68,7 +68,7 @@ import org.diylc.utils.Constants;
 public class DrawingManager {
 
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
-  public static final byte MIRROR_ALPHA = 64;
+  public static final Percentage MIRROR_ALPHA = new Percentage(50);
 
   public static int CONTROL_POINT_SIZE = 7;
   public static double EXTRA_SPACE = 0.25;

@@ -26,6 +26,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Percentage;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -46,13 +47,7 @@ public class Ellipse extends AbstractShapeWithDimensions {
       IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((int) borderThickness.convertToPixels()));
 
-    float alpha = this.alpha;
-    if (componentState == ComponentState.DRAGGING)
-      alpha = 0;
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(color);
     g2d.fillOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()));
     g2d.setComposite(oldComposite);

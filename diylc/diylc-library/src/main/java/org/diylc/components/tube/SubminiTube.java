@@ -306,10 +306,7 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
     }
     int pinSize = (int) LEAD_THICKNESS.convertToPixels() / 2 * 2;
     Shape mainArea = getBody()[0];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(mainArea);
 

@@ -165,10 +165,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
           new Ellipse2D.Double((getFlipStanding() ? getPoints()[1] : getPoints()[0]).getX() - width / 2,
               (getFlipStanding() ? getPoints()[1] : getPoints()[0]).getY() - width / 2, width, width);
       shapeRect = body.getBounds();
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getStandingBodyColor());
       g2d.fill(body);
       g2d.setComposite(oldComposite);           
@@ -255,10 +252,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       g2d.translate((getPoints()[0].getX() + getPoints()[1].getX() - length) / 2, (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2);
       g2d.rotate(theta, length / 2, width / 2);
       // Draw body.
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
       if (getBodyColor() != null) {
         g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
         
@@ -440,10 +434,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
         break;
     }
 
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     if (shouldShadeLeads()) {     
       Shape lineShape = stroke.createStrokedShape(line);
       

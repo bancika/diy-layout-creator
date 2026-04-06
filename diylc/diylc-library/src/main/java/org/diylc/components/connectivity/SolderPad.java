@@ -91,10 +91,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
       gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
       gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
     }
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,

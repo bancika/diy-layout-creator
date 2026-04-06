@@ -79,10 +79,7 @@ public class DrillHole extends AbstractTransparentComponent<Void>
       gerberDrawingObserver.startGerberOutput(drillLayer, GerberFunctions.COMPONENT_DRILL, false);
     }
     
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     // Draw white circle (hole)
     g2d.setColor(Color.white);

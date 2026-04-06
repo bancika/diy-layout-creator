@@ -76,9 +76,7 @@ public class MarshallPerfBoard extends AbstractBoard {
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
     if (componentState != ComponentState.DRAGGING) {
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      applyAlpha(g2d, componentState);
       double x = firstPoint.getX();
       double y = firstPoint.getY();
       int holeDiameter = getClosestOdd((int) HOLE_SIZE.convertToPixels());

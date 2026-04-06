@@ -98,10 +98,7 @@ public class HumbuckerPickup extends AbstractGuitarPickup {
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : color);
     if (getType() != HumbuckerType.Filtertron) {
       drawingObserver.startTracking();

@@ -31,15 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.log4j.Logger;
+import org.diylc.common.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import org.diylc.common.Display;
-import org.diylc.common.HorizontalAlignment;
-import org.diylc.common.Orientation;
-import org.diylc.common.OrientationHV;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.boards.AbstractBoard;
@@ -673,7 +669,7 @@ public class V1FileParser implements IOldFileParser {
             ((AbstractLeadedComponent<?>) component).setDisplay(Display.NAME);
           }
           if (component instanceof AbstractTransparentComponent<?>) {
-            ((AbstractTransparentComponent<?>) component).setAlpha((byte) 100);
+            ((AbstractTransparentComponent<?>) component).setAlpha(new Percentage(100));
           }
           project.getComponents().add(component);
         }

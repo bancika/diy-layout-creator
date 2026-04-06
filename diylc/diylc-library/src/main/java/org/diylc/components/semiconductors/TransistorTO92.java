@@ -37,6 +37,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Percentage;
 import org.diylc.components.transform.TO92Transformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -72,7 +73,7 @@ public class TransistorTO92 extends AbstractTransistorPackage {
   public TransistorTO92() {
     super();
     updateControlPoints();
-    alpha = (byte) 100;
+    this.alphaPercent = new Percentage(100);
     bodyColor = BODY_COLOR;
     borderColor = BORDER_COLOR;
   }
@@ -202,10 +203,7 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     }
     
     Area mainArea = getBody()[0];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     drawingObserver.startTracking();
     g2d.fill(mainArea);

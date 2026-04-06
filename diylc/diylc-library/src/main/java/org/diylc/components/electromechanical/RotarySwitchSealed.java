@@ -174,10 +174,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
 
     // Draw body
     Shape[] body = getBody();
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     if (componentState != ComponentState.DRAGGING) {
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getColor());
       g2d.fill(body[0]);

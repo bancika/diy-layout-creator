@@ -27,6 +27,7 @@ import com.bancika.gerberwriter.GerberFunctions;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.PCBLayer;
+import org.diylc.common.Percentage;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.LineEndingStyle;
@@ -126,7 +127,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   public void setValue(Void value) {}
 
   @Override
-  public void setAlpha(Byte alpha) {
+  public void setAlpha(Percentage alpha) {
     super.setAlpha(alpha);
   }
   

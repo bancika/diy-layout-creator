@@ -61,10 +61,7 @@ public class TriPadBoard extends AbstractVeroBoard implements ILayeredComponent 
     }
     super.draw(g2d, componentState, outlineMode, project, drawingObserver);
     if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
       double x = firstPoint.getX();
       double y = firstPoint.getY();
       int stripSize = getClosestOdd((int) STRIP_SIZE.convertToPixels());

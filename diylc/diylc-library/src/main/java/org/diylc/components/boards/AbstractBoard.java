@@ -88,12 +88,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
     Point2D finalSecondPoint = getFinalSecondPoint();
 
-    Composite oldComposite = g2d.getComposite();
-    // render as transparent when dragging
-    int alpha = componentState == ComponentState.DRAGGING ? 0 : this.alpha;
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(boardColor);
     g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     g2d.setComposite(oldComposite);

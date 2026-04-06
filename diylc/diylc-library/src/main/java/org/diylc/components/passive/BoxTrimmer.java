@@ -110,10 +110,7 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     }
 
     // Draw body
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fillRoundRect(bodyX, bodyY, bodyW, bodyH, bodyW / 10, bodyH / 10);
     g2d.setComposite(oldComposite);

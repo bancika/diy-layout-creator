@@ -67,10 +67,7 @@ public class Turret extends AbstractTransparentComponent<String> {
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     int diameter = getClosestOdd((int) size.convertToPixels());
     int holeDiameter = getClosestOdd((int) holeSize.convertToPixels());
     g2d.setColor(color);

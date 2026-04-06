@@ -38,6 +38,7 @@ import java.text.DecimalFormat;
 import org.diylc.common.Display;
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Percentage;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
@@ -276,7 +277,7 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
   }
 
   @Override
-  public Byte getAlpha() {
+  public Percentage getAlpha() {
     return super.getAlpha();
   }
 

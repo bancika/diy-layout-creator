@@ -34,12 +34,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
-import org.diylc.common.Display;
-import org.diylc.common.HorizontalAlignment;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
-import org.diylc.common.VerticalAlignment;
+import org.diylc.common.*;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.RoundedPolygon;
 import org.diylc.components.AbstractLeadedComponent.LabelOriantation;
@@ -117,7 +112,7 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
   public BridgeRectifier() {
     super();
     updateControlPoints();
-    alpha = 100;
+    this.alphaPercent = new Percentage(100);
   }
 
   @EditableProperty
@@ -380,10 +375,7 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
       }
     }
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);

@@ -84,10 +84,7 @@ public class GroundFill extends AbstractTransparentComponent<Void>
       yPoints[i] = (int)controlPoints[i].getY();
     }
     drawingObserver.startTrackingContinuityArea(true);
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
     g2d.setComposite(oldComposite);
     drawingObserver.stopTrackingContinuityArea();

@@ -121,10 +121,7 @@ public class Freeway3x3_05 extends AbstractTransparentComponent<Void> implements
       g2d.rotate(theta, x, y);
     }
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     double offsetX = getXOffsetsPx()[0];
     double offsetY = getYOffsetsPx()[0];

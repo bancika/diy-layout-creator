@@ -27,5 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)  
 public @interface PercentEditor {
   
-  public byte _100PercentValue();
+  public int minValue() default 0;
+
+  public int maxValue() default 100;
 }

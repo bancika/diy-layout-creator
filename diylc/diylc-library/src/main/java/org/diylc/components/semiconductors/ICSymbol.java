@@ -86,10 +86,7 @@ public class ICSymbol extends AbstractTransparentComponent<String> {
       return;
     }
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     Shape[] body = getBody();
 

@@ -31,10 +31,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
-import org.diylc.common.Display;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.ObjectCache;
-import org.diylc.common.Orientation;
+import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -97,7 +94,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   public DIPSwitch() {
     super();
     updateControlPoints();
-    alpha = (byte) 100;
+    this.alphaPercent = new Percentage(100);
   }
 
   @EditableProperty
@@ -348,10 +345,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
             pinWidth, pinHeight);
       }
     }
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);

@@ -97,7 +97,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
   public AudioTransformer() {
     super();
     updateControlPoints();
-    alpha = 100;
+//    alpha = 100;
   }
 
   @EditableProperty
@@ -276,10 +276,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
         g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     }
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     
     // render coil
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getCoilColor());

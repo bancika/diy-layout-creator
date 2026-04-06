@@ -35,6 +35,7 @@ import org.apache.poi.util.IOUtils;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
+import org.diylc.common.*;
 import org.diylc.components.connectivity.Dot;
 import org.diylc.components.connectivity.Line;
 import org.diylc.components.misc.Image;
@@ -47,12 +48,6 @@ import org.diylc.swingframework.DoubleTextField;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import org.diylc.common.EventType;
-import org.diylc.common.HorizontalAlignment;
-import org.diylc.common.IPlugIn;
-import org.diylc.common.IPlugInPort;
-import org.diylc.common.PropertyWrapper;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractCurvedComponent.PointCount;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
@@ -687,7 +682,7 @@ public class LoadlineEditorFrame extends JFrame implements IView {
           image.setControlPoint(new Point((int) spacing, (int) spacing), 0);
           image.setControlPoint(new Point((int) (canvasDimensions.width - spacing),
               (int) (canvasDimensions.height - spacing)), 1);
-          image.setAlpha((byte) 50); // make it transparent
+          image.setAlpha(new Percentage(50)); // make it transparent
           fis.close();
           // add to the bottom
           project.getComponents().add(0, image);

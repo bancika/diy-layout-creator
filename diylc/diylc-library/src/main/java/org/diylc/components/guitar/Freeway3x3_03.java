@@ -146,10 +146,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
     List<Shape> labels = getLabels();
     Shape caseShape = getCase();
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
 
     AffineTransform oldTx = new AffineTransform(g2d.getTransform());
 

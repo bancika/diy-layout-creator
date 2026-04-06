@@ -240,10 +240,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
 
     // draw main area
     Area mainArea = getBody()[0];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
@@ -269,9 +266,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
     Area contactArea = getBody()[1];
     if (!outlineMode) {
       g2d.setColor(PIN_COLOR);
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      applyAlpha(g2d, componentState);
       g2d.fill(contactArea);
       g2d.setComposite(oldComposite);
     }

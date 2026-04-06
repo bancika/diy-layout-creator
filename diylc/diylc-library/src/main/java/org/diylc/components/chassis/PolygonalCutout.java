@@ -66,10 +66,7 @@ public class PolygonalCutout extends AbstractShape {
       yPoints[i] = (int)controlPoints[i].getY();
     }
 
-    Composite oldComposite = g2d.getComposite();
-    if (this.alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(3, 1.0F * this.alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
     g2d.setComposite(oldComposite);
 

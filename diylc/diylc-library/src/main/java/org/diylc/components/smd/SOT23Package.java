@@ -266,8 +266,8 @@ package org.diylc.components.smd;
 //    // draw main area
 //    Area mainArea = getBody()[0];
 //    Composite oldComposite = g2d.getComposite();
-//    if (alpha < MAX_ALPHA) {
-//      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+//    if (getAlpha().getValue() < MAX_ALPHA) {
+//      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getAlpha().getValue() /  100f));
 //    }
 //    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
 //    g2d.fill(mainArea);
@@ -294,8 +294,8 @@ package org.diylc.components.smd;
 //    Area contactArea = getBody()[1];
 //    if (!outlineMode) {
 //      g2d.setColor(PIN_COLOR);
-//      if (alpha < MAX_ALPHA) {
-//        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
+//      if (getAlpha().getValue() < MAX_ALPHA) {
+//        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getAlpha().getValue() /  100f));
 //      }
 //      g2d.fill(contactArea);
 //      g2d.setComposite(oldComposite);

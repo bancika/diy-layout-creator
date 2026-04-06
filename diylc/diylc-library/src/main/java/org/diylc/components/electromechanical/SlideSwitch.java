@@ -234,11 +234,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
         Constants.DEFAULT_THEME);
     // Draw body if available.
     if (body != null) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(
-            AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
 
       if (getShowBracket()) {
         g2d.setColor(getBracketColor());

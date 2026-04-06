@@ -79,10 +79,7 @@ public class TraceCut extends AbstractTransparentComponent<Void> implements ILay
     if (checkPointsClipped(g2d.getClip())) {
       return;
     }
-    Composite oldComposite = g2d.getComposite();
-    if (getAlpha() < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * getAlpha() / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     int size = getClosestOdd((int) this.size.convertToPixels());
     int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());

@@ -59,10 +59,7 @@ public class ChassisPanel extends AbstractShape {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((int) borderThickness.convertToPixels()));
     int radius = (int) edgeRadius.convertToPixels();
     if (componentState != ComponentState.DRAGGING) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(color);
       if (radius == 0) {
         g2d.fillRect((int) firstPoint.getX(), (int) firstPoint.getY(),

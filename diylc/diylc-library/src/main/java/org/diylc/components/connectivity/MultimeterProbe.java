@@ -32,6 +32,7 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation45;
+import org.diylc.common.Percentage;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.*;
@@ -67,7 +68,7 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
   private transient Shape[] body = null;
 
   public MultimeterProbe() {
-    this.alpha = (byte) (MAX_ALPHA / 2);
+    this.alphaPercent = new Percentage(50);
   }
 
   @Override
@@ -85,11 +86,7 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
         (int) (sensitivity * 2), (int) (sensitivity * 2));
     drawingObserver.stopTrackingContinuityArea();
 
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(
-          AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : PROBE_COLOR);
     g2d.fill(shapes[0]);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : handleColor);

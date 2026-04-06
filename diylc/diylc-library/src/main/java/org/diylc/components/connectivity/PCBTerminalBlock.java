@@ -206,11 +206,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
         Constants.DEFAULT_THEME);
     // Draw body if available.
     if (body != null) {
-      Composite oldComposite = g2d.getComposite();
-      if (alpha < MAX_ALPHA) {
-        g2d.setComposite(
-            AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-      }
+      Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
       g2d.fill(body[0]);
       // Do not track these changes because the whole switch has been tracked

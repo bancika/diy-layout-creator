@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Percentage;
 import org.nfunk.jep.JEP;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -83,9 +84,7 @@ import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.Presenter;
-import org.diylc.serialization.IOldFileParser;
 import org.diylc.utils.Constants;
-
 
 public class V2FileParser implements IOldFileParser {
 
@@ -142,9 +141,9 @@ public class V2FileParser implements IOldFileParser {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         if (node.getNodeName().equalsIgnoreCase("component")) {
           LOG.debug(node.getAttributes().getNamedItem("name").getNodeValue());
-          NodeList unuci = node.getChildNodes();
-          Node properties = unuci.item(1);
-          Node points = unuci.item(3);
+          NodeList grandchildNodes = node.getChildNodes();
+          Node properties = grandchildNodes.item(1);
+          Node points = grandchildNodes.item(3);
 
           NodeList propertyList = properties.getChildNodes();
           NodeList pointList = points.getChildNodes();
@@ -174,7 +173,6 @@ public class V2FileParser implements IOldFileParser {
               // // gives Name Part# Thickness Color Group
               if (propertyList.item(j).getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("color")) {
                 String color = propertyList.item(j).getAttributes().getNamedItem("value").getNodeValue();
-                System.out.println(color);
                 String hex_r = color.substring(0, 2);
                 int value_r = Integer.parseInt(hex_r, 16);
                 String hex_g = color.substring(2, 4);
@@ -234,7 +232,7 @@ public class V2FileParser implements IOldFileParser {
               } else if (propertyList.item(j).getAttributes().getNamedItem("name").getNodeValue()
                   .equalsIgnoreCase("Value")) {
                 String pr8 = propertyList.item(j).getAttributes().getNamedItem("value").getNodeValue();
-                if (pr8 != "") {
+                if (!pr8.isEmpty()) {
                   value_s = pr8;
                   String pr9 = pr8.replaceAll("[^0-9.]", "");
                   String pr10 = pr8.replaceAll("[^a-zA-Z]", "");
@@ -287,7 +285,7 @@ public class V2FileParser implements IOldFileParser {
             if (cl != null) {
               board.setBoardColor(cl);
             }
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               board.setName(com_name);
             } else {
               board.setName("Main board");
@@ -298,7 +296,7 @@ public class V2FileParser implements IOldFileParser {
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Perfboard")) {
             PerfBoard board = new PerfBoard();
             board.setBoardColor(Color.white);
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               board.setName(com_name);
             } else {
               board.setName("Main board");
@@ -309,7 +307,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(board);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Copper Trace")) {
             CopperTrace trace = new CopperTrace();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               trace.setName(com_name);
             } else {
               trace.setName("t");
@@ -324,7 +322,7 @@ public class V2FileParser implements IOldFileParser {
 
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Copper Trace Curved")) {
             CurvedTrace trace = new CurvedTrace();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               trace.setName(com_name);
             } else {
               trace.setName("t");
@@ -340,7 +338,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(trace);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Eyelet")) {
             Eyelet eyelet = new Eyelet();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               eyelet.setName(com_name);
             } else {
               eyelet.setName("eyelet");
@@ -350,7 +348,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(eyelet);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Solder pad")) {
             SolderPad pad = new SolderPad();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               pad.setName(com_name);
             } else
               pad.setName("pad");
@@ -363,7 +361,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(pad);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Stripboard")) {
             VeroBoard board = new VeroBoard();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               board.setName(com_name);
             } else {
               board.setName("Main board");
@@ -374,7 +372,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(board);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Trace Cut")) {
             TraceCut cut = new TraceCut();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               cut.setName(com_name);
             } else
               cut.setName("cut");
@@ -383,7 +381,7 @@ public class V2FileParser implements IOldFileParser {
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Switch")) {
             MiniToggleSwitch sw = new MiniToggleSwitch();
             sw.setValue(ToggleSwitchType.DPDT);
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               sw.setName(com_name);
             } else
               sw.setName("sw");
@@ -416,7 +414,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(sw);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Wire")) {
             HookupWire hw = new HookupWire();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               hw.setName(com_name);
             } else
               hw.setName("hookup_wire");
@@ -472,11 +470,11 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(hw);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Electrolytic (Axial)")) {
             AxialElectrolyticCapacitor capacitor = new AxialElectrolyticCapacitor();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               capacitor.setName(com_name);
             } else
               capacitor.setName("A_E_C");
-            capacitor.setAlpha((byte) transparency);
+            capacitor.setAlpha(new Percentage(transparency));
             if (value != -9999) {
               capacitor.setValue(new Capacitance(value, cp));
             }
@@ -492,10 +490,10 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(capacitor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Capacitor (Axial)")) {
             AxialFilmCapacitor capacitor = new AxialFilmCapacitor();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               capacitor.setName(com_name);
             }
-            capacitor.setAlpha((byte) transparency);
+            capacitor.setAlpha(new Percentage(transparency));
             if (value != -9999) {
               capacitor.setValue(new Capacitance(value, cp));
             } else
@@ -512,11 +510,11 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(capacitor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Capacitor (Ceramic)")) {
             RadialCeramicDiskCapacitor capacitor = new RadialCeramicDiskCapacitor();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               capacitor.setName(com_name);
             } else
               capacitor.setName("Radial_Ceramic_Capacitor");
-            capacitor.setAlpha((byte) transparency);
+            capacitor.setAlpha(new Percentage(transparency));
             if (value != -9999) {
               capacitor.setValue(new Capacitance(value, cp));
             }
@@ -532,11 +530,11 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(capacitor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Capacitor (Radial)")) {
             RadialFilmCapacitor capacitor = new RadialFilmCapacitor();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               capacitor.setName(com_name);
             } else
               capacitor.setName("Radial_Film_Capacitor");
-            capacitor.setAlpha((byte) transparency);
+            capacitor.setAlpha(new Percentage(transparency));
             if (value != -9999) {
               capacitor.setValue(new Capacitance(value, cp));
             }
@@ -552,28 +550,28 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(capacitor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Electrolytic (Radial)")) {
             RadialElectrolytic capacitor = new RadialElectrolytic();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               capacitor.setName(com_name);
             } else
               capacitor.setName("Radial_Electrolytic_Capacitor");
             if (value != -9999) {
               capacitor.setValue(new Capacitance(value, cp));
             }
-            capacitor.setAlpha((byte) transparency);
+            capacitor.setAlpha(new Percentage(transparency));
             capacitor.setLength(diameterPro);            
             capacitor.setControlPoint(tacke.get(0), 0);
             capacitor.setControlPoint(tacke.get(1), 1);
             project.getComponents().add(capacitor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Potentiometer Lug")) {
             PotentiometerPanel panel = new PotentiometerPanel();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               panel.setName(com_name);
             } else
               panel.setName("potentiometer_panel");
             if (value != -9999) {
               panel.setValue(new Resistance(value, ru));
             }
-            panel.setAlpha((byte) transparency);
+            panel.setAlpha(new Percentage(transparency));
             if (angle > 45 && angle <= 135)
               panel.setOrientation(Orientation._90);
             else if (angle > 135 && angle <= 225)
@@ -592,14 +590,14 @@ public class V2FileParser implements IOldFileParser {
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Resistor")
               || node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Resistor Standing")) {
             Resistor resistor = new Resistor();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               resistor.setName(com_name);
             } else
               resistor.setName("resistor");
             if (value != -9999) {
               resistor.setValue(new Resistance(value, ru));
             }
-            resistor.setAlpha((byte) transparency);
+            resistor.setAlpha(new Percentage(transparency));
             resistor.setWidth(diameterPro);
             if (lengthPro.getValue() != 0) {
               resistor.setLength(lengthPro);
@@ -609,7 +607,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(resistor);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Capacitor Symbol")) {
             CapacitorSymbol cap = new CapacitorSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               cap.setName(com_name);
             } else
               cap.setName("cap_simbol");
@@ -625,7 +623,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(cap);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Diode Symbol")) {
             DiodeSymbol dio = new DiodeSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               dio.setName(com_name);
             } else
               dio.setName("dp");
@@ -639,7 +637,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(dio);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Ground Symbol")) {
             GroundSymbol gs = new GroundSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               gs.setName(com_name);
             } else
               gs.setName("gs");
@@ -648,11 +646,11 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(gs);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("LED Symbol")) {
             LEDSymbol ls = new LEDSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ls.setName(com_name);
             } else
               ls.setName("ls");
-            if (value_s != "") {
+            if (!value_s.isEmpty()) {
               ls.setValue(value_s);
             }
             ls.setBodyColor(cl);
@@ -662,12 +660,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ls);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Pentode")) {
             PentodeSymbol ps = new PentodeSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ps.setName(com_name);
             } else
               ps.setName("ps");
             ps.setColor(cl);
-            if (value_s != "")
+            if (!value_s.isEmpty())
               ps.setValue(value_s);
 
             Point point;
@@ -678,7 +676,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ps);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Electrolytic Symbol")) {
             CapacitorSymbol cs = new CapacitorSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               cs.setName(com_name);
             } else
               cs.setName("cs");
@@ -694,13 +692,13 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(cs);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Opamp Symbol")) {
             ICSymbol ic = new ICSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ic.setName(com_name);
             } else
               ic.setName("ics");
-            if (value_s != "")
+            if (!value_s.isEmpty())
               ic.setValue(value_s);
-            ic.setAlpha((byte) transparency);
+            ic.setAlpha(new Percentage(transparency));
             Point point;
             int x = (int) (tacke.get(0).getX() - 70);
             int y = (int) tacke.get(0).getY() - 20;
@@ -710,12 +708,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ic);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Potentiometer Symbol")) {
             PotentiometerSymbol ps = new PotentiometerSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ps.setName(com_name);
             } else
               ps.setName("ps");
             ps.setOrientation(Orientation._270);
-            if (value_s != "")
+            if (!value_s.isEmpty())
               ps.setValue(value_s);
             ps.setColor(cl);
             Point point;
@@ -730,7 +728,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ps);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Resistor Symbol")) {
             ResistorSymbol rs = new ResistorSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               rs.setName(com_name);
             } else
               rs.setName("rs");
@@ -746,11 +744,11 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(rs);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Triode")) {
             TriodeSymbol ts = new TriodeSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ts.setName(com_name);
             } else
               ts.setName("ts");
-            if (value_s != "") {
+            if (!value_s.isEmpty()) {
               ts.setValue(value_s);
             }
             ts.setColor(cl);
@@ -762,14 +760,14 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ts);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Diode")) {
             DiodePlastic dp = new DiodePlastic();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               dp.setName(com_name);
             } else
               dp.setName("dp");
-            if (value_s != "") {
+            if (!value_s.isEmpty()) {
               dp.setValue(value_s);
             }
-            dp.setAlpha((byte) transparency);
+            dp.setAlpha(new Percentage(transparency));
             if (display.equals("Name"))
               dp.setDisplay(Display.NAME);
             else
@@ -781,7 +779,7 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(dp);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("IC DIL")) {
             DIL_IC dil = new DIL_IC();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               dil.setName(com_name);
             } else
               dil.setName("dil");
@@ -793,8 +791,6 @@ public class V2FileParser implements IOldFileParser {
               dil.setPinCount(PinCount._8);
             else if (pins == 10)
               dil.setPinCount(PinCount._10);
-            else if (pins == 12)
-              dil.setPinCount(PinCount._12);
             else if (pins == 12)
               dil.setPinCount(PinCount._12);
             else if (pins == 14)
@@ -835,8 +831,8 @@ public class V2FileParser implements IOldFileParser {
               dil.setPinCount(PinCount._48);
             else if (pins == 50)
               dil.setPinCount(PinCount._50);
-            dil.setAlpha((byte) transparency);
-            if (value_s != "")
+            dil.setAlpha(new Percentage(transparency));
+            if (!value_s.isEmpty())
               dil.setValue(value_s);
             dil.setRowSpacing(spacingPro);
             dil.setControlPoint(tacke.get(0), 0);
@@ -844,12 +840,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(dil);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Transistor")) {
             TransistorTO92 trans = new TransistorTO92();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               trans.setName(com_name);
             } else
               trans.setName("tr");
-            trans.setAlpha((byte) transparency);
-            if (value_s != "") {
+            trans.setAlpha(new Percentage(transparency));
+            if (!value_s.isEmpty()) {
               trans.setValue(value_s);
             }
             trans.setPinSpacing(new Size(0.1, SizeUnit.in));
@@ -898,7 +894,7 @@ public class V2FileParser implements IOldFileParser {
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Ellipse")) {
             Ellipse el = new Ellipse();
             el.setName("elipse");
-            el.setAlpha((byte) transparency);
+            el.setAlpha(new Percentage(transparency));
             el.setColor(cl);
             el.setControlPoint(tacke.get(0), 0);
             el.setControlPoint(tacke.get(1), 1);
@@ -915,19 +911,19 @@ public class V2FileParser implements IOldFileParser {
             Rectangle rec = new Rectangle();
             rec.setName("rec");
             rec.setColor(cl);
-            rec.setAlpha((byte) transparency);
+            rec.setAlpha(new Percentage(transparency));
             rec.setEdgeRadius(radiusPro);
             rec.setControlPoint(tacke.get(0), 0);
             rec.setControlPoint(tacke.get(1), 1);
             project.getComponents().add(rec);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Noval Tube Socket")) {
             TubeSocket ts = new TubeSocket();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ts.setName(com_name);
             } else
               ts.setName("ts");
-            ts.setAlpha((byte) transparency);
-            if (value_s != "")
+            ts.setAlpha(new Percentage(transparency));
+            if (!value_s.isEmpty())
               ts.setValue(value_s);
             ts.setAngle(Angle.of((int) angle));
             ts.setControlPoint(tacke.get(0), 0);
@@ -935,12 +931,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ts);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("BJT Transistor")) {
             BJTSymbol bjt = new BJTSymbol();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               bjt.setName(com_name);
             } else
               bjt.setName("bjt");
             bjt.setColor(cl);
-            if (value_s != "")
+            if (!value_s.isEmpty())
               bjt.setValue(value_s);
             if (angle <= 45 || angle > 315)
               bjt.setOrientation(Orientation.DEFAULT);
@@ -958,12 +954,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(bjt);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("Octal Tube Socket")) {
             TubeSocket ts = new TubeSocket();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ts.setName(com_name);
             } else
               ts.setName("ts");
-            ts.setAlpha((byte) transparency);
-            if (value_s != "")
+            ts.setAlpha(new Percentage(transparency));
+            if (!value_s.isEmpty())
               ts.setValue(value_s);
             ts.setAngle(Angle.of((int) angle));
             ts.setControlPoint(tacke.get(0), 0);
@@ -971,12 +967,12 @@ public class V2FileParser implements IOldFileParser {
             project.getComponents().add(ts);
           } else if (node.getAttributes().getNamedItem("name").getNodeValue().equalsIgnoreCase("7-pin Tube Socket")) {
             TubeSocket ts = new TubeSocket();
-            if (com_name != "") {
+            if (!com_name.isEmpty()) {
               ts.setName(com_name);
             } else
               ts.setName("ts");
-            ts.setAlpha((byte) transparency);
-            if (value_s != "")
+            ts.setAlpha(new Percentage(transparency));
+            if (!value_s.isEmpty())
               ts.setValue(value_s);
             ts.setAngle(Angle.of((int)angle));
 

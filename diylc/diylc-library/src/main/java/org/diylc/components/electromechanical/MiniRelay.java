@@ -297,10 +297,7 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
       return;
     }
     Area mainArea = getBody()[0];
-    Composite oldComposite = g2d.getComposite();
-    if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f * alpha / MAX_ALPHA));
-    }
+    Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : BODY_COLOR);
     g2d.fill(mainArea);
     g2d.setComposite(oldComposite);
