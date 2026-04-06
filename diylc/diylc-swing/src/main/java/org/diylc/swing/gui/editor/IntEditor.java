@@ -22,11 +22,15 @@
 package org.diylc.swing.gui.editor;
 
 import java.awt.Color;
+import java.text.ParseException;
 
+import javax.swing.AbstractSpinnerModel;
+import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 import org.diylc.common.PropertyWrapper;
 import org.diylc.utils.Constants;
@@ -38,28 +42,109 @@ public class IntEditor extends JSpinner {
   private Color oldBg;
 
   public IntEditor(final PropertyWrapper property) {
-    super(new SpinnerNumberModel());
+    super(new NullableIntModel((Integer) property.getValue()));
+
     JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) getEditor();
-    oldBg = editor.getTextField().getBackground();
-    
+    JFormattedTextField textField = editor.getTextField();
+
+    // Install a formatter that maps empty text to null and vice-versa
+    DefaultFormatter formatter = new DefaultFormatter() {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public Object stringToValue(String text) throws ParseException {
+        if (text == null || text.trim().isEmpty())
+          return null;
+        try {
+          return Integer.valueOf(text.trim());
+        } catch (NumberFormatException e) {
+          throw new ParseException(text, 0);
+        }
+      }
+
+      @Override
+      public String valueToString(Object value) throws ParseException {
+        return value == null ? "" : value.toString();
+      }
+    };
+    formatter.setOverwriteMode(false);
+    textField.setFormatterFactory(new DefaultFormatterFactory(formatter));
+
+    oldBg = textField.getBackground();
+
     if (property.isReadOnly())
       setEnabled(false);
-    
-    if (property.getValue() != null)
-      setValue((Integer) property.getValue());
-      
+
     addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
         property.setChanged(true);
-        editor.getTextField().setBackground(oldBg);
-        property.setValue((Integer) getValue());
+        textField.setBackground(oldBg);
+        property.setValue(getValue());
       }
     });
-    
+
     if (!property.isUnique()) {
-      editor.getTextField().setBackground(Constants.MULTI_VALUE_COLOR);
+      textField.setBackground(Constants.MULTI_VALUE_COLOR);
+    }
+  }
+
+  /**
+   * A spinner model that holds a nullable Integer value.
+   */
+  private static class NullableIntModel extends AbstractSpinnerModel {
+
+    private Integer value;
+    private boolean firing = false;
+
+    NullableIntModel(Integer initialValue) {
+      this.value = initialValue;
+    }
+
+    @Override
+    public Object getValue() {
+      return value;
+    }
+
+    @Override
+    public void setValue(Object val) {
+      if (firing)
+        return;
+
+      Integer newValue;
+      if (val == null) {
+        newValue = null;
+      } else if (val instanceof Integer) {
+        newValue = (Integer) val;
+      } else if (val instanceof Number) {
+        newValue = ((Number) val).intValue();
+      } else if (val instanceof String) {
+        String s = ((String) val).trim();
+        newValue = s.isEmpty() ? null : Integer.valueOf(s);
+      } else {
+        return;
+      }
+
+      if (java.util.Objects.equals(this.value, newValue))
+        return;
+
+      this.value = newValue;
+      firing = true;
+      try {
+        fireStateChanged();
+      } finally {
+        firing = false;
+      }
+    }
+
+    @Override
+    public Object getNextValue() {
+      return value == null ? 1 : value + 1;
+    }
+
+    @Override
+    public Object getPreviousValue() {
+      return value == null ? -1 : value - 1;
     }
   }
 }
-
