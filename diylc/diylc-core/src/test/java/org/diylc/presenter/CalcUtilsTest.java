@@ -235,7 +235,7 @@ public class CalcUtilsTest {
         assertEquals(Color.BLACK.getRed(), result.getRed());
         assertEquals(Color.BLACK.getGreen(), result.getGreen());
         assertEquals(Color.BLACK.getBlue(), result.getBlue());
-        assertEquals(128, result.getAlpha().getValue());
+        assertEquals(128, result.getAlpha());
         
         // Test light color with alpha - should become WHITE
         Color transparentLight = new Color(255, 255, 200, 128);
@@ -243,16 +243,16 @@ public class CalcUtilsTest {
         assertEquals(Color.WHITE.getRed(), result.getRed());
         assertEquals(Color.WHITE.getGreen(), result.getGreen());
         assertEquals(Color.WHITE.getBlue(), result.getBlue());
-        assertEquals(128, result.getAlpha().getValue());
+        assertEquals(128, result.getAlpha());
         
         // Test fully transparent color
         Color transparent = new Color(100, 150, 200, 0);
         result = CalcUtils.convertToMonochrome(transparent);
-        assertEquals(0, result.getAlpha().getValue());
+        assertEquals(0, result.getAlpha());
         
         // Test opaque color - alpha should remain 255
         Color opaque = new Color(50, 50, 50);
         result = CalcUtils.convertToMonochrome(opaque);
-        assertEquals(255, result.getAlpha().getValue());
+        assertEquals(255, result.getAlpha());
     }
 }
