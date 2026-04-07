@@ -319,7 +319,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved rendering of components while being dragged to show only the outline, making it easier to place</description>
+					<description>Uniformized rendering of components while being dragged</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

@@ -30,6 +30,7 @@ import java.awt.*;
 public abstract class AbstractTransparentComponent<T> extends AbstractComponent<T> {
 
   private static final long serialVersionUID = 1L;
+  private static final boolean OUTLINE_MODE_WHILE_DRAGGING = false;
 
   public static byte MAX_ALPHA_LEGACY = Byte.MAX_VALUE;
   public static int MAX_ALPHA = 100;
@@ -58,7 +59,8 @@ public abstract class AbstractTransparentComponent<T> extends AbstractComponent<
 
   public Composite applyAlpha(Graphics2D g2d, ComponentState componentState) {
     Composite oldComposite = g2d.getComposite();
-    int alpha = componentState == ComponentState.DRAGGING ? 0 : getAlpha().getValue();
+    int alpha = (OUTLINE_MODE_WHILE_DRAGGING && componentState == ComponentState.DRAGGING) ? 0 :
+        getAlpha().getValue();
     if (alpha < MAX_ALPHA) {
       g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 100f));
     }
