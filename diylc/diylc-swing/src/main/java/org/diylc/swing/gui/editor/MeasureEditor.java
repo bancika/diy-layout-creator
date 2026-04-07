@@ -68,10 +68,15 @@ public class MeasureEditor extends Container {
       @Override
       public void propertyChange(PropertyChangeEvent evt) {
         try {
-          Constructor<?> ctor = property.getType().getConstructors()[0];
-          AbstractMeasure<?> newMeasure =
-              (AbstractMeasure<?>) ctor.newInstance((Double) evt.getNewValue(), unitBox.getSelectedItem());
-          property.setValue(newMeasure);
+          Double newValue = (Double) evt.getNewValue();
+          if (newValue == null) {
+            property.setValue(null);
+          } else {
+            Constructor<?> ctor = property.getType().getConstructors()[0];
+            AbstractMeasure<?> newMeasure =
+                (AbstractMeasure<?>) ctor.newInstance(newValue, unitBox.getSelectedItem());
+            property.setValue(newMeasure);
+          }
           property.setChanged(true);
           valueField.setBackground(oldBg);
           unitBox.setBackground(oldBg);
@@ -91,18 +96,22 @@ public class MeasureEditor extends Container {
         @Override
         public void actionPerformed(ActionEvent evt) {
           try {
-            Constructor<?> ctor = property.getType().getConstructors()[0];
             Double newValue = valueField.getValue();
-            if (newValue != null && property.isReadOnly()) {
-              double oldFactor = ((Unit)((AbstractMeasure<?>)property.getValue()).getUnit()).getFactor();
-              double newFactor = ((Unit)unitBox.getSelectedItem()).getFactor();
-              newValue = newValue * oldFactor / newFactor;
-              valueField.setValue(newValue);
+            if (newValue == null) {
+              property.setValue(null);
+            } else {
+              Constructor<?> ctor = property.getType().getConstructors()[0];
+              if (property.isReadOnly()) {
+                double oldFactor = ((Unit)((AbstractMeasure<?>)property.getValue()).getUnit()).getFactor();
+                double newFactor = ((Unit)unitBox.getSelectedItem()).getFactor();
+                newValue = newValue * oldFactor / newFactor;
+                valueField.setValue(newValue);
+              }
+              AbstractMeasure<?> newMeasure =
+                  (AbstractMeasure<?>) ctor.newInstance(newValue,
+                      (Enum<? extends Unit>) unitBox.getSelectedItem());
+              property.setValue(newMeasure);
             }
-            AbstractMeasure<?> newMeasure =
-                (AbstractMeasure<?>) ctor.newInstance(newValue,
-                    (Enum<? extends Unit>) unitBox.getSelectedItem());
-            property.setValue(newMeasure);
             property.setChanged(true);
             valueField.setBackground(oldBg);
             unitBox.setBackground(oldBg);

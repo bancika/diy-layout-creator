@@ -323,6 +323,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Ability to blank-out previously populated values for unit-type measures, e.g. resistance, capacitance, dimensions, etc</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved data model for storing transparency alpha and other properties that are edited using a slider widget; as a result, the editing is more precise and does not randomly change to neighboring values</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
