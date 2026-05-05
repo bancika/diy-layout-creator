@@ -357,6 +357,14 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Potentiometer (Miniature)' component with two variations - right-angled and vertically mounted</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Enable all types of potentiometers and jacks for guitar diagram analysis/description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Enable all types of potentiometers and jacks for guitar diagram analysis/description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

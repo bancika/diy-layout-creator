@@ -31,8 +31,7 @@ import javax.swing.JLabel;
 
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.NetlistSwitchPreference;
-import org.diylc.components.electromechanical.ClosedJack1_4;
-import org.diylc.components.electromechanical.OpenJack1_4;
+import org.diylc.components.electromechanical.*;
 import org.diylc.components.guitar.AbstractGuitarPickup;
 import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.JazzBassPickup;
@@ -40,12 +39,7 @@ import org.diylc.components.guitar.P90Pickup;
 import org.diylc.components.guitar.PBassPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.guitar.StingrayBassPickup;
-import org.diylc.components.passive.AxialFilmCapacitor;
-import org.diylc.components.passive.PotentiometerPanel;
-import org.diylc.components.passive.RadialCeramicDiskCapacitor;
-import org.diylc.components.passive.RadialFilmCapacitor;
-import org.diylc.components.passive.RadialMicaCapacitor;
-import org.diylc.components.passive.Resistor;
+import org.diylc.components.passive.*;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistAnalyzer;
@@ -69,8 +63,14 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
   static {
     JACK_TYPES.add(OpenJack1_4.class.getCanonicalName());
     JACK_TYPES.add(ClosedJack1_4.class.getCanonicalName());
+    JACK_TYPES.add(OpenJack1_8.class.getCanonicalName());
+    JACK_TYPES.add(CliffJack1_8.class.getCanonicalName());
+    JACK_TYPES.add(CliffJack1_4.class.getCanonicalName());
+    JACK_TYPES.add(ThonkJack3_5.class.getCanonicalName());
 
     POT_TYPES.add(PotentiometerPanel.class.getCanonicalName());
+    POT_TYPES.add(TrimmerPotentiometer.class.getCanonicalName());
+    POT_TYPES.add(MiniaturePotentiometer.class.getCanonicalName());
 
     PICKUP_TYPES.add(SingleCoilPickup.class.getCanonicalName());
     PICKUP_TYPES.add(HumbuckerPickup.class.getCanonicalName());
