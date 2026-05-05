@@ -359,11 +359,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Enable all types of potentiometers and jacks for guitar diagram analysis/description>
+					<description>Enable all types of potentiometers and jacks for guitar diagram analysis</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Enable all types of potentiometers and jacks for guitar diagram analysis/description>
+					<description>Increase maximum number of switch combination for analysis to 1024</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
