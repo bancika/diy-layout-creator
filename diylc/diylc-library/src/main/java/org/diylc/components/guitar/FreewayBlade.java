@@ -460,15 +460,15 @@ public class FreewayBlade extends AbstractAngledComponent<String> implements ISw
   public String getControlPointNodeName(int index) {
     switch (type) {
       case B3_01: {
-        String[] arr = { "NH", "A", "NG", "OP", "B", "BH", "GD" };
+        String[] arr = { "GD", "BH", "B", "OP", "NG", "A", "NH" };
         return arr[index];
       }
       case B5_01: {
-        String[] arr = { "NG", "NH", "OP", "GD", "B", "A", "MH", "BG", "BT", "BH" };
+        String[] arr = { "BH", "BT", "BG", "MH", "A", "B", "GD", "OP", "NH", "NG" };
         return arr[index];
       }
       case B5_02: {
-        String[] arr = { "NH", "BT", "NT", "MH", "OP", "GD", "G3", "4+", "3+", "2+", "BH" };
+        String[] arr = { "BH", "2+", "3+", "4+", "G3", "GD", "OP", "MH", "NT", "BT", "NH" };
         return arr[index];
       }
       default:
@@ -507,122 +507,122 @@ public class FreewayBlade extends AbstractAngledComponent<String> implements ISw
 
   private static final List<List<int[]>> B3_01_CONNECTIONS = Arrays.asList(
       Arrays.asList(
-          new int[] { 3, 5 }), // position 1
+          new int[] { 3, 1 }), // position 1
       Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 3, 5 },
-          new int[] { 0, 5 },
-          new int[] { 2, 6 }), // position 2
+          new int[] { 6, 3 },
+          new int[] { 3, 1 },
+          new int[] { 6, 1 },
+          new int[] { 4, 0 }), // position 2
       Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 2, 6 }), // position 3
+          new int[] { 6, 3 },
+          new int[] { 4, 0 }), // position 3
       Arrays.asList(
-          new int[] { 1, 3 },
-          new int[] { 3, 5 },
+          new int[] { 5, 3 },
+          new int[] { 3, 1 },
           new int[] { 1, 5 },
           new int[] { 0, 6 }), // position 4
       Arrays.asList(
-          new int[] { 1, 3 },
-          new int[] { 1, 4 },
-          new int[] { 3, 4 },
-          new int[] { 0, 5 }), // position 5
+          new int[] { 5, 3 },
+          new int[] { 5, 2 },
+          new int[] { 3, 2 },
+          new int[] { 6, 1 }), // position 5
       Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 0, 4 },
-          new int[] { 3, 4 },
-          new int[] { 2, 5 }) // position 6
+          new int[] { 6, 3 },
+          new int[] { 6, 2 },
+          new int[] { 3, 2 },
+          new int[] { 4, 1 }) // position 6
   );
 
   private static final List<List<int[]>> B5_01_CONNECTIONS = Arrays.asList(
       Arrays.asList(
-          new int[] { 2, 9 },
-          new int[] { 3, 8 }), // position 1
+          new int[] { 7, 0 },
+          new int[] { 6, 1 }), // position 1
       Arrays.asList(
-          new int[] { 2, 9 },
-          new int[] { 2, 6 },
-          new int[] { 6, 9 },
-          new int[] { 3, 8 }), // position 2
+          new int[] { 7, 0 },
+          new int[] { 7, 3 },
+          new int[] { 3, 0 },
+          new int[] { 6, 1 }), // position 2
       Arrays.asList(
-          new int[] { 2, 6 }), // position 3
+          new int[] { 7, 3 }), // position 3
       Arrays.asList(
-          new int[] { 1, 2 },
-          new int[] { 1, 6 },
-          new int[] { 2, 6 },
-          new int[] { 0, 3 }), // position 4
+          new int[] { 8, 7 },
+          new int[] { 8, 3 },
+          new int[] { 7, 3 },
+          new int[] { 9, 6 }), // position 4
       Arrays.asList(
-          new int[] { 1, 2 },
-          new int[] { 0, 3 }), // position 5
+          new int[] { 8, 7 },
+          new int[] { 9, 6 }), // position 5
       Arrays.asList(
-          new int[] { 2, 9 },
-          new int[] { 0, 5 },
-          new int[] { 4, 7 }), // position 6
+          new int[] { 7, 0 },
+          new int[] { 9, 4 },
+          new int[] { 5, 2 }), // position 6
       Arrays.asList(
-          new int[] { 1, 2 },
-          new int[] { 1, 6 },
-          new int[] { 1, 9 },
-          new int[] { 2, 6 },
-          new int[] { 2, 9 },
-          new int[] { 6, 9 },
-          new int[] { 0, 3 },
-          new int[] { 0, 8 },
-          new int[] { 3, 8 }), // position 7
+          new int[] { 8, 7 },
+          new int[] { 8, 3 },
+          new int[] { 8, 0 },
+          new int[] { 7, 3 },
+          new int[] { 7, 0 },
+          new int[] { 3, 0 },
+          new int[] { 9, 6 },
+          new int[] { 9, 1 },
+          new int[] { 6, 1 }), // position 7
       Arrays.asList(
-          new int[] { 1, 2 },
+          new int[] { 8, 7 },
           new int[] { 0, 9 },
-          new int[] { 3, 8 }), // position 8
+          new int[] { 6, 1 }), // position 8
       Arrays.asList(
-          new int[] { 1, 2 },
-          new int[] { 1, 9 },
-          new int[] { 2, 9 },
-          new int[] { 0, 3 },
-          new int[] { 0, 8 },
-          new int[] { 3, 8 }), // position 9
+          new int[] { 8, 7 },
+          new int[] { 8, 0 },
+          new int[] { 7, 0 },
+          new int[] { 9, 6 },
+          new int[] { 9, 1 },
+          new int[] { 6, 1 }), // position 9
       Arrays.asList(
-          new int[] { 1, 2 },
-          new int[] { 0, 6 },
-          new int[] { 3, 8 }) // position 10
+          new int[] { 8, 7 },
+          new int[] { 9, 3 },
+          new int[] { 6, 1 }) // position 10
   );
 
   private static final List<List<int[]>> B5_02_CONNECTIONS = Arrays.asList(
       Arrays.asList(
-          new int[] { 4, 10 }), // position 1
+          new int[] { 6, 0 }), // position 1
       Arrays.asList(
-          new int[] { 4, 9 },
-          new int[] { 4, 10 },
-          new int[] { 9, 10 }), // position 2
+          new int[] { 6, 1 },
+          new int[] { 6, 0 },
+          new int[] { 1, 0 }), // position 2
       Arrays.asList(
-          new int[] { 0, 4 },
-          new int[] { 0, 8 },
-          new int[] { 0, 10 },
-          new int[] { 4, 8 },
-          new int[] { 4, 10 },
-          new int[] { 8, 10 },
-          new int[] { 1, 2 },
-          new int[] { 1, 6 },
-          new int[] { 2, 6 }), // position 3
+          new int[] { 10, 6 },
+          new int[] { 10, 2 },
+          new int[] { 10, 0 },
+          new int[] { 6, 2 },
+          new int[] { 6, 0 },
+          new int[] { 2, 0 },
+          new int[] { 9, 8 },
+          new int[] { 9, 4 },
+          new int[] { 8, 4 }), // position 3
       Arrays.asList(
-          new int[] { 0, 4 },
-          new int[] { 0, 7 },
-          new int[] { 4, 7 }), // position 4
+          new int[] { 10, 6 },
+          new int[] { 10, 3 },
+          new int[] { 6, 3 }), // position 4
       Arrays.asList(
-          new int[] { 0, 4 }), // position 5
+          new int[] { 10, 6 }), // position 5
       Arrays.asList(
-          new int[] { 4, 10 },
-          new int[] { 1, 5 }), // position 6
+          new int[] { 6, 0 },
+          new int[] { 9, 5 }), // position 6
       Arrays.asList(
-          new int[] { 3, 4 },
-          new int[] { 3, 10 },
-          new int[] { 4, 10 },
-          new int[] { 1, 5 }), // position 7
+          new int[] { 7, 6 },
+          new int[] { 7, 0 },
+          new int[] { 6, 0 },
+          new int[] { 9, 5 }), // position 7
       Arrays.asList(
-          new int[] { 3, 4 }), // position 8
+          new int[] { 7, 6 }), // position 8
       Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 0, 4 },
-          new int[] { 3, 4 },
-          new int[] { 2, 5 }), // position 9
+          new int[] { 10, 7 },
+          new int[] { 10, 6 },
+          new int[] { 7, 6 },
+          new int[] { 8, 5 }), // position 9
       Arrays.asList(
-          new int[] { 0, 4 },
-          new int[] { 2, 5 }) // position 10
+          new int[] { 10, 6 },
+          new int[] { 8, 5 }) // position 10
   );
 }
