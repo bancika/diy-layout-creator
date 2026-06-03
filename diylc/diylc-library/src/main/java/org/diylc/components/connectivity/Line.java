@@ -82,7 +82,7 @@ public class Line extends AbstractLeadedComponent<Void> {
     Stroke stroke = null;
     switch (getStyle()) {
       case SOLID:
-        stroke = ObjectCache.getInstance().fetchZoomableStroke(thickness);
+        stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
         break;
       case DASHED:
         stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] {thickness * 2, thickness * 4}, thickness * 4, BasicStroke.CAP_SQUARE);
