@@ -358,6 +358,10 @@
 					<description>Added 'Potentiometer (Miniature)' component with two variations - right-angled and vertically mounted</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Thonk 3.5mm Jack' component with two variations - mono switched and stereo</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Enable all types of potentiometers and jacks for guitar diagram analysis</description>
 				</org.diylc.appframework.update.Change>
@@ -365,6 +369,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Increase maximum number of switch combination for analysis to 1024</description>
 				</org.diylc.appframework.update.Change>
+                <org.diylc.appframework.update.Change>
+                    <changeType>IMPROVEMENT</changeType>
+                    <description>'Line' component set to px used to render slightly thicker than 1px, appearing thicker than schematic symbols; changed to match the thickenss of schematic symbols</description>
+                </org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
