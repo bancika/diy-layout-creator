@@ -90,7 +90,10 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected View view;
   private Boolean showMarkers;
   private Color markerColor;
-  // Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
+  protected Size shaftLength = new Size(1 / 2d, SizeUnit.in);
+  protected Size threadLength = new Size(1 / 4d, SizeUnit.in);
+  protected Size bodyDepth = new Size(0.4d, SizeUnit.in);
+  // Array of 16 elements: 3 lug connectors, 1 pot body and 3 lugs, 1 nut, 1 shaft, 1 wafer, 3 lug holes, 1 thread, 1 locating lug
   transient protected Area[] body = null;
 
   public PotentiometerPanel() {
@@ -126,12 +129,113 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     int spacing = (int) this.spacing.convertToPixels();
     int diameter = getClosestOdd(bodyDiameter.convertToPixels());
     if (body == null) {
-      // mandatory: 0, 1, 2 pins, 3 body, 9 wafer
-      // optional: 4, 5, 6 lugs, 7 nut, 8 shaft
-      body = new Area[13];
-
-      // Add lugs.
-      int pinWidth = (int) PIN_SIZE.convertToPixels();
+      if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+        body = new Area[16];
+        double D = diameter;
+        double spacingPx = this.spacing.convertToPixels();
+        double cx = controlPoints[0].getX() + spacingPx;
+        double cy = controlPoints[0].getY();
+        
+        double dir = getView() == View.TerminalsUp ? -1 : 1;
+        
+        double lugLength = spacingPx * 0.8;
+        double waferHeight = new Size(0.04d, SizeUnit.in).convertToPixels(); // ~1mm
+        double bodyHeight = getBodyDepth().convertToPixels();
+        double threadH = getThreadLength().convertToPixels();
+        double shaftH = getShaftLength().convertToPixels();
+        double topPlateThickness = new Size(0.05d, SizeUnit.in).convertToPixels();
+        
+        double yBodyBottom = cy + dir * lugLength;
+        double yBodyTop = yBodyBottom + dir * bodyHeight;
+        
+        double yWaferTop = yBodyTop - dir * topPlateThickness;
+        double yWaferBottom = yWaferTop - dir * waferHeight;
+        
+        double yThreadBottom = yBodyTop;
+        double yThreadTop = yThreadBottom + dir * threadH;
+        
+        double yShaftBottom = yBodyTop;
+        double yShaftTop = yShaftBottom + dir * shaftH;
+        
+        // Wafer (body[9])
+        double wWidth = 2.5 * spacingPx;
+        body[9] = new Area(new RoundRectangle2D.Double(cx - wWidth / 2, Math.min(yWaferTop, yWaferBottom), wWidth, waferHeight, spacingPx / 4, spacingPx / 4));
+        
+        // Body (body[3])
+        double bWidth = D;
+        double r = D * 0.1;
+        body[3] = new Area(new RoundRectangle2D.Double(cx - bWidth / 2, Math.min(yBodyTop, yBodyBottom), bWidth, bodyHeight, r, r));
+        
+        // Shaft (body[8])
+        double sWidth = getClosestOdd(SHAFT_SIZE.convertToPixels());
+        body[8] = new Area(new Rectangle2D.Double(cx - sWidth / 2, Math.min(yShaftTop, yShaftBottom), sWidth, shaftH));
+        
+        // Thread (body[13])
+        double tWidth = getClosestOdd(NUT_SIZE.convertToPixels() * 0.75);
+        body[13] = new Area(new Rectangle2D.Double(cx - tWidth / 2, Math.min(yThreadTop, yThreadBottom), tWidth, threadH));
+        
+        // Nut & Washer (body[7])
+        double nWidth = getClosestOdd(NUT_SIZE.convertToPixels());
+        double nHeight = getClosestOdd(NUT_SIZE.convertToPixels() * 0.3);
+        double washerWidth = nWidth * 1.2;
+        double washerHeight = nHeight * 0.2;
+        double yNutCenter = yThreadBottom + dir * (washerHeight + nHeight / 2);
+        Area nutArea = new Area(new Rectangle2D.Double(cx - nWidth / 2, yNutCenter - nHeight / 2, nWidth, nHeight));
+        
+        double yWasherStart = yThreadBottom;
+        double yWasherEnd = yWasherStart + dir * washerHeight;
+        nutArea.add(new Area(new Rectangle2D.Double(cx - washerWidth / 2, Math.min(yWasherStart, yWasherEnd), washerWidth, washerHeight)));
+        body[7] = nutArea;
+        
+        // Locating lug (body[14])
+        body[14] = null;
+        
+        // Terminals
+        double pinW = PIN_SIZE.convertToPixels();
+        for (int i = 0; i < 3; i++) {
+          double px = controlPoints[0].getX() + i * spacingPx;
+          body[i] = new Area(new Rectangle2D.Double(px - pinW / 2, Math.min(cy, yWaferBottom), pinW, Math.abs(cy - yWaferBottom)));
+        }
+        
+        if (getType() == Type.ThroughHole) {
+          int lugDiam = getClosestOdd(this.lugDiameter.convertToPixels());
+          int holeDiam = getClosestOdd(this.lugDiameter.convertToPixels() / 2);
+          for (int i = 0; i < 3; i++) {
+            double px = controlPoints[0].getX() + i * spacingPx;
+            Area lugArea = new Area(new Ellipse2D.Double(px - lugDiam / 2, cy - lugDiam / 2, lugDiam, lugDiam));
+            body[4 + i] = lugArea;
+            body[10 + i] = new Area(lugArea); 
+            body[4 + i].subtract(new Area(new Ellipse2D.Double(px - holeDiam / 2, cy - holeDiam / 2, holeDiam, holeDiam)));
+            body[i].subtract(new Area(new Ellipse2D.Double(px - lugDiam / 2, cy - lugDiam / 2, lugDiam, lugDiam)));
+          }
+        }
+        
+        java.awt.geom.AffineTransform t = new java.awt.geom.AffineTransform();
+        switch (orientation) {
+          case _90:
+            t.rotate(Math.PI / 2, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          case _180:
+            t.rotate(Math.PI, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          case _270:
+            t.rotate(Math.PI * 1.5, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          default:
+            break;
+        }
+        for (int i = 0; i < body.length; i++) {
+          if (body[i] != null) {
+            body[i].transform(t);
+          }
+        }
+      } else {
+        // mandatory: 0, 1, 2 pins, 3 body, 9 wafer
+        // optional: 4, 5, 6 lugs, 7 nut, 8 shaft
+        body = new Area[13];
+  
+        // Add lugs.
+        int pinWidth = (int) PIN_SIZE.convertToPixels();
 
       double centerX = 0;
       double centerY = 0;
@@ -246,6 +350,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         body[8] =
             new Area(new Ellipse2D.Double(centerX - shaftSize / 2, centerY - shaftSize / 2, shaftSize, shaftSize));
       }
+      }
     }
     return body;
   }
@@ -269,7 +374,21 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     Area[] body = getBody();
-    for (int i = 0; i < body.length; i++) {
+    
+    int[] drawOrder = new int[body.length];
+    for (int i = 0; i < body.length; i++) drawOrder[i] = i;
+    if (body.length >= 16) {
+      // Thread (13) drawn before Nut (7)
+      drawOrder[7] = 13;
+      drawOrder[13] = 7;
+      // Terminals (0, 1, 2) drawn after Body (3)
+      drawOrder[0] = 3;
+      drawOrder[1] = 0;
+      drawOrder[2] = 1;
+      drawOrder[3] = 2;
+    }
+    
+    for (int i : drawOrder) {
       Area shape = body[i];      
       // determine color
       if (shape != null) {
@@ -291,10 +410,11 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
 
         Composite oldComposite = applyAlpha(g2d, componentState);
         if (!outlineMode) {
-          if (i >= 10)
+          boolean isHole = (i >= 10 && i <= 12);
+          if (isHole)
             drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
-          if (i >= 10)
+          if (isHole)
             drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
@@ -362,42 +482,65 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     if (getShowMarkers()) {
       g2d.setColor(outlineMode ? theme.getOutlineColor() : getMarkerColor());
       
-      // Get circle center and radius
-      Rectangle2D circleBounds = body[3].getBounds2D();
-      double centerX = circleBounds.getCenterX();
-      double centerY = circleBounds.getCenterY();
-      double radius = getBodyDiameter().convertToPixels() / 2;
-      
-      // Fixed distance from circle edge (inside the circle)
-      double markerOffset = MARKER_OFFSET.convertToPixels() + 2;
-      double markerDistance = radius - markerOffset;
-      
-      // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
-      // Reverse numbering when view is ShaftDown
-      boolean reverseOrder = getView() == View.ShaftDown;
-      
-      for (int i = 0; i < 3; i++) {
-        Point2D lugPoint = controlPoints[i];
-        
-        // Calculate direction from center to lug
-        double dx = lugPoint.getX() - centerX;
-        double dy = lugPoint.getY() - centerY;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance > 0) {
-          // Normalize direction vector
-          double unitX = dx / distance;
-          double unitY = dy / distance;
+      if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+        double markerOffset = MARKER_OFFSET.convertToPixels() + 5;
+        for (int i = 0; i < 3; i++) {
+          Point2D lugPoint = controlPoints[i];
+          int markerNumber = i + 1;
           
-          // Position marker at fixed distance from circle edge along radial line
-          double markerX = centerX + unitX * markerDistance;
-          double markerY = centerY + unitY * markerDistance;
+          double mx = lugPoint.getX();
+          double my = lugPoint.getY();
           
-          // Determine marker number based on view
-          int markerNumber = reverseOrder ? (3 - i) : (i + 1);
+          Rectangle2D bodyBounds = body[3].getBounds2D();
+          double dx = bodyBounds.getCenterX() - mx;
+          double dy = bodyBounds.getCenterY() - my;
+          double dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist > 0) {
+            mx += (dx / dist) * markerOffset;
+            my += (dy / dist) * markerOffset;
+          }
           
-          StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), markerX, markerY,
+          StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), mx, my,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        }
+      } else {
+        // Get circle center and radius
+        Rectangle2D circleBounds = body[3].getBounds2D();
+        double centerX = circleBounds.getCenterX();
+        double centerY = circleBounds.getCenterY();
+        double radius = getBodyDiameter().convertToPixels() / 2;
+        
+        // Fixed distance from circle edge (inside the circle)
+        double markerOffset = MARKER_OFFSET.convertToPixels() + 2;
+        double markerDistance = radius - markerOffset;
+        
+        // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
+        // Reverse numbering when view is ShaftDown
+        boolean reverseOrder = getView() == View.ShaftDown;
+        
+        for (int i = 0; i < 3; i++) {
+          Point2D lugPoint = controlPoints[i];
+          
+          // Calculate direction from center to lug
+          double dx = lugPoint.getX() - centerX;
+          double dy = lugPoint.getY() - centerY;
+          double distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance > 0) {
+            // Normalize direction vector
+            double unitX = dx / distance;
+            double unitY = dy / distance;
+            
+            // Position marker at fixed distance from circle edge along radial line
+            double markerX = centerX + unitX * markerDistance;
+            double markerY = centerY + unitY * markerDistance;
+            
+            // Determine marker number based on view
+            int markerNumber = reverseOrder ? (3 - i) : (i + 1);
+            
+            StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), markerX, markerY,
+                HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          }
         }
       }
     }
@@ -547,6 +690,45 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     this.markerColor = markerColor;
   }
   
+  @EditableProperty(name = "Shaft Length")
+  public Size getShaftLength() {
+    if (shaftLength == null) {
+      shaftLength = new Size(1 / 2d, SizeUnit.in);
+    }
+    return shaftLength;
+  }
+
+  public void setShaftLength(Size shaftLength) {
+    this.shaftLength = shaftLength;
+    body = null;
+  }
+
+  @EditableProperty(name = "Thread Length")
+  public Size getThreadLength() {
+    if (threadLength == null) {
+      threadLength = new Size(1 / 4d, SizeUnit.in);
+    }
+    return threadLength;
+  }
+
+  public void setThreadLength(Size threadLength) {
+    this.threadLength = threadLength;
+    body = null;
+  }
+  
+  @EditableProperty(name = "Body Depth")
+  public Size getBodyDepth() {
+    if (bodyDepth == null) {
+      bodyDepth = new Size(0.4d, SizeUnit.in);
+    }
+    return bodyDepth;
+  }
+
+  public void setBodyDepth(Size bodyDepth) {
+    this.bodyDepth = bodyDepth;
+    body = null;
+  }
+  
   @Override
   public String getInternalLinkName(int index1, int index2) {
     if (index1 > index2)
@@ -608,7 +790,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   }
   
   public enum View {
-    ShaftDown("Shaft Down"), ShaftUp("Shaft Up");//, TerminalsDown, TerminalsUp;
+    ShaftDown("Shaft Down"), ShaftUp("Shaft Up"), TerminalsDown("Terminals Down"), TerminalsUp("Terminals Up");
     
     private String value;
 
