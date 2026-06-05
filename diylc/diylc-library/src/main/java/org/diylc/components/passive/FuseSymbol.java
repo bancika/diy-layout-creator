@@ -24,6 +24,7 @@ package org.diylc.components.passive;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
 
 import org.diylc.components.AbstractSchematicLeadedSymbol;
@@ -47,6 +48,8 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   public static Size DEFAULT_LENGTH = new Size(0.3, SizeUnit.in);
   public static Size DEFAULT_WIDTH = new Size(0.12, SizeUnit.in);
+  private DrawStyle drawStyle = DrawStyle.ANSI;
+
 
   private Current value = null;
 
@@ -57,6 +60,18 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   public void setValue(Current value) {
     this.value = value;
+  }
+
+  @EditableProperty(name = "Draw Standard")
+  public DrawStyle getDrawStandard() {
+    if (drawStyle == null) {
+      drawStyle = DrawStyle.ANSI;
+    }
+    return drawStyle;
+  }
+  
+  public void setDrawStandard(DrawStyle drawStyle) {
+    this.drawStyle = drawStyle;
   }
 
   @Override
@@ -93,21 +108,44 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
 
   @Override
   protected Shape getBodyShape() {
-    Path2D polyline = new Path2D.Double();
-    double length = getLength().convertToPixels();
     double width = getWidth().convertToPixels();
-    double radius = width / 6;
-    polyline.moveTo(2 * radius, width / 2);
-    polyline.curveTo(3 * radius, width, length / 2 - radius, width, length / 2, width / 2);
-    polyline.curveTo(length / 2 + radius, 0, length - 3 * radius, 0, length - 2 * radius, width / 2);
-    polyline.append(new Ellipse2D.Double(0, width / 2 - radius, radius * 2, radius * 2), false);
-    polyline.append(new Ellipse2D.Double(length - radius * 2, width / 2 - radius, radius * 2, radius * 2), false);
-    return polyline;
+    double length = getLength().convertToPixels();
+    if(getDrawStandard() == DrawStyle.ANSI) {
+      Path2D polyline = new Path2D.Double();
+      double radius = width / 6;
+      polyline.moveTo(2 * radius, width / 2);
+      polyline.curveTo(3 * radius, width, length / 2 - radius, width, length / 2, width / 2);
+      polyline.curveTo(length / 2 + radius, 0, length - 3 * radius, 0, length - 2 * radius, width / 2);
+      polyline.append(new Ellipse2D.Double(0, width / 2 - radius, radius * 2, radius * 2), false);
+      polyline.append(new Ellipse2D.Double(length - radius * 2, width / 2 - radius, radius * 2, radius * 2), false);
+      return polyline;
+    } else {
+      GeneralPath fuseshape = new GeneralPath();
+      fuseshape.moveTo(0f, 0f);
+      fuseshape.lineTo(0f, width);
+      fuseshape.lineTo(length, width);
+      fuseshape.lineTo(length, 0f);
+      fuseshape.lineTo(0f, 0f);
+      if (getDrawStandard() == DrawStyle.IEEE) {
+        fuseshape.moveTo(0f, width / 2);
+        fuseshape.lineTo(length, width / 2);
+      } else {        
+        fuseshape.moveTo(length * 0.2f, 0f);
+        fuseshape.lineTo(length * 0.2f, width);
+        fuseshape.moveTo(length * 0.8f, 0f);
+        fuseshape.lineTo(length * 0.8f, width);
+      }
+      return fuseshape;        
+    }
   }
   
   @Override
   protected boolean useShapeRectAsPosition() {
     return false;
+  }
+
+  public enum DrawStyle {
+    ANSI, IEC, IEEE 
   }
 
   @Override
