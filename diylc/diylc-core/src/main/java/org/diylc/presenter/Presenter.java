@@ -2491,10 +2491,9 @@ public class Presenter implements IPlugInPort {
       return;
     }
 
-    // if (componentType == null) {
-    // controlPointMap.clear();
-    // updateSelection(EMPTY_SELECTION);
-    // }
+    if (controlPointMap != null) {
+      controlPointMap.clear();
+    }
 
     // try to find a default template if none is provided
     if (componentType != null && template == null) {

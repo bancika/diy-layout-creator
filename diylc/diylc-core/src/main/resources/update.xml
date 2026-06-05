@@ -389,6 +389,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>IEC variations of fuse and potentiometer symbols</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Dragging a component from the component tree to the canvas sometimes does not work as expected without clicking on it first and then dragging it</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
