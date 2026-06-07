@@ -369,26 +369,12 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
     notes.add(sb.toString());
 
     TrebleBleed trebleBleed = volPotTrebleBleedMap.get(e.getKey());
-    Set<IDIYComponent<?>> trebleBleedComponents = trebleBleed.components();
-    if (trebleBleedComponents != null && !trebleBleedComponents.isEmpty()) {
-
-      TrebleBleed.AnalysisResult analyze = trebleBleed.analyze();
-
-      String strComponents =
-          trebleBleedComponents.stream().sorted(Comparator.comparing(IDIYComponent::getName))
-              .map(c -> "'" + c.getName() + "'").collect(Collectors.joining(", "));
-      String trebleBleedNote = strComponents + (trebleBleedComponents.size() == 1 ? " forms a " : " form a ");
-      if (analyze.circuitType() != null) {
-        trebleBleedNote += analyze.circuitType() + " ";
-      }
-      trebleBleedNote = trebleBleedNote + "treble bleed circuit on the '" + e.getKey().getName() + "' volume control";
-      if (analyze.style() != null) {
-        trebleBleedNote = trebleBleedNote + ", in the style of " + analyze.style();
-      }
+    String trebleBleedNote = trebleBleed.toNote(e.getKey());
+    if (trebleBleedNote != null && !trebleBleedNote.isEmpty()) {
       notes.add(trebleBleedNote);
     }
   }
-  
+
   private void processPotentiometer(IDIYComponent<?> pot, Tree tree, Map<IDIYComponent<?>, Tree> pickupRoots,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupReverseMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupMap,
