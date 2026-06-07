@@ -387,6 +387,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Add Freeway Blade switches 3B3-01, 5B5-01, 5B5-02 (thank you Martin Morell)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>IEC variations of fuse and potentiometer symbols</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
