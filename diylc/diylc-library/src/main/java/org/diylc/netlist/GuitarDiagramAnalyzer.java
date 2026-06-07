@@ -18,14 +18,7 @@
  */
 package org.diylc.netlist;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.swing.JLabel;
 
@@ -59,6 +52,7 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
   private static Set<String> CAP_TYPES = new HashSet<String>();
   private static Set<String> RESISTOR_TYPES = new HashSet<String>();
   private static Set<String> RC_TYPES = new HashSet<String>();
+  private static Set<String> ALL_TYPES = null;
   
   static {
     JACK_TYPES.add(OpenJack1_4.class.getCanonicalName());
@@ -273,15 +267,15 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
 
       // locate volume and tone pots
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupMap =
-          new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
-      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap =
-          new HashMap<IDIYComponent<?>, Set<IDIYComponent<?>>>();
+          new HashMap<>();
+      Map<IDIYComponent<?>, TrebleBleed> volPotTrebleBleedMap =
+          new HashMap<>();
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupMap =
-          new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
+          new HashMap<>();
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupReverseMap =
-          new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
+          new HashMap<>();
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupReverseMap =
-          new HashMap<IDIYComponent<?>, List<IDIYComponent<?>>>();
+          new HashMap<>();
 
       Set<IDIYComponent<?>> pots = tree.extractComponents(POT_TYPES);
       for (IDIYComponent<?> pot : pots) {
@@ -360,12 +354,12 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
   }
 
   private static void outputVolumePotentiometer(Map.Entry<IDIYComponent<?>, List<IDIYComponent<?>>> e,
-      List<String> notes, Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap) {
+      List<String> notes, Map<IDIYComponent<?>, TrebleBleed> volPotTrebleBleedMap) {
     StringBuilder sb = new StringBuilder(
         "'" + e.getKey().getName() + "' potentiometer acts as a volume control for ");
     boolean first = true;
     List<String> pickupNames =
-        e.getValue().stream().map(x -> x.getName()).sorted().collect(Collectors.toList());
+        e.getValue().stream().map(IDIYComponent::getName).sorted().toList();
     for (String pickupName : pickupNames) {
       if (!first)
         sb.append(pickupNames.size() == 2 ? " and " : ", ");
@@ -374,21 +368,31 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
     }
     notes.add(sb.toString());
 
-    Set<IDIYComponent<?>> trebleBleedComponents = volPotTrebleBleedMap.get(e.getKey());
-    if (trebleBleedComponents != null && trebleBleedComponents.size() > 0) {
+    TrebleBleed trebleBleed = volPotTrebleBleedMap.get(e.getKey());
+    Set<IDIYComponent<?>> trebleBleedComponents = trebleBleed.components();
+    if (trebleBleedComponents != null && !trebleBleedComponents.isEmpty()) {
 
-      String trebleBleadNote = trebleBleedComponents.stream()
-        .sorted(Comparator.comparing(c -> c.getName()))
-        .map(c ->  "'" + c.getName() + "'")
-        .collect(Collectors.joining(", ")) + " form a treble bleed network on the '" + e.getKey().getName() + "' volume control";
-      notes.add(trebleBleadNote);
+      TrebleBleed.AnalysisResult analyze = trebleBleed.analyze();
+
+      String strComponents =
+          trebleBleedComponents.stream().sorted(Comparator.comparing(IDIYComponent::getName))
+              .map(c -> "'" + c.getName() + "'").collect(Collectors.joining(", "));
+      String trebleBleedNote = strComponents + (trebleBleedComponents.size() == 1 ? " forms a " : " form a ");
+      if (analyze.circuitType() != null) {
+        trebleBleedNote += analyze.circuitType() + " ";
+      }
+      trebleBleedNote = trebleBleedNote + "treble bleed circuit on the '" + e.getKey().getName() + "' volume control";
+      if (analyze.style() != null) {
+        trebleBleedNote = trebleBleedNote + ", in the style of " + analyze.style();
+      }
+      notes.add(trebleBleedNote);
     }
   }
-
+  
   private void processPotentiometer(IDIYComponent<?> pot, Tree tree, Map<IDIYComponent<?>, Tree> pickupRoots,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupReverseMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> tonePotPickupMap,
-      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap,
+      Map<IDIYComponent<?>, TrebleBleed> volPotTrebleBleedMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupMap,
       Map<IDIYComponent<?>, List<IDIYComponent<?>>> volPotPickupReverseMap) {
     TreeLeaf leaf1 = new TreeLeaf(pot, 0, 1);
@@ -459,17 +463,27 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
   }
 
   private void locateTrebleBleed(Tree tree,
-      Map<IDIYComponent<?>, Set<IDIYComponent<?>>> volPotTrebleBleedMap, IDIYComponent<?> pot,
+      Map<IDIYComponent<?>, TrebleBleed> volPotTrebleBleedMap, IDIYComponent<?> pot,
       Tree tree1) {
     Tree parent1 = tree1;
     do { 
       parent1 = tree.findParent(parent1);
     } while (parent1 != null && parent1.getChildren().size() <= 1);
     if (parent1 != null) {
-      Set<IDIYComponent<?>> trebleBleedComponents = parent1.extractComponents(RC_TYPES);
-      if (trebleBleedComponents.stream().anyMatch(c -> CAP_TYPES.contains(c.getClass().getCanonicalName()))) {
-        volPotTrebleBleedMap.computeIfAbsent(pot, k -> new HashSet<IDIYComponent<?>>()).addAll(trebleBleedComponents);
-      }
+      Optional<Tree> trebleTree =
+          parent1.getChildren().stream().filter(t -> !t.equals(tree1)).findFirst();
+      trebleTree.ifPresent(t -> {
+        // transcend one layer down if the tree is nested
+        while (t.getChildren().size() == 1 && t.getChildren().get(0).getLeaf() == null) {
+          t = t.getChildren().get(0);
+        }
+        Set<IDIYComponent<?>> trebleBleedComponents = t.extractComponents(ALL_TYPES);
+        if (trebleBleedComponents.stream().allMatch(c -> RC_TYPES.contains(c.getClass().getCanonicalName())) &&
+            trebleBleedComponents.stream().anyMatch(c -> CAP_TYPES.contains(c.getClass().getCanonicalName()))) {
+          TrebleBleed trebleBleed = new TrebleBleed(trebleBleedComponents, t.getConnectionType());
+          volPotTrebleBleedMap.put(pot, trebleBleed);
+        }
+      });
     }
   }
 

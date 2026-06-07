@@ -234,7 +234,7 @@ public class Tree {
 
   public Set<IDIYComponent<?>> extractComponents(Set<String> types) {
     Set<IDIYComponent<?>> res = new HashSet<IDIYComponent<?>>();
-    if (leaf != null && types.contains(leaf.getComponent().getClass().getCanonicalName())) {
+    if (leaf != null && (types == null || types.contains(leaf.getComponent().getClass().getCanonicalName()))) {
       res.add(leaf.getComponent());
     } else if (children != null) {
       for (Tree t : children) {

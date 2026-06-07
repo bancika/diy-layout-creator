@@ -390,6 +390,14 @@
 					<description>IEC variations of fuse and potentiometer symbols</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Detect the style of a treble bleed based on the topology and component values (e.g. Fender, DiMarzio, Kinman, etc)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Tone capacitor mistaken for treble bleed when connected to the input lug of the volume pot</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Dragging a component from the component tree to the canvas sometimes does not work as expected without clicking on it first and then dragging it</description>
 				</org.diylc.appframework.update.Change>
