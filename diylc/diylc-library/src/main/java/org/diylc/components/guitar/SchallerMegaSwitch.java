@@ -277,9 +277,9 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
       // Rotate if needed
       if (theta != 0) {
-        // Skip the last two because terminals are already rotated
+        // Skip the last one because terminals are already rotated
         AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
-        for (int i = 0; i < body.length - 2; i++) {
+        for (int i = 0; i < body.length - 1; i++) {
           Shape shape = body[i];
           Area area = (Area) shape;
           area.transform(rotation);

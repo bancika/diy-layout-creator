@@ -405,6 +405,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Dragging a component from the component tree to the canvas sometimes does not work as expected without clicking on it first and then dragging it</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Schaller Megaswitch' not rendered correctly when rotated for 90 or 270 degrees</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
