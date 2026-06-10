@@ -84,10 +84,8 @@ public record TrebleBleed(Set<IDIYComponent<?>> components, TreeConnectionType c
                 Double rVal = resValues.get(0);
                 if (matches(cVal, 330e-6) && matches(rVal, 80e3)) {
                     style = "Bill Lawrence";
-                } else if (matches(cVal, 471e-6) && matches(rVal, 220e3)) {
-                    style = "Mojo Tone";
                 } else if (matches(cVal, 470e-6) && matches(rVal, 220e3)) {
-                    style = "Emerson Custom";
+                    style = "Mojo Tone, Emerson Custom";
                 } else if (matches(cVal, 560e-6) && matches(rVal, 300e3)) {
                     style = "DiMarzio";
                 } else if (matches(cVal, 680e-6) && matches(rVal, 150e3)) {
