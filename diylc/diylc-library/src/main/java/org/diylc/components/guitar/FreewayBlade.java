@@ -49,7 +49,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Freeway Blade", category = "Guitar", author = "Martin Morrell, Branislav Stojkovic", description = "Several variations of Freeway Blade switches", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
+@ComponentDescriptor(name = "Freeway Blade", category = "Guitar", author = "Martin Morrell", description = "Several variations of Freeway Blade switches", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
 public class FreewayBlade extends AbstractAngledComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;

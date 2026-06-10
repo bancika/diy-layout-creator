@@ -30,7 +30,7 @@ public class MathUtils {
   public static Double round(double value) {
     return Math.round(value * 1e8) / 1e8;
   }
-  
+
   public static double parseDouble(String str) {
     return Math.round(Double.parseDouble(str) * 1e8) / 1e8;
   }
