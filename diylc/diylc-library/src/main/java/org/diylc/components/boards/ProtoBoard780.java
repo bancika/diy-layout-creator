@@ -150,14 +150,14 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
 
       g2d.setColor(traceColor);
-      int padX = (int) (point.getX() + width / 2 - 7 * spacing + i * spacing);
+      int padX = (int) Math.round(point.getX() + width / 2 - 7 * spacing + i * spacing);
       drawingObserver.startTrackingContinuityArea(true);
-      g2d.drawLine(padX, (int) (point.getY() + offsetY), padX,
-          (int) (point.getY() + spacing + offsetY));
+      g2d.drawLine(padX, (int) Math.round(point.getY() + offsetY), padX,
+          (int) Math.round(point.getY() + spacing + offsetY));
       drawingObserver.stopTrackingContinuityArea();
 
       for (int j = 0; j < 2; j++) {
-        int padY = (int) (point.getY() + spacing * j + offsetY);
+        int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
         g2d.setColor(padColor);
 
@@ -180,8 +180,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     g2d.setColor(textColor);
     for (int i = 0; i < 4; i++) {
       int x = i == 0 ? 1 : i * 5;
-      int padX = (int) (point.getX() + width / 2 - 8 * spacing + x * spacing);
-      int padY = (int) (point.getY() + spacing * 2);
+      int padX = (int) Math.round(point.getX() + width / 2 - 8 * spacing + x * spacing);
+      int padY = (int) Math.round(point.getY() + spacing * 2);
 
       // // flip the coordinates for MPJA
       // if (type == ProtoBoard780Type.MPJA) {
@@ -201,38 +201,38 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
 
     // the outer bus
-    g2d.drawLine((int) (point.getX() + width / 2 - 13 * spacing),
-        (int) (point.getY() - 2 * spacing + offsetY),
-        (int) (point.getX() + width / 2 + 13 * spacing),
-        (int) (point.getY() - 2 * spacing + offsetY));
-    g2d.drawLine((int) (point.getX() + width / 2 - 13 * spacing),
-        (int) (point.getY() - 2 * spacing + offsetY),
-        (int) (point.getX() + width / 2 - 13 * spacing),
+    g2d.drawLine((int) Math.round(point.getX() + width / 2 - 13 * spacing),
+        (int) Math.round(point.getY() - 2 * spacing + offsetY),
+        (int) Math.round(point.getX() + width / 2 + 13 * spacing),
+        (int) Math.round(point.getY() - 2 * spacing + offsetY));
+    g2d.drawLine((int) Math.round(point.getX() + width / 2 - 13 * spacing),
+        (int) Math.round(point.getY() - 2 * spacing + offsetY),
+        (int) Math.round(point.getX() + width / 2 - 13 * spacing),
         (int) (point.getY() + (29 + (type == ProtoBoard780Type.RS ? 2 : 0)) * spacing + offsetY));
-    g2d.drawLine((int) (point.getX() + width / 2 + 13 * spacing),
-        (int) (point.getY() - 2 * spacing + offsetY),
-        (int) (point.getX() + width / 2 + 13 * spacing),
+    g2d.drawLine((int) Math.round(point.getX() + width / 2 + 13 * spacing),
+        (int) Math.round(point.getY() - 2 * spacing + offsetY),
+        (int) Math.round(point.getX() + width / 2 + 13 * spacing),
         (int) (point.getY() + (29 + (type == ProtoBoard780Type.RS ? 2 : 0)) * spacing + offsetY));
 
     // horizontal long traces
-    g2d.drawLine((int) (point.getX() + width / 2 - 12 * spacing), (int) (point.getY() + offsetY),
-        (int) (point.getX() + width / 2 + 12 * spacing), (int) (point.getY() + offsetY));
-    g2d.drawLine((int) (point.getX() + width / 2 - 12 * spacing),
-        (int) (point.getY() + spacing * 29 + offsetY),
-        (int) (point.getX() + width / 2 + 12 * spacing),
-        (int) (point.getY() + spacing * 29 + offsetY));
+    g2d.drawLine((int) Math.round(point.getX() + width / 2 - 12 * spacing), (int) Math.round(point.getY() + offsetY),
+        (int) Math.round(point.getX() + width / 2 + 12 * spacing), (int) Math.round(point.getY() + offsetY));
+    g2d.drawLine((int) Math.round(point.getX() + width / 2 - 12 * spacing),
+        (int) Math.round(point.getY() + spacing * 29 + offsetY),
+        (int) Math.round(point.getX() + width / 2 + 12 * spacing),
+        (int) Math.round(point.getY() + spacing * 29 + offsetY));
 
     for (int i = 0; i < 5; i++) {
       int padX = (int) (point.getX() + width / 2 - 12 * spacing + (i * 5 + 1) * spacing);
 
       // vertical traces
-      g2d.drawLine((int) (padX - spacing), (int) (point.getY() + offsetY), (int) (padX - spacing),
-          (int) (point.getY() + spacing * 28 + offsetY));
-      g2d.drawLine((int) (padX + 3 * spacing), (int) (point.getY() + spacing + offsetY),
-          (int) (padX + 3 * spacing), (int) (point.getY() + spacing * 29 + offsetY));
+      g2d.drawLine((int) (padX - spacing), (int) Math.round(point.getY() + offsetY), (int) (padX - spacing),
+          (int) Math.round(point.getY() + spacing * 28 + offsetY));
+      g2d.drawLine((int) (padX + 3 * spacing), (int) Math.round(point.getY() + spacing + offsetY),
+          (int) (padX + 3 * spacing), (int) Math.round(point.getY() + spacing * 29 + offsetY));
 
       for (int j = 1; j < 29; j++) {
-        int padY = (int) (point.getY() + spacing * j + offsetY);
+        int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
         // 3-pad traces
         g2d.drawLine(padX, padY, (int) (padX + 2 * spacing), padY);
@@ -245,14 +245,14 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
 
       g2d.setColor(padColor);
-      int padX = (int) (point.getX() + width / 2 - 12 * spacing + i * spacing);
+      int padX = (int) Math.round(point.getX() + width / 2 - 12 * spacing + i * spacing);
       // drawingObserver.startTrackingContinuityArea(true);
-      // g2d.drawLine(padX, (int)(point.getY() + offsetY), padX, (int)(point.getY() + spacing +
+      // g2d.drawLine(padX, (int) Math.round(point.getY() + offsetY), padX, (int) Math.round(point.getY() + spacing +
       // offsetY));
       // drawingObserver.stopTrackingContinuityArea();
 
       for (int j = 0; j < 30; j++) {
-        int padY = (int) (point.getY() + spacing * j + offsetY);
+        int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
         g2d.setColor(padColor);
 
@@ -277,8 +277,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     // horizontal coordinates
     for (int i = 0; i < 6; i++) {
       int x = i == 0 ? 1 : i * 5;
-      int padX = (int) (point.getX() + width / 2 - 13 * spacing + x * spacing);
-      int padY = (int) (point.getY() - spacing + offsetY);
+      int padX = (int) Math.round(point.getX() + width / 2 - 13 * spacing + x * spacing);
+      int padY = (int) Math.round(point.getY() - spacing + offsetY);
 
       String label = String.valueOf((char) ('A' + i));
 
@@ -293,7 +293,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     for (int i = 0; i < 7; i++) {
       int y = i == 0 ? 1 : i * 5;
 
-      int padX = (int) (point.getX() + width / 2 - 14 * spacing);
+      int padX = (int) Math.round(point.getX() + width / 2 - 14 * spacing);
       int padY = (int) (point.getY() + spacing * (y - 1) + offsetY);
 
       StringUtils.drawCenteredText(g2d, Integer.toString(y), padX, padY, HorizontalAlignment.LEFT,
@@ -302,8 +302,8 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
     // model name
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE * 1.8f));
-    int x = (int) (point.getX() + width / 2);
-    int y = (int) (point.getY() + length - spacing * 1.5);
+    int x = (int) Math.round(point.getX() + width / 2);
+    int y = (int) Math.round(point.getY() + length - spacing * 1.5);
     StringUtils.drawCenteredText(g2d,
         type == ProtoBoard780Type.RS ? "Radio Shack 276-168B" : "MPJA.COM 33304 PB", x, y,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -315,32 +315,32 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.setColor(HOLE_COLOR);
 
-    g2d.fillOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+    g2d.fillOval((int) Math.round(point.getX() + width / 2) - dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
-    g2d.fillOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+    g2d.fillOval((int) Math.round(point.getX() + width / 2) + dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
 
     g2d.setColor(finalBorderColor);
 
-    g2d.drawOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+    g2d.drawOval((int) Math.round(point.getX() + width / 2) - dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
-    g2d.drawOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+    g2d.drawOval((int) Math.round(point.getX() + width / 2) + dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
 
-    holeY = (int) (point.getY() + length - spacing);
+    holeY = (int) Math.round(point.getY() + length - spacing);
 
     g2d.setColor(HOLE_COLOR);
 
-    g2d.fillOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+    g2d.fillOval((int) Math.round(point.getX() + width / 2) - dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
-    g2d.fillOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+    g2d.fillOval((int) Math.round(point.getX() + width / 2) + dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
 
     g2d.setColor(finalBorderColor);
 
-    g2d.drawOval((int) (point.getX() + width / 2) - dx - mountingHoleSize / 2,
+    g2d.drawOval((int) Math.round(point.getX() + width / 2) - dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
-    g2d.drawOval((int) (point.getX() + width / 2) + dx - mountingHoleSize / 2,
+    g2d.drawOval((int) Math.round(point.getX() + width / 2) + dx - mountingHoleSize / 2,
         holeY - mountingHoleSize / 2, mountingHoleSize, mountingHoleSize);
   }
 

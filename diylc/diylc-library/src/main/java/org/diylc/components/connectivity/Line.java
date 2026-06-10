@@ -130,7 +130,7 @@ public class Line extends AbstractLeadedComponent<Void> {
       interpolate(endPoint, startPoint, getArrowSize().convertToPixels() * 0.9 / distance, endPoint);
     }
     
-    g2d.drawLine((int)startPoint.getX(), (int)startPoint.getY(), (int)endPoint.getX(), (int)endPoint.getY());
+    g2d.drawLine((int) Math.round(startPoint.getX()), (int) Math.round(startPoint.getY()), (int) Math.round(endPoint.getX()), (int) Math.round(endPoint.getY()));
   }
   
   private void interpolate(Point2D p1, Point2D p2, double t, Point2D p) {

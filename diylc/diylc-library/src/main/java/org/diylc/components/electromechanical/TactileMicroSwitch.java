@@ -188,9 +188,9 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
       controlPoints[i] =
-          new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+          new Point2D.Double((int) Math.round(firstPoint.getX() + dx1), (int) Math.round(firstPoint.getY() + dy1));
       controlPoints[i + PIN_COUNT / 2] =
-          new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
+          new Point2D.Double((int) Math.round(firstPoint.getX() + dx2), (int) Math.round(firstPoint.getY() + dy2));
     }
   }
 

@@ -240,14 +240,14 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
       if (outlineMode) {
         // g2d.setColor(Constants.TRANSPARENT_COLOR);
         // drawingObserver.startTrackingContinuityArea(true);
-        // g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth,
+        // g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth,
         // lugHeight);
         // drawingObserver.stopTrackingContinuityArea();
 
         g2d.setColor(theme.getOutlineColor());
       } else {
         g2d.setColor(CIRCLE_COLOR);
-        g2d.fillOval((int) (p.getX() - circleDiameter / 2), (int) (p.getY() - circleDiameter / 2),
+        g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2), (int) Math.round(p.getY() - circleDiameter / 2),
             circleDiameter, circleDiameter);
 
         g2d.setColor(CIRCLE_COLOR.darker());

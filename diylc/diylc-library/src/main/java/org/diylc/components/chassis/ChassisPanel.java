@@ -62,11 +62,11 @@ public class ChassisPanel extends AbstractShape {
       Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(color);
       if (radius == 0) {
-        g2d.fillRect((int) firstPoint.getX(), (int) firstPoint.getY(),
+        g2d.fillRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
             (int) (secondPoint.getX() - firstPoint.getX()),
             (int) (secondPoint.getY() - firstPoint.getY()));
       } else {
-        g2d.fillRoundRect((int) firstPoint.getX(), (int) firstPoint.getY(),
+        g2d.fillRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
             (int) (secondPoint.getX() - firstPoint.getX()),
             (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
       }
@@ -78,11 +78,11 @@ public class ChassisPanel extends AbstractShape {
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
     if (radius == 0) {
-      g2d.drawRect((int) (firstPoint.getX()), (int) (firstPoint.getY()),
+      g2d.drawRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
           (int) (secondPoint.getX() - firstPoint.getX()),
           (int) (secondPoint.getY() - firstPoint.getY()));
     } else {
-      g2d.drawRoundRect((int) (firstPoint.getX()), (int) (firstPoint.getY()),
+      g2d.drawRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
           (int) (secondPoint.getX() - firstPoint.getX()),
           (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
     }

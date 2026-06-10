@@ -187,16 +187,16 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
       Point2D p = controlPoints[i];
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawOval((int)(p.getX() - padDiameter / 2), (int)(p.getY() - padDiameter / 2), padDiameter, padDiameter);
+        g2d.drawOval((int) Math.round(p.getX() - padDiameter / 2), (int) Math.round(p.getY() - padDiameter / 2), padDiameter, padDiameter);
       } else {
         g2d.setColor(PAD_COLOR);
         drawingObserver.startTrackingContinuityArea(true);
-        g2d.fillOval((int)(p.getX() - padDiameter / 2), (int)(p.getY() - padDiameter / 2), padDiameter, padDiameter);
+        g2d.fillOval((int) Math.round(p.getX() - padDiameter / 2), (int) Math.round(p.getY() - padDiameter / 2), padDiameter, padDiameter);
         drawingObserver.stopTrackingContinuityArea();
         g2d.setColor(PAD_COLOR.darker());
-        g2d.drawOval((int)(p.getX() - padDiameter / 2), (int)(p.getY() - padDiameter / 2), padDiameter, padDiameter);
+        g2d.drawOval((int) Math.round(p.getX() - padDiameter / 2), (int) Math.round(p.getY() - padDiameter / 2), padDiameter, padDiameter);
         g2d.setColor(HOLE_COLOR);
-        g2d.fillOval((int)(p.getX() - holeDiameter / 2), (int)(p.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
+        g2d.fillOval((int) Math.round(p.getX() - holeDiameter / 2), (int) Math.round(p.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
       }
       
       if (!showMarkers || i % 3 == 2) {
@@ -213,8 +213,8 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
       Stroke stroke = g2d.getStroke();
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
       g2d.setColor(LINE_COLOR);
-      g2d.drawLine((int)(p.getX() - padDiameter / 3), (int)(p.getY() + dy * padDiameter * 4 / 5), 
-          (int)(p.getX() + padDiameter / 3), (int)(p.getY() + dy * padDiameter * 4 / 5));
+      g2d.drawLine((int) Math.round(p.getX() - padDiameter / 3), (int) Math.round(p.getY() + dy * padDiameter * 4 / 5), 
+          (int) Math.round(p.getX() + padDiameter / 3), (int) Math.round(p.getY() + dy * padDiameter * 4 / 5));
       g2d.setStroke(stroke);
     }
     

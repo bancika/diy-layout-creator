@@ -365,43 +365,43 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
           case DEFAULT:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int) Math.round(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int) Math.round(point.getX() - leadLength - leadThickness / 2), (int)(startY + increment * i));
             break;
           case _90:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() - leadLength));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int)(startX + increment * i), (int) Math.round(point.getY() - leadLength));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() - leadLength));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int)(startX + increment * i), (int) Math.round(point.getY() - leadLength));
             break;
           case _180:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int) Math.round(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int) Math.round(point.getX() + leadLength - leadThickness / 2), (int)(startY + increment * i));
             break;
           case _270:
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness));
             g2d.setColor(finalPinBorderColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() + leadLength - leadThickness / 2));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int)(startX + increment * i), (int) Math.round(point.getY() + leadLength - leadThickness / 2));
             g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(leadThickness - 2));
             g2d.setColor(finalPinColor);
-            g2d.drawLine((int)point.getX(), (int)point.getY(), (int)(startX + increment * i), (int)(point.getY() + leadLength - leadThickness / 2));
+            g2d.drawLine((int) Math.round(point.getX()), (int) Math.round(point.getY()), (int)(startX + increment * i), (int) Math.round(point.getY() + leadLength - leadThickness / 2));
             break;
         }
       }
       if (getTopLead()) {
         Point2D point = controlPoints[controlPoints.length - 1];
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
         g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-        g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     } else {
       if (!outlineMode) {
@@ -409,9 +409,9 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
             : 0; i < controlPoints.length; i++) {
           Point2D point = controlPoints[i];
           g2d.setColor(PIN_COLOR);
-          g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+          g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
           g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-          g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+          g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
         }
       }
     }

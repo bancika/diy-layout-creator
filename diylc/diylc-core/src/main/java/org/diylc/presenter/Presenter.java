@@ -1289,8 +1289,8 @@ public class Presenter implements IPlugInPort {
       // If there's no selection, the only thing to do is update the
       // selection rectangle and refresh.
       Rectangle oldSelectionRect = selectionRect == null ? null : new Rectangle(selectionRect);
-      this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
-          new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));
+      this.selectionRect = Utils.createRectangle(new Point((int) Math.round(scaledPoint.getX()), (int) Math.round(scaledPoint.getY())), 
+          new Point((int) Math.round(previousDragPoint.getX()), (int) Math.round(previousDragPoint.getY())));
       if (selectionRect.equals(oldSelectionRect)) {
         return true;
       }
@@ -1621,8 +1621,8 @@ public class Presenter implements IPlugInPort {
       // If there's no selection finalize selectionRect and see which
       // components intersect with it.
       if (scaledPoint != null && previousDragPoint != null) {
-        this.selectionRect = Utils.createRectangle(new Point((int)scaledPoint.getX(), (int)scaledPoint.getY()), 
-            new Point((int)previousDragPoint.getX(), (int)previousDragPoint.getY()));;
+        this.selectionRect = Utils.createRectangle(new Point((int) Math.round(scaledPoint.getX()), (int) Math.round(scaledPoint.getY())), 
+            new Point((int) Math.round(previousDragPoint.getX()), (int) Math.round(previousDragPoint.getY())));;
       }
       List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
       if (operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS)

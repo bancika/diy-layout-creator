@@ -329,9 +329,9 @@ public class EurorackStripboard extends AbstractProtoBoard {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     for (int i = 0; i < 5; i++) {
       for (Point2D[] trace : potTraces) {
-        int padX1 = (int) (x0 + trace[0].getX() * spacing);
+        int padX1 = (int) Math.round(x0 + trace[0].getX() * spacing);
         int padY1 = (int) (y0 + (trace[0].getY() + 8 * i) * spacing);
-        int padX2 = (int) (x0 + trace[1].getX() * spacing);
+        int padX2 = (int) Math.round(x0 + trace[1].getX() * spacing);
         int padY2 = (int) (y0 + (trace[1].getY() + 8 * i) * spacing);
         g2d.drawLine(padX1, padY1, padX2, padY2);
       }

@@ -141,7 +141,7 @@ public class PotentiometerSymbol extends Abstract3LegSymbol {
   // return controlPoints[1].x - pinSpacing / 2 - (int) textRect.getWidth();
   // if (controlPoints[0].y > controlPoints[1].y && controlPoints[0].y > controlPoints[2].y)
   // return controlPoints[0].x - (int) (textRect.getWidth() / 2);
-  // return 2 * ((int) (shapeRect.getWidth() - textRect.getWidth()) / 2 + (int) shapeRect.getX());
+  // return 2 * ((int) (shapeRect.getWidth() - textRect.getWidth()) / 2 + (int) Math.round(shapeRect.getX()));
   // }
   //
   // @Override

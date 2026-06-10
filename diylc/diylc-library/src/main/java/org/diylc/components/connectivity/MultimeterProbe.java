@@ -82,7 +82,7 @@ public class MultimeterProbe extends AbstractTransparentComponent<Color> {
     g2d.setColor(Constants.TRANSPARENT_COLOR);
     drawingObserver.startTrackingContinuityArea(true);
     double sensitivity = SENSITIVITY.convertToPixels();
-    g2d.fillOval((int) (point.getX() - sensitivity), (int) (point.getY() - sensitivity),
+    g2d.fillOval((int) Math.round(point.getX() - sensitivity), (int) Math.round(point.getY() - sensitivity),
         (int) (sensitivity * 2), (int) (sensitivity * 2));
     drawingObserver.stopTrackingContinuityArea();
 

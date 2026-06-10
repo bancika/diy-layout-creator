@@ -32,6 +32,8 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+import org.diylc.utils.MathUtils;
+
 /**
  * Serializes {@link Area} objects by converting coordinates from pixels to inches, thus avoiding
  * the resolution to affect point placement.
@@ -66,7 +68,7 @@ public class AreaConverter implements Converter {
       }
       for (int i = 0; i < n; i++) {
         writer.startNode("coordinate");
-        writer.setValue(String.valueOf(coord[i]));
+        writer.setValue(MathUtils.formatDouble(coord[i]));
         writer.endNode();
       }
       writer.endNode();
@@ -87,7 +89,7 @@ public class AreaConverter implements Converter {
       List<java.lang.Double> values = new ArrayList<java.lang.Double>();
       while (reader.hasMoreChildren()) {
         reader.moveDown();
-        values.add(java.lang.Double.parseDouble(reader.getValue()));
+        values.add(MathUtils.parseDouble(reader.getValue()));
         reader.moveUp();
       }
       java.lang.Double[] coord = values.toArray(new java.lang.Double[0]);      

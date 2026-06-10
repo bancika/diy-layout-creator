@@ -158,7 +158,7 @@ public class MockDIYComponent extends AbstractComponent<Capacitance> {
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
     g2d.setColor(componentState.equals(ComponentState.SELECTED) ? color : color.darker());
-    g2d.fillRect((int)leftTopCorner.getX(), (int)leftTopCorner.getY(), 200, 50);
+    g2d.fillRect((int) Math.round(leftTopCorner.getX()), (int) Math.round(leftTopCorner.getY()), 200, 50);
   }
 
   @Override

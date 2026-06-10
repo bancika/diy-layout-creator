@@ -444,10 +444,10 @@ public class CanvasPlugin implements IPlugIn{
 		// center to cursor
 	    int relativeX = (int) (mousePosBefore.getX() + locationBefore.getX());
 	    int relativeY = (int) (mousePosBefore.getY() + locationBefore.getY());
-		Point desiredPos = new Point((int) (1d * mousePosBefore.getX() / oldZoom * newZoom),
-				(int) (1d * mousePosBefore.getY() / oldZoom * newZoom));
-		int newHorizontalPos = (int) (desiredPos.getX() - relativeX);
-		int newVerticalPos = (int) (desiredPos.getY() - relativeY);
+		Point desiredPos = new Point((int) Math.round(1d * mousePosBefore.getX() / oldZoom * newZoom),
+				(int) Math.round(1d * mousePosBefore.getY() / oldZoom * newZoom));
+		int newHorizontalPos = (int) Math.round(desiredPos.getX() - relativeX);
+		int newVerticalPos = (int) Math.round(desiredPos.getY() - relativeY);
 		horizontal.setValue(newHorizontalPos < 0 ? 0 : newHorizontalPos);
 		vertical.setValue(newVerticalPos < 0 ? 0 : newVerticalPos);
 	} else {

@@ -158,11 +158,11 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     int legLength = (int) (getPoints()[0].distance(getPoints()[1]) - strWidth) / 2 - 6;
         
     // draw legs around the enter text
-    g2d.drawLine((int)startPoint.getX(), (int)startPoint.getY(), 
+    g2d.drawLine((int) Math.round(startPoint.getX()), (int) Math.round(startPoint.getY()), 
     		(int)Math.round(startPoint.getX() + Math.cos(theta) * legLength), 
     		(int)Math.round(startPoint.getY() + Math.sin(theta) * legLength));
     
-    g2d.drawLine((int)endPoint.getX(), (int)endPoint.getY(), 
+    g2d.drawLine((int) Math.round(endPoint.getX()), (int) Math.round(endPoint.getY()), 
     		(int)Math.round(endPoint.getX() - Math.cos(theta) * legLength), 
     		(int)Math.round(endPoint.getY() - Math.sin(theta) * legLength));
     

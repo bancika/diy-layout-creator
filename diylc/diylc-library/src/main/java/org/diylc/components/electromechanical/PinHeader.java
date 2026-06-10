@@ -239,10 +239,10 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
     for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fillRect((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawRect((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+      g2d.drawRect((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     Color finalBorderColor;

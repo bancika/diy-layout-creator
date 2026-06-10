@@ -284,14 +284,14 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
       Point2D p = controlPoints[i];
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
+        g2d.drawRect((int) Math.round(p.getX() - lugWidth / 2d), (int) Math.round(p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       } else {
         g2d.setColor(TERMINAL_COLOR);
-        g2d.fillRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
+        g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2d), (int) Math.round(p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
         g2d.setColor(TERMINAL_COLOR.darker());
-        g2d.drawRect((int) (p.getX() - lugWidth / 2d), (int) (p.getY() - lugHeight / 2d), lugWidth,
+        g2d.drawRect((int) Math.round(p.getX() - lugWidth / 2d), (int) Math.round(p.getY() - lugHeight / 2d), lugWidth,
             lugHeight);
       }
     }

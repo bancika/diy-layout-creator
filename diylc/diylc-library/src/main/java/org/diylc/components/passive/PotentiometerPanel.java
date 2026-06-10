@@ -345,7 +345,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     int x = (panelWidth - textWidth) / 2;
     int y = panelHeight / 2 - textHeight + fontMetrics.getAscent();
 
-    g2d.drawString(getName(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+    g2d.drawString(getName(), (int) Math.round(bodyRect.getX() + x), (int) Math.round(bodyRect.getY() + y));
 
     // Draw value.
     rect = fontMetrics.getStringBounds(getValueForDisplay(), g2d);
@@ -356,7 +356,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     x = (panelWidth - textWidth) / 2;
     y = panelHeight / 2 + fontMetrics.getAscent();
 
-    g2d.drawString(getValueForDisplay(), (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+    g2d.drawString(getValueForDisplay(), (int) Math.round(bodyRect.getX() + x), (int) Math.round(bodyRect.getY() + y));
 
     // Draw markers if enabled.
     if (getShowMarkers()) {

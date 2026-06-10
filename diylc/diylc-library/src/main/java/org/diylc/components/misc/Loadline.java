@@ -75,7 +75,7 @@ public class Loadline extends AbstractBoard {
       Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(boardColor);
 
-      g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()),
+      g2d.fillRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()),
           (int)(finalSecondPoint.getY() - firstPoint.getY()));
 
       g2d.setComposite(oldComposite);
@@ -88,7 +88,7 @@ public class Loadline extends AbstractBoard {
             ? SELECTION_COLOR
             : borderColor);
 
-    g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()),
+    g2d.drawRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()),
         (int)(finalSecondPoint.getY() - firstPoint.getY()));
 
   }

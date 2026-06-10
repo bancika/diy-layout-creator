@@ -77,16 +77,16 @@ public class Eyelet extends AbstractTransparentComponent<String> {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     g2d.setColor(color);
     drawingObserver.startTrackingContinuityArea(true);
-    g2d.fillOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
+    g2d.fillOval((int) Math.round(point.getX() - diameter / 2), (int) Math.round(point.getY() - diameter / 2), diameter, diameter);
     drawingObserver.stopTrackingContinuityArea();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
-    g2d.drawOval((int)(point.getX() - diameter / 2), (int)(point.getY() - diameter / 2), diameter, diameter);
+    g2d.drawOval((int) Math.round(point.getX() - diameter / 2), (int) Math.round(point.getY() - diameter / 2), diameter, diameter);
     g2d.setColor(Constants.CANVAS_COLOR);
-    g2d.fillOval((int)(point.getX() - holeDiameter / 2), (int)(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
+    g2d.fillOval((int) Math.round(point.getX() - holeDiameter / 2), (int) Math.round(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : color.darker());
-    g2d.drawOval((int)(point.getX() - holeDiameter / 2), (int)(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
+    g2d.drawOval((int) Math.round(point.getX() - holeDiameter / 2), (int) Math.round(point.getY() - holeDiameter / 2), holeDiameter, holeDiameter);
 
     g2d.setComposite(oldComposite);
   }

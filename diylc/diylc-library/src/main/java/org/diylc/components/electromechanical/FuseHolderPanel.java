@@ -213,10 +213,10 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
     for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.drawRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       } else {
         g2d.setColor(METAL_COLOR);
-        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       }
     }
     

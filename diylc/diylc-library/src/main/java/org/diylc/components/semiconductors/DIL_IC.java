@@ -237,9 +237,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
       controlPoints[i] =
-          new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+          new Point2D.Double((int) Math.round(firstPoint.getX() + dx1), (int) Math.round(firstPoint.getY() + dy1));
       controlPoints[i + pinCount.getValue() / 2] =
-          new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
+          new Point2D.Double((int) Math.round(firstPoint.getX() + dx2), (int) Math.round(firstPoint.getY() + dy2));
     }
   }
 
@@ -431,10 +431,10 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
         Point2D point = controlPoints[i];
 
         // determine points relative to rotation
-        int textX1 = (int) (point.getX() - 2 * pinSize);
-        int textY1 = (int) (point.getY() + pinSize / 2);
-        int textX2 = (int) (point.getX() + pinSize);
-        int textY2 = (int) (point.getY() + pinSize / 2);
+        int textX1 = (int) Math.round(point.getX() - 2 * pinSize);
+        int textY1 = (int) Math.round(point.getY() + pinSize / 2);
+        int textX2 = (int) Math.round(point.getX() + pinSize);
+        int textY2 = (int) Math.round(point.getY() + pinSize / 2);
         if (orientation == Orientation._90) {
           textX2 = textX2 - pinSize - pinSize / 2;
           textY2 = textY2 + pinSize;

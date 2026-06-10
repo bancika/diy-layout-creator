@@ -116,7 +116,7 @@ public class BOM extends AbstractComponent<Void> {
     int columnWidth = (int) size.convertToPixels() / columnCount;
     int entriesPerColumn = (int) Math.ceil(1.d * bom.size() / columnCount);
     if (entriesPerColumn == 0) {
-      g2d.drawString(DEFAULT_TEXT, (int)point.getX(), (int)point.getY());
+      g2d.drawString(DEFAULT_TEXT, (int) Math.round(point.getX()), (int) Math.round(point.getY()));
       return;
     }
     for (int i = 0; i < bom.size(); i++) {
@@ -129,8 +129,8 @@ public class BOM extends AbstractComponent<Void> {
       }
       int columnIndex = i / entriesPerColumn;
       int rowIndex = i % entriesPerColumn;
-      int x = (int)(point.getX() + columnIndex * columnWidth);
-      int y = (int)(point.getY() + rowIndex * maxHeight);
+      int x = (int) Math.round(point.getX() + columnIndex * columnWidth);
+      int y = (int) Math.round(point.getY() + rowIndex * maxHeight);
       g2d.drawString(entry.getName(), x, y);
       x += maxNameWidth + SPACING.convertToPixels();
       g2d.drawString(valueStr, x, y);

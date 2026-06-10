@@ -122,8 +122,8 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       double dy = offsetY.convertToPixels() * (i - 1);
       
       // calculate lead position
-      Point2D p1 = new Point2D.Double((int)(p0.getX() + dx / 2), (int)(p0.getY() + dy / 2));
-      Point2D p2 = new Point2D.Double((int)(p0.getX() + dx), (int)(p0.getY() + dy));
+      Point2D p1 = new Point2D.Double((int) Math.round(p0.getX() + dx / 2), (int) Math.round(p0.getY() + dy / 2));
+      Point2D p2 = new Point2D.Double((int) Math.round(p0.getX() + dx), (int) Math.round(p0.getY() + dy));
       
       if (c.getOrientation() != Orientation.DEFAULT) {
         AffineTransform tx = AffineTransform.getRotateInstance(c.getOrientation().toRadians(), p0.getX(), p0.getY());
@@ -182,7 +182,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point2D p = new Point2D.Double((int)(p0.getX() + dx * j), (int)(p0.getY() + dy * j));
+        Point2D p = new Point2D.Double((int) Math.round(p0.getX() + dx * j), (int) Math.round(p0.getY() + dy * j));
           if (tx != null)
           tx.transform(p, p);                  
         w.setControlPoint(p, j);
@@ -213,7 +213,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       HookupWire w = new HookupWire();
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point2D pw = new Point2D.Double((int)(p.getX() + dx * j), (int)(p.getY() + dy * j));
+        Point2D pw = new Point2D.Double((int) Math.round(p.getX() + dx * j), (int) Math.round(p.getY() + dy * j));
         w.setControlPoint(pw, j);
       }  
       newSelection.add(w);    
@@ -248,7 +248,7 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       w.setValue(AWG._24);
       getInstantiationManager().fillWithDefaultProperties(w, null);
       for (int j = 0; j < w.getControlPointCount(); j++) {
-        Point2D p = new Point2D.Double((int)(p0.getX() + dx * j), (int)(p0.getY() + dy * j));
+        Point2D p = new Point2D.Double((int) Math.round(p0.getX() + dx * j), (int) Math.round(p0.getY() + dy * j));
           if (tx != null)
           tx.transform(p, p);                  
         w.setControlPoint(p, j);

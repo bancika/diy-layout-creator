@@ -386,8 +386,8 @@ public class DrawingManager {
               g2dWrapper.setColor(CONTROL_POINT_COLOR);
               Point2D controlPoint = component.getControlPoint(i);
               int pointSize = CONTROL_POINT_SIZE - 2;
-              g2dWrapper.fillOval((int) (controlPoint.getX() - pointSize / 2),
-                  (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
+              g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - pointSize / 2),
+                  (int) Math.round(controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             }
           }
         }
@@ -403,11 +403,11 @@ public class DrawingManager {
             int pointSize = CONTROL_POINT_SIZE;
 
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-            g2dWrapper.fillOval((int) (controlPoint.getX() - pointSize / 2),
-                (int) (controlPoint.getY() - pointSize / 2), pointSize, pointSize);
+            g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - pointSize / 2),
+                (int) Math.round(controlPoint.getY() - pointSize / 2), pointSize, pointSize);
             g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-            g2dWrapper.fillOval((int) (controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1),
-                (int) (controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
+            g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1),
+                (int) Math.round(controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
                 CONTROL_POINT_SIZE - 2);
           }
         }
@@ -437,12 +437,12 @@ public class DrawingManager {
       for (Point2D point : controlPointSlot) {
         if (point != null) {
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-          g2dWrapper.fillOval((int) (point.getX() - CONTROL_POINT_SIZE / 2),
-              (int) (point.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
+          g2dWrapper.fillOval((int) Math.round(point.getX() - CONTROL_POINT_SIZE / 2),
+              (int) Math.round(point.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
               CONTROL_POINT_SIZE);
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-          g2dWrapper.fillOval((int) (point.getX() - CONTROL_POINT_SIZE / 2 + 1),
-              (int) (point.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
+          g2dWrapper.fillOval((int) Math.round(point.getX() - CONTROL_POINT_SIZE / 2 + 1),
+              (int) Math.round(point.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
               CONTROL_POINT_SIZE - 2);
         }
       }

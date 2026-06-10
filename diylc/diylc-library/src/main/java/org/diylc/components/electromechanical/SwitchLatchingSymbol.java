@@ -134,7 +134,7 @@ public class SwitchLatchingSymbol
             Math.atan2(endPoint.getY() - startPoint.getY(), endPoint.getX() - startPoint.getX());
         int startAngle = (int) Math.toDegrees(-latchAngle) - ARC_ANGLE / 2;
 
-        g2d.drawArc((int) (startPoint.getX() - d), (int) (startPoint.getY() - d), (int) (d * 2),
+        g2d.drawArc((int) Math.round(startPoint.getX() - d), (int) Math.round(startPoint.getY() - d), (int) (d * 2),
             (int) (d * 2), startAngle, ARC_ANGLE);
       }
     }

@@ -55,7 +55,7 @@ public class Rectangle extends AbstractShapeWithDimensions {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(color);
-    g2d.fillRoundRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()), radius,
+    g2d.fillRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()), radius,
         radius);
     g2d.setComposite(oldComposite);
     
@@ -64,7 +64,7 @@ public class Rectangle extends AbstractShapeWithDimensions {
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
         : borderColor);
-    g2d.drawRoundRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()), radius,
+    g2d.drawRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(secondPoint.getX() - firstPoint.getX()), (int)(secondPoint.getY() - firstPoint.getY()), radius,
         radius);
   }
 

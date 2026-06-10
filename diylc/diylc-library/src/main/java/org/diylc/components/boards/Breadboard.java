@@ -122,15 +122,15 @@ public class Breadboard extends AbstractProtoBoard {
 
     // draw lines
     g2d.setColor(PLUS_COLOR);
-    g2d.drawLine((int) (point.getX() + spacing), (int) (point.getY() + spacing), (int) (point.getX() + spacing),
-        (int) (point.getY() + holeCount * spacing));
-    g2d.drawLine((int) (point.getX() + 19 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 19 * spacing),
-        (int) (point.getY() + holeCount * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + spacing), (int) Math.round(point.getY() + spacing), (int) Math.round(point.getX() + spacing),
+        (int) Math.round(point.getY() + holeCount * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + 19 * spacing), (int) Math.round(point.getY() + spacing), (int) Math.round(point.getX() + 19 * spacing),
+        (int) Math.round(point.getY() + holeCount * spacing));
     g2d.setColor(MINUS_COLOR);
-    g2d.drawLine((int) (point.getX() + 4 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 4 * spacing),
-        (int) (point.getY() + holeCount * spacing));
-    g2d.drawLine((int) (point.getX() + 22 * spacing), (int) (point.getY() + spacing), (int) (point.getX() + 22 * spacing),
-        (int) (point.getY() + holeCount * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + 4 * spacing), (int) Math.round(point.getY() + spacing), (int) Math.round(point.getX() + 4 * spacing),
+        (int) Math.round(point.getY() + holeCount * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + 22 * spacing), (int) Math.round(point.getY() + spacing), (int) Math.round(point.getX() + 22 * spacing),
+        (int) Math.round(point.getY() + holeCount * spacing));
 
     int holeSize = getClosestOdd(HOLE_SIZE.convertToPixels());
     int holeArc = (int) HOLE_ARC.convertToPixels();
@@ -146,9 +146,9 @@ public class Breadboard extends AbstractProtoBoard {
         g2d.setColor(COORDINATE_COLOR);
         int coordinateX;
         if (section == 0) {
-          coordinateX = (int) (point.getX() + offset + 5.5 * spacing);
+          coordinateX = (int) Math.round(point.getX() + offset + 5.5 * spacing);
         } else {
-          coordinateX = (int) (point.getX() + offset + 10.5 * spacing);
+          coordinateX = (int) Math.round(point.getX() + offset + 10.5 * spacing);
         }
         StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.getY() + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
@@ -163,9 +163,9 @@ public class Breadboard extends AbstractProtoBoard {
           // Draw horizontal labels
           if (y == 0) {
             g2d.setColor(COORDINATE_COLOR);
-            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.getY() + COORDINATE_FONT_SIZE),
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) Math.round(point.getY() + COORDINATE_FONT_SIZE),
                 HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) (point.getY()
+            StringUtils.drawCenteredText(g2d, new String(new byte[] {(byte) (a + x + 5 * section)}), holeX, (int) Math.round(point.getY()
                 + spacing * 31 - COORDINATE_FONT_SIZE / 2), HorizontalAlignment.CENTER, VerticalAlignment.TOP);
           }
         }
@@ -218,15 +218,15 @@ public class Breadboard extends AbstractProtoBoard {
         g2d.setColor(COORDINATE_COLOR);
         int coordinateX;
         if (section == 0) {
-          coordinateX = (int) (point.getX() + offset + 5.5 * spacing);
+          coordinateX = (int) Math.round(point.getX() + offset + 5.5 * spacing);
         } else {
-          coordinateX = (int) (point.getX() + offset + 10.5 * spacing);
+          coordinateX = (int) Math.round(point.getX() + offset + 10.5 * spacing);
         }
         StringUtils.drawCenteredText(g2d, String.valueOf(y + 1), coordinateX, (int) (point.getY() + (y + 1) * spacing),
             section == 0 ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
 //        for (int x = 0; x < 5; x++) {
-          int holeX1 = (int) (point.getX() + offset + 6 * spacing);
-          int holeX2 = (int) (point.getX() + offset + 10 * spacing);
+          int holeX1 = (int) Math.round(point.getX() + offset + 6 * spacing);
+          int holeX2 = (int) Math.round(point.getX() + offset + 10 * spacing);
           int holeY = (int) (point.getY() + (y + 1) * spacing);
           g2d.setColor(HOLE_COLOR);
           g2d.fillRoundRect(holeX1 - holeSize / 2, holeY - holeSize / 2, holeSize + holeX2 - holeX1, holeSize, holeArc, holeArc);

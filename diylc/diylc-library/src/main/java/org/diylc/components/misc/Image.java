@@ -161,7 +161,7 @@ public class Image extends AbstractTransparentComponent<Void> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.drawImage(ICON.getImage(), (int)point.getX(), (int)point.getY(), null);
+    g2d.drawImage(ICON.getImage(), (int) Math.round(point.getX()), (int) Math.round(point.getY()), null);
   }
 
   @Override

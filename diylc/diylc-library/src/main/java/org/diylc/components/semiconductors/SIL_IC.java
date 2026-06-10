@@ -216,7 +216,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+      controlPoints[i] = new Point2D.Double((int) Math.round(firstPoint.getX() + dx1), (int) Math.round(firstPoint.getY() + dy1));
     }
   }
 
@@ -293,9 +293,9 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
         g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     }
     

@@ -90,7 +90,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(boardColor);
-    g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+    g2d.fillRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     g2d.setComposite(oldComposite);
 
     // Do not track any changes that follow because the whole board has been
@@ -98,7 +98,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
     drawingObserver.stopTracking();
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : borderColor);
-    g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+    g2d.drawRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
   }
 
   protected Point2D getFinalSecondPoint() {
@@ -178,7 +178,7 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
                 HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         if (getCoordinateDisplay() == CoordinateDisplay.Both_Sides) {
           StringUtils.drawCenteredText(g2d, label,
-                  x, (int) (finalSecondPoint.getY() - COORDINATE_FONT_SIZE),
+                  x, (int) Math.round(finalSecondPoint.getY() - COORDINATE_FONT_SIZE),
                   HorizontalAlignment.CENTER, VerticalAlignment.BOTTOM);
         }
       }

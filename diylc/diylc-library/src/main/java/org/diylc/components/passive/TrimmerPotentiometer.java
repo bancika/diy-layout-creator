@@ -405,10 +405,10 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     for (Point2D point : controlPoints) {
       if (!outlineMode) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
       g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+      g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     // Draw label.
@@ -451,7 +451,7 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
     int x = (panelWidth - textWidth) / 2;
     int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
-    g2d.drawString(label, (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+    g2d.drawString(label, (int) Math.round(bodyRect.getX() + x), (int) Math.round(bodyRect.getY() + y));
   }
 
   @Override
