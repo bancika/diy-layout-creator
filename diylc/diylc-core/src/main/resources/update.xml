@@ -399,6 +399,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved quality of AI Assistant responses in some cases</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Improved precision of rendering, in some cases there was a sub-pixel misalignment between the lines that should meet exactly</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
