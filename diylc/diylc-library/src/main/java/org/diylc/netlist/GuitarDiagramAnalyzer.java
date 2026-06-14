@@ -369,9 +369,11 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
     notes.add(sb.toString());
 
     TrebleBleed trebleBleed = volPotTrebleBleedMap.get(e.getKey());
-    String trebleBleedNote = trebleBleed.toNote(e.getKey());
-    if (trebleBleedNote != null && !trebleBleedNote.isEmpty()) {
-      notes.add(trebleBleedNote);
+    if (trebleBleed != null) {
+      String trebleBleedNote = trebleBleed.toNote(e.getKey());
+      if (trebleBleedNote != null && !trebleBleedNote.isEmpty()) {
+        notes.add(trebleBleedNote);
+      }
     }
   }
 
@@ -460,7 +462,7 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
           parent1.getChildren().stream().filter(t -> !t.equals(tree1)).findFirst();
       trebleTree.ifPresent(t -> {
         // transcend one layer down if the tree is nested
-        while (t.getChildren().size() == 1 && t.getChildren().get(0).getLeaf() == null) {
+        while (t.getChildren() != null && t.getChildren().size() == 1 && t.getChildren().get(0).getLeaf() == null) {
           t = t.getChildren().get(0);
         }
         Set<IDIYComponent<?>> trebleBleedComponents = t.extractComponents(ALL_TYPES);

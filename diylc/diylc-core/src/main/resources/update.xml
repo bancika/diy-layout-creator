@@ -433,6 +433,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed scaling for 'Image' and 'SVG Image' components; it was showing as undefined</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed errors while analyzing guitar wiring diagrams caused by treble bleed enhancements</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
