@@ -7,15 +7,15 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>5.15.0</version>
+        <version>6.0.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
     <!-- No need to specify version - it inherits from parent -->
     
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
     
     <dependencies>
@@ -307,10 +307,10 @@
             <id>linux-appimage</id>
             <properties>
                 <appdir.dir>${project.build.directory}/AppDir</appdir.dir>
-                <jdk.version>17.0.14+7</jdk.version>
-                <jdk.version.file>17.0.14_7</jdk.version.file>
-                <jdk.archive.linux>OpenJDK17U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz</jdk.archive.linux>
-                <jdk.url.linux>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}</jdk.url.linux>
+                <jdk.version>21.0.11+10</jdk.version>
+                <jdk.version.file>21.0.11_10</jdk.version.file>
+                <jdk.archive.linux>OpenJDK21U-jre_x64_linux_hotspot_${jdk.version.file}.tar.gz</jdk.archive.linux>
+                <jdk.url.linux>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.linux}</jdk.url.linux>
                 <jre.dest.linux>${project.build.directory}/jre-temp</jre.dest.linux>
                 <wsl.command>wsl bash -c</wsl.command>
                 <appimage.output.file>DIYLayoutCreator-${project.version}-x86_64.AppImage</appimage.output.file>
@@ -561,10 +561,10 @@
         <profile>
             <id>win64-installer</id>
             <properties>
-                <jdk.version>17.0.14+7</jdk.version>
-                <jdk.version.file>17.0.14_7</jdk.version.file>
-                <jdk.archive.win64>OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
-                <jdk.url.win64>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
+                <jdk.version>21.0.11+10</jdk.version>
+                <jdk.version.file>21.0.11_10</jdk.version.file>
+                <jdk.archive.win64>OpenJDK21U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
+                <jdk.url.win64>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
                 <jre.dest.win64>${project.build.directory}/jre_win</jre.dest.win64>
             </properties>
             <build>
@@ -647,10 +647,10 @@
         <profile>
             <id>win64-zip</id>
             <properties>
-                <jdk.version>17.0.14+7</jdk.version>
-                <jdk.version.file>17.0.14_7</jdk.version.file>
-                <jdk.archive.win64>OpenJDK17U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
-                <jdk.url.win64>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
+                <jdk.version>21.0.11+10</jdk.version>
+                <jdk.version.file>21.0.11_10</jdk.version.file>
+                <jdk.archive.win64>OpenJDK21U-jre_x64_windows_hotspot_${jdk.version.file}.zip</jdk.archive.win64>
+                <jdk.url.win64>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.win64}</jdk.url.win64>
                 <jre.dest.win64>${project.build.directory}/jre_win</jre.dest.win64>
             </properties>
             <build>
@@ -716,8 +716,8 @@
                                         <copy file="${project.basedir}/deploy/win/diylc-x64.exe" 
                                               tofile="${project.build.directory}/zip-temp/diylc.exe" />
                                         
-                                        <!-- Copy JRE to jre17 folder instead of jre -->
-                                        <copy todir="${project.build.directory}/zip-temp/jre17">
+                                        <!-- Copy JRE to jre21 folder instead of jre -->
+                                        <copy todir="${project.build.directory}/zip-temp/jre21">
                                             <fileset dir="${jre.dest.win64}" />
                                         </copy>
                                         
@@ -740,10 +740,10 @@
         <profile>
             <id>mac-x86</id>
             <properties>
-                <jdk.version>17.0.14+7</jdk.version>
-                <jdk.version.file>17.0.14_7</jdk.version.file>
-                <jdk.archive.osx>OpenJDK17U-jre_x64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
-                <jdk.url.osx>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
+                <jdk.version>21.0.11+10</jdk.version>
+                <jdk.version.file>21.0.11_10</jdk.version.file>
+                <jdk.archive.osx>OpenJDK21U-jre_x64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
+                <jdk.url.osx>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
                 <jre.dest.osx>${project.build.directory}/jre_x86.bundle</jre.dest.osx>
             </properties>
             <build>
@@ -853,7 +853,7 @@
                                                   icon="${project.basedir}/src/main/resources/icons/diylc.icns"
                                                   mainclassname="org.diylc.DIYLCStarter"
                                                   copyright="2025 bancika"
-                                                  jvmrequired="17">
+                                                  jvmrequired="21">
                                             <bundledocument contentTypes="org.diylc.diy"
                                                            name="DIYLC document"
                                                            role="Editor"
@@ -1053,10 +1053,10 @@
         <profile>
             <id>mac-arm</id>
             <properties>
-                <jdk.version>17.0.14+7</jdk.version>
-                <jdk.version.file>17.0.14_7</jdk.version.file>
-                <jdk.archive.osx>OpenJDK17U-jre_aarch64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
-                <jdk.url.osx>https://github.com/adoptium/temurin17-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
+                <jdk.version>21.0.11+10</jdk.version>
+                <jdk.version.file>21.0.11_10</jdk.version.file>
+                <jdk.archive.osx>OpenJDK21U-jre_aarch64_mac_hotspot_${jdk.version.file}.tar.gz</jdk.archive.osx>
+                <jdk.url.osx>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-${jdk.version}/${jdk.archive.osx}</jdk.url.osx>
                 <jre.dest.osx>${project.build.directory}/jre_arm.bundle</jre.dest.osx>
             </properties>
             <build>
@@ -1166,7 +1166,7 @@
                                                   icon="${project.basedir}/src/main/resources/icons/diylc.icns"
                                                   mainclassname="org.diylc.DIYLCStarter"
                                                   copyright="2025 bancika"
-                                                  jvmrequired="17">
+                                                  jvmrequired="21">
                                             <bundledocument contentTypes="org.diylc.diy"
                                                            name="DIYLC document"
                                                            role="Editor"
