@@ -21,6 +21,7 @@
 */
 package org.diylc.swing.plugins.explorer;
 
+import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
@@ -91,7 +94,8 @@ public class ExplorerPlugin implements IPlugIn {
       @Override
       public boolean dispatchKeyEvent(KeyEvent e) {
         if (explorerPane != null
-            && (canvasPanel.hasFocus() || explorerPane.hasFocus())
+            && e.getID() == KeyEvent.KEY_PRESSED
+            && isQuickJumpFocusOwner()
             && e.getKeyChar() == 'x' && e.getModifiersEx() == 0
             && ConfigurationManager.getInstance()
                 .readBoolean(ConfigPlugin.PROJECT_EXPLORER, true)) {
@@ -101,6 +105,13 @@ public class ExplorerPlugin implements IPlugIn {
         return false;
       }
     });
+  }
+
+  private boolean isQuickJumpFocusOwner() {
+    Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+    return focusOwner != null
+        && !(focusOwner instanceof JTextComponent)
+        && (focusOwner == canvasPanel || SwingUtilities.isDescendingFrom(focusOwner, explorerPane));
   }
   
   public ExplorerPane getExplorerPane() {
