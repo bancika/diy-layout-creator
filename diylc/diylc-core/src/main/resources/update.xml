@@ -340,5 +340,25 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-06-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved handling of larger AI analysis requests and added more token budget per request to Supporter and Pro plans</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Files containing Inductor Symbol fail to open</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>
