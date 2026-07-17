@@ -360,5 +360,21 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>2</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-07-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved comparison logic of the 'Compare With..' tool</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

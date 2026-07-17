@@ -48,33 +48,34 @@ public class CompareServiceTest {
 
     @Test
     public void testCompare_MissingConnectionsInSecondNetlist() {
-        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
-        // Group will have 3 nodes
-        Netlist netlist1 = createNetlist(componentMap, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
-        Netlist netlist2 = createNetlist(componentMap, "Component1", "Node1"); // Missing group with 2 nodes
+        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
+        Netlist netlist1 = createNetlist(componentMap1, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
+        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Netlist netlist2 = createNetlist(componentMap2, "Component1", "Node1"); // Missing components 2 & 3
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
         // 2 components missing = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
-        // 3 nodes = 3 connections (1-2, 1-3, 2-3)
-        assertEquals(3, results.connectionDiffs().size());
+        // Connections involving missing components are filtered out, so 0 connection diffs
+        assertEquals(0, results.connectionDiffs().size());
     }
 
     @Test
     public void testCompare_MissingConnectionsInFirstNetlist() {
-        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
-        // Group will have 3 nodes
-        Netlist netlist1 = createNetlist(componentMap, "Component1", "Node1");
-        Netlist netlist2 = createNetlist(componentMap, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
+        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
+        Netlist netlist1 = createNetlist(componentMap1, "Component1", "Node1");
+        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Netlist netlist2 = createNetlist(componentMap2, "Component1", "Node1", "Component2", "Node2", "Component3", "Node3");
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
         // 2 components missing = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
-        assertEquals(3, results.connectionDiffs().size());
+        // Connections involving missing components are filtered out, so 0 connection diffs
+        assertEquals(0, results.connectionDiffs().size());
     }
 
     @Test
@@ -89,8 +90,8 @@ public class CompareServiceTest {
         assertTrue(!results.matches());
         // 4 components missing (2 in each netlist) = 4 component diffs
         assertEquals(4, results.componentDiffs().size());
-        // 2 connections in each netlist = 2 connection diffs
-        assertEquals(2, results.connectionDiffs().size());
+        // Connections involving missing components are filtered out, so 0 connection diffs
+        assertEquals(0, results.connectionDiffs().size());
         
         // Verify differences from first netlist
         List<ComponentDiff> firstNetlistComponentDiffs = results.componentDiffs().stream()
@@ -109,13 +110,15 @@ public class CompareServiceTest {
     public void testCompare_MultipleGroups_Identical() {
         Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         
-        // Create first netlist with two groups
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
+        // Create groups first so componentMap is populated
+        Group g1a = createGroup(componentMap, "Component1", "Node1", "Component2", "Node2");
+        Group g1b = createGroup(componentMap, "Component3", "Node3", "Component4", "Node4");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist1.add(g1a);
+        netlist1.add(g1b);
         
-        // Create second netlist with same groups
-        Netlist netlist2 = new Netlist(new ArrayList<>());
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap.values()));
         netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
         netlist2.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
 
@@ -130,13 +133,16 @@ public class CompareServiceTest {
     public void testCompare_MultipleGroups_DifferentOrder() {
         Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         
-        // Create first netlist with two groups
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
+        // Create groups first so componentMap is populated
+        Group g1a = createGroup(componentMap, "Component1", "Node1", "Component2", "Node2");
+        Group g1b = createGroup(componentMap, "Component3", "Node3", "Component4", "Node4");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist1.add(g1a);
+        netlist1.add(g1b);
         
-        // Create second netlist with same groups but in different order
-        Netlist netlist2 = new Netlist(new ArrayList<>());
+        // Same groups but in different order
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap.values()));
         netlist2.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
         netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
 
@@ -149,33 +155,45 @@ public class CompareServiceTest {
 
     @Test
     public void testCompare_MultipleGroups_ExtraGroup() {
-        Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
-        // Each group has 2 nodes
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
-        Netlist netlist2 = new Netlist(new ArrayList<>());
-        netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
-        netlist2.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
-        netlist2.add(createGroup(componentMap, "Component5", "Node5", "Component6", "Node6"));
+        Map<String, IDIYComponent<?>> componentMap1 = new HashMap<>();
+        // Create shared groups first
+        Group shared1 = createGroup(componentMap1, "Component1", "Node1", "Component2", "Node2");
+        Group shared2 = createGroup(componentMap1, "Component3", "Node3", "Component4", "Node4");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap1.values()));
+        netlist1.add(shared1);
+        netlist1.add(shared2);
+
+        Map<String, IDIYComponent<?>> componentMap2 = new HashMap<>();
+        Group shared2_1 = createGroup(componentMap2, "Component1", "Node1", "Component2", "Node2");
+        Group shared2_2 = createGroup(componentMap2, "Component3", "Node3", "Component4", "Node4");
+        Group extra = createGroup(componentMap2, "Component5", "Node5", "Component6", "Node6");
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap2.values()));
+        netlist2.add(shared2_1);
+        netlist2.add(shared2_2);
+        netlist2.add(extra);
 
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(!results.matches());
         // 2 components in extra group = 2 component diffs
         assertEquals(2, results.componentDiffs().size());
-        // 1 connection in extra group = 1 connection diff
-        assertEquals(1, results.connectionDiffs().size());
+        // Connections to/from missing Component5/6 are filtered out, so 0 connection diffs
+        assertEquals(0, results.connectionDiffs().size());
     }
 
     @Test
     public void testCompare_MultipleGroups_DifferentConnections() {
         Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
-        // Each group has 2 nodes
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Component1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap, "Component3", "Node3", "Component4", "Node4"));
-        Netlist netlist2 = new Netlist(new ArrayList<>());
+        // Create groups first so componentMap is populated
+        Group g1a = createGroup(componentMap, "Component1", "Node1", "Component2", "Node2");
+        Group g1b = createGroup(componentMap, "Component3", "Node3", "Component4", "Node4");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist1.add(g1a);
+        netlist1.add(g1b);
+
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap.values()));
         netlist2.add(createGroup(componentMap, "Component1", "Node1", "Component3", "Node3"));
         netlist2.add(createGroup(componentMap, "Component2", "Node2", "Component4", "Node4"));
 
@@ -191,13 +209,16 @@ public class CompareServiceTest {
     public void testCompare_NonPolarizedComponent_SwappedNodes() {
         Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         
-        // Create first netlist with non-polarized component in two groups
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Resistor1", "Node1", "Component2", "Node2"));
-        netlist1.add(createGroup(componentMap, "Resistor1", "Node2", "Component3", "Node3"));
+        // Create groups first so componentMap is populated
+        Group g1a = createGroup(componentMap, "Resistor1", "Node1", "Component2", "Node2");
+        Group g1b = createGroup(componentMap, "Resistor1", "Node2", "Component3", "Node3");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist1.add(g1a);
+        netlist1.add(g1b);
         
-        // Create second netlist with same connections but different node order
-        Netlist netlist2 = new Netlist(new ArrayList<>());
+        // Same connections but different node order
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap.values()));
         netlist2.add(createGroup(componentMap, "Resistor1", "Node2", "Component2", "Node2"));
         netlist2.add(createGroup(componentMap, "Resistor1", "Node1", "Component3", "Node3"));
 
@@ -214,9 +235,6 @@ public class CompareServiceTest {
 
     @Test
     public void testCompare_PolarizedComponent_SwappedNodes() {
-        // Create first netlist with polarized component in two groups
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        
         // Create diode for netlist1
         IDIYComponent<?> diode1 = mock(IDIYComponent.class);
         when(diode1.getName()).thenReturn("Diode1");
@@ -250,6 +268,9 @@ public class CompareServiceTest {
         when(component3_1.toString()).thenReturn("Component3");
         when(component3_1.isPolarized()).thenReturn(false);
         
+        // Create first netlist with polarized component in two groups
+        Netlist netlist1 = new Netlist(List.of(diode1, component2_1, component3_1));
+
         // Create groups for netlist1
         Group group1 = new Group();
         Node node1 = new Node(diode1, 0); // Anode
@@ -264,9 +285,6 @@ public class CompareServiceTest {
         group2.getNodes().add(node3);
         group2.getNodes().add(node4);
         netlist1.add(group2);
-        
-        // Create second netlist with same connections but different node order
-        Netlist netlist2 = new Netlist(new ArrayList<>());
         
         // Create diode for netlist2
         IDIYComponent<?> diode2 = mock(IDIYComponent.class);
@@ -301,6 +319,9 @@ public class CompareServiceTest {
         when(component3_2.toString()).thenReturn("Component3");
         when(component3_2.isPolarized()).thenReturn(false);
         
+        // Create second netlist with same connections but different node order
+        Netlist netlist2 = new Netlist(List.of(diode2, component2_2, component3_2));
+
         // Create groups for netlist2 with swapped nodes
         Group group3 = new Group();
         Node node5 = new Node(diode2, 1); // Cathode
@@ -447,14 +468,18 @@ public class CompareServiceTest {
     public void testCompare_MixedPolarizedAndNonPolarized() {
         Map<String, IDIYComponent<?>> componentMap = new HashMap<>();
         
-        // Create first netlist with both polarized and non-polarized components
-        Netlist netlist1 = new Netlist(new ArrayList<>());
-        netlist1.add(createGroup(componentMap, "Resistor1", "Node1", "Diode1", "Anode"));
-        netlist1.add(createGroup(componentMap, "Resistor1", "Node2", "Component3", "Node3"));
-        netlist1.add(createGroup(componentMap, "Diode1", "Cathode", "Component4", "Node4"));
+        // Create groups first so componentMap is populated
+        Group g1a = createGroup(componentMap, "Resistor1", "Node1", "Diode1", "Anode");
+        Group g1b = createGroup(componentMap, "Resistor1", "Node2", "Component3", "Node3");
+        Group g1c = createGroup(componentMap, "Diode1", "Cathode", "Component4", "Node4");
+
+        Netlist netlist1 = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist1.add(g1a);
+        netlist1.add(g1b);
+        netlist1.add(g1c);
         
-        // Create second netlist with same connections but different node order for non-polarized
-        Netlist netlist2 = new Netlist(new ArrayList<>());
+        // Same connections but different node order for non-polarized
+        Netlist netlist2 = new Netlist(new ArrayList<>(componentMap.values()));
         netlist2.add(createGroup(componentMap, "Resistor1", "Node2", "Diode1", "Anode"));
         netlist2.add(createGroup(componentMap, "Resistor1", "Node1", "Component3", "Node3"));
         netlist2.add(createGroup(componentMap, "Diode1", "Cathode", "Component4", "Node4"));
@@ -473,8 +498,9 @@ public class CompareServiceTest {
     }
 
     private Netlist createNetlist(Map<String, IDIYComponent<?>> componentMap, String... componentNodePairs) {
-        Netlist netlist = new Netlist(new ArrayList<>());
-        netlist.add(createGroup(componentMap, componentNodePairs));
+        Group group = createGroup(componentMap, componentNodePairs);
+        Netlist netlist = new Netlist(new ArrayList<>(componentMap.values()));
+        netlist.add(group);
         return netlist;
     }
 
