@@ -508,11 +508,6 @@ public class HeatSinkResistor extends AbstractLeadedComponent<Resistance> implem
     g2d.draw(a);
   }
 
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
-
   public enum MountingHoleCount {
     TWO_DIAGONAL("2 diagonal"),
     FOUR("4 holes"),

@@ -222,10 +222,6 @@ public class CompareServiceTest {
         netlist2.add(createGroup(componentMap, "Resistor1", "Node2", "Component2", "Node2"));
         netlist2.add(createGroup(componentMap, "Resistor1", "Node1", "Component3", "Node3"));
 
-        // Make Resistor1 non-polarized
-        IDIYComponent<?> resistor = componentMap.get("Resistor1");
-        when(resistor.isPolarized()).thenReturn(false);
-
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(results.matches());
@@ -243,7 +239,6 @@ public class CompareServiceTest {
         when(diode1.getControlPoint(1)).thenReturn(new Point2D.Double(0, 0));
         when(diode1.isControlPointSticky(0)).thenReturn(true);
         when(diode1.isControlPointSticky(1)).thenReturn(true);
-        when(diode1.isPolarized()).thenReturn(true);
         when(diode1.toString()).thenReturn("Diode1");
         when(diode1.getControlPointNodeName(0)).thenReturn("Anode");
         when(diode1.getControlPointNodeName(1)).thenReturn("Cathode");
@@ -256,7 +251,6 @@ public class CompareServiceTest {
         when(component2_1.getControlPoint(0)).thenReturn(new Point2D.Double(0, 0));
         when(component2_1.isControlPointSticky(0)).thenReturn(true);
         when(component2_1.toString()).thenReturn("Component2");
-        when(component2_1.isPolarized()).thenReturn(false);
         
         // Create Component3 for netlist1
         IDIYComponent<?> component3_1 = mock(IDIYComponent.class);
@@ -266,7 +260,6 @@ public class CompareServiceTest {
         when(component3_1.getControlPoint(0)).thenReturn(new Point2D.Double(0, 0));
         when(component3_1.isControlPointSticky(0)).thenReturn(true);
         when(component3_1.toString()).thenReturn("Component3");
-        when(component3_1.isPolarized()).thenReturn(false);
         
         // Create first netlist with polarized component in two groups
         Netlist netlist1 = new Netlist(List.of(diode1, component2_1, component3_1));
@@ -294,7 +287,6 @@ public class CompareServiceTest {
         when(diode2.getControlPoint(1)).thenReturn(new Point2D.Double(0, 0));
         when(diode2.isControlPointSticky(0)).thenReturn(true);
         when(diode2.isControlPointSticky(1)).thenReturn(true);
-        when(diode2.isPolarized()).thenReturn(true);
         when(diode2.toString()).thenReturn("Diode1");
         when(diode2.getControlPointNodeName(0)).thenReturn("Anode");
         when(diode2.getControlPointNodeName(1)).thenReturn("Cathode");
@@ -307,7 +299,6 @@ public class CompareServiceTest {
         when(component2_2.getControlPoint(0)).thenReturn(new Point2D.Double(0, 0));
         when(component2_2.isControlPointSticky(0)).thenReturn(true);
         when(component2_2.toString()).thenReturn("Component2");
-        when(component2_2.isPolarized()).thenReturn(false);
         
         // Create Component3 for netlist2
         IDIYComponent<?> component3_2 = mock(IDIYComponent.class);
@@ -317,7 +308,6 @@ public class CompareServiceTest {
         when(component3_2.getControlPoint(0)).thenReturn(new Point2D.Double(0, 0));
         when(component3_2.isControlPointSticky(0)).thenReturn(true);
         when(component3_2.toString()).thenReturn("Component3");
-        when(component3_2.isPolarized()).thenReturn(false);
         
         // Create second netlist with same connections but different node order
         Netlist netlist2 = new Netlist(List.of(diode2, component2_2, component3_2));
@@ -343,8 +333,7 @@ public class CompareServiceTest {
             System.out.println("Group: " + g);
             for (Node n : g.getNodes()) {
                 System.out.println("  Node: " + n.getComponent().getName() + 
-                    " " + n.getComponent().getControlPointNodeName(n.getPointIndex()) +
-                    " (polarized: " + n.getComponent().isPolarized() + ")");
+                    " " + n.getComponent().getControlPointNodeName(n.getPointIndex()));
             }
         }
         System.out.println("\nNetlist2 groups:");
@@ -352,8 +341,7 @@ public class CompareServiceTest {
             System.out.println("Group: " + g);
             for (Node n : g.getNodes()) {
                 System.out.println("  Node: " + n.getComponent().getName() + 
-                    " " + n.getComponent().getControlPointNodeName(n.getPointIndex()) +
-                    " (polarized: " + n.getComponent().isPolarized() + ")");
+                    " " + n.getComponent().getControlPointNodeName(n.getPointIndex()));
             }
         }
 
@@ -485,11 +473,6 @@ public class CompareServiceTest {
         netlist2.add(createGroup(componentMap, "Diode1", "Cathode", "Component4", "Node4"));
 
         // Make Resistor1 non-polarized and Diode1 polarized
-        IDIYComponent<?> resistor = componentMap.get("Resistor1");
-        IDIYComponent<?> diode = componentMap.get("Diode1");
-        when(resistor.isPolarized()).thenReturn(false);
-        when(diode.isPolarized()).thenReturn(true);
-
         CompareResults results = compareService.compare(netlist1, netlist2);
 
         assertTrue(results.matches());
@@ -519,8 +502,6 @@ public class CompareServiceTest {
                 when(c.getControlPoint(0)).thenReturn(new Point2D.Double(0, 0));
                 when(c.isControlPointSticky(0)).thenReturn(true);
                 when(c.toString()).thenReturn(name);
-                // Default to non-polarized
-                when(c.isPolarized()).thenReturn(false);
                 return c;
             });
             // For the same component name, update the node name for this instance

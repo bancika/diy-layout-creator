@@ -147,9 +147,4 @@ public class FuseSymbol extends AbstractSchematicLeadedSymbol<Current> {
   public enum DrawStyle {
     ANSI, IEC, IEEE 
   }
-
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
 }
