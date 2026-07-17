@@ -132,7 +132,7 @@ public class TreePanel extends JPanel {
 
     add(getTreeScroll(), gbc);
 
-    setPreferredSize(new Dimension(240, 200));
+    setPreferredSize(new Dimension(260, 200));
    
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY,
         new IConfigListener() {
