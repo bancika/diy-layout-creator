@@ -25,7 +25,6 @@ import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.DrawOption;
 import org.diylc.common.DummyView;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Node;
@@ -44,7 +43,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CompareService {
 
@@ -58,8 +56,6 @@ public class CompareService {
     Presenter presenter = new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance());
     presenter.loadProjectFromFile(file.getAbsolutePath());
 
-    // Render in-memory to populate componentAreaMap,
-    // which is required for getContinuityAreas() used by extractNetlists()
     renderInMemory(presenter);
 
     try {
@@ -84,13 +80,8 @@ public class CompareService {
   }
 
   public CompareResults compare(Netlist netlist1, Netlist netlist2) {
-    // Step 1: Compare components
-    Set<String> currentComponents = netlist1.getComponents().stream()
-        .map(IDIYComponent::getName)
-        .collect(Collectors.toSet());
-    Set<String> targetComponents = netlist2.getComponents().stream()
-        .map(IDIYComponent::getName)
-        .collect(Collectors.toSet());
+    Set<String> currentComponents = extractNetlistedComponents(netlist1);
+    Set<String> targetComponents = extractNetlistedComponents(netlist2);
 
     List<ComponentDiff> componentDiffs = new ArrayList<>();
     for (String name : currentComponents) {
@@ -104,9 +95,6 @@ public class CompareService {
       }
     }
 
-    // Step 2: Compare connections
-    // A connection is a pair of nodes within the same group.
-    // We represent each connection as a normalized string so order doesn't matter.
     Set<String> currentConnections = extractConnections(netlist1);
     Set<String> targetConnections = extractConnections(netlist2);
 
@@ -132,10 +120,16 @@ public class CompareService {
     return new CompareResults(matches, connectionDiffs, componentDiffs);
   }
 
-  /**
-   * Extracts all connections from a netlist. Each connection is a pair of nodes
-   * that belong to the same group, represented as a normalized string key.
-   */
+  private Set<String> extractNetlistedComponents(Netlist netlist) {
+    Set<String> names = new HashSet<>();
+    for (Group group : netlist.getGroups()) {
+      for (Node node : group.getNodes()) {
+        names.add(node.getComponent().getName());
+      }
+    }
+    return names;
+  }
+
   private Set<String> extractConnections(Netlist netlist) {
     Set<String> connections = new HashSet<>();
     for (Group group : netlist.getGroups()) {
@@ -149,11 +143,6 @@ public class CompareService {
     return connections;
   }
 
-  /**
-   * Creates a normalized string key for a connection between two nodes.
-   * The key is ordered alphabetically so that the same connection always
-   * produces the same key regardless of the order of the two nodes.
-   */
   private String connectionKey(Node a, Node b) {
     String keyA = a.getComponent().getName() + "|" + a.getComponent().getControlPointNodeName(a.getPointIndex());
     String keyB = b.getComponent().getName() + "|" + b.getComponent().getControlPointNodeName(b.getPointIndex());
