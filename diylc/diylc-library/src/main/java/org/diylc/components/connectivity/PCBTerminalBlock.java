@@ -49,7 +49,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "PCB Terminal Block", category = "Connectivity",
-    author = "Branislav Stojkovic", description = "Horizontal PCB terminal block with 5mm pitch",
+    author = "Branislav Stojkovic", description = "Horizontal PCB terminal block with configurable pitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "TB",
     enableCache = true, transformer = PCBTerminalBlockTransformer.class)
 public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> implements IGerberComponentSimple {
