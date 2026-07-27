@@ -448,7 +448,8 @@ public class FreewayBlade extends AbstractAngledComponent<String> implements ISw
 
     List<int[]> positionConnections = connections.get(position);
     for (int[] arr : positionConnections) {
-      if (arr[0] == index1 && arr[1] == index2) {
+      if ((arr[0] == index1 && arr[1] == index2)
+          || (arr[0] == index2 && arr[1] == index1)) {
         return true;
       }
     }
