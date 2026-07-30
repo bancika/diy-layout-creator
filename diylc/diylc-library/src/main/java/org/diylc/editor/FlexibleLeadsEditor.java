@@ -1,5 +1,6 @@
 package org.diylc.editor;
 
+import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.HashSet;
@@ -247,15 +248,25 @@ public class FlexibleLeadsEditor implements IProjectEditor {
       HookupWire w = new HookupWire();
       w.setValue(AWG._24);
       getInstantiationManager().fillWithDefaultProperties(w, null);
+
+      // if the pickup has a library definition applied and it supplies a colour for this
+      // terminal, use it; otherwise keep whatever fillWithDefaultProperties set above. This is
+      // the only pickup-specific step here - it goes through the generic
+      // IDefaultLeadStyleProvider interface, so this editor needs no knowledge of pickup
+      // definitions/terminals at all.
+      Color leadColor = c.getDefaultLeadColor(i);
+      if (leadColor != null)
+        w.setLeadColor(leadColor);
+
       for (int j = 0; j < w.getControlPointCount(); j++) {
         Point2D p = new Point2D.Double((int) Math.round(p0.getX() + dx * j), (int) Math.round(p0.getY() + dy * j));
           if (tx != null)
-          tx.transform(p, p);                  
+          tx.transform(p, p);
         w.setControlPoint(p, j);
       }
- 
-      newSelection.add(w);    
-      
+
+      newSelection.add(w);
+
       // inject leads right before the component
       int index = project.getComponents().indexOf(c);
       project.getComponents().add(index + 1, w);

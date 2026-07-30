@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://diylc.org/schemas/pickup-library-v1.json",
+  "title": "DIYLC Pickup Library",
+  "description": "Documentation schema for DIYLC pickup library files (built-in or user). This file is not used at runtime for validation - DIYLC's loader (org.diylc.components.guitar.pickup.PickupLibraryLoader) performs field-level validation directly, ignoring unknown fields and skipping malformed entries/fields with a logged warning rather than rejecting a whole file.",
+  "type": "object",
+  "required": ["schemaVersion", "pickups"],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "description": "Format version of this file. DIYLC currently supports version 1."
+    },
+    "libraryId": {
+      "type": "string",
+      "description": "Human-readable identifier for this library file, e.g. 'diylc-standard' or a user's own library name."
+    },
+    "pickups": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/pickup" }
+    }
+  },
+  "definitions": {
+    "measurement": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": {
+        "value": { "type": "number" },
+        "unit": {
+          "type": "string",
+          "enum": ["OHM", "KILOOHM", "MEGAOHM", "HENRY", "MILLIHENRY", "MICROHENRY",
+            "PICOFARAD", "NANOFARAD", "MICROFARAD", "MILLIMETRE", "CENTIMETRE", "INCH",
+            "MILLIVOLT", "VOLT"]
+        }
+      }
+    },
+    "lead": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["INSULATED", "BARE", "UNKNOWN"] },
+        "displayName": { "type": "string" },
+        "baseColour": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "stripeColour": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+      }
+    },
+    "coil": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Local id, unique within the owning pickup only (referenced by terminals[].coilId)."
+        },
+        "localSide": { "type": "string", "enum": ["SIDE_A", "SIDE_B"] },
+        "polePieceType": { "type": "string", "enum": ["SLUG", "SCREW", "ROD", "RAIL", "BLADE", "UNKNOWN"] },
+        "magneticPolarity": { "type": "string", "enum": ["NORTH", "SOUTH", "UNKNOWN"] },
+        "windingDirection": { "type": "string", "enum": ["CW", "CCW", "UNKNOWN"] },
+        "dcResistance": { "$ref": "#/definitions/measurement" },
+        "inductance": { "$ref": "#/definitions/measurement" }
+      }
+    },
+    "terminal": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Semantic terminal id, e.g. 'coilA.start' or 'shield'. Never a colour name."
+        },
+        "coilId": {
+          "type": "string",
+          "description": "References coils[].id. Omit for terminals not part of any coil winding (e.g. shield)."
+        },
+        "role": { "type": "string", "enum": ["START", "FINISH", "SHIELD"] },
+        "lead": { "$ref": "#/definitions/lead" }
+      }
+    },
+    "electrical": {
+      "type": "object",
+      "description": "Whole-pickup electrical spec (coils already combined). Storage/display only - not used in analysis.",
+      "properties": {
+        "seriesDcResistance": { "$ref": "#/definitions/measurement" },
+        "seriesInductance": { "$ref": "#/definitions/measurement" },
+        "parasiticCapacitance": { "$ref": "#/definitions/measurement" },
+        "outputMillivolts": { "$ref": "#/definitions/measurement" }
+      }
+    },
+    "magnet": {
+      "type": "object",
+      "properties": {
+        "material": { "type": "string" },
+        "grade": { "type": "string" }
+      }
+    },
+    "physical": {
+      "type": "object",
+      "properties": {
+        "width": { "$ref": "#/definitions/measurement" },
+        "length": { "$ref": "#/definitions/measurement" },
+        "depth": { "$ref": "#/definitions/measurement" },
+        "poleSpacing": { "$ref": "#/definitions/measurement" },
+        "mountingLeg": { "type": "string", "enum": ["SHORT", "LONG", "UNKNOWN"] }
+      }
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["MANUFACTURER", "MEASURED", "COMMUNITY", "OTHER"] },
+        "reference": { "type": "string" }
+      }
+    },
+    "pickup": {
+      "type": "object",
+      "description": "Only id, manufacturer, model and format are required; everything else is optional. Unknown fields are ignored by DIYLC's loader for forward compatibility.",
+      "required": ["id", "manufacturer", "model", "format"],
+      "properties": {
+        "id": { "type": "string", "description": "Stable, globally-unique pickup id, e.g. 'bareknuckle:the-mule-bridge'." },
+        "definitionVersion": { "type": "integer" },
+        "manufacturer": { "type": "string" },
+        "model": { "type": "string" },
+        "variant": {
+          "type": "string",
+          "description": "Manufacturer/model identity such as 'Bridge' or 'Neck' as a product variant name - not installation state."
+        },
+        "format": {
+          "type": "string",
+          "enum": ["SINGLE_COIL", "HUMBUCKER", "P90", "JAZZ_BASS", "PRECISION_BASS", "STINGRAY_BASS"]
+        },
+        "active": { "type": "boolean" },
+        "stringCount": { "type": "integer" },
+        "coils": { "type": "array", "items": { "$ref": "#/definitions/coil" } },
+        "terminals": { "type": "array", "items": { "$ref": "#/definitions/terminal" } },
+        "electrical": { "$ref": "#/definitions/electrical" },
+        "magnet": { "$ref": "#/definitions/magnet" },
+        "physical": { "$ref": "#/definitions/physical" },
+        "sources": { "type": "array", "items": { "$ref": "#/definitions/source" } }
+      }
+    }
+  }
+}

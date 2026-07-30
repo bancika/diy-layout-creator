@@ -233,6 +233,11 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
+  public Point2D getModelPoint(Point point) {
+    return scalePoint(point);
+  }
+
+  @Override
   public Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     // Only change the cursor if we're not making a new component.
     if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown) {

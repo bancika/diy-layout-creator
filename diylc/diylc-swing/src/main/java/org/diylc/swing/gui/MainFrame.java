@@ -131,6 +131,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(() -> new AnalyzeMenuPlugin(this));
     presenter.installPlugin(() -> new EditMenuPlugin(this));
     presenter.installPlugin(() -> new ConfigPlugin(this));
+    presenter.installPlugin(() -> new org.diylc.swing.plugins.guitar.GuitarFeaturesPlugin(this));
     presenter.installPlugin(() -> new LayersMenuPlugin(this));
     presenter.installPlugin(() -> new ChatbotPlugin(this));
     presenter.installPlugin(() -> new CloudPlugIn(this));

@@ -35,7 +35,9 @@ import org.diylc.swing.actions.ExportGerberAction;
 import org.diylc.swing.actions.ExportPNGAction;
 import org.diylc.swing.actions.FindAction;
 import org.diylc.swing.actions.FlexibleLeadsAction;
+import org.diylc.swing.actions.RecolorPickupLeadsAction;
 import org.diylc.swing.actions.RenumberAction;
+import org.diylc.swing.actions.SelectPickupFromLibraryAction;
 import org.diylc.swing.actions.ThemeAction;
 import org.diylc.swing.actions.ToggleAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
@@ -237,6 +239,15 @@ public class ActionFactory {
 
   public FlexibleLeadsAction createFlexibleLeadsAction(IPlugInPort plugInPort) {
     return new FlexibleLeadsAction(plugInPort);
+  }
+
+  public SelectPickupFromLibraryAction createSelectPickupFromLibraryAction(IPlugInPort plugInPort,
+      java.awt.Component owner) {
+    return new SelectPickupFromLibraryAction(plugInPort, owner);
+  }
+
+  public RecolorPickupLeadsAction createRecolorPickupLeadsAction(IPlugInPort plugInPort) {
+    return new RecolorPickupLeadsAction(plugInPort);
   }
 
   // Config actions.

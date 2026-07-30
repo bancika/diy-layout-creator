@@ -22,6 +22,7 @@
 package org.diylc.swing.gui;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -38,15 +39,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.apache.log4j.Logger;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
+import org.diylc.components.guitar.AbstractGuitarPickup;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.actions.FlexibleLeadsAction;
+import org.diylc.swing.actions.RecolorPickupLeadsAction;
+import org.diylc.swing.actions.SelectPickupFromLibraryAction;
+import org.diylc.swing.plugins.guitar.GuitarFeaturesPlugin;
 import org.diylc.swing.actions.edit.BringToFrontAction;
 import org.diylc.swing.actions.edit.CopyAction;
 import org.diylc.swing.actions.edit.CutAction;
@@ -101,6 +107,9 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
   private MirrorSelectionAction mirrorHorizontallyAction;
   private MirrorSelectionAction mirrorVerticallyAction;
   private FlexibleLeadsAction flexibleLeadsAction;
+  private SelectPickupFromLibraryAction selectPickupFromLibraryAction;
+  private RecolorPickupLeadsAction recolorPickupLeadsAction;
+  private JMenu guitarPickupsMenu;
 
   private IPlugInPort plugInPort;
   private Clipboard clipboard;
@@ -110,12 +119,12 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     this.plugInPort = plugInPort;
     this.owner = owner;
     this.clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    
+
     if (showSelectionMenu) {
       add(getSelectionMenu());
       addSeparator();
     }
-    
+
     add(getCutAction());
     add(getCopyAction());
     add(getPasteAction());
@@ -134,8 +143,19 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     add(getUnlockMenu());
     addSeparator();
     add(getFlexibleLeadsAction());
+    add(getGuitarPickupsMenu());
     addSeparator();
     add(ActionFactory.getInstance().createEditProjectAction(plugInPort));
+  }
+
+  public JMenu getGuitarPickupsMenu() {
+    if (guitarPickupsMenu == null) {
+      guitarPickupsMenu = new TranslatedMenu("Guitar Pickups");
+      guitarPickupsMenu.setIcon(IconLoader.ComponentReplace.getIcon());
+      guitarPickupsMenu.add(getSelectPickupFromLibraryAction());
+      guitarPickupsMenu.add(getRecolorPickupLeadsAction());
+    }
+    return guitarPickupsMenu;
   }
   
   public JMenu getSelectionMenu() {
@@ -240,7 +260,17 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     getSaveAsTemplateAction()
         .setEnabled(plugInPort.getSelectedComponents().size() == 1);
     getSaveAsBlockAction().setEnabled(plugInPort.getSelectedComponents().size() > 1);
-    
+
+    // "Select Pickup from Library..." always stays enabled: it replaces the selected pickup when
+    // exactly one is selected, or places a brand new one at (x, y) otherwise - see
+    // SelectPickupFromLibraryAction. "Recolor Wires..." only ever makes sense for an existing,
+    // selected pickup. The whole submenu is hidden entirely when the "Guitar features" toggle
+    // (View menu) is off - re-read live so switching it takes effect immediately.
+    getSelectPickupFromLibraryAction().setPlacementPoint(new Point(x, y));
+    getRecolorPickupLeadsAction().setEnabled(isSinglePickupSelected());
+    getGuitarPickupsMenu()
+        .setVisible(ConfigurationManager.getInstance().readBoolean(GuitarFeaturesPlugin.GUITAR_FEATURES_KEY, true));
+
     updateSelectionMenu(componentsForSelection);
     updateApplyTemplateMenu();
     updateApplyModelMenu();
@@ -427,6 +457,23 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     if (flexibleLeadsAction == null)
       flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
     return flexibleLeadsAction;
+  }
+
+  public SelectPickupFromLibraryAction getSelectPickupFromLibraryAction() {
+    if (selectPickupFromLibraryAction == null)
+      selectPickupFromLibraryAction = ActionFactory.getInstance().createSelectPickupFromLibraryAction(plugInPort, owner);
+    return selectPickupFromLibraryAction;
+  }
+
+  public RecolorPickupLeadsAction getRecolorPickupLeadsAction() {
+    if (recolorPickupLeadsAction == null)
+      recolorPickupLeadsAction = ActionFactory.getInstance().createRecolorPickupLeadsAction(plugInPort);
+    return recolorPickupLeadsAction;
+  }
+
+  private boolean isSinglePickupSelected() {
+    Collection<IDIYComponent<?>> selected = plugInPort.getSelectedComponents();
+    return selected.size() == 1 && selected.iterator().next() instanceof AbstractGuitarPickup;
   }
 
   public SaveAsTemplateAction getSaveAsTemplateAction() {

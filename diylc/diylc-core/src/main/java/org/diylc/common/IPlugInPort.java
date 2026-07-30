@@ -142,6 +142,20 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   Cursor getCursorAt(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown);
 
   /**
+   * Converts a raw, on-screen canvas point (e.g. a mouse click location, before any zoom or
+   * extra-space adjustment) into the same project/model coordinate space every
+   * {@link org.diylc.core.IDIYComponent} control point is stored in - the same conversion
+   * {@link #findComponentsAt} applies internally before comparing against component control
+   * points. Useful for any caller that wants to place a brand new component directly at a
+   * clicked location without going through the interactive "arm a new component slot, then click
+   * to place" flow.
+   *
+   * @param point raw canvas point, in on-screen pixels
+   * @return the equivalent point in project/model space
+   */
+  Point2D getModelPoint(Point point);
+
+  /**
    * Returns an instance of currently loaded project.
    *
    * @return
