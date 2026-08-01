@@ -64,6 +64,7 @@ public class HelpMenuPlugin implements IPlugIn {
   public static String BUG_URL = "https://github.com/bancika/diy-layout-creator/issues";
   public static String DONATE_URL = "http://diy-fever.com/donate";
   public static String PATREON_URL = "http://diy-fever.com/patreon";
+  public static String BOOK_URL = "http://www.diy-fever.com/diylc-book-coupon";
 
   private IPlugInPort plugInPort;
   private AboutDialog aboutDialog;
@@ -71,7 +72,8 @@ public class HelpMenuPlugin implements IPlugIn {
 
   public HelpMenuPlugin(ISwingUI swingUI) {
     this.swingUI = swingUI;
-    swingUI.injectMenuAction(new NavigateURLAction("User Manual", IconLoader.Manual.getIcon(), MANUAL_URL), HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateURLAction("Get the Book", IconLoader.Manual.getIcon(), BOOK_URL), HELP_TITLE);
+    swingUI.injectMenuAction(new NavigateURLAction("Wiki Pages", IconLoader.DocumentInfo.getIcon(), MANUAL_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("FAQ", IconLoader.Faq.getIcon(), FAQ_URL), HELP_TITLE);
     swingUI.injectMenuAction(new NavigateURLAction("Component API", IconLoader.CoffeebeanEdit.getIcon(), COMPONENT_URL),
         HELP_TITLE);
