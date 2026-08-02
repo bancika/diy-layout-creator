@@ -370,6 +370,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Use either username of email to log into DIYLC cloud</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Improved comparison logic of the 'Compare With..' tool</description>
 				</org.diylc.appframework.update.Change>
