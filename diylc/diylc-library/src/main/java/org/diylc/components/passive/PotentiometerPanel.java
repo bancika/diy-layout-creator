@@ -75,6 +75,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected static Color BORDER_COLOR = Color.gray;
   protected static Color NUT_COLOR = Color.decode("#CBD5DB");
   protected static Color MARKER_COLOR_DEFAULT = Color.gray;
+  protected static Color LUG_COLOR = Color.decode("#B0B0B0");
 
 
   protected Size bodyDiameter = BODY_DIAMETER;
@@ -84,6 +85,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected Color borderColor = BORDER_COLOR;
   protected Color nutColor = NUT_COLOR;
   protected Color waferColor = WAFER_COLOR;
+  protected Color lugColor = LUG_COLOR;
   protected Type type = Type.ThroughHole;
   @Deprecated
   protected boolean showShaft = false;
@@ -130,71 +132,69 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     int diameter = getClosestOdd(bodyDiameter.convertToPixels());
     if (body == null) {
       if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
-        body = new Area[16];
+        body = new Area[18];
+        
         double D = diameter;
         double spacingPx = this.spacing.convertToPixels();
         double cx = controlPoints[0].getX() + spacingPx;
         double cy = controlPoints[0].getY();
         
-        double dir = getView() == View.TerminalsUp ? -1 : 1;
-        
         double lugLength = spacingPx * 0.8;
-        double waferHeight = new Size(0.04d, SizeUnit.in).convertToPixels(); // ~1mm
+        double waferHeight = new Size(0.05d, SizeUnit.in).convertToPixels();
         double bodyHeight = getBodyDepth().convertToPixels();
         double threadH = getThreadLength().convertToPixels();
         double shaftH = getShaftLength().convertToPixels();
-        double topPlateThickness = new Size(0.05d, SizeUnit.in).convertToPixels();
+        double waferTopSpace = new Size(0.03d, SizeUnit.in).convertToPixels();
         
-        double yBodyBottom = cy + dir * lugLength;
-        double yBodyTop = yBodyBottom + dir * bodyHeight;
+        // Wafer is at the top of the body, terminals start below it
+        double yWaferBottom = cy - lugLength;
+        double yWaferTop = yWaferBottom - waferHeight;
         
-        double yWaferTop = yBodyTop - dir * topPlateThickness;
-        double yWaferBottom = yWaferTop - dir * waferHeight;
+        // Body starts slightly above the wafer and goes DOWN
+        double yBodyTop = yWaferTop - waferTopSpace;
+        double yBodyBottom = yBodyTop + bodyHeight;
         
+        // Thread sits on top of the body
         double yThreadBottom = yBodyTop;
-        double yThreadTop = yThreadBottom + dir * threadH;
+        double yThreadTop = yThreadBottom - threadH;
         
-        double yShaftBottom = yBodyTop;
-        double yShaftTop = yShaftBottom + dir * shaftH;
+        double yShaftBottom = yThreadTop;
+        double yShaftTop = yShaftBottom - shaftH;
         
-        // Wafer (body[9])
+        // Wafer (body[9]) - regular rectangle without rounding
         double wWidth = 2.5 * spacingPx;
-        body[9] = new Area(new RoundRectangle2D.Double(cx - wWidth / 2, Math.min(yWaferTop, yWaferBottom), wWidth, waferHeight, spacingPx / 4, spacingPx / 4));
+        body[9] = new Area(new Rectangle2D.Double(cx - wWidth / 2, yWaferTop, wWidth, waferHeight));
+        
+        // Body Tabs (body[14])
+        body[14] = null;
+        
+        // Extra Wafer layer (body[15])
+        body[15] = null;
         
         // Body (body[3])
         double bWidth = D;
-        double r = D * 0.1;
-        body[3] = new Area(new RoundRectangle2D.Double(cx - bWidth / 2, Math.min(yBodyTop, yBodyBottom), bWidth, bodyHeight, r, r));
+        double r = 6; // slightly increased rounding
+        body[3] = new Area(new RoundRectangle2D.Double(cx - bWidth / 2, yBodyTop, bWidth, bodyHeight, r, r));
         
-        // Shaft (body[8])
+        // Shaft (body[8]) - single straight rectangle
         double sWidth = getClosestOdd(SHAFT_SIZE.convertToPixels());
-        body[8] = new Area(new Rectangle2D.Double(cx - sWidth / 2, Math.min(yShaftTop, yShaftBottom), sWidth, shaftH));
+        body[8] = new Area(new Rectangle2D.Double(cx - sWidth / 2, yShaftTop, sWidth, shaftH));
         
-        // Thread (body[13])
+        // Thread (body[13]) - single straight rectangle
         double tWidth = getClosestOdd(NUT_SIZE.convertToPixels() * 0.75);
-        body[13] = new Area(new Rectangle2D.Double(cx - tWidth / 2, Math.min(yThreadTop, yThreadBottom), tWidth, threadH));
+        body[13] = new Area(new Rectangle2D.Double(cx - tWidth / 2, yThreadTop, tWidth, threadH));
         
         // Nut & Washer (body[7])
-        double nWidth = getClosestOdd(NUT_SIZE.convertToPixels());
-        double nHeight = getClosestOdd(NUT_SIZE.convertToPixels() * 0.3);
-        double washerWidth = nWidth * 1.2;
-        double washerHeight = nHeight * 0.2;
-        double yNutCenter = yThreadBottom + dir * (washerHeight + nHeight / 2);
-        Area nutArea = new Area(new Rectangle2D.Double(cx - nWidth / 2, yNutCenter - nHeight / 2, nWidth, nHeight));
-        
-        double yWasherStart = yThreadBottom;
-        double yWasherEnd = yWasherStart + dir * washerHeight;
-        nutArea.add(new Area(new Rectangle2D.Double(cx - washerWidth / 2, Math.min(yWasherStart, yWasherEnd), washerWidth, washerHeight)));
-        body[7] = nutArea;
-        
-        // Locating lug (body[14])
-        body[14] = null;
+        body[7] = null;
         
         // Terminals
         double pinW = PIN_SIZE.convertToPixels();
+        double termTopW = pinW * 2.5;
         for (int i = 0; i < 3; i++) {
           double px = controlPoints[0].getX() + i * spacingPx;
-          body[i] = new Area(new Rectangle2D.Double(px - pinW / 2, Math.min(cy, yWaferBottom), pinW, Math.abs(cy - yWaferBottom)));
+          Area termArea = new Area(new Rectangle2D.Double(px - termTopW / 2, yWaferBottom, termTopW, lugLength / 2));
+          termArea.add(new Area(new Rectangle2D.Double(px - pinW / 2, yWaferBottom + lugLength / 2, pinW, lugLength / 2)));
+          body[i] = termArea;
         }
         
         if (getType() == Type.ThroughHole) {
@@ -209,6 +209,23 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
             body[i].subtract(new Area(new Ellipse2D.Double(px - lugDiam / 2, cy - lugDiam / 2, lugDiam, lugDiam)));
           }
         }
+        
+        // Add slanted thread lines (body[16])
+        Area threadLines = new Area();
+        int step = 4;
+        for (double i = yThreadBottom - step; i >= yThreadTop + step; i -= step) {
+            java.awt.geom.Path2D.Double p = new java.awt.geom.Path2D.Double();
+            p.moveTo(cx - tWidth / 2 + 1, i);
+            p.lineTo(cx + tWidth / 2 - 1, i - step);
+            p.lineTo(cx + tWidth / 2 - 1, i - step + 1);
+            p.lineTo(cx - tWidth / 2 + 1, i + 1);
+            p.closePath();
+            threadLines.add(new Area(p));
+        }
+        body[16] = threadLines;
+
+        // Knurling lines removed per user request (solid shaft)
+        body[17] = null;
         
         java.awt.geom.AffineTransform t = new java.awt.geom.AffineTransform();
         switch (orientation) {
@@ -377,15 +394,15 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     
     int[] drawOrder = new int[body.length];
     for (int i = 0; i < body.length; i++) drawOrder[i] = i;
-    if (body.length >= 16) {
-      // Thread (13) drawn before Nut (7)
-      drawOrder[7] = 13;
-      drawOrder[13] = 7;
-      // Terminals (0, 1, 2) drawn after Body (3)
-      drawOrder[0] = 3;
-      drawOrder[1] = 0;
-      drawOrder[2] = 1;
-      drawOrder[3] = 2;
+    if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+      int idx = 0;
+      if (getView() == View.TerminalsDown) {
+        int[] seq = {0, 1, 2, 4, 5, 6, 10, 11, 12, 9, 14, 15, 8, 17, 13, 16, 3, 7};
+        for (int i : seq) { if (i < body.length) drawOrder[idx++] = i; }
+      } else {
+        int[] seq = {3, 8, 17, 13, 16, 9, 14, 15, 0, 1, 2, 4, 5, 6, 10, 11, 12, 7};
+        for (int i : seq) { if (i < body.length) drawOrder[idx++] = i; }
+      }
     }
     
     for (int i : drawOrder) {
@@ -397,12 +414,25 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
             g2d.setColor(getNutColor());
             break;
           case 9:
+          case 15:
             g2d.setColor(getWaferColor());
             break;
           case 10:
           case 11:
           case 12:
             g2d.setColor(Constants.TRANSPARENT_COLOR);
+            break;
+          case 0:
+          case 1:
+          case 2:
+          case 4:
+          case 5:
+          case 6:
+            g2d.setColor(getLugColor());
+            break;
+          case 16:
+          case 17:
+            g2d.setColor(outlineMode ? theme.getOutlineColor() : getBorderColor());
             break;
           default:
             g2d.setColor(getBodyColor());
@@ -664,6 +694,17 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
 
   public void setWaferColor(Color waferColor) {
     this.waferColor = waferColor;
+  }
+
+  @EditableProperty(name = "Lug")
+  public Color getLugColor() {
+    if (lugColor == null)
+      lugColor = LUG_COLOR;
+    return lugColor;
+  }
+
+  public void setLugColor(Color lugColor) {
+    this.lugColor = lugColor;
   }
 
   @EditableProperty(name = "Markers")
