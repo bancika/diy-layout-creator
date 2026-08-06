@@ -23,57 +23,73 @@ package org.diylc.utils;
 
 import org.apache.log4j.Logger;
 
-import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * Loads image resources as Icons.
- * 
+ *
  * @author Branislav Stojkovic
  */
 public enum IconLoader {
 
-  Delete("delete.png"), Add("add.png"), FolderOut("folder_out.png"), Garbage("garbage.png"), DiskBlue("disk_blue.png"), SaveAs(
-      "save_as.png"), Exit("exit.png"), DocumentPlainYellow("document_plain_yellow.png"), PhotoScenery(
-      "photo_scenery.png"), LightBulbOn("lightbulb_on.png"), LightBulbOff("lightbulb_off.png"), NotebookAdd(
-      "notebook_add.png"), FormGreen("form_green.png"), Gears("gears.png"), About("about.png"), WindowColors(
-      "window_colors.png"), WindowGear("window_gear.png"), NavigateCheck("navigate_check.png"), Undo("undo.png"), Error(
-      "error.png"), Warning("warning.png"), ZoomSmall("zoom_small.png"), MoveSmall("move_small.png"), Print("print.png"), PDF(
-      "pdf.png"), Excel("excel.png"), CSV("csv.png"), HTML("html.png"), Image("image.png"), Cut("cut.png"), Copy(
-      "copy.png"), Paste("paste.png"), Selection("selection.png"), BOM("bom.png"), BlackBoard("blackboard.png"), IdCard(
-      "id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench("wrench.png"), Group(
-      "group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png"), Faq("faq.png"), Component("component.png"), Plugin(
-      "plugin.png"), Manual("manual.png"), Donate("donate.png"), Bug("bug.png"), IconLarge("icon_large.png"), IconMedium(
-      "icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
-      "edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png"), Pens("pens.png"), Sort("sort.png"), ElementsSelection(
-      "elements_selection.png"), BranchAdd("branch_add.png"), BriefcaseAdd("briefcase_add.png"), BriefcaseInto(
-      "briefcase_into.png"), RotateCW("rotate_cw.png"), RotateCCW("rotate_ccw.png"), ElementInto("element_into.png"), Arrow(
-      "arrow.png"), Cloud("cloud.png"), CloudUp("cloud_up.png"), CloudGear("cloud_gear.png"), IdCardEdit(
-      "id_card_edit.png"), KeyEdit("key_edit.png"), Find("find.png"), Dashboard("dashboard.png"), DataFind(
-      "data_find.png"), CloudDownload("cloud_download.png"), CloudDelete("cloud_delete.png"), CloudEdit(
-      "cloud_edit.png"), CloudUpload("cloud_upload.png"), NavLeftBlue("nav_left_blue.png"), NavRightBlue(
-      "nav_right_blue.png"), MissingImage("missing_image.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudWait(
-      "cloud_wait.png"), Spinning("spinning.gif"), Megaphone("megaphone.png"), Download("download.png"), Eye("eye.png"), Messages(
-      "messages.png"), SearchBox("search-box.png"), Screwdriver("screwdriver.png"), Hammer("hammer.png"), FlipHorizontal(
-      "flip_horizontal.png"), FlipVertical("flip_vertical.png"), MagicWand("magic_wand.png"), PinGrey("pin_grey.png"), PinGreen(
-      "pin_green.png"), CoffeebeanEdit("coffeebean_edit.png"), ApplicationEdit("application_edit.png"), ComponentAdd(
-      "component_add.png"), History("history.png"), DocumentPlain("document_plain.png"), FitToSize("fit_to_size.png"), DocumentsGear(
-      "documents_gear.png"), SplashResistor("splash_resistor.png"), SplashCeramic("splash_ceramic.png"), SplashElectrolytic(
-      "splash_electrolytic.png"), SplashFilm("splash_film.png"), Splash("splash.png"), Help("help2.png"), ScrollInformation("scroll_information.png"),
-      Node("node.png"), Web("web.png"), Guitar("guitar.png"), Scientist("scientist.png"), StarGrey("star_grey.png"), StarBlue("star_blue.png"), 
-      JarBeanInto("jar_bean_into.png"), GraphEdgeDirected("graph_edge_directed.png"), LaserPointer("laserpointer.png"), TapeMeasure("tape_measure1.png"),
-      Elements("elements1.png"), GraphNodes("graph_nodes.png"), User("user1.png"), FlexibleLeads("flexible_leads.png"), Pads("pads.png"), Lock("lock.png"),
-      Unlock("lock_open.png"), Earth("earth.png"), Loadline("loadline.png"), LoadlineAdd("loadline_add.png"), SnapToGrid("snap_to_grid.png"),
-      SnapToComponents("snap_to_components.png"), SnapToNone("snap_to_none.png"), TraceProximity("trace_proximity.png"),
-      ComponentLarge("component_large.png"), ImportNetlist("import_netlist.png"), SplashIC("splash_ic.png"), 
-      ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png"),
-      DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png"), Multimeter("multimeter.png"),
-      Patreon("patreon.png"), Brain("brain.png"), Tables("tables.png"), Silkscreen("silkscreen.png"),
-      Project("project.png"), DocumentInfo("document_info.png");
+  About("about.png"), Add("add.png"), ApplicationEdit("application_edit.png"), Arrow(
+      "arrow.png"), BOM("bom.png"), Back("back.png"), Barcode("barcode.png"), BlackBoard(
+      "blackboard.png"), Brain("brain.png"), BrainBig("brain_big.png"), BranchAdd(
+      "branch_add.png"), BriefcaseAdd("briefcase_add.png"), BriefcaseInto(
+      "briefcase_into.png"), Bug("bug.png"), CSV("csv.png"), Chest("chest.png"), Cloud(
+      "cloud.png"), CloudBg("cloud_bg.png"), CloudBig("cloud_big.png"), CloudDelete(
+      "cloud_delete.png"), CloudDownload("cloud_download.png"), CloudEdit(
+      "cloud_edit.png"), CloudGear("cloud_gear.png"), CloudUp("cloud_up.png"), CloudUpload(
+      "cloud_upload.png"), CloudWait("cloud_wait.png"), CoffeebeanEdit(
+      "coffeebean_edit.png"), Component("component.png"), ComponentAdd(
+      "component_add.png"), ComponentLarge("component_large.png"), ComponentPreferences(
+      "component_preferences.png"), ComponentReplace("component_replace.png"), Copy(
+      "copy.png"), Cut("cut.png"), Dashboard("dashboard.png"), DataFind("data_find.png"), Delete(
+      "delete.png"), DiskBlue("disk_blue.png"), DocumentEdit("document_edit.png"), DocumentGerber(
+      "document_gerber.png"), DocumentInfo("document_info.png"), DocumentPlain(
+      "document_plain.png"), DocumentPlainYellow("document_plain_yellow.png"), DocumentX2(
+      "document_x2.png"), DocumentsGear("documents_gear.png"), Donate("donate.png"), Download(
+      "download.png"), Earth("earth.png"), EditComponent("edit_component.png"), ElementInto(
+      "element_into.png"), Elements("elements1.png"), ElementsSelection(
+      "elements_selection.png"), Error("error.png"), Excel("excel.png"), Exit("exit.png"), Export(
+      "export.png"), Eye("eye.png"), Faq("faq.png"), Find("find.png"), FitToSize(
+      "fit_to_size.png"), FlexibleLeads("flexible_leads.png"), FlipHorizontal(
+      "flip_horizontal.png"), FlipVertical("flip_vertical.png"), FolderOut(
+      "folder_out.png"), FormGreen("form_green.png"), Front("front.png"), Garbage(
+      "garbage.png"), Gears("gears.png"), GraphEdgeDirected("graph_edge_directed.png"), GraphNodes(
+      "graph_nodes.png"), Group("group.png"), Guitar("guitar.png"), HTML("html.png"), Hammer(
+      "hammer.png"), Help("help2.png"), History("history.png"), IconLarge(
+      "icon_large.png"), IconMedium("icon_medium.png"), IconSmall("icon_small.png"), IdCard(
+      "id_card.png"), IdCardAdd("id_card_add.png"), IdCardEdit("id_card_edit.png"), Image(
+      "image.png"), ImportNetlist("import_netlist.png"), JarBeanInto("jar_bean_into.png"), KeyEdit(
+      "key_edit.png"), LaserPointer("laserpointer.png"), LightBulbOff(
+      "lightbulb_off.png"), LightBulbOn("lightbulb_on.png"), Loadline("loadline.png"), LoadlineAdd(
+      "loadline_add.png"), Lock("lock.png"), MagicWand("magic_wand.png"), Manual(
+      "manual.png"), Megaphone("megaphone.png"), Messages("messages.png"), MissingImage(
+      "missing_image.png"), MoveSmall("move_small.png"), Multimeter("multimeter.png"), NavLeftBlue(
+      "nav_left_blue.png"), NavRightBlue("nav_right_blue.png"), NavigateCheck(
+      "navigate_check.png"), Node("node.png"), NotebookAdd("notebook_add.png"), PDF(
+      "pdf.png"), Pads("pads.png"), Paste("paste.png"), Patreon("patreon.png"), Pens(
+      "pens.png"), PhotoScenery("photo_scenery.png"), PinGreen("pin_green.png"), PinGrey(
+      "pin_grey.png"), Plugin("plugin.png"), Print("print.png"), Project("project.png"), RotateCCW(
+      "rotate_ccw.png"), RotateCW("rotate_cw.png"), SaveAs("save_as.png"), Scientist(
+      "scientist.png"), Screwdriver("screwdriver.png"), ScrollInformation(
+      "scroll_information.png"), SearchBox("search-box.png"), Selection(
+      "selection.png"), Silkscreen("silkscreen.png"), Size("size.png"), SnapToComponents(
+      "snap_to_components.png"), SnapToGrid("snap_to_grid.png"), SnapToNone(
+      "snap_to_none.png"), Sort("sort.png"), Spinning("spinning.gif"), Splash(
+      "splash.png"), SplashCeramic("splash_ceramic.png"), SplashElectrolytic(
+      "splash_electrolytic.png"), SplashFilm("splash_film.png"), SplashIC(
+      "splash_ic.png"), SplashResistor("splash_resistor.png"), StarBlue("star_blue.png"), StarGrey(
+      "star_grey.png"), Tables("tables.png"), TapeMeasure("tape_measure1.png"), TraceMask(
+      "trace_mask.png"), TraceProximity("trace_proximity.png"), Undo("undo.png"), Ungroup(
+      "ungroup.png"), Unlock("lock_open.png"), Upload("upload.png"), User("user1.png"), Warning(
+      "warning.png"), Web("web.png"), WindowColors("window_colors.png"), WindowGear(
+      "window_gear.png"), Wrench("wrench.png"), ZoomSmall("zoom_small.png");
 
   protected String name;
 
@@ -86,8 +102,8 @@ public enum IconLoader {
     if (imgURL != null) {
       return new ImageIcon(imgURL, name);
     } else {
-        Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
-        return null;
+      Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
+      return null;
     }
   }
 
@@ -96,7 +112,7 @@ public enum IconLoader {
     try {
       img = ImageIO.read(getClass().getResourceAsStream("/diylc-swing-images/" + name));
     } catch (IOException e) {
-        Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
+      Logger.getLogger(IconLoader.class).error("Couldn't find file: " + name);
     }
     return img;
   }

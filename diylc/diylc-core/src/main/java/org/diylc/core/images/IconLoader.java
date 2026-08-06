@@ -23,34 +23,38 @@ package org.diylc.core.images;
 
 import org.apache.log4j.Logger;
 
-import java.awt.Image;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * Loads image resources as Icons.
- * 
+ *
  * @author Branislav Stojkovic
  */
 public enum IconLoader {
 
-  Delete("delete.png"), Add("add.png"), FolderOut("folder_out.png"), Garbage("garbage.png"), DiskBlue("disk_blue.png"), SaveAs(
-      "save_as.png"), Exit("exit.png"), DocumentPlainYellow("document_plain_yellow.png"), PhotoScenery(
-      "photo_scenery.png"), LightBulbOn("lightbulb_on.png"), LightBulbOff("lightbulb_off.png"), NotebookAdd(
-      "notebook_add.png"), FormGreen("form_green.png"), Gears("gears.png"), About("about.png"), WindowColors(
-      "window_colors.png"), WindowGear("window_gear.png"), NavigateCheck("navigate_check.png"), Undo("undo.png"), Error(
-      "error.png"), Warning("warning.png"), ZoomSmall("zoom_small.png"), MoveSmall("move_small.png"), Print("print.png"), PDF(
-      "pdf.png"), Excel("excel.png"), CSV("csv.png"), HTML("html.png"), Image("image.png"), Cut("cut.png"), Copy(
-      "copy.png"), Paste("paste.png"), Selection("selection.png"), BOM("bom.png"), BlackBoard("blackboard.png"), IdCard(
-      "id_card.png"), IdCardAdd("id_card_add.png"), Chest("chest.png"), Upload("upload.png"), Wrench("wrench.png"), Group(
-      "group.png"), Ungroup("ungroup.png"), TraceMask("trace_mask.png"), Faq("faq.png"), Component("component.png"), Plugin(
-      "plugin.png"), Manual("manual.png"), Donate("donate.png"), Bug("bug.png"), IconLarge("icon_large.png"), IconMedium(
-      "icon_medium.png"), IconSmall("icon_small.png"), DocumentEdit("document_edit.png"), EditComponent(
-      "edit_component.png"), Size("size.png"), Front("front.png"), Back("back.png"), Pens("pens.png"), Sort("sort.png"), ElementsSelection(
-      "elements_selection.png"), Schaller("schaller.png");
+  About("about.png"), Add("add.png"), BOM("bom.png"), Back("back.png"), BlackBoard(
+      "blackboard.png"), Bug("bug.png"), CSV("csv.png"), Chest("chest.png"), Component(
+      "component.png"), Copy("copy.png"), Cut("cut.png"), Delete("delete.png"), DiskBlue(
+      "disk_blue.png"), DocumentEdit("document_edit.png"), DocumentPlainYellow(
+      "document_plain_yellow.png"), Donate("donate.png"), EditComponent(
+      "edit_component.png"), ElementsSelection("elements_selection.png"), Error("error.png"), Excel(
+      "excel.png"), Exit("exit.png"), Faq("faq.png"), FolderOut("folder_out.png"), FormGreen(
+      "form_green.png"), Front("front.png"), Garbage("garbage.png"), Gears("gears.png"), Group(
+      "group.png"), HTML("html.png"), IconLarge("icon_large.png"), IconMedium(
+      "icon_medium.png"), IconSmall("icon_small.png"), IdCard("id_card.png"), IdCardAdd(
+      "id_card_add.png"), Image("image.png"), LightBulbOff("lightbulb_off.png"), LightBulbOn(
+      "lightbulb_on.png"), Manual("manual.png"), MoveSmall("move_small.png"), NavigateCheck(
+      "navigate_check.png"), NotebookAdd("notebook_add.png"), PDF("pdf.png"), Paste(
+      "paste.png"), Pens("pens.png"), PhotoScenery("photo_scenery.png"), Plugin(
+      "plugin.png"), Print("print.png"), SaveAs("save_as.png"), Schaller("schaller.png"), Selection(
+      "selection.png"), Size("size.png"), Sort("sort.png"), TraceMask("trace_mask.png"), Undo(
+      "undo.png"), Ungroup("ungroup.png"), Upload("upload.png"), Warning(
+      "warning.png"), WindowColors("window_colors.png"), WindowGear("window_gear.png"), Wrench(
+      "wrench.png"), ZoomSmall("zoom_small.png");
 
   protected String name;
 
