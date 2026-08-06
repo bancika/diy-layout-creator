@@ -75,6 +75,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected static Color BORDER_COLOR = Color.gray;
   protected static Color NUT_COLOR = Color.decode("#CBD5DB");
   protected static Color MARKER_COLOR_DEFAULT = Color.gray;
+  protected static Color LUG_COLOR = Color.decode("#B0B0B0");
 
 
   protected Size bodyDiameter = BODY_DIAMETER;
@@ -84,13 +85,17 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected Color borderColor = BORDER_COLOR;
   protected Color nutColor = NUT_COLOR;
   protected Color waferColor = WAFER_COLOR;
+  protected Color lugColor = LUG_COLOR;
   protected Type type = Type.ThroughHole;
   @Deprecated
   protected boolean showShaft = false;
   protected View view;
   private Boolean showMarkers;
   private Color markerColor;
-  // Array of 7 elements: 3 lug connectors, 1 pot body and 3 lugs
+  protected Size shaftLength = new Size(1 / 2d, SizeUnit.in);
+  protected Size threadLength = new Size(1 / 4d, SizeUnit.in);
+  protected Size bodyDepth = new Size(0.4d, SizeUnit.in);
+  // Array of 16 elements: 3 lug connectors, 1 pot body and 3 lugs, 1 nut, 1 shaft, 1 wafer, 3 lug holes, 1 thread, 1 locating lug
   transient protected Area[] body = null;
 
   public PotentiometerPanel() {
@@ -126,12 +131,128 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     int spacing = (int) this.spacing.convertToPixels();
     int diameter = getClosestOdd(bodyDiameter.convertToPixels());
     if (body == null) {
-      // mandatory: 0, 1, 2 pins, 3 body, 9 wafer
-      // optional: 4, 5, 6 lugs, 7 nut, 8 shaft
-      body = new Area[13];
+      if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+        body = new Area[18];
+        
+        double D = diameter;
+        double spacingPx = this.spacing.convertToPixels();
+        double cx = controlPoints[0].getX() + spacingPx;
+        double cy = controlPoints[0].getY();
+        
+        double lugLength = spacingPx * 0.8;
+        double waferHeight = new Size(0.05d, SizeUnit.in).convertToPixels();
+        double bodyHeight = getBodyDepth().convertToPixels();
+        double threadH = getThreadLength().convertToPixels();
+        double shaftH = getShaftLength().convertToPixels();
+        double waferTopSpace = new Size(0.03d, SizeUnit.in).convertToPixels();
+        
+        // Wafer is at the top of the body, terminals start below it
+        double yWaferBottom = cy - lugLength;
+        double yWaferTop = yWaferBottom - waferHeight;
+        
+        // Body starts slightly above the wafer and goes DOWN
+        double yBodyTop = yWaferTop - waferTopSpace;
+        double yBodyBottom = yBodyTop + bodyHeight;
+        
+        // Thread sits on top of the body
+        double yThreadBottom = yBodyTop;
+        double yThreadTop = yThreadBottom - threadH;
+        
+        double yShaftBottom = yThreadTop;
+        double yShaftTop = yShaftBottom - shaftH;
+        
+        // Wafer (body[9]) - regular rectangle without rounding
+        double wWidth = 2.5 * spacingPx;
+        body[9] = new Area(new Rectangle2D.Double(cx - wWidth / 2, yWaferTop, wWidth, waferHeight));
+        
+        // Body Tabs (body[14])
+        body[14] = null;
+        
+        // Extra Wafer layer (body[15])
+        body[15] = null;
+        
+        // Body (body[3])
+        double bWidth = D;
+        double r = 6; // slightly increased rounding
+        body[3] = new Area(new RoundRectangle2D.Double(cx - bWidth / 2, yBodyTop, bWidth, bodyHeight, r, r));
+        
+        // Shaft (body[8]) - single straight rectangle
+        double sWidth = getClosestOdd(SHAFT_SIZE.convertToPixels());
+        body[8] = new Area(new Rectangle2D.Double(cx - sWidth / 2, yShaftTop, sWidth, shaftH));
+        
+        // Thread (body[13]) - single straight rectangle
+        double tWidth = getClosestOdd(NUT_SIZE.convertToPixels() * 0.75);
+        body[13] = new Area(new Rectangle2D.Double(cx - tWidth / 2, yThreadTop, tWidth, threadH));
+        
+        // Nut & Washer (body[7])
+        body[7] = null;
+        
+        // Terminals
+        double pinW = PIN_SIZE.convertToPixels();
+        double termTopW = pinW * 2.5;
+        for (int i = 0; i < 3; i++) {
+          double px = controlPoints[0].getX() + i * spacingPx;
+          Area termArea = new Area(new Rectangle2D.Double(px - termTopW / 2, yWaferBottom, termTopW, lugLength / 2));
+          termArea.add(new Area(new Rectangle2D.Double(px - pinW / 2, yWaferBottom + lugLength / 2, pinW, lugLength / 2)));
+          body[i] = termArea;
+        }
+        
+        if (getType() == Type.ThroughHole) {
+          int lugDiam = getClosestOdd(this.lugDiameter.convertToPixels());
+          int holeDiam = getClosestOdd(this.lugDiameter.convertToPixels() / 2);
+          for (int i = 0; i < 3; i++) {
+            double px = controlPoints[0].getX() + i * spacingPx;
+            Area lugArea = new Area(new Ellipse2D.Double(px - lugDiam / 2, cy - lugDiam / 2, lugDiam, lugDiam));
+            body[4 + i] = lugArea;
+            body[10 + i] = new Area(lugArea); 
+            body[4 + i].subtract(new Area(new Ellipse2D.Double(px - holeDiam / 2, cy - holeDiam / 2, holeDiam, holeDiam)));
+            body[i].subtract(new Area(new Ellipse2D.Double(px - lugDiam / 2, cy - lugDiam / 2, lugDiam, lugDiam)));
+          }
+        }
+        
+        // Add slanted thread lines (body[16])
+        Area threadLines = new Area();
+        int step = 4;
+        for (double i = yThreadBottom - step; i >= yThreadTop + step; i -= step) {
+            java.awt.geom.Path2D.Double p = new java.awt.geom.Path2D.Double();
+            p.moveTo(cx - tWidth / 2 + 1, i);
+            p.lineTo(cx + tWidth / 2 - 1, i - step);
+            p.lineTo(cx + tWidth / 2 - 1, i - step + 1);
+            p.lineTo(cx - tWidth / 2 + 1, i + 1);
+            p.closePath();
+            threadLines.add(new Area(p));
+        }
+        body[16] = threadLines;
 
-      // Add lugs.
-      int pinWidth = (int) PIN_SIZE.convertToPixels();
+        // Knurling lines removed per user request (solid shaft)
+        body[17] = null;
+        
+        java.awt.geom.AffineTransform t = new java.awt.geom.AffineTransform();
+        switch (orientation) {
+          case _90:
+            t.rotate(Math.PI / 2, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          case _180:
+            t.rotate(Math.PI, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          case _270:
+            t.rotate(Math.PI * 1.5, controlPoints[0].getX(), controlPoints[0].getY());
+            break;
+          default:
+            break;
+        }
+        for (int i = 0; i < body.length; i++) {
+          if (body[i] != null) {
+            body[i].transform(t);
+          }
+        }
+      } else {
+        // mandatory: 0, 1, 2 pins, 3 body, 9 wafer
+        // optional: 4, 5, 6 lugs, 7 nut, 8 shaft
+        body = new Area[13];
+  
+        // Add lugs.
+        int pinWidth = (int) PIN_SIZE.convertToPixels();
 
       double centerX = 0;
       double centerY = 0;
@@ -246,6 +367,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         body[8] =
             new Area(new Ellipse2D.Double(centerX - shaftSize / 2, centerY - shaftSize / 2, shaftSize, shaftSize));
       }
+      }
     }
     return body;
   }
@@ -269,7 +391,21 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     Area[] body = getBody();
-    for (int i = 0; i < body.length; i++) {
+    
+    int[] drawOrder = new int[body.length];
+    for (int i = 0; i < body.length; i++) drawOrder[i] = i;
+    if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+      int idx = 0;
+      if (getView() == View.TerminalsDown) {
+        int[] seq = {0, 1, 2, 4, 5, 6, 10, 11, 12, 9, 14, 15, 8, 17, 13, 16, 3, 7};
+        for (int i : seq) { if (i < body.length) drawOrder[idx++] = i; }
+      } else {
+        int[] seq = {3, 8, 17, 13, 16, 9, 14, 15, 0, 1, 2, 4, 5, 6, 10, 11, 12, 7};
+        for (int i : seq) { if (i < body.length) drawOrder[idx++] = i; }
+      }
+    }
+    
+    for (int i : drawOrder) {
       Area shape = body[i];      
       // determine color
       if (shape != null) {
@@ -278,6 +414,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
             g2d.setColor(getNutColor());
             break;
           case 9:
+          case 15:
             g2d.setColor(getWaferColor());
             break;
           case 10:
@@ -285,16 +422,29 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
           case 12:
             g2d.setColor(Constants.TRANSPARENT_COLOR);
             break;
+          case 0:
+          case 1:
+          case 2:
+          case 4:
+          case 5:
+          case 6:
+            g2d.setColor(getLugColor());
+            break;
+          case 16:
+          case 17:
+            g2d.setColor(outlineMode ? theme.getOutlineColor() : getBorderColor());
+            break;
           default:
             g2d.setColor(getBodyColor());
         }
 
         Composite oldComposite = applyAlpha(g2d, componentState);
         if (!outlineMode) {
-          if (i >= 10)
+          boolean isHole = (i >= 10 && i <= 12);
+          if (isHole)
             drawingObserver.startTrackingContinuityArea(true);
           g2d.fill(shape);
-          if (i >= 10)
+          if (isHole)
             drawingObserver.stopTrackingContinuityArea();
         }
         g2d.setComposite(oldComposite);
@@ -362,42 +512,59 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     if (getShowMarkers()) {
       g2d.setColor(outlineMode ? theme.getOutlineColor() : getMarkerColor());
       
-      // Get circle center and radius
-      Rectangle2D circleBounds = body[3].getBounds2D();
-      double centerX = circleBounds.getCenterX();
-      double centerY = circleBounds.getCenterY();
-      double radius = getBodyDiameter().convertToPixels() / 2;
-      
-      // Fixed distance from circle edge (inside the circle)
-      double markerOffset = MARKER_OFFSET.convertToPixels() + 2;
-      double markerDistance = radius - markerOffset;
-      
-      // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
-      // Reverse numbering when view is ShaftDown
-      boolean reverseOrder = getView() == View.ShaftDown;
-      
-      for (int i = 0; i < 3; i++) {
-        Point2D lugPoint = controlPoints[i];
-        
-        // Calculate direction from center to lug
-        double dx = lugPoint.getX() - centerX;
-        double dy = lugPoint.getY() - centerY;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance > 0) {
-          // Normalize direction vector
-          double unitX = dx / distance;
-          double unitY = dy / distance;
+      if (getView() == View.TerminalsDown || getView() == View.TerminalsUp) {
+        double markerOffset = MARKER_OFFSET.convertToPixels() + 5;
+        for (int i = 0; i < 3; i++) {
+          Point2D lugPoint = controlPoints[i];
           
-          // Position marker at fixed distance from circle edge along radial line
-          double markerX = centerX + unitX * markerDistance;
-          double markerY = centerY + unitY * markerDistance;
+          double mx = lugPoint.getX();
+          double my = lugPoint.getY();
           
-          // Determine marker number based on view
-          int markerNumber = reverseOrder ? (3 - i) : (i + 1);
+          Rectangle2D bodyBounds = body[3].getBounds2D();
+          double dx = bodyBounds.getCenterX() - mx;
+          double dy = bodyBounds.getCenterY() - my;
+          double dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist > 0) {
+            mx += (dx / dist) * markerOffset;
+            my += (dy / dist) * markerOffset;
+          }
           
-          StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), markerX, markerY,
+          StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), mx, my,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        }
+      } else {
+        // Get circle center and radius
+        Rectangle2D circleBounds = body[3].getBounds2D();
+        double centerX = circleBounds.getCenterX();
+        double centerY = circleBounds.getCenterY();
+        double radius = getBodyDiameter().convertToPixels() / 2;
+        
+        // Fixed distance from circle edge (inside the circle)
+        double markerOffset = MARKER_OFFSET.convertToPixels() + 2;
+        double markerDistance = radius - markerOffset;
+        
+        // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
+        
+        for (int i = 0; i < 3; i++) {
+          Point2D lugPoint = controlPoints[i];
+          
+          // Calculate direction from center to lug
+          double dx = lugPoint.getX() - centerX;
+          double dy = lugPoint.getY() - centerY;
+          double distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance > 0) {
+            // Normalize direction vector
+            double unitX = dx / distance;
+            double unitY = dy / distance;
+            
+            // Position marker at fixed distance from circle edge along radial line
+            double markerX = centerX + unitX * markerDistance;
+            double markerY = centerY + unitY * markerDistance;
+            
+            StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), markerX, markerY,
+                HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          }
         }
       }
     }
@@ -523,6 +690,17 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     this.waferColor = waferColor;
   }
 
+  @EditableProperty(name = "Lug")
+  public Color getLugColor() {
+    if (lugColor == null)
+      lugColor = LUG_COLOR;
+    return lugColor;
+  }
+
+  public void setLugColor(Color lugColor) {
+    this.lugColor = lugColor;
+  }
+
   @EditableProperty(name = "Markers")
   public Boolean getShowMarkers() {
     if (showMarkers == null) {
@@ -547,13 +725,60 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     this.markerColor = markerColor;
   }
   
+  @EditableProperty(name = "Shaft Length")
+  public Size getShaftLength() {
+    if (shaftLength == null) {
+      shaftLength = new Size(1 / 2d, SizeUnit.in);
+    }
+    return shaftLength;
+  }
+
+  public void setShaftLength(Size shaftLength) {
+    this.shaftLength = shaftLength;
+    body = null;
+  }
+
+  @EditableProperty(name = "Thread Length")
+  public Size getThreadLength() {
+    if (threadLength == null) {
+      threadLength = new Size(1 / 4d, SizeUnit.in);
+    }
+    return threadLength;
+  }
+
+  public void setThreadLength(Size threadLength) {
+    this.threadLength = threadLength;
+    body = null;
+  }
+  
+  @EditableProperty(name = "Body Depth")
+  public Size getBodyDepth() {
+    if (bodyDepth == null) {
+      bodyDepth = new Size(0.4d, SizeUnit.in);
+    }
+    return bodyDepth;
+  }
+
+  public void setBodyDepth(Size bodyDepth) {
+    this.bodyDepth = bodyDepth;
+    body = null;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (getView() == View.ShaftUp || getView() == View.TerminalsUp) {
+      return Integer.toString(index + 1);
+    }
+    return Integer.toString(3 - index);
+  }
+
   @Override
   public String getInternalLinkName(int index1, int index2) {
     if (index1 > index2)
       return getInternalLinkName(index2, index1);
     
     if (index2 - index1 == 1)
-      return (index1 + 1) + "-" + (index2 + 1);
+      return getControlPointNodeName(index1) + "-" + getControlPointNodeName(index2);
     
     return null;
   }
@@ -608,7 +833,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   }
   
   public enum View {
-    ShaftDown("Shaft Down"), ShaftUp("Shaft Up");//, TerminalsDown, TerminalsUp;
+    ShaftDown("Shaft Down"), ShaftUp("Shaft Up"), TerminalsDown("Terminals Down"), TerminalsUp("Terminals Up");
     
     private String value;
 

@@ -61,7 +61,7 @@ public class GuitarDiagramAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("((Volume.1-2 + Pickup.North<-) || Volume.2-3)", s);
+    assertEquals("((Volume.3-2 + Pickup.North<-) || Volume.2-1)", s);
   }
 
   @Test
@@ -83,7 +83,7 @@ public class GuitarDiagramAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(trebleBleedGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("((((Cbleed + Rbleed) || Volume.1-2) + Pickup.North<-) || Volume.2-3)", s);
+    assertEquals("((((Cbleed + Rbleed) || Volume.3-2) + Pickup.North<-) || Volume.2-1)", s);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class GuitarDiagramAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("(((Cbleed || Rbleed || Volume.1-2) + Pickup.North<-) || Volume.2-3)", s);
+    assertEquals("(((Cbleed || Rbleed || Volume.3-2) + Pickup.North<-) || Volume.2-1)", s);
   }
 
   @Test
@@ -127,7 +127,7 @@ public class GuitarDiagramAnalyzerTests {
     netlist.add(tipGroup).add(tipGroup).add(sleeveGroup).add(hotGroup).add(toneGroup);
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
-    assertEquals("((Volume.1-2 + ((Tone.2-3 + Cap) || Pickup.North<-)) || Volume.2-3)", s);
+    assertEquals("((Volume.3-2 + ((Tone.2-1 + Cap) || Pickup.North<-)) || Volume.2-1)", s);
   }
 
   @Test
@@ -161,7 +161,7 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-        "((Volume.1-2 + (Pickup1.North<- || Pickup2.North<- || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
+        "((Volume.3-2 + (Pickup1.North<- || Pickup2.North<- || (Tone1.2-1 + Cap1) || (Tone2.2-1 + Cap2))) || Volume.2-1)",
         s);
   }
 
@@ -325,7 +325,7 @@ public class GuitarDiagramAnalyzerTests {
     Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
     String s = tree.toString();
     assertEquals(
-        "((Volume.1-2 + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-3 + Cap1) || (Tone2.2-3 + Cap2))) || Volume.2-3)",
+        "((Volume.3-2 + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-1 + Cap1) || (Tone2.2-1 + Cap2))) || Volume.2-1)",
         s);
   }
 }
