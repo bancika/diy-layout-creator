@@ -73,7 +73,7 @@ public enum IconLoader {
       ComponentPreferences("component_preferences.png"), ComponentReplace("component_replace.png"), Barcode("barcode.png"),
       DocumentGerber("document_gerber.png"), DocumentX2("document_x2.png"), Export("export.png"), Multimeter("multimeter.png"),
       Patreon("patreon.png"), Brain("brain.png"), Tables("tables.png"), Silkscreen("silkscreen.png"),
-      Project("project.png");
+      Project("project.png"), DocumentInfo("document_info.png");
 
   protected String name;
 

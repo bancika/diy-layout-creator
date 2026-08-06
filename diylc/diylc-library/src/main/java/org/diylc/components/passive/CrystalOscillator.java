@@ -133,9 +133,4 @@ public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implem
   protected Size getDefaultWidth() {
     return DEFAULT_WIDTH;
   }
-
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
 }

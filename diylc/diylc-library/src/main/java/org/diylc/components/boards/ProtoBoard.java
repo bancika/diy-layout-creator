@@ -225,12 +225,12 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(traceColor);      
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     drawingObserver.startTrackingContinuityArea(true);
-    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + 1 * spacing), 
-        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) (point.getY() + 3.5 * spacing));
-    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) (point.getY() + 1 * spacing), 
-        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) (point.getY() + 3.5 * spacing));
-    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getY() + 1 * spacing), 
-        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) Math.round(point.getY() + 1 * spacing), 
+        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) Math.round(point.getY() + 1 * spacing), 
+        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) Math.round(point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) Math.round(point.getY() + 1 * spacing), 
+        (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
     drawingObserver.stopTrackingContinuityArea();
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -335,12 +335,12 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(SEPARATOR_COLOR);
     g2d.draw(new Rectangle2D.Double(point.getX() + width - 5.5 * spacing, point.getY() + 2, 5 * spacing, 2 * spacing));
     
-    g2d.drawLine((int) (point.getX() + width - 5.5 * spacing), (int) (point.getY() + 2 * spacing) + 8, 
-        (int) (point.getX() + width - 5.5 * spacing), (int) (point.getY() + 3.5 * spacing));
-    g2d.drawLine((int) (point.getX() + width - 4.5 * spacing), (int) (point.getY() + 2 * spacing + 8), 
-        (int) (point.getX() + width - 4.5 * spacing), (int) (point.getY() + 3.5 * spacing));
-    g2d.drawLine((int) (point.getX() + width - 1.5 * spacing), (int) (point.getY() + 2 * spacing + 8), 
-        (int) (point.getX() + width - 1.5 * spacing), (int) (point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + width - 5.5 * spacing), (int) Math.round(point.getY() + 2 * spacing) + 8, 
+        (int) Math.round(point.getX() + width - 5.5 * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + width - 4.5 * spacing), (int) Math.round(point.getY() + 2 * spacing + 8), 
+        (int) Math.round(point.getX() + width - 4.5 * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + width - 1.5 * spacing), (int) Math.round(point.getY() + 2 * spacing + 8), 
+        (int) Math.round(point.getX() + width - 1.5 * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
     
     g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
@@ -348,8 +348,8 @@ public class ProtoBoard extends AbstractProtoBoard {
     drawingObserver.startTrackingContinuityArea(true);     
     
     // Draw two horizontal traces in the top-right section
-    g2d.drawLine((int) (point.getX() + width - 4 * spacing), (int) (point.getY() + 0.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) (point.getY() + 0.5 * spacing));
-    g2d.drawLine((int) (point.getX() + width - 4 * spacing), (int) (point.getY() + 1.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) (point.getY() + 1.5 * spacing));        
+    g2d.drawLine((int) Math.round(point.getX() + width - 4 * spacing), (int) Math.round(point.getY() + 0.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) Math.round(point.getY() + 0.5 * spacing));
+    g2d.drawLine((int) Math.round(point.getX() + width - 4 * spacing), (int) Math.round(point.getY() + 1.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) Math.round(point.getY() + 1.5 * spacing));        
     
     // Draw top-right pads
     for (int x = 0; x < 6; x++) { 
@@ -357,7 +357,7 @@ public class ProtoBoard extends AbstractProtoBoard {
 
       g2d.setColor(traceColor);      
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
-      g2d.drawLine(padX, (int) (point.getY() + 0.5 * spacing), padX, (int) (point.getY() + 3 * spacing));
+      g2d.drawLine(padX, (int) Math.round(point.getY() + 0.5 * spacing), padX, (int) Math.round(point.getY() + 3 * spacing));
       
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       
@@ -433,22 +433,22 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(textColor);
     
     // Draw top labels
-    StringUtils.drawCenteredText(g2d, "+5V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) (point.getY() + 1 * spacing) + 1, 
+    StringUtils.drawCenteredText(g2d, "+5V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) Math.round(point.getY() + 1 * spacing) + 1, 
         HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    StringUtils.drawCenteredText(g2d, "+12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) (point.getY() + 1.5 * spacing) + 1, 
+    StringUtils.drawCenteredText(g2d, "+12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) Math.round(point.getY() + 1.5 * spacing) + 1, 
         HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    StringUtils.drawCenteredText(g2d, "GND", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) (point.getY() + 2 * spacing) + 1, 
+    StringUtils.drawCenteredText(g2d, "GND", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) Math.round(point.getY() + 2 * spacing) + 1, 
         HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-    StringUtils.drawCenteredText(g2d, "-12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) (point.getY() + 2.5 * spacing) + 1, 
+    StringUtils.drawCenteredText(g2d, "-12V", (int) (point.getX() + (1 + SEGMENTS_SUM[3] - 0.3) * spacing), (int) Math.round(point.getY() + 2.5 * spacing) + 1, 
         HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     
     // Draw top-right labels
-    int labelY = (int) (point.getY() + 3.8 * spacing) + 1;
-    StringUtils.drawCenteredText(g2d, "+5V", (int) (point.getX() + width - 6 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    StringUtils.drawCenteredText(g2d, "+", (int) (point.getX() + width - 5 * spacing) - 6, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    StringUtils.drawCenteredText(g2d, " 12V", (int) (point.getX() + width - 5 * spacing) + 2, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    StringUtils.drawCenteredText(g2d, "GND", (int) (point.getX() + width - 3 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
-    StringUtils.drawCenteredText(g2d, "-12V", (int) (point.getX() + width - 1 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    int labelY = (int) Math.round(point.getY() + 3.8 * spacing) + 1;
+    StringUtils.drawCenteredText(g2d, "+5V", (int) Math.round(point.getX() + width - 6 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    StringUtils.drawCenteredText(g2d, "+", (int) Math.round(point.getX() + width - 5 * spacing) - 6, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    StringUtils.drawCenteredText(g2d, " 12V", (int) Math.round(point.getX() + width - 5 * spacing) + 2, labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    StringUtils.drawCenteredText(g2d, "GND", (int) Math.round(point.getX() + width - 3 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    StringUtils.drawCenteredText(g2d, "-12V", (int) Math.round(point.getX() + width - 1 * spacing), labelY, HorizontalAlignment.CENTER, VerticalAlignment.TOP);
 
     // Draw vertical labels
     byte A = "A".getBytes()[0];
@@ -460,14 +460,14 @@ public class ProtoBoard extends AbstractProtoBoard {
         label = new String(new byte[] {(byte) (a + y - 26)});
       else
         label = new String(new byte[] {(byte) (A + y)});
-      StringUtils.drawCenteredText(g2d, label, (int) (point.getX() + spacing * 0.35), padY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, label, (int) (point.getX() + width - spacing * 0.35), padY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, label, (int) Math.round(point.getX() + spacing * 0.35), padY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, label, (int) Math.round(point.getX() + width - spacing * 0.35), padY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
     
     g2d.setColor(textColor);
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
     
-    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Bl�sol 2019", (int) (point.getX() + width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
+    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Bl�sol 2019", (int) Math.round(point.getX() + width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
         HorizontalAlignment.LEFT, VerticalAlignment.TOP);        
     
     // draw central mini pads

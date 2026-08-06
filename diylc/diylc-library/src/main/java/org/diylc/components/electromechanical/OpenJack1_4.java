@@ -168,7 +168,7 @@ public class OpenJack1_4 extends AbstractMultiPartComponent<OpenJackType> {
       int springLength = (int) SPRING_LENGTH.convertToPixels();
       int holeToEdge = (int) HOLE_TO_EDGE.convertToPixels();
       double centerY = controlPoints[0].getY() + springLength - holeToEdge;
-      Point2D tipLabel = new Point2D.Double(controlPoints[0].getX(), (int) (controlPoints[0].getY() + holeToEdge * 1.25));
+      Point2D tipLabel = new Point2D.Double(controlPoints[0].getX(), (int) Math.round(controlPoints[0].getY() + holeToEdge * 1.25));
       AffineTransform ringTransform = AffineTransform.getRotateInstance(getValue() == OpenJackType.SWITCHED ? SWITCH_THETA : RING_THETA, controlPoints[0].getX(), centerY);
       AffineTransform sleeveTransform = AffineTransform.getRotateInstance(getValue() == OpenJackType.SWITCHED ? SLEEVE_SWITCHED_THETA : SLEEVE_THETA, controlPoints[0].getX(), centerY);
       Point2D ringOrSwitchLabel = new Point2D.Double(0, 0);

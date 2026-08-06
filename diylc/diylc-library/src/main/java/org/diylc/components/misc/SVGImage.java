@@ -37,6 +37,7 @@ import com.kitfox.svg.SVGUniverse;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.Percentage;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.ImageTransformer;
 import org.diylc.core.ComponentState;
@@ -44,12 +45,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.core.annotations.BinaryType;
-import org.diylc.core.annotations.BomPolicy;
-import org.diylc.core.annotations.ByteArrayProperty;
-import org.diylc.core.annotations.ComponentDescriptor;
-import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.annotations.PercentEditor;
+import org.diylc.core.annotations.*;
 
 @ComponentDescriptor(name = "SVG Image", author = "Branislav Stojkovic", category = "Misc",
     description = "Scalable Vector Graphics", instanceNamePrefix = "Svg",
@@ -61,7 +57,6 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;
   public static String DEFAULT_TEXT = "Double click to edit text";
-  private static byte DEFAULT_SCALE = 25;
 
   private Point2D.Double point = new Point2D.Double(0, 0);
   private Point2D.Double secondPoint = null;
@@ -74,8 +69,11 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
   }
 
   private byte[] data;
+  @Deprecated
   private Byte scale;
-  private byte newScale = DEFAULT_SCALE;
+  @Deprecated
+  private Byte newScale;
+  private Percentage scalePercent = new Percentage(100);
   private ImageSizingMode sizingMode = ImageSizingMode.Scale;
   private transient SVGDiagram svgDiagram;
 
@@ -95,7 +93,7 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
     double scaleY;
     SVGDiagram svgDiagram = getSvgDiagram();
     if (getSizingMode() == ImageSizingMode.Scale) {
-      scaleX = scaleY = 1d * getScale() / DEFAULT_SCALE;
+      scaleX = scaleY = 1d * getScale().getValue() / 100d;
     } else {
       Point2D secondPoint = getControlPoint(1);
       scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / svgDiagram.getWidth();
@@ -226,18 +224,25 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
     this.svgDiagram = null;
   }
 
-  @PercentEditor(minValue = 0, maxValue = 1000)
-  @EditableProperty(defaultable = false)
-  public byte getScale() {
-    if (scale != null) {
-      newScale = (byte) (scale / 2);
-      scale = null;
+  @PercentEditor(minValue = 1, maxValue = 1000)
+  @EditableProperty(name = "Scale", defaultable = false)
+  public Percentage getScale() {
+    if (scalePercent == null) {
+      if (newScale != null) {
+        scalePercent = new Percentage(newScale * 4);
+        newScale = null;
+      } else if (scale != null) {
+        scalePercent = new Percentage(scale * 2);
+        scale = null;
+      } else {
+        scalePercent = new Percentage(100);
+      }
     }
-    return newScale;
+    return scalePercent;
   }
 
-  public void setScale(byte scale) {
-    this.newScale = scale;
+  public void setScale(Percentage scale) {
+    this.scalePercent = scale;
   }
 
   @Override

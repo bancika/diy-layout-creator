@@ -3,110 +3,6 @@
 		<org.diylc.appframework.update.Version>
 			<versionNumber>
 				<major>5</major>
-				<minor>7</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-12-21 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added '6P5T (5-Position 6 Pole AxLabs)' lever switch type (thank you mm-rnd)</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added '4P3T (3-Position 4 Pole AxLabs)' lever switch type (thank you mm-rnd)</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'DP3T (Import 5-Position 2502N)' lever switch type (thank you mm-rnd)</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Corrected 'S1 Switch' up/down position designators (thank you mm-rnd)</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Corrected 'Mini Toggle Switch' position names for center-OFF variants to be in the correct order (thank you mm-rnd)</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>'Drill Hole' changes color to red when selected</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
-				<minor>8</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2025-12-30 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added Silkscreen export to PDF/PNG and print capabilities</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Multiwatt IC' package with 11 and 15 pin varieties</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added new property in 'LP Switch' that allows having the middle terminals connected (as they were) or disconnected to allow more flexibility</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Ending Style' property to 'Copper Trace' and 'Curved Trace' to allow choosing round or flat style</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added Chinese simplified (thank you chenjingyuanku) and Hindi UI translation and updated all other languages with new translations</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Added configuration for text scale factor in rare cases when system scale factor is not applied correctly; requires adding a configuration property to config.xml with key 'fontScaleFactor' and a desired float value</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved behavior of mouse cursor during drag operations; this should also fix behavior on some linux machines that show a "forbidden" cursor while dragging</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved sensitivity of 'Multimeter Probe' that required pixel-level precision to detect connectivity; improved rendering of the probe in outline mode</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improve contrast of tooltips on some Linux machines that show white text against yellow balloon</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Honor label color settings for 'Tape Measure' component</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Reorganized export and print related items in the File menu to reduce clutter</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed underside rendering and mirroring position issues that affected only SPDT 'Mini Toggle Switch' types</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Application freezes when using underside rendering or mirroring on 'Pin Header' when sized at 1x1</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>'Rotary Switch (Open)' cannot be selected by clicking on the wafer for 4-pole variations</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>5</major>
 				<minor>9</minor>
 				<build>0</build>
 			</versionNumber>
@@ -350,7 +246,7 @@
 				<minor>14</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-04-07 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-06-03 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -373,6 +269,114 @@
                     <changeType>IMPROVEMENT</changeType>
                     <description>'Line' component set to px used to render slightly thicker than 1px, appearing thicker than schematic symbols; changed to match the thickenss of schematic symbols</description>
                 </org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>5</major>
+				<minor>15</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-06-13 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Add Freeway Blade switches 3B3-01, 5B5-01, 5B5-02 (thank you Martin Morell)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>IEC variations of fuse and potentiometer symbols</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Detect the style of a treble bleed based on the topology and component values (e.g. Fender, DiMarzio, Kinman, etc)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved quality of AI Assistant responses in some cases</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved precision of rendering, in some cases there was a sub-pixel misalignment between the lines that should meet exactly</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Tone capacitor mistaken for treble bleed when connected to the input lug of the volume pot</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Dragging a component from the component tree to the canvas sometimes does not work as expected without clicking on it first and then dragging it</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Schaller Megaswitch' not rendered correctly when rotated for 90 or 270 degrees</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>0</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-06-13 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Upgrade Java version to 21</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed scaling for 'Image' and 'SVG Image' components; it was showing as unrecognized</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed errors while analyzing guitar wiring diagrams caused by treble bleed enhancements</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>1</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-06-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved handling of larger AI analysis requests and added more token budget per request to Supporter and Pro plans</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Files containing Inductor Symbol fail to open</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>2</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-07-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Use either username of email to log into DIYLC cloud</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved comparison logic of the 'Compare With..' tool</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

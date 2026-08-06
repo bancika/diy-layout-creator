@@ -202,7 +202,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i] = new Point2D.Double((int) (firstPoint.getX() + dx1), (int) (firstPoint.getY() + dy1));
+      controlPoints[i] = new Point2D.Double((int) Math.round(firstPoint.getX() + dx1), (int) Math.round(firstPoint.getY() + dy1));
     }
     
     // Right side pins (second row, staggered - offset by half pin spacing)
@@ -227,7 +227,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
         default:
           throw new RuntimeException("Unexpected orientation: " + orientation);
       }
-      controlPoints[i + pinsLeft] = new Point2D.Double((int) (firstPoint.getX() + dx2), (int) (firstPoint.getY() + dy2));
+      controlPoints[i + pinsLeft] = new Point2D.Double((int) Math.round(firstPoint.getX() + dx2), (int) Math.round(firstPoint.getY() + dy2));
     }
   }
 

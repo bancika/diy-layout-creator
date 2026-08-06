@@ -30,6 +30,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 import org.diylc.utils.Constants;
+import org.diylc.utils.MathUtils;
 
 /**
  * Serializes {@link Point2D} objects by converting coordinates from pixels to inches, thus avoiding
@@ -42,9 +43,10 @@ public class PointConverter implements Converter {
   @Override
   public void marshal(Object object, HierarchicalStreamWriter writer, MarshallingContext context) {
     Point2D point = (Point2D) object;
-    writer.addAttribute("x", Double.toString(1d * point.getX() / Constants.PIXELS_PER_INCH));
-    writer.addAttribute("y", Double.toString(1d * point.getY() / Constants.PIXELS_PER_INCH));
+    writer.addAttribute("x", MathUtils.formatDouble(1d * point.getX() / Constants.PIXELS_PER_INCH));
+    writer.addAttribute("y", MathUtils.formatDouble(1d * point.getY() / Constants.PIXELS_PER_INCH));
   }
+
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
@@ -52,16 +54,16 @@ public class PointConverter implements Converter {
     double y;
     if (reader.hasMoreChildren()) {
       reader.moveDown();
-      x = Double.parseDouble(reader.getValue());
+      x = MathUtils.parseDouble(reader.getValue());
       reader.moveUp();
       reader.moveDown();
-      y = Double.parseDouble(reader.getValue());
+      y = MathUtils.parseDouble(reader.getValue());
       reader.moveUp();
       return new Point2D.Double(x, y);
     } else {        
-      x = Double.parseDouble(reader.getAttribute("x"));
-      y = Double.parseDouble(reader.getAttribute("y"));
-      return new Point2D.Double(x * Constants.PIXELS_PER_INCH, y * Constants.PIXELS_PER_INCH);
+      x = MathUtils.round(Double.parseDouble(reader.getAttribute("x")) * Constants.PIXELS_PER_INCH);
+      y = MathUtils.round(Double.parseDouble(reader.getAttribute("y")) * Constants.PIXELS_PER_INCH);
+      return new Point2D.Double(x, y);
     }       
   }
 

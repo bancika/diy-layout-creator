@@ -64,7 +64,7 @@ public class LoginDialog extends ButtonDialog {
 
   public LoginDialog(JFrame owner) {
     super(owner, "Login", new String[] {OK, CANCEL});
-    setMinimumSize(new Dimension(240, 32));
+    setMinimumSize(new Dimension(320, 32));
     layoutGui();
     refreshState();
   }
@@ -91,7 +91,7 @@ public class LoginDialog extends ButtonDialog {
       gbc.gridx = 0;
 
       gbc.gridy = 0;
-      mainPanel.add(new JLabel(LangUtil.translate("User Name") + ":"), gbc);
+      mainPanel.add(new JLabel(LangUtil.translate("User Name or eMail") + ":"), gbc);
 
       gbc.gridy = 1;
       mainPanel.add(new JLabel(LangUtil.translate("Password") + ":"), gbc);

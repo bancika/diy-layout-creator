@@ -151,9 +151,4 @@ public class InductorSymbol extends AbstractSchematicLeadedSymbol<Inductance> {
   public void setCore(boolean core) {
     this.core = core;
   }
-
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
 }

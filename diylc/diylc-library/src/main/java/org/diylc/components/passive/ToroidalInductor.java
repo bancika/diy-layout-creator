@@ -165,9 +165,4 @@ public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implem
   public void setResistance(Resistance resistance) {
     this.resistance = resistance;
   }
-
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
 }

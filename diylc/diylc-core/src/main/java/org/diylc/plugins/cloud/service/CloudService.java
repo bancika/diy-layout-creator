@@ -86,8 +86,8 @@ public class CloudService {
   public CloudService(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
     
-    serviceUrl = ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY,
-        "http://www.diy-fever.com/diylc/api/v1");
+    serviceUrl = System.getProperty("org.diylc.cloud.baseUrl",
+        ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1"));
     ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
     service = factory.createProxy(IServiceAPI.class, serviceUrl);
 
@@ -104,12 +104,6 @@ public class CloudService {
   }
 
   private IServiceAPI getService() {
-    if (service == null) {
-      serviceUrl =
-          ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1");
-      ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
-      service = factory.createProxy(IServiceAPI.class, serviceUrl);
-    }
     return service;
   }
 

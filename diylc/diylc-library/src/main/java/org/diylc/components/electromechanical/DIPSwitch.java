@@ -338,10 +338,10 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
         int pinHeight = getClosestOdd(pinSize
             / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 1f
                 : 2f));
-        g2d.fillRect((int) (point.getX() - pinWidth / 2), (int) (point.getY() - pinHeight / 2),
+        g2d.fillRect((int) Math.round(point.getX() - pinWidth / 2), (int) Math.round(point.getY() - pinHeight / 2),
             pinWidth, pinHeight);
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawRect((int) (point.getX() - pinWidth / 2), (int) (point.getY() - pinHeight / 2),
+        g2d.drawRect((int) Math.round(point.getX() - pinWidth / 2), (int) Math.round(point.getY() - pinHeight / 2),
             pinWidth, pinHeight);
       }
     }

@@ -16,10 +16,10 @@
 	<property name="main.class" value="org.diylc.DIYLCStarter" />
 	<property name="diylc.version" value="5.0.0" />
 	
-	<property name="win.jre.x86.path" value="tools/jre/win/x86/jre17.0.14_7.zip" />
-	<property name="win.jre.x64.path" value="tools/jre/win/x64/jre17.0.14_7.zip" />
-	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre17.zip" />
-	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre17.zip" />
+	<property name="win.jre.x86.path" value="tools/jre/win/x86/jre21.0.11_10.zip" />
+	<property name="win.jre.x64.path" value="tools/jre/win/x64/jre21.0.11_10.zip" />
+	<property name="osx.jre.x86.path" value="tools/jre/osx/x86/jre21.zip" />
+	<property name="osx.jre.arm.path" value="tools/jre/osx/arm/jre21.zip" />
 
 	<property name="classes.dir" value="${build.dir}/temp/${ant.project.name}/classes" />
 	<property name="test.classes.dir" value="${build.dir}/temp/${ant.project.name}/test.classes" />
@@ -93,7 +93,7 @@
 		<bundleapp
 			        outputdirectory="${build.dir}"
 			        name="DIYLC"
-							jvmrequired="17"
+							jvmrequired="21"
 							copyright="2025 bancika"
 			        displayname="DIY Layout Creator"
 			        identifier="org.diylc.Desktop"
@@ -151,7 +151,7 @@
 			<bundleapp
 		        outputdirectory="${build.dir}"
 		        name="DIYLC"
-						jvmrequired="17"
+						jvmrequired="21"
 						copyright="2025 bancika"
 		        displayname="DIY Layout Creator"
 		        identifier="org.diylc.Desktop"

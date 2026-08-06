@@ -369,7 +369,7 @@ public class ThonkJack3_5 extends AbstractTransparentComponent<String> {
       rotation.transform(textCenter, textCenter);
     }
 
-    int drawX = (int) (textCenter.getX() - textWidth / 2);
+    int drawX = (int) Math.round(textCenter.getX() - textWidth / 2);
     int drawY = (int) (textCenter.getY() - textHeight / 2 + fontMetrics.getAscent()); 
 
     g2d.drawString(label, drawX, drawY);

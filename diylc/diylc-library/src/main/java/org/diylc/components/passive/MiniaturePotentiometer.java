@@ -425,7 +425,7 @@ public class MiniaturePotentiometer extends AbstractPotentiometer {
     int x = (panelWidth - textWidth) / 2;
     int y = (panelHeight - textHeight) / 2 + fontMetrics.getAscent();
 
-    g2d.drawString(label, (int) (bodyRect.getX() + x), (int) (bodyRect.getY() + y));
+    g2d.drawString(label, (int) Math.round(bodyRect.getX() + x), (int) Math.round(bodyRect.getY() + y));
   }
 
   @Override

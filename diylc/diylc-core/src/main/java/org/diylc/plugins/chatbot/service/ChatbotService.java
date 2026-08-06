@@ -109,8 +109,8 @@ public class ChatbotService {
 
   private IChatbotAPI getService() {
     if (service == null) {
-      String serviceUrl =
-          ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1/ai");
+      String serviceUrl = System.getProperty("org.diylc.cloud.baseUrl",
+          ConfigurationManager.getInstance().readString(IServiceAPI.URL_KEY, "http://www.diy-fever.com/diylc/api/v1")) + "/ai";
       ProxyFactory factory = new ProxyFactory(new PhpFlatProxy());
       service = factory.createProxy(IChatbotAPI.class, serviceUrl);
     }

@@ -155,9 +155,4 @@ public class AirCoreInductor extends AbstractLeadedComponent<Inductance> {
   public void setResistance(Resistance resistance) {
     this.resistance = resistance;
   }
-
-  @Override
-  public boolean isPolarized() {
-    return false;
-  }
 }

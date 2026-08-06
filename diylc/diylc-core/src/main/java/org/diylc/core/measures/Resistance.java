@@ -118,4 +118,10 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
     }
     throw new IllegalArgumentException("Could not parse resistance: " + value);
   }
+
+  public Double getNormalizedValue() {
+    if (value == null || unit == null)
+      return null;
+    return value * unit.getFactor(); 
+  }
 }

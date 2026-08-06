@@ -67,7 +67,13 @@ public class ActionBarPlugin implements IPlugIn {
       "Join Patreon",
       IconLoader.Patreon,
       HelpMenuPlugin.PATREON_URL
-    )
+    ),
+      new SupportOption(
+          "Get the official DIYLC eBook",
+          "Join Patreon",
+          IconLoader.Manual,
+          HelpMenuPlugin.BOOK_URL
+      )
   };
 
   private IPlugInPort plugInPort;

@@ -18,11 +18,9 @@
  */
 package org.diylc.components.guitar;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -32,10 +30,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.IntStream;
 
-import com.kitfox.svg.A;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -50,16 +45,12 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
-import org.diylc.core.images.IconLoader;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Schaller Megaswitch", category = "Guitar",
-    author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
-    zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
-    keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
-public class SchallerMegaSwitch extends AbstractAngledComponent<String> implements ISwitch {
+@ComponentDescriptor(name = "Freeway Blade", category = "Guitar", author = "Martin Morrell", description = "Several variations of Freeway Blade switches", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
+public class FreewayBlade extends AbstractAngledComponent<String> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
 
@@ -74,15 +65,13 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   private static Size HOLE_SIZE = new Size(2d, SizeUnit.mm);
   private static Size HOLE_SPACING = new Size(41.2d, SizeUnit.mm);
   private static Size TERMINAL_WIDTH = new Size(2d, SizeUnit.mm);
-  // private static Size TERMINAL_LENGTH = new Size(2d, SizeUnit.mm);
   private static Size TERMINAL_SPACING = new Size(0.1d, SizeUnit.in);
 
-  // public static float LABEL_FONT_SIZE = 10f;
-  public static Size LABEL_OFFSET = new Size(0.1d, SizeUnit.in);
+  public static Size LABEL_OFFSET = new Size(0.11d, SizeUnit.in);
 
   private String value = "";
-  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
-  private MegaSwitchType type = MegaSwitchType.E;
+  private Point2D[] controlPoints = new Point2D[] { new Point2D.Double(0, 0) };
+  private FreewayBladeType type = FreewayBladeType.B3_01;
   private Color labelColor = Color.gray;
 
   private transient Double labelDx = null;
@@ -91,7 +80,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   private Integer selectedPosition;
   private Boolean showMarkers;
 
-  public SchallerMegaSwitch() {
+  public FreewayBlade() {
     super();
     updateControlPoints();
   }
@@ -118,15 +107,13 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     if (outlineMode) {
       Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
           Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-              ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-              ? SELECTION_COLOR
-              : BASE_COLOR.darker();
+      finalBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : BASE_COLOR.darker();
     }
 
     g2d.setColor(finalBorderColor);
@@ -135,15 +122,13 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     if (outlineMode) {
       Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY,
           Constants.DEFAULT_THEME);
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-              ? SELECTION_COLOR
-              : theme.getOutlineColor();
+      finalBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : theme.getOutlineColor();
     } else {
-      finalBorderColor =
-          componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
-              ? SELECTION_COLOR
-              : WAFER_COLOR.darker();
+      finalBorderColor = componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING
+          ? SELECTION_COLOR
+          : WAFER_COLOR.darker();
     }
 
     g2d.draw(body[1]);
@@ -164,38 +149,19 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
 
     g2d.setColor(labelColor);
-    // g2d.setFont(project.getFont().deriveFont(LABEL_FONT_SIZE));
-    if (type == MegaSwitchType.M) {
-      for (int i = 0; i < controlPoints.length; i++) {
-        double dx = getLabelDx();
-        double dy = getLabelDy();        
-
-        if (i >= controlPoints.length / 2) {
-          dx = -dx;
-          dy = -dy;
-        }
-
-        StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), controlPoints[i].getX() + dx,
-            controlPoints[i].getY() + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      }
-    } else {
-      for (int i = 0; i < controlPoints.length; i++) {
-        StringUtils.drawCenteredText(g2d, getControlPointNodeName(i),
-            controlPoints[i].getX() + getLabelDx(), controlPoints[i].getY() + getLabelDy(),
-            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      }
+    for (int i = 0; i < controlPoints.length; i++) {
+      StringUtils.drawCenteredText(g2d, getControlPointNodeName(i),
+          controlPoints[i].getX() + getLabelDx(), controlPoints[i].getY() + getLabelDy(),
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
-    int lastPointIdx =
-        type == MegaSwitchType.M ? controlPoints.length / 2 - 1 : controlPoints.length - 1;
+    int lastPointIdx = controlPoints.length - 1;
 
-    double x =
-        (controlPoints[0].getX() + controlPoints[lastPointIdx].getX()) / 2 + getLabelDx() * 2.25;
-    double y =
-        (controlPoints[0].getY() + controlPoints[lastPointIdx].getY()) / 2 + getLabelDy() * 2.25;
+    double x = (controlPoints[0].getX() + controlPoints[lastPointIdx].getX()) / 2 + getLabelDx() * 2.25;
+    double y = (controlPoints[0].getY() + controlPoints[lastPointIdx].getY()) / 2 + getLabelDy() * 2.25;
 
     double theta = getAngle().getValueRad() - Math.PI / 2;
-    
+
     if ((theta >= Math.PI / 2 && theta <= Math.PI) || (theta < -Math.PI / 2 && theta > -Math.PI)) {
       theta += Math.PI;
     }
@@ -205,7 +171,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
 
     g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 1.25)));
-    StringUtils.drawCenteredText(g2d, "Schaller Megaswitch " + type.toString(), x, y,
+    StringUtils.drawCenteredText(g2d, "Freeway Blade " + type.toString(), x, y,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
@@ -214,8 +180,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
       body = new Shape[3];
 
-      int lastPointIdx =
-          type == MegaSwitchType.M ? controlPoints.length / 2 - 1 : controlPoints.length - 1;
+      int lastPointIdx = controlPoints.length - 1;
 
       double x = (controlPoints[0].getX() + controlPoints[lastPointIdx].getX()) / 2;
       double y = (controlPoints[0].getY() + controlPoints[lastPointIdx].getY()) / 2;
@@ -233,10 +198,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
       }
 
       int xOffset = 0;
-      if (type == MegaSwitchType.M) {
-        xOffset = terminalSize + waferThickness / 4;
-      }
-
       double baseX = x - terminalSize / 2 - baseWidth + waferThickness / 2 + xOffset;
       double baseY = y - baseLength / 2;
       Area baseArea = new Area(new Rectangle2D.Double(baseX, baseY, baseWidth, baseLength));
@@ -249,8 +210,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
 
       double waferX = x + xOffset - terminalSize / 2 - waferThickness / 2;
       double waferY = y - waferLength / 2;
-      Area waferArea =
-          new Area(new Rectangle2D.Double(waferX, waferY, waferThickness, waferLength));
+      Area waferArea = new Area(new Rectangle2D.Double(waferX, waferY, waferThickness, waferLength));
 
       body[1] = waferArea;
       body[2] = new Area();
@@ -272,7 +232,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
           terminal.transform(rotation);
         }
 
-        ((Area)body[2]).add(terminal);
+        ((Area) body[2]).add(terminal);
       }
 
       // Rotate if needed
@@ -298,36 +258,36 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     int waferThickness = (int) WAFER_THICKNESS.convertToPixels();
 
     int pointCount = switch (type) {
-      case E, P -> 7;
-      case E_PLUS -> 9;
-      case S, T -> 8;
-      case M -> 24;
+      case B3_01 -> 7;
+      case B5_01 -> 10;
+      case B5_02 -> 11;
     };
 
     controlPoints = new Point2D[pointCount];
     if (pointCount < 12) {
       terminalSpacing *= 1.5;
       for (int i = 0; i < controlPoints.length; i++) {
-        controlPoints[i] = new Point2D.Double(x, y - i * terminalSpacing);;
+        controlPoints[i] = new Point2D.Double(x, y - i * terminalSpacing);
+        ;
       }
     } else {
       for (int i = 0; i < controlPoints.length / 2; i++) {
         controlPoints[i] = new Point2D.Double(x, y - i * terminalSpacing);
-        controlPoints[controlPoints.length - i - 1] =
-            new Point2D.Double(x + terminalWidth + waferThickness / 2, y - i * terminalSpacing);
+        controlPoints[controlPoints.length - i - 1] = new Point2D.Double(x + terminalWidth + waferThickness / 2,
+            y - i * terminalSpacing);
       }
     }
 
     // Rotate if needed
     double theta = getAngle().getValueRad();
-    if (theta != 0) {      
+    if (theta != 0) {
       AffineTransform rotation = AffineTransform.getRotateInstance(theta, x, y);
       for (Point2D point : controlPoints) {
         rotation.transform(point, point);
       }
     }
   }
-  
+
   @Override
   public void setAngle(Angle angle) {
     super.setAngle(angle);
@@ -349,7 +309,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   }
 
   public double getLabelDy() {
-    if (labelDy == null ) {
+    if (labelDy == null) {
       updateLabelPositions();
     }
     return labelDy;
@@ -385,9 +345,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     g2d.fill(terminals);
     g2d.setColor(LUG_COLOR.darker());
     g2d.draw(terminals);
-
-    Image logo = IconLoader.Schaller.getImage();
-    g2d.drawImage(logo, 2, (int) (6.0 * width / 32), null);
   }
 
   @Override
@@ -427,7 +384,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     this.value = value;
   }
 
-//  @EditableProperty(name = "Label")
+  // @EditableProperty(name = "Label")
   public Color getLabelColor() {
     return labelColor;
   }
@@ -437,25 +394,26 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   }
 
   @EditableProperty
-  public MegaSwitchType getType() {
+  public FreewayBladeType getType() {
     return type;
   }
 
-  public void setType(MegaSwitchType type) {
+  public void setType(FreewayBladeType type) {
     this.type = type;
     updateControlPoints();
     // Invalidate body
     this.body = null;
   }
 
-  public enum MegaSwitchType {
-    E("E", 5), E_PLUS("E+", 5), M("M", 5),
-    P("P", 5), S("S", 5), T("T", 3);
+  public enum FreewayBladeType {
+    B3_01("3B3-01", 6),
+    B5_01("5B5-01", 10),
+    B5_02("5B5-02", 10);
 
-    private String title;
+    private final String title;
     private final int positionCount;
 
-    private MegaSwitchType(String title, int positionCount) {
+    private FreewayBladeType(String title, int positionCount) {
       this.title = title;
       this.positionCount = positionCount;
     }
@@ -470,14 +428,6 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     }
   }
 
-  // @Override
-  // public String getControlPointNodeName(int index) {
-  // // we don't want the switch to produce any nodes, it just makes connections
-  // return null;
-  // }
-
-  // switch stuff
-
   @Override
   public int getPositionCount() {
     return type.getPositionCount();
@@ -491,12 +441,9 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
   @Override
   public boolean arePointsConnected(int index1, int index2, int position) {
     List<List<int[]>> connections = switch (type) {
-      case E -> E_CONNECTIONS;
-      case E_PLUS -> E_PLUS_CONNECTIONS;
-      case S -> S_CONNECTIONS;
-      case P -> P_CONNECTIONS;
-      case T -> T_CONNECTIONS;
-      case M -> M_CONNECTIONS;
+      case B3_01 -> B3_01_CONNECTIONS;
+      case B5_01 -> B5_01_CONNECTIONS;
+      case B5_02 -> B5_02_CONNECTIONS;
     };
 
     List<int[]> positionConnections = connections.get(position);
@@ -506,15 +453,27 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
       }
     }
 
-    return false;   
+    return false;
   }
-  
+
   @Override
   public String getControlPointNodeName(int index) {
-    if (type == MegaSwitchType.M) {
-      return String.valueOf((char) (index + 'A'));
+    switch (type) {
+      case B3_01: {
+        String[] arr = { "GD", "BH", "B", "OP", "NG", "A", "NH" };
+        return arr[index];
+      }
+      case B5_01: {
+        String[] arr = { "BH", "BT", "BG", "MH", "A", "B", "GD", "OP", "NH", "NG" };
+        return arr[index];
+      }
+      case B5_02: {
+        String[] arr = { "BH", "2+", "3+", "4+", "G3", "GD", "OP", "MH", "NT", "BT", "NH" };
+        return arr[index];
+      }
+      default:
+        return "";
     }
-    return Integer.toString(index + 1);
   }
 
   @Override
@@ -522,7 +481,7 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     return false;
   }
 
-  @DynamicEditableProperty(source = SchallerMegaSwitchPositionPropertyValueSource.class)
+  @DynamicEditableProperty(source = FreewayBladePositionPropertyValueSource.class)
   @EditableProperty(name = "Selected Position")
   @Override
   public Integer getSelectedPosition() {
@@ -546,152 +505,124 @@ public class SchallerMegaSwitch extends AbstractAngledComponent<String> implemen
     this.showMarkers = showMarkers;
   }
 
-  private static final List<List<int[]>> E_CONNECTIONS = Arrays.asList(
+  private static final List<List<int[]>> B3_01_CONNECTIONS = Arrays.asList(
       Arrays.asList(
-          new int[] { 2, 6 }
-          ), // position 1
+          new int[] { 3, 1 }), // position 1
       Arrays.asList(
-          new int[] { 0, 2 },
-          new int[] { 2, 6 },
-          new int[] { 3, 5 }
-          ), // position 2
+          new int[] { 6, 3 },
+          new int[] { 3, 1 },
+          new int[] { 6, 1 },
+          new int[] { 4, 0 }), // position 2
       Arrays.asList(
-          new int[] { 3, 4 },
-          new int[] { 1, 2 },
-          new int[] { 2, 5 }
-          ), // position 3
+          new int[] { 6, 3 },
+          new int[] { 4, 0 }), // position 3
       Arrays.asList(
-          new int[] { 3, 4 },
-          new int[] { 0, 2 },
-          new int[] { 1, 2 }
-          ), // position 4
-      Arrays.asList(
-          new int[] { 1, 2 }
-          ) // position 5
-      );
-  
-  private static final List<List<int[]>> E_PLUS_CONNECTIONS = Arrays.asList(
-      Arrays.asList(
-          new int[] { 2, 8 }
-          ), // position 1
-      Arrays.asList(
-          new int[] { 3, 6 },
-          new int[] { 2, 8 },
-          new int[] { 0, 2 }
-          ), // position 2
-      Arrays.asList(
-          new int[] { 3, 5 },
-          new int[] { 2, 7 },
-          new int[] { 1, 2 }
-          ), // position 3
-      Arrays.asList(
-          new int[] { 3, 4 },
-          new int[] { 0, 2 },
-          new int[] { 1, 2 }
-          ), // position 4
-      Arrays.asList(
-          new int[] { 1, 2 }
-          ) // position 5
-      );
-  
-  private static final List<List<int[]>> S_CONNECTIONS = Arrays.asList(
-      Arrays.asList(
-          new int[] { 2, 3 },
-          new int[] { 6, 7 }
-          ), // position 1
-      Arrays.asList(
-          new int[] { 2, 3 },
-          new int[] { 0, 3 },
-          new int[] { 6, 7 },
-          new int[] { 4, 7 }
-          ), // position 2
-      Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 4, 7 }
-          ), // position 3
-      Arrays.asList(
-          new int[] { 1, 3 },
-          new int[] { 0, 3 },
-          new int[] { 5, 7 },
-          new int[] { 4, 7 }
-          ), // position 4
-      Arrays.asList(
-          new int[] { 1, 3 },
-          new int[] { 5, 7 }
-          ) // position 5
-      );
-  
-  private static final List<List<int[]>> P_CONNECTIONS = Arrays.asList(
-      Arrays.asList(
-          new int[] { 1, 6 },
-          new int[] { 3, 4 }
-          ), // position 1
-      Arrays.asList(
+          new int[] { 5, 3 },
+          new int[] { 3, 1 },
           new int[] { 1, 5 },
-          new int[] { 0, 4 },
-          new int[] { 1, 2 },
-          new int[] { 3, 4 }
-          ), // position 2
+          new int[] { 0, 6 }), // position 4
       Arrays.asList(
-          new int[] { 1, 6 },
-          new int[] { 0, 2 }
-          ), // position 3
+          new int[] { 5, 3 },
+          new int[] { 5, 2 },
+          new int[] { 3, 2 },
+          new int[] { 6, 1 }), // position 5
       Arrays.asList(
-          new int[] { 1, 6 },
-          new int[] { 0, 1 },
-          new int[] { 2, 4 },
-          new int[] { 3, 4 }
-          ), // position 4
+          new int[] { 6, 3 },
+          new int[] { 6, 2 },
+          new int[] { 3, 2 },
+          new int[] { 4, 1 }) // position 6
+  );
+
+  private static final List<List<int[]>> B5_01_CONNECTIONS = Arrays.asList(
       Arrays.asList(
-          new int[] { 1, 5 }
-          ) // position 5
-      );
-  
-  private static final List<List<int[]>> T_CONNECTIONS = Arrays.asList(
+          new int[] { 7, 0 },
+          new int[] { 6, 1 }), // position 1
       Arrays.asList(
-          new int[] { 2, 3 },
-          new int[] { 6, 7 }
-          ), // position 1
+          new int[] { 7, 0 },
+          new int[] { 7, 3 },
+          new int[] { 3, 0 },
+          new int[] { 6, 1 }), // position 2
       Arrays.asList(
-          new int[] { 0, 3 },
-          new int[] { 4, 7 }
-          ), // position 2
+          new int[] { 7, 3 }), // position 3
       Arrays.asList(
-          new int[] { 1, 3 },
-          new int[] { 5, 7 }
-          ) // position 3
-      );
-  
-  private static final List<List<int[]>> M_CONNECTIONS = Arrays.asList(
+          new int[] { 8, 7 },
+          new int[] { 8, 3 },
+          new int[] { 7, 3 },
+          new int[] { 9, 6 }), // position 4
       Arrays.asList(
-          new int[] { 4, 5 },
-          new int[] { 10, 11 },
-          new int[] { 16, 17 },
-          new int[] { 22, 23 }
-          ), // position 1
+          new int[] { 8, 7 },
+          new int[] { 9, 6 }), // position 5
       Arrays.asList(
-          new int[] { 3, 5 },
-          new int[] { 9, 11 },
-          new int[] { 15, 17 },
-          new int[] { 21, 23 }
-          ), // position 2
+          new int[] { 7, 0 },
+          new int[] { 9, 4 },
+          new int[] { 5, 2 }), // position 6
       Arrays.asList(
-          new int[] { 2, 5 },
-          new int[] { 8, 11 },
-          new int[] { 14, 17 },
-          new int[] { 20, 23 }
-          ), // position 3
+          new int[] { 8, 7 },
+          new int[] { 8, 3 },
+          new int[] { 8, 0 },
+          new int[] { 7, 3 },
+          new int[] { 7, 0 },
+          new int[] { 3, 0 },
+          new int[] { 9, 6 },
+          new int[] { 9, 1 },
+          new int[] { 6, 1 }), // position 7
       Arrays.asList(
-          new int[] { 1, 5 },
-          new int[] { 7, 11 },
-          new int[] { 13, 17 },
-          new int[] { 19, 23 }
-          ), // position 4
+          new int[] { 8, 7 },
+          new int[] { 0, 9 },
+          new int[] { 6, 1 }), // position 8
       Arrays.asList(
-          new int[] { 0, 5 },
-          new int[] { 6, 11 },
-          new int[] { 12, 17 },
-          new int[] { 18, 23 }
-          ) // position 5
-      );
+          new int[] { 8, 7 },
+          new int[] { 8, 0 },
+          new int[] { 7, 0 },
+          new int[] { 9, 6 },
+          new int[] { 9, 1 },
+          new int[] { 6, 1 }), // position 9
+      Arrays.asList(
+          new int[] { 8, 7 },
+          new int[] { 9, 3 },
+          new int[] { 6, 1 }) // position 10
+  );
+
+  private static final List<List<int[]>> B5_02_CONNECTIONS = Arrays.asList(
+      Arrays.asList(
+          new int[] { 6, 0 }), // position 1
+      Arrays.asList(
+          new int[] { 6, 1 },
+          new int[] { 6, 0 },
+          new int[] { 1, 0 }), // position 2
+      Arrays.asList(
+          new int[] { 10, 6 },
+          new int[] { 10, 2 },
+          new int[] { 10, 0 },
+          new int[] { 6, 2 },
+          new int[] { 6, 0 },
+          new int[] { 2, 0 },
+          new int[] { 9, 8 },
+          new int[] { 9, 4 },
+          new int[] { 8, 4 }), // position 3
+      Arrays.asList(
+          new int[] { 10, 6 },
+          new int[] { 10, 3 },
+          new int[] { 6, 3 }), // position 4
+      Arrays.asList(
+          new int[] { 10, 6 }), // position 5
+      Arrays.asList(
+          new int[] { 6, 0 },
+          new int[] { 9, 5 }), // position 6
+      Arrays.asList(
+          new int[] { 7, 6 },
+          new int[] { 7, 0 },
+          new int[] { 6, 0 },
+          new int[] { 9, 5 }), // position 7
+      Arrays.asList(
+          new int[] { 7, 6 }), // position 8
+      Arrays.asList(
+          new int[] { 10, 7 },
+          new int[] { 10, 6 },
+          new int[] { 7, 6 },
+          new int[] { 8, 5 }), // position 9
+      Arrays.asList(
+          new int[] { 10, 6 },
+          new int[] { 8, 5 }) // position 10
+  );
 }

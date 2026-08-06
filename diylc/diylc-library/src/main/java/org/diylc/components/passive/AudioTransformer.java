@@ -212,8 +212,8 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
       body = new Area[2];
       double leadSpacing = this.leadSpacing.convertToPixels();
       double windingSpacing = this.windingSpacing.convertToPixels();
-      double centerX = (int) (controlPoints[0].getX() + windingSpacing / 2);
-      double centerY = (int) (controlPoints[0].getY() + leadSpacing);
+      double centerX = (int) Math.round(controlPoints[0].getX() + windingSpacing / 2);
+      double centerY = (int) Math.round(controlPoints[0].getY() + leadSpacing);
       int coreWidth = getClosestOdd(this.coreWidth.convertToPixels());
       int coreThickness = getClosestOdd(this.coreThickness.convertToPixels());
       int coilWidth = getClosestOdd(this.coilWidth.convertToPixels());
@@ -271,9 +271,9 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
       int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
         g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
         g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawOval((int)(point.getX() - pinSize / 2), (int)(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
     }
     Composite oldComposite = applyAlpha(g2d, componentState);

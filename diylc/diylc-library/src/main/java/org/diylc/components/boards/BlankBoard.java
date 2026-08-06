@@ -73,9 +73,9 @@ public class BlankBoard extends AbstractBoard {
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(boardColor);
     if (getType() == Type.SQUARE)
-      g2d.fillRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+      g2d.fillRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     else
-      g2d.fillOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+      g2d.fillOval((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     g2d.setComposite(oldComposite);
 //    }
     // Do not track any changes that follow because the whole board has been
@@ -84,9 +84,9 @@ public class BlankBoard extends AbstractBoard {
     g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : borderColor);
     if (getType() == Type.SQUARE)
-      g2d.drawRect((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+      g2d.drawRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
     else
-      g2d.drawOval((int)firstPoint.getX(), (int)firstPoint.getY(), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
+      g2d.drawOval((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()), (int)(finalSecondPoint.getX() - firstPoint.getX()), (int)(finalSecondPoint.getY() - firstPoint.getY()));
   }
 
   @Override

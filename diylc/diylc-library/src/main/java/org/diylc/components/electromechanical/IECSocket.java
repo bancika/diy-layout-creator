@@ -236,10 +236,10 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
     for (Point2D p : controlPoints) {
       if (outlineMode) {
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.drawRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       } else {
         g2d.setColor(METAL_COLOR);
-        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+        g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth, lugHeight);
       }
     }
     
@@ -302,7 +302,7 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
       
       Point2D[] cutoutPoints = new Point2D[] {
           new Point2D.Double(firstPoint.getX(), firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2),
-          new Point2D.Double(firstPoint.getX() + cutoutLength / 2 - cutoutSlant, (int) (firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2)),
+          new Point2D.Double(firstPoint.getX() + cutoutLength / 2 - cutoutSlant, (int) Math.round(firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2)),
           new Point2D.Double(firstPoint.getX() + cutoutLength / 2, firstPoint.getY() + vSpacing / 2 - cutoutWidth / 2 + cutoutSlant),
           new Point2D.Double(firstPoint.getX() + cutoutLength / 2, firstPoint.getY() + vSpacing / 2 + cutoutWidth / 2),
           new Point2D.Double(firstPoint.getX() - cutoutLength / 2, firstPoint.getY() + vSpacing / 2 + cutoutWidth / 2),

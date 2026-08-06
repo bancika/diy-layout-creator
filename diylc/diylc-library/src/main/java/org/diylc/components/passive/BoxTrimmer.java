@@ -176,7 +176,7 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     // Draw pins
     g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_COLOR);
     for (Point2D p : controlPoints) {
-      g2d.fillOval((int) p.getX() - 2, (int) p.getY() - 2, 4, 4);
+      g2d.fillOval((int) Math.round(p.getX()) - 2, (int) Math.round(p.getY()) - 2, 4, 4);
     }
 
     // Draw label - position outside body for readability

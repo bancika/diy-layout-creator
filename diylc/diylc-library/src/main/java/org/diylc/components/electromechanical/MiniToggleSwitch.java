@@ -317,21 +317,21 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       if (outlineMode) {
 //        g2d.setColor(Constants.TRANSPARENT_COLOR);
 //        drawingObserver.startTrackingContinuityArea(true);
-//        g2d.fillRect((int)(p.getX() - lugWidth / 2), (int)(p.getY() - lugHeight / 2), lugWidth, lugHeight);
+//        g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2), (int) Math.round(p.getY() - lugHeight / 2), lugWidth, lugHeight);
 //        drawingObserver.stopTrackingContinuityArea();
         
         g2d.setColor(theme.getOutlineColor());
-        g2d.drawRect((int)(p.getX() - lugWidth / 2d), (int)(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
+        g2d.drawRect((int) Math.round(p.getX() - lugWidth / 2d), (int) Math.round(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
       } else {
         g2d.setColor(getTerminalPadColor().darker());
 
-        g2d.drawOval((int)(p.getX() - circleDiameter / 2d), (int)(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
+        g2d.drawOval((int) Math.round(p.getX() - circleDiameter / 2d), (int) Math.round(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
 
         g2d.setColor(getTerminalPadColor());
-        g2d.fillOval((int)(p.getX() - circleDiameter / 2d), (int)(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
+        g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2d), (int) Math.round(p.getY() - circleDiameter / 2d), circleDiameter, circleDiameter);
         g2d.setColor(getTerminalColor());
 //        drawingObserver.startTrackingContinuityArea(true);
-        g2d.fillRect((int)(p.getX() - lugWidth / 2d), (int)(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
+        g2d.fillRect((int) Math.round(p.getX() - lugWidth / 2d), (int) Math.round(p.getY() - lugHeight / 2d), lugWidth, lugHeight);
 //        drawingObserver.stopTrackingContinuityArea();
       }
     }
