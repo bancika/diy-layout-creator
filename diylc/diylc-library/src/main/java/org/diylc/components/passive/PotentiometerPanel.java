@@ -516,7 +516,6 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         double markerOffset = MARKER_OFFSET.convertToPixels() + 5;
         for (int i = 0; i < 3; i++) {
           Point2D lugPoint = controlPoints[i];
-          int markerNumber = i + 1;
           
           double mx = lugPoint.getX();
           double my = lugPoint.getY();
@@ -530,7 +529,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
             my += (dy / dist) * markerOffset;
           }
           
-          StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), mx, my,
+          StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), mx, my,
               HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         }
       } else {
@@ -545,8 +544,6 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
         double markerDistance = radius - markerOffset;
         
         // Draw markers "1", "2", "3" along radial line from center to each lug, close to circle edge
-        // Reverse numbering when view is ShaftDown
-        boolean reverseOrder = getView() == View.ShaftDown;
         
         for (int i = 0; i < 3; i++) {
           Point2D lugPoint = controlPoints[i];
@@ -565,10 +562,7 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
             double markerX = centerX + unitX * markerDistance;
             double markerY = centerY + unitY * markerDistance;
             
-            // Determine marker number based on view
-            int markerNumber = reverseOrder ? (3 - i) : (i + 1);
-            
-            StringUtils.drawCenteredText(g2d, Integer.toString(markerNumber), markerX, markerY,
+            StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), markerX, markerY,
                 HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
           }
         }
@@ -769,14 +763,22 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
     this.bodyDepth = bodyDepth;
     body = null;
   }
-  
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (getView() == View.ShaftUp || getView() == View.TerminalsUp) {
+      return Integer.toString(index + 1);
+    }
+    return Integer.toString(3 - index);
+  }
+
   @Override
   public String getInternalLinkName(int index1, int index2) {
     if (index1 > index2)
       return getInternalLinkName(index2, index1);
     
     if (index2 - index1 == 1)
-      return (index1 + 1) + "-" + (index2 + 1);
+      return getControlPointNodeName(index1) + "-" + getControlPointNodeName(index2);
     
     return null;
   }
