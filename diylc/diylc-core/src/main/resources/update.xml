@@ -399,6 +399,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved AI Assistant's knowledge base by ingesting most of the material from the eBook</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Show a progress dialog while waiting for a long-running AI Analysis to complete</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
