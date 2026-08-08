@@ -399,7 +399,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved AI Assistant's knowledge base by ingesting most of the material from the eBook</description>
+					<description>Significantly improved AI Assistant's knowledge base on DIYLC usage by ingesting most of the material from the eBook</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
