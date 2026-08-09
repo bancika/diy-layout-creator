@@ -117,7 +117,7 @@ public class ChatbotService {
     return service;
   }
 
-  public String promptChatbot(String prompt) throws NotLoggedInException, CloudException {
+  public ChatbotResponse promptChatbot(String prompt) throws NotLoggedInException, CloudException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
@@ -129,10 +129,34 @@ public class ChatbotService {
     File aiProjectFile = getAiProjectFile();
 
     try {
-      String response = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
+      String rawResponse = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
           plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile, prompt);
-      return Optional.ofNullable(response).orElse(SERVER_ERROR_PLEASE_TRY_AGAIN);
+      
+      LOG.info("Raw chatbot response: " + rawResponse);
+      
+      if (rawResponse == null || rawResponse.isBlank()) {
+          throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
+      }
+      
+      // Try to parse as ChatbotResponse (covers both standard chat and interactive edit)
+      ChatbotResponse response = new ChatbotResponse();
+      String trimmed = rawResponse.trim();
+      if (trimmed.startsWith("{")) {
+        try {
+          ObjectMapper mapper = new ObjectMapper();
+          response = mapper.readValue(trimmed, ChatbotResponse.class);
+        } catch (Exception parseEx) {
+          LOG.warn("Could not parse response as structured JSON, treating as plain text: " + parseEx.getMessage());
+          response.setString(rawResponse);
+        }
+      } else {
+        response.setString(rawResponse);
+      }
+      
+      return response;
+    } catch (CloudException ce) {
+      throw ce;
     } catch (Exception e) {
       LOG.error("Chatbot error", e);
       throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);

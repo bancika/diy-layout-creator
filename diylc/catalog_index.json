@@ -1,0 +1,16 @@
+{
+  "version" : "6.2.0",
+  "categories" : {
+    "Boards" : [ "Blank Board", "Breadboard", "Eurorack Stripboard", "Eyelet Board", "Marshall Style Perf Board", "P-0+o (Proto) Board", "Perf Board w/ Pads", "Proto Board 780 Holes", "Tag Strip", "Terminal Strip", "TriPad Board", "Vero Board" ],
+    "Connectivity" : [ "Copper Trace", "Curved Trace", "Cut Line", "Dot", "Eyelet", "Ground Fill", "Hookup Wire", "Jumper", "Multimeter Probe", "PCB Terminal Block", "Solder Lug", "Solder Pad", "Trace Cut", "Turret Lug", "Twisted Leads" ],
+    "Electro-Mechanical" : [ "9V Battery Snap", "Chassis Panel", "Cliff 1/4\" Jack", "Cliff 1/8\" Jack", "Closed 1/4\" Jack", "DIP Switch", "Drill Hole", "Elliptical Cutout", "Fuse Holder (Panel)", "IEC Socket", "Mini Relay", "Mini Toggle Switch", "Neutrik 1/4\" Jack", "Open 1/4\" Jack", "Open 1/8\" Jack", "Pilot Lamp Holder", "Pin Header", "Plastic DC Jack", "Polygonal Cutout", "RCA Jack", "Rectangular Cutout", "Rotary Selector Switch", "Rotary Switch (Open)", "Rotary Switch (Sealed)", "Slide Switch", "Tactile Micro-Switch", "Thonk 3.5mm Jack" ],
+    "Guitar" : [ "Freeway 3X3-03 Switch", "Freeway 3X3-05 (Ultra) Switch", "Freeway Blade", "Humbucker Pickup", "Jazz Bass Pickup", "LP Toggle Switch", "Lever Switch", "P- Bass Pickup", "P-90 Single Coil Pickup", "S1 Switch", "Schaller Megaswitch", "Single Coil Pickup", "Stingray Bass Pickup" ],
+    "Misc" : [ "Auto-Wrap Label", "Bill of Materials", "Common Node", "Dial Scale", "Image", "Label", "PCB Buzzer", "PCB Text", "SVG Image", "Tape Measure" ],
+    "Passive" : [ "Ceramic Capacitor (Radial)", "Crystal Oscillator", "Electrolytic Capacitor (Axial)", "Electrolytic Capacitor (Radial)", "Film Capacitor (Axial)", "Film Capacitor (Radial)", "Heat Sink Resistor", "Inductor (Radial)", "Inductor (Toroidal)", "Mica Capacitor (Radial)", "Mini Signal Transformer", "Multi-Section Capacitor", "Potentiometer", "Potentiometer (Miniature)", "Resistor", "Tantalum Capacitor", "Trimmer Potentiometer" ],
+    "SMD" : [ "SMD Capacitor", "SMD Resistor" ],
+    "Schematic Symbols" : [ "BJT", "Battery", "Bulb", "Buzzer Symbol", "Capacitor", "Current Source", "Diode", "Diode Tube", "Duo-Diode", "Fuse", "Ground", "IC", "Inductor", "JFET", "LED", "Logic Gate", "MOSFET", "Pentode", "Phono Jack", "Photo Diode", "Potentiometer", "Resistor", "Schottky Diode", "Switch (Latching)", "Transformer Coil", "Transformer Core", "Triode", "Voltage Source", "Zener Diode" ],
+    "Semiconductors" : [ "Bridge Rectifier", "DIP IC", "Diode (glass)", "Diode (plastic)", "LED", "Multiwatt IC", "SIP IC", "Transistor (TO-1)", "Transistor (TO-126)", "Transistor (TO-220)", "Transistor (TO-3)", "Transistor (TO-92)" ],
+    "Shapes" : [ "Ellipse", "Line", "Polygon", "Rectangle" ],
+    "Tubes" : [ "4-pin Jumbo Tube Socket", "Sub-Mini Tube", "Tube Socket" ]
+  }
+}

@@ -1,0 +1,4903 @@
+{
+  "version" : "6.2.0",
+  "components" : [ {
+    "name" : "Blank Board",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Blank circuit board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Shape",
+      "type" : "Type",
+      "possibleValues" : [ "Round", "Square" ],
+      "defaultValue" : "Square"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Breadboard",
+    "category" : "Boards",
+    "namePrefix" : "BB",
+    "description" : "Prototyping solderless breadboard",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Size",
+      "type" : "BreadboardSize",
+      "possibleValues" : [ "Half", "Full" ],
+      "defaultValue" : "Half"
+    }, {
+      "name" : "Power Strip",
+      "type" : "PowerStripPosition",
+      "possibleValues" : [ "Inline", "Offset" ],
+      "defaultValue" : "Inline"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Eurorack Stripboard",
+    "category" : "Boards",
+    "namePrefix" : "BB",
+    "description" : "David Haillant's eurorack format stripboard for prototyping and building simple modules",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Eyelet Board",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Perforated board with eyelets",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "X",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Numbers"
+    }, {
+      "name" : "Coordinates",
+      "type" : "CoordinateDisplay",
+      "possibleValues" : [ "None", "One Side", "Both Sides" ],
+      "defaultValue" : "One Side"
+    }, {
+      "name" : "Y",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Letters"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Marshall Style Perf Board",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Perforated board as found on some Marshall and Trainwreck amps",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.375in"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "X",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Numbers"
+    }, {
+      "name" : "Coordinates",
+      "type" : "CoordinateDisplay",
+      "possibleValues" : [ "None", "One Side", "Both Sides" ],
+      "defaultValue" : "One Side"
+    }, {
+      "name" : "Y",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Letters"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "P-0+o (Proto) Board",
+    "category" : "Boards",
+    "namePrefix" : "BB",
+    "description" : "A prototyping board for modular synths, central bus with V+ GND and V-",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Perf Board w/ Pads",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Perforated board with solder pads",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "X",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Numbers"
+    }, {
+      "name" : "Coordinates",
+      "type" : "CoordinateDisplay",
+      "possibleValues" : [ "None", "One Side", "Both Sides" ],
+      "defaultValue" : "One Side"
+    }, {
+      "name" : "Y",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Letters"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Proto Board 780 Holes",
+    "category" : "Boards",
+    "namePrefix" : "BB",
+    "description" : "Prototyping board similar to Radio Shack 276-168B or MPJA 33304",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Type",
+      "type" : "ProtoBoard780Type",
+      "possibleValues" : [ "RS", "MPJA" ],
+      "defaultValue" : "MPJA"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Tag Strip",
+    "category" : "Boards",
+    "namePrefix" : "TS",
+    "description" : "Row of terminals for point-to-point construction",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Terminals",
+      "type" : "Integer",
+      "defaultValue" : "7"
+    }, {
+      "name" : "Terminal Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.375in"
+    }, {
+      "name" : "Mounting Lugs",
+      "type" : "TagStripMount",
+      "possibleValues" : [ "Central", "Outside" ],
+      "defaultValue" : "Central"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Terminal Strip",
+    "category" : "Boards",
+    "namePrefix" : "TS",
+    "description" : "Row of terminals for point-to-point construction",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Center Terminal",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Board Width",
+      "type" : "Size",
+      "defaultValue" : "0.35in"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Terminals",
+      "type" : "Integer",
+      "defaultValue" : "10"
+    }, {
+      "name" : "Terminal Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Hole Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "TriPad Board",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Holes Per Strip",
+      "type" : "Integer",
+      "defaultValue" : "3"
+    }, {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Horizontal"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "X",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Numbers"
+    }, {
+      "name" : "Coordinates",
+      "type" : "CoordinateDisplay",
+      "possibleValues" : [ "None", "One Side", "Both Sides" ],
+      "defaultValue" : "One Side"
+    }, {
+      "name" : "Y",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Letters"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Vero Board",
+    "category" : "Boards",
+    "namePrefix" : "Board",
+    "description" : "Perforated FR4 board with copper strips connecting all holes in a row",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Horizontal"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "BoardSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Coordinate Origin",
+      "type" : "CoordinateOrigin",
+      "possibleValues" : [ "Top Left", "Top Right", "Bottom Right", "Bottom Left" ],
+      "defaultValue" : "Top Left"
+    }, {
+      "name" : "Underside Display",
+      "type" : "BoardUndersideDisplay",
+      "possibleValues" : [ "None", "Above", "Below", "Left", "Right" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Underside Offset",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Underside Transparency",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "X",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Numbers"
+    }, {
+      "name" : "Coordinates",
+      "type" : "CoordinateDisplay",
+      "possibleValues" : [ "None", "One Side", "Both Sides" ],
+      "defaultValue" : "One Side"
+    }, {
+      "name" : "Y",
+      "type" : "CoordinateType",
+      "possibleValues" : [ "Letters", "Numbers" ],
+      "defaultValue" : "Letters"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Copper Trace",
+    "category" : "Connectivity",
+    "namePrefix" : "Trace",
+    "description" : "Straight copper trace",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Ending Style",
+      "type" : "LineEndingStyle",
+      "possibleValues" : [ "Round", "Flat" ],
+      "defaultValue" : "Round"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "1mm"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "Bottom", "Top", "Inner 1", "Inner 2", "Inner 3", "Inner 4", "Inner 5", "Inner 6" ],
+      "defaultValue" : "Bottom"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Curved Trace",
+    "category" : "Connectivity",
+    "namePrefix" : "Trace",
+    "description" : "Curved copper trace with two control points",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Ending Style",
+      "type" : "LineEndingStyle",
+      "possibleValues" : [ "Round", "Flat" ],
+      "defaultValue" : "Round"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "1mm"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "Bottom", "Top", "Inner 1", "Inner 2", "Inner 3", "Inner 4", "Inner 5", "Inner 6" ],
+      "defaultValue" : "Bottom"
+    }, {
+      "name" : "Smooth",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Point Count",
+      "type" : "PointCount",
+      "possibleValues" : [ "Two", "Three", "Four", "Five", "Seven" ],
+      "defaultValue" : "Four"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Cut Line",
+    "category" : "Connectivity",
+    "namePrefix" : "CL",
+    "description" : "Cut line",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Vertical"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "3.125in"
+    } ]
+  }, {
+    "name" : "Dot",
+    "category" : "Connectivity",
+    "namePrefix" : "Dot",
+    "description" : "Connector dot",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "1mm"
+    } ]
+  }, {
+    "name" : "Eyelet",
+    "category" : "Connectivity",
+    "namePrefix" : "Eyelet",
+    "description" : "Eyelet or turret terminal",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Hole Size",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Ground Fill",
+    "category" : "Connectivity",
+    "namePrefix" : "GF",
+    "description" : "Polygonal ground fill area",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Edges",
+      "type" : "PointCount",
+      "possibleValues" : [ "3", "4", "5", "6", "7", "8" ],
+      "defaultValue" : "4"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "Bottom", "Top", "Inner 1", "Inner 2", "Inner 3", "Inner 4", "Inner 5", "Inner 6" ],
+      "defaultValue" : "Bottom"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Hookup Wire",
+    "category" : "Connectivity",
+    "namePrefix" : "W",
+    "description" : "Flexible wire with two control points",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "AWG",
+      "type" : "AWG",
+      "possibleValues" : [ "#8 / 3.26mm", "#10 / 2.59mm", "#12 / 2.05mm", "#14 / 1.63mm", "#16 / 1.29mm", "#18 / 1.02mm", "#20 / 0.81mm", "#22 / 0.64mm", "#24 / 0.51mm", "#26 / 0.40mm", "#28 / 0.32mm", "#30 / 0.25mm", "#32 / 0.20mm", "#34 / 0.16mm", "#36 / 0.13mm" ],
+      "defaultValue" : "#22 / 0.64mm"
+    }, {
+      "name" : "Stripe",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "Solid", "Dashed", "Dotted" ],
+      "defaultValue" : "Solid"
+    }, {
+      "name" : "Smooth",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Point Count",
+      "type" : "PointCount",
+      "possibleValues" : [ "Two", "Three", "Four", "Five", "Seven" ],
+      "defaultValue" : "Four"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Jumper",
+    "category" : "Connectivity",
+    "namePrefix" : "J",
+    "description" : "",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "Solid", "Dashed", "Dotted" ],
+      "defaultValue" : "Solid"
+    } ]
+  }, {
+    "name" : "Multimeter Probe",
+    "category" : "Connectivity",
+    "namePrefix" : "Probe",
+    "description" : "Multimeter Probe",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Angle",
+      "type" : "Orientation45",
+      "possibleValues" : [ "Default", "45 degrees clockwise", "90 degrees clockwise", "135 degrees clockwise", "180 degrees clockwise", "225 degrees clockwise", "270 degrees clockwise", "315 degrees clockwise" ],
+      "defaultValue" : "315 degrees clockwise"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "PCB Terminal Block",
+    "category" : "Connectivity",
+    "namePrefix" : "TB",
+    "description" : "Horizontal PCB terminal block with configurable pitch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Pitch",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Screw Position",
+      "type" : "ScrewPosition",
+      "possibleValues" : [ "Center", "Offset" ],
+      "defaultValue" : "Offset"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Pins",
+      "type" : "PCBTerminalBlockCount",
+      "possibleValues" : [ "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten" ],
+      "defaultValue" : "Three"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Solder Lug",
+    "category" : "Connectivity",
+    "namePrefix" : "SL",
+    "description" : "Locking terminal lug commonly used for chassis ground connections",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Solder Pad",
+    "category" : "Connectivity",
+    "namePrefix" : "Pad",
+    "description" : "Copper solder pad, round or square",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Hole Type",
+      "type" : "HoleType",
+      "possibleValues" : [ "None", "Plated Through Hole", "Non-Plated Through Hole" ],
+      "defaultValue" : "Non-Plated Through Hole"
+    }, {
+      "name" : "Hole",
+      "type" : "Size",
+      "defaultValue" : "0.8mm"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.09in"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "Bottom", "Top", "Inner 1", "Inner 2", "Inner 3", "Inner 4", "Inner 5", "Inner 6" ],
+      "defaultValue" : "Bottom"
+    }, {
+      "name" : "Type",
+      "type" : "Type",
+      "possibleValues" : [ "Round", "Square", "Oval horizontal", "Oval vertical" ],
+      "defaultValue" : "Round"
+    } ]
+  }, {
+    "name" : "Trace Cut",
+    "category" : "Connectivity",
+    "namePrefix" : "Cut",
+    "description" : "Designates the place where a trace on the vero board needs to be cut",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Cut Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Vertical"
+    }, {
+      "name" : "Cut Between Holes",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Hole Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.08in"
+    } ]
+  }, {
+    "name" : "Turret Lug",
+    "category" : "Connectivity",
+    "namePrefix" : "Turret",
+    "description" : "Turret terminal lug",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Hole Size",
+      "type" : "Size",
+      "defaultValue" : "0.0625in"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.16in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Twisted Leads",
+    "category" : "Connectivity",
+    "namePrefix" : "W",
+    "description" : "A pair of flexible leads twisted tightly together",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "AWG",
+      "type" : "AWG",
+      "possibleValues" : [ "#8 / 3.26mm", "#10 / 2.59mm", "#12 / 2.05mm", "#14 / 1.63mm", "#16 / 1.29mm", "#18 / 1.02mm", "#20 / 0.81mm", "#22 / 0.64mm", "#24 / 0.51mm", "#26 / 0.40mm", "#28 / 0.32mm", "#30 / 0.25mm", "#32 / 0.20mm", "#34 / 0.16mm", "#36 / 0.13mm" ],
+      "defaultValue" : "#22 / 0.64mm"
+    }, {
+      "name" : "Stripe 1",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Stripe 2",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Smooth",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Point Count",
+      "type" : "PointCount",
+      "possibleValues" : [ "Two", "Three", "Four", "Five", "Seven" ],
+      "defaultValue" : "Four"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "9V Battery Snap",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "BTR",
+    "description" : "",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Chassis Panel",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "CP",
+    "description" : "One side of a chassis, with or withouth rounded edges",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Radius",
+      "type" : "Size",
+      "defaultValue" : "0mm"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Cliff 1/4\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Cliff-style closed panel mount 1/4\" phono jack",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Type",
+      "type" : "JackType",
+      "possibleValues" : [ "Mono", "Stereo" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Cliff 1/8\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Cliff-style closed 1/8\" phono jack",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Nut",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Type",
+      "type" : "JackType",
+      "possibleValues" : [ "Mono", "Stereo" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Closed 1/4\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Enclosed panel mount 1/4\" phono jack",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Type",
+      "type" : "JackType",
+      "possibleValues" : [ "Mono", "Stereo" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "DIP Switch",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Dual-in-line package switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Switches",
+      "type" : "SwitchCount",
+      "possibleValues" : [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
+      "defaultValue" : "8"
+    }, {
+      "name" : "Row Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Drill Hole",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "Hole",
+    "description" : "Drill hole marker for PCB, chassis or faceplate",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "3mm"
+    } ]
+  }, {
+    "name" : "Elliptical Cutout",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "ELC",
+    "description" : "Elliptical chassis cutout",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Fuse Holder (Panel)",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "FH",
+    "description" : "Panel mounted fuse holder",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Fuse",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Vertical"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Value"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    } ]
+  }, {
+    "name" : "IEC Socket",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "IEC",
+    "description" : "Panel mounted IEC power socket",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Mini Relay",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "RY",
+    "description" : "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage",
+      "defaultValue" : "12V"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Size",
+      "type" : "RelaySize",
+      "possibleValues" : [ "Miniature", "Ultra-miniature" ],
+      "defaultValue" : "Miniature"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Type",
+      "type" : "RelayType",
+      "possibleValues" : [ "SPDT", "DPDT" ],
+      "defaultValue" : "DPDT"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Mini Toggle Switch",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Panel mounted mini toggle switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Vertical"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Type",
+      "type" : "ToggleSwitchType",
+      "possibleValues" : [ "SPST", "SPDT (On/On)", "SPDT (On/Off/On)", "DPDT (On/On)", "DPDT (On/Off/On)", "DPDT (On/On/On Type 1)", "DPDT (On/On/On Type 2)", "3PDT", "3PDT (On/Off/On)", "4PDT", "4PDT (On/Off/On)", "4PDT (On/On/On Type 1)", "4PDT (On/On/On Type 2)", "5PDT", "5PDT (On/Off/On)" ],
+      "defaultValue" : "DPDT (On/On)"
+    } ]
+  }, {
+    "name" : "Neutrik 1/4\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "1/4\" mono/stereo phono jack based on Neutrik NMJx series, PCB or Panel-mount",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Mount",
+      "type" : "Mount",
+      "possibleValues" : [ "PCB", "Panel" ],
+      "defaultValue" : "Panel"
+    }, {
+      "name" : "Type",
+      "type" : "JackType",
+      "possibleValues" : [ "Mono", "Stereo" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Open 1/4\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Labels",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Angle",
+      "type" : "Integer",
+      "defaultValue" : "0"
+    }, {
+      "name" : "Type",
+      "type" : "OpenJackType",
+      "possibleValues" : [ "Mono", "Stereo", "Switched" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Open 1/8\" Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Switchcraft-style open panel mount 1/8\" phono jack, stereo and mono",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Labels",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Angle",
+      "type" : "Integer",
+      "defaultValue" : "0"
+    }, {
+      "name" : "Type",
+      "type" : "OpenJackType",
+      "possibleValues" : [ "Mono", "Stereo", "Switched" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Pilot Lamp Holder",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "PL",
+    "description" : "Fender-style pilot bulb holder for T2 and T-3 ï¿½ miniature bayonet lamps",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Angle",
+      "type" : "Integer",
+      "defaultValue" : "0"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Pin Header",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "PH",
+    "description" : "PCB mount male pin header with editable number or pins and pin spacing",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Rows",
+      "type" : "Integer",
+      "defaultValue" : "2"
+    }, {
+      "name" : "Columns",
+      "type" : "Integer",
+      "defaultValue" : "5"
+    }, {
+      "name" : "Shrouded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Plastic DC Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Panel mount plastic DC jack",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Polarity",
+      "type" : "DCPolarity",
+      "possibleValues" : [ "None", "Center Positive", "Center Negative" ],
+      "defaultValue" : "Center Negative"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Polygonal Cutout",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "POLYC",
+    "description" : "Polygonal chassis cutout",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Edges",
+      "type" : "PointCount",
+      "possibleValues" : [ "3", "4", "5", "6", "7", "8" ],
+      "defaultValue" : "4"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "RCA Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Panel mount RCA phono jack socket",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rectangular Cutout",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "RECTC",
+    "description" : "Rectangular chassis cutout, with or without rounded edges",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Radius",
+      "type" : "Size",
+      "defaultValue" : "0mm"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rotary Selector Switch",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Single pole rotary switch, typically used for impedance selector",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Labels",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Timing",
+      "type" : "SwitchTiming",
+      "possibleValues" : [ "Shorting", "Non-shorting" ]
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Positions",
+      "type" : "RotaryPositionCount",
+      "possibleValues" : [ "Two", "Three", "Four" ],
+      "defaultValue" : "Three"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rotary Switch (Open)",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Open rotary switch in several different switching configurations",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Timing",
+      "type" : "SwitchTiming",
+      "possibleValues" : [ "Shorting", "Non-shorting" ]
+    }, {
+      "name" : "Angle Offset",
+      "type" : "Angle"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Type",
+      "type" : "RotarySwitchOpenType",
+      "possibleValues" : [ "2P5T", "2P6T", "4P5T", "4P6T" ],
+      "defaultValue" : "2P6T"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rotary Switch (Sealed)",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Sealed plastic rotary switch in several different switching configurations",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Timing",
+      "type" : "SwitchTiming",
+      "possibleValues" : [ "Shorting", "Non-shorting" ]
+    }, {
+      "name" : "Mount",
+      "type" : "Mount",
+      "possibleValues" : [ "Chassis", "PCB" ],
+      "defaultValue" : "Chassis"
+    }, {
+      "name" : "Type",
+      "type" : "RotarySwitchSealedType",
+      "possibleValues" : [ "1P12T", "2P6T", "3P4T", "4P3T" ],
+      "defaultValue" : "4P3T"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Slide Switch",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "Panel mounted slide switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Column Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Show Bracket",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Orientation",
+      "type" : "OrientationHV",
+      "possibleValues" : [ "Vertical", "Horizontal" ],
+      "defaultValue" : "Vertical"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Row Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Type",
+      "type" : "SlideSwitchType",
+      "possibleValues" : [ "SPDT", "DPDT", "DP3T" ],
+      "defaultValue" : "DP3T"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Tactile Micro-Switch",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "SW",
+    "description" : "4-pin tactile momentary switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin Spacing",
+      "type" : "Size",
+      "defaultValue" : "4.5mm"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Both"
+    }, {
+      "name" : "Pin Pairing Mode",
+      "type" : "PinPairingMode",
+      "possibleValues" : [ "Opposite", "Diagonal", "Adjacent" ],
+      "defaultValue" : "Opposite"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer",
+      "defaultValue" : "0"
+    }, {
+      "name" : "Row Spacing",
+      "type" : "Size",
+      "defaultValue" : "6.5mm"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Case Size",
+      "type" : "Size",
+      "defaultValue" : "6mm"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Thonk 3.5mm Jack",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "J",
+    "description" : "Thonkiconn style 3.5mm jack",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Type",
+      "type" : "ThonkJackType",
+      "possibleValues" : [ "Mono Switched", "Stereo" ],
+      "defaultValue" : "Mono Switched"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Freeway 3X3-03 Switch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Freeway 3X3-03 (Standard) Toggle Switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Freeway 3X3-05 (Ultra) Switch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Freeway 3X3-05 (Ultra) Toggle Switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Freeway Blade",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Several variations of Freeway Blade switches",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Type",
+      "type" : "FreewayBladeType",
+      "possibleValues" : [ "3B3-01", "5B5-01", "5B5-02" ],
+      "defaultValue" : "3B3-01"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Humbucker Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Legs",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Cover",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pole Pieces 1",
+      "type" : "PolePieceType",
+      "possibleValues" : [ "Rods", "Rail", "Screws", "None" ],
+      "defaultValue" : "Screws"
+    }, {
+      "name" : "Pole Pieces 2",
+      "type" : "PolePieceType",
+      "possibleValues" : [ "Rods", "Rail", "Screws", "None" ],
+      "defaultValue" : "Rods"
+    }, {
+      "name" : "Type",
+      "type" : "HumbuckerType",
+      "possibleValues" : [ "PAF", "Mini", "Filtertron" ],
+      "defaultValue" : "PAF"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Jazz Bass Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Single coil pickup for Jazz Bass and similar guitars",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Coil(s)",
+      "type" : "Polarity",
+      "possibleValues" : [ "Single - North", "Single - South", "Humbucking - 4 leads" ],
+      "defaultValue" : "Single - North"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "LP Toggle Switch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Les Paul style 3 position toggle switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Middle Terminals",
+      "type" : "MiddleTerminalConfiguration",
+      "possibleValues" : [ "Connected", "Disconnected" ],
+      "defaultValue" : "Connected"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Lever Switch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Strat-style lever switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Type",
+      "type" : "LeverSwitchType",
+      "possibleValues" : [ "DP3T (Standard 3-Position Strat)", "DP3T (Standard 5-Position Strat)", "DP3T (Import 5-Position Strat)", "4P5T (Super/Mega)", "DP4T (4-Position Tele)", "DP4T (6-Position Oak Grigsby)", "DP5T", "6P5T (5-Position 6 Pole AxLabs)", "4P3T (3-Position 4 Pole AxLabs)", "DP3T (Import 5-Position 2502N)" ],
+      "defaultValue" : "DP3T (Standard 3-Position Strat)"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "P- Bass Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Split-coil pickup for P-Bass and similar guitars",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Coil(s)",
+      "type" : "Polarity",
+      "possibleValues" : [ "Single - North", "Single - South", "Humbucking - 4 leads" ],
+      "defaultValue" : "Single - North"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "P-90 Single Coil Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Type",
+      "type" : "P90Type",
+      "possibleValues" : [ "Dog Ear", "Soap Bar" ],
+      "defaultValue" : "Dog Ear"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Coil(s)",
+      "type" : "Polarity",
+      "possibleValues" : [ "Single - North", "Single - South", "Humbucking - 4 leads" ],
+      "defaultValue" : "Single - North"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "S1 Switch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Fender S1 4 pole pushbutton switch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Schaller Megaswitch",
+    "category" : "Guitar",
+    "namePrefix" : "SW",
+    "description" : "Several variations of Schaller Megaswitch",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Selected Position",
+      "type" : "Integer"
+    }, {
+      "name" : "Type",
+      "type" : "MegaSwitchType",
+      "possibleValues" : [ "E", "E+", "M", "P", "S", "T" ],
+      "defaultValue" : "E"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Single Coil Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Single coil guitar pickup, both Strat and Tele style",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pole Pieces",
+      "type" : "PolePieceType",
+      "possibleValues" : [ "Single Rods", "Single Rail", "Double Rods", "Double Rails", "None" ],
+      "defaultValue" : "Single Rods"
+    }, {
+      "name" : "Type",
+      "type" : "SingleCoilType",
+      "possibleValues" : [ "Stratocaster", "Telecaster" ],
+      "defaultValue" : "Stratocaster"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Coil(s)",
+      "type" : "Polarity",
+      "possibleValues" : [ "Single - North", "Single - South", "Humbucking - 4 leads" ],
+      "defaultValue" : "Single - North"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Stingray Bass Pickup",
+    "category" : "Guitar",
+    "namePrefix" : "PKP",
+    "description" : "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Model",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Auto-Wrap Label",
+    "category" : "Misc",
+    "namePrefix" : "LAB",
+    "description" : "User defined label with auto-wrapped text",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Font Italic",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Bold",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Size",
+      "type" : "Integer",
+      "defaultValue" : "14"
+    }, {
+      "name" : "Horizontal Alignment",
+      "type" : "HorizontalAlignment",
+      "possibleValues" : [ "Left", "Center", "Right" ],
+      "defaultValue" : "Left"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "The quick brown fox jumped over a lazy dog"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Bill of Materials",
+    "category" : "Misc",
+    "namePrefix" : "BOM",
+    "description" : "",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "10cm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Common Node",
+    "category" : "Misc",
+    "namePrefix" : "CN",
+    "description" : "Label that ties all nodes together",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Font Bold",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Size",
+      "type" : "Integer",
+      "defaultValue" : "14"
+    }, {
+      "name" : "Shape",
+      "type" : "CommonNodeShape",
+      "possibleValues" : [ "Rectangle", "Circle" ],
+      "defaultValue" : "Rectangle"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "X"
+    } ]
+  }, {
+    "name" : "Dial Scale",
+    "category" : "Misc",
+    "namePrefix" : "DS",
+    "description" : "Control panel dial scale",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "1in"
+    }, {
+      "name" : "Marker Size",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Tick Width",
+      "type" : "Size",
+      "defaultValue" : "0.5mm"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Type",
+      "type" : "DialScaleType",
+      "possibleValues" : [ "Ticks", "Ticks (Uniform)", "Ticks + Numeric (0/5.5/11)", "Dots (Uniform)", "Dots (Gradual)", "Numeric (0-10)", "Numeric (1-11)", "Numeric (1-10)", "Numeric (1-12)", "Numeric (Even, No Ticks)", "Numeric (Even, With Ticks)" ],
+      "defaultValue" : "Ticks (Uniform)"
+    } ]
+  }, {
+    "name" : "Image",
+    "category" : "Misc",
+    "namePrefix" : "Img",
+    "description" : "User defined image",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Sizing Mode",
+      "type" : "ImageSizingMode",
+      "possibleValues" : [ "Opposing Points", "Scale" ],
+      "defaultValue" : "Scale"
+    }, {
+      "name" : "Scale",
+      "type" : "Percentage"
+    }, {
+      "name" : "Image",
+      "type" : "byte[]"
+    } ]
+  }, {
+    "name" : "Label",
+    "category" : "Misc",
+    "namePrefix" : "LAB",
+    "description" : "User defined label",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Font Italic",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Font Bold",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Size",
+      "type" : "Integer",
+      "defaultValue" : "14"
+    }, {
+      "name" : "Vertical Alignment",
+      "type" : "VerticalAlignment",
+      "possibleValues" : [ "Top", "Center", "Bottom" ],
+      "defaultValue" : "Center"
+    }, {
+      "name" : "Horizontal Alignment",
+      "type" : "HorizontalAlignment",
+      "possibleValues" : [ "Left", "Center", "Right" ],
+      "defaultValue" : "Center"
+    }, {
+      "name" : "Text",
+      "type" : "String",
+      "defaultValue" : "Double click to edit text"
+    } ]
+  }, {
+    "name" : "PCB Buzzer",
+    "category" : "Misc",
+    "namePrefix" : "BZ",
+    "description" : "Vertically mounted Buzzer, active or passive",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Invert Polarity",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Polarized",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Height",
+      "type" : "Size",
+      "defaultValue" : "8.5mm"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "12mm"
+    }, {
+      "name" : "Value",
+      "type" : "Voltage"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "PCB Text",
+    "category" : "Misc",
+    "namePrefix" : "L",
+    "description" : "Mirrored text for PCB artwork",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Font Italic",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Text",
+      "type" : "String",
+      "defaultValue" : "Double click to edit text"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Font Bold",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Font Size",
+      "type" : "Integer",
+      "defaultValue" : "15"
+    }, {
+      "name" : "Vertical Alignment",
+      "type" : "VerticalAlignment",
+      "possibleValues" : [ "Top", "Center", "Bottom" ],
+      "defaultValue" : "Center"
+    }, {
+      "name" : "Horizontal Alignment",
+      "type" : "HorizontalAlignment",
+      "possibleValues" : [ "Left", "Center", "Right" ],
+      "defaultValue" : "Center"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "Bottom", "Top", "Inner 1", "Inner 2", "Inner 3", "Inner 4", "Inner 5", "Inner 6" ],
+      "defaultValue" : "Bottom"
+    } ]
+  }, {
+    "name" : "SVG Image",
+    "category" : "Misc",
+    "namePrefix" : "Svg",
+    "description" : "Scalable Vector Graphics",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Sizing Mode",
+      "type" : "ImageSizingMode",
+      "possibleValues" : [ "Opposing Points", "Scale" ],
+      "defaultValue" : "Scale"
+    }, {
+      "name" : "Scale",
+      "type" : "Percentage"
+    }, {
+      "name" : "Image",
+      "type" : "byte[]"
+    } ]
+  }, {
+    "name" : "Tape Measure",
+    "category" : "Misc",
+    "namePrefix" : "TM",
+    "description" : "Measures distance between the two points",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "Solid", "Dashed", "Dotted" ],
+      "defaultValue" : "Solid"
+    }, {
+      "name" : "Thickness",
+      "type" : "Size",
+      "defaultValue" : "1px"
+    }, {
+      "name" : "Arrow Size",
+      "type" : "Size",
+      "defaultValue" : "5px"
+    }, {
+      "name" : "Decimals",
+      "type" : "Integer",
+      "defaultValue" : "2"
+    }, {
+      "name" : "Unit",
+      "type" : "SizeUnit",
+      "possibleValues" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "mm"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    } ]
+  }, {
+    "name" : "Ceramic Capacitor (Radial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Standard radial ceramic capacitor",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Crystal Oscillator",
+    "category" : "Passive",
+    "namePrefix" : "X",
+    "description" : "Radial crystal oscillator",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Pin Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Value",
+      "type" : "Frequency"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Electrolytic Capacitor (Axial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Polarized",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Electrolytic Capacitor (Radial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Vertically mounted electrolytic capacitor, polarized or bipolar",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Invert Polarity",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Polarized",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Height",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Film Capacitor (Axial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Axial film capacitor, similar to Mallory 150s",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Reverse (standing)",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Outer Foil Mark",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Film Capacitor (Radial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Radial film capacitor, similar to Sprague Orange Drop",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Shape",
+      "type" : "RadialFilmCapacitorShape",
+      "possibleValues" : [ "Drop", "Box" ],
+      "defaultValue" : "Drop"
+    }, {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Outer Foil Mark",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Heat Sink Resistor",
+    "category" : "Passive",
+    "namePrefix" : "R",
+    "description" : "Power resistor with heatsink; similar to Arcol HS series",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Mounting Holes",
+      "type" : "MountingHoleCount",
+      "possibleValues" : [ "2 diagonal", "4 holes", "6 holes" ],
+      "defaultValue" : "2 diagonal"
+    }, {
+      "name" : "Hole Spacing",
+      "type" : "Size",
+      "defaultValue" : "18.3mm"
+    }, {
+      "name" : "Hole Diameter",
+      "type" : "Size",
+      "defaultValue" : "3.2mm"
+    }, {
+      "name" : "Lead Diameter",
+      "type" : "Size",
+      "defaultValue" : "2mm"
+    }, {
+      "name" : "Lip Width",
+      "type" : "Size",
+      "defaultValue" : "7mm"
+    }, {
+      "name" : "Power Rating",
+      "type" : "Power"
+    }, {
+      "name" : "Lead Length",
+      "type" : "Size",
+      "defaultValue" : "11.85mm"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "28mm"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "27.3mm"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Inductor (Radial)",
+    "category" : "Passive",
+    "namePrefix" : "L",
+    "description" : "Vertically mounted ferrite core inductor",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Inner Diameter",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Rim",
+      "type" : "Size",
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Core",
+      "type" : "InductorCore",
+      "possibleValues" : [ "Ferrite", "Air" ],
+      "defaultValue" : "Ferrite"
+    }, {
+      "name" : "Resistance",
+      "type" : "Resistance"
+    }, {
+      "name" : "Height",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Value",
+      "type" : "Inductance"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Inductor (Toroidal)",
+    "category" : "Passive",
+    "namePrefix" : "L",
+    "description" : "Ferrite core toroidal inductor mounted vertically",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Resistance",
+      "type" : "Resistance"
+    }, {
+      "name" : "Value",
+      "type" : "Inductance"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "14mm"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "8mm"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Mica Capacitor (Radial)",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Standard radial mica capacitor",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "4.3mm"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "11.4mm"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Mini Signal Transformer",
+    "category" : "Passive",
+    "namePrefix" : "TR",
+    "description" : "Miniature PCB-mount signal transformer with EI core",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Winding Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Core Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Core Width",
+      "type" : "Size",
+      "defaultValue" : "0.6in"
+    }, {
+      "name" : "Coil Width",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Coil Length",
+      "type" : "Size",
+      "defaultValue" : "0.6in"
+    }, {
+      "name" : "Primary CT",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Secondary CT",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Both"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Multi-Section Capacitor",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "1in"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance[]"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Potentiometer",
+    "category" : "Passive",
+    "namePrefix" : "VR",
+    "description" : "Panel mount potentiometer with solder lugs",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "View",
+      "type" : "View",
+      "possibleValues" : [ "Shaft Down", "Shaft Up", "Terminals Down", "Terminals Up" ],
+      "defaultValue" : "Shaft Down"
+    }, {
+      "name" : "Body Depth",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Thread Length",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Shaft Length",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "1in"
+    }, {
+      "name" : "Lug Size",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Markers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Type",
+      "type" : "Type",
+      "possibleValues" : [ "Through Hole", "PCB" ],
+      "defaultValue" : "Through Hole"
+    }, {
+      "name" : "Taper",
+      "type" : "Taper",
+      "possibleValues" : [ "Lin", "Log", "Rev log", "W", "S", "M", "N" ],
+      "defaultValue" : "Lin"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Potentiometer (Miniature)",
+    "category" : "Passive",
+    "namePrefix" : "VR",
+    "description" : "9mm Alpha style miniature potentiometers",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Type",
+      "type" : "MiniatureType",
+      "possibleValues" : [ "Right-Angled", "Vertical" ],
+      "defaultValue" : "Right-Angled"
+    }, {
+      "name" : "Taper",
+      "type" : "Taper",
+      "possibleValues" : [ "Lin", "Log", "Rev log", "W", "S", "M", "N" ],
+      "defaultValue" : "Lin"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Resistor",
+    "category" : "Passive",
+    "namePrefix" : "R",
+    "description" : "Resistor layout symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Power Rating",
+      "type" : "Power"
+    }, {
+      "name" : "Color code",
+      "type" : "ResistorColorCode",
+      "possibleValues" : [ "None", "4 band", "5 band" ],
+      "defaultValue" : "5 band"
+    }, {
+      "name" : "Shape",
+      "type" : "ResistorShape",
+      "possibleValues" : [ "Tubular", "Tubular Beveled", "Standard" ],
+      "defaultValue" : "Standard"
+    }, {
+      "name" : "Reverse (standing)",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.5in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Tantalum Capacitor",
+    "category" : "Passive",
+    "namePrefix" : "C",
+    "description" : "Vertically mounted tantalum capacitor",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Invert Polarity",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Height",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Type",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Trimmer Potentiometer",
+    "category" : "Passive",
+    "namePrefix" : "VR",
+    "description" : "Various types of board mounted trimmer potentiometers",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Type",
+      "type" : "TrimmerType",
+      "possibleValues" : [ "Horizontal Small 1", "Horizontal Small 2", "Horizontal X-Small", "Horizontal Medium", "Horizontal Large", "Vertical Inline", "Vertical Offset 1", "Vertical Offset 2" ],
+      "defaultValue" : "Horizontal Small 1"
+    }, {
+      "name" : "Taper",
+      "type" : "Taper",
+      "possibleValues" : [ "Lin", "Log", "Rev log", "W", "S", "M", "N" ],
+      "defaultValue" : "Lin"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "SMD Capacitor",
+    "category" : "SMD",
+    "namePrefix" : "C",
+    "description" : "Surface mount capacitor",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Size",
+      "type" : "SMDSize",
+      "possibleValues" : [ "0805", "1206", "1210", "1806", "1812" ],
+      "defaultValue" : "1206"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "SMD Resistor",
+    "category" : "SMD",
+    "namePrefix" : "R",
+    "description" : "Surface mount resistor",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Size",
+      "type" : "SMDSize",
+      "possibleValues" : [ "0805", "1206", "1210", "1806", "1812" ],
+      "defaultValue" : "1206"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "BJT",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "Q",
+    "description" : "Bipolar junction transistor schematic symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Polarity",
+      "type" : "BJTPolarity",
+      "possibleValues" : [ "NPN", "PNP" ],
+      "defaultValue" : "NPN"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Battery",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "B",
+    "description" : "Battery schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage",
+      "defaultValue" : "9V"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "Battery"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Bulb",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "LMP",
+    "description" : "Bulb schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Filament Voltage",
+      "type" : "Voltage",
+      "defaultValue" : "6.3V"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "Bulb / Pilot Light / Lamp Symbol"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Buzzer Symbol",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "BZ",
+    "description" : "Buzzer schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage",
+      "defaultValue" : "12V"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "Buzzer Symbol"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "58px"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "48px"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Capacitor",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "C",
+    "description" : "Capacitor schematic symbol with an optional polarity sign",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Polarized",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "Capacitance"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Current Source",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "I",
+    "description" : "Current Source schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Current",
+      "type" : "Current",
+      "defaultValue" : "100mA"
+    }, {
+      "name" : "Source Style",
+      "type" : "SourceStyle",
+      "possibleValues" : [ "Standard", "Alternate" ],
+      "defaultValue" : "Standard"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "Current Source"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Diode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "D",
+    "description" : "Diode schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Diode Tube",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "V",
+    "description" : "Diode tube symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Directly heated",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Heaters",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Envelope",
+      "type" : "TubeEnvelope",
+      "possibleValues" : [ "Full", "Section A", "Section B" ],
+      "defaultValue" : "Full"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Duo-Diode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "V",
+    "description" : "Duo-diode tube symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Directly heated",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Heaters",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Envelope",
+      "type" : "TubeEnvelope",
+      "possibleValues" : [ "Full", "Section A", "Section B" ],
+      "defaultValue" : "Full"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Fuse",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "F",
+    "description" : "Fuse schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Draw Standard",
+      "type" : "DrawStyle",
+      "possibleValues" : [ "ANSI", "IEC", "IEEE" ],
+      "defaultValue" : "ANSI"
+    }, {
+      "name" : "Value",
+      "type" : "Current"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.12in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Ground",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "GND",
+    "description" : "Ground schematic symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Stroke",
+      "type" : "Integer",
+      "defaultValue" : "1"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.15in"
+    }, {
+      "name" : "Style",
+      "type" : "GroundSymbolType",
+      "possibleValues" : [ "Default", "Triangle" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "IC",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "IC",
+    "description" : "IC symbol with 3 or 5 contacts",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Flip",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Contacts",
+      "type" : "ICPointCount",
+      "possibleValues" : [ "3", "5" ],
+      "defaultValue" : "5"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Inductor",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "L",
+    "description" : "Inductor schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Core",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Current",
+      "type" : "Current"
+    }, {
+      "name" : "Resistance",
+      "type" : "Resistance"
+    }, {
+      "name" : "Value",
+      "type" : "Inductance"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.08in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "JFET",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "Q",
+    "description" : "JFET transistor schematic symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Channel",
+      "type" : "FETPolarity",
+      "possibleValues" : [ "Negative", "Positive" ],
+      "defaultValue" : "Negative"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "LED",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "D",
+    "description" : "Diode schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Logic Gate",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "LG",
+    "description" : "Basic logic gate schematic symbols",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Type",
+      "type" : "GateType",
+      "possibleValues" : [ "Buffer", "Not", "Or", "And", "Xor", "Nor", "Nand", "Xnor" ],
+      "defaultValue" : "Not"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "MOSFET",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "Q",
+    "description" : "MOSFET transistor schematic symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Channel",
+      "type" : "FETPolarity",
+      "possibleValues" : [ "Negative", "Positive" ],
+      "defaultValue" : "Negative"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Pentode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "V",
+    "description" : "Pentode tube symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Suppressor grid",
+      "type" : "Boolean",
+      "defaultValue" : "true"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Heaters",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Envelope",
+      "type" : "TubeEnvelope",
+      "possibleValues" : [ "Full", "Section A", "Section B" ],
+      "defaultValue" : "Full"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Phono Jack",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "J",
+    "description" : "Connectors typically used for analog audio signals",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Type",
+      "type" : "PhonoJackType",
+      "possibleValues" : [ "Mono", "Stereo" ],
+      "defaultValue" : "Mono"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Photo Diode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "D",
+    "description" : "Photo Diode schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Potentiometer",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "VR",
+    "description" : "Potentiometer symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Draw Standard",
+      "type" : "DrawStyle",
+      "possibleValues" : [ "ANSI", "IEC" ],
+      "defaultValue" : "ANSI"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Resistor",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "R",
+    "description" : "Resistor schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Draw Standard",
+      "type" : "DrawStyle",
+      "possibleValues" : [ "ANSI", "IEC" ],
+      "defaultValue" : "ANSI"
+    }, {
+      "name" : "Power Rating",
+      "type" : "Power",
+      "defaultValue" : "0.5W"
+    }, {
+      "name" : "Value",
+      "type" : "Resistance"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.08in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Schottky Diode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "D",
+    "description" : "Schottky diode schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Switch (Latching)",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "SW",
+    "description" : "Schematic symbol of various types of latching switches",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Poles",
+      "type" : "PoleCount",
+      "possibleValues" : [ "One", "Two", "Three", "Four", "Five", "Six" ],
+      "defaultValue" : "One"
+    }, {
+      "name" : "Configuration",
+      "type" : "SwitchConfiguration",
+      "possibleValues" : [ "1 throws / 2 positions", "2 throws / 2 positions", "2 throws / 3 positions / OFF even positions", "3 throws / 3 positions", "3 throws / 5 positions / SHORT even positions", "4 throws / 4 positions", "5 throws / 5 positions", "6 throws / 6 positions", "7 throws / 7 positions", "8 throws / 8 positions", "9 throws / 9 positions", "10 throws / 10 positions", "11 throws / 11 positions", "12 throws / 12 positions" ],
+      "defaultValue" : "2 throws / 2 positions"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transformer Coil",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "L",
+    "description" : "Transformer coil symbol. Use multiple instances together with \"Transformer Core Symbol\"<br>to draw transformer schematics.",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Value",
+      "type" : "Voltage"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transformer Core",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "T",
+    "description" : "Transformer core symbol. Use multiple instances together with \"Transformer Coil Symbol\"<br>to draw transformer schematics.",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Triode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "V",
+    "description" : "Triode tube symbol",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Directly heated",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Flip",
+      "type" : "SymbolFlipping",
+      "possibleValues" : [ "None", "X-axis", "Y-axis" ],
+      "defaultValue" : "None"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Heaters",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Envelope",
+      "type" : "TubeEnvelope",
+      "possibleValues" : [ "Full", "Section A", "Section B" ],
+      "defaultValue" : "Full"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Voltage Source",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "V",
+    "description" : "Voltage Source schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Voltage",
+      "type" : "Voltage",
+      "defaultValue" : "5V"
+    }, {
+      "name" : "Source Type",
+      "type" : "SourceType",
+      "possibleValues" : [ "AC", "DC" ],
+      "defaultValue" : "DC"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "Voltage Source"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Zener Diode",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "D",
+    "description" : "Zener diode schematic symbol",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Label Position",
+      "type" : "LabelPosition",
+      "possibleValues" : [ "Above", "Below" ],
+      "defaultValue" : "Above"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Bridge Rectifier",
+    "category" : "Semiconductors",
+    "namePrefix" : "BR",
+    "description" : "Few variations of bridge rectifier chips",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Voltage",
+      "type" : "Voltage"
+    }, {
+      "name" : "Type",
+      "type" : "RectifierType",
+      "possibleValues" : [ "DFM A", "DFM B", "Round WOG A", "Round WOG B", "In-Line D-44", "Square BR-3" ],
+      "defaultValue" : "DFM A"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Current",
+      "type" : "Current"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Both"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "DIP IC",
+    "category" : "Semiconductors",
+    "namePrefix" : "IC",
+    "description" : "Dual-in-line package IC",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display Pin #s",
+      "type" : "DisplayNumbers",
+      "possibleValues" : [ "No", "DIP", "Connector", "DIP (Mirrored)", "Connector (Mirrored)" ],
+      "defaultValue" : "No"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Both"
+    }, {
+      "name" : "Pins",
+      "type" : "PinCount",
+      "possibleValues" : [ "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36", "38", "40", "42", "44", "46", "48", "50" ],
+      "defaultValue" : "8"
+    }, {
+      "name" : "Row Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.3in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Diode (glass)",
+    "category" : "Semiconductors",
+    "namePrefix" : "D",
+    "description" : "Glass diode, like most small signal diodes.",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Reverse (standing)",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.09in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.2in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Diode (plastic)",
+    "category" : "Semiconductors",
+    "namePrefix" : "D",
+    "description" : "Plastic diode, like most rectifier, zener, schottky, etc.",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Reverse (standing)",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "defaultValue" : "0.125in"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "0.25in"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "LED",
+    "category" : "Semiconductors",
+    "namePrefix" : "D",
+    "description" : "Light Emitting Diode",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Size",
+      "type" : "Size",
+      "defaultValue" : "5mm"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Label Orientation",
+      "type" : "LabelOriantation",
+      "possibleValues" : [ "Directional", "Horizontal" ],
+      "defaultValue" : "Directional"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Multiwatt IC",
+    "category" : "Semiconductors",
+    "namePrefix" : "IC",
+    "description" : "Multiwatt package IC typically used for audio amplifiers of high power applications",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Type",
+      "type" : "MultiwattType",
+      "possibleValues" : [ "Multiwatt 11", "Multiwatt 15" ],
+      "defaultValue" : "Multiwatt 11"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "SIP IC",
+    "category" : "Semiconductors",
+    "namePrefix" : "IC",
+    "description" : "Single-in-line package IC",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Pins",
+      "type" : "PinCount",
+      "possibleValues" : [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" ],
+      "defaultValue" : "8"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transistor (TO-1)",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistor with small metal body",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin spacing",
+      "type" : "Size",
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pinout",
+      "type" : "TransistorPinout",
+      "possibleValues" : [ "E-B-C     BJT", "C-B-E     BJT", "B-C-E     BJT", "E-C-B     BJT", "D-S-G     JFET", "G-S-D     JFET", "D-G-S     JFET", "S-G-D     JFET", "G-D-S     JFET", "D-S-G     MOSFET", "G-S-D     MOSFET", "D-G-S     MOSFET", "S-G-D     MOSFET", "G-D-S     MOSFET", "I-G-O     REGULATOR", "O-G-I     REGULATOR", "G-O-I     REGULATOR", "A-O-I     REGULATOR", "G-I-O     REGULATOR" ]
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "Name", "Value", "None", "Both", "Pinout" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transistor (TO-126)",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistors with a hole for heat sink mounting",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Lead Length",
+      "type" : "Size",
+      "defaultValue" : "3.5mm"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pinout",
+      "type" : "TransistorPinout",
+      "possibleValues" : [ "E-B-C     BJT", "C-B-E     BJT", "B-C-E     BJT", "E-C-B     BJT", "D-S-G     JFET", "G-S-D     JFET", "D-G-S     JFET", "S-G-D     JFET", "G-D-S     JFET", "D-S-G     MOSFET", "G-S-D     MOSFET", "D-G-S     MOSFET", "S-G-D     MOSFET", "G-D-S     MOSFET", "I-G-O     REGULATOR", "O-G-I     REGULATOR", "G-O-I     REGULATOR", "A-O-I     REGULATOR", "G-I-O     REGULATOR" ]
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "Name", "Value", "None", "Both", "Pinout" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transistor (TO-220)",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistors with metal tab for heat sink mounting",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Lead Length",
+      "type" : "Size",
+      "defaultValue" : "3.5mm"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pinout",
+      "type" : "TransistorPinout",
+      "possibleValues" : [ "E-B-C     BJT", "C-B-E     BJT", "B-C-E     BJT", "E-C-B     BJT", "D-S-G     JFET", "G-S-D     JFET", "D-G-S     JFET", "S-G-D     JFET", "G-D-S     JFET", "D-S-G     MOSFET", "G-S-D     MOSFET", "D-G-S     MOSFET", "S-G-D     MOSFET", "G-D-S     MOSFET", "I-G-O     REGULATOR", "O-G-I     REGULATOR", "G-O-I     REGULATOR", "A-O-I     REGULATOR", "G-I-O     REGULATOR" ]
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "Name", "Value", "None", "Both", "Pinout" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transistor (TO-3)",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistor with large metal body",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Transistor (TO-92)",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistor with small plastic or epoxy body",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Pin spacing",
+      "type" : "Size",
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pinout",
+      "type" : "TransistorPinout",
+      "possibleValues" : [ "E-B-C     BJT", "C-B-E     BJT", "B-C-E     BJT", "E-C-B     BJT", "D-S-G     JFET", "G-S-D     JFET", "D-G-S     JFET", "S-G-D     JFET", "G-D-S     JFET", "D-S-G     MOSFET", "G-S-D     MOSFET", "D-G-S     MOSFET", "S-G-D     MOSFET", "G-D-S     MOSFET", "I-G-O     REGULATOR", "O-G-I     REGULATOR", "G-O-I     REGULATOR", "A-O-I     REGULATOR", "G-I-O     REGULATOR" ]
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "Name", "Value", "None", "Both", "Pinout" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Ellipse",
+    "category" : "Shapes",
+    "namePrefix" : "ELL",
+    "description" : "Elliptical area",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Dimension Mode",
+      "type" : "ShapeSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Line",
+    "category" : "Shapes",
+    "namePrefix" : "LN",
+    "description" : "Line with optional arrows",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "Solid", "Dashed", "Dotted" ],
+      "defaultValue" : "Solid"
+    }, {
+      "name" : "Thickness",
+      "type" : "Size",
+      "defaultValue" : "1px"
+    }, {
+      "name" : "Arrow Size",
+      "type" : "Size",
+      "defaultValue" : "5px"
+    }, {
+      "name" : "Start Arrow",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "End Arrow",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Moveable Label",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    } ]
+  }, {
+    "name" : "Polygon",
+    "category" : "Shapes",
+    "namePrefix" : "POLY",
+    "description" : "Polygonal area",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Edges",
+      "type" : "PointCount",
+      "possibleValues" : [ "3", "4", "5", "6", "7", "8" ],
+      "defaultValue" : "4"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rectangle",
+    "category" : "Shapes",
+    "namePrefix" : "RECT",
+    "description" : "Rectangular area, with or without rounded edges",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Radius",
+      "type" : "Size",
+      "defaultValue" : "0mm"
+    }, {
+      "name" : "Dimension Mode",
+      "type" : "ShapeSizingMode",
+      "possibleValues" : [ "Opposing Points", "Explicit Dimensions" ],
+      "defaultValue" : "Opposing Points"
+    }, {
+      "name" : "Explicit Width",
+      "type" : "Size"
+    }, {
+      "name" : "Explicit Length",
+      "type" : "Size"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "4-pin Jumbo Tube Socket",
+    "category" : "Tubes",
+    "namePrefix" : "J",
+    "description" : "4-pin Jumbo ceramic tube socket for 211, 805 and 845 tubes",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Designation",
+      "type" : "String"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Sub-Mini Tube",
+    "category" : "Tubes",
+    "namePrefix" : "V",
+    "description" : "Sub-miniature (pencil) vacuum tube",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Pin Arrangement",
+      "type" : "PinArrangement",
+      "possibleValues" : [ "In-line", "Circular" ],
+      "defaultValue" : "Circular"
+    }, {
+      "name" : "Top Lead",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "Default", "90 degrees clockwise", "180 degrees clockwise", "270 degrees clockwise" ],
+      "defaultValue" : "Default"
+    }, {
+      "name" : "Lead Length",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Display",
+      "type" : "Display",
+      "possibleValues" : [ "Name", "Value", "None", "Both" ],
+      "defaultValue" : "Name"
+    }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "defaultValue" : "0.4in"
+    }, {
+      "name" : "Lead Count",
+      "type" : "PinCount",
+      "possibleValues" : [ "3", "4", "5", "6", "7", "8", "9", "10" ],
+      "defaultValue" : "8"
+    }, {
+      "name" : "Length",
+      "type" : "Size",
+      "defaultValue" : "1.375in"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Tube Socket",
+    "category" : "Tubes",
+    "namePrefix" : "V",
+    "description" : "Various types of tube/valve sockets",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Electrode Labels",
+      "type" : "String",
+      "defaultValue" : "1,2,3,4,5,6,7,8,9,10,11,12"
+    }, {
+      "name" : "Mount",
+      "type" : "Mount",
+      "possibleValues" : [ "Chassis", "PCB" ],
+      "defaultValue" : "Chassis"
+    }, {
+      "name" : "Base",
+      "type" : "Base",
+      "possibleValues" : [ "Noval B9A", "Octal", "Small-button B7G", "Duodecar B12C" ],
+      "defaultValue" : "Noval B9A"
+    }, {
+      "name" : "Designation",
+      "type" : "String"
+    }, {
+      "name" : "Angle",
+      "type" : "Angle"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  } ]
+}

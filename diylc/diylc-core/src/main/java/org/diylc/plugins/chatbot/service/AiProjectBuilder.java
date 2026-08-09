@@ -80,22 +80,47 @@ public class AiProjectBuilder {
   private static List<String> getTags(Project project) {
 
     List<String> tags = new ArrayList<>();
+    
+    // Helper: checks if any component's class name (lowercase) contains the given substring
+    java.util.function.Predicate<String> hasClass = sub ->
+        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains(sub));
+    
     if (project.getComponents().stream().anyMatch(x -> x.getClass().getCanonicalName().toLowerCase().contains("guitar"))) {
       tags.add("guitar");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("symbol"))) {
+    if (hasClass.test("symbol")) {
       tags.add("schematic");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("board")) &&
-        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("trace")) &&
-        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("pad"))) {
-      tags.add("PCB");
+    if (hasClass.test("board") && hasClass.test("trace") && hasClass.test("pad")) {
+      tags.add("pcb");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("tube"))) {
+    if (hasClass.test("tube")) {
       tags.add("tube");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("vero"))) {
-      tags.add("vero/strip");
+    // Veroboard / stripboard (includes EurorackStripboard, VeroBoard, TriPadBoard)
+    if (hasClass.test("vero") || hasClass.test("tripad") || hasClass.test("eurorackstrip")) {
+      tags.add("veroboard");
+    }
+    // Perfboard / protoboard (PerfBoard, MarshallPerfBoard, ProtoBoard)
+    if (hasClass.test("perfboard") || hasClass.test("marshallperf") || hasClass.test("protoboard")) {
+      tags.add("perfboard");
+    }
+    // Turret / eyelet board
+    if (hasClass.test("eyeletboard") || hasClass.test("turret") || hasClass.test("eyelet")) {
+      tags.add("turret");
+    }
+    // Tag strip / terminal strip
+    if (hasClass.test("tagstrip") || hasClass.test("terminalstrip")) {
+      tags.add("tagboard");
+    }
+    // Breadboard
+    if (hasClass.test("breadboard")) {
+      tags.add("breadboard");
+    }
+    // Point-to-point: has hookup wire but no board at all
+    if (hasClass.test("hookupwire") && !hasClass.test("board") && !hasClass.test("breadboard")
+        && !hasClass.test("tagstrip") && !hasClass.test("terminalstrip")) {
+      tags.add("point-to-point");
     }
     return tags;
   }
