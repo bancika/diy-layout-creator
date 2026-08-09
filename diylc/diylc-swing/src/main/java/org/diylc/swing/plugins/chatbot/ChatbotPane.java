@@ -419,20 +419,14 @@ public class ChatbotPane extends JPanel {
                   String replacementText;
                   if (!editor.getWarnings().isEmpty()) {
                     String warningMsg = String.join("<br>", editor.getWarnings());
-                    replacementText = "<b>⚠️ Warnings during apply:</b><br>" + warningMsg;
+                    replacementText = "<b>\u26A0 Warnings during apply:</b><br>" + warningMsg;
                   } else {
-                    replacementText = "<b>✅ Changes applied</b>";
+                    replacementText = "<b>\u2705 Changes applied</b>";
                   }
                   
-                  // Replace the Apply Changes link with the result text
+                  // Replace the Apply Changes link with the result text using regex (handles Swing JEditorPane HTML reformatting)
                   String chatText = getChatEditorPane().getText();
-                  chatText = chatText.replace(
-                      "<a href='diy://applyEditScript'><b>[ Apply Changes ]</b></a>",
-                      replacementText);
-                  // Also handle href with double quotes
-                  chatText = chatText.replace(
-                      "<a href=\"diy://applyEditScript\"><b>[ Apply Changes ]</b></a>",
-                      replacementText);
+                  chatText = chatText.replaceAll("(?is)<a\\s+href=['\"]diy://applyEditScript['\"][^>]*>.*?</a>", java.util.regex.Matcher.quoteReplacement(replacementText));
                   getChatEditorPane().setText(chatText);
                   lastEditScript = null; // Consume the script
                 }
@@ -532,14 +526,13 @@ public class ChatbotPane extends JPanel {
                   String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
                   switch (action) {
                     case "add":
-                      html.append("\u2705 Add ").append(op.getComponentType() != null ? op.getComponentType() : "");
-                      html.append(" \"" + op.getComponentName() + "\"");
+                      html.append("\u2795 Add ").append(op.getComponentName());
                       if (op.getProperties() != null && op.getProperties().containsKey("Value")) {
                         html.append(" (").append(op.getProperties().get("Value")).append(")");
                       }
                       break;
                     case "modify":
-                      html.append("\u270F\uFE0F Modify ").append(op.getComponentName());
+                      html.append("\u270E Modify ").append(op.getComponentName());
                       if (op.getProperties() != null) {
                         html.append(" (").append(String.join(", ", op.getProperties().entrySet().stream()
                             .map(e -> e.getKey() + "=" + e.getValue()).toArray(String[]::new))).append(")");

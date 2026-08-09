@@ -50,7 +50,7 @@ import org.diylc.presenter.ComponentProcessor;
  * <p>
  * Usage: {@code java -cp ... org.diylc.plugins.chatbot.service.ComponentCatalogGenerator [outputDir]}
  *
- * @author DIYLC AI Feature
+ * @author Branislav Stojkovic
  */
 public class ComponentCatalogGenerator {
 
@@ -89,11 +89,11 @@ public class ComponentCatalogGenerator {
     Map<String, List<ComponentType>> componentTypes = processor.getComponentTypes();
 
     List<Map<String, Object>> fullComponents = new ArrayList<>();
-    Map<String, List<String>> indexCategories = new TreeMap<>();
+    Map<String, List<Map<String, String>>> indexCategories = new TreeMap<>();
 
     for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
       String category = entry.getKey();
-      List<String> indexNames = new ArrayList<>();
+      List<Map<String, String>> indexEntries = new ArrayList<>();
 
       for (ComponentType ct : entry.getValue()) {
         // Build full catalog entry
@@ -102,11 +102,14 @@ public class ComponentCatalogGenerator {
           fullComponents.add(comp);
         }
         // Build index entry
-        indexNames.add((String) comp.get("name"));
+        Map<String, String> idx = new LinkedHashMap<>();
+        idx.put("name", (String) comp.get("name"));
+        idx.put("className", (String) comp.get("className"));
+        indexEntries.add(idx);
       }
 
-      Collections.sort(indexNames);
-      indexCategories.put(category, indexNames);
+      indexEntries.sort((a, b) -> a.get("name").compareTo(b.get("name")));
+      indexCategories.put(category, indexEntries);
     }
 
     // Sort full components by category then name for consistency
@@ -149,6 +152,7 @@ public class ComponentCatalogGenerator {
     }
     
     comp.put("name", name);
+    comp.put("className", ct.getInstanceClass().getCanonicalName());
     comp.put("category", ct.getCategory());
     comp.put("namePrefix", ct.getNamePrefix());
     comp.put("description", ct.getDescription());

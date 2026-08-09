@@ -92,8 +92,9 @@ public class AiEditScriptEditor implements IProjectEditor {
     for (AiEditOperation op : pass1Ops) {
       try {
         if ("remove".equalsIgnoreCase(op.getAction())) {
-          IDIYComponent<?> target = componentByName.remove(op.getComponentName());
+          IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
           if (target != null) {
+            componentByName.remove(target.getName());
             project.getComponents().remove(target);
             newSelection.remove(target);
           } else {
@@ -101,7 +102,7 @@ public class AiEditScriptEditor implements IProjectEditor {
           }
         } 
         else if ("modify".equalsIgnoreCase(op.getAction())) {
-          IDIYComponent<?> target = componentByName.get(op.getComponentName());
+          IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
           if (target != null) {
             applyProperties(target, op.getProperties(), processor);
             newSelection.add(target);
@@ -286,30 +287,56 @@ public class AiEditScriptEditor implements IProjectEditor {
   }
 
   private ComponentType findComponentType(ComponentProcessor processor, String typeName) {
-    // Strip (Schematic) if present for lookup, but restrict search to Schematic Symbols
-    boolean isSchematic = typeName.endsWith(" (Schematic)");
-    String searchName = isSchematic ? typeName.replace(" (Schematic)", "") : typeName;
-
     for (Map.Entry<String, List<ComponentType>> entry : processor.getComponentTypes().entrySet()) {
-      String category = entry.getKey();
-      
-      if (isSchematic && !"Schematic Symbols".equals(category)) continue;
-      if (!isSchematic && "Schematic Symbols".equals(category)) {
-        // Special case: if there's no collision, allow it, but generally prefer non-schematic for normal parts
-        // Actually, let's just strictly avoid Schematic Symbols unless explicitly asked for.
-        if (searchName.contains("Symbol")) {
-            // It inherently is a symbol. We allow it.
-        } else {
-            continue; 
-        }
-      }
-
       for (ComponentType ct : entry.getValue()) {
-        if (ct.getName().equalsIgnoreCase(searchName)) {
+        if (ct.getInstanceClass().getCanonicalName().equals(typeName)) {
+          return ct;
+        }
+        // Fallback for backwards compatibility with old scripts that might use the display name
+        if (ct.getName().equalsIgnoreCase(typeName)) {
           return ct;
         }
       }
     }
+    return null;
+  }
+
+  private IDIYComponent<?> findComponentByName(String searchName, Map<String, IDIYComponent<?>> map) {
+    if (searchName == null) return null;
+    String name = searchName.trim();
+
+    // 1. Exact match
+    if (map.containsKey(name)) {
+      return map.get(name);
+    }
+
+    // 2. Case-insensitive match
+    for (Map.Entry<String, IDIYComponent<?>> entry : map.entrySet()) {
+      if (entry.getKey().equalsIgnoreCase(name)) {
+        return entry.getValue();
+      }
+    }
+
+    // 3. Match ignoring spaces/underscores/hyphens
+    String normalizedSearch = name.replaceAll("[\\s_\\-]+", "").toLowerCase();
+    for (Map.Entry<String, IDIYComponent<?>> entry : map.entrySet()) {
+      String normalizedKey = entry.getKey().replaceAll("[\\s_\\-]+", "").toLowerCase();
+      if (normalizedKey.equals(normalizedSearch)) {
+        return entry.getValue();
+      }
+    }
+
+    // 4. Prefix match (e.g. "Neck" matching "Neck Pickup" or "Neck P")
+    List<IDIYComponent<?>> prefixMatches = new ArrayList<>();
+    for (Map.Entry<String, IDIYComponent<?>> entry : map.entrySet()) {
+      if (entry.getKey().toLowerCase().startsWith(name.toLowerCase())) {
+        prefixMatches.add(entry.getValue());
+      }
+    }
+    if (prefixMatches.size() == 1) {
+      return prefixMatches.get(0);
+    }
+
     return null;
   }
 
@@ -323,7 +350,7 @@ public class AiEditScriptEditor implements IProjectEditor {
     String compName = terminalRef.substring(0, lastDot);
     String pinStr = terminalRef.substring(lastDot + 1);
     
-    IDIYComponent<?> comp = componentByName.get(compName);
+    IDIYComponent<?> comp = findComponentByName(compName, componentByName);
     if (comp == null) {
       warnings.add("Terminal reference points to unknown component: " + compName);
       return null;

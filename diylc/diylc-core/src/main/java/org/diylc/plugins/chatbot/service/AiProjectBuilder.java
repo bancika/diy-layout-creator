@@ -85,7 +85,16 @@ public class AiProjectBuilder {
     java.util.function.Predicate<String> hasClass = sub ->
         project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains(sub));
     
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getCanonicalName().toLowerCase().contains("guitar"))) {
+    boolean isGuitar = project.getComponents().stream().anyMatch(x -> {
+      if (x.getClass().getName().toLowerCase().contains("guitar")) return true;
+      try {
+        ComponentType ct = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getClass());
+        return ct != null && "Guitar".equalsIgnoreCase(ct.getCategory());
+      } catch (Exception e) {
+        return false;
+      }
+    });
+    if (isGuitar) {
       tags.add("guitar");
     }
     if (hasClass.test("symbol")) {
