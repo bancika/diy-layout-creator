@@ -35,7 +35,8 @@ public interface IChatbotAPI {
    * @param token
    * @param machineId
    * @param project
-   * @param netlist
+   * @param circuit
+   * @param clientAnalysis
    * @param prompt
    * @return
    */
