@@ -41,7 +41,7 @@ public interface IChatbotAPI {
    */
   String promptChatbot(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("project") String project,
-      @ParamName("netlist") File netlist, @ParamName("prompt") String prompt);
+      @ParamName("circuit") File circuit, @ParamName("clientAnalysis") File clientAnalysis, @ParamName("prompt") String prompt);
 
   /**
    * Analyzes the provided circuit
@@ -50,12 +50,13 @@ public interface IChatbotAPI {
    * @param token
    * @param machineId
    * @param project
-   * @param netlist
+   * @param circuit
+   * @param clientAnalysis
    * @return
    */
   String analyzeCircuit(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId, @ParamName("project") String project,
-      @ParamName("netlist") File netlist);
+      @ParamName("circuit") File circuit, @ParamName("clientAnalysis") File clientAnalysis);
 
   SubscriptionEntity getSubscriptionInfo(@ParamName("username") String username, @ParamName("token") String token,
       @ParamName("machineId") String machineId);
