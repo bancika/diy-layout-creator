@@ -1,4 +1,6 @@
 package org.diylc.plugins.chatbot.model;
 
-public record AiPoint(int x, int y) {
+import java.math.BigDecimal;
+
+public record AiPoint(BigDecimal gridX, BigDecimal gridY) {
 }
