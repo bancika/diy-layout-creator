@@ -16,11 +16,11 @@ public class AiEditOperation {
   private Map<String, String> properties;
   
   // For SINGLE_CLICK components
-  private AiGridPosition position;
+  private AiPoint position;
   
   // For POINT_BY_POINT non-wires
-  private AiGridPosition fromPos;
-  private AiGridPosition toPos;
+  private AiPoint fromPos;
+  private AiPoint toPos;
   
   // For POINT_BY_POINT wires and connectors
   private String fromTerminal; // e.g., "R1.0"
@@ -38,14 +38,14 @@ public class AiEditOperation {
   public Map<String, String> getProperties() { return properties; }
   public void setProperties(Map<String, String> properties) { this.properties = properties; }
   
-  public AiGridPosition getPosition() { return position; }
-  public void setPosition(AiGridPosition position) { this.position = position; }
+  public AiPoint getPosition() { return position; }
+  public void setPosition(AiPoint position) { this.position = position; }
   
-  public AiGridPosition getFromPos() { return fromPos; }
-  public void setFromPos(AiGridPosition fromPos) { this.fromPos = fromPos; }
+  public AiPoint getFromPos() { return fromPos; }
+  public void setFromPos(AiPoint fromPos) { this.fromPos = fromPos; }
   
-  public AiGridPosition getToPos() { return toPos; }
-  public void setToPos(AiGridPosition toPos) { this.toPos = toPos; }
+  public AiPoint getToPos() { return toPos; }
+  public void setToPos(AiPoint toPos) { this.toPos = toPos; }
   
   public String getFromTerminal() { return fromTerminal; }
   public void setFromTerminal(String fromTerminal) { this.fromTerminal = fromTerminal; }

@@ -9,7 +9,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
-import org.diylc.plugins.chatbot.model.AiGridPosition;
+import org.diylc.plugins.chatbot.model.AiPoint;
 import org.diylc.presenter.ComponentProcessor;
 import org.junit.Before;
 import org.junit.Test;
@@ -175,12 +175,8 @@ public class AiEditScriptEditorTest {
         op.setComponentType("DummyTypeThatDoesNotExist");
         op.setComponentName("R1");
         
-        AiGridPosition from = new AiGridPosition();
-        from.setGridX(1.0);
-        from.setGridY(1.0);
-        AiGridPosition to = new AiGridPosition();
-        to.setGridX(2.0);
-        to.setGridY(1.0);
+        AiPoint from = new AiPoint(new java.math.BigDecimal("1.0"), new java.math.BigDecimal("1.0"));
+        AiPoint to = new AiPoint(new java.math.BigDecimal("2.0"), new java.math.BigDecimal("1.0"));
         op.setFromPos(from);
         op.setToPos(to);
         
