@@ -1,4 +1,448 @@
 {
   "version" : "6.2.0",
-  "categories" : { }
+  "categories" : {
+    "Boards" : [ {
+      "name" : "Blank Board",
+      "className" : "boards.BlankBoard"
+    }, {
+      "name" : "Breadboard",
+      "className" : "boards.Breadboard"
+    }, {
+      "name" : "Eurorack Stripboard",
+      "className" : "boards.EurorackStripboard"
+    }, {
+      "name" : "Eyelet Board",
+      "className" : "boards.EyeletBoard"
+    }, {
+      "name" : "Marshall Style Perf Board",
+      "className" : "boards.MarshallPerfBoard"
+    }, {
+      "name" : "P-0+o (Proto) Board",
+      "className" : "boards.ProtoBoard"
+    }, {
+      "name" : "Perf Board w/ Pads",
+      "className" : "boards.PerfBoard"
+    }, {
+      "name" : "Proto Board 780 Holes",
+      "className" : "boards.ProtoBoard780"
+    }, {
+      "name" : "Tag Strip",
+      "className" : "boards.TagStrip"
+    }, {
+      "name" : "Terminal Strip",
+      "className" : "boards.TerminalStrip"
+    }, {
+      "name" : "TriPad Board",
+      "className" : "boards.TriPadBoard"
+    }, {
+      "name" : "Vero Board",
+      "className" : "boards.VeroBoard"
+    } ],
+    "Connectivity" : [ {
+      "name" : "Copper Trace",
+      "className" : "connectivity.CopperTrace"
+    }, {
+      "name" : "Curved Trace",
+      "className" : "connectivity.CurvedTrace"
+    }, {
+      "name" : "Cut Line",
+      "className" : "connectivity.CutLine"
+    }, {
+      "name" : "Dot",
+      "className" : "connectivity.Dot"
+    }, {
+      "name" : "Eyelet",
+      "className" : "connectivity.Eyelet"
+    }, {
+      "name" : "Ground Fill",
+      "className" : "connectivity.GroundFill"
+    }, {
+      "name" : "Hookup Wire",
+      "className" : "connectivity.HookupWire"
+    }, {
+      "name" : "Jumper",
+      "className" : "connectivity.Jumper"
+    }, {
+      "name" : "Multimeter Probe",
+      "className" : "connectivity.MultimeterProbe"
+    }, {
+      "name" : "PCB Terminal Block",
+      "className" : "connectivity.PCBTerminalBlock"
+    }, {
+      "name" : "Solder Lug",
+      "className" : "connectivity.SolderLug"
+    }, {
+      "name" : "Solder Pad",
+      "className" : "connectivity.SolderPad"
+    }, {
+      "name" : "Trace Cut",
+      "className" : "connectivity.TraceCut"
+    }, {
+      "name" : "Turret Lug",
+      "className" : "connectivity.Turret"
+    }, {
+      "name" : "Twisted Leads",
+      "className" : "connectivity.TwistedWire"
+    } ],
+    "Electro-Mechanical" : [ {
+      "name" : "9V Battery Snap",
+      "className" : "electromechanical.BatterySnap9V"
+    }, {
+      "name" : "Chassis Panel",
+      "className" : "chassis.ChassisPanel"
+    }, {
+      "name" : "Cliff 1/4\" Jack",
+      "className" : "electromechanical.CliffJack1_4"
+    }, {
+      "name" : "Cliff 1/8\" Jack",
+      "className" : "electromechanical.CliffJack1_8"
+    }, {
+      "name" : "Closed 1/4\" Jack",
+      "className" : "electromechanical.ClosedJack1_4"
+    }, {
+      "name" : "DIP Switch",
+      "className" : "electromechanical.DIPSwitch"
+    }, {
+      "name" : "Drill Hole",
+      "className" : "electromechanical.DrillHole"
+    }, {
+      "name" : "Elliptical Cutout",
+      "className" : "chassis.EllipticalCutout"
+    }, {
+      "name" : "Fuse Holder (Panel)",
+      "className" : "electromechanical.FuseHolderPanel"
+    }, {
+      "name" : "IEC Socket",
+      "className" : "electromechanical.IECSocket"
+    }, {
+      "name" : "Mini Relay",
+      "className" : "electromechanical.MiniRelay"
+    }, {
+      "name" : "Mini Toggle Switch",
+      "className" : "electromechanical.MiniToggleSwitch"
+    }, {
+      "name" : "Neutrik 1/4\" Jack",
+      "className" : "electromechanical.NeutrikJack1_4"
+    }, {
+      "name" : "Open 1/4\" Jack",
+      "className" : "electromechanical.OpenJack1_4"
+    }, {
+      "name" : "Open 1/8\" Jack",
+      "className" : "electromechanical.OpenJack1_8"
+    }, {
+      "name" : "Pilot Lamp Holder",
+      "className" : "electromechanical.PilotLampHolder"
+    }, {
+      "name" : "Pin Header",
+      "className" : "electromechanical.PinHeader"
+    }, {
+      "name" : "Plastic DC Jack",
+      "className" : "electromechanical.PlasticDCJack"
+    }, {
+      "name" : "Polygonal Cutout",
+      "className" : "chassis.PolygonalCutout"
+    }, {
+      "name" : "RCA Jack",
+      "className" : "electromechanical.RCAJack"
+    }, {
+      "name" : "Rectangular Cutout",
+      "className" : "chassis.RectangularCutout"
+    }, {
+      "name" : "Rotary Selector Switch",
+      "className" : "electromechanical.RotarySelectorSwitch"
+    }, {
+      "name" : "Rotary Switch (Open)",
+      "className" : "electromechanical.RotarySwitchOpen"
+    }, {
+      "name" : "Rotary Switch (Sealed)",
+      "className" : "electromechanical.RotarySwitchSealed"
+    }, {
+      "name" : "Slide Switch",
+      "className" : "electromechanical.SlideSwitch"
+    }, {
+      "name" : "Tactile Micro-Switch",
+      "className" : "electromechanical.TactileMicroSwitch"
+    }, {
+      "name" : "Thonk 3.5mm Jack",
+      "className" : "electromechanical.ThonkJack3_5"
+    } ],
+    "Guitar" : [ {
+      "name" : "Freeway 3X3-03 Switch",
+      "className" : "guitar.Freeway3x3_03"
+    }, {
+      "name" : "Freeway 3X3-05 (Ultra) Switch",
+      "className" : "guitar.Freeway3x3_05"
+    }, {
+      "name" : "Freeway Blade",
+      "className" : "guitar.FreewayBlade"
+    }, {
+      "name" : "Humbucker Pickup",
+      "className" : "guitar.HumbuckerPickup"
+    }, {
+      "name" : "Jazz Bass Pickup",
+      "className" : "guitar.JazzBassPickup"
+    }, {
+      "name" : "LP Toggle Switch",
+      "className" : "guitar.LPSwitch"
+    }, {
+      "name" : "Lever Switch",
+      "className" : "guitar.LeverSwitch"
+    }, {
+      "name" : "P- Bass Pickup",
+      "className" : "guitar.PBassPickup"
+    }, {
+      "name" : "P-90 Single Coil Pickup",
+      "className" : "guitar.P90Pickup"
+    }, {
+      "name" : "S1 Switch",
+      "className" : "guitar.S1Switch"
+    }, {
+      "name" : "Schaller Megaswitch",
+      "className" : "guitar.SchallerMegaSwitch"
+    }, {
+      "name" : "Single Coil Pickup",
+      "className" : "guitar.SingleCoilPickup"
+    }, {
+      "name" : "Stingray Bass Pickup",
+      "className" : "guitar.StingrayBassPickup"
+    } ],
+    "Misc" : [ {
+      "name" : "Auto-Wrap Label",
+      "className" : "misc.WrapLabel"
+    }, {
+      "name" : "Bill of Materials",
+      "className" : "misc.BOM"
+    }, {
+      "name" : "Common Node",
+      "className" : "misc.CommonNode"
+    }, {
+      "name" : "Dial Scale",
+      "className" : "chassis.DialScale"
+    }, {
+      "name" : "Image",
+      "className" : "misc.Image"
+    }, {
+      "name" : "Label",
+      "className" : "misc.Label"
+    }, {
+      "name" : "PCB Buzzer",
+      "className" : "misc.Buzzer"
+    }, {
+      "name" : "PCB Text",
+      "className" : "misc.PCBText"
+    }, {
+      "name" : "SVG Image",
+      "className" : "misc.SVGImage"
+    }, {
+      "name" : "Tape Measure",
+      "className" : "shapes.TapeMeasure"
+    } ],
+    "Passive" : [ {
+      "name" : "Ceramic Capacitor (Radial)",
+      "className" : "passive.RadialCeramicDiskCapacitor"
+    }, {
+      "name" : "Crystal Oscillator",
+      "className" : "passive.CrystalOscillator"
+    }, {
+      "name" : "Electrolytic Capacitor (Axial)",
+      "className" : "passive.AxialElectrolyticCapacitor"
+    }, {
+      "name" : "Electrolytic Capacitor (Radial)",
+      "className" : "passive.RadialElectrolytic"
+    }, {
+      "name" : "Film Capacitor (Axial)",
+      "className" : "passive.AxialFilmCapacitor"
+    }, {
+      "name" : "Film Capacitor (Radial)",
+      "className" : "passive.RadialFilmCapacitor"
+    }, {
+      "name" : "Heat Sink Resistor",
+      "className" : "passive.HeatSinkResistor"
+    }, {
+      "name" : "Inductor (Radial)",
+      "className" : "passive.RadialInductor"
+    }, {
+      "name" : "Inductor (Toroidal)",
+      "className" : "passive.ToroidalInductor"
+    }, {
+      "name" : "Mica Capacitor (Radial)",
+      "className" : "passive.RadialMicaCapacitor"
+    }, {
+      "name" : "Mini Signal Transformer",
+      "className" : "passive.AudioTransformer"
+    }, {
+      "name" : "Multi-Section Capacitor",
+      "className" : "passive.MultiSectionCapacitor"
+    }, {
+      "name" : "Potentiometer",
+      "className" : "passive.PotentiometerPanel"
+    }, {
+      "name" : "Potentiometer (Miniature)",
+      "className" : "passive.MiniaturePotentiometer"
+    }, {
+      "name" : "Resistor",
+      "className" : "passive.Resistor"
+    }, {
+      "name" : "Tantalum Capacitor",
+      "className" : "passive.TantalumCapacitor"
+    }, {
+      "name" : "Trimmer Potentiometer",
+      "className" : "passive.TrimmerPotentiometer"
+    } ],
+    "SMD" : [ {
+      "name" : "SMD Capacitor",
+      "className" : "smd.SMDCapacitor"
+    }, {
+      "name" : "SMD Resistor",
+      "className" : "smd.SMDResistor"
+    } ],
+    "Schematic Symbols" : [ {
+      "name" : "BJT (Schematic)",
+      "className" : "semiconductors.BJTSymbol"
+    }, {
+      "name" : "Battery (Schematic)",
+      "className" : "misc.BatterySymbol"
+    }, {
+      "name" : "Bulb (Schematic)",
+      "className" : "misc.BulbSchematicSymbol"
+    }, {
+      "name" : "Buzzer Symbol",
+      "className" : "misc.BuzzerSymbol"
+    }, {
+      "name" : "Capacitor (Schematic)",
+      "className" : "passive.CapacitorSymbol"
+    }, {
+      "name" : "Current Source (Schematic)",
+      "className" : "misc.CurrentSourceSymbol"
+    }, {
+      "name" : "Diode (Schematic)",
+      "className" : "semiconductors.DiodeSymbol"
+    }, {
+      "name" : "Diode Tube (Schematic)",
+      "className" : "tube.DiodeSymbol"
+    }, {
+      "name" : "Duo-Diode (Schematic)",
+      "className" : "tube.DuoDiodeSymbol"
+    }, {
+      "name" : "Fuse (Schematic)",
+      "className" : "passive.FuseSymbol"
+    }, {
+      "name" : "Ground (Schematic)",
+      "className" : "misc.GroundSymbol"
+    }, {
+      "name" : "IC (Schematic)",
+      "className" : "semiconductors.ICSymbol"
+    }, {
+      "name" : "Inductor (Schematic)",
+      "className" : "passive.InductorSymbol"
+    }, {
+      "name" : "JFET (Schematic)",
+      "className" : "semiconductors.JFETSymbol"
+    }, {
+      "name" : "LED (Schematic)",
+      "className" : "semiconductors.LEDSymbol"
+    }, {
+      "name" : "Logic Gate (Schematic)",
+      "className" : "semiconductors.LogicGateSymbol"
+    }, {
+      "name" : "MOSFET (Schematic)",
+      "className" : "semiconductors.MOSFETSymbol"
+    }, {
+      "name" : "Pentode (Schematic)",
+      "className" : "tube.PentodeSymbol"
+    }, {
+      "name" : "Phono Jack (Schematic)",
+      "className" : "electromechanical.PhonoJackSymbol"
+    }, {
+      "name" : "Photo Diode (Schematic)",
+      "className" : "semiconductors.PhotoDiodeSymbol"
+    }, {
+      "name" : "Potentiometer (Schematic)",
+      "className" : "passive.PotentiometerSymbol"
+    }, {
+      "name" : "Resistor (Schematic)",
+      "className" : "passive.ResistorSymbol"
+    }, {
+      "name" : "Schottky Diode (Schematic)",
+      "className" : "semiconductors.SchottkyDiodeSymbol"
+    }, {
+      "name" : "Switch (Latching) (Schematic)",
+      "className" : "electromechanical.SwitchLatchingSymbol"
+    }, {
+      "name" : "Transformer Coil (Schematic)",
+      "className" : "passive.TransformerCoil"
+    }, {
+      "name" : "Transformer Core (Schematic)",
+      "className" : "passive.TransformerCore"
+    }, {
+      "name" : "Triode (Schematic)",
+      "className" : "tube.TriodeSymbol"
+    }, {
+      "name" : "Voltage Source (Schematic)",
+      "className" : "misc.VoltageSourceSymbol"
+    }, {
+      "name" : "Zener Diode (Schematic)",
+      "className" : "semiconductors.ZenerDiodeSymbol"
+    } ],
+    "Semiconductors" : [ {
+      "name" : "Bridge Rectifier",
+      "className" : "semiconductors.BridgeRectifier"
+    }, {
+      "name" : "DIP IC",
+      "className" : "semiconductors.DIL_IC"
+    }, {
+      "name" : "Diode (glass)",
+      "className" : "semiconductors.DiodeGlass"
+    }, {
+      "name" : "Diode (plastic)",
+      "className" : "semiconductors.DiodePlastic"
+    }, {
+      "name" : "LED",
+      "className" : "semiconductors.LED"
+    }, {
+      "name" : "Multiwatt IC",
+      "className" : "semiconductors.MultiwattIC"
+    }, {
+      "name" : "SIP IC",
+      "className" : "semiconductors.SIL_IC"
+    }, {
+      "name" : "Transistor (TO-1)",
+      "className" : "semiconductors.TransistorTO1"
+    }, {
+      "name" : "Transistor (TO-126)",
+      "className" : "semiconductors.TransistorTO126"
+    }, {
+      "name" : "Transistor (TO-220)",
+      "className" : "semiconductors.TransistorTO220"
+    }, {
+      "name" : "Transistor (TO-3)",
+      "className" : "semiconductors.TransistorTO3"
+    }, {
+      "name" : "Transistor (TO-92)",
+      "className" : "semiconductors.TransistorTO92"
+    } ],
+    "Shapes" : [ {
+      "name" : "Ellipse",
+      "className" : "shapes.Ellipse"
+    }, {
+      "name" : "Line",
+      "className" : "connectivity.Line"
+    }, {
+      "name" : "Polygon",
+      "className" : "shapes.Polygon"
+    }, {
+      "name" : "Rectangle",
+      "className" : "shapes.Rectangle"
+    } ],
+    "Tubes" : [ {
+      "name" : "4-pin Jumbo Tube Socket",
+      "className" : "tube.Jumbo4PinTubeSocket"
+    }, {
+      "name" : "Sub-Mini Tube",
+      "className" : "tube.SubminiTube"
+    }, {
+      "name" : "Tube Socket",
+      "className" : "tube.TubeSocket"
+    } ]
+  }
 }

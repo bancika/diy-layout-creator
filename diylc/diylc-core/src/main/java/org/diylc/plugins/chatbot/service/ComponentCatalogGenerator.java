@@ -24,6 +24,8 @@ package org.diylc.plugins.chatbot.service;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.log4j.Logger;
 
 import org.diylc.common.ComponentType;
+import org.diylc.common.Percentage;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.*;
@@ -64,20 +67,14 @@ public class ComponentCatalogGenerator {
    * These are excluded from the full catalog to save tokens.
    */
   private static final Set<String> SKIP_PROPERTY_TYPES = Set.of(
-      "Color", "Font", "Image", "BufferedImage"
+      "Image", "BufferedImage"
   );
 
   /**
    * Property names that are purely cosmetic/visual and should be excluded.
    */
   private static final Set<String> SKIP_PROPERTY_NAMES = Set.of(
-      "Alpha", "Border Color", "Body Color", "Label Color", "Label Font",
-      "Board Color", "Pad Color", "Trace Color", "Coordinate Color",
-      "Nut Color", "Wafer Color", "Marker Color",
-      "Hole Color", "Fill Color", "Strip Color",
-      "Header Color", "Slot Color", "Lug Color",
-      "Inner Color", "Outer Color", "Color",
-      "Header Font", "Coordinate Font"
+
   );
 
   public static void main(String[] args) throws IOException {
@@ -152,7 +149,7 @@ public class ComponentCatalogGenerator {
     }
     
     comp.put("name", name);
-    comp.put("className", ct.getInstanceClass().getCanonicalName());
+    comp.put("className", ct.getInstanceClass().getCanonicalName().replace("org.diylc.components.", ""));
     comp.put("category", ct.getCategory());
     comp.put("namePrefix", ct.getNamePrefix());
     comp.put("description", ct.getDescription());
@@ -181,10 +178,23 @@ public class ComponentCatalogGenerator {
         prop.put("name", propName);
         prop.put("type", formatType(propType));
 
-        // Include enum possible values
+        // Format guidance
+        if (Color.class.isAssignableFrom(propType)) {
+          prop.put("format", "hex");
+        } else if (Percentage.class.isAssignableFrom(propType)) {
+          prop.put("format", "number without the % sign, e.g. 100");
+        } else if (AbstractMeasure.class.isAssignableFrom(propType)) {
+          prop.put("format", "(value)(unit)");
+          List<String> units = extractUnits(propType);
+          if (!units.isEmpty()) {
+            prop.put("possibleUnits", units);
+          }
+        }
+
+        // Include enum possible values (using name() instead of toString())
         if (propType.isEnum()) {
           List<String> possibleValues = Arrays.stream(propType.getEnumConstants())
-              .map(Object::toString)
+              .map(e -> ((Enum<?>) e).name())
               .collect(Collectors.toList());
           prop.put("possibleValues", possibleValues);
         }
@@ -216,6 +226,26 @@ public class ComponentCatalogGenerator {
     return comp;
   }
 
+  private static List<String> extractUnits(Class<?> propType) {
+    try {
+      Type genericSuperclass = propType.getGenericSuperclass();
+      if (genericSuperclass instanceof ParameterizedType) {
+        Type[] args = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        if (args.length > 0 && args[0] instanceof Class<?>) {
+          Class<?> unitEnum = (Class<?>) args[0];
+          if (unitEnum.isEnum()) {
+            return Arrays.stream(unitEnum.getEnumConstants())
+                .map(e -> ((Enum<?>) e).name())
+                .collect(Collectors.toList());
+          }
+        }
+      }
+    } catch (Exception e) {
+      // ignore
+    }
+    return Collections.emptyList();
+  }
+
   /**
    * Formats a property type for the catalog. Uses friendly names for measure types.
    */
@@ -240,8 +270,13 @@ public class ComponentCatalogGenerator {
   private static String formatDefaultValue(Object value) {
     if (value == null) return null;
 
-    // Skip Color, Font, and other visual types
-    if (value instanceof Color) return null;
+    if (value instanceof Color) {
+      Color c = (Color) value;
+      return String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
+    }
+    if (value instanceof Percentage) {
+      return Integer.toString(((Percentage) value).getValue());
+    }
     if (value instanceof java.awt.Font) return null;
     if (value instanceof java.awt.Image) return null;
 
@@ -252,7 +287,7 @@ public class ComponentCatalogGenerator {
 
     // Enums
     if (value.getClass().isEnum()) {
-      return value.toString();
+      return ((Enum<?>) value).name();
     }
 
     // Basic types

@@ -9,6 +9,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IProjectEditor;
+import org.diylc.common.Percentage;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -273,6 +274,11 @@ public class AiEditScriptEditor implements IProjectEditor {
       throw new IllegalArgumentException("Unknown enum value: " + value);
     }
     
+    if (Percentage.class.isAssignableFrom(type)) {
+      String cleanVal = value.replace("%", "").trim();
+      return new Percentage(Integer.parseInt(cleanVal));
+    }
+    
     if (AbstractMeasure.class.isAssignableFrom(type)) {
       for (Method m : type.getMethods()) {
         if (Modifier.isStatic(m.getModifiers()) 
@@ -287,9 +293,13 @@ public class AiEditScriptEditor implements IProjectEditor {
   }
 
   private ComponentType findComponentType(ComponentProcessor processor, String typeName) {
+    if (typeName == null) return null;
+    String cleanTypeName = typeName.replace("org.diylc.components.", "");
     for (Map.Entry<String, List<ComponentType>> entry : processor.getComponentTypes().entrySet()) {
       for (ComponentType ct : entry.getValue()) {
-        if (ct.getInstanceClass().getCanonicalName().equals(typeName)) {
+        String canonical = ct.getInstanceClass().getCanonicalName();
+        String cleanCanonical = canonical.replace("org.diylc.components.", "");
+        if (cleanCanonical.equalsIgnoreCase(cleanTypeName) || canonical.equalsIgnoreCase(typeName)) {
           return ct;
         }
         // Fallback for backwards compatibility with old scripts that might use the display name

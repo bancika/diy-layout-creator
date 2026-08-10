@@ -209,7 +209,8 @@ public class AiProjectBuilder {
       }
     }
 
-    return new AiComponent(component.getName(), componentType.getName(),
+    String compType = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+    return new AiComponent(component.getName(), compType,
         component.getValue() == null ? null : component.getValue().toString(),
          fromPos, toPos, pos, terminals.isEmpty() ? null : terminals);
   }
