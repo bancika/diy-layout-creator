@@ -29,7 +29,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -105,7 +108,6 @@ public class ChatbotPane extends JPanel {
   private JButton askButton;
   private JButton clearButton;
   private JButton exportButton;
-  private JButton premiumButton;
   
   private AiEditScript lastEditScript;
 
@@ -182,30 +184,23 @@ public class ChatbotPane extends JPanel {
     add(promptScrollPane, gbc);
 
     // Button panel for Clear, Premium, and Ask buttons
-    JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));  // 10px horizontal gap between components
+    JPanel buttonPanel = new JPanel(new BorderLayout());
     buttonPanel.setBackground(TERMINAL_BG);
     
-    // Left panel for Clear and Export (10px only between them; Clear flush left)
+    // Left panel for secondary actions
     JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
     leftPanel.setBackground(TERMINAL_BG);
     leftPanel.add(getClearButton());
     leftPanel.add(Box.createHorizontalStrut(10));
     leftPanel.add(getExportButton());
     
-    // Center panel for Premium button
-    JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-    centerPanel.setBackground(TERMINAL_BG);
-    centerPanel.add(getPremiumButton());
-    
-    // Right panel for Premium and Ask buttons
+    // Right panel for primary action
     JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     rightPanel.setBackground(TERMINAL_BG);
-    rightPanel.add(getPremiumButton());
     rightPanel.add(getAskButton());
     
-    // Add all panels to the main button panel
+    // Add panels to the main button panel
     buttonPanel.add(leftPanel, BorderLayout.WEST);
-    buttonPanel.add(centerPanel, BorderLayout.CENTER);
     buttonPanel.add(rightPanel, BorderLayout.EAST);
 
     gbc.gridx = 0;  // Start from first column
@@ -321,7 +316,6 @@ public class ChatbotPane extends JPanel {
       appendSection(ChatbotService.SYSTEM, "Please log into your cloud account to use the AI assistant");
       getAskButton().setEnabled(false);
       getClearButton().setEnabled(false);
-      getPremiumButton().setVisible(false);
     } else {
       swingUI.executeBackgroundTask(new ITask<Void>() {
         @Override
@@ -337,7 +331,6 @@ public class ChatbotPane extends JPanel {
         @Override
         public void complete(Void result) {
           if (ChatbotPane.this.subscriptionInfo != null) {
-            getPremiumButton().setVisible(FREE_TIER.equals(ChatbotPane.this.subscriptionInfo.getTier()));
             String subscriptionInfoText = "Your are currently subscribed to the '" +
                 ChatbotPane.this.subscriptionInfo.getTier() + "' tier, expiring on " +
                 ChatbotPane.this.subscriptionInfo.getEndDate() + ", with " +
@@ -522,27 +515,41 @@ public class ChatbotPane extends JPanel {
               
               // Render per-operation summary
               if (lastEditScript.getOperations() != null) {
+                Map<String, List<String>> groupedOps = new LinkedHashMap<>();
                 for (AiEditOperation op : lastEditScript.getOperations()) {
                   String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
+                  String compStr = op.getComponentName();
                   switch (action) {
                     case "add":
-                      html.append("\u2795 Add ").append(op.getComponentName());
                       if (op.getProperties() != null && op.getProperties().containsKey("Value")) {
-                        html.append(" (").append(op.getProperties().get("Value")).append(")");
+                        compStr += " (" + op.getProperties().get("Value") + ")";
                       }
                       break;
                     case "modify":
-                      html.append("\u270E Modify ").append(op.getComponentName());
                       if (op.getProperties() != null) {
-                        html.append(" (").append(String.join(", ", op.getProperties().entrySet().stream()
-                            .map(e -> e.getKey() + "=" + e.getValue()).toArray(String[]::new))).append(")");
+                        compStr += " (" + String.join(", ", op.getProperties().entrySet().stream()
+                            .map(e -> e.getKey() + "=" + e.getValue()).toArray(String[]::new)) + ")";
                       }
                       break;
+                  }
+                  groupedOps.computeIfAbsent(action, k -> new ArrayList<>()).add(compStr);
+                }
+
+                for (Map.Entry<String, List<String>> entry : groupedOps.entrySet()) {
+                  String action = entry.getKey();
+                  String compsStr = String.join(", ", entry.getValue());
+                  switch (action) {
+                    case "add":
+                      html.append("\u2795 Add ").append(compsStr);
+                      break;
+                    case "modify":
+                      html.append("\u270E Modify ").append(compsStr);
+                      break;
                     case "remove":
-                      html.append("\u274C Remove ").append(op.getComponentName());
+                      html.append("\u274C Remove ").append(compsStr);
                       break;
                     default:
-                      html.append("\u2022 ").append(action).append(" ").append(op.getComponentName());
+                      html.append("\u2022 ").append(action).append(" ").append(compsStr);
                   }
                   html.append("<br>");
                 }
@@ -641,24 +648,6 @@ public class ChatbotPane extends JPanel {
     return exportButton;
   }
 
-  public JButton getPremiumButton() {
-    if (premiumButton == null) {
-      premiumButton = new JButton(LangUtil.translate("Get Premium"));
-      styleButton(premiumButton);
-      premiumButton.setVisible(false);
-      premiumButton.addActionListener(e -> {
-        try {
-          java.awt.Desktop.getDesktop().browse(new java.net.URI("http://diy-fever.com/get-premium"));
-        } catch (Exception ex) {
-          LOG.error("Failed to open premium subscription page", ex);
-          swingUI.showMessage("Failed to open premium subscription page. Please visit http://diy-fever.com/get-premium manually.", "Error",
-              ISwingUI.ERROR_MESSAGE);
-        }
-      });
-    }
-    return premiumButton;
-  }
-
   private void styleButton(JButton button) {
     button.setBackground(BUTTON_BG);
     button.setForeground(BUTTON_FG);
@@ -689,14 +678,7 @@ public class ChatbotPane extends JPanel {
     });
     
     // Set minimum and preferred size based on button type
-    if (button == premiumButton) {
-      // Wider size for Premium button
-      button.setMinimumSize(new Dimension(120, 25));
-      button.setPreferredSize(new Dimension(120, 25));
-    } else {
-      // Standard size for other buttons
-      button.setMinimumSize(new Dimension(80, 25));
-      button.setPreferredSize(new Dimension(80, 25));
-    }
+    button.setMinimumSize(new Dimension(80, 25));
+    button.setPreferredSize(new Dimension(80, 25));
   }
 }
