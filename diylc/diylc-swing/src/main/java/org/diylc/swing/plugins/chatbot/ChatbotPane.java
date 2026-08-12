@@ -412,7 +412,7 @@ public class ChatbotPane extends JPanel {
                   String replacementText;
                   if (!editor.getWarnings().isEmpty()) {
                     String warningMsg = String.join("<br>", editor.getWarnings());
-                    replacementText = "<b>\u26A0 Warnings during apply:</b><br>" + warningMsg;
+                    replacementText = "<font color='orange'><b>\u26A0 Warnings during apply:</b><br>" + warningMsg + "</font>";
                   } else {
                     replacementText = "<b>\u2705 Changes applied</b>";
                   }
@@ -531,6 +531,16 @@ public class ChatbotPane extends JPanel {
                             .map(e -> e.getKey() + "=" + e.getValue()).toArray(String[]::new)) + ")";
                       }
                       break;
+                    case "send_behind":
+                      if (op.getReferenceComponent() != null) {
+                        compStr += " (behind " + op.getReferenceComponent() + ")";
+                      }
+                      break;
+                    case "bring_in_front":
+                      if (op.getReferenceComponent() != null) {
+                        compStr += " (in front of " + op.getReferenceComponent() + ")";
+                      }
+                      break;
                   }
                   groupedOps.computeIfAbsent(action, k -> new ArrayList<>()).add(compStr);
                 }
@@ -547,6 +557,12 @@ public class ChatbotPane extends JPanel {
                       break;
                     case "remove":
                       html.append("\u274C Remove ").append(compsStr);
+                      break;
+                    case "send_behind":
+                      html.append("\u2B07\uFE0F Send Behind ").append(compsStr);
+                      break;
+                    case "bring_in_front":
+                      html.append("\u2B06\uFE0F Bring in Front ").append(compsStr);
                       break;
                     default:
                       html.append("\u2022 ").append(action).append(" ").append(compsStr);

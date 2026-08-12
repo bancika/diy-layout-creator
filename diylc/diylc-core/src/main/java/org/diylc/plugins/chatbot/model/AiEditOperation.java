@@ -26,6 +26,9 @@ public class AiEditOperation {
   private String fromTerminal; // e.g., "R1.0"
   private String toTerminal; // e.g., "C1.1"
 
+  // For z-order operations
+  private String referenceComponent; // e.g., "Board1"
+
   public String getAction() { return action; }
   public void setAction(String action) { this.action = action; }
   
@@ -52,4 +55,7 @@ public class AiEditOperation {
   
   public String getToTerminal() { return toTerminal; }
   public void setToTerminal(String toTerminal) { this.toTerminal = toTerminal; }
+
+  public String getReferenceComponent() { return referenceComponent; }
+  public void setReferenceComponent(String referenceComponent) { this.referenceComponent = referenceComponent; }
 }

@@ -69,9 +69,12 @@ public class AiEditScriptEditor implements IProjectEditor {
     List<AiEditOperation> modifyOps = new ArrayList<>();
     List<AiEditOperation> addOps = new ArrayList<>();
     List<AiEditOperation> pass2Ops = new ArrayList<>();
+    List<AiEditOperation> zOrderOps = new ArrayList<>();
 
     for (AiEditOperation op : editScript.getOperations()) {
-      if ("add".equalsIgnoreCase(op.getAction()) && op.getFromTerminal() != null && op.getToTerminal() != null) {
+      if ("send_behind".equalsIgnoreCase(op.getAction()) || "bring_in_front".equalsIgnoreCase(op.getAction())) {
+        zOrderOps.add(op);
+      } else if ("add".equalsIgnoreCase(op.getAction()) && op.getFromTerminal() != null && op.getToTerminal() != null) {
         pass2Ops.add(op);
       } else if ("remove".equalsIgnoreCase(op.getAction())) {
         removeOps.add(op);
@@ -213,6 +216,46 @@ public class AiEditScriptEditor implements IProjectEditor {
       } catch (Exception e) {
         LOG.error("Failed to execute Pass 2 operation: " + op, e);
         warnings.add("Error executing " + op.getAction() + " on wire " + op.getComponentName() + ": " + e.getMessage());
+      }
+    }
+
+    // ==========================================
+    // PASS 3: Z-Order Operations
+    // ==========================================
+    for (AiEditOperation op : zOrderOps) {
+      try {
+        IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
+        IDIYComponent<?> ref = findComponentByName(op.getReferenceComponent(), componentByName);
+        
+        if (target == null) {
+          warnings.add("Cannot change Z-order: component '" + op.getComponentName() + "' not found.");
+          continue;
+        }
+        if (ref == null) {
+          warnings.add("Cannot change Z-order: reference component '" + op.getReferenceComponent() + "' not found.");
+          continue;
+        }
+        if (target.equals(ref)) {
+          continue;
+        }
+
+        List<IDIYComponent<?>> comps = project.getComponents();
+        if (!comps.contains(target) || !comps.contains(ref)) {
+          continue;
+        }
+
+        comps.remove(target);
+        int refIndex = comps.indexOf(ref);
+        
+        if ("send_behind".equalsIgnoreCase(op.getAction())) {
+          comps.add(refIndex, target);
+        } else if ("bring_in_front".equalsIgnoreCase(op.getAction())) {
+          comps.add(refIndex + 1, target);
+        }
+        newSelection.add(target);
+      } catch (Exception e) {
+        LOG.error("Failed to execute Pass 3 operation: " + op, e);
+        warnings.add("Error executing " + op.getAction() + " on " + op.getComponentName() + ": " + e.getMessage());
       }
     }
 
