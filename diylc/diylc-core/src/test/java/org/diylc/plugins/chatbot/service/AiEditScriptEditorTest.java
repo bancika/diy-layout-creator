@@ -191,4 +191,19 @@ public class AiEditScriptEditorTest {
         assertEquals(1, editor.getWarnings().size());
         assertTrue(editor.getWarnings().get(0).contains("unknown type"));
     }
+
+    @Test
+    public void testDatasheetModelField() {
+        AiEditOperation op = new AiEditOperation();
+        op.setAction("add");
+        op.setComponentType("passive.AxialFilmCapacitor");
+        op.setComponentName("C1");
+        op.setDatasheetModel("Mallory 150");
+        Map<String, String> props = new HashMap<>();
+        props.put("Value", "0.22uF");
+        props.put("Voltage", "63V");
+        op.setProperties(props);
+
+        assertEquals("Mallory 150", op.getDatasheetModel());
+    }
 }

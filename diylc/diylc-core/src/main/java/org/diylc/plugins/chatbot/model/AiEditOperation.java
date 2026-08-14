@@ -29,6 +29,9 @@ public class AiEditOperation {
   // For z-order operations
   private String referenceComponent; // e.g., "Board1"
 
+  // Datasheet model identifier (e.g. "F&T Typ A")
+  private String datasheetModel;
+
   public String getAction() { return action; }
   public void setAction(String action) { this.action = action; }
   
@@ -58,4 +61,7 @@ public class AiEditOperation {
 
   public String getReferenceComponent() { return referenceComponent; }
   public void setReferenceComponent(String referenceComponent) { this.referenceComponent = referenceComponent; }
+
+  public String getDatasheetModel() { return datasheetModel; }
+  public void setDatasheetModel(String datasheetModel) { this.datasheetModel = datasheetModel; }
 }

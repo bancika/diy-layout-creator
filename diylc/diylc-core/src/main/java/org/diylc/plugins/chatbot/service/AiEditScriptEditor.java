@@ -15,9 +15,12 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.measures.AbstractMeasure;
+import org.diylc.core.IDatasheetSupport;
+import org.diylc.core.measures.Capacitance;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.DatasheetService;
 
 /**
  * Executes an AiEditScript against a Project.
@@ -109,6 +112,9 @@ public class AiEditScriptEditor implements IProjectEditor {
           IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
           if (target != null) {
             applyProperties(target, op.getProperties(), processor);
+            if (op.getDatasheetModel() != null && !op.getDatasheetModel().isEmpty()) {
+              applyDatasheetModel(target, op.getDatasheetModel());
+            }
             newSelection.add(target);
           } else {
             warnings.add("Cannot modify component '" + op.getComponentName() + "' (not found).");
@@ -127,6 +133,11 @@ public class AiEditScriptEditor implements IProjectEditor {
           
           // Apply properties first so geometry (e.g. pin count, orientation) is computed correctly
           applyProperties(comp, op.getProperties(), processor);
+          
+          // Apply datasheet model if specified
+          if (op.getDatasheetModel() != null && !op.getDatasheetModel().isEmpty()) {
+            applyDatasheetModel(comp, op.getDatasheetModel());
+          }
           
           // Position the component
           if (ct.getCreationMethod() == CreationMethod.SINGLE_CLICK) {
@@ -284,6 +295,77 @@ public class AiEditScriptEditor implements IProjectEditor {
           break;
         }
       }
+    }
+  }
+
+  private void applyDatasheetModel(IDIYComponent<?> comp, String datasheetModel) {
+    if (!(comp instanceof IDatasheetSupport) || datasheetModel == null || datasheetModel.trim().isEmpty()) {
+      return;
+    }
+    List<String[]> datasheet = DatasheetService.getInstance().loadDatasheet(comp.getClass());
+    if (datasheet == null || datasheet.isEmpty()) {
+      return;
+    }
+
+    String targetModel = datasheetModel.trim();
+    List<String[]> modelCandidates = new ArrayList<>();
+    for (String[] row : datasheet) {
+      if (row.length > 0 && row[0].trim().equalsIgnoreCase(targetModel)) {
+        modelCandidates.add(row);
+      }
+    }
+
+    if (modelCandidates.isEmpty()) {
+      for (String[] row : datasheet) {
+        if (row.length > 0 && row[0].trim().toLowerCase().contains(targetModel.toLowerCase())) {
+          modelCandidates.add(row);
+        }
+      }
+    }
+
+    if (modelCandidates.isEmpty()) {
+      LOG.warn("No datasheet model found matching '" + datasheetModel + "' for " + comp.getName());
+      return;
+    }
+
+    if (modelCandidates.size() == 1) {
+      try {
+        ((IDatasheetSupport) comp).applyModel(modelCandidates.get(0));
+      } catch (Exception e) {
+        LOG.warn("Failed to apply datasheet model " + datasheetModel + " to " + comp.getName(), e);
+      }
+      return;
+    }
+
+    String[] bestMatch = modelCandidates.get(0);
+    Object valObj = comp.getValue();
+    
+    Double compCapValue = null;
+    if (valObj instanceof Capacitance) {
+      compCapValue = ((Capacitance) valObj).getNormalizedValue();
+    } else if (valObj != null) {
+      try {
+        compCapValue = Capacitance.parseCapacitance(valObj.toString()).getNormalizedValue();
+      } catch (Exception ignored) {}
+    }
+
+    for (String[] row : modelCandidates) {
+      if (row.length >= 3 && compCapValue != null) {
+        try {
+          String[] capParts = row[2].split(" ");
+          Capacitance rowCap = Capacitance.parseCapacitance(capParts[0] + capParts[1]);
+          if (rowCap.getNormalizedValue() != null && Math.abs(rowCap.getNormalizedValue() - compCapValue) / compCapValue < 0.05) {
+            bestMatch = row;
+            break;
+          }
+        } catch (Exception ignored) {}
+      }
+    }
+
+    try {
+      ((IDatasheetSupport) comp).applyModel(bestMatch);
+    } catch (Exception e) {
+      LOG.warn("Failed to apply datasheet model " + datasheetModel + " to " + comp.getName(), e);
     }
   }
 
