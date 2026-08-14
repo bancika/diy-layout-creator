@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+ * along with DIYLC. If not, see <http://www.gnu.org/licenses/>.
  * 
  */
 package org.diylc.components.modules;
@@ -89,33 +89,30 @@ public class L298NMotorDriver extends AbstractMakerBoard {
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    double termSpacing = new Size(5.08d, SizeUnit.mm).convertToPixels(); // ~40px
+    double termSpacing = new Size(5.08d, SizeUnit.mm).convertToPixels(); // 40px
     double pinSpacing = PIN_SPACING.convertToPixels(); // 20px
+    double boardSizePx = BOARD_SIZE.convertToPixels();
+    double boardX = -45;
 
-    double[][] relativeOffsets = new double[13][2];
-
-    // Power screw terminal (0..2) at bottom-left
-    for (int i = 0; i < 3; i++) {
-      relativeOffsets[i][0] = i * termSpacing;
-      relativeOffsets[i][1] = 0;
-    }
-    // Motor A terminal (3..4) on left edge
-    double leftX = -40;
-    double leftY = -120;
-    relativeOffsets[3] = new double[] {leftX, leftY};
-    relativeOffsets[4] = new double[] {leftX, leftY - termSpacing};
-
-    // Motor B terminal (5..6) on right edge
-    double rightX = 240;
-    relativeOffsets[5] = new double[] {rightX, leftY};
-    relativeOffsets[6] = new double[] {rightX, leftY - termSpacing};
-
-    // Logic header (7..12) at bottom-right
-    double logicX = 120;
-    for (int i = 0; i < 6; i++) {
-      relativeOffsets[7 + i][0] = logicX + i * pinSpacing;
-      relativeOffsets[7 + i][1] = 0;
-    }
+    double[][] relativeOffsets = new double[][] {
+      // Power screw terminal (0..2) at bottom-left: 12V, GND, 5V
+      { 0, 0 },
+      { termSpacing, 0 },
+      { termSpacing * 2, 0 },
+      // Motor A terminal (3..4) on left edge: OUT1, OUT2
+      { boardX + 22.5, -140 },
+      { boardX + 22.5, -180 },
+      // Motor B terminal (5..6) on right edge: OUT3, OUT4
+      { boardX + boardSizePx - 22.5, -140 },
+      { boardX + boardSizePx - 22.5, -180 },
+      // Logic header (7..12) at bottom-right: ENA, IN1, IN2, IN3, IN4, ENB
+      { 140, 0 },
+      { 140 + pinSpacing, 0 },
+      { 140 + pinSpacing * 2, 0 },
+      { 140 + pinSpacing * 3, 0 },
+      { 140 + pinSpacing * 4, 0 },
+      { 140 + pinSpacing * 5, 0 }
+    };
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -126,8 +123,8 @@ public class L298NMotorDriver extends AbstractMakerBoard {
     double x = p0.getX();
     double y = p0.getY();
     double boardSizePx = BOARD_SIZE.convertToPixels();
-    double boardX = x - 55;
-    double boardY = y - boardSizePx + 20;
+    double boardX = x - 45;
+    double boardY = y - boardSizePx + 25;
     return new RoundRectangle2D.Double(boardX, boardY, boardSizePx, boardSizePx, 10, 10);
   }
 
@@ -148,8 +145,8 @@ public class L298NMotorDriver extends AbstractMakerBoard {
     }
 
     double boardSizePx = BOARD_SIZE.convertToPixels();
-    double boardX = x - 55;
-    double boardY = y - boardSizePx + 20;
+    double boardX = x - 45;
+    double boardY = y - boardSizePx + 25;
 
     Shape boardShape = getBodyShape();
 
@@ -192,17 +189,27 @@ public class L298NMotorDriver extends AbstractMakerBoard {
 
       // Green screw terminal block bodies
       g2d.setColor(SCREW_TERMINAL_COLOR);
-      // Power terminal
-      g2d.fill(new RoundRectangle2D.Double(x - 15, y - 25, 110, 35, 3, 3));
-      // Motor A terminal
-      g2d.fill(new RoundRectangle2D.Double(x - 55, y - 175, 35, 75, 3, 3));
-      // Motor B terminal
-      g2d.fill(new RoundRectangle2D.Double(x + 225, y - 175, 35, 75, 3, 3));
+      // Power terminal (3 pins)
+      g2d.fill(new RoundRectangle2D.Double(x - 15, y - 25, 120, 35, 3, 3));
+      // Motor A terminal (2 pins)
+      g2d.fill(new RoundRectangle2D.Double(boardX + 5, y - 195, 35, 75, 3, 3));
+      // Motor B terminal (2 pins)
+      g2d.fill(new RoundRectangle2D.Double(boardX + boardSizePx - 40, y - 195, 35, 75, 3, 3));
+
+      // Logic header black block
+      g2d.setColor(HEADER_BODY_COLOR);
+      g2d.fill(new RoundRectangle2D.Double(x + 130, y - 10, 128, 20, 2, 2));
 
       // Silkscreen
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT);
       StringUtils.drawCenteredText(g2d, "L298N DRIVER", boardX + boardSizePx / 2.0, boardY + 30, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Terminal Silk labels
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "12V GND 5V", x + 40, y - 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT1/2", boardX + 50, y - 160, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT3/4", boardX + boardSizePx - 50, y - 160, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

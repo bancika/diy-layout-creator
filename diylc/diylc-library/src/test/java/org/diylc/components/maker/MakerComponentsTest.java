@@ -75,6 +75,9 @@ public class MakerComponentsTest {
       DHTSensor.class,
       MPU6050.class,
       LDRSensorModule.class,
+      BME280Sensor.class,
+      SoilMoistureSensor.class,
+      TCRT5000Sensor.class,
 
       // Displays & Outputs
       CharacterLCD.class,
@@ -82,6 +85,7 @@ public class MakerComponentsTest {
       SevenSegmentDisplay.class,
       LEDMatrix8x8.class,
       TFTDisplay.class,
+      WS2812BStick.class,
 
       // Modules & Breakouts
       LogicLevelConverter.class,
@@ -90,6 +94,18 @@ public class MakerComponentsTest {
       RelayModule.class,
       SDCardModule.class,
       RTCModule.class,
+      MB102PowerSupply.class,
+      TP4056Charger.class,
+      LM2596BuckConverter.class,
+      MT3608BoostConverter.class,
+      AnalogJoystickKY023.class,
+      RotaryEncoderKY040.class,
+      NRF24L01Transceiver.class,
+      HC05Bluetooth.class,
+      RFIDRC522.class,
+      ULN2003Driver.class,
+      PCA9685ServoDriver.class,
+      MOSFETSwitchModule.class,
 
       // Robotics
       MicroServoSG90.class,
