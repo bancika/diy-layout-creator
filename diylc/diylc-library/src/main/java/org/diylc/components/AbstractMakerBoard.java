@@ -222,6 +222,34 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
+   * Helper to draw rectangular tinned solder pads with drill holes at given control points.
+   */
+  protected void drawSolderPads(Graphics2D g2d, int startIndex, int count, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+    double padW = 22.0;
+    double padH = 16.0;
+    double holeD = 7.0;
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      RoundRectangle2D pad = new RoundRectangle2D.Double(p.getX() - padW / 2.0, p.getY() - padH / 2.0, padW, padH, 2, 2);
+      g2d.setColor(LIGHT_METAL_COLOR);
+      g2d.fill(pad);
+      g2d.setColor(LIGHT_METAL_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(pad);
+
+      // Central through-hole / drill hole
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
+      g2d.setColor(Color.DARK_GRAY);
+      g2d.draw(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
    * Helper to draw a mounting hole.
    */
   protected void drawMountingHole(Graphics2D g2d, double cx, double cy, double diameter) {

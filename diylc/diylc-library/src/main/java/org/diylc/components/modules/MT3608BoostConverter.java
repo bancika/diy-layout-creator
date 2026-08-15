@@ -23,12 +23,12 @@ package org.diylc.components.modules;
 
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -60,12 +60,21 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
   public static Color BOOST_BLUE = Color.decode("#1B4F72");
   public static Color POT_BLUE = Color.decode("#0055AA");
   public static Color INDUCTOR_BODY_COLOR = Color.decode("#2C3E50");
+  public static Color INDUCTOR_CORE_COLOR = Color.decode("#1A252F");
   public static Color POT_SCREW_BRASS = Color.decode("#D4AC0D");
+
+  public static Font PAD_LABEL_FONT = new Font("SansSerif", Font.BOLD, 9);
 
   public static Size BOARD_WIDTH = new Size(36.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(17.0d, SizeUnit.mm);
 
-  private static final String[] PIN_NAMES = {"VIN+", "VIN-", "VOUT+", "VOUT-"};
+  private static final double PAD_MARGIN_X = 22.0;
+  private static final double PAD_MARGIN_Y = 24.0;
+
+  // Pinout matches physical MT3608 board:
+  // Left: Output (0 = VOUT+, 1 = VOUT-)
+  // Right: Input (2 = VIN+, 3 = VIN-)
+  private static final String[] PIN_NAMES = {"VOUT+", "VOUT-", "VIN+", "VIN-"};
 
   public MT3608BoostConverter() {
     super();
@@ -87,14 +96,14 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
     double h = BOARD_HEIGHT.convertToPixels();
     double w = BOARD_WIDTH.convertToPixels();
 
-    // 4 Solder pads:
-    // Input (Left): 0 = VIN+, 1 = VIN-
-    // Output (Right): 2 = VOUT+, 3 = VOUT-
+    // 4 Solder pads with realistic vertical spacing:
+    // Output (Left): 0 = VOUT+ (Top-Left), 1 = VOUT- (Bottom-Left)
+    // Input (Right): 2 = VIN+ (Top-Right), 3 = VIN- (Bottom-Right)
     double[][] relativeOffsets = new double[][] {
-      { 0, 0 },             // Pin 0: VIN+
-      { 0, h - 20 },        // Pin 1: VIN-
-      { w - 20, 0 },        // Pin 2: VOUT+
-      { w - 20, h - 20 }    // Pin 3: VOUT-
+      { 0, 0 },                                        // Pin 0: VOUT+
+      { 0, h - 2 * PAD_MARGIN_Y },                     // Pin 1: VOUT-
+      { w - 2 * PAD_MARGIN_X, 0 },                     // Pin 2: VIN+
+      { w - 2 * PAD_MARGIN_X, h - 2 * PAD_MARGIN_Y }   // Pin 3: VIN-
     };
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -107,7 +116,9 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    return new RoundRectangle2D.Double(x - 10, y - 10, boardW, boardH, 6, 6);
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - PAD_MARGIN_Y;
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
   }
 
   @Override
@@ -128,8 +139,8 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - PAD_MARGIN_Y;
 
     Shape boardShape = getBodyShape();
 
@@ -145,38 +156,66 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Power Inductor (Square SMD, Center Left)
-      g2d.setColor(INDUCTOR_BODY_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 35, boardY + boardH / 2.0 - 20, 40, 40, 4, 4));
-      g2d.setColor(Color.LIGHT_GRAY);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "220", boardX + 55, boardY + boardH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-
-      // MT3608 SOT23-6 Boost Controller IC
-      drawChip(g2d, boardX + 85, boardY + boardH / 2.0 - 10, 20, 20, "3608");
-
-      // Blue 3296W Trimmer Potentiometer (Right Center)
+      // Blue 3296W Trimmer Potentiometer (Left side)
+      double potX = boardX + 44.0;
+      double potY = boardY + 44.0;
+      double potW = 48.0;
+      double potH = 46.0;
       g2d.setColor(POT_BLUE);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 115, boardY + 12, 45, 26, 3, 3));
-      // Brass screw head
-      g2d.setColor(POT_SCREW_BRASS);
-      g2d.fill(new Ellipse2D.Double(boardX + 120, boardY + 19, 12, 12));
-      g2d.setColor(Color.BLACK);
-      g2d.drawLine((int)(boardX + 122), (int)(boardY + 25), (int)(boardX + 130), (int)(boardY + 25));
+      g2d.fill(new RoundRectangle2D.Double(potX, potY, potW, potH, 3, 3));
+      g2d.setColor(POT_BLUE.darker());
+      g2d.draw(new RoundRectangle2D.Double(potX, potY, potW, potH, 3, 3));
 
-      // Silk Screen Text
+      // Brass screw head at bottom-left corner of the pot
+      double screwX = potX + 11.0;
+      double screwY = potY + potH - 11.0;
+      double screwD = 13.0;
+      g2d.setColor(POT_SCREW_BRASS);
+      g2d.fill(new Ellipse2D.Double(screwX - screwD / 2.0, screwY - screwD / 2.0, screwD, screwD));
+      g2d.setColor(Color.BLACK);
+      g2d.drawLine((int) (screwX - 4), (int) screwY, (int) (screwX + 4), (int) screwY);
+
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "VIN+", boardX + 15, boardY + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "VIN-", boardX + 15, boardY + boardH - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "VOUT+", boardX + boardW - 18, boardY + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "VOUT-", boardX + boardW - 18, boardY + boardH - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "3296", potX + potW / 2.0 + 4, potY + 18,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Power Inductor (Top-Right / Center, marked 220)
+      double indX = boardX + 115.0;
+      double indY = boardY + 12.0;
+      double indSize = 54.0;
+      g2d.setColor(INDUCTOR_BODY_COLOR);
+      g2d.fill(new RoundRectangle2D.Double(indX, indY, indSize, indSize, 6, 6));
+      g2d.setColor(INDUCTOR_CORE_COLOR);
+      g2d.fill(new Ellipse2D.Double(indX + 5, indY + 5, indSize - 10, indSize - 10));
+      g2d.setColor(LIGHT_METAL_COLOR);
+      g2d.fillRect((int) indX, (int) (indY + 16), 4, 22);
+      g2d.fillRect((int) (indX + indSize - 4), (int) (indY + 16), 4, 22);
+      g2d.setColor(Color.LIGHT_GRAY);
+      g2d.setFont(SILK_FONT);
+      StringUtils.drawCenteredText(g2d, "220", indX + indSize / 2.0, indY + indSize / 2.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // MT3608 SOT23-6 Boost Controller IC (Bottom-Right / Center)
+      drawChip(g2d, boardX + 150.0, boardY + 78.0, 26.0, 22.0, "3608");
+
+      // Silkscreen Text Labels (placed above/below pads without overlapping)
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(PAD_LABEL_FONT);
+      StringUtils.drawCenteredText(g2d, "VOUT+", boardX + PAD_MARGIN_X, boardY + 9.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "VOUT-", boardX + PAD_MARGIN_X, boardY + boardH - 9.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "VIN+", boardX + boardW - PAD_MARGIN_X, boardY + 9.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "VIN-", boardX + boardW - PAD_MARGIN_X, boardY + boardH - 9.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw connection pads
-    drawScrewTerminals(g2d, 0, controlPoints.length, 0, outlineMode, drawingObserver);
+    // Draw square/rounded rectangular tinned solder pads using LIGHT_METAL_COLOR
+    drawSolderPads(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
@@ -185,9 +224,9 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(BOOST_BLUE);
     g2d.fill(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
-    g2d.setColor(INDUCTOR_BODY_COLOR);
-    g2d.fillRect(6, height / 2 - 4, 8, 8);
     g2d.setColor(POT_BLUE);
-    g2d.fillRect(width - 12, height / 2 - 4, 8, 8);
+    g2d.fillRect(6, height / 2 - 4, 8, 8);
+    g2d.setColor(INDUCTOR_BODY_COLOR);
+    g2d.fillRect(width - 14, height / 2 - 4, 8, 8);
   }
 }
