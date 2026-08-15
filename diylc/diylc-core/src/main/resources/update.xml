@@ -403,6 +403,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved the accuracy of board underside rendering; some of the components were not rendered in the right place or at all</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Show a progress dialog while waiting for a long-running AI Analysis to complete</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
