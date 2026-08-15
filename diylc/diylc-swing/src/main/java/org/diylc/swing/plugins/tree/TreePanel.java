@@ -26,8 +26,6 @@ import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -54,8 +52,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.View;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -219,13 +215,6 @@ public class TreePanel extends JPanel {
       tree.setRowHeight(0);
       tree.setToggleClickCount(1);
       ToolTipManager.sharedInstance().registerComponent(tree);
-
-      tree.addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-          tree.setRowHeight(0);
-        }
-      });
 
       tree.addTreeSelectionListener(new TreeSelectionListener() {
 
@@ -474,11 +463,6 @@ public class TreePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    public ComponentCellRenderer() {
-      setVerticalAlignment(SwingConstants.CENTER);
-      setVerticalTextPosition(SwingConstants.CENTER);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Component getTreeCellRendererComponent(final JTree tree, final Object value,
@@ -486,8 +470,6 @@ public class TreePanel extends JPanel {
         final boolean hasFocus) {
 
       super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-      setVerticalAlignment(SwingConstants.CENTER);
-      setVerticalTextPosition(SwingConstants.CENTER);
 
       Object obj = value;
       if (obj != null && obj.getClass().equals(TreeNode.class)) {
@@ -496,12 +478,15 @@ public class TreePanel extends JPanel {
           setToolTipText(null);
           if (leaf)
             setIcon(IconLoader.Component.getIcon());
+
+          setPreferredSize(new Dimension(250, 20));
         } else {
           setToolTipText("<html><b>" + payload.getComponentType().getName() + "</b><br>"
               + payload.getComponentType().getDescription() + "<br>Author: "
               + payload.getComponentType().getAuthor() + "<br><br>" + CLICK_TO_INSTANTIATE
               + "</html>");
           setIcon(payload.getComponentType().getIcon());
+          setPreferredSize(new Dimension(250, 32));
         }
 
         String shortCutHtml = "";
@@ -542,39 +527,6 @@ public class TreePanel extends JPanel {
             + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay())
                 : payload.forDisplay())
             + shortCutHtml + variantsHtml + "</html>");
-
-        View view = (View) getClientProperty(BasicHTML.propertyKey);
-        if (view != null) {
-          int treeWidth = (tree != null && tree.getWidth() > 0) ? tree.getWidth() : 250;
-          int depth = 1;
-          if (tree != null && row >= 0) {
-            TreePath path = tree.getPathForRow(row);
-            if (path != null) {
-              depth = Math.max(1, path.getPathCount() - 1);
-            }
-          }
-          int indent = depth * 20 + 20;
-          int iconW = getIcon() != null ? getIcon().getIconWidth() + getIconTextGap() : 0;
-          int availableTextWidth = Math.max(80, treeWidth - indent - iconW - 12);
-
-          view.setSize(availableTextWidth, 0);
-          float prefTextH = view.getPreferredSpan(View.Y_AXIS);
-          float prefTextW = view.getPreferredSpan(View.X_AXIS);
-
-          int iconH = getIcon() != null ? getIcon().getIconHeight() : 0;
-          int minH = (payload.getComponentType() == null) ? 20 : 34;
-          int contentH = (int) Math.ceil(Math.max(iconH, prefTextH));
-          int finalH = Math.max(minH, contentH + 4);
-          int finalW = Math.max(250, indent + iconW + (int) Math.ceil(prefTextW) + 12);
-
-          setPreferredSize(new Dimension(finalW, finalH));
-        } else {
-          if (payload.getComponentType() == null) {
-            setPreferredSize(new Dimension(250, 20));
-          } else {
-            setPreferredSize(new Dimension(250, 34));
-          }
-        }
       }
 
       return this;
