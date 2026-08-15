@@ -70,6 +70,18 @@ public class ULN2003Driver extends AbstractMakerBoard {
     updateControlPoints();
   }
 
+  private static final String[] PIN_NAMES = {"IN1", "IN2", "IN3", "IN4", "5-12V", "GND",
+      "A", "B", "C", "D", "COM"};
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
+  }
+
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];

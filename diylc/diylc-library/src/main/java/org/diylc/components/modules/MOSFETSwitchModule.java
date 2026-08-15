@@ -62,10 +62,20 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(33.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(24.0d, SizeUnit.mm);
 
+  private static final String[] PIN_NAMES = {"SIG", "VCC", "GND", "VIN", "GND (Power)", "V+", "V-"};
+
   public MOSFETSwitchModule() {
     super();
     this.bodyColor = MOSFET_RED;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -157,16 +167,14 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
 
       // Dual Screw Terminal Blocks (Right side)
       double stX = boardX + boardW - 48;
+      RoundRectangle2D stb1 = new RoundRectangle2D.Double(stX, boardY + 8, 42, 35, 3, 3);
+      RoundRectangle2D stb2 = new RoundRectangle2D.Double(stX, boardY + boardH - 43, 42, 35, 3, 3);
       g2d.setColor(SCREW_TERMINAL_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(stX, boardY + 8, 42, 35, 3, 3));
-      g2d.fill(new RoundRectangle2D.Double(stX, boardY + boardH - 43, 42, 35, 3, 3));
-
-      // Screw heads
-      g2d.setColor(Color.LIGHT_GRAY);
-      g2d.fill(new Ellipse2D.Double(stX + 8, boardY + 18, 12, 12));
-      g2d.fill(new Ellipse2D.Double(stX + 24, boardY + 18, 12, 12));
-      g2d.fill(new Ellipse2D.Double(stX + 8, boardY + boardH - 32, 12, 12));
-      g2d.fill(new Ellipse2D.Double(stX + 24, boardY + boardH - 32, 12, 12));
+      g2d.fill(stb1);
+      g2d.fill(stb2);
+      g2d.setColor(SCREW_TERMINAL_BORDER);
+      g2d.draw(stb1);
+      g2d.draw(stb2);
 
       // Gate Trigger Status LED (Red)
       g2d.setColor(Color.RED);

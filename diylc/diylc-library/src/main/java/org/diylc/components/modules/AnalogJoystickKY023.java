@@ -60,14 +60,27 @@ public class AnalogJoystickKY023 extends AbstractMakerBoard {
   public static Color JOY_PCB = Color.decode("#1B2631");
   public static Color POT_GREEN = Color.decode("#27AE60");
   public static Color THUMB_CAP = Color.decode("#17202A");
+  public static Color GIMBAL_METAL = Color.decode("#7F8C8D");
+  public static Color THUMB_INNER = Color.decode("#2C3E50");
+  public static Color THUMB_WELL = Color.decode("#111111");
 
   public static Size BOARD_WIDTH = new Size(34.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(26.0d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {"GND", "+5V", "VRx", "VRy", "SW"};
 
   public AnalogJoystickKY023() {
     super();
     this.bodyColor = JOY_PCB;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -141,7 +154,7 @@ public class AnalogJoystickKY023 extends AbstractMakerBoard {
       // Metal Gimbal Frame (Center)
       double cx = boardX + (boardW - 30) / 2.0;
       double cy = boardY + boardH / 2.0;
-      g2d.setColor(Color.decode("#7F8C8D"));
+      g2d.setColor(GIMBAL_METAL);
       g2d.fill(new RoundRectangle2D.Double(cx - 50, cy - 50, 100, 100, 8, 8));
 
       // Potentiometer cases (X and Y side blocks)
@@ -152,9 +165,9 @@ public class AnalogJoystickKY023 extends AbstractMakerBoard {
       // Circular Rubber Thumbstick Cap
       g2d.setColor(THUMB_CAP);
       g2d.fill(new Ellipse2D.Double(cx - 42, cy - 42, 84, 84));
-      g2d.setColor(Color.decode("#2C3E50"));
+      g2d.setColor(THUMB_INNER);
       g2d.fill(new Ellipse2D.Double(cx - 30, cy - 30, 60, 60));
-      g2d.setColor(Color.decode("#111111"));
+      g2d.setColor(THUMB_WELL);
       g2d.fill(new Ellipse2D.Double(cx - 20, cy - 20, 40, 40));
 
       // Silk Screen Pin Labels

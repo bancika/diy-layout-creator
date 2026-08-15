@@ -62,18 +62,22 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color MOUNTING_HOLE_BORDER = Color.decode("#8B6508");
   public static Color IC_BODY_COLOR = Color.decode("#1A1A1A");
   public static Color IC_TEXT_COLOR = Color.decode("#CCCCCC");
-  public static Color SCREW_TERMINAL_COLOR = Color.decode("#2E7D32");
-  public static Color SCREW_TERMINAL_BORDER = Color.decode("#1B5E20");
+  public static Color SCREW_TERMINAL_COLOR = Color.decode("#90AB66");
+  public static Color SCREW_TERMINAL_BORDER = Color.decode("#90AB66").darker();
+  public static Color SCREW_CIRCLE_COLOR = LIGHT_METAL_COLOR;
   public static Color METAL_SHIELD_COLOR = Color.decode("#C0C0C0");
   public static Color METAL_SHIELD_BORDER = Color.decode("#909090");
   public static Color USB_METAL_COLOR = Color.decode("#D3D3D3");
+  public static Color IC_BORDER_COLOR = Color.decode("#333333");
+  public static Color PIN_MARKER_COLOR = Color.decode("#555555");
+  public static Color METAL_LABEL_COLOR = Color.decode("#555555");
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
 
-  public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 8);
-  public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 9);
-  public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 11);
+  public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
+  public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
+  public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -193,24 +197,28 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   /**
    * Helper to draw screw terminal block contacts at given control points.
+   * Visuals match the PCBTerminalBlock component: green body, light metal screw circles with diagonal slot.
    */
   protected void drawScrewTerminals(Graphics2D g2d, int startIndex, int count, double pitchPx, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
-    int pinPx = (int) Math.round(PIN_SIZE.convertToPixels() * 1.5);
+    int circleDiameter = getClosestOdd((int) (PIN_SPACING.convertToPixels() * 3d / 5));
+
     drawingObserver.startTrackingContinuityArea(true);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
     for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
-      g2d.setColor(COPPER_COLOR);
-      g2d.fill(new Ellipse2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
+      // Light metal screw head circle
+      g2d.setColor(SCREW_CIRCLE_COLOR);
+      g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2), (int) Math.round(p.getY() - circleDiameter / 2),
+          circleDiameter, circleDiameter);
+      // Diagonal screw slot line
+      g2d.setColor(SCREW_CIRCLE_COLOR.darker());
+      g2d.drawLine((int) (p.getX() + Math.cos(Math.PI / 4) * circleDiameter / 2),
+          (int) (p.getY() + Math.sin(Math.PI / 4) * circleDiameter / 2),
+          (int) (p.getX() + Math.cos(5 * Math.PI / 4) * circleDiameter / 2),
+          (int) (p.getY() + Math.sin(5 * Math.PI / 4) * circleDiameter / 2));
     }
     drawingObserver.stopTrackingContinuityArea();
-
-    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
-      Point2D p = controlPoints[i];
-      g2d.setColor(COPPER_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(new Ellipse2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
-    }
   }
 
   /**
@@ -235,12 +243,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   protected void drawChip(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 4, 4));
-    g2d.setColor(Color.decode("#333333"));
+    g2d.setColor(IC_BORDER_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(x, y, w, h, 4, 4));
 
     // pin 1 dot
-    g2d.setColor(Color.decode("#555555"));
+    g2d.setColor(PIN_MARKER_COLOR);
     g2d.fill(new Ellipse2D.Double(x + 3, y + 3, 3, 3));
 
     if (label != null && !label.isEmpty() && w > 20 && h > 10) {
@@ -260,7 +268,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(x, y, w, h, 3, 3));
     if (label != null && !label.isEmpty()) {
-      g2d.setColor(Color.decode("#555555"));
+      g2d.setColor(METAL_LABEL_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, label, x + w / 2.0, y + h / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }

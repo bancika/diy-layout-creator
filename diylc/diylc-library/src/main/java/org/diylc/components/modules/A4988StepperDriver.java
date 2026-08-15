@@ -57,6 +57,9 @@ public class A4988StepperDriver extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color A4988_GREEN = Color.decode("#2E7D32");
+  public static Color HEATSINK_COLOR = Color.decode("#B0BEC5");
+  public static Color HEATSINK_FIN_COLOR = Color.decode("#78909C");
+  public static Color TRIMPOT_COLOR = Color.decode("#CFD8DC");
   public static Size BOARD_WIDTH = new Size(15.2d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(20.3d, SizeUnit.mm);
 
@@ -154,16 +157,16 @@ public class A4988StepperDriver extends AbstractMakerBoard {
       double hsX = boardX + (boardW - hsSize) / 2.0;
       double hsY = boardY + 35;
 
-      g2d.setColor(Color.decode("#B0BEC5"));
+      g2d.setColor(HEATSINK_COLOR);
       g2d.fill(new RoundRectangle2D.Double(hsX, hsY, hsSize, hsSize, 3, 3));
-      g2d.setColor(Color.decode("#78909C"));
+      g2d.setColor(HEATSINK_FIN_COLOR);
       g2d.draw(new RoundRectangle2D.Double(hsX, hsY, hsSize, hsSize, 3, 3));
       // Heatsink fins
       g2d.drawLine((int) hsX + 15, (int) hsY + 4, (int) hsX + 15, (int) (hsY + hsSize - 4));
       g2d.drawLine((int) hsX + 30, (int) hsY + 4, (int) hsX + 30, (int) (hsY + hsSize - 4));
 
       // Tiny metal trimpot at bottom
-      g2d.setColor(Color.decode("#CFD8DC"));
+      g2d.setColor(TRIMPOT_COLOR);
       g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - 25) / 2.0, boardY + boardH - 35, 25, 20, 2, 2));
 
       g2d.setColor(Color.WHITE);
@@ -186,7 +189,7 @@ public class A4988StepperDriver extends AbstractMakerBoard {
     g2d.draw(new RoundRectangle2D.Double(5, 3, width - 10, height - 6, 3, 3));
 
     // Heatsink
-    g2d.setColor(Color.decode("#B0BEC5"));
+    g2d.setColor(HEATSINK_COLOR);
     g2d.fillRect(10, 8, width - 20, 10);
 
     g2d.setColor(Color.WHITE);

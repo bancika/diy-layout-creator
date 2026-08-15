@@ -61,10 +61,20 @@ public class TP4056Charger extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(28.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(17.5d, SizeUnit.mm);
 
+  private static final String[] PIN_NAMES = {"IN+", "IN-", "OUT+", "B+", "B-", "OUT-"};
+
   public TP4056Charger() {
     super();
     this.bodyColor = TP4056_BLUE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override

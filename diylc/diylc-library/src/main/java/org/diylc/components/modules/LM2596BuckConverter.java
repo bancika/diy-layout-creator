@@ -60,14 +60,28 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
   public static Color BUCK_BLUE = Color.decode("#1F618D");
   public static Color POT_BLUE = Color.decode("#0055AA");
   public static Color COPPER_COIL = Color.decode("#D35400");
+  public static Color IC_TAB_BODY = Color.decode("#333333");
+  public static Color IC_TAB_METAL = Color.decode("#CCCCCC");
+  public static Color INDUCTOR_CORE = Color.decode("#222222");
+  public static Color POT_SCREW_BRASS = Color.decode("#D4AC0D");
 
   public static Size BOARD_WIDTH = new Size(43.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(21.0d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {"IN+", "IN-", "OUT+", "OUT-"};
 
   public LM2596BuckConverter() {
     super();
     this.bodyColor = BUCK_BLUE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -151,16 +165,16 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
       g2d.draw(new Ellipse2D.Double(boardX + boardW - 58, boardY + boardH / 2.0 - 18, 36, 36));
 
       // LM2596 IC (Center Left) with tab
-      g2d.setColor(Color.decode("#333333"));
+      g2d.setColor(IC_TAB_BODY);
       g2d.fill(new RoundRectangle2D.Double(boardX + 70, boardY + 15, 38, 48, 3, 3));
-      g2d.setColor(Color.decode("#CCCCCC"));
+      g2d.setColor(IC_TAB_METAL);
       g2d.fill(new RoundRectangle2D.Double(boardX + 70, boardY + 12, 38, 10, 2, 2));
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "LM2596", boardX + 89, boardY + 38, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Toroidal Power Inductor (Center Right)
-      g2d.setColor(Color.decode("#222222"));
+      g2d.setColor(INDUCTOR_CORE);
       g2d.fill(new Ellipse2D.Double(boardX + 120, boardY + boardH / 2.0 - 24, 48, 48));
       g2d.setColor(COPPER_COIL);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
@@ -170,7 +184,7 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
       g2d.setColor(POT_BLUE);
       g2d.fill(new RoundRectangle2D.Double(boardX + 185, boardY + 15, 45, 26, 3, 3));
       // Brass screw head
-      g2d.setColor(Color.decode("#D4AC0D"));
+      g2d.setColor(POT_SCREW_BRASS);
       g2d.fill(new Ellipse2D.Double(boardX + 190, boardY + 22, 12, 12));
       g2d.setColor(Color.BLACK);
       g2d.drawLine((int)(boardX + 192), (int)(boardY + 28), (int)(boardX + 200), (int)(boardY + 28));

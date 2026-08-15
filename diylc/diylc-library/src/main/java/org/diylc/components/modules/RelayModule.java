@@ -219,8 +219,11 @@ public class RelayModule extends AbstractMakerBoard {
         double rx = boardX + 55;
 
         // Terminal block
+        RoundRectangle2D tb = new RoundRectangle2D.Double(boardX + 5, ry + 2, 45, relayH - 4, 3, 3);
         g2d.setColor(SCREW_TERMINAL_COLOR);
-        g2d.fill(new RoundRectangle2D.Double(boardX + 5, ry + 2, 45, relayH - 4, 3, 3));
+        g2d.fill(tb);
+        g2d.setColor(SCREW_TERMINAL_BORDER);
+        g2d.draw(tb);
 
         // Blue Relay cube
         g2d.setColor(RELAY_CUBE_BLUE);

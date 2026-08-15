@@ -60,9 +60,15 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
 
   public static Color NRF_PCB = Color.decode("#111111");
   public static Color ANTENNA_GOLD = Color.decode("#D4AC0D");
+  public static Color CRYSTAL_BODY = Color.decode("#BDC3C7");
+  public static Color CRYSTAL_BORDER = Color.decode("#7F8C8D");
+  public static Color HEADER_SHROUD = Color.decode("#1C1C1C");
+  public static Color HEADER_BORDER = Color.decode("#333333");
 
   public static Size BOARD_WIDTH = new Size(29.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(15.2d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {"GND", "VCC", "CE", "CSN", "SCK", "MOSI", "MISO", "IRQ"};
 
   public NRF24L01Transceiver() {
     super();
@@ -71,22 +77,32 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
   }
 
   @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
+  }
+
+  @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    // 2x4 Header (8 pins):
-    // Row 1 (Top): 0 = GND, 1 = CE, 2 = SCK, 3 = MISO
-    // Row 2 (Bottom): 4 = VCC (3.3V), 5 = CSN, 6 = MOSI, 7 = IRQ
+    // 4x2 Header (8 pins) — 4 rows, 2 columns:
+    // Row 0: 0 = GND,  1 = VCC (3.3V)
+    // Row 1: 2 = CE,   3 = CSN
+    // Row 2: 4 = SCK,  5 = MOSI
+    // Row 3: 6 = MISO, 7 = IRQ
     double[][] relativeOffsets = new double[][] {
       { 0, 0 },
       { spacing, 0 },
-      { spacing * 2, 0 },
-      { spacing * 3, 0 },
       { 0, spacing },
       { spacing, spacing },
-      { spacing * 2, spacing },
-      { spacing * 3, spacing }
+      { 0, spacing * 2 },
+      { spacing, spacing * 2 },
+      { 0, spacing * 3 },
+      { spacing, spacing * 3 }
     };
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -99,8 +115,9 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - boardW + 4 * PIN_SPACING.convertToPixels() + 10;
-    double boardY = y - (boardH - PIN_SPACING.convertToPixels()) / 2.0;
+    double spacing = PIN_SPACING.convertToPixels();
+    double boardX = x - 15;
+    double boardY = y - (boardH - 3 * spacing) / 2.0;
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4);
   }
 
@@ -120,10 +137,11 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
+    double spacing = PIN_SPACING.convertToPixels();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - boardW + 4 * PIN_SPACING.convertToPixels() + 10;
-    double boardY = y - (boardH - PIN_SPACING.convertToPixels()) / 2.0;
+    double boardX = x - 15;
+    double boardY = y - (boardH - 3 * spacing) / 2.0;
 
     Shape boardShape = getBodyShape();
 
@@ -139,11 +157,11 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Serpentine PCB Trace Antenna (Left edge)
+      // Serpentine PCB Trace Antenna (right side, extending beyond board)
       g2d.setColor(ANTENNA_GOLD);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2.0f));
       Path2D antenna = new Path2D.Double();
-      double ax = boardX + 8;
+      double ax = boardX + boardW - 50;
       double ay = boardY + 12;
       antenna.moveTo(ax, ay);
       antenna.lineTo(ax + 35, ay);
@@ -158,25 +176,34 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
       g2d.draw(antenna);
 
       // NRF24L01+ QFN IC (Center)
-      drawChip(g2d, boardX + 60, boardY + boardH / 2.0 - 15, 30, 30, "NRF");
+      drawChip(g2d, boardX + 50, boardY + boardH / 2.0 - 18, 30, 36, "NRF");
 
       // 16.000 MHz Crystal (Silver can)
-      g2d.setColor(Color.decode("#BDC3C7"));
-      g2d.fill(new RoundRectangle2D.Double(boardX + 98, boardY + boardH / 2.0 - 10, 24, 38, 4, 4));
-      g2d.setColor(Color.decode("#7F8C8D"));
-      g2d.draw(new RoundRectangle2D.Double(boardX + 98, boardY + boardH / 2.0 - 10, 24, 38, 4, 4));
+      g2d.setColor(CRYSTAL_BODY);
+      g2d.fill(new RoundRectangle2D.Double(boardX + 88, boardY + boardH / 2.0 - 10, 22, 20, 4, 4));
+      g2d.setColor(CRYSTAL_BORDER);
+      g2d.draw(new RoundRectangle2D.Double(boardX + 88, boardY + boardH / 2.0 - 10, 22, 20, 4, 4));
 
-      // 2x4 Header Body (Black Shroud)
-      g2d.setColor(Color.decode("#1C1C1C"));
-      double spacing = PIN_SPACING.convertToPixels();
-      g2d.fill(new RoundRectangle2D.Double(x - 6, y - 6, spacing * 3 + 12, spacing + 12, 3, 3));
-      g2d.setColor(Color.decode("#333333"));
-      g2d.draw(new RoundRectangle2D.Double(x - 6, y - 6, spacing * 3 + 12, spacing + 12, 3, 3));
+      // 2x4 Header Body (Black Shroud) — now 2-wide × 4-tall
+      g2d.setColor(HEADER_SHROUD);
+      g2d.fill(new RoundRectangle2D.Double(x - 6, y - 6, spacing + 12, spacing * 3 + 12, 3, 3));
+      g2d.setColor(HEADER_BORDER);
+      g2d.draw(new RoundRectangle2D.Double(x - 6, y - 6, spacing + 12, spacing * 3 + 12, 3, 3));
 
       // Silk Screen Pin Labels
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "NRF24L01+", boardX + boardW / 2.0, boardY + 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      for (int row = 0; row < 4; row++) {
+        StringUtils.drawCenteredText(g2d, PIN_NAMES[row * 2], x - 12, y + row * spacing,
+            HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+        StringUtils.drawCenteredText(g2d, PIN_NAMES[row * 2 + 1], x + spacing + 12, y + row * spacing,
+            HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      }
+
+      // Board label
+      g2d.setFont(SILK_FONT);
+      StringUtils.drawCenteredText(g2d, "NRF24L01+", boardX + boardW / 2.0, boardY + 12,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

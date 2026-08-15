@@ -63,10 +63,20 @@ public class BME280Sensor extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(15.2d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(12.0d, SizeUnit.mm);
 
+  private static final String[] PIN_NAMES = {"VCC", "GND", "SCL", "SDA", "CSB", "SDO"};
+
   public BME280Sensor() {
     super();
     this.bodyColor = BME_PURPLE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override

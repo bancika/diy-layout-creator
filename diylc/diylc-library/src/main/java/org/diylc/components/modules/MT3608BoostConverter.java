@@ -59,14 +59,26 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
 
   public static Color BOOST_BLUE = Color.decode("#1B4F72");
   public static Color POT_BLUE = Color.decode("#0055AA");
+  public static Color INDUCTOR_BODY_COLOR = Color.decode("#2C3E50");
+  public static Color POT_SCREW_BRASS = Color.decode("#D4AC0D");
 
   public static Size BOARD_WIDTH = new Size(36.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(17.0d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {"VIN+", "VIN-", "VOUT+", "VOUT-"};
 
   public MT3608BoostConverter() {
     super();
     this.bodyColor = BOOST_BLUE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -134,7 +146,7 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Power Inductor (Square SMD, Center Left)
-      g2d.setColor(Color.decode("#2C3E50"));
+      g2d.setColor(INDUCTOR_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(boardX + 35, boardY + boardH / 2.0 - 20, 40, 40, 4, 4));
       g2d.setColor(Color.LIGHT_GRAY);
       g2d.setFont(SILK_FONT_SMALL);
@@ -147,7 +159,7 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
       g2d.setColor(POT_BLUE);
       g2d.fill(new RoundRectangle2D.Double(boardX + 115, boardY + 12, 45, 26, 3, 3));
       // Brass screw head
-      g2d.setColor(Color.decode("#D4AC0D"));
+      g2d.setColor(POT_SCREW_BRASS);
       g2d.fill(new Ellipse2D.Double(boardX + 120, boardY + 19, 12, 12));
       g2d.setColor(Color.BLACK);
       g2d.drawLine((int)(boardX + 122), (int)(boardY + 25), (int)(boardX + 130), (int)(boardY + 25));
@@ -173,7 +185,7 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(BOOST_BLUE);
     g2d.fill(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
-    g2d.setColor(Color.decode("#2C3E50"));
+    g2d.setColor(INDUCTOR_BODY_COLOR);
     g2d.fillRect(6, height / 2 - 4, 8, 8);
     g2d.setColor(POT_BLUE);
     g2d.fillRect(width - 12, height / 2 - 4, 8, 8);

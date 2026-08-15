@@ -60,14 +60,30 @@ public class MB102PowerSupply extends AbstractMakerBoard {
   public static Color MB102_PCB = Color.decode("#E8E4D9");
   public static Color JUMPER_YELLOW = Color.decode("#F1C40F");
   public static Color SWITCH_RED = Color.decode("#E74C3C");
+  public static Color JACK_BODY_COLOR = Color.decode("#111111");
+  public static Color JACK_BORDER_COLOR = Color.decode("#333333");
+  public static Color POWER_LED_COLOR = Color.decode("#2ECC71");
 
   public static Size BOARD_WIDTH = new Size(32.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(54.0d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {
+      "V+ (Top)", "GND (Top)", "V+ (Top)", "GND (Top)",
+      "V+ (Bottom)", "GND (Bottom)", "V+ (Bottom)", "GND (Bottom)"
+  };
 
   public MB102PowerSupply() {
     super();
     this.bodyColor = MB102_PCB;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -141,9 +157,9 @@ public class MB102PowerSupply extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // DC Barrel Jack (Left Edge Center)
-      g2d.setColor(Color.decode("#111111"));
+      g2d.setColor(JACK_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(boardX - 8, boardY + boardH / 2.0 - 25, 45, 50, 4, 4));
-      g2d.setColor(Color.decode("#333333"));
+      g2d.setColor(JACK_BORDER_COLOR);
       g2d.draw(new RoundRectangle2D.Double(boardX - 8, boardY + boardH / 2.0 - 25, 45, 50, 4, 4));
       g2d.setColor(Color.LIGHT_GRAY);
       g2d.fill(new Ellipse2D.Double(boardX - 4, boardY + boardH / 2.0 - 10, 20, 20));
@@ -160,7 +176,7 @@ public class MB102PowerSupply extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(boardX + 53, boardY + 50, 18, 18));
 
       // Power Green LED
-      g2d.setColor(Color.decode("#2ECC71"));
+      g2d.setColor(POWER_LED_COLOR);
       g2d.fill(new Ellipse2D.Double(boardX + 85, boardY + 54, 10, 10));
 
       // AMS1117 Voltage Regulators (3.3V and 5.0V)

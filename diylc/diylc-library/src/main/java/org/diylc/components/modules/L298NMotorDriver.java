@@ -189,12 +189,16 @@ public class L298NMotorDriver extends AbstractMakerBoard {
 
       // Green screw terminal block bodies
       g2d.setColor(SCREW_TERMINAL_COLOR);
-      // Power terminal (3 pins)
-      g2d.fill(new RoundRectangle2D.Double(x - 15, y - 25, 120, 35, 3, 3));
-      // Motor A terminal (2 pins)
-      g2d.fill(new RoundRectangle2D.Double(boardX + 5, y - 195, 35, 75, 3, 3));
-      // Motor B terminal (2 pins)
-      g2d.fill(new RoundRectangle2D.Double(boardX + boardSizePx - 40, y - 195, 35, 75, 3, 3));
+      RoundRectangle2D tb1 = new RoundRectangle2D.Double(x - 15, y - 25, 120, 35, 3, 3);
+      RoundRectangle2D tb2 = new RoundRectangle2D.Double(boardX + 5, y - 195, 35, 75, 3, 3);
+      RoundRectangle2D tb3 = new RoundRectangle2D.Double(boardX + boardSizePx - 40, y - 195, 35, 75, 3, 3);
+      g2d.fill(tb1);
+      g2d.fill(tb2);
+      g2d.fill(tb3);
+      g2d.setColor(SCREW_TERMINAL_BORDER);
+      g2d.draw(tb1);
+      g2d.draw(tb2);
+      g2d.draw(tb3);
 
       // Logic header black block
       g2d.setColor(HEADER_BODY_COLOR);

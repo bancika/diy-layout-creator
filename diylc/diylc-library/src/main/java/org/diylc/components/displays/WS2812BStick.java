@@ -23,6 +23,7 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -59,15 +60,35 @@ public class WS2812BStick extends AbstractMakerBoard {
 
   public static Color NEO_BLACK = Color.decode("#111111");
   public static Color LED_PACKAGE = Color.decode("#FDFEFE");
+  public static Color LED_BORDER = Color.decode("#D0D3D4");
   public static Color LED_DIFFUSER = Color.decode("#EAECEE");
+  public static Color DIFFUSER_BORDER = Color.decode("#BDC3C7");
+  public static Color CHIP_DOT_COLOR = Color.decode("#333333");
+  public static Color CAP_CERAMIC_COLOR = Color.decode("#B87333");
+  public static Color CAP_METAL_COLOR = Color.decode("#D5D8DC");
+
+  public static Font PIN_LABEL_FONT = new Font("SansSerif", Font.BOLD, 9);
 
   public static Size BOARD_WIDTH = new Size(53.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(10.2d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {
+      "DIN", "+5V (In)", "GND (In)", "GND (In)",
+      "DOUT", "+5V (Out)", "GND (Out)", "GND (Out)"
+  };
 
   public WS2812BStick() {
     super();
     this.bodyColor = NEO_BLACK;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
@@ -138,45 +159,63 @@ public class WS2812BStick extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 8x 5050 SMD WS2812B RGB LEDs
-      double startX = boardX + 45;
-      double ledPitch = (boardW - 90) / 7.0;
+      // 8x 5050 SMD WS2812B RGB LEDs (centered between left and right pin areas)
+      double spacing = PIN_SPACING.convertToPixels();
+      double ledAreaStartX = boardX + 68;
+      double ledAreaEndX = boardX + boardW - 68;
+      double ledPitch = (ledAreaEndX - ledAreaStartX) / 7.0;
 
       for (int i = 0; i < 8; i++) {
-        double lx = startX + i * ledPitch;
+        double lx = ledAreaStartX + i * ledPitch;
         double ly = boardY + boardH / 2.0;
 
-        // 5050 White Package
+        // 5050 White Package (28x28)
         g2d.setColor(LED_PACKAGE);
-        g2d.fill(new RoundRectangle2D.Double(lx - 16, ly - 16, 32, 32, 3, 3));
-        g2d.setColor(Color.LIGHT_GRAY);
-        g2d.draw(new RoundRectangle2D.Double(lx - 16, ly - 16, 32, 32, 3, 3));
+        g2d.fill(new RoundRectangle2D.Double(lx - 14, ly - 14, 28, 28, 3, 3));
+        g2d.setColor(LED_BORDER);
+        g2d.draw(new RoundRectangle2D.Double(lx - 14, ly - 14, 28, 28, 3, 3));
 
         // Circular milky phosphor/lens
         g2d.setColor(LED_DIFFUSER);
-        g2d.fill(new Ellipse2D.Double(lx - 11, ly - 11, 22, 22));
+        g2d.fill(new Ellipse2D.Double(lx - 10, ly - 10, 20, 20));
+        g2d.setColor(DIFFUSER_BORDER);
+        g2d.draw(new Ellipse2D.Double(lx - 10, ly - 10, 20, 20));
 
         // Internal tiny IC dot
-        g2d.setColor(Color.decode("#333333"));
-        g2d.fill(new Rectangle2D.Double(lx - 3, ly - 3, 6, 6));
+        g2d.setColor(CHIP_DOT_COLOR);
+        g2d.fill(new Rectangle2D.Double(lx - 2.5, ly - 2.5, 5, 5));
 
-        // Bypass capacitor
+        // Decoupling capacitor between LEDs (0805 SMD capacitor with silver end caps)
         if (i < 7) {
-          g2d.setColor(Color.decode("#8B6508"));
-          g2d.fill(new Rectangle2D.Double(lx + ledPitch / 2.0 - 4, ly - 14, 8, 4));
+          double capX = lx + ledPitch / 2.0 - 4;
+          double capY = ly - 12;
+          // Ceramic body
+          g2d.setColor(CAP_CERAMIC_COLOR);
+          g2d.fill(new Rectangle2D.Double(capX, capY, 8, 4));
+          // Silver endcaps
+          g2d.setColor(CAP_METAL_COLOR);
+          g2d.fillRect((int) capX, (int) capY, 2, 4);
+          g2d.fillRect((int) (capX + 6), (int) capY, 2, 4);
         }
       }
 
-      // Silk Screen Pin Labels
+      // Silk Screen Pin Labels — all 4 pins labeled on both sides with clean spacing
       g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "DI", boardX + 22, y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "5V", boardX + 22, y + PIN_SPACING.convertToPixels(), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "GND", boardX + 22, y + PIN_SPACING.convertToPixels() * 2, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      g2d.setFont(PIN_LABEL_FONT);
 
-      StringUtils.drawCenteredText(g2d, "DO", boardX + boardW - 22, y, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "5V", boardX + boardW - 22, y + PIN_SPACING.convertToPixels(), HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "GND", boardX + boardW - 22, y + PIN_SPACING.convertToPixels() * 2, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      // Left Input Header Labels (DIN, 5V, GND, GND)
+      String[] inLabels = {"DIN", "5V", "GND", "GND"};
+      for (int i = 0; i < 4; i++) {
+        StringUtils.drawCenteredText(g2d, inLabels[i], boardX + 23, y + i * spacing,
+            HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      }
+
+      // Right Output Header Labels (DOUT, 5V, GND, GND)
+      String[] outLabels = {"DOUT", "5V", "GND", "GND"};
+      for (int i = 0; i < 4; i++) {
+        StringUtils.drawCenteredText(g2d, outLabels[i], boardX + boardW - 23, y + i * spacing,
+            HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      }
     }
 
     g2d.setTransform(oldTx);

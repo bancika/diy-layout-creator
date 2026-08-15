@@ -59,15 +59,28 @@ public class RFIDRC522 extends AbstractMakerBoard {
 
   public static Color RFID_BLUE = Color.decode("#1B4F72");
   public static Color ANTENNA_GOLD = Color.decode("#D4AC0D");
+  public static Color CRYSTAL_BODY = Color.decode("#BDC3C7");
+  public static Color CRYSTAL_BORDER = Color.decode("#7F8C8D");
 
   public static Size BOARD_WIDTH = new Size(60.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(40.0d, SizeUnit.mm);
+
+  private static final String[] PIN_NAMES = {"SDA", "SCK", "MOSI", "MISO", "IRQ", "GND", "RST", "3.3V"};
 
   public RFIDRC522() {
     super();
     this.bodyColor = RFID_BLUE;
     updateControlPoints();
   }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
+  }
+
 
   @Override
   protected void updateControlPoints() {
@@ -155,9 +168,9 @@ public class RFIDRC522 extends AbstractMakerBoard {
       drawChip(g2d, icX, icY, 36, 36, "RC522");
 
       // 27.120 MHz Crystal
-      g2d.setColor(Color.decode("#BDC3C7"));
+      g2d.setColor(CRYSTAL_BODY);
       g2d.fill(new RoundRectangle2D.Double(icX - 25, icY + 6, 18, 24, 3, 3));
-      g2d.setColor(Color.decode("#7F8C8D"));
+      g2d.setColor(CRYSTAL_BORDER);
       g2d.draw(new RoundRectangle2D.Double(icX - 25, icY + 6, 18, 24, 3, 3));
 
       // Silk Screen Text

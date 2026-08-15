@@ -58,6 +58,9 @@ public class RTCModule extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color RTC_BLUE = Color.decode("#0055A5");
+  public static Color BATTERY_HOLDER_COLOR = Color.decode("#E0E0E0");
+  public static Color BATTERY_BORDER_COLOR = Color.decode("#9E9E9E");
+  public static Color BATTERY_TEXT_COLOR = Color.decode("#757575");
   public static Size BOARD_WIDTH = new Size(38.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(22.0d, SizeUnit.mm);
 
@@ -149,13 +152,13 @@ public class RTCModule extends AbstractMakerBoard {
       double battX = boardX + boardW - battD - 35;
       double battY = boardY + 15;
 
-      g2d.setColor(Color.decode("#E0E0E0"));
+      g2d.setColor(BATTERY_HOLDER_COLOR);
       g2d.fill(new Ellipse2D.Double(battX, battY, battD, battD));
-      g2d.setColor(Color.decode("#9E9E9E"));
+      g2d.setColor(BATTERY_BORDER_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
       g2d.draw(new Ellipse2D.Double(battX, battY, battD, battD));
 
-      g2d.setColor(Color.decode("#757575"));
+      g2d.setColor(BATTERY_TEXT_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "CR2032", battX + battD / 2.0, battY + battD / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
@@ -185,7 +188,7 @@ public class RTCModule extends AbstractMakerBoard {
     g2d.draw(new RoundRectangle2D.Double(2, 4, width - 4, height - 8, 3, 3));
 
     // Coin cell
-    g2d.setColor(Color.decode("#E0E0E0"));
+    g2d.setColor(BATTERY_HOLDER_COLOR);
     g2d.fillOval(width - 14, 8, 10, 10);
 
     // IC

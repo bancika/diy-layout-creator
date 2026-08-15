@@ -63,10 +63,20 @@ public class TCRT5000Sensor extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(32.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(14.0d, SizeUnit.mm);
 
+  private static final String[] PIN_NAMES = {"VCC", "GND", "DO", "AO"};
+
   public TCRT5000Sensor() {
     super();
     this.bodyColor = SENSOR_BLUE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override

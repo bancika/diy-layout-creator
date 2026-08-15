@@ -63,10 +63,20 @@ public class HC05Bluetooth extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(37.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(16.0d, SizeUnit.mm);
 
+  private static final String[] PIN_NAMES = {"STATE", "RXD", "TXD", "GND", "VCC", "EN"};
+
   public HC05Bluetooth() {
     super();
     this.bodyColor = BT_BLUE;
     updateControlPoints();
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
+    }
+    return Integer.toString(index + 1);
   }
 
   @Override
