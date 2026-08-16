@@ -4,7 +4,7 @@ DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists
 
 It provides an intuitive, drag-and-drop interface for placing components, arranging connections, and visualizing circuit designs before assembly. With a built-in component library and customization options, it allows users to design layouts with precision and clarity. 
 
-🎸 **Perfect for pedal builders and tube amp enthusiasts!** DIYLC is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.
+🎸 **Perfect for guitar pedal builders, guitar, synth and Hi-Fi enthusiasts!** DIYLC is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.
 
 ### 🚀 Quick Links
 * **[⬇️ Download the latest release](https://github.com/bancika/diy-layout-creator/releases/latest)** for all platforms.
@@ -37,13 +37,13 @@ The **Official DIYLC Guide (v1.0)** is a comprehensive 174-page eBook that goes 
 ### 🖼️ Gallery & Samples
 
 <p align="center">
-  <img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/cache/slo.png-nggid041072-ngg0dyn-450x350-00f0w010c010r110f110r010t010.png" width="48%" alt="Point-to-point tube amplifier">
-  <img src="https://diy-fever.com/nextgen-image/1073/450x350/34b70d759e46422208d61e376b4633dc" width="48%" alt="Guitar wiring">
+  <img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/slo.png" width="48%" alt="Point-to-point tube amplifier">
+  <img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/travelcaster.png" width="48%" alt="Guitar wiring">
   <br>
   <sup><i>Left: Point-to-point tube amplifier &nbsp; | &nbsp; Right: Guitar wiring</i></sup>
   <br><br>
-  <img src="https://diy-fever.com/nextgen-image/1070/450x350/ccb592ec5828b6f5bc75e840438918f1" width="48%" alt="PCB tube amplifier">
-  <img src="https://diy-fever.com/nextgen-image/1069/450x350/358e43165de40e9c4043726c9efde4a7" width="48%" alt="Perfboard guitar effect">
+  <img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/iic.png" width="48%" alt="PCB tube amplifier">
+  <img src="https://diy-fever.com/wordpress/wp-content/gallery/diylc/split.png" width="48%" alt="Perfboard guitar effect">
   <br>
   <sup><i>Left: PCB tube amplifier &nbsp; | &nbsp; Right: Perfboard guitar effect</i></sup>
 </p>
@@ -51,7 +51,8 @@ The **Official DIYLC Guide (v1.0)** is a comprehensive 174-page eBook that goes 
 ---
 
 ### ✨ Key Features
-* 💻 **Platform Independence:** Runs on any machine capable of running Java JRE/JDK 21 or newer.
+* 🆓 **Free for Life**: A true old-school offline app—the app you download is yours forever and the files you created are yours.
+* 💻 **Platform Independence:** Runs locally on any machine capable of running Java JRE/JDK 21 or newer.
 * 🖱️ **Intuitive UI:** Easy-to-use interface; most operations can be done seamlessly with a mouse.
 * 🎛️ **Versatile Designs:** Draw PCB, perfboard, stripboard, or point-to-point layouts, schematics, guitar wiring diagrams or custom faceplates.
 * 🔌 **Highly Extensible:** API allows custom plug-ins and new components to be added easily.

@@ -100,6 +100,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SNAP_TO_COMPONENTS = "Components";
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
 
+  public static final String SHOW_NODE_NAME_TOOLTIPS_KEY = "showNodeNameTooltips";
+
   public static final String LOCKED_ALPHA = "lockedAlpha";
 
   public static final String LANGUAGE = "language";
