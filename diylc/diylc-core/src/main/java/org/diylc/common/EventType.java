@@ -112,5 +112,10 @@ public enum EventType {
   /**
    * Signals that the Cloud account is logged out.
    */
-  CLOUD_LOGGED_OUT;
+  CLOUD_LOGGED_OUT,
+  /**
+   * Called when the mouse hovers over sticky control points (nodes) in tooltip mode.
+   * Parameters: String text (semicolon-separated component and node names, or null), Point point.
+   */
+  NODE_NAME_HOVER_TOOLTIP;
 }

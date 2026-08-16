@@ -37,6 +37,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -161,6 +162,8 @@ public class Presenter implements IPlugInPort {
   private DIYTest test = null;
 
   private OperationMode operationMode;
+
+  private String lastHoveredNodeText = null;
   
   public Presenter(IView view, IConfigurationManager<?> configManager) {
     this(view, configManager, false);
@@ -191,6 +194,14 @@ public class Presenter implements IPlugInPort {
       variantManager.importDefaultVariants();
       buildingBlockManager.importDefaultBlocks();
     }
+
+    configManager.addConfigListener(IPlugInPort.SHOW_NODE_NAME_TOOLTIPS_KEY, new IConfigListener() {
+      @Override
+      public void valueChanged(String key, Object value) {
+        lastHoveredNodeText = null;
+        messageDispatcher.dispatchMessage(EventType.NODE_NAME_HOVER_TOOLTIP, null, null);
+      }
+    });
   }
 
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
@@ -886,6 +897,45 @@ public class Presenter implements IPlugInPort {
       messageDispatcher.dispatchMessage(EventType.AVAILABLE_CTRL_POINTS_CHANGED,
           new HashMap<IDIYComponent<?>, Set<Integer>>(components));
     }
+
+    // Node name hover detection for sticky points
+    String nodeHoverText = null;
+    if (!dragInProgress && instantiationManager.getComponentTypeSlot() == null) {
+      List<String> nodeInfos = new ArrayList<String>();
+      for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
+        IDIYComponent<?> component = currentProject.getComponents().get(i);
+        for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
+          try {
+            if (component.isControlPointSticky(pointIndex)) {
+              Point2D controlPoint = component.getControlPoint(pointIndex);
+              if (controlPoint != null && previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
+                String nodeName = component.getControlPointNodeName(pointIndex);
+                if (nodeName != null && !nodeName.trim().isEmpty()) {
+                  String info = "<b>" + component.getName() + "</b>: " + nodeName;
+                  if (!nodeInfos.contains(info)) {
+                    nodeInfos.add(info);
+                  }
+                }
+              }
+            }
+          } catch (Exception e) {
+            LOG.warn("Error reading control point for component of type: " + component.getClass().getName());
+          }
+        }
+      }
+      if (!nodeInfos.isEmpty()) {
+        nodeHoverText = String.join("; ", nodeInfos);
+      }
+    }
+
+    if (!Objects.equals(nodeHoverText, lastHoveredNodeText)) {
+      lastHoveredNodeText = nodeHoverText;
+      if (nodeHoverText != null && configManager.readBoolean(IPlugInPort.SHOW_NODE_NAME_TOOLTIPS_KEY, true)) {
+        messageDispatcher.dispatchMessage(EventType.NODE_NAME_HOVER_TOOLTIP, nodeHoverText, point);
+      } else {
+        messageDispatcher.dispatchMessage(EventType.NODE_NAME_HOVER_TOOLTIP, null, null);
+      }
+    }
   }
 
   @Override
@@ -1084,6 +1134,8 @@ public class Presenter implements IPlugInPort {
       return;
     }
     this.dragInProgress = true;
+    this.lastHoveredNodeText = null;
+    this.messageDispatcher.dispatchMessage(EventType.NODE_NAME_HOVER_TOOLTIP, null, null);
     this.dragAction = dragAction;
     this.preDragProject = currentProject.clone();
     Point2D scaledPoint = scalePoint(point);

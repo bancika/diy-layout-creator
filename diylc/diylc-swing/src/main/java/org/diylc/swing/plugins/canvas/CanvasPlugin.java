@@ -69,6 +69,7 @@ public class CanvasPlugin implements IPlugIn{
   private CanvasPanel canvasPanel;
   private ComponentPopupMenu popupMenu;
   private ResizeInfoTooltip resizeInfoTooltip;
+  private NodeNameTooltip nodeNameTooltip;
   private boolean resizingInProgress = false;
 
   private IPlugInPort plugInPort;
@@ -196,6 +197,7 @@ public class CanvasPlugin implements IPlugIn{
     if (canvasPanel == null) {
       canvasPanel = new CanvasPanel(plugInPort, configManager);
       resizeInfoTooltip = new ResizeInfoTooltip(canvasPanel, configManager);
+      nodeNameTooltip = new NodeNameTooltip(canvasPanel, configManager);
       canvasPanel.addMouseListener(new MouseAdapter() {
 
         private MouseEvent pressedEvent;
@@ -219,6 +221,9 @@ public class CanvasPlugin implements IPlugIn{
           canvasPanel.requestFocus();
           canvasPanel.setClickInProgress(true);
           pressedEvent = e;
+          if (nodeNameTooltip != null) {
+            nodeNameTooltip.hideTooltip();
+          }
         }
 
         @Override
@@ -288,6 +293,10 @@ public class CanvasPlugin implements IPlugIn{
             } else {
               resizeInfoTooltip.hideTooltip();
             }
+          }
+
+          if (nodeNameTooltip != null && nodeNameTooltip.isVisible()) {
+            nodeNameTooltip.updatePosition(e.getPoint());
           }
         }
       });
@@ -469,7 +478,7 @@ public class CanvasPlugin implements IPlugIn{
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.of(EventType.PROJECT_LOADED, EventType.ZOOM_CHANGED, EventType.REPAINT,
-        EventType.SCROLL_TO);
+        EventType.SCROLL_TO, EventType.NODE_NAME_HOVER_TOOLTIP);
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -566,6 +575,26 @@ public class CanvasPlugin implements IPlugIn{
               new Rectangle((int) (targetRect.getCenterX() - visibleRect2.width / 2),
                   (int) (targetRect.getCenterY() - visibleRect2.height / 2), visibleRect2.width,
                   visibleRect2.height));
+        break;
+      case NODE_NAME_HOVER_TOOLTIP:
+        final String nodeText = params.length > 0 ? (String) params[0] : null;
+        final Point mousePt = params.length > 1 && params[1] instanceof Point ? (Point) params[1] : null;
+        SwingUtilities.invokeLater(new Runnable() {
+
+          @Override
+          public void run() {
+            if (nodeText != null) {
+              Point pt = mousePt != null ? mousePt : getCanvasPanel().getMousePosition();
+              if (pt != null && nodeNameTooltip != null) {
+                nodeNameTooltip.update(nodeText, pt);
+              }
+            } else {
+              if (nodeNameTooltip != null) {
+                nodeNameTooltip.hideTooltip();
+              }
+            }
+          }
+        });
         break;
     }
     // }

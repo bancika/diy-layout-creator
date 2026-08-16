@@ -135,6 +135,9 @@ public class ConfigPlugin implements IPlugIn {
         ActionFactory.getInstance().createConfigAction(plugInPort, "Mouse Wheel Zoom", IPlugInPort.WHEEL_ZOOM_KEY,
             false), CONFIG_MENU);
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Node Name Tooltips",
+            IPlugInPort.SHOW_NODE_NAME_TOOLTIPS_KEY, true), CONFIG_MENU);
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Outline Mode", IPlugInPort.OUTLINE_KEY, false),
         CONFIG_MENU);
     swingUI.injectMenuAction(
@@ -154,16 +157,20 @@ public class ConfigPlugin implements IPlugIn {
             ConfigPlugin.CHATBOT, true), CONFIG_MENU);
     
     swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
+        CONFIG_MENU);
+    
+    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Project Explorer",
             ConfigPlugin.PROJECT_EXPLORER, false), CONFIG_MENU);
     
     swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
-        CONFIG_MENU);
-    
-    swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Show Resize Dimensions",
             IPlugInPort.SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY, true), CONFIG_MENU);
+    
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Rulers", IPlugInPort.SHOW_RULERS_KEY, true),
+        CONFIG_MENU);
     
     swingUI.injectSubmenu(SNAP_MENU, IconLoader.GraphEdgeDirected.getIcon(), CONFIG_MENU);    
     swingUI.injectMenuAction(
@@ -175,11 +182,7 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createToggleAction(IPlugInPort.SNAP_TO_COMPONENTS, IPlugInPort.SNAP_TO_KEY, SNAP_MENU, IPlugInPort.SNAP_TO_DEFAULT),
         SNAP_MENU);  
-    
-    swingUI.injectMenuAction(
-        ActionFactory.getInstance().createConfigAction(plugInPort, "Show Grid", IPlugInPort.SHOW_GRID_KEY, true),
-        CONFIG_MENU);
-    
+
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      

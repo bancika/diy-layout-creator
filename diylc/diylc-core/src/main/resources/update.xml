@@ -398,6 +398,10 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Node Name Tooltips' feature that can be toggled in the Config menu; when enabled a tooltip is shown next to the cursor with names of component nodes under the cursor</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Significantly improved AI Assistant's knowledge base on DIYLC usage by ingesting most of the material from the eBook</description>
 				</org.diylc.appframework.update.Change>
