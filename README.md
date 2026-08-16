@@ -79,8 +79,8 @@ The **Official DIYLC Guide (v1.0)** is a comprehensive 174-page eBook that goes 
 DIYLC is provided free of charge and can be used and redistributed freely. Building, testing, and maintaining this tool—while supporting our growing community—takes a significant amount of time and effort. 
 
 If you find DIYLC useful, here are the best ways you can support its future development:
-* 📖 **[Purchase the Official DIYLC Guide](https://www.diy-fever.com/diylc-book):** Level up your layout skills while directly supporting the app!
 * 🧡 **[Become a Patreon](https://www.patreon.com/c/user?u=5213116):** Join the inner circle for exclusive perks.
+* 📖 **[Purchase the Official DIYLC Guide](https://www.diy-fever.com/diylc-book):** Level up your layout skills while directly supporting the app!
 * ☕ **[Make a PayPal donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U6GLS8HLTSU88):** A one-time donation helps keep the lights on.
 * 📝 **Documentation:** Help us improve the [user manual](https://github.com/bancika/diy-layout-creator/blob/wiki/Manual.md) or other project docs.
 * 🧩 **Extend the App:** Read the [Component API Wiki](https://github.com/bancika/diy-layout-creator/blob/wiki/ComponentAPI.md) to add new components, or the [Plugin API Wiki](https://github.com/bancika/diy-layout-creator/blob/wiki/PluginAPI.md) to create new plug-ins.
