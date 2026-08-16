@@ -84,20 +84,23 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
     return Integer.toString(index + 1);
   }
 
+  private static final Size TERMINAL_PITCH = new Size(5.08d, SizeUnit.mm);
+  private static final double PAD_MARGIN_X = 16.0;
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    double h = BOARD_HEIGHT.convertToPixels();
+    double termSpacing = TERMINAL_PITCH.convertToPixels();
     double w = BOARD_WIDTH.convertToPixels();
 
-    // 4 Solder / Screw terminal pads:
+    // 4 Solder / Screw terminal pads (5.08mm pitch, centered vertically on left and right edges):
     // Input (Left): 0 = IN+, 1 = IN-
     // Output (Right): 2 = OUT+, 3 = OUT-
     double[][] relativeOffsets = new double[][] {
-      { 0, 0 },             // Pin 0: IN+
-      { 0, h - 20 },        // Pin 1: IN-
-      { w - 20, 0 },        // Pin 2: OUT+
-      { w - 20, h - 20 }    // Pin 3: OUT-
+      { 0, 0 },                      // Pin 0: IN+
+      { 0, termSpacing },            // Pin 1: IN-
+      { w - 2 * PAD_MARGIN_X, 0 },   // Pin 2: OUT+
+      { w - 2 * PAD_MARGIN_X, termSpacing } // Pin 3: OUT-
     };
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -110,7 +113,10 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    return new RoundRectangle2D.Double(x - 10, y - 10, boardW, boardH, 6, 6);
+    double termSpacing = TERMINAL_PITCH.convertToPixels();
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - (boardH - termSpacing) / 2.0;
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
   }
 
   @Override
@@ -131,8 +137,9 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
+    double termSpacing = TERMINAL_PITCH.convertToPixels();
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - (boardH - termSpacing) / 2.0;
 
     Shape boardShape = getBodyShape();
 
@@ -149,59 +156,60 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Diagonal Mounting holes
-      drawMountingHole(g2d, boardX + 45, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 45, boardY + boardH - 16, 16);
+      drawMountingHole(g2d, boardX + 50, boardY + 16, 16);
+      drawMountingHole(g2d, boardX + boardW - 50, boardY + boardH - 16, 16);
 
       // Input Capacitor (Left)
       g2d.setColor(Color.LIGHT_GRAY);
-      g2d.fill(new Ellipse2D.Double(boardX + 22, boardY + boardH / 2.0 - 18, 36, 36));
+      g2d.fill(new Ellipse2D.Double(boardX + 38, boardY + boardH / 2.0 - 18, 34, 34));
       g2d.setColor(Color.DARK_GRAY);
-      g2d.draw(new Ellipse2D.Double(boardX + 22, boardY + boardH / 2.0 - 18, 36, 36));
+      g2d.draw(new Ellipse2D.Double(boardX + 38, boardY + boardH / 2.0 - 18, 34, 34));
 
       // Output Capacitor (Right)
       g2d.setColor(Color.LIGHT_GRAY);
-      g2d.fill(new Ellipse2D.Double(boardX + boardW - 58, boardY + boardH / 2.0 - 18, 36, 36));
+      g2d.fill(new Ellipse2D.Double(boardX + boardW - 72, boardY + boardH / 2.0 - 18, 34, 34));
       g2d.setColor(Color.DARK_GRAY);
-      g2d.draw(new Ellipse2D.Double(boardX + boardW - 58, boardY + boardH / 2.0 - 18, 36, 36));
+      g2d.draw(new Ellipse2D.Double(boardX + boardW - 72, boardY + boardH / 2.0 - 18, 34, 34));
 
       // LM2596 IC (Center Left) with tab
       g2d.setColor(IC_TAB_BODY);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 70, boardY + 15, 38, 48, 3, 3));
+      g2d.fill(new RoundRectangle2D.Double(boardX + 80, boardY + 16, 38, 48, 3, 3));
       g2d.setColor(IC_TAB_METAL);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 70, boardY + 12, 38, 10, 2, 2));
+      g2d.fill(new RoundRectangle2D.Double(boardX + 80, boardY + 12, 38, 10, 2, 2));
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "LM2596", boardX + 89, boardY + 38, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "LM2596", boardX + 99, boardY + 38, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Toroidal Power Inductor (Center Right)
       g2d.setColor(INDUCTOR_CORE);
-      g2d.fill(new Ellipse2D.Double(boardX + 120, boardY + boardH / 2.0 - 24, 48, 48));
+      g2d.fill(new Ellipse2D.Double(boardX + 130, boardY + boardH / 2.0 - 24, 48, 48));
       g2d.setColor(COPPER_COIL);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3));
-      g2d.draw(new Ellipse2D.Double(boardX + 124, boardY + boardH / 2.0 - 20, 40, 40));
+      g2d.draw(new Ellipse2D.Double(boardX + 134, boardY + boardH / 2.0 - 20, 40, 40));
 
       // Blue 3296W Trimmer Potentiometer (Top Center)
       g2d.setColor(POT_BLUE);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 185, boardY + 15, 45, 26, 3, 3));
+      g2d.fill(new RoundRectangle2D.Double(boardX + 190, boardY + 16, 45, 26, 3, 3));
       // Brass screw head
       g2d.setColor(POT_SCREW_BRASS);
-      g2d.fill(new Ellipse2D.Double(boardX + 190, boardY + 22, 12, 12));
+      g2d.fill(new Ellipse2D.Double(boardX + 195, boardY + 23, 12, 12));
       g2d.setColor(Color.BLACK);
-      g2d.drawLine((int)(boardX + 192), (int)(boardY + 28), (int)(boardX + 200), (int)(boardY + 28));
+      g2d.drawLine((int)(boardX + 197), (int)(boardY + 29), (int)(boardX + 205), (int)(boardY + 29));
 
       // Silk Screen Text
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "IN+", boardX + 14, boardY + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "IN-", boardX + 14, boardY + boardH - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT+", boardX + boardW - 14, boardY + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT-", boardX + boardW - 14, boardY + boardH - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "IN+", boardX + 38, y - 8, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "IN-", boardX + 38, y + termSpacing + 8, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT+", boardX + boardW - 38, y - 8, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT-", boardX + boardW - 38, y + termSpacing + 8, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw connection pads
-    drawScrewTerminals(g2d, 0, controlPoints.length, 0, outlineMode, drawingObserver);
+    // Draw Input and Output terminal blocks matching PCBTerminalBlock style
+    drawTerminalBlock(g2d, 0, 2, false, -1, 35.0, outlineMode, drawingObserver);
+    drawTerminalBlock(g2d, 2, 2, false, 1, 35.0, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

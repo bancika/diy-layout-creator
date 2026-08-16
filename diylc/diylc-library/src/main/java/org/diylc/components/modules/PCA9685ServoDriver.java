@@ -268,11 +268,6 @@ public class PCA9685ServoDriver extends AbstractMakerBoard {
       double termH = 34.0;
       double termX = centerX - termW / 2.0;
       double termY = boardY + 8.0;
-      RoundRectangle2D termBody = new RoundRectangle2D.Double(termX, termY, termW, termH, 4, 4);
-      g2d.setColor(SCREW_TERMINAL_COLOR);
-      g2d.fill(termBody);
-      g2d.setColor(SCREW_TERMINAL_BORDER);
-      g2d.draw(termBody);
 
       // Terminal Silk labels (V+ on left, GND on right of the terminal block)
       g2d.setColor(Color.WHITE);
@@ -398,8 +393,8 @@ public class PCA9685ServoDriver extends AbstractMakerBoard {
     drawPins(g2d, 0, 6, false, outlineMode, drawingObserver);
     drawPins(g2d, 6, 6, false, outlineMode, drawingObserver);
 
-    // Draw screw terminal contacts (V+, GND)
-    drawScrewTerminals(g2d, 12, 2, 0, outlineMode, drawingObserver);
+    // Draw screw terminal block matching PCBTerminalBlock style (V+, GND)
+    drawTerminalBlock(g2d, 12, 2, true, -1, 34.0, outlineMode, drawingObserver);
 
     // Draw all 48 servo channel pins
     drawPins(g2d, 14, 48, false, outlineMode, drawingObserver);

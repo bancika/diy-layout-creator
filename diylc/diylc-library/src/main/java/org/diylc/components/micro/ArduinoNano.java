@@ -89,7 +89,7 @@ public class ArduinoNano extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels(); // 20px (0.1")
-    double rowSpacing = new Size(0.7d, SizeUnit.in).convertToPixels(); // 140px (0.7")
+    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels(); // 120px (0.6")
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
@@ -121,7 +121,7 @@ public class ArduinoNano extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double rowSpacing = new Size(0.7d, SizeUnit.in).convertToPixels();
+    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
     double boardW = rowSpacing + 20;
     double boardH = 16 * PIN_SPACING.convertToPixels();
     double boardX = x - 10;
@@ -145,7 +145,7 @@ public class ArduinoNano extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double rowSpacing = new Size(0.7d, SizeUnit.in).convertToPixels();
+    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
     double boardW = rowSpacing + 20;
     double boardH = 16 * PIN_SPACING.convertToPixels();
     double boardX = x - 10;
@@ -167,17 +167,17 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Mini USB Jack
-      drawMetalConnector(g2d, boardX + (boardW - 60) / 2.0, boardY - 8, 60, 45, "USB");
+      drawMetalConnector(g2d, boardX + (boardW - 50) / 2.0, boardY - 8, 50, 42, "USB");
 
       // ATmega328P TQFP square chip
-      drawChip(g2d, boardX + (boardW - 55) / 2.0, boardY + 90, 55, 55, "m328P");
+      drawChip(g2d, boardX + (boardW - 48) / 2.0, boardY + 90, 48, 48, "m328P");
 
       // Reset Button
       g2d.setColor(Color.decode("#CC3333"));
-      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - 25) / 2.0, boardY + 50, 25, 20, 4, 4));
+      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - 22) / 2.0, boardY + 50, 22, 18, 4, 4));
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, boardY + 60, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, boardY + 59, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Silkscreen
       g2d.setFont(SILK_FONT);

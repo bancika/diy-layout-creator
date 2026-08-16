@@ -164,10 +164,6 @@ public class RotaryEncoderKY040 extends AbstractMakerBoard {
       g2d.setColor(METAL_SHAFT);
       g2d.fillRect((int)(cx + 4), (int)(cy - 14), 10, 28);
 
-      // SMD Pull-up Resistors (10k)
-      drawChip(g2d, boardX + 145, boardY + 25, 12, 18, "");
-      drawChip(g2d, boardX + 145, boardY + boardH - 43, 12, 18, "");
-
       // Silk Screen Pin Labels
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);

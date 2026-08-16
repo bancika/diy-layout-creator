@@ -187,19 +187,6 @@ public class L298NMotorDriver extends AbstractMakerBoard {
       // L298 Multiwatt IC mounted to heatsink
       drawChip(g2d, hsX + (hsW - 100) / 2.0, hsY + hsH - 15, 100, 30, "L298N");
 
-      // Green screw terminal block bodies
-      g2d.setColor(SCREW_TERMINAL_COLOR);
-      RoundRectangle2D tb1 = new RoundRectangle2D.Double(x - 15, y - 25, 120, 35, 3, 3);
-      RoundRectangle2D tb2 = new RoundRectangle2D.Double(boardX + 5, y - 195, 35, 75, 3, 3);
-      RoundRectangle2D tb3 = new RoundRectangle2D.Double(boardX + boardSizePx - 40, y - 195, 35, 75, 3, 3);
-      g2d.fill(tb1);
-      g2d.fill(tb2);
-      g2d.fill(tb3);
-      g2d.setColor(SCREW_TERMINAL_BORDER);
-      g2d.draw(tb1);
-      g2d.draw(tb2);
-      g2d.draw(tb3);
-
       // Logic header black block
       g2d.setColor(HEADER_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(x + 130, y - 10, 128, 20, 2, 2));
@@ -218,8 +205,12 @@ public class L298NMotorDriver extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw terminals and logic header pins
-    drawScrewTerminals(g2d, 0, 7, 40, outlineMode, drawingObserver);
+    // Draw terminal blocks matching PCBTerminalBlock style
+    drawTerminalBlock(g2d, 0, 3, true, -1, 38.0, outlineMode, drawingObserver);
+    drawTerminalBlock(g2d, 3, 2, false, -1, 38.0, outlineMode, drawingObserver);
+    drawTerminalBlock(g2d, 5, 2, false, 1, 38.0, outlineMode, drawingObserver);
+
+    // Draw logic header pins
     drawPins(g2d, 7, 6, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);

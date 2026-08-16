@@ -218,13 +218,6 @@ public class RelayModule extends AbstractMakerBoard {
         double ry = boardY + 20 + ch * relayH;
         double rx = boardX + 55;
 
-        // Terminal block
-        RoundRectangle2D tb = new RoundRectangle2D.Double(boardX + 5, ry + 2, 45, relayH - 4, 3, 3);
-        g2d.setColor(SCREW_TERMINAL_COLOR);
-        g2d.fill(tb);
-        g2d.setColor(SCREW_TERMINAL_BORDER);
-        g2d.draw(tb);
-
         // Blue Relay cube
         g2d.setColor(RELAY_CUBE_BLUE);
         g2d.fill(new RoundRectangle2D.Double(rx, ry + 2, relayW, relayH - 4, 4, 4));
@@ -244,9 +237,13 @@ public class RelayModule extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw terminals and control pins
+    // Draw terminal blocks matching PCBTerminalBlock style for each channel
     int chCount = channels.getCount();
-    drawScrewTerminals(g2d, 0, chCount * 3, 40, outlineMode, drawingObserver);
+    for (int ch = 0; ch < chCount; ch++) {
+      drawTerminalBlock(g2d, ch * 3, 3, false, -1, 40.0, outlineMode, drawingObserver);
+    }
+
+    // Draw control pins on right
     drawPins(g2d, chCount * 3, 2 + chCount, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);

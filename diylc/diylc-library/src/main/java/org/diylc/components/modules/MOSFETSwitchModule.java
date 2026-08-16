@@ -78,25 +78,33 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
     return Integer.toString(index + 1);
   }
 
+  private static final Size TERMINAL_PITCH = new Size(5.08d, SizeUnit.mm);
+  private static final double PAD_MARGIN_X = 15.0;
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
+    double termSpacing = TERMINAL_PITCH.convertToPixels();
     double w = BOARD_WIDTH.convertToPixels();
     double h = BOARD_HEIGHT.convertToPixels();
 
     // 7 pins total:
-    // Pin 0..2: Control header (SIG, VCC, GND on left)
-    // Pin 3, 4: VIN, GND (Power in screw terminal, top right)
-    // Pin 5, 6: V+, V- (Load out screw terminal, bottom right)
+    // Pin 0..2: Control header (SIG, VCC, GND on left, 2.54mm pitch)
+    // Pin 3, 4: VIN, GND (Power in screw terminal, top right, 5.08mm pitch)
+    // Pin 5, 6: V+, V- (Load out screw terminal, bottom right, 5.08mm pitch)
+    double rightX = w - PAD_MARGIN_X - 18.0;
+    double topTermY = 18.0;
+    double btmTermY = h - 18.0 - termSpacing;
+
     double[][] relativeOffsets = new double[][] {
-      { 0, 0 },
-      { 0, spacing },
-      { 0, spacing * 2 },
-      { w - 30, -spacing * 1.5 },
-      { w - 30, -spacing * 0.5 },
-      { w - 30, spacing * 1.5 },
-      { w - 30, spacing * 2.5 }
+      { 0, 0 },                         // Pin 0: SIG
+      { 0, spacing },                   // Pin 1: VCC
+      { 0, spacing * 2 },               // Pin 2: GND
+      { rightX, topTermY - (h - 2 * spacing) / 2.0 },               // Pin 3: VIN
+      { rightX, topTermY + termSpacing - (h - 2 * spacing) / 2.0 }, // Pin 4: GND (Power)
+      { rightX, btmTermY - (h - 2 * spacing) / 2.0 },               // Pin 5: V+
+      { rightX, btmTermY + termSpacing - (h - 2 * spacing) / 2.0 }  // Pin 6: V-
     };
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -109,7 +117,7 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 15;
+    double boardX = x - PAD_MARGIN_X;
     double boardY = y - (boardH - 2 * PIN_SPACING.convertToPixels()) / 2.0;
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
   }
@@ -132,7 +140,7 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 15;
+    double boardX = x - PAD_MARGIN_X;
     double boardY = y - (boardH - 2 * PIN_SPACING.convertToPixels()) / 2.0;
 
     Shape boardShape = getBodyShape();
@@ -165,17 +173,6 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "IRF520", mosX + 18, mosY + 24, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Dual Screw Terminal Blocks (Right side)
-      double stX = boardX + boardW - 48;
-      RoundRectangle2D stb1 = new RoundRectangle2D.Double(stX, boardY + 8, 42, 35, 3, 3);
-      RoundRectangle2D stb2 = new RoundRectangle2D.Double(stX, boardY + boardH - 43, 42, 35, 3, 3);
-      g2d.setColor(SCREW_TERMINAL_COLOR);
-      g2d.fill(stb1);
-      g2d.fill(stb2);
-      g2d.setColor(SCREW_TERMINAL_BORDER);
-      g2d.draw(stb1);
-      g2d.draw(stb2);
-
       // Gate Trigger Status LED (Red)
       g2d.setColor(Color.RED);
       g2d.fill(new RoundRectangle2D.Double(boardX + 32, boardY + boardH / 2.0 - 5, 10, 10, 2, 2));
@@ -188,15 +185,19 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
       for (int i = 0; i < 3; i++) {
         StringUtils.drawCenteredText(g2d, labels[i], x + 16, y + i * spacing, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
       }
-      StringUtils.drawCenteredText(g2d, "VIN", stX - 10, boardY + 24, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT", stX - 10, boardY + boardH - 26, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      double termX = boardX + boardW - 42;
+      StringUtils.drawCenteredText(g2d, "VIN", termX - 6, boardY + 36, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT", termX - 6, boardY + boardH - 36, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw control header pins and terminal contacts
+    // Draw control header pins on left
     drawPins(g2d, 0, 3, false, outlineMode, drawingObserver);
-    drawScrewTerminals(g2d, 3, 4, 0, outlineMode, drawingObserver);
+
+    // Draw dual terminal blocks on right matching PCBTerminalBlock style
+    drawTerminalBlock(g2d, 3, 2, false, 1, 38.0, outlineMode, drawingObserver);
+    drawTerminalBlock(g2d, 5, 2, false, 1, 38.0, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

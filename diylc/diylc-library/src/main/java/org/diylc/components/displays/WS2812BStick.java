@@ -64,8 +64,6 @@ public class WS2812BStick extends AbstractMakerBoard {
   public static Color LED_DIFFUSER = Color.decode("#EAECEE");
   public static Color DIFFUSER_BORDER = Color.decode("#BDC3C7");
   public static Color CHIP_DOT_COLOR = Color.decode("#333333");
-  public static Color CAP_CERAMIC_COLOR = Color.decode("#B87333");
-  public static Color CAP_METAL_COLOR = Color.decode("#D5D8DC");
 
   public static Font PIN_LABEL_FONT = new Font("SansSerif", Font.BOLD, 9);
 
@@ -184,19 +182,6 @@ public class WS2812BStick extends AbstractMakerBoard {
         // Internal tiny IC dot
         g2d.setColor(CHIP_DOT_COLOR);
         g2d.fill(new Rectangle2D.Double(lx - 2.5, ly - 2.5, 5, 5));
-
-        // Decoupling capacitor between LEDs (0805 SMD capacitor with silver end caps)
-        if (i < 7) {
-          double capX = lx + ledPitch / 2.0 - 4;
-          double capY = ly - 12;
-          // Ceramic body
-          g2d.setColor(CAP_CERAMIC_COLOR);
-          g2d.fill(new Rectangle2D.Double(capX, capY, 8, 4));
-          // Silver endcaps
-          g2d.setColor(CAP_METAL_COLOR);
-          g2d.fillRect((int) capX, (int) capY, 2, 4);
-          g2d.fillRect((int) (capX + 6), (int) capY, 2, 4);
-        }
       }
 
       // Silk Screen Pin Labels — all 4 pins labeled on both sides with clean spacing

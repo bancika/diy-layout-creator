@@ -196,12 +196,77 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
+   * Helper to draw a complete PCB terminal block (green body + inner compartment lines + screw lugs)
+   * that matches the visuals of the PCBTerminalBlock component.
+   *
+   * @param g2d Graphics2D context
+   * @param startIndex First control point index
+   * @param count Number of positions in this terminal block
+   * @param isHorizontal true if terminal block runs horizontally (along X), false if vertically (along Y)
+   * @param wireEntryOffset Direction/offset from pins to the wire entry edge (positive or negative)
+   * @param blockDepth Total depth of the green body (e.g. 50.0px for 5.08mm blocks, or 35.0px for compact)
+   * @param outlineMode Outline mode flag
+   * @param drawingObserver Observer
+   */
+  protected void drawTerminalBlock(Graphics2D g2d, int startIndex, int count, boolean isHorizontal,
+      double wireEntryOffset, double blockDepth, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+    if (count <= 0 || startIndex < 0 || startIndex >= controlPoints.length) return;
+
+    Point2D p0 = controlPoints[startIndex];
+    Point2D pLast = controlPoints[Math.min(startIndex + count - 1, controlPoints.length - 1)];
+
+    double pitchPx = count > 1 ?
+        (isHorizontal ? Math.abs(pLast.getX() - p0.getX()) / (count - 1) : Math.abs(pLast.getY() - p0.getY()) / (count - 1))
+        : new Size(5.08d, SizeUnit.mm).convertToPixels();
+    if (pitchPx <= 0) {
+      pitchPx = new Size(5.08d, SizeUnit.mm).convertToPixels();
+    }
+
+    double minX = Math.min(p0.getX(), pLast.getX());
+    double minY = Math.min(p0.getY(), pLast.getY());
+    double maxX = Math.max(p0.getX(), pLast.getX());
+    double maxY = Math.max(p0.getY(), pLast.getY());
+
+    Rectangle2D outerBody;
+    Rectangle2D innerCompartment;
+
+    if (isHorizontal) {
+      double bx = minX - pitchPx / 2.0;
+      double bw = (maxX - minX) + pitchPx;
+      double by = wireEntryOffset >= 0 ? minY - (blockDepth - pitchPx) / 2.0 : minY - (blockDepth - pitchPx / 2.0);
+      double bh = blockDepth;
+      outerBody = new Rectangle2D.Double(bx, by, bw, bh);
+      innerCompartment = new Rectangle2D.Double(bx, minY - pitchPx / 2.0, bw, pitchPx);
+    } else {
+      double by = minY - pitchPx / 2.0;
+      double bh = (maxY - minY) + pitchPx;
+      double bx = wireEntryOffset >= 0 ? minX - (blockDepth - pitchPx) / 2.0 : minX - (blockDepth - pitchPx / 2.0);
+      double bw = blockDepth;
+      outerBody = new Rectangle2D.Double(bx, by, bw, bh);
+      innerCompartment = new Rectangle2D.Double(minX - pitchPx / 2.0, by, pitchPx, bh);
+    }
+
+    // Draw green body and compartment
+    g2d.setColor(SCREW_TERMINAL_COLOR);
+    g2d.fill(outerBody);
+    g2d.setColor(SCREW_TERMINAL_BORDER);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.draw(innerCompartment);
+    g2d.draw(outerBody);
+
+    // Draw screw contacts
+    drawScrewTerminals(g2d, startIndex, count, pitchPx, outlineMode, drawingObserver);
+  }
+
+  /**
    * Helper to draw screw terminal block contacts at given control points.
-   * Visuals match the PCBTerminalBlock component: green body, light metal screw circles with diagonal slot.
+   * Visuals match the PCBTerminalBlock component: light metal screw circles with diagonal slot.
    */
   protected void drawScrewTerminals(Graphics2D g2d, int startIndex, int count, double pitchPx, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
-    int circleDiameter = getClosestOdd((int) (PIN_SPACING.convertToPixels() * 3d / 5));
+    double effectivePitch = pitchPx > 0 ? pitchPx : PIN_SPACING.convertToPixels();
+    int circleDiameter = getClosestOdd((int) (effectivePitch * 3d / 5));
 
     drawingObserver.startTrackingContinuityArea(true);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
@@ -209,14 +274,14 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       Point2D p = controlPoints[i];
       // Light metal screw head circle
       g2d.setColor(SCREW_CIRCLE_COLOR);
-      g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2), (int) Math.round(p.getY() - circleDiameter / 2),
+      g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2.0), (int) Math.round(p.getY() - circleDiameter / 2.0),
           circleDiameter, circleDiameter);
       // Diagonal screw slot line
       g2d.setColor(SCREW_CIRCLE_COLOR.darker());
-      g2d.drawLine((int) (p.getX() + Math.cos(Math.PI / 4) * circleDiameter / 2),
-          (int) (p.getY() + Math.sin(Math.PI / 4) * circleDiameter / 2),
-          (int) (p.getX() + Math.cos(5 * Math.PI / 4) * circleDiameter / 2),
-          (int) (p.getY() + Math.sin(5 * Math.PI / 4) * circleDiameter / 2));
+      g2d.drawLine((int) (p.getX() + Math.cos(Math.PI / 4) * circleDiameter / 2.0),
+          (int) (p.getY() + Math.sin(Math.PI / 4) * circleDiameter / 2.0),
+          (int) (p.getX() + Math.cos(5 * Math.PI / 4) * circleDiameter / 2.0),
+          (int) (p.getY() + Math.sin(5 * Math.PI / 4) * circleDiameter / 2.0));
     }
     drawingObserver.stopTrackingContinuityArea();
   }

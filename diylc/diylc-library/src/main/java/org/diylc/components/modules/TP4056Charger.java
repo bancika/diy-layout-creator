@@ -77,6 +77,9 @@ public class TP4056Charger extends AbstractMakerBoard {
     return Integer.toString(index + 1);
   }
 
+  private static final double PAD_MARGIN_X = 14.0;
+  private static final double PAD_MARGIN_Y = 14.0;
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
@@ -85,15 +88,19 @@ public class TP4056Charger extends AbstractMakerBoard {
     double w = BOARD_WIDTH.convertToPixels();
 
     // 6 Solder pads:
-    // Input (Left): 0 = IN+, 1 = IN-
-    // Output (Right): 2 = OUT+, 3 = B+, 4 = B-, 5 = OUT-
+    // Input (Left): 0 = IN+ (Top-Left), 1 = IN- (Bottom-Left)
+    // Output (Right): 2 = OUT+ (Top-Right), 3 = B+, 4 = B-, 5 = OUT- (Bottom-Right)
+    double rightX = w - 2 * PAD_MARGIN_X;
+    double padSpanY = h - 2 * PAD_MARGIN_Y;
+    double rightSpacing = Math.min(spacing, padSpanY / 3.0);
+
     double[][] relativeOffsets = new double[][] {
-      { 0, 0 },             // Pin 0: IN+ (Top-Left)
-      { 0, h - 20 },        // Pin 1: IN- (Bottom-Left)
-      { w - 20, 0 },        // Pin 2: OUT+ (Top-Right)
-      { w - 20, spacing },  // Pin 3: B+
-      { w - 20, h - 20 - spacing }, // Pin 4: B-
-      { w - 20, h - 20 }    // Pin 5: OUT- (Bottom-Right)
+      { 0, 0 },                           // Pin 0: IN+ (Top-Left)
+      { 0, padSpanY },                    // Pin 1: IN- (Bottom-Left)
+      { rightX, 0 },                      // Pin 2: OUT+ (Top-Right)
+      { rightX, rightSpacing },           // Pin 3: B+
+      { rightX, padSpanY - rightSpacing }, // Pin 4: B-
+      { rightX, padSpanY }                // Pin 5: OUT- (Bottom-Right)
     };
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -106,7 +113,9 @@ public class TP4056Charger extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    return new RoundRectangle2D.Double(x - 10, y - 10, boardW, boardH, 6, 6);
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - PAD_MARGIN_Y;
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
   }
 
   @Override
@@ -127,8 +136,8 @@ public class TP4056Charger extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
+    double boardX = x - PAD_MARGIN_X;
+    double boardY = y - PAD_MARGIN_Y;
 
     Shape boardShape = getBodyShape();
 
@@ -156,25 +165,29 @@ public class TP4056Charger extends AbstractMakerBoard {
 
       // Dual Status LEDs (Red = CHRG, Blue = STDBY)
       g2d.setColor(Color.RED);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 45, boardY + 16, 8, 12, 2, 2));
+      g2d.fill(new RoundRectangle2D.Double(boardX + 42, boardY + 18, 8, 12, 2, 2));
       g2d.setColor(Color.CYAN);
-      g2d.fill(new RoundRectangle2D.Double(boardX + 45, boardY + boardH - 28, 8, 12, 2, 2));
+      g2d.fill(new RoundRectangle2D.Double(boardX + 42, boardY + boardH - 30, 8, 12, 2, 2));
 
-      // Silk Screen Labels
+      // Silk Screen Labels (cleanly positioned beside pads)
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "IN+", boardX + 18, boardY + 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "IN-", boardX + 18, boardY + boardH - 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT+", boardX + boardW - 22, boardY + 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "B+", boardX + boardW - 22, boardY + 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "B-", boardX + boardW - 22, boardY + boardH - 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT-", boardX + boardW - 22, boardY + boardH - 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "IN+", x + 16, y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "IN-", x + 16, y + boardH - 2 * PAD_MARGIN_Y, HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+
+      double rightX = x + boardW - 2 * PAD_MARGIN_X;
+      double padSpanY = boardH - 2 * PAD_MARGIN_Y;
+      double rightSpacing = Math.min(PIN_SPACING.convertToPixels(), padSpanY / 3.0);
+      StringUtils.drawCenteredText(g2d, "OUT+", rightX - 16, y, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "B+", rightX - 16, y + rightSpacing, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "B-", rightX - 16, y + padSpanY - rightSpacing, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT-", rightX - 16, y + padSpanY, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw solder pads
-    drawScrewTerminals(g2d, 0, controlPoints.length, 0, outlineMode, drawingObserver);
+    // Draw tinned solder pads
+    drawSolderPads(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
