@@ -125,6 +125,11 @@ public abstract class AbstractMotor extends AbstractTransparentComponent<Void> {
   }
 
   @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
+
+  @Override
   public Void getValue() {
     return null;
   }

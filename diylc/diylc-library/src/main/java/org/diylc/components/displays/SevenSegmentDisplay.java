@@ -23,11 +23,11 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -70,8 +70,19 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   public static Color BODY_BLACK = Color.decode("#1C1C1C");
+  public static Color FACE_BLACK = Color.decode("#111111");
+  public static Color FACE_BORDER = Color.decode("#333333");
   public static Color LED_RED = Color.decode("#E53935");
   public static Color LED_OFF = Color.decode("#2E2E2E");
+  public static Color LED_OFF_BORDER = Color.decode("#222222");
+
+  // Exact physical proportions from datasheet
+  public static Size DIGIT_HEIGHT = new Size(14.2d, SizeUnit.mm); // 0.56"
+  public static Size DIGIT_WIDTH = new Size(8.1d, SizeUnit.mm);
+  public static Size DIGIT_PITCH = new Size(12.7d, SizeUnit.mm);
+  public static Size SEGMENT_THICKNESS = new Size(1.4d, SizeUnit.mm);
+  public static Size SEGMENT_GAP = new Size(0.35d, SizeUnit.mm);
+  public static double SLANT_DEGREES = 8.0d;
 
   public static final String[] PIN_NAMES_1DIGIT = new String[] {
       "e", "d", "COM1", "c", "DP", "b", "a", "COM2", "f", "g"
@@ -180,20 +191,22 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     double boardY;
 
     if (displayType == DisplayType.SingleDigit_10Pin) {
-      boardW = new Size(12.5d, SizeUnit.mm).convertToPixels();
+      boardW = new Size(12.6d, SizeUnit.mm).convertToPixels();
       boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
-      boardX = x - 10;
-      boardY = y - boardH + 15;
+      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
+      boardX = x - (boardW - 4 * PIN_SPACING.convertToPixels()) / 2.0;
+      boardY = y - rowSpacing - (boardH - rowSpacing) / 2.0;
     } else if (displayType == DisplayType.FourDigit_12Pin) {
-      boardW = new Size(30.0d, SizeUnit.mm).convertToPixels();
+      boardW = new Size(50.3d, SizeUnit.mm).convertToPixels();
       boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
+      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
       boardX = x - (boardW - 5 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - boardH + 15;
+      boardY = y - rowSpacing - (boardH - rowSpacing) / 2.0;
     } else {
       boardW = new Size(42.0d, SizeUnit.mm).convertToPixels();
       boardH = new Size(24.0d, SizeUnit.mm).convertToPixels();
       boardX = x - (boardW - 3 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - boardH + 15;
+      boardY = y - (boardH - PIN_SPACING.convertToPixels()) / 2.0;
     }
 
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
@@ -215,30 +228,12 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double boardW;
-    double boardH;
-    double boardX;
-    double boardY;
-
-    if (displayType == DisplayType.SingleDigit_10Pin) {
-      boardW = new Size(12.5d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
-      boardX = x - 10;
-      boardY = y - boardH + 15;
-    } else if (displayType == DisplayType.FourDigit_12Pin) {
-      boardW = new Size(30.0d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
-      boardX = x - (boardW - 5 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - boardH + 15;
-    } else {
-      // TM1637 Module
-      boardW = new Size(42.0d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(24.0d, SizeUnit.mm).convertToPixels();
-      boardX = x - (boardW - 3 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - boardH + 15;
-    }
-
     Shape boardShape = getBodyShape();
+    Rectangle2D bounds = boardShape.getBounds2D();
+    double boardX = bounds.getX();
+    double boardY = bounds.getY();
+    double boardW = bounds.getWidth();
+    double boardH = bounds.getHeight();
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
@@ -252,17 +247,89 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Draw 7-segment digit(s)
-      int digits = (displayType == DisplayType.SingleDigit_10Pin) ? 1 : 4;
-      double digitW = (boardW - 20) / digits;
-      for (int d = 0; d < digits; d++) {
-        double dx = boardX + 10 + d * digitW;
-        double dy = boardY + 18;
-        double dw = digitW - 8;
-        double dh = boardH - 45;
+      if (displayType == DisplayType.SingleDigit_10Pin) {
+        // Dark display face
+        g2d.setColor(FACE_BLACK);
+        g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
+        g2d.setColor(FACE_BORDER);
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
 
-        // Draw 7 segments
-        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8", ledColor);
+        // Single 0.56" 7-segment digit with exact datasheet dimensions
+        double dw = DIGIT_WIDTH.convertToPixels();
+        double dh = DIGIT_HEIGHT.convertToPixels();
+        double dx = boardX + (boardW - dw) / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
+        double dy = boardY + (boardH - dh) / 2.0;
+        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+
+      } else if (displayType == DisplayType.FourDigit_12Pin) {
+        // Dark display face
+        g2d.setColor(FACE_BLACK);
+        g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
+        g2d.setColor(FACE_BORDER);
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
+
+        // 4 digits across with 12.70mm center-to-center pitch
+        double dw = DIGIT_WIDTH.convertToPixels();
+        double dh = DIGIT_HEIGHT.convertToPixels();
+        double pitch = DIGIT_PITCH.convertToPixels();
+        double firstCenterX = boardX + new Size(6.1d, SizeUnit.mm).convertToPixels();
+        double dy = boardY + (boardH - dh) / 2.0;
+
+        for (int d = 0; d < 4; d++) {
+          double centerX = firstCenterX + d * pitch;
+          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
+          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        }
+
+        // Center colon dots between digits 1 & 2
+        double colonX = boardX + boardW / 2.0;
+        double colonY1 = dy + dh * 0.35;
+        double colonY2 = dy + dh * 0.65;
+        g2d.setColor(ledColor);
+        g2d.fill(new Ellipse2D.Double(colonX - 2.0, colonY1 - 2.0, 4.0, 4.0));
+        g2d.fill(new Ellipse2D.Double(colonX - 2.0, colonY2 - 2.0, 4.0, 4.0));
+
+      } else {
+        // TM1637 4-Digit Display Module
+        drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
+        drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 12);
+        drawMountingHole(g2d, boardX + boardW - 14, boardY + 14, 12);
+        drawMountingHole(g2d, boardX + boardW - 14, boardY + boardH - 14, 12);
+
+        // Display Bezel (Center)
+        double bezelW = new Size(30.0d, SizeUnit.mm).convertToPixels();
+        double bezelH = new Size(14.0d, SizeUnit.mm).convertToPixels();
+        double bezelX = boardX + (boardW - bezelW) / 2.0 - 6.0;
+        double bezelY = boardY + (boardH - bezelH) / 2.0;
+
+        g2d.setColor(FACE_BLACK);
+        g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
+        g2d.setColor(FACE_BORDER);
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
+
+        // 4 Digits inside 0.36" bezel
+        double dw = new Size(5.5d, SizeUnit.mm).convertToPixels();
+        double dh = new Size(9.2d, SizeUnit.mm).convertToPixels();
+        double pitch = new Size(7.62d, SizeUnit.mm).convertToPixels();
+        double firstCenterX = bezelX + (bezelW - 3 * pitch) / 2.0;
+        double dy = bezelY + (bezelH - dh) / 2.0;
+
+        for (int d = 0; d < 4; d++) {
+          double centerX = firstCenterX + d * pitch;
+          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65;
+          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        }
+
+        // Center colon dots
+        double colonX = bezelX + bezelW / 2.0;
+        double colonY1 = bezelY + bezelH / 2.0 - 8.0;
+        double colonY2 = bezelY + bezelH / 2.0 + 6.0;
+        g2d.setColor(ledColor);
+        g2d.fill(new Ellipse2D.Double(colonX - 1.5, colonY1 - 1.5, 3.0, 3.0));
+        g2d.fill(new Ellipse2D.Double(colonX - 1.5, colonY2 - 1.5, 3.0, 3.0));
       }
     }
 
@@ -273,37 +340,171 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.setComposite(oldComposite);
   }
 
+  private static final int SEG_A = 1 << 0;
+  private static final int SEG_B = 1 << 1;
+  private static final int SEG_C = 1 << 2;
+  private static final int SEG_D = 1 << 3;
+  private static final int SEG_E = 1 << 4;
+  private static final int SEG_F = 1 << 5;
+  private static final int SEG_G = 1 << 6;
+  private static final int SEG_DP = 1 << 7;
+
+  private static int getSegmentMask(char c) {
+    switch (c) {
+      case '0': return SEG_A | SEG_B | SEG_C | SEG_D | SEG_E | SEG_F;
+      case '1': return SEG_B | SEG_C;
+      case '2': return SEG_A | SEG_B | SEG_G | SEG_E | SEG_D;
+      case '3': return SEG_A | SEG_B | SEG_G | SEG_C | SEG_D;
+      case '4': return SEG_F | SEG_G | SEG_B | SEG_C;
+      case '5': return SEG_A | SEG_F | SEG_G | SEG_C | SEG_D;
+      case '6': return SEG_A | SEG_F | SEG_E | SEG_D | SEG_C | SEG_G;
+      case '7': return SEG_A | SEG_B | SEG_C;
+      case '8': return SEG_A | SEG_B | SEG_C | SEG_D | SEG_E | SEG_F | SEG_G;
+      case '9': return SEG_A | SEG_B | SEG_C | SEG_D | SEG_F | SEG_G;
+      case 'A': case 'a': return SEG_A | SEG_B | SEG_C | SEG_E | SEG_F | SEG_G;
+      case 'B': case 'b': return SEG_C | SEG_D | SEG_E | SEG_F | SEG_G;
+      case 'C': case 'c': return SEG_A | SEG_D | SEG_E | SEG_F;
+      case 'D': case 'd': return SEG_B | SEG_C | SEG_D | SEG_E | SEG_G;
+      case 'E': case 'e': return SEG_A | SEG_D | SEG_E | SEG_F | SEG_G;
+      case 'F': case 'f': return SEG_A | SEG_E | SEG_F | SEG_G;
+      case '-': return SEG_G;
+      case '.': return SEG_DP;
+      default: return SEG_A | SEG_B | SEG_C | SEG_D | SEG_E | SEG_F | SEG_G;
+    }
+  }
+
+  /**
+   * Draws an authentic 7-segment digit matching exact engineering drawing specifications:
+   * - 8.0° italic forward slant
+   * - Realistic polygon segment geometry (trapezoids/hexagons with clean junction bevels)
+   * - 1.40mm segment thickness, 0.35mm inter-segment gaps without overlap
+   * - Unlit segments rendered in dim silhouette and active segments lit in onColor
+   * - 1.40mm Decimal point circle at bottom-right
+   */
   private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h, String charToDisplay, Color onColor) {
+    AffineTransform orig = g2d.getTransform();
+
+    // Exact 8.0° forward italic slant from engineering drawing
+    g2d.translate(x + w / 2.0, y + h / 2.0);
+    g2d.shear(-Math.tan(Math.toRadians(SLANT_DEGREES)), 0);
+    g2d.translate(-w / 2.0, -h / 2.0);
+
+    double t = Math.max(3.0, SEGMENT_THICKNESS.convertToPixels() * (h / DIGIT_HEIGHT.convertToPixels()));
+    double g = Math.max(1.0, SEGMENT_GAP.convertToPixels() * (h / DIGIT_HEIGHT.convertToPixels()));
+    double segW = w - t * 0.8;
+
+    double x0 = 0;
+    double x1 = segW;
+    double y0 = 0;
+    double ym = h / 2.0;
+    double y1 = h;
+
+    // Segment A (Top horizontal)
+    Path2D pathA = new Path2D.Double();
+    pathA.moveTo(x0 + t * 0.6 + g, y0);
+    pathA.lineTo(x1 - t * 0.6 - g, y0);
+    pathA.lineTo(x1 - g, y0 + t * 0.45);
+    pathA.lineTo(x1 - t - g, y0 + t);
+    pathA.lineTo(x0 + t + g, y0 + t);
+    pathA.lineTo(x0 + g, y0 + t * 0.45);
+    pathA.closePath();
+
+    // Segment B (Top-Right vertical)
+    Path2D pathB = new Path2D.Double();
+    pathB.moveTo(x1, y0 + t * 0.5 + g);
+    pathB.lineTo(x1 - t * 0.35, y0 + g);
+    pathB.lineTo(x1 - t, y0 + t + 1.4 * g);
+    pathB.lineTo(x1 - t, ym - t * 0.5 - 0.8 * g);
+    pathB.lineTo(x1, ym - 0.8 * g);
+    pathB.closePath();
+
+    // Segment C (Bottom-Right vertical)
+    Path2D pathC = new Path2D.Double();
+    pathC.moveTo(x1, ym + 0.8 * g);
+    pathC.lineTo(x1 - t, ym + t * 0.5 + 0.8 * g);
+    pathC.lineTo(x1 - t, y1 - t - 1.4 * g);
+    pathC.lineTo(x1 - t * 0.35, y1 - g);
+    pathC.lineTo(x1, y1 - t * 0.5 - g);
+    pathC.closePath();
+
+    // Segment D (Bottom horizontal)
+    Path2D pathD = new Path2D.Double();
+    pathD.moveTo(x0 + t + g, y1 - t);
+    pathD.lineTo(x1 - t - g, y1 - t);
+    pathD.lineTo(x1 - g, y1 - t * 0.45);
+    pathD.lineTo(x1 - t * 0.6 - g, y1);
+    pathD.lineTo(x0 + t * 0.6 + g, y1);
+    pathD.lineTo(x0 + g, y1 - t * 0.45);
+    pathD.closePath();
+
+    // Segment E (Bottom-Left vertical)
+    Path2D pathE = new Path2D.Double();
+    pathE.moveTo(x0, ym + 0.8 * g);
+    pathE.lineTo(x0 + t, ym + t * 0.5 + 0.8 * g);
+    pathE.lineTo(x0 + t, y1 - t - 1.4 * g);
+    pathE.lineTo(x0 + t * 0.35, y1 - g);
+    pathE.lineTo(x0, y1 - t * 0.5 - g);
+    pathE.closePath();
+
+    // Segment F (Top-Left vertical)
+    Path2D pathF = new Path2D.Double();
+    pathF.moveTo(x0, y0 + t * 0.5 + g);
+    pathF.lineTo(x0 + t * 0.35, y0 + g);
+    pathF.lineTo(x0 + t, y0 + t + 1.4 * g);
+    pathF.lineTo(x0 + t, ym - t * 0.5 - 0.8 * g);
+    pathF.lineTo(x0, ym - 0.8 * g);
+    pathF.closePath();
+
+    // Segment G (Middle horizontal hexagon)
+    Path2D pathG = new Path2D.Double();
+    pathG.moveTo(x0 + 1.4 * g, ym);
+    pathG.lineTo(x0 + t * 0.6 + 1.4 * g, ym - t * 0.48);
+    pathG.lineTo(x1 - t * 0.6 - 1.4 * g, ym - t * 0.48);
+    pathG.lineTo(x1 - 1.4 * g, ym);
+    pathG.lineTo(x1 - t * 0.6 - 1.4 * g, ym + t * 0.48);
+    pathG.lineTo(x0 + t * 0.6 + 1.4 * g, ym + t * 0.48);
+    pathG.closePath();
+
+    // Decimal Point (DP)
+    double dpD = t * 0.95;
+    Shape dpShape = new Ellipse2D.Double(x1 + t * 0.25, y1 - dpD, dpD, dpD);
+
+    Shape[] segments = new Shape[] { pathA, pathB, pathC, pathD, pathE, pathF, pathG };
+    int mask = getSegmentMask(charToDisplay.isEmpty() ? '8' : charToDisplay.charAt(0));
+
+    // 1. Draw unlit segment silhouettes (dim background)
+    g2d.setColor(LED_OFF);
+    for (int i = 0; i < 7; i++) {
+      if ((mask & (1 << i)) == 0) {
+        g2d.fill(segments[i]);
+      }
+    }
+    if ((mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
+      g2d.fill(dpShape);
+    }
+
+    // 2. Draw lit active segments
     g2d.setColor(onColor);
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(3f));
+    for (int i = 0; i < 7; i++) {
+      if ((mask & (1 << i)) != 0) {
+        g2d.fill(segments[i]);
+      }
+    }
+    if ((mask & SEG_DP) != 0 || charToDisplay.contains(".")) {
+      g2d.fill(dpShape);
+    }
 
-    // a (top)
-    g2d.drawLine((int) (x + 5), (int) y, (int) (x + w - 5), (int) y);
-    // b (top-right)
-    g2d.drawLine((int) (x + w), (int) (y + 4), (int) (x + w), (int) (y + h / 2 - 2));
-    // c (bottom-right)
-    g2d.drawLine((int) (x + w), (int) (y + h / 2 + 2), (int) (x + w), (int) (y + h - 4));
-    // d (bottom)
-    g2d.drawLine((int) (x + 5), (int) (y + h), (int) (x + w - 5), (int) (y + h));
-    // e (bottom-left)
-    g2d.drawLine((int) x, (int) (y + h / 2 + 2), (int) x, (int) (y + h - 4));
-    // f (top-left)
-    g2d.drawLine((int) x, (int) (y + 4), (int) x, (int) (y + h / 2 - 2));
-    // g (middle)
-    g2d.drawLine((int) (x + 5), (int) (y + h / 2), (int) (x + w - 5), (int) (y + h / 2));
-
-    // DP (decimal point)
-    g2d.fill(new Ellipse2D.Double(x + w + 3, y + h - 3, 4, 4));
+    g2d.setTransform(orig);
   }
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(BODY_BLACK);
-    g2d.fill(new RoundRectangle2D.Double(6, 4, width - 12, height - 8, 3, 3));
+    g2d.fill(new RoundRectangle2D.Double(6, 3, width - 12, height - 6, 3, 3));
     g2d.setColor(Color.DARK_GRAY);
-    g2d.draw(new RoundRectangle2D.Double(6, 4, width - 12, height - 8, 3, 3));
+    g2d.draw(new RoundRectangle2D.Double(6, 3, width - 12, height - 6, 3, 3));
 
-    // Draw single '8'
-    drawSevenSegmentDigit(g2d, 10, 8, width - 20, height - 16, "8", LED_RED);
+    // Draw single stylized '8'
+    drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED);
   }
 }

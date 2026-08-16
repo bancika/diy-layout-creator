@@ -213,4 +213,16 @@ public class MakerComponentsTest {
       }
     }
   }
+
+  @Test
+  public void testCanPointMoveFreelyReturnsFalse() throws Exception {
+    for (Class<? extends IDIYComponent<?>> clazz : allMakerComponentClasses) {
+      IDIYComponent<?> component = clazz.getDeclaredConstructor().newInstance();
+      int count = component.getControlPointCount();
+      for (int i = 0; i < count; i++) {
+        Assert.assertFalse("canPointMoveFreely(" + i + ") must return false for " + clazz.getSimpleName(),
+            component.canPointMoveFreely(i));
+      }
+    }
+  }
 }
