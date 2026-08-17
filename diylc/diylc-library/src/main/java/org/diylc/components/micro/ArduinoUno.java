@@ -73,7 +73,7 @@ public class ArduinoUno extends AbstractMakerBoard {
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
       // ICSP (32..37)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };

@@ -72,7 +72,7 @@ public class ArduinoMega extends AbstractMakerBoard {
       // Digital Low (24..31)
       "D0 (RX0)", "D1 (TX0)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (32..41)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
       // Communication Header (42..49)
       "D14 (TX3)", "D15 (RX3)", "D16 (TX2)", "D17 (RX2)", "D18 (TX1)", "D19 (RX1)", "D20 (SDA)", "D21 (SCL)",
       // Double Digital 2x18 Header (50..85: D22..D53, 5V, 5V, GND, GND)

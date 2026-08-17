@@ -222,10 +222,10 @@ public abstract class AbstractMotor extends AbstractTransparentComponent<Void> {
     if (minX == Double.MAX_VALUE) {
       Point2D p0 = (controlPoints != null && controlPoints.length > 0 && controlPoints[0] != null)
           ? controlPoints[0] : new Point2D.Double(0, 0);
-      return new Rectangle2D.Double(p0.getX() - 20, p0.getY() - 20, 40, 40);
+      return new Rectangle2D.Double(p0.getX() - 50, p0.getY() - 50, 100, 100);
     }
 
-    int margin = 20;
+    int margin = 50;
     return new Rectangle2D.Double(minX - margin, minY - margin, (maxX - minX) + 2 * margin, (maxY - minY) + 2 * margin);
   }
 }

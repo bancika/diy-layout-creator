@@ -62,26 +62,26 @@ public class RaspberryPi extends AbstractMakerBoard {
   public static Size BOARD_HEIGHT = new Size(56.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
-      "Pin 1 (3.3V)", "Pin 2 (5V)",
-      "Pin 3 (GPIO2/SDA)", "Pin 4 (5V)",
-      "Pin 5 (GPIO3/SCL)", "Pin 6 (GND)",
-      "Pin 7 (GPIO4)", "Pin 8 (GPIO14/TXD)",
-      "Pin 9 (GND)", "Pin 10 (GPIO15/RXD)",
-      "Pin 11 (GPIO17)", "Pin 12 (GPIO18)",
-      "Pin 13 (GPIO27)", "Pin 14 (GND)",
-      "Pin 15 (GPIO22)", "Pin 16 (GPIO23)",
-      "Pin 17 (3.3V)", "Pin 18 (GPIO24)",
-      "Pin 19 (GPIO10/MOSI)", "Pin 20 (GND)",
-      "Pin 21 (GPIO9/MISO)", "Pin 22 (GPIO25)",
-      "Pin 23 (GPIO11/SCLK)", "Pin 24 (GPIO8/CE0)",
-      "Pin 25 (GND)", "Pin 26 (GPIO7/CE1)",
-      "Pin 27 (ID_SD)", "Pin 28 (ID_SC)",
-      "Pin 29 (GPIO5)", "Pin 30 (GND)",
-      "Pin 31 (GPIO6)", "Pin 32 (GPIO12)",
-      "Pin 33 (GPIO13)", "Pin 34 (GND)",
-      "Pin 35 (GPIO19)", "Pin 36 (GPIO16)",
-      "Pin 37 (GPIO26)", "Pin 38 (GPIO20)",
-      "Pin 39 (GND)", "Pin 40 (GPIO21)"
+      "3.3V (Pin 1)", "5V (Pin 2)",
+      "GPIO2/SDA (Pin 3)", "5V (Pin 4)",
+      "GPIO3/SCL (Pin 5)", "GND (Pin 6)",
+      "GPIO4 (Pin 7)", "GPIO14/TXD (Pin 8)",
+      "GND (Pin 9)", "GPIO15/RXD (Pin 10)",
+      "GPIO17 (Pin 11)", "GPIO18 (Pin 12)",
+      "GPIO27 (Pin 13)", "GND (Pin 14)",
+      "GPIO22 (Pin 15)", "GPIO23 (Pin 16)",
+      "3.3V (Pin 17)", "GPIO24 (Pin 18)",
+      "GPIO10/MOSI (Pin 19)", "GND (Pin 20)",
+      "GPIO9/MISO (Pin 21)", "GPIO25 (Pin 22)",
+      "GPIO11/SCLK (Pin 23)", "GPIO8/CE0 (Pin 24)",
+      "GND (Pin 25)", "GPIO7/CE1 (Pin 26)",
+      "ID_SD (Pin 27)", "ID_SC (Pin 28)",
+      "GPIO5 (Pin 29)", "GND (Pin 30)",
+      "GPIO6 (Pin 31)", "GPIO12 (Pin 32)",
+      "GPIO13 (Pin 33)", "GND (Pin 34)",
+      "GPIO19 (Pin 35)", "GPIO16 (Pin 36)",
+      "GPIO26 (Pin 37)", "GPIO20 (Pin 38)",
+      "GND (Pin 39)", "GPIO21 (Pin 40)"
   };
 
   public RaspberryPi() {
@@ -103,15 +103,15 @@ public class RaspberryPi extends AbstractMakerBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    // 2x20 header: Pin 1 at (0,0), Pin 2 at (0, spacing), Pin 3 at (spacing, 0), Pin 4 at (spacing, spacing)...
+    // 2x20 header: Pin 1 at (0,0), Pin 2 at (0, -spacing), Pin 3 at (spacing, 0), Pin 4 at (spacing, -spacing)...
     double[][] relativeOffsets = new double[40][2];
     for (int col = 0; col < 20; col++) {
-      int pinOdd = col * 2;     // Pin 1, 3, 5... (bottom row of header)
-      int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top row of header)
+      int pinOdd = col * 2;      // Pin 1, 3, 5... (bottom/inner row of header)
+      int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top/outer row of header)
       relativeOffsets[pinOdd][0] = col * spacing;
-      relativeOffsets[pinOdd][1] = spacing;
+      relativeOffsets[pinOdd][1] = 0;
       relativeOffsets[pinEven][0] = col * spacing;
-      relativeOffsets[pinEven][1] = 0;
+      relativeOffsets[pinEven][1] = -spacing;
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -125,7 +125,7 @@ public class RaspberryPi extends AbstractMakerBoard {
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
     double boardX = x - 60;
-    double boardY = y - 30;
+    double boardY = y - 50;
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 16, 16);
   }
 
@@ -148,7 +148,7 @@ public class RaspberryPi extends AbstractMakerBoard {
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
     double boardX = x - 60;
-    double boardY = y - 30;
+    double boardY = y - 50;
 
     Shape boardShape = getBodyShape();
 
@@ -188,7 +188,7 @@ public class RaspberryPi extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT_LARGE);
       StringUtils.drawCenteredText(g2d, "Raspberry Pi", boardX + 120, boardY + 120, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "40-PIN GPIO", x + 190, y - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "40-PIN GPIO", x + 190, y - 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

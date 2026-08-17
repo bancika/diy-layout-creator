@@ -81,12 +81,12 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     double[][] relativeOffsets = new double[40][2];
     for (int col = 0; col < 20; col++) {
-      int pinOdd = col * 2;
-      int pinEven = col * 2 + 1;
+      int pinOdd = col * 2;      // Pin 1, 3, 5... (bottom/inner row of header)
+      int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top/outer row of header)
       relativeOffsets[pinOdd][0] = col * spacing;
-      relativeOffsets[pinOdd][1] = spacing;
+      relativeOffsets[pinOdd][1] = 0;
       relativeOffsets[pinEven][0] = col * spacing;
-      relativeOffsets[pinEven][1] = 0;
+      relativeOffsets[pinEven][1] = -spacing;
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -100,7 +100,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
     double boardX = x - 55;
-    double boardY = y - 25;
+    double boardY = y - 45;
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 12, 12);
   }
 
@@ -123,7 +123,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
     double boardX = x - 55;
-    double boardY = y - 25;
+    double boardY = y - 45;
 
     Shape boardShape = getBodyShape();
 
@@ -145,9 +145,9 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       drawMountingHole(g2d, boardX + boardW - 25, boardY + boardH - 25, 20);
 
       // Mini HDMI & Dual Micro-USB
-      drawMetalConnector(g2d, boardX + 80, boardY + boardH - 12, 45, 24, "HDMI");
-      drawMetalConnector(g2d, boardX + 240, boardY + boardH - 12, 40, 24, "USB");
-      drawMetalConnector(g2d, boardX + 340, boardY + boardH - 12, 40, 24, "PWR");
+      drawMetalConnector(g2d, boardX + 80, boardY + boardH - 8, 65, 40, "HDMI");
+      drawMetalConnector(g2d, boardX + 240, boardY + boardH - 8, 55, 40, "USB");
+      drawMetalConnector(g2d, boardX + 350, boardY + boardH - 8, 55, 40, "PWR");
 
       // SoC chip
       drawChip(g2d, boardX + 150, boardY + 80, 80, 80, "RPi SoC");

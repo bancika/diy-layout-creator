@@ -213,12 +213,39 @@ public class WS2812BStick extends AbstractMakerBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    double rectX = 2;
+    double rectY = height / 2.0 - 5;
+    double rectW = width - 4;
+    double rectH = 10;
+
     g2d.setColor(NEO_BLACK);
-    g2d.fill(new RoundRectangle2D.Double(2, 10, width - 4, height - 20, 2, 2));
-    Color[] rainbow = new Color[] { Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA };
-    for (int i = 0; i < 5; i++) {
+    g2d.fill(new RoundRectangle2D.Double(rectX, rectY, rectW, rectH, 2, 2));
+    g2d.setColor(Color.DARK_GRAY);
+    g2d.draw(new RoundRectangle2D.Double(rectX, rectY, rectW, rectH, 2, 2));
+
+    Color[] rainbow = new Color[] {
+        Color.decode("#FF3333"), // Red
+        Color.decode("#FFD700"), // Yellow
+        Color.decode("#00E676"), // Green
+        Color.decode("#00E5FF"), // Cyan
+        Color.decode("#E040FB")  // Magenta
+    };
+
+    double dotSize = Math.max(3.0, Math.min(4.0, rectH - 4.0));
+    double margin = 3.0;
+    double step = (rectW - 2 * margin - dotSize) / (rainbow.length - 1);
+
+    for (int i = 0; i < rainbow.length; i++) {
+      double dotX = rectX + margin + i * step;
+      double dotY = height / 2.0 - dotSize / 2.0;
+
+      // 5050 package mini white backing
+      g2d.setColor(Color.WHITE);
+      g2d.fill(new Rectangle2D.Double(dotX - 0.5, dotY - 0.5, dotSize + 1, dotSize + 1));
+
+      // RGB LED dot
       g2d.setColor(rainbow[i]);
-      g2d.fill(new Ellipse2D.Double(4 + i * 6, height / 2 - 2, 4, 4));
+      g2d.fill(new Ellipse2D.Double(dotX, dotY, dotSize, dotSize));
     }
   }
 }

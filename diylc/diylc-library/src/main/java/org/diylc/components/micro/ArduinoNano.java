@@ -64,7 +64,7 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14)
-      "D13", "3V3", "REF", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "5V", "RST", "GND", "VIN",
+      "D13", "3V3", "REF", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "5V", "RST1", "GND1", "VIN",
       // Right row (15..29)
       "TX1", "RX0", "RST2", "GND2", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
       // ICSP (30..35)
