@@ -33,6 +33,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.DefaultComponentTransformer;
 import org.diylc.common.Orientation;
 import org.diylc.components.displays.*;
+import org.diylc.components.electromechanical.*;
 import org.diylc.components.micro.*;
 import org.diylc.components.modules.*;
 import org.diylc.components.robotics.*;
@@ -78,6 +79,7 @@ public class MakerComponentsTest {
       BME280Sensor.class,
       SoilMoistureSensor.class,
       TCRT5000Sensor.class,
+      IRReceiverModule.class,
 
       // Displays & Outputs
       CharacterLCD.class,
@@ -86,6 +88,7 @@ public class MakerComponentsTest {
       LEDMatrix8x8.class,
       TFTDisplay.class,
       WS2812BStick.class,
+      WS2812BRing.class,
 
       // Modules & Breakouts
       LogicLevelConverter.class,
@@ -106,6 +109,12 @@ public class MakerComponentsTest {
       ULN2003Driver.class,
       PCA9685ServoDriver.class,
       MOSFETSwitchModule.class,
+      ActiveBuzzerModule.class,
+      GPSModuleNEO6M.class,
+      INA219CurrentSensor.class,
+
+      // Electro-Mechanical
+      BatteryHolder18650.class,
 
       // Robotics
       MicroServoSG90.class,
