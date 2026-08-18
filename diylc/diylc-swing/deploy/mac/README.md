@@ -109,12 +109,12 @@ This document describes how to set up a macOS machine for building and signing D
 After successful builds, you'll find these files in the `diylc-swing/target` directory:
 
 **Signed and Notarized Builds:**
-- `diylc-<version>-osx-x86.zip` - Signed and notarized Intel build
-- `diylc-<version>-osx-arm.zip` - Signed and notarized ARM build
+- `diylc-<version>-mac-intel.zip` - Signed and notarized Intel build
+- `diylc-<version>-mac-silicon.zip` - Signed and notarized Apple Silicon (ARM) build
 
 **Unsigned Builds:**
-- `diylc-<version>-osx-x86-unsigned.zip` - Unsigned Intel build
-- `diylc-<version>-osx-arm-unsigned.zip` - Unsigned ARM build
+- `diylc-<version>-mac-intel-unsigned.zip` - Unsigned Intel build
+- `diylc-<version>-mac-silicon-unsigned.zip` - Unsigned Apple Silicon (ARM) build
 
 The unsigned builds are created before the signing and notarization process and can be useful for testing or in environments where code signing is not required.
 

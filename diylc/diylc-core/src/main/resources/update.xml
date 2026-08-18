@@ -413,6 +413,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Show a progress dialog while waiting for a long-running AI Analysis to complete</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Renamed Mac OS build files to start with a 'mac' prefix instead of 'osx'</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
