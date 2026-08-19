@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -56,9 +57,16 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color NODEMCU_BLACK = Color.decode("#1C1C1C");
-  public static Size BOARD_WIDTH = new Size(25.4d, SizeUnit.mm);
-  public static Size BOARD_LENGTH = new Size(48.3d, SizeUnit.mm);
+  public static Color NODEMCU_BLACK = Color.decode("#1E1E1E");
+  public static Size BOARD_WIDTH = new Size(25.7d, SizeUnit.mm);
+  public static Size BOARD_LENGTH = new Size(48.0d, SizeUnit.mm);
+  public static Size TOP_MARGIN = new Size(6.22d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH = new Size(6.0d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH = new Size(16.0d, SizeUnit.mm);
+  public static Size ROW_SPACING = new Size(0.9d, SizeUnit.in);
+  public static Size HOLE_DISTANCE_X = new Size(21.0d, SizeUnit.mm);
+  public static Size HOLE_DISTANCE_Y = new Size(44.0d, SizeUnit.mm);
+  public static Size HOLE_DIAMETER = new Size(3.2d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..14)
@@ -85,7 +93,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels(); // 180px
+    double rowSpacing = ROW_SPACING.convertToPixels(); // 180px
 
     double[][] relativeOffsets = new double[30][2];
     for (int i = 0; i < 15; i++) {
@@ -105,11 +113,12 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 26;
-    double boardH = 16 * PIN_SPACING.convertToPixels();
-    double boardX = x - 13;
-    double boardY = y - 10;
+    double rowSpacing = ROW_SPACING.convertToPixels();
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double topMargin = TOP_MARGIN.convertToPixels();
+    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+    double boardY = y - topMargin;
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
   }
 
@@ -129,11 +138,17 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 26;
-    double boardH = 16 * PIN_SPACING.convertToPixels();
-    double boardX = x - 13;
-    double boardY = y - 10;
+    double rowSpacing = ROW_SPACING.convertToPixels();
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double topMargin = TOP_MARGIN.convertToPixels();
+    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+    double boardY = y - topMargin;
+
+    double antennaW = ANTENNA_WIDTH.convertToPixels();
+    double antennaH = ANTENNA_LENGTH.convertToPixels();
+    double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+    double antennaY = boardY + new Size(1.0d, SizeUnit.mm).convertToPixels();
 
     Shape boardShape = getBodyShape();
 
@@ -149,28 +164,88 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Micro-USB Jack at bottom
-      drawMetalConnector(g2d, boardX + (boardW - 60) / 2.0, boardY + boardH - 20, 60, 30, "USB");
+      // 4 Corner Mounting Holes (diameter 3.2mm, spaced 44mm lengthwise, 21mm widthwise)
+      double holeDiameter = HOLE_DIAMETER.convertToPixels();
+      double holeDistX = HOLE_DISTANCE_X.convertToPixels();
+      double holeDistY = HOLE_DISTANCE_Y.convertToPixels();
+      double topHoleY = boardY + (boardH - holeDistY) / 2.0;
+      double bottomHoleY = boardY + (boardH + holeDistY) / 2.0;
+      double leftHoleX = (x + rowSpacing / 2.0) - holeDistX / 2.0;
+      double rightHoleX = (x + rowSpacing / 2.0) + holeDistX / 2.0;
 
-      // ESP-12F Metal shield with antenna at top
-      drawMetalConnector(g2d, boardX + 20, boardY + 40, boardW - 40, 110, "ESP-12F");
+      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
-      // Copper trace antenna
+      // Antenna trace (gold/copper serpentine PCB trace)
       g2d.setColor(Color.decode("#DAA520"));
-      g2d.fillRect((int) (boardX + 25), (int) (boardY + 10), (int) (boardW - 50), 20);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
+      Path2D.Double antPath = new Path2D.Double();
+      double antPadX = antennaX + 12;
+      double antPadW = antennaW - 24;
+      double antTopY = antennaY + 4;
+      double antMidY = antennaY + antennaH - 6;
+      antPath.moveTo(antPadX, antMidY);
+      antPath.lineTo(antPadX, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
+      antPath.lineTo(antPadX + antPadW, antMidY);
+      antPath.lineTo(antPadX + antPadW, antTopY);
+      g2d.draw(antPath);
 
-      // Buttons
-      g2d.setColor(Color.decode("#555555"));
-      g2d.fill(new RoundRectangle2D.Double(boardX + 15, boardY + boardH - 45, 25, 18, 3, 3));
-      g2d.fill(new RoundRectangle2D.Double(boardX + boardW - 40, boardY + boardH - 45, 25, 18, 3, 3));
+      // ESP-12 Metal shield module below antenna
+      double shieldW = new Size(16.0d, SizeUnit.mm).convertToPixels();
+      double shieldH = new Size(15.0d, SizeUnit.mm).convertToPixels();
+      double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
+      double shieldY = antennaY + antennaH + 2;
+      drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
+
+      // USB to UART chip (CP2102)
+      double chipSize = new Size(4.5d, SizeUnit.mm).convertToPixels();
+      double chipX = (x + rowSpacing / 2.0) - chipSize / 2.0;
+      double chipY = shieldY + shieldH + new Size(4.0d, SizeUnit.mm).convertToPixels();
+      drawChip(g2d, chipX, chipY, chipSize, chipSize, "CP2102");
+
+      // Micro-USB Jack at bottom
+      double usbW = 54;
+      double usbH = 32;
+      double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
+      double usbY = boardY + boardH - 22;
+      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+
+      // RST & FLASH tactile buttons at bottom (flanking the Micro-USB port)
+      double btnW = 18;
+      double btnH = 18;
+      double btnY = boardY + boardH - 25;
+      double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
+      double btnLeftX = leftHoleX + 10 + shift1mm;
+      double btnRightX = rightHoleX - 10 - shift1mm - btnW;
+
+      g2d.setColor(Color.decode("#383838"));
+      g2d.fill(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
+      g2d.fill(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
+      g2d.setColor(Color.decode("#666666"));
+      g2d.draw(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
+      g2d.draw(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
+
+      // Button actuators
+      g2d.setColor(Color.decode("#A0A0A0"));
+      g2d.fillOval((int) (btnLeftX + btnW / 2.0 - 3.5), (int) (btnY + btnH / 2.0 - 3.5), 7, 7);
+      g2d.fillOval((int) (btnRightX + btnW / 2.0 - 3.5), (int) (btnY + btnH / 2.0 - 3.5), 7, 7);
+
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + 27, boardY + boardH - 36, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "FLASH", boardX + boardW - 28, boardY + boardH - 36, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", btnLeftX + btnW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "FLASH", btnRightX + btnW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "NodeMCU", boardX + boardW / 2.0, boardY + 180, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "NodeMCU", x + rowSpacing / 2.0, chipY - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
@@ -187,6 +262,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     g2d.setColor(Color.GRAY);
     g2d.draw(new RoundRectangle2D.Double(5, 2, width - 10, height - 4, 3, 3));
 
+    // Metal shield
     g2d.setColor(METAL_SHIELD_COLOR);
     g2d.fillRect(8, 6, width - 16, 12);
 
