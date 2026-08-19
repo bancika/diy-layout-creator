@@ -61,6 +61,8 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public static Color ARDUINO_BLUE = Color.decode("#00878F");
   public static Color ITALIAN_TEAL = Color.decode("#00979D");
+  public static Color RESET_BTN_COLOR = Color.decode("#CC3333");
+  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(53.4d, SizeUnit.mm);
@@ -98,9 +100,10 @@ public class ArduinoUno extends AbstractMakerBoard {
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    double spacing = PIN_SPACING.convertToPixels(); // 20px for 0.1"
+    double spacing = PIN_SPACING.convertToPixels(); // 20px for 0.1" (100 mils)
+    double gap02 = new Size(0.2d, SizeUnit.in).convertToPixels(); // 40px for 0.2"
 
-    // Reference: Pin 0 (NC) is at (boardX + 219.78, boardY + 400.00)
+    // Reference: Pin 0 (NC) is at (boardX + 220.0, boardY + 400.0) [1100 mils, 100 mils from bottom-left]
     // Board is 539.78px wide, 419.78px high
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
@@ -110,28 +113,30 @@ public class ArduinoUno extends AbstractMakerBoard {
       relativeOffsets[i][1] = 0;
     }
     // Analog pins 8..13 (bottom right row, separated from VIN by 0.2" = 40px)
-    double analogStartX = 7 * spacing + 40; // 180px
+    double analogStartX = 7 * spacing + gap02; // 180px
     for (int i = 0; i < 6; i++) {
       relativeOffsets[8 + i][0] = analogStartX + i * spacing;
       relativeOffsets[8 + i][1] = 0;
     }
     // Digital Low pins 14..21 (top right row: D0..D7)
-    double topRowY = -380;
-    double d0X = 280; // aligns with A5
+    double topRowY = -new Size(1.9d, SizeUnit.in).convertToPixels(); // -380px
+    double d0X = new Size(1.4d, SizeUnit.in).convertToPixels(); // 280px (aligns with A5)
     for (int i = 0; i < 8; i++) {
       relativeOffsets[14 + i][0] = d0X - i * spacing;
       relativeOffsets[14 + i][1] = topRowY;
     }
     // Digital High pins 22..31 (top left row: D8..D13, GND, AREF, SDA, SCL)
     // Gap between D7 (140px) and D8 is 0.16" = 32px
-    double d8X = 140 - 32; // 108px
+    double d7X = 7 * spacing; // 140px
+    double d7d8Gap = new Size(0.16d, SizeUnit.in).convertToPixels(); // 32px
+    double d8X = d7X - d7d8Gap; // 108px
     for (int i = 0; i < 10; i++) {
       relativeOffsets[22 + i][0] = d8X - i * spacing;
       relativeOffsets[22 + i][1] = topRowY;
     }
     // Main ICSP header (2x3 pins, 32..37) located on right side of board
-    double icspX = (257.7 - 131.2) * (20.0 / 9.0); // 281.11 px
-    double icspY = (91.0 - 190.0) * (20.0 / 9.0);  // -220.00 px
+    double icspX = new Size(1.405d, SizeUnit.in).convertToPixels(); // 281.0 px
+    double icspY = -new Size(1.1d, SizeUnit.in).convertToPixels();  // -220.0 px
     relativeOffsets[32] = new double[] {icspX, icspY};
     relativeOffsets[33] = new double[] {icspX + spacing, icspY};
     relativeOffsets[34] = new double[] {icspX, icspY + spacing};
@@ -140,8 +145,8 @@ public class ArduinoUno extends AbstractMakerBoard {
     relativeOffsets[37] = new double[] {icspX + spacing, icspY + 2 * spacing};
 
     // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
-    double icsp2X = (106.0 - 131.2) * (20.0 / 9.0); // -56.00 px
-    double icsp2Y = (30.7 - 190.0) * (20.0 / 9.0);  // -354.00 px
+    double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
+    double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
     relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
     relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
     relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
@@ -157,23 +162,38 @@ public class ArduinoUno extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double boardX = x - (131.2 - 32.3) * (20.0 / 9.0); // x - 219.78
-    double boardY = y - (190.0 - 10.0) * (20.0 / 9.0); // y - 400.00
+    double boardX = x - new Size(1.1d, SizeUnit.in).convertToPixels();
+    double boardY = y - new Size(2.0d, SizeUnit.in).convertToPixels();
+
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_HEIGHT.convertToPixels();
+
+    double notchInset = new Size(0.1d, SizeUnit.in).convertToPixels();
+    double topCutoff = new Size(0.16d, SizeUnit.in).convertToPixels();
+    double y12 = new Size(0.06d, SizeUnit.in).convertToPixels();
+    double y102 = new Size(0.51d, SizeUnit.in).convertToPixels();
+    double y122 = new Size(0.61d, SizeUnit.in).convertToPixels();
+    double y380 = new Size(1.9d, SizeUnit.in).convertToPixels();
+    double y400 = new Size(2.0d, SizeUnit.in).convertToPixels();
+    double cornerRadius = new Size(1.0d, SizeUnit.mm).convertToPixels();
+    double c1 = cornerRadius * (1 - 0.5523);
+    double c2 = cornerRadius * 0.5523;
+    double y412 = boardH - cornerRadius;
 
     Path2D.Double path = new Path2D.Double();
-    path.moveTo(boardX + 507.78, boardY + 0.00);
-    path.lineTo(boardX + 519.78, boardY + 12.00);
-    path.lineTo(boardX + 519.78, boardY + 102.00);
-    path.lineTo(boardX + 539.78, boardY + 122.00);
-    path.lineTo(boardX + 539.78, boardY + 380.00);
-    path.lineTo(boardX + 519.78, boardY + 400.00);
-    path.lineTo(boardX + 519.78, boardY + 412.00);
-    path.curveTo(boardX + 519.78, boardY + 416.44, boardX + 516.22, boardY + 419.78, boardX + 512.00, boardY + 419.78);
-    path.lineTo(boardX + 7.78, boardY + 419.78);
-    path.curveTo(boardX + 3.33, boardY + 419.78, boardX + 0.00, boardY + 416.22, boardX + 0.00, boardY + 412.00);
-    path.lineTo(boardX + 0.00, boardY + 7.78);
-    path.curveTo(boardX + 0.00, boardY + 3.33, boardX + 3.56, boardY + 0.00, boardX + 7.78, boardY + 0.00);
-    path.lineTo(boardX + 507.78, boardY + 0.00);
+    path.moveTo(boardX + boardW - topCutoff, boardY);
+    path.lineTo(boardX + boardW - notchInset, boardY + y12);
+    path.lineTo(boardX + boardW - notchInset, boardY + y102);
+    path.lineTo(boardX + boardW, boardY + y122);
+    path.lineTo(boardX + boardW, boardY + y380);
+    path.lineTo(boardX + boardW - notchInset, boardY + y400);
+    path.lineTo(boardX + boardW - notchInset, boardY + y412);
+    path.curveTo(boardX + boardW - notchInset, boardY + boardH - c1, boardX + boardW - notchInset - c2, boardY + boardH, boardX + boardW - notchInset - cornerRadius, boardY + boardH);
+    path.lineTo(boardX + cornerRadius, boardY + boardH);
+    path.curveTo(boardX + c1, boardY + boardH, boardX, boardY + boardH - c1, boardX, boardY + boardH - cornerRadius);
+    path.lineTo(boardX, boardY + cornerRadius);
+    path.curveTo(boardX, boardY + c1, boardX + c1, boardY, boardX + cornerRadius, boardY);
+    path.lineTo(boardX + boardW - topCutoff, boardY);
     path.closePath();
     return path;
   }
@@ -195,8 +215,8 @@ public class ArduinoUno extends AbstractMakerBoard {
     }
 
     // Board bounding origin
-    double boardX = x - (131.2 - 32.3) * (20.0 / 9.0); // x - 219.78
-    double boardY = y - (190.0 - 10.0) * (20.0 / 9.0); // y - 400.00
+    double boardX = x - new Size(1.1d, SizeUnit.in).convertToPixels();
+    double boardY = y - new Size(2.0d, SizeUnit.in).convertToPixels();
 
     Shape boardShape = getBodyShape();
 
@@ -214,40 +234,59 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Mounting holes
-      drawMountingHole(g2d, boardX + 120, boardY + 20, 24);
-      drawMountingHole(g2d, boardX + 110, boardY + 400, 24);
-      drawMountingHole(g2d, boardX + 520, boardY + 140, 24);
-      drawMountingHole(g2d, boardX + 520, boardY + 360, 24);
+      double holeDiameter = new Size(0.12d, SizeUnit.in).convertToPixels();
+      drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
 
       // USB Type-B Jack & DC Power Jack
-      drawMetalConnector(g2d, boardX - 28, boardY + 75, 102, 90, "USB");
-      drawChip(g2d, boardX - 14, boardY + 323, 104, 71, "DC IN");
+      drawMetalConnector(g2d, boardX - new Size(0.14d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
+          new Size(0.51d, SizeUnit.in).convertToPixels(),
+          new Size(0.45d, SizeUnit.in).convertToPixels(), "USB");
+      drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(1.615d, SizeUnit.in).convertToPixels(),
+          new Size(0.52d, SizeUnit.in).convertToPixels(),
+          new Size(0.355d, SizeUnit.in).convertToPixels(), "DC IN");
 
       // ATmega328P DIP chip
-      drawChip(g2d, boardX + 219, boardY + 269, 292, 44, "ATmega328P");
+      drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(1.345d, SizeUnit.in).convertToPixels(),
+          new Size(1.46d, SizeUnit.in).convertToPixels(),
+          new Size(0.22d, SizeUnit.in).convertToPixels(), "ATmega328P");
 
       // Reset Button near USB
-      g2d.setColor(Color.decode("#CC3333"));
-      g2d.fill(new Ellipse2D.Double(boardX + 38, boardY + 20, 18, 18));
-      g2d.setColor(Color.WHITE);
+      double rstBtnSize = new Size(0.09d, SizeUnit.in).convertToPixels();
+      g2d.setColor(RESET_BTN_COLOR);
+      g2d.fill(new Ellipse2D.Double(boardX + new Size(0.19d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), rstBtnSize, rstBtnSize));
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + 47, boardY + 48, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", boardX + new Size(0.235d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.24d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Arduino Infinity Logo
-      drawArduinoLogo(g2d, boardX + 252.00, boardY + 88.22);
+      drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.4411d, SizeUnit.in).convertToPixels());
 
       // Silkscreen text & branding
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + 300, boardY + 155, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + new Size(1.5d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.775d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "UNO", boardX + 405, boardY + 111, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "UNO", boardX + new Size(2.025d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.555d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Header silkscreen labels
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "POWER", boardX + 290, boardY + 370, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + 450, boardY + 370, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + 410, boardY + 55, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "POWER", boardX + new Size(1.45d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + new Size(2.25d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + new Size(2.05d, SizeUnit.in).convertToPixels(),
+          boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
@@ -305,7 +344,7 @@ public class ArduinoUno extends AbstractMakerBoard {
     drawArduinoLogo(g2d, logoX, logoY, scale);
 
     // UNO text below logo
-    g2d.setColor(Color.WHITE);
+    g2d.setColor(SILK_COLOR);
     int fontSize = Math.max(7, (int) Math.round(boardH * 0.28));
     g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
