@@ -95,46 +95,4 @@ public class ArduinoUnoTest {
     Point2D pIcsp2_1 = uno.getControlPoint(39);
     Assert.assertEquals(20.0, pIcsp2_0.distance(pIcsp2_1), 0.01);
   }
-
-  @Test
-  public void testBodyShapeAndRendering() throws Exception {
-    ArduinoUno uno = new ArduinoUno();
-
-    Shape body = uno.getBodyShape();
-    Assert.assertNotNull(body);
-    Rectangle2D bounds = body.getBounds2D();
-    Assert.assertEquals(539.78, bounds.getWidth(), 1.0);
-    Assert.assertEquals(419.78, bounds.getHeight(), 1.0);
-
-    BufferedImage img = new BufferedImage(800, 800, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 800, 800));
-
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    g2d.translate(250, 450);
-    uno.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    File outDir = new File("/Users/branislavstojkovic/.gemini/antigravity-cli/brain/26ea8af1-303a-4fb2-ba45-9eb1a8e27129/scratch");
-    outDir.mkdirs();
-    File outFile = new File(outDir, "arduino_uno_rendered.png");
-    ImageIO.write(img, "PNG", outFile);
-    g2d.dispose();
-
-    // Render Icon (32x32)
-    BufferedImage iconImg = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D iconG2d = iconImg.createGraphics();
-    iconG2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
-    uno.drawIcon(iconG2d, 32, 32);
-    iconG2d.dispose();
-    ImageIO.write(iconImg, "PNG", new File(outDir, "arduino_uno_icon.png"));
-  }
 }
