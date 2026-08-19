@@ -147,8 +147,8 @@ public class ArduinoMega extends AbstractMakerBoard {
       relativeOffsets[42 + i][1] = topRowY;
     }
     // Double digital header 2x18 at far right pins 50..85 (D22..D53, GNDx2, 5Vx2; X=3600, 3700 mils, Y=2000..300 mils)
-    double d22InnerX = 500; // (3600 - 1100) * 0.2
-    double d22OuterX = 520; // (3700 - 1100) * 0.2
+    double d22InnerX = 520; // (3700 - 1100) * 0.2
+    double d22OuterX = 540; // (3800 - 1100) * 0.2
     for (int row = 0; row < 18; row++) {
       double py = topRowY + row * spacing;
       relativeOffsets[50 + row * 2][0] = d22InnerX;

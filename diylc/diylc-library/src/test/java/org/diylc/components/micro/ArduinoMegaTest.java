@@ -125,8 +125,8 @@ public class ArduinoMegaTest {
     Point2D pD23 = mega.getControlPoint(51);
     Assert.assertEquals(20.0, pD22.distance(pD23), 0.01);
     Assert.assertEquals(pD22.getY(), pD23.getY(), 0.01);
-    Assert.assertEquals(500.0, pD22.getX() - pNc.getX(), 0.01);
-    Assert.assertEquals(520.0, pD23.getX() - pNc.getX(), 0.01);
+    Assert.assertEquals(520.0, pD22.getX() - pNc.getX(), 0.01);
+    Assert.assertEquals(540.0, pD23.getX() - pNc.getX(), 0.01);
 
     // Main ICSP header (Pin 86 MISO, Pin 87 5V_ICSP)
     Point2D pMiso = mega.getControlPoint(86);
