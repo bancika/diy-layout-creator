@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -180,15 +181,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     drawingObserver.startTrackingContinuityArea(true);
     for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
-      if (female) {
-        g2d.setColor(HEADER_BODY_COLOR);
-        g2d.fill(new Rectangle2D.Double(p.getX() - pinPx - 1, p.getY() - pinPx - 1, (pinPx + 1) * 2, (pinPx + 1) * 2));
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(new Rectangle2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
-      } else {
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(new Rectangle2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
-      }
+      g2d.setColor(HEADER_BODY_COLOR);
+      g2d.fill(new Rectangle2D.Double(p.getX() - pinPx - 1, p.getY() - pinPx - 1, (pinPx + 1) * 2, (pinPx + 1) * 2));
+      g2d.setColor(PIN_COLOR);
+      g2d.fill(new Rectangle2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
     }
     drawingObserver.stopTrackingContinuityArea();
 
@@ -198,6 +194,121 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(new Rectangle2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
     }
+  }
+
+  /**
+   * Helper to draw the official Arduino infinity logo (white infinity symbol with '-' and '+').
+   * Default bounding box size is 95.56 x 45.33 px.
+   *
+   * @param g2d Graphics2D context
+   * @param x Top-left X coordinate of the logo bounding box
+   * @param y Top-left Y coordinate of the logo bounding box
+   */
+  protected void drawArduinoLogo(Graphics2D g2d, double x, double y) {
+    drawArduinoLogo(g2d, x, y, 1.0);
+  }
+
+  /**
+   * Helper to draw the official Arduino infinity logo with custom scaling.
+   *
+   * @param g2d Graphics2D context
+   * @param x Top-left X coordinate of the logo bounding box
+   * @param y Top-left Y coordinate of the logo bounding box
+   * @param scale Scale factor (1.0 = 95.56 x 45.33 px)
+   */
+  protected void drawArduinoLogo(Graphics2D g2d, double x, double y, double scale) {
+    AffineTransform oldTx = g2d.getTransform();
+    g2d.translate(x, y);
+    if (scale != 1.0) {
+      g2d.scale(scale, scale);
+    }
+
+    Path2D.Double infinityBody = new Path2D.Double(Path2D.WIND_EVEN_ODD);
+    // Outer loop
+    infinityBody.moveTo(47.56, 14.67);
+    infinityBody.curveTo(50.00, 12.00, 51.78, 9.78, 54.00, 7.78);
+    infinityBody.curveTo(62.22, 0.44, 71.56, -2.44, 82.22, 2.22);
+    infinityBody.curveTo(92.22, 6.44, 97.78, 16.89, 95.56, 27.56);
+    infinityBody.curveTo(93.56, 37.33, 84.00, 44.89, 73.78, 45.33);
+    infinityBody.curveTo(64.22, 45.56, 56.89, 41.33, 50.89, 34.44);
+    infinityBody.curveTo(50.00, 33.33, 49.11, 32.22, 48.00, 30.89);
+    infinityBody.curveTo(47.11, 31.78, 46.44, 32.67, 46.00, 33.33);
+    infinityBody.curveTo(39.56, 41.33, 31.56, 46.00, 20.89, 45.33);
+    infinityBody.curveTo(10.44, 44.67, 0.67, 34.89, 0.00, 24.44);
+    infinityBody.curveTo(-0.89, 11.11, 9.33, 0.22, 23.33, 0.00);
+    infinityBody.curveTo(32.67, 0.00, 40.00, 4.67, 45.78, 12.00);
+    infinityBody.curveTo(46.44, 12.89, 47.11, 13.56, 47.78, 14.67);
+    infinityBody.closePath();
+
+    // Left hole cutout
+    infinityBody.moveTo(24.44, 7.56);
+    infinityBody.curveTo(14.67, 7.56, 7.56, 13.78, 6.89, 21.78);
+    infinityBody.curveTo(6.22, 28.89, 11.78, 36.00, 19.56, 37.78);
+    infinityBody.curveTo(27.33, 39.33, 33.33, 36.22, 38.00, 30.67);
+    infinityBody.curveTo(45.11, 22.22, 44.89, 23.56, 38.00, 15.11);
+    infinityBody.curveTo(34.22, 10.44, 29.11, 7.78, 24.22, 7.56);
+    infinityBody.closePath();
+
+    // Right hole cutout
+    infinityBody.moveTo(72.67, 7.33);
+    infinityBody.curveTo(71.56, 7.33, 70.67, 7.33, 69.78, 7.33);
+    infinityBody.curveTo(61.56, 8.89, 56.44, 14.44, 52.44, 21.56);
+    infinityBody.curveTo(52.22, 22.00, 52.22, 23.11, 52.44, 23.56);
+    infinityBody.curveTo(56.00, 29.56, 60.22, 34.89, 67.33, 37.11);
+    infinityBody.curveTo(74.00, 39.33, 80.00, 37.56, 84.67, 32.22);
+    infinityBody.curveTo(88.89, 27.56, 89.78, 22.00, 87.11, 16.44);
+    infinityBody.curveTo(84.22, 10.44, 78.89, 7.78, 72.67, 7.33);
+    infinityBody.lineTo(72.67, 7.33);
+    infinityBody.closePath();
+
+    g2d.setColor(Color.WHITE);
+    g2d.fill(infinityBody);
+
+    // Minus sign in left loop
+    Path2D.Double minus = new Path2D.Double();
+    minus.moveTo(31.33, 24.44);
+    minus.curveTo(31.33, 24.44, 31.33, 24.89, 30.89, 24.89);
+    minus.lineTo(16.44, 24.89);
+    minus.curveTo(16.44, 24.89, 16.00, 24.89, 16.00, 24.44);
+    minus.lineTo(16.00, 20.00);
+    minus.curveTo(16.00, 20.00, 16.00, 19.56, 16.44, 19.56);
+    minus.lineTo(30.89, 19.56);
+    minus.curveTo(30.89, 19.56, 31.33, 19.56, 31.33, 20.00);
+    minus.lineTo(31.33, 24.44);
+    minus.closePath();
+    g2d.fill(minus);
+
+    // Plus sign in right loop
+    Path2D.Double plus = new Path2D.Double();
+    plus.moveTo(78.89, 20.22);
+    plus.curveTo(78.89, 20.22, 78.89, 19.78, 78.44, 19.78);
+    plus.lineTo(74.22, 19.78);
+    plus.curveTo(74.22, 19.78, 73.78, 19.78, 73.78, 19.33);
+    plus.lineTo(73.78, 15.11);
+    plus.curveTo(73.78, 15.11, 73.78, 14.67, 73.33, 14.67);
+    plus.lineTo(68.89, 14.67);
+    plus.curveTo(68.89, 14.67, 68.44, 14.67, 68.44, 15.11);
+    plus.lineTo(68.44, 19.33);
+    plus.curveTo(68.44, 19.33, 68.44, 19.78, 68.00, 19.78);
+    plus.lineTo(63.78, 19.78);
+    plus.curveTo(63.78, 19.78, 63.33, 19.78, 63.33, 20.22);
+    plus.lineTo(63.33, 24.67);
+    plus.curveTo(63.33, 24.67, 63.33, 25.11, 63.78, 25.11);
+    plus.lineTo(68.00, 25.11);
+    plus.curveTo(68.00, 25.11, 68.44, 25.11, 68.44, 25.56);
+    plus.lineTo(68.44, 29.78);
+    plus.curveTo(68.44, 29.78, 68.44, 30.22, 68.89, 30.22);
+    plus.lineTo(73.33, 30.22);
+    plus.curveTo(73.33, 30.22, 73.78, 30.22, 73.78, 29.78);
+    plus.lineTo(73.78, 25.56);
+    plus.curveTo(73.78, 25.56, 73.78, 25.11, 74.22, 25.11);
+    plus.lineTo(78.44, 25.11);
+    plus.curveTo(78.44, 25.11, 78.89, 25.11, 78.89, 24.67);
+    plus.lineTo(78.89, 20.22);
+    plus.closePath();
+    g2d.fill(plus);
+
+    g2d.setTransform(oldTx);
   }
 
   /**

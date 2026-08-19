@@ -234,7 +234,7 @@ public class ArduinoUno extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "RST", boardX + 47, boardY + 48, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Arduino Infinity Logo
-      drawArduinoLogo(g2d, boardX, boardY);
+      drawArduinoLogo(g2d, boardX + 252.00, boardY + 88.22);
 
       // Silkscreen text & branding
       g2d.setColor(Color.WHITE);
@@ -252,98 +252,10 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw header pins with continuity tracking (female for peripheral headers 0..31, male for ICSP headers 32..43)
-    drawPins(g2d, 0, 32, true, outlineMode, drawingObserver);
-    drawPins(g2d, 32, controlPoints.length - 32, false, outlineMode, drawingObserver);
+    // Draw header pins with continuity tracking
+    drawPins(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
-  }
-
-  private void drawArduinoLogo(Graphics2D g2d, double boardX, double boardY) {
-    Path2D.Double infinityBody = new Path2D.Double(Path2D.WIND_EVEN_ODD);
-    // Outer loop
-    infinityBody.moveTo(boardX + 299.56, boardY + 102.89);
-    infinityBody.curveTo(boardX + 302.00, boardY + 100.22, boardX + 303.78, boardY + 98.00, boardX + 306.00, boardY + 96.00);
-    infinityBody.curveTo(boardX + 314.22, boardY + 88.67, boardX + 323.56, boardY + 85.78, boardX + 334.22, boardY + 90.44);
-    infinityBody.curveTo(boardX + 344.22, boardY + 94.67, boardX + 349.78, boardY + 105.11, boardX + 347.56, boardY + 115.78);
-    infinityBody.curveTo(boardX + 345.56, boardY + 125.56, boardX + 336.00, boardY + 133.11, boardX + 325.78, boardY + 133.56);
-    infinityBody.curveTo(boardX + 316.22, boardY + 133.78, boardX + 308.89, boardY + 129.56, boardX + 302.89, boardY + 122.67);
-    infinityBody.curveTo(boardX + 302.00, boardY + 121.56, boardX + 301.11, boardY + 120.44, boardX + 300.00, boardY + 119.11);
-    infinityBody.curveTo(boardX + 299.11, boardY + 120.00, boardX + 298.44, boardY + 120.89, boardX + 298.00, boardY + 121.56);
-    infinityBody.curveTo(boardX + 291.56, boardY + 129.56, boardX + 283.56, boardY + 134.22, boardX + 272.89, boardY + 133.56);
-    infinityBody.curveTo(boardX + 262.44, boardY + 132.89, boardX + 252.67, boardY + 123.11, boardX + 252.00, boardY + 112.67);
-    infinityBody.curveTo(boardX + 251.11, boardY + 99.33, boardX + 261.33, boardY + 88.44, boardX + 275.33, boardY + 88.22);
-    infinityBody.curveTo(boardX + 284.67, boardY + 88.22, boardX + 292.00, boardY + 92.89, boardX + 297.78, boardY + 100.22);
-    infinityBody.curveTo(boardX + 298.44, boardY + 101.11, boardX + 299.11, boardY + 101.78, boardX + 299.78, boardY + 102.89);
-    infinityBody.closePath();
-
-    // Left hole cutout
-    infinityBody.moveTo(boardX + 276.44, boardY + 95.78);
-    infinityBody.curveTo(boardX + 266.67, boardY + 95.78, boardX + 259.56, boardY + 102.00, boardX + 258.89, boardY + 110.00);
-    infinityBody.curveTo(boardX + 258.22, boardY + 117.11, boardX + 263.78, boardY + 124.22, boardX + 271.56, boardY + 126.00);
-    infinityBody.curveTo(boardX + 279.33, boardY + 127.56, boardX + 285.33, boardY + 124.44, boardX + 290.00, boardY + 118.89);
-    infinityBody.curveTo(boardX + 297.11, boardY + 110.44, boardX + 296.89, boardY + 111.78, boardX + 290.00, boardY + 103.33);
-    infinityBody.curveTo(boardX + 286.22, boardY + 98.67, boardX + 281.11, boardY + 96.00, boardX + 276.22, boardY + 95.78);
-    infinityBody.closePath();
-
-    // Right hole cutout
-    infinityBody.moveTo(boardX + 324.67, boardY + 95.56);
-    infinityBody.curveTo(boardX + 323.56, boardY + 95.56, boardX + 322.67, boardY + 95.56, boardX + 321.78, boardY + 95.56);
-    infinityBody.curveTo(boardX + 313.56, boardY + 97.11, boardX + 308.44, boardY + 102.67, boardX + 304.44, boardY + 109.78);
-    infinityBody.curveTo(boardX + 304.22, boardY + 110.22, boardX + 304.22, boardY + 111.33, boardX + 304.44, boardY + 111.78);
-    infinityBody.curveTo(boardX + 308.00, boardY + 117.78, boardX + 312.22, boardY + 123.11, boardX + 319.33, boardY + 125.33);
-    infinityBody.curveTo(boardX + 326.00, boardY + 127.56, boardX + 332.00, boardY + 125.78, boardX + 336.67, boardY + 120.44);
-    infinityBody.curveTo(boardX + 340.89, boardY + 115.78, boardX + 341.78, boardY + 110.22, boardX + 339.11, boardY + 104.67);
-    infinityBody.curveTo(boardX + 336.22, boardY + 98.67, boardX + 330.89, boardY + 96.00, boardX + 324.67, boardY + 95.56);
-    infinityBody.lineTo(boardX + 324.67, boardY + 95.56);
-    infinityBody.closePath();
-
-    g2d.setColor(Color.WHITE);
-    g2d.fill(infinityBody);
-
-    // Minus sign in left loop
-    Path2D.Double minus = new Path2D.Double();
-    minus.moveTo(boardX + 283.33, boardY + 112.67);
-    minus.curveTo(boardX + 283.33, boardY + 112.67, boardX + 283.33, boardY + 113.11, boardX + 282.89, boardY + 113.11);
-    minus.lineTo(boardX + 268.44, boardY + 113.11);
-    minus.curveTo(boardX + 268.44, boardY + 113.11, boardX + 268.00, boardY + 113.11, boardX + 268.00, boardY + 112.67);
-    minus.lineTo(boardX + 268.00, boardY + 108.22);
-    minus.curveTo(boardX + 268.00, boardY + 108.22, boardX + 268.00, boardY + 107.78, boardX + 268.44, boardY + 107.78);
-    minus.lineTo(boardX + 282.89, boardY + 107.78);
-    minus.curveTo(boardX + 282.89, boardY + 107.78, boardX + 283.33, boardY + 107.78, boardX + 283.33, boardY + 108.22);
-    minus.lineTo(boardX + 283.33, boardY + 112.67);
-    minus.closePath();
-    g2d.fill(minus);
-
-    // Plus sign in right loop
-    Path2D.Double plus = new Path2D.Double();
-    plus.moveTo(boardX + 330.89, boardY + 108.44);
-    plus.curveTo(boardX + 330.89, boardY + 108.44, boardX + 330.89, boardY + 108.00, boardX + 330.44, boardY + 108.00);
-    plus.lineTo(boardX + 326.22, boardY + 108.00);
-    plus.curveTo(boardX + 326.22, boardY + 108.00, boardX + 325.78, boardY + 108.00, boardX + 325.78, boardY + 107.56);
-    plus.lineTo(boardX + 325.78, boardY + 103.33);
-    plus.curveTo(boardX + 325.78, boardY + 103.33, boardX + 325.78, boardY + 102.89, boardX + 325.33, boardY + 102.89);
-    plus.lineTo(boardX + 320.89, boardY + 102.89);
-    plus.curveTo(boardX + 320.89, boardY + 102.89, boardX + 320.44, boardY + 102.89, boardX + 320.44, boardY + 103.33);
-    plus.lineTo(boardX + 320.44, boardY + 107.56);
-    plus.curveTo(boardX + 320.44, boardY + 107.56, boardX + 320.44, boardY + 108.00, boardX + 320.00, boardY + 108.00);
-    plus.lineTo(boardX + 315.78, boardY + 108.00);
-    plus.curveTo(boardX + 315.78, boardY + 108.00, boardX + 315.33, boardY + 108.00, boardX + 315.33, boardY + 108.44);
-    plus.lineTo(boardX + 315.33, boardY + 112.89);
-    plus.curveTo(boardX + 315.33, boardY + 112.89, boardX + 315.33, boardY + 113.33, boardX + 315.78, boardY + 113.33);
-    plus.lineTo(boardX + 320.00, boardY + 113.33);
-    plus.curveTo(boardX + 320.00, boardY + 113.33, boardX + 320.44, boardY + 113.33, boardX + 320.44, boardY + 113.78);
-    plus.lineTo(boardX + 320.44, boardY + 118.00);
-    plus.curveTo(boardX + 320.44, boardY + 118.00, boardX + 320.44, boardY + 118.44, boardX + 320.89, boardY + 118.44);
-    plus.lineTo(boardX + 325.33, boardY + 118.44);
-    plus.curveTo(boardX + 325.33, boardY + 118.44, boardX + 325.78, boardY + 118.44, boardX + 325.78, boardY + 118.00);
-    plus.lineTo(boardX + 325.78, boardY + 113.78);
-    plus.curveTo(boardX + 325.78, boardY + 113.78, boardX + 325.78, boardY + 113.33, boardX + 326.22, boardY + 113.33);
-    plus.lineTo(boardX + 330.44, boardY + 113.33);
-    plus.curveTo(boardX + 330.44, boardY + 113.33, boardX + 330.89, boardY + 113.33, boardX + 330.89, boardY + 112.89);
-    plus.lineTo(boardX + 330.89, boardY + 108.44);
-    plus.closePath();
-    g2d.fill(plus);
   }
 
   @Override
