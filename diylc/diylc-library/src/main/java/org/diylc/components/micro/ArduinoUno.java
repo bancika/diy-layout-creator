@@ -260,28 +260,56 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    double boardX = 5;
+    double boardY = 3;
+    double boardW = width - boardX - 2;
+    double boardH = height - 6;
+
+    // USB Type-B Jack (metallic silver, top left protruding)
+    double usbW = 7;
+    double usbH = 8;
+    double usbX = 1;
+    double usbY = boardY + 2;
+
+    // DC Power Jack (dark body, bottom left protruding)
+    double dcW = 7;
+    double dcH = 6;
+    double dcX = 1;
+    double dcY = boardY + boardH - dcH - 3;
+
+    // Board PCB
     g2d.setColor(ARDUINO_BLUE);
-    g2d.fill(new RoundRectangle2D.Double(2, 4, width - 4, height - 8, 6, 6));
+    g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
     g2d.setColor(ARDUINO_BLUE.darker());
-    g2d.draw(new RoundRectangle2D.Double(2, 4, width - 4, height - 8, 6, 6));
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // USB / DC jacks
+    // Draw USB Jack
     g2d.setColor(USB_METAL_COLOR);
-    g2d.fillRect(3, 7, 7, 6);
-    g2d.setColor(Color.DARK_GRAY);
-    g2d.fillRect(3, 19, 8, 6);
+    g2d.fill(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
+    g2d.setColor(METAL_SHIELD_BORDER);
+    g2d.draw(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
 
-    // IC
+    // Draw DC Jack
     g2d.setColor(IC_BODY_COLOR);
-    g2d.fillRect(14, 12, 14, 8);
+    g2d.fill(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
+    g2d.setColor(Color.BLACK);
+    g2d.draw(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
 
-    // Header pin strips
-    g2d.setColor(HEADER_BODY_COLOR);
-    g2d.fillRect(12, 5, 16, 3);
-    g2d.fillRect(12, 24, 16, 3);
+    // Arduino Infinity logo
+    double scale = 15.0 / 95.56;
+    double logoW = 95.56 * scale;
+    double logoH = 45.33 * scale;
+    double logoX = boardX + (boardW - logoW) / 2.0 + 1.0;
+    double logoY = boardY + 3.5;
+    drawArduinoLogo(g2d, logoX, logoY, scale);
 
+    // UNO text below logo
     g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 7));
-    StringUtils.drawCenteredText(g2d, "UNO", width / 2 + 5, height / 2 + 1, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    int fontSize = Math.max(7, (int) Math.round(boardH * 0.28));
+    g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
+    double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
+    double textX = boardX + (boardW / 2.0) + 0.5;
+    StringUtils.drawCenteredText(g2d, "UNO", textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

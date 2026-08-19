@@ -127,7 +127,14 @@ public class ArduinoUnoTest {
     outDir.mkdirs();
     File outFile = new File(outDir, "arduino_uno_rendered.png");
     ImageIO.write(img, "PNG", outFile);
-
     g2d.dispose();
+
+    // Render Icon (32x32)
+    BufferedImage iconImg = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D iconG2d = iconImg.createGraphics();
+    iconG2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+    uno.drawIcon(iconG2d, 32, 32);
+    iconG2d.dispose();
+    ImageIO.write(iconImg, "PNG", new File(outDir, "arduino_uno_icon.png"));
   }
 }
