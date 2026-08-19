@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -64,7 +65,7 @@ public class ArduinoUno extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(53.4d, SizeUnit.mm);
 
-  // Pin names in sequence
+  // Pin names in sequence (44 pins total)
   public static final String[] PIN_NAMES = new String[] {
       // Power Header (0..7)
       "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
@@ -74,8 +75,10 @@ public class ArduinoUno extends AbstractMakerBoard {
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
       "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
-      // ICSP (32..37)
-      "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
+      // Main ICSP Header (32..37, ATmega328P)
+      "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
+      // Top-Left ICSP Header (38..43, ATmega16U2)
+      "MISO_16U2", "5V_16U2", "SCK_16U2", "MOSI_16U2", "RST_16U2", "GND_16U2"
   };
 
   public ArduinoUno() {
@@ -97,8 +100,8 @@ public class ArduinoUno extends AbstractMakerBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels(); // 20px for 0.1"
 
-    // Reference: Pin 0 (NC) is at (boardX + 220, boardY + 400)
-    // Board is 540px wide, 420px high
+    // Reference: Pin 0 (NC) is at (boardX + 219.78, boardY + 400.00)
+    // Board is 539.78px wide, 419.78px high
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
     // Power header pins 0..7 (bottom left row)
@@ -106,34 +109,45 @@ public class ArduinoUno extends AbstractMakerBoard {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
     }
-    // Analog pins 8..13 (bottom right row, separated by 0.16" = 32px)
-    double analogStartX = 7 * spacing + 32;
+    // Analog pins 8..13 (bottom right row, separated from VIN by 0.2" = 40px)
+    double analogStartX = 7 * spacing + 40; // 180px
     for (int i = 0; i < 6; i++) {
       relativeOffsets[8 + i][0] = analogStartX + i * spacing;
       relativeOffsets[8 + i][1] = 0;
     }
     // Digital Low pins 14..21 (top right row: D0..D7)
     double topRowY = -380;
-    double d0X = 300;
+    double d0X = 280; // aligns with A5
     for (int i = 0; i < 8; i++) {
       relativeOffsets[14 + i][0] = d0X - i * spacing;
       relativeOffsets[14 + i][1] = topRowY;
     }
     // Digital High pins 22..31 (top left row: D8..D13, GND, AREF, SDA, SCL)
-    double d8X = 128;
+    // Gap between D7 (140px) and D8 is 0.16" = 32px
+    double d8X = 140 - 32; // 108px
     for (int i = 0; i < 10; i++) {
       relativeOffsets[22 + i][0] = d8X - i * spacing;
       relativeOffsets[22 + i][1] = topRowY;
     }
-    // ICSP header (2x3 pins, 32..37) located on right side of board
-    double icspX = 260;
-    double icspY = -210;
+    // Main ICSP header (2x3 pins, 32..37) located on right side of board
+    double icspX = (257.7 - 131.2) * (20.0 / 9.0); // 281.11 px
+    double icspY = (91.0 - 190.0) * (20.0 / 9.0);  // -220.00 px
     relativeOffsets[32] = new double[] {icspX, icspY};
     relativeOffsets[33] = new double[] {icspX + spacing, icspY};
     relativeOffsets[34] = new double[] {icspX, icspY + spacing};
     relativeOffsets[35] = new double[] {icspX + spacing, icspY + spacing};
     relativeOffsets[36] = new double[] {icspX, icspY + 2 * spacing};
     relativeOffsets[37] = new double[] {icspX + spacing, icspY + 2 * spacing};
+
+    // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
+    double icsp2X = (106.0 - 131.2) * (20.0 / 9.0); // -56.00 px
+    double icsp2Y = (30.7 - 190.0) * (20.0 / 9.0);  // -354.00 px
+    relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
+    relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
+    relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
+    relativeOffsets[41] = new double[] {icsp2X - spacing, icsp2Y + spacing};
+    relativeOffsets[42] = new double[] {icsp2X - 2 * spacing, icsp2Y};
+    relativeOffsets[43] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -143,11 +157,25 @@ public class ArduinoUno extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 220;
-    double boardY = y - 400;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 16, 16);
+    double boardX = x - (131.2 - 32.3) * (20.0 / 9.0); // x - 219.78
+    double boardY = y - (190.0 - 10.0) * (20.0 / 9.0); // y - 400.00
+
+    Path2D.Double path = new Path2D.Double();
+    path.moveTo(boardX + 507.78, boardY + 0.00);
+    path.lineTo(boardX + 519.78, boardY + 12.00);
+    path.lineTo(boardX + 519.78, boardY + 102.00);
+    path.lineTo(boardX + 539.78, boardY + 122.00);
+    path.lineTo(boardX + 539.78, boardY + 380.00);
+    path.lineTo(boardX + 519.78, boardY + 400.00);
+    path.lineTo(boardX + 519.78, boardY + 412.00);
+    path.curveTo(boardX + 519.78, boardY + 416.44, boardX + 516.22, boardY + 419.78, boardX + 512.00, boardY + 419.78);
+    path.lineTo(boardX + 7.78, boardY + 419.78);
+    path.curveTo(boardX + 3.33, boardY + 419.78, boardX + 0.00, boardY + 416.22, boardX + 0.00, boardY + 412.00);
+    path.lineTo(boardX + 0.00, boardY + 7.78);
+    path.curveTo(boardX + 0.00, boardY + 3.33, boardX + 3.56, boardY + 0.00, boardX + 7.78, boardY + 0.00);
+    path.lineTo(boardX + 507.78, boardY + 0.00);
+    path.closePath();
+    return path;
   }
 
   @Override
@@ -166,11 +194,9 @@ public class ArduinoUno extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    // Board bounding rectangle
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 220;
-    double boardY = y - 400;
+    // Board bounding origin
+    double boardX = x - (131.2 - 32.3) * (20.0 / 9.0); // x - 219.78
+    double boardY = y - (190.0 - 10.0) * (20.0 / 9.0); // y - 400.00
 
     Shape boardShape = getBodyShape();
 
@@ -188,45 +214,136 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Mounting holes
-      drawMountingHole(g2d, boardX + 110, boardY + 30, 24);
-      drawMountingHole(g2d, boardX + 120, boardY + 390, 24);
-      drawMountingHole(g2d, boardX + 520, boardY + 60, 24);
-      drawMountingHole(g2d, boardX + 520, boardY + 280, 24);
+      drawMountingHole(g2d, boardX + 120, boardY + 20, 24);
+      drawMountingHole(g2d, boardX + 110, boardY + 400, 24);
+      drawMountingHole(g2d, boardX + 520, boardY + 140, 24);
+      drawMountingHole(g2d, boardX + 520, boardY + 360, 24);
 
       // USB Type-B Jack & DC Power Jack
-      drawMetalConnector(g2d, boardX - 10, boardY + 40, 95, 80, "USB");
-      drawChip(g2d, boardX - 10, boardY + boardH - 115, 105, 75, "DC IN");
+      drawMetalConnector(g2d, boardX - 28, boardY + 75, 102, 90, "USB");
+      drawChip(g2d, boardX - 14, boardY + 323, 104, 71, "DC IN");
 
       // ATmega328P DIP chip
-      drawChip(g2d, boardX + 180, boardY + 190, 210, 55, "ATmega328P");
+      drawChip(g2d, boardX + 219, boardY + 269, 292, 44, "ATmega328P");
 
       // Reset Button near USB
       g2d.setColor(Color.decode("#CC3333"));
-      g2d.fill(new Ellipse2D.Double(boardX + 45, boardY + 135, 18, 18));
+      g2d.fill(new Ellipse2D.Double(boardX + 38, boardY + 20, 18, 18));
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + 45, boardY + 160, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", boardX + 47, boardY + 48, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Arduino Infinity Logo
+      drawArduinoLogo(g2d, boardX, boardY);
 
       // Silkscreen text & branding
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + 290, boardY + 100, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "UNO", boardX + 290, boardY + 125, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + 300, boardY + 155, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setFont(SILK_FONT_LARGE);
+      StringUtils.drawCenteredText(g2d, "UNO", boardX + 405, boardY + 111, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Header silkscreen labels
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "POWER", boardX + 290, boardY + 375, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + 440, boardY + 375, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "DIGITAL", boardX + 350, boardY + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "POWER", boardX + 290, boardY + 370, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + 450, boardY + 370, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + 410, boardY + 55, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw header pins with continuity tracking
-    drawPins(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    // Draw header pins with continuity tracking (female for peripheral headers 0..31, male for ICSP headers 32..43)
+    drawPins(g2d, 0, 32, true, outlineMode, drawingObserver);
+    drawPins(g2d, 32, controlPoints.length - 32, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
+  }
+
+  private void drawArduinoLogo(Graphics2D g2d, double boardX, double boardY) {
+    Path2D.Double infinityBody = new Path2D.Double(Path2D.WIND_EVEN_ODD);
+    // Outer loop
+    infinityBody.moveTo(boardX + 299.56, boardY + 102.89);
+    infinityBody.curveTo(boardX + 302.00, boardY + 100.22, boardX + 303.78, boardY + 98.00, boardX + 306.00, boardY + 96.00);
+    infinityBody.curveTo(boardX + 314.22, boardY + 88.67, boardX + 323.56, boardY + 85.78, boardX + 334.22, boardY + 90.44);
+    infinityBody.curveTo(boardX + 344.22, boardY + 94.67, boardX + 349.78, boardY + 105.11, boardX + 347.56, boardY + 115.78);
+    infinityBody.curveTo(boardX + 345.56, boardY + 125.56, boardX + 336.00, boardY + 133.11, boardX + 325.78, boardY + 133.56);
+    infinityBody.curveTo(boardX + 316.22, boardY + 133.78, boardX + 308.89, boardY + 129.56, boardX + 302.89, boardY + 122.67);
+    infinityBody.curveTo(boardX + 302.00, boardY + 121.56, boardX + 301.11, boardY + 120.44, boardX + 300.00, boardY + 119.11);
+    infinityBody.curveTo(boardX + 299.11, boardY + 120.00, boardX + 298.44, boardY + 120.89, boardX + 298.00, boardY + 121.56);
+    infinityBody.curveTo(boardX + 291.56, boardY + 129.56, boardX + 283.56, boardY + 134.22, boardX + 272.89, boardY + 133.56);
+    infinityBody.curveTo(boardX + 262.44, boardY + 132.89, boardX + 252.67, boardY + 123.11, boardX + 252.00, boardY + 112.67);
+    infinityBody.curveTo(boardX + 251.11, boardY + 99.33, boardX + 261.33, boardY + 88.44, boardX + 275.33, boardY + 88.22);
+    infinityBody.curveTo(boardX + 284.67, boardY + 88.22, boardX + 292.00, boardY + 92.89, boardX + 297.78, boardY + 100.22);
+    infinityBody.curveTo(boardX + 298.44, boardY + 101.11, boardX + 299.11, boardY + 101.78, boardX + 299.78, boardY + 102.89);
+    infinityBody.closePath();
+
+    // Left hole cutout
+    infinityBody.moveTo(boardX + 276.44, boardY + 95.78);
+    infinityBody.curveTo(boardX + 266.67, boardY + 95.78, boardX + 259.56, boardY + 102.00, boardX + 258.89, boardY + 110.00);
+    infinityBody.curveTo(boardX + 258.22, boardY + 117.11, boardX + 263.78, boardY + 124.22, boardX + 271.56, boardY + 126.00);
+    infinityBody.curveTo(boardX + 279.33, boardY + 127.56, boardX + 285.33, boardY + 124.44, boardX + 290.00, boardY + 118.89);
+    infinityBody.curveTo(boardX + 297.11, boardY + 110.44, boardX + 296.89, boardY + 111.78, boardX + 290.00, boardY + 103.33);
+    infinityBody.curveTo(boardX + 286.22, boardY + 98.67, boardX + 281.11, boardY + 96.00, boardX + 276.22, boardY + 95.78);
+    infinityBody.closePath();
+
+    // Right hole cutout
+    infinityBody.moveTo(boardX + 324.67, boardY + 95.56);
+    infinityBody.curveTo(boardX + 323.56, boardY + 95.56, boardX + 322.67, boardY + 95.56, boardX + 321.78, boardY + 95.56);
+    infinityBody.curveTo(boardX + 313.56, boardY + 97.11, boardX + 308.44, boardY + 102.67, boardX + 304.44, boardY + 109.78);
+    infinityBody.curveTo(boardX + 304.22, boardY + 110.22, boardX + 304.22, boardY + 111.33, boardX + 304.44, boardY + 111.78);
+    infinityBody.curveTo(boardX + 308.00, boardY + 117.78, boardX + 312.22, boardY + 123.11, boardX + 319.33, boardY + 125.33);
+    infinityBody.curveTo(boardX + 326.00, boardY + 127.56, boardX + 332.00, boardY + 125.78, boardX + 336.67, boardY + 120.44);
+    infinityBody.curveTo(boardX + 340.89, boardY + 115.78, boardX + 341.78, boardY + 110.22, boardX + 339.11, boardY + 104.67);
+    infinityBody.curveTo(boardX + 336.22, boardY + 98.67, boardX + 330.89, boardY + 96.00, boardX + 324.67, boardY + 95.56);
+    infinityBody.lineTo(boardX + 324.67, boardY + 95.56);
+    infinityBody.closePath();
+
+    g2d.setColor(Color.WHITE);
+    g2d.fill(infinityBody);
+
+    // Minus sign in left loop
+    Path2D.Double minus = new Path2D.Double();
+    minus.moveTo(boardX + 283.33, boardY + 112.67);
+    minus.curveTo(boardX + 283.33, boardY + 112.67, boardX + 283.33, boardY + 113.11, boardX + 282.89, boardY + 113.11);
+    minus.lineTo(boardX + 268.44, boardY + 113.11);
+    minus.curveTo(boardX + 268.44, boardY + 113.11, boardX + 268.00, boardY + 113.11, boardX + 268.00, boardY + 112.67);
+    minus.lineTo(boardX + 268.00, boardY + 108.22);
+    minus.curveTo(boardX + 268.00, boardY + 108.22, boardX + 268.00, boardY + 107.78, boardX + 268.44, boardY + 107.78);
+    minus.lineTo(boardX + 282.89, boardY + 107.78);
+    minus.curveTo(boardX + 282.89, boardY + 107.78, boardX + 283.33, boardY + 107.78, boardX + 283.33, boardY + 108.22);
+    minus.lineTo(boardX + 283.33, boardY + 112.67);
+    minus.closePath();
+    g2d.fill(minus);
+
+    // Plus sign in right loop
+    Path2D.Double plus = new Path2D.Double();
+    plus.moveTo(boardX + 330.89, boardY + 108.44);
+    plus.curveTo(boardX + 330.89, boardY + 108.44, boardX + 330.89, boardY + 108.00, boardX + 330.44, boardY + 108.00);
+    plus.lineTo(boardX + 326.22, boardY + 108.00);
+    plus.curveTo(boardX + 326.22, boardY + 108.00, boardX + 325.78, boardY + 108.00, boardX + 325.78, boardY + 107.56);
+    plus.lineTo(boardX + 325.78, boardY + 103.33);
+    plus.curveTo(boardX + 325.78, boardY + 103.33, boardX + 325.78, boardY + 102.89, boardX + 325.33, boardY + 102.89);
+    plus.lineTo(boardX + 320.89, boardY + 102.89);
+    plus.curveTo(boardX + 320.89, boardY + 102.89, boardX + 320.44, boardY + 102.89, boardX + 320.44, boardY + 103.33);
+    plus.lineTo(boardX + 320.44, boardY + 107.56);
+    plus.curveTo(boardX + 320.44, boardY + 107.56, boardX + 320.44, boardY + 108.00, boardX + 320.00, boardY + 108.00);
+    plus.lineTo(boardX + 315.78, boardY + 108.00);
+    plus.curveTo(boardX + 315.78, boardY + 108.00, boardX + 315.33, boardY + 108.00, boardX + 315.33, boardY + 108.44);
+    plus.lineTo(boardX + 315.33, boardY + 112.89);
+    plus.curveTo(boardX + 315.33, boardY + 112.89, boardX + 315.33, boardY + 113.33, boardX + 315.78, boardY + 113.33);
+    plus.lineTo(boardX + 320.00, boardY + 113.33);
+    plus.curveTo(boardX + 320.00, boardY + 113.33, boardX + 320.44, boardY + 113.33, boardX + 320.44, boardY + 113.78);
+    plus.lineTo(boardX + 320.44, boardY + 118.00);
+    plus.curveTo(boardX + 320.44, boardY + 118.00, boardX + 320.44, boardY + 118.44, boardX + 320.89, boardY + 118.44);
+    plus.lineTo(boardX + 325.33, boardY + 118.44);
+    plus.curveTo(boardX + 325.33, boardY + 118.44, boardX + 325.78, boardY + 118.44, boardX + 325.78, boardY + 118.00);
+    plus.lineTo(boardX + 325.78, boardY + 113.78);
+    plus.curveTo(boardX + 325.78, boardY + 113.78, boardX + 325.78, boardY + 113.33, boardX + 326.22, boardY + 113.33);
+    plus.lineTo(boardX + 330.44, boardY + 113.33);
+    plus.curveTo(boardX + 330.44, boardY + 113.33, boardX + 330.89, boardY + 113.33, boardX + 330.89, boardY + 112.89);
+    plus.lineTo(boardX + 330.89, boardY + 108.44);
+    plus.closePath();
+    g2d.fill(plus);
   }
 
   @Override

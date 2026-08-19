@@ -323,16 +323,11 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    * Helper to draw a mounting hole.
    */
   protected void drawMountingHole(Graphics2D g2d, double cx, double cy, double diameter) {
-    g2d.setColor(MOUNTING_HOLE_COLOR);
+    g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fill(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
-    g2d.setColor(MOUNTING_HOLE_BORDER);
+    g2d.setColor(Color.DARK_GRAY);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
-    // inner hole
-    g2d.setColor(Constants.CANVAS_COLOR);
-    g2d.fill(new Ellipse2D.Double(cx - diameter / 4.0, cy - diameter / 4.0, diameter / 2.0, diameter / 2.0));
-    g2d.setColor(Color.DARK_GRAY);
-    g2d.draw(new Ellipse2D.Double(cx - diameter / 4.0, cy - diameter / 4.0, diameter / 2.0, diameter / 2.0));
   }
 
   /**
