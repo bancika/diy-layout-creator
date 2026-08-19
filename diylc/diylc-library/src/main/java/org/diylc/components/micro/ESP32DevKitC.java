@@ -51,6 +51,12 @@ public class ESP32DevKitC extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color ESP_BLACK = Color.decode("#1E1E1E");
+  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color ANTENNA_TAB_COLOR = Color.decode("#383838");
+  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
+  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
+  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
+  public static Color SILK_COLOR = Color.WHITE;
   public static Size BOARD_WIDTH = new Size(27.9d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(54.4d, SizeUnit.mm);
   public static Size MAIN_BODY_LENGTH = new Size(48.2d, SizeUnit.mm);
@@ -182,7 +188,7 @@ public class ESP32DevKitC extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Antenna trace (gold/copper serpentine PCB trace)
-      g2d.setColor(Color.decode("#DAA520"));
+      g2d.setColor(ANTENNA_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
       Path2D.Double antPath = new Path2D.Double();
       double antPadX = antennaX + 16;
@@ -222,19 +228,19 @@ public class ESP32DevKitC extends AbstractMakerBoard {
       double btnLeftX = mainX + 38;
       double btnRightX = mainX + mainW - 38 - btnW;
 
-      g2d.setColor(Color.decode("#383838"));
+      g2d.setColor(BUTTON_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
       g2d.fill(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
-      g2d.setColor(Color.decode("#666666"));
+      g2d.setColor(BUTTON_BORDER_COLOR);
       g2d.draw(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
       g2d.draw(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
 
       // Button actuators
-      g2d.setColor(Color.decode("#A0A0A0"));
+      g2d.setColor(BUTTON_ACTUATOR_COLOR);
       g2d.fillOval((int) (btnLeftX + btnW / 2.0 - 4), (int) (btnY + btnH / 2.0 - 4), 8, 8);
       g2d.fillOval((int) (btnRightX + btnW / 2.0 - 4), (int) (btnY + btnH / 2.0 - 4), 8, 8);
 
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "EN", btnLeftX + btnW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "BOOT", btnRightX + btnW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -257,7 +263,7 @@ public class ESP32DevKitC extends AbstractMakerBoard {
     g2d.fill(new RoundRectangle2D.Double(5, 6, width - 10, height - 8, 3, 3));
 
     // Antenna tab
-    g2d.setColor(Color.decode("#383838"));
+    g2d.setColor(ANTENNA_TAB_COLOR);
     g2d.fillRect(8, 2, width - 16, 5);
     g2d.setColor(Color.GRAY);
     g2d.draw(new RoundRectangle2D.Double(5, 6, width - 10, height - 8, 3, 3));
@@ -266,7 +272,7 @@ public class ESP32DevKitC extends AbstractMakerBoard {
     g2d.setColor(METAL_SHIELD_COLOR);
     g2d.fillRect(8, 9, width - 16, 10);
 
-    g2d.setColor(Color.WHITE);
+    g2d.setColor(SILK_COLOR);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
     StringUtils.drawCenteredText(g2d, "ESP32", width / 2, height / 2 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
