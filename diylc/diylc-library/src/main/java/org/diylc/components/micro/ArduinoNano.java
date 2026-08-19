@@ -59,14 +59,18 @@ public class ArduinoNano extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color ARDUINO_BLUE = Color.decode("#00878F");
-  public static Size BOARD_WIDTH = new Size(18.0d, SizeUnit.mm);
-  public static Size BOARD_LENGTH = new Size(45.0d, SizeUnit.mm);
+  public static Color ITALIAN_TEAL = Color.decode("#00979D");
+  public static Color RESET_BTN_COLOR = Color.decode("#CC3333");
+  public static Color SILK_COLOR = Color.WHITE;
+
+  public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
+  public static Size BOARD_LENGTH = new Size(1.70d, SizeUnit.in);
 
   public static final String[] PIN_NAMES = new String[] {
-      // Left row (0..14)
-      "D13", "3V3", "REF", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "5V", "RST1", "GND1", "VIN",
-      // Right row (15..29)
-      "TX1", "RX0", "RST2", "GND2", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RESET", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
       // ICSP (30..35)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
@@ -88,30 +92,43 @@ public class ArduinoNano extends AbstractMakerBoard {
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    double spacing = PIN_SPACING.convertToPixels(); // 20px (0.1")
-    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels(); // 120px (0.6")
+    double spacing = PIN_SPACING.convertToPixels(); // 20px (0.10")
+    double rowSpacing = new Size(0.60d, SizeUnit.in).convertToPixels(); // 120px (0.60")
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
-    // Left row (pins 0..14)
+    // Left row (pins 0..14, top to bottom)
     for (int i = 0; i < 15; i++) {
       relativeOffsets[i][0] = 0;
       relativeOffsets[i][1] = i * spacing;
     }
-    // Right row (pins 15..29)
+    // Right row (pins 15..29, top to bottom)
     for (int i = 0; i < 15; i++) {
       relativeOffsets[15 + i][0] = rowSpacing;
       relativeOffsets[15 + i][1] = i * spacing;
     }
-    // ICSP header (2x3) between rows at the bottom
-    double icspX = rowSpacing / 2.0 - spacing / 2.0;
-    double icspY = 12 * spacing;
-    relativeOffsets[30] = new double[] {icspX, icspY};
-    relativeOffsets[31] = new double[] {icspX + spacing, icspY};
-    relativeOffsets[32] = new double[] {icspX, icspY + spacing};
-    relativeOffsets[33] = new double[] {icspX + spacing, icspY + spacing};
-    relativeOffsets[34] = new double[] {icspX, icspY + 2 * spacing};
-    relativeOffsets[35] = new double[] {icspX + spacing, icspY + 2 * spacing};
+    // ICSP header (2x3 pins, 30..35) flush with top edge:
+    // Outer row is 0.05" (10px) from top edge (-20px / -0.10" relative to Pin 0)
+    // Inner row is 0.15" (30px) from top edge (0px / 0.00" relative to Pin 0, aligned with Pin 0 & Pin 15)
+    double icspOuterY = -spacing; // -20px (-0.10")
+    double icspInnerY = 0;        // 0px (0.00")
+
+    double col0X = rowSpacing / 2.0 - spacing; // 40px (0.20")
+    double col1X = rowSpacing / 2.0;           // 60px (0.30")
+    double col2X = rowSpacing / 2.0 + spacing; // 80px (0.40")
+
+    // Pin 1 (MISO at col2X, outer row)
+    relativeOffsets[30] = new double[] {col2X, icspOuterY};
+    // Pin 2 (5V_ICSP at col2X, inner row)
+    relativeOffsets[31] = new double[] {col2X, icspInnerY};
+    // Pin 3 (SCK at col1X, outer row)
+    relativeOffsets[32] = new double[] {col1X, icspOuterY};
+    // Pin 4 (MOSI at col1X, inner row)
+    relativeOffsets[33] = new double[] {col1X, icspInnerY};
+    // Pin 5 (RST_ICSP at col0X, outer row)
+    relativeOffsets[34] = new double[] {col0X, icspOuterY};
+    // Pin 6 (GND_ICSP at col0X, inner row)
+    relativeOffsets[35] = new double[] {col0X, icspInnerY};
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -121,12 +138,17 @@ public class ArduinoNano extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 20;
-    double boardH = 16 * PIN_SPACING.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+
+    double boardW = BOARD_WIDTH.convertToPixels();   // 146px (0.73")
+    double boardH = BOARD_LENGTH.convertToPixels();  // 340px (1.70")
+    double rowSpacing = new Size(0.60d, SizeUnit.in).convertToPixels(); // 120px (0.60")
+    double boardMarginX = (boardW - rowSpacing) / 2.0; // 13px (0.065")
+    double boardMarginY = new Size(0.15d, SizeUnit.in).convertToPixels(); // 30px (0.15")
+    double cornerRadius = new Size(1.0d, SizeUnit.mm).convertToPixels();
+
+    double boardX = x - boardMarginX;
+    double boardY = y - boardMarginY;
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerRadius * 2, cornerRadius * 2);
   }
 
   @Override
@@ -145,11 +167,14 @@ public class ArduinoNano extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 20;
-    double boardH = 16 * PIN_SPACING.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
+    double boardW = BOARD_WIDTH.convertToPixels();   // 146px (0.73")
+    double boardH = BOARD_LENGTH.convertToPixels();  // 340px (1.70")
+    double rowSpacing = new Size(0.60d, SizeUnit.in).convertToPixels();
+    double boardMarginX = (boardW - rowSpacing) / 2.0; // 13px (0.065")
+    double boardMarginY = new Size(0.15d, SizeUnit.in).convertToPixels(); // 30px (0.15")
+
+    double boardX = x - boardMarginX;
+    double boardY = y - boardMarginY;
 
     Shape boardShape = getBodyShape();
 
@@ -166,22 +191,60 @@ public class ArduinoNano extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Mini USB Jack
-      drawMetalConnector(g2d, boardX + (boardW - 50) / 2.0, boardY - 8, 50, 42, "USB");
+      // 4 Corner Mounting Holes (non-plated drill holes matching Uno/Mega)
+      double holeDiameter = new Size(0.07d, SizeUnit.in).convertToPixels();
+      double topHoleY = boardY + new Size(0.05d, SizeUnit.in).convertToPixels();
+      double bottomHoleY = boardY + new Size(1.65d, SizeUnit.in).convertToPixels();
+      double leftHoleX = boardX + boardMarginX;
+      double rightHoleX = boardX + boardW - boardMarginX;
 
-      // ATmega328P TQFP square chip
-      drawChip(g2d, boardX + (boardW - 48) / 2.0, boardY + 90, 48, 48, "m328P");
+      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+
+      // Mini USB Jack at bottom (plain metal connector)
+      double usbW = new Size(0.30d, SizeUnit.in).convertToPixels();
+      double usbH = new Size(0.36d, SizeUnit.in).convertToPixels();
+      drawMetalConnector(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + new Size(0.05d, SizeUnit.in).convertToPixels(), usbW, usbH, "USB");
+
+      // ATmega328P TQFP square chip rotated 45 degrees
+      double chipSize = new Size(0.28d, SizeUnit.in).convertToPixels();
+      double chipCenterX = boardX + boardW / 2.0;
+      double chipCenterY = boardY + new Size(1.06d, SizeUnit.in).convertToPixels();
+
+      AffineTransform oldChipTx = g2d.getTransform();
+      g2d.translate(chipCenterX, chipCenterY);
+      g2d.rotate(Math.PI / 4.0);
+
+      g2d.setColor(IC_BODY_COLOR);
+      g2d.fill(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
+      g2d.setColor(IC_BORDER_COLOR);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
+
+      // Pin 1 dot
+      g2d.setColor(PIN_MARKER_COLOR);
+      g2d.fill(new Ellipse2D.Double(-chipSize / 2.0 + 3, -chipSize / 2.0 + 3, 3, 3));
+
+      g2d.setColor(IC_TEXT_COLOR);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "m328P", 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      g2d.setTransform(oldChipTx);
 
       // Reset Button
-      g2d.setColor(Color.decode("#CC3333"));
-      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - 22) / 2.0, boardY + 50, 22, 18, 4, 4));
-      g2d.setColor(Color.WHITE);
+      double rstW = new Size(0.12d, SizeUnit.in).convertToPixels();
+      double rstH = new Size(0.10d, SizeUnit.in).convertToPixels();
+      g2d.setColor(RESET_BTN_COLOR);
+      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - rstW) / 2.0, boardY + new Size(0.68d, SizeUnit.in).convertToPixels(), rstW, rstH, 3, 3));
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, boardY + 59, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, boardY + new Size(0.73d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "NANO", boardX + boardW / 2.0, boardY + 165, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "NANO", boardX + boardW / 2.0, boardY + new Size(0.50d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
@@ -194,22 +257,37 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    double boardX = 6;
+    double boardY = 2;
+    double boardW = width - 12;
+    double boardH = height - 4;
+
     g2d.setColor(ARDUINO_BLUE);
-    g2d.fill(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 4, 4));
+    g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
     g2d.setColor(ARDUINO_BLUE.darker());
-    g2d.draw(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 4, 4));
+    g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // USB
+    // ICSP header at top
+    g2d.setColor(HEADER_BODY_COLOR);
+    g2d.fill(new Rectangle2D.Double(width / 2.0 - 4, boardY, 8, 4));
+
+    // Mini USB at bottom
     g2d.setColor(USB_METAL_COLOR);
-    g2d.fillRect(11, 2, 10, 4);
+    g2d.fillRect((int) (width / 2.0 - 4), (int) (boardY + boardH - 4), 8, 4);
 
-    // IC
+    // 45-degree rotated diamond IC chip in center
+    AffineTransform oldTx = g2d.getTransform();
+    g2d.translate(width / 2.0, boardY + boardH / 2.0 + 1);
+    g2d.rotate(Math.PI / 4.0);
     g2d.setColor(IC_BODY_COLOR);
-    g2d.fillRect(11, 12, 10, 10);
+    g2d.fill(new RoundRectangle2D.Double(-4, -4, 8, 8, 1, 1));
+    g2d.setColor(IC_BORDER_COLOR);
+    g2d.draw(new RoundRectangle2D.Double(-4, -4, 8, 8, 1, 1));
+    g2d.setTransform(oldTx);
 
     // Pin strips on sides
     g2d.setColor(PIN_COLOR);
-    for (int y = 5; y < height - 5; y += 4) {
+    for (int y = 5; y < height - 5; y += 3) {
       g2d.fillRect(7, y, 2, 2);
       g2d.fillRect(width - 9, y, 2, 2);
     }
