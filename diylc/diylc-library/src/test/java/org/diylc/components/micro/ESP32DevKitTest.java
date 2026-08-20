@@ -77,10 +77,10 @@ public class ESP32DevKitTest {
       Assert.assertEquals(p1.getX(), p2.getX(), 0.01);
     }
 
-    // Row spacing: 0.90" = 180px between Left row and Right row
+    // Row spacing: 1.00" = 200px between Left row and Right row
     Point2D pLeftTop = devKit.getControlPoint(0);
     Point2D pRightTop = devKit.getControlPoint(29);
-    Assert.assertEquals(180.0, pLeftTop.distance(pRightTop), 0.01);
+    Assert.assertEquals(200.0, pLeftTop.distance(pRightTop), 0.01);
     Assert.assertEquals(pLeftTop.getY(), pRightTop.getY(), 0.01);
   }
 

@@ -61,7 +61,9 @@ public class ESP32DevKit extends AbstractMakerBoard {
   public static Size TOP_MARGIN = new Size(6.7d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(6.2d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(20.0d, SizeUnit.mm);
-  public static Size ROW_SPACING = new Size(0.9d, SizeUnit.in);
+  public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
+  public static Size HOLE_DIAMETER = new Size(2.8d, SizeUnit.mm);
+  public static Size HOLE_EDGE_MARGIN = new Size(0.8d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..14)
@@ -88,7 +90,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double rowSpacing = ROW_SPACING.convertToPixels(); // 180px
+    double rowSpacing = ROW_SPACING.convertToPixels(); // 200px
 
     double[][] relativeOffsets = new double[30][2];
     for (int i = 0; i < 15; i++) {
@@ -159,12 +161,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Corner Mounting Holes (diameter 2.8mm)
-      double holeDiameter = new Size(2.8d, SizeUnit.mm).convertToPixels();
-      double topHoleY = boardY + new Size(3.5d, SizeUnit.mm).convertToPixels();
-      double bottomHoleY = boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels();
-      double leftHoleX = x;
-      double rightHoleX = x + rowSpacing;
+      // 4 Corner Mounting Holes (diameter 2.8mm, 0.8mm away from edges in both directions)
+      double holeDiameter = HOLE_DIAMETER.convertToPixels();
+      double holeRadius = holeDiameter / 2.0;
+      double edgeMargin = HOLE_EDGE_MARGIN.convertToPixels();
+      double leftHoleX = boardX + edgeMargin + holeRadius;
+      double rightHoleX = boardX + boardW - edgeMargin - holeRadius;
+      double topHoleY = boardY + edgeMargin + holeRadius;
+      double bottomHoleY = boardY + boardH - edgeMargin - holeRadius;
 
       drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
       drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
@@ -191,11 +195,13 @@ public class ESP32DevKit extends AbstractMakerBoard {
       antPath.lineTo(antPadX + antPadW, antTopY);
       g2d.draw(antPath);
 
+      double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
+
       // ESP32-WROOM-32 metal shield module below antenna
       double shieldW = new Size(18.0d, SizeUnit.mm).convertToPixels();
       double shieldH = new Size(18.0d, SizeUnit.mm).convertToPixels();
       double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
-      double shieldY = boardY + antennaH;
+      double shieldY = boardY + antennaH + shift1mm;
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
 
       // Micro-USB Jack at bottom
@@ -208,8 +214,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
       // EN & BOOT tactile buttons at bottom (flanking the Micro-USB port)
       double btnW = 20;
       double btnH = 20;
-      double btnY = boardY + boardH - 25;
-      double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
+      double btnY = boardY + boardH - 25 - shift1mm;
       double btnLeftX = leftHoleX + 14 + shift1mm;
       double btnRightX = rightHoleX - 14 - shift1mm - btnW;
 
@@ -232,7 +237,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "ESP32", x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "DevKit V1", x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
