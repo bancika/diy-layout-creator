@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -60,6 +61,7 @@ public class RaspberryPi extends AbstractMakerBoard {
   public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(85.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(56.0d, SizeUnit.mm);
+  public static Font RPI_TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
 
   public static final String[] PIN_NAMES = new String[] {
       "3.3V (Pin 1)", "5V (Pin 2)",
@@ -124,9 +126,12 @@ public class RaspberryPi extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 60;
-    double boardY = y - 50;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 16, 16);
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + PIN_SPACING.convertToPixels() / 2.0;
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
+    double cornerArc = new Size(6.0d, SizeUnit.mm).convertToPixels();
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerArc, cornerArc);
   }
 
   @Override
@@ -147,8 +152,10 @@ public class RaspberryPi extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 60;
-    double boardY = y - 50;
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + PIN_SPACING.convertToPixels() / 2.0;
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
 
     Shape boardShape = getBodyShape();
 
@@ -164,31 +171,91 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Mounting holes
-      drawMountingHole(g2d, boardX + 30, boardY + 30, 22);
-      drawMountingHole(g2d, boardX + 30, boardY + boardH - 30, 22);
-      drawMountingHole(g2d, boardX + boardW - 170, boardY + 30, 22);
-      drawMountingHole(g2d, boardX + boardW - 170, boardY + boardH - 30, 22);
+      // 4 Mounting holes (diameter 2.7mm, spaced 58mm apart horizontally and 49mm vertically)
+      double holeDiameter = new Size(2.7d, SizeUnit.mm).convertToPixels();
+      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
-      // Ethernet & USB Ports on the right edge
-      drawMetalConnector(g2d, boardX + boardW - 140, boardY + 30, 150, 110, "ETHERNET");
-      drawMetalConnector(g2d, boardX + boardW - 140, boardY + 160, 150, 100, "USB 3.0");
-      drawMetalConnector(g2d, boardX + boardW - 140, boardY + 280, 150, 100, "USB 2.0");
+      // USB & Ethernet Ports on the right edge
+      // USB 3.0 (top): center Y = 9.0 mm from top edge (47.0 mm from bottom edge)
+      drawMetalConnector(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(2.0d, SizeUnit.mm).convertToPixels(),
+          new Size(17.5d, SizeUnit.mm).convertToPixels(),
+          new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 3.0");
 
-      // Broadcom SoC with metal heat spreader
-      drawMetalConnector(g2d, boardX + 220, boardY + 180, 110, 110, "BCM SoC");
+      // USB 2.0 (middle): center Y = 26.9 mm from top edge (29.1 mm from bottom edge)
+      drawMetalConnector(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(19.9d, SizeUnit.mm).convertToPixels(),
+          new Size(17.5d, SizeUnit.mm).convertToPixels(),
+          new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 2.0");
 
-      // HDMI & USB-C Power
-      drawMetalConnector(g2d, boardX + 30, boardY + boardH - 15, 60, 30, "PWR");
-      drawMetalConnector(g2d, boardX + 110, boardY + boardH - 15, 55, 30, "HDMI0");
-      drawMetalConnector(g2d, boardX + 180, boardY + boardH - 15, 55, 30, "HDMI1");
+      // Ethernet (bottom): center Y = 45.8 mm from top edge (10.2 mm from bottom edge)
+      drawMetalConnector(g2d, boardX + boardW - new Size(18.0d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(37.8d, SizeUnit.mm).convertToPixels(),
+          new Size(21.0d, SizeUnit.mm).convertToPixels(),
+          new Size(16.0d, SizeUnit.mm).convertToPixels(), "ETHERNET");
 
-      // Raspberry Pi Silkscreen
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "Raspberry Pi", boardX + 120, boardY + 120, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      // Broadcom SoC with metal heat spreader and chipped top-left corner (17x17mm)
+      double socX = boardX + new Size(32.5d, SizeUnit.mm).convertToPixels() - new Size(0.3d, SizeUnit.in).convertToPixels();
+      double socY = boardY + new Size(24.5d, SizeUnit.mm).convertToPixels();
+      double socW = new Size(17.0d, SizeUnit.mm).convertToPixels();
+      double socH = new Size(17.0d, SizeUnit.mm).convertToPixels();
+      double socCut = new Size(2.0d, SizeUnit.mm).convertToPixels();
+
+      Path2D.Double socShape = new Path2D.Double();
+      socShape.moveTo(socX + socCut, socY);
+      socShape.lineTo(socX + socW, socY);
+      socShape.lineTo(socX + socW, socY + socH);
+      socShape.lineTo(socX, socY + socH);
+      socShape.lineTo(socX, socY + socCut);
+      socShape.closePath();
+
+      g2d.setColor(USB_METAL_COLOR);
+      g2d.fill(socShape);
+      g2d.setColor(METAL_SHIELD_BORDER);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(socShape);
+
+      g2d.setColor(METAL_LABEL_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "40-PIN GPIO", x + 190, y - 32, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "BCM SoC", socX + socW / 2.0, socY + socH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Bottom edge: USB-C Power & Micro-HDMI connectors
+      // PWR (USB-C): center X = 11.2 mm
+      drawMetalConnector(g2d, boardX + new Size(6.7d, SizeUnit.mm).convertToPixels(),
+          boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
+          new Size(9.0d, SizeUnit.mm).convertToPixels(),
+          new Size(7.5d, SizeUnit.mm).convertToPixels(), "PWR");
+
+      // HDMI0: center X = 25.8 mm
+      drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
+          boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
+          new Size(7.5d, SizeUnit.mm).convertToPixels(),
+          new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI0");
+
+      // HDMI1: center X = 39.2 mm
+      drawMetalConnector(g2d, boardX + new Size(35.45d, SizeUnit.mm).convertToPixels(),
+          boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
+          new Size(7.5d, SizeUnit.mm).convertToPixels(),
+          new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI1");
+
+      // Raspberry Pi Silkscreen text below 40-pin header
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(RPI_TITLE_FONT);
+      StringUtils.drawCenteredText(g2d, "Raspberry Pi", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(9.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Raspberry Pi Logo to the left of the SoC (shrunk 20% to 10.4mm, moved 0.2" up)
+      double logoSize = new Size(10.4d, SizeUnit.mm).convertToPixels();
+      double logoX = boardX + new Size(8.3d, SizeUnit.mm).convertToPixels();
+      double logoY = boardY + new Size(26.5d, SizeUnit.mm).convertToPixels() - new Size(0.2d, SizeUnit.in).convertToPixels();
+      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
     }
 
     g2d.setTransform(oldTx);
@@ -206,19 +273,19 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(2, 4, width - 4, height - 8, 4, 4));
 
-    // Ethernet & USB
+    // USB & Ethernet (Top USB 3.0, Middle USB 2.0, Bottom Ethernet)
     g2d.setColor(USB_METAL_COLOR);
-    g2d.fillRect(width - 8, 6, 6, 6);
-    g2d.fillRect(width - 8, 14, 6, 6);
-    g2d.fillRect(width - 8, 22, 6, 6);
+    g2d.fillRect(width - 8, 6, 6, 5);
+    g2d.fillRect(width - 8, 13, 6, 5);
+    g2d.fillRect(width - 9, 20, 7, 6);
 
     // SoC
     g2d.setColor(METAL_SHIELD_COLOR);
-    g2d.fillRect(10, 14, 8, 8);
+    g2d.fillRect(13, 14, 7, 7);
 
     // GPIO Header
     g2d.setColor(HEADER_BODY_COLOR);
-    g2d.fillRect(4, 5, 18, 4);
+    g2d.fillRect(4, 5, 18, 3);
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 6));

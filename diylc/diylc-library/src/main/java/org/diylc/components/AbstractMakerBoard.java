@@ -117,6 +117,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   @Override
   public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
+//    if (index == 0) {
+//      updateControlPoints();
+//    }
     invalidateCache();
   }
 
@@ -308,6 +311,196 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     plus.closePath();
     g2d.fill(plus);
 
+    g2d.setTransform(oldTx);
+  }
+
+  /**
+   * Helper to draw the Raspberry Pi logo in white using Path2D vector paths.
+   * Native viewBox is 32 x 32.
+   *
+   * @param g2d Graphics2D context
+   * @param x Top-left X coordinate
+   * @param y Top-left Y coordinate
+   * @param size Target width and height in pixels
+   */
+  public static void drawRaspberryPiLogo(Graphics2D g2d, double x, double y, double size) {
+    AffineTransform oldTx = g2d.getTransform();
+    g2d.translate(x, y);
+    double scale = size / 32.0;
+    g2d.scale(scale, scale);
+
+    Path2D.Double logoPath = new Path2D.Double(Path2D.WIND_NON_ZERO);
+    logoPath.moveTo(13.8, 6.4);
+    logoPath.curveTo(12.400, 5.300, 10.900, 4.500, 9.200, 3.900);
+    logoPath.curveTo(10.700, 4.800, 12.200, 5.600, 13.400, 6.800);
+    logoPath.curveTo(13.300, 7.900, 11.900, 8.600, 10.300, 8.500);
+    logoPath.curveTo(10.200, 8.400, 10.400, 8.400, 10.400, 8.200);
+    logoPath.curveTo(10.0, 8.1, 9.5, 8.2, 9.2, 8.0);
+    logoPath.curveTo(9.200, 7.900, 9.400, 7.900, 9.300, 7.800);
+    logoPath.curveTo(9.0, 7.6, 8.6, 7.5, 8.3, 7.3);
+    logoPath.curveTo(8.300, 7.200, 8.500, 7.200, 8.600, 7.100);
+    logoPath.curveTo(8.300, 6.900, 7.900, 6.800, 7.600, 6.500);
+    logoPath.curveTo(7.700, 6.400, 7.800, 6.500, 7.900, 6.300);
+    logoPath.curveTo(7.6, 6.1, 7.3, 5.9, 7.1, 5.6);
+    logoPath.curveTo(7.200, 5.500, 7.300, 5.600, 7.400, 5.500);
+    logoPath.curveTo(7.3, 5.2, 6.9, 5.0, 6.8, 4.7);
+    logoPath.curveTo(7.000, 4.700, 7.100, 4.800, 7.300, 4.600);
+    logoPath.curveTo(7.1, 4.3, 6.7, 4.2, 6.6, 3.8);
+    logoPath.curveTo(6.700, 3.700, 6.900, 3.800, 7.000, 3.700);
+    logoPath.curveTo(7.000, 3.400, 6.800, 3.200, 6.700, 2.900);
+    logoPath.curveTo(7.000, 2.800, 7.400, 2.900, 7.700, 2.800);
+    logoPath.curveTo(7.700, 2.700, 7.600, 2.600, 7.600, 2.500);
+    logoPath.curveTo(8.000, 2.300, 8.400, 2.500, 8.800, 2.600);
+    logoPath.curveTo(8.900, 2.400, 8.700, 2.400, 8.800, 2.200);
+    logoPath.curveTo(9.100, 2.200, 9.400, 2.400, 9.800, 2.400);
+    logoPath.curveTo(9.9, 2.2, 9.6, 2.2, 9.6, 2.0);
+    logoPath.curveTo(10.000, 2.000, 10.300, 2.200, 10.600, 2.400);
+    logoPath.curveTo(10.700, 2.300, 10.600, 2.200, 10.700, 2.000);
+    logoPath.curveTo(11.000, 2.100, 11.200, 2.300, 11.500, 2.500);
+    logoPath.curveTo(11.700, 2.500, 11.600, 2.300, 11.700, 2.200);
+    logoPath.curveTo(12.000, 2.300, 12.200, 2.600, 12.400, 2.700);
+    logoPath.curveTo(12.600, 2.700, 12.500, 2.500, 12.600, 2.400);
+    logoPath.curveTo(12.900, 2.600, 13.100, 2.900, 13.300, 3.100);
+    logoPath.curveTo(13.500, 3.100, 13.400, 2.900, 13.600, 2.900);
+    logoPath.curveTo(14.200, 3.600, 14.800, 4.400, 14.700, 5.400);
+    logoPath.curveTo(14.7, 5.9, 14.3, 6.2, 13.8, 6.4);
+    logoPath.lineTo(13.8, 6.4);
+    logoPath.closePath();
+    logoPath.moveTo(23.5, 7.1);
+    logoPath.curveTo(23.600, 7.200, 23.700, 7.200, 23.800, 7.200);
+    logoPath.curveTo(23.500, 7.500, 23.100, 7.500, 22.700, 7.700);
+    logoPath.curveTo(22.700, 7.800, 22.800, 7.800, 22.800, 7.900);
+    logoPath.curveTo(22.500, 8.100, 22.000, 8.000, 21.700, 8.100);
+    logoPath.curveTo(21.600, 8.200, 21.800, 8.300, 21.700, 8.400);
+    logoPath.curveTo(21.300, 8.500, 20.900, 8.400, 20.400, 8.300);
+    logoPath.curveTo(19.500, 8.100, 18.800, 7.700, 18.500, 6.800);
+    logoPath.curveTo(19.700, 5.500, 21.200, 4.700, 22.700, 3.900);
+    logoPath.curveTo(21.000, 4.500, 19.500, 5.300, 18.100, 6.300);
+    logoPath.curveTo(17.500, 6.100, 17.200, 5.600, 17.200, 5.000);
+    logoPath.curveTo(17.200, 4.300, 17.800, 3.200, 18.400, 2.700);
+    logoPath.lineTo(18.6, 3.0);
+    logoPath.curveTo(18.900, 2.800, 19.100, 2.400, 19.400, 2.300);
+    logoPath.curveTo(19.500, 2.400, 19.400, 2.600, 19.600, 2.600);
+    logoPath.curveTo(19.800, 2.500, 20.000, 2.200, 20.300, 2.100);
+    logoPath.curveTo(20.400, 2.200, 20.300, 2.300, 20.500, 2.400);
+    logoPath.curveTo(20.8, 2.4, 21.0, 2.1, 21.4, 2.0);
+    logoPath.curveTo(21.400, 2.100, 21.300, 2.200, 21.400, 2.400);
+    logoPath.curveTo(21.7, 2.2, 22.0, 2.0, 22.4, 2.0);
+    logoPath.curveTo(22.400, 2.100, 22.200, 2.200, 22.300, 2.400);
+    logoPath.curveTo(22.600, 2.400, 22.900, 2.200, 23.300, 2.200);
+    logoPath.curveTo(23.300, 2.300, 23.200, 2.400, 23.300, 2.600);
+    logoPath.curveTo(23.700, 2.500, 24.100, 2.400, 24.500, 2.500);
+    logoPath.curveTo(24.500, 2.600, 24.400, 2.700, 24.400, 2.800);
+    logoPath.curveTo(24.700, 2.900, 25.100, 2.800, 25.400, 2.900);
+    logoPath.curveTo(25.3, 3.2, 25.0, 3.4, 25.0, 3.7);
+    logoPath.curveTo(25.100, 3.800, 25.300, 3.700, 25.400, 3.800);
+    logoPath.curveTo(25.300, 4.200, 24.900, 4.300, 24.800, 4.600);
+    logoPath.curveTo(24.900, 4.800, 25.100, 4.600, 25.200, 4.700);
+    logoPath.curveTo(25.100, 5.000, 24.700, 5.200, 24.500, 5.500);
+    logoPath.curveTo(24.600, 5.700, 24.700, 5.600, 24.800, 5.600);
+    logoPath.curveTo(24.600, 5.900, 24.300, 6.000, 24.100, 6.300);
+    logoPath.curveTo(24.200, 6.400, 24.300, 6.400, 24.400, 6.500);
+    logoPath.curveTo(24.2, 6.8, 23.8, 6.9, 23.5, 7.1);
+    logoPath.lineTo(23.5, 7.1);
+    logoPath.closePath();
+    logoPath.moveTo(15.4, 16.0);
+    logoPath.curveTo(15.400, 17.800, 14.000, 19.600, 12.200, 20.000);
+    logoPath.curveTo(10.400, 20.400, 8.800, 19.100, 8.700, 17.300);
+    logoPath.curveTo(8.600, 15.500, 9.900, 13.700, 11.600, 13.300);
+    logoPath.curveTo(13.7, 12.7, 15.4, 14.0, 15.4, 16.0);
+    logoPath.closePath();
+    logoPath.moveTo(23.4, 16.9);
+    logoPath.curveTo(23.400, 19.000, 21.600, 20.300, 19.600, 19.700);
+    logoPath.curveTo(17.800, 19.100, 16.500, 17.200, 16.800, 15.300);
+    logoPath.curveTo(17.100, 13.500, 18.900, 12.400, 20.700, 13.100);
+    logoPath.curveTo(22.3, 13.7, 23.4, 15.3, 23.4, 16.9);
+    logoPath.lineTo(23.4, 16.9);
+    logoPath.closePath();
+    logoPath.moveTo(16.1, 19.4);
+    logoPath.curveTo(17.100, 19.400, 18.100, 19.800, 18.800, 20.600);
+    logoPath.curveTo(20.000, 21.900, 19.900, 23.800, 18.600, 24.900);
+    logoPath.curveTo(17.300, 26.000, 15.200, 26.100, 13.900, 25.000);
+    logoPath.curveTo(12.900, 24.200, 12.500, 23.200, 12.700, 21.900);
+    logoPath.curveTo(13.000, 20.600, 13.900, 19.900, 15.100, 19.500);
+    logoPath.curveTo(15.4, 19.5, 15.7, 19.4, 16.1, 19.4);
+    logoPath.lineTo(16.1, 19.4);
+    logoPath.closePath();
+    logoPath.moveTo(19.8, 25.3);
+    logoPath.curveTo(19.900, 24.300, 20.300, 23.300, 21.100, 22.400);
+    logoPath.curveTo(21.600, 21.900, 22.100, 21.400, 22.600, 21.000);
+    logoPath.curveTo(22.900, 20.800, 23.200, 20.700, 23.500, 20.600);
+    logoPath.curveTo(24.100, 20.500, 24.600, 20.700, 24.800, 21.300);
+    logoPath.curveTo(25.200, 22.300, 25.300, 23.300, 24.800, 24.300);
+    logoPath.curveTo(24.200, 25.700, 23.100, 26.600, 21.600, 26.900);
+    logoPath.curveTo(21.500, 26.900, 21.300, 26.900, 21.100, 26.900);
+    logoPath.curveTo(20.2, 27.0, 19.8, 26.6, 19.8, 25.3);
+    logoPath.closePath();
+    logoPath.moveTo(6.9, 22.7);
+    logoPath.curveTo(6.900, 22.700, 6.900, 22.500, 6.900, 22.400);
+    logoPath.curveTo(7.000, 21.300, 7.600, 20.900, 8.700, 21.200);
+    logoPath.curveTo(10.400, 21.700, 12.000, 23.700, 12.100, 25.500);
+    logoPath.curveTo(12.100, 26.600, 11.600, 27.100, 10.500, 26.900);
+    logoPath.curveTo(9.000, 26.700, 8.000, 25.900, 7.400, 24.600);
+    logoPath.curveTo(7.0, 24.0, 6.9, 23.4, 6.9, 22.7);
+    logoPath.lineTo(6.9, 22.7);
+    logoPath.closePath();
+    logoPath.moveTo(16.2, 12.8);
+    logoPath.curveTo(15.400, 12.800, 14.600, 12.700, 13.900, 12.300);
+    logoPath.curveTo(12.600, 11.600, 12.600, 10.700, 13.700, 9.900);
+    logoPath.curveTo(15.200, 8.800, 17.200, 8.900, 18.600, 10.100);
+    logoPath.curveTo(18.700, 10.200, 18.800, 10.300, 18.900, 10.400);
+    logoPath.curveTo(19.400, 11.000, 19.300, 11.600, 18.700, 12.100);
+    logoPath.curveTo(18.200, 12.500, 17.600, 12.600, 17.000, 12.700);
+    logoPath.curveTo(16.7, 12.8, 16.4, 12.8, 16.2, 12.8);
+    logoPath.lineTo(16.2, 12.8);
+    logoPath.closePath();
+    logoPath.moveTo(16.0, 30.0);
+    logoPath.curveTo(14.800, 30.000, 13.800, 29.500, 12.900, 28.600);
+    logoPath.curveTo(12.500, 28.200, 12.500, 27.800, 13.000, 27.500);
+    logoPath.curveTo(13.700, 27.100, 14.400, 26.900, 15.200, 26.800);
+    logoPath.curveTo(16.200, 26.700, 17.200, 26.700, 18.200, 27.000);
+    logoPath.curveTo(18.400, 27.100, 18.700, 27.200, 18.900, 27.300);
+    logoPath.curveTo(19.500, 27.600, 19.600, 27.900, 19.100, 28.500);
+    logoPath.curveTo(19.100, 28.500, 19.100, 28.500, 19.000, 28.600);
+    logoPath.curveTo(18.3, 29.5, 17.3, 30.0, 16.0, 30.0);
+    logoPath.closePath();
+    logoPath.moveTo(7.8, 16.8);
+    logoPath.curveTo(7.800, 17.900, 7.600, 18.900, 7.200, 19.900);
+    logoPath.curveTo(7.100, 20.200, 7.000, 20.400, 6.800, 20.600);
+    logoPath.curveTo(6.5, 21.0, 6.3, 21.0, 6.0, 20.7);
+    logoPath.curveTo(4.600, 19.300, 4.800, 16.600, 6.500, 15.400);
+    logoPath.curveTo(7.100, 14.900, 7.500, 15.000, 7.700, 15.800);
+    logoPath.curveTo(7.7, 16.1, 7.8, 16.5, 7.8, 16.8);
+    logoPath.lineTo(7.8, 16.8);
+    logoPath.closePath();
+    logoPath.moveTo(26.9, 18.3);
+    logoPath.curveTo(26.900, 19.100, 26.600, 20.000, 26.000, 20.700);
+    logoPath.curveTo(25.700, 21.000, 25.500, 21.000, 25.200, 20.700);
+    logoPath.curveTo(24.900, 20.300, 24.700, 19.800, 24.600, 19.300);
+    logoPath.curveTo(24.300, 18.300, 24.200, 17.200, 24.300, 16.100);
+    logoPath.curveTo(24.300, 15.900, 24.400, 15.600, 24.500, 15.400);
+    logoPath.curveTo(24.700, 15.000, 24.900, 14.900, 25.300, 15.200);
+    logoPath.curveTo(26.3, 15.8, 26.9, 16.9, 26.9, 18.3);
+    logoPath.closePath();
+    logoPath.moveTo(7.5, 13.9);
+    logoPath.curveTo(7.400, 12.600, 7.800, 11.400, 8.900, 10.600);
+    logoPath.curveTo(10.000, 9.800, 11.200, 9.600, 12.500, 9.800);
+    logoPath.curveTo(12.500, 10.100, 12.300, 10.300, 12.200, 10.500);
+    logoPath.curveTo(11.500, 11.400, 10.600, 12.100, 9.800, 12.800);
+    logoPath.curveTo(9.300, 13.200, 8.800, 13.500, 8.300, 13.800);
+    logoPath.curveTo(7.9, 13.9, 7.7, 14.1, 7.5, 13.9);
+    logoPath.closePath();
+    logoPath.moveTo(24.6, 14.0);
+    logoPath.curveTo(24.400, 14.100, 24.100, 14.000, 23.900, 13.800);
+    logoPath.curveTo(23.200, 13.400, 22.500, 12.900, 21.900, 12.400);
+    logoPath.curveTo(21.200, 11.800, 20.600, 11.200, 20.000, 10.600);
+    logoPath.curveTo(19.900, 10.400, 19.700, 10.200, 19.700, 10.000);
+    logoPath.curveTo(20.300, 9.700, 22.300, 9.800, 23.300, 10.700);
+    logoPath.curveTo(24.3, 11.5, 24.9, 13.1, 24.6, 14.0);
+    logoPath.closePath();
+
+    g2d.setColor(Color.WHITE);
+    g2d.fill(logoPath);
     g2d.setTransform(oldTx);
   }
 
