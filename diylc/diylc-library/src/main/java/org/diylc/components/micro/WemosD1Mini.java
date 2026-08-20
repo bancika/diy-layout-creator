@@ -27,7 +27,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -57,14 +59,34 @@ public class WemosD1Mini extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color WEMOS_BLUE = Color.decode("#006699");
-  public static Size BOARD_WIDTH = new Size(25.6d, SizeUnit.mm);
-  public static Size BOARD_LENGTH = new Size(34.2d, SizeUnit.mm);
+  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
+  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
+  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
+  public static Color SILK_COLOR = Color.WHITE;
+
+  public static Size BOARD_WIDTH = new Size(1.0d, SizeUnit.in);
+  public static Size BOARD_LENGTH = new Size(1.34d, SizeUnit.in);
+  public static Size ROW_SPACING = new Size(0.9d, SizeUnit.in);
+  public static Size TOP_MARGIN = new Size(0.275d, SizeUnit.in);
+  public static Size ANTENNA_LENGTH = new Size(5.5d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH = new Size(17.0d, SizeUnit.mm);
+  public static Size SHIELD_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size SHIELD_LENGTH = new Size(12.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..7)
       "RST", "A0", "D0 (GPIO16)", "D5 (GPIO14)", "D6 (GPIO12)", "D7 (GPIO13)", "D8 (GPIO15)", "3V3",
       // Right row (pins 8..15)
       "5V", "G (GND)", "D4 (GPIO2)", "D3 (GPIO0)", "D2 (GPIO4)", "D1 (GPIO5)", "RX (GPIO3)", "TX (GPIO1)"
+  };
+
+  public static final String[] SILK_PIN_NAMES_LEFT = new String[] {
+      "RST", "A0", "D0", "D5", "D6", "D7", "D8", "3V3"
+  };
+
+  public static final String[] SILK_PIN_NAMES_RIGHT = new String[] {
+      "TX", "RX", "D1", "D2", "D3", "D4", "G", "5V"
   };
 
   public WemosD1Mini() {
@@ -85,7 +107,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels(); // 180px
+    double rowSpacing = ROW_SPACING.convertToPixels(); // 180px
 
     double[][] relativeOffsets = new double[16][2];
     for (int i = 0; i < 8; i++) {
@@ -105,12 +127,54 @@ public class WemosD1Mini extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 22;
-    double boardH = 9 * PIN_SPACING.convertToPixels() + 10;
-    double boardX = x - 11;
-    double boardY = y - 10;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+
+    double rowSpacing = ROW_SPACING.convertToPixels();
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double topMargin = TOP_MARGIN.convertToPixels();
+    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+    double boardY = y - topMargin;
+
+    double rTop = 18.0;
+    double rBottom = 6.0;
+    double usbCutoutW = 54.0;
+    double usbCutoutH = 14.0;
+    double rstCutoutW = 16.0;
+    double rstCutoutH = 24.0;
+
+    double cx = boardX + boardW / 2.0;
+    double bottomY = boardY + boardH;
+    double rightX = boardX + boardW;
+
+    Path2D.Double path = new Path2D.Double();
+    // Start at top-left, after top-left corner curve
+    path.moveTo(boardX + rTop, boardY);
+    // Top edge
+    path.lineTo(rightX - rTop, boardY);
+    // Top-right corner curve (larger radius)
+    path.quadTo(rightX, boardY, rightX, boardY + rTop);
+    // Right edge down to bottom-right corner
+    path.lineTo(rightX, bottomY - rBottom);
+    // Bottom-right corner curve (smaller radius)
+    path.quadTo(rightX, bottomY, rightX - rBottom, bottomY);
+    // Bottom edge towards USB cutout
+    path.lineTo(cx + usbCutoutW / 2.0, bottomY);
+    // USB cutout (slightly wider than the USB connector)
+    path.lineTo(cx + usbCutoutW / 2.0, bottomY - usbCutoutH);
+    path.lineTo(cx - usbCutoutW / 2.0, bottomY - usbCutoutH);
+    path.lineTo(cx - usbCutoutW / 2.0, bottomY);
+    // Bottom edge towards Reset button cutout
+    path.lineTo(boardX + rstCutoutW, bottomY);
+    // Reset button cutout
+    path.lineTo(boardX + rstCutoutW, bottomY - rstCutoutH);
+    path.lineTo(boardX, bottomY - rstCutoutH);
+    // Left edge up to top-left corner
+    path.lineTo(boardX, boardY + rTop);
+    // Top-left corner curve (larger radius)
+    path.quadTo(boardX, boardY, boardX + rTop, boardY);
+    path.closePath();
+
+    return path;
   }
 
   @Override
@@ -129,11 +193,18 @@ public class WemosD1Mini extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double rowSpacing = new Size(0.9d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 22;
-    double boardH = 9 * PIN_SPACING.convertToPixels() + 10;
-    double boardX = x - 11;
-    double boardY = y - 10;
+    double rowSpacing = ROW_SPACING.convertToPixels();
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double topMargin = TOP_MARGIN.convertToPixels();
+    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+    double boardY = y - topMargin;
+    double bottomY = boardY + boardH;
+
+    double antennaW = ANTENNA_WIDTH.convertToPixels();
+    double antennaH = ANTENNA_LENGTH.convertToPixels();
+    double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+    double antennaY = boardY + 5.0;
 
     Shape boardShape = getBodyShape();
 
@@ -149,16 +220,81 @@ public class WemosD1Mini extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Micro USB
-      drawMetalConnector(g2d, boardX + (boardW - 55) / 2.0, boardY + boardH - 18, 55, 26, "USB");
+      // Antenna trace (gold/copper serpentine PCB trace)
+      g2d.setColor(ANTENNA_COLOR);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
+      Path2D.Double antPath = new Path2D.Double();
+      double antPadX = antennaX + 12;
+      double antPadW = antennaW - 24;
+      double antTopY = antennaY + 3;
+      double antMidY = antennaY + antennaH - 6;
+      antPath.moveTo(antPadX, antMidY);
+      antPath.lineTo(antPadX, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
+      antPath.lineTo(antPadX + antPadW, antMidY);
+      antPath.lineTo(antPadX + antPadW, antTopY);
+      g2d.draw(antPath);
+
+      // Black rectangle below antenna
+      double rectW = new Size(15.0d, SizeUnit.mm).convertToPixels();
+      double rectH = new Size(1.2d, SizeUnit.mm).convertToPixels();
+      double rectX = (x + rowSpacing / 2.0) - rectW / 2.0;
+      double rectY = antennaY + antennaH;
+      g2d.setColor(Color.BLACK);
+      g2d.fill(new Rectangle2D.Double(rectX, rectY, rectW, rectH));
 
       // ESP8266 Metal Shield
-      drawMetalConnector(g2d, boardX + 15, boardY + 25, boardW - 30, 85, "ESP8266");
+      double shieldW = SHIELD_WIDTH.convertToPixels();
+      double shieldH = SHIELD_LENGTH.convertToPixels();
+      double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
+      double shieldY = rectY + rectH + 2.0;
+      drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
-      // Silkscreen
-      g2d.setColor(Color.WHITE);
+      // Micro-USB Jack drawn flush with the bottom edge of the board
+      double usbW = 46.0;
+      double usbH = 26.0;
+      double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
+      double usbY = bottomY - usbH;
+      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+
+      // Reset button: small black rectangle touching the board in the bottom left cutout
+      double rstCutoutW = 16.0;
+      double btnW = 8.0;
+      double btnH = 16.0;
+      double btnX = boardX + rstCutoutW - btnW;
+      double btnY = bottomY - 20.0;
+
+      g2d.setColor(Color.BLACK);
+      g2d.fill(new Rectangle2D.Double(btnX, btnY, btnW, btnH));
+
+      // Reset button label on the board next to the button
+      g2d.setColor(SILK_COLOR);
+      g2d.setFont(new Font("SansSerif", Font.BOLD, 9));
+      StringUtils.drawCenteredText(g2d, "RST", boardX + rstCutoutW + 3.0, btnY + btnH / 2.0,
+          HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+
+      // Silkscreen: D1 mini label
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "D1 Mini", boardX + boardW / 2.0, boardY + 130, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "D1 mini", x + rowSpacing / 2.0, shieldY + shieldH + 18.0,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Silkscreen: Pin labels
+      g2d.setFont(new Font("SansSerif", Font.BOLD, 9));
+      double spacing = PIN_SPACING.convertToPixels();
+      for (int i = 0; i < 8; i++) {
+        double pinY = y + i * spacing;
+        // Left pin labels
+        StringUtils.drawCenteredText(g2d, SILK_PIN_NAMES_LEFT[i], x + 11.0, pinY,
+            HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+        // Right pin labels
+        StringUtils.drawCenteredText(g2d, SILK_PIN_NAMES_RIGHT[i], x + rowSpacing - 11.0, pinY,
+            HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      }
     }
 
     g2d.setTransform(oldTx);
@@ -170,16 +306,60 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
+    Path2D.Double iconShape = new Path2D.Double();
+    double rT = 5.0;
+    double rB = 2.0;
+    iconShape.moveTo(5 + rT, 3);
+    iconShape.lineTo(width - 5 - rT, 3);
+    iconShape.quadTo(width - 5, 3, width - 5, 3 + rT);
+    iconShape.lineTo(width - 5, height - 4 - rB);
+    iconShape.quadTo(width - 5, height - 4, width - 5 - rB, height - 4);
+    iconShape.lineTo(width / 2.0 + 4, height - 4);
+    iconShape.lineTo(width / 2.0 + 4, height - 7);
+    iconShape.lineTo(width / 2.0 - 4, height - 7);
+    iconShape.lineTo(width / 2.0 - 4, height - 4);
+    iconShape.lineTo(8, height - 4);
+    iconShape.lineTo(8, height - 8);
+    iconShape.lineTo(5, height - 8);
+    iconShape.lineTo(5, 3 + rT);
+    iconShape.quadTo(5, 3, 5 + rT, 3);
+    iconShape.closePath();
+
     g2d.setColor(WEMOS_BLUE);
-    g2d.fill(new RoundRectangle2D.Double(5, 4, width - 10, height - 8, 3, 3));
+    g2d.fill(iconShape);
     g2d.setColor(WEMOS_BLUE.darker());
-    g2d.draw(new RoundRectangle2D.Double(5, 4, width - 10, height - 8, 3, 3));
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.draw(iconShape);
 
+    // Antenna trace
+    g2d.setColor(ANTENNA_COLOR);
+    g2d.drawLine(10, 5, 12, 5);
+    g2d.drawLine(12, 5, 12, 7);
+    g2d.drawLine(12, 7, 16, 7);
+    g2d.drawLine(16, 7, 16, 5);
+    g2d.drawLine(16, 5, 20, 5);
+    g2d.drawLine(20, 5, 20, 7);
+    g2d.drawLine(20, 7, 22, 7);
+
+    // Black rectangle below antenna
+    g2d.setColor(Color.BLACK);
+    g2d.fillRect(8, 8, width - 16, 2);
+
+    // Metal shield
     g2d.setColor(METAL_SHIELD_COLOR);
-    g2d.fillRect(8, 8, width - 16, 10);
+    g2d.fill(new RoundRectangle2D.Double(8, 10, width - 16, 10, 2, 2));
 
+    // Reset button in icon
+    g2d.setColor(Color.BLACK);
+    g2d.fillRect(6, height - 7, 2, 3);
+
+    // USB connector flush with bottom edge
+    g2d.setColor(USB_METAL_COLOR);
+    g2d.fill(new RoundRectangle2D.Double(width / 2.0 - 3, height - 8, 6, 4, 1, 1));
+
+    // Text
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
-    StringUtils.drawCenteredText(g2d, "D1", width / 2, height / 2 + 7, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "D1", width / 2.0, height / 2.0 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }
