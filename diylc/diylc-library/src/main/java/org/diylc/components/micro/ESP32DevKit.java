@@ -237,7 +237,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "DevKit V1", x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ESP32 DevKit V1", x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

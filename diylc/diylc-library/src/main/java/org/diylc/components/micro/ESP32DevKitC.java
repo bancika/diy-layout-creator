@@ -61,7 +61,7 @@ public class ESP32DevKitC extends AbstractMakerBoard {
   public static Size BOARD_LENGTH = new Size(54.4d, SizeUnit.mm);
   public static Size MAIN_BODY_LENGTH = new Size(48.2d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(6.2d, SizeUnit.mm);
-  public static Size ANTENNA_WIDTH = new Size(20.0d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH = new Size(19.0d, SizeUnit.mm);
   public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
 
   public static final String[] PIN_NAMES = new String[] {
@@ -247,7 +247,7 @@ public class ESP32DevKitC extends AbstractMakerBoard {
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "ESP32", x + rowSpacing / 2.0, mainY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "ESP32 DevKitC V4", x + rowSpacing / 2.0, mainY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
