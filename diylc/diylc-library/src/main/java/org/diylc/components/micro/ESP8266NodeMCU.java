@@ -210,12 +210,6 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       double shieldY = antennaY + antennaH + 2;
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
-      // USB to UART chip (CP2102)
-      double chipSize = new Size(4.5d, SizeUnit.mm).convertToPixels();
-      double chipX = (x + rowSpacing / 2.0) - chipSize / 2.0;
-      double chipY = shieldY + shieldH + new Size(4.0d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipSize, chipSize, "CP2102");
-
       // Micro-USB Jack at bottom
       double usbW = 54;
       double usbH = 32;
@@ -250,7 +244,8 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "NodeMCU", x + rowSpacing / 2.0, chipY - 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      double labelY = shieldY + shieldH + new Size(4.0d, SizeUnit.mm).convertToPixels();
+      StringUtils.drawCenteredText(g2d, "NodeMCU", x + rowSpacing / 2.0, labelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
