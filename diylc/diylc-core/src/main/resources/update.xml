@@ -417,6 +417,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Renamed Mac OS build files to start with a 'mac' prefix instead of 'osx'</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Images can randomly disappear when zooming in and scrolling</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
