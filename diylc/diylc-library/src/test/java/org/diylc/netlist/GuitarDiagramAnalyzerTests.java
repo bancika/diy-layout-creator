@@ -19,13 +19,16 @@
 package org.diylc.netlist;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
+import java.util.List;
 
 import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.junit.Test;
 
 import org.diylc.components.electromechanical.OpenJack1_4;
+import org.diylc.components.guitar.AbstractGuitarPickup.Polarity;
 import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.PotentiometerPanel;
@@ -327,5 +330,156 @@ public class GuitarDiagramAnalyzerTests {
     assertEquals(
         "((Volume.3-2 + ((Pickup1.North<- + Pickup1.South<-) || (Pickup2.North<- + Pickup2.South<-) || (Tone1.2-1 + Cap1) || (Tone2.2-1 + Cap2))) || Volume.2-1)",
         s);
+  }
+
+  @Test
+  public void testOneStackedNorthPickup() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    pickup.setPolarity(Polarity.StackedNorth);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("Pickup.StackedNorth<-", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("'Pickup' is the only engaged pickup"));
+  }
+
+  @Test
+  public void testOneStackedSouthPickup() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    pickup.setPolarity(Polarity.StackedSouth);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("Pickup.StackedSouth<-", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+  }
+
+  @Test
+  public void testOneStackedPickupReverse() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    pickup.setPolarity(Polarity.StackedNorth);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup, 2);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 1);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("Pickup.StackedNorth->", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+  }
+
+  @Test
+  public void testTwoStackedPickupsParallel() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup1 = new SingleCoilPickup();
+    pickup1.setName("Pickup1");
+    pickup1.setPolarity(Polarity.StackedNorth);
+    SingleCoilPickup pickup2 = new SingleCoilPickup();
+    pickup2.setName("Pickup2");
+    pickup2.setPolarity(Polarity.StackedSouth);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(Pickup1.StackedNorth<- || Pickup2.StackedSouth<-)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("All pickup coils are wired in-phase"));
+  }
+
+  @Test
+  public void testTwoStackedPickupsParallelOutOfPhase() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup1 = new SingleCoilPickup();
+    pickup1.setName("Pickup1");
+    pickup1.setPolarity(Polarity.StackedNorth);
+    SingleCoilPickup pickup2 = new SingleCoilPickup();
+    pickup2.setName("Pickup2");
+    pickup2.setPolarity(Polarity.StackedSouth);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 2);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 1);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(Pickup1.StackedNorth<- || Pickup2.StackedSouth->)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("Some pickup coils are wired OUT-of-phase"));
+  }
+
+  @Test
+  public void testStackedPickupAndSingleCoilParallel() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup1 = new SingleCoilPickup();
+    pickup1.setName("Pickup1");
+    pickup1.setPolarity(Polarity.StackedNorth);
+    SingleCoilPickup pickup2 = new SingleCoilPickup();
+    pickup2.setName("Pickup2");
+    pickup2.setPolarity(Polarity.North);
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(Pickup1.StackedNorth<- || Pickup2.North<-)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is NOT hum-cancelling"));
+    assertTrue(notes.contains("All pickup coils are wired in-phase"));
+  }
+
+  @Test
+  public void testStackedPickupAndHumbuckerParallel() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup1 = new SingleCoilPickup();
+    pickup1.setName("Pickup1");
+    pickup1.setPolarity(Polarity.StackedNorth);
+    HumbuckerPickup pickup2 = new HumbuckerPickup();
+    pickup2.setName("Pickup2");
+    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 0);
+    Group coilTapGroup = new Group().connect(pickup2, 1).connect(pickup2, 2);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 3);
+    netlist.add(tipGroup).add(coilTapGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("((Pickup2.North<- + Pickup2.South<-) || Pickup1.StackedNorth<-)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("'Pickup2' pickup wired in humbucking mode with series coils"));
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("All pickup coils are wired in-phase"));
   }
 }

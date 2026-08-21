@@ -399,6 +399,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added support for stacked guitar pickups: 'Stacked - North' and 'Stacked - South' are two new options to pick in the Coil(s) property of Single Coil, P-90, P-Bass and Jazz Bass pickups</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Node Name Tooltips' feature that can be toggled in the Config menu; when enabled a tooltip is shown next to the cursor with names of component nodes under the cursor</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -416,6 +420,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Renamed Mac OS build files to start with a 'mac' prefix instead of 'osx'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Images can randomly disappear when zooming in and scrolling</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
