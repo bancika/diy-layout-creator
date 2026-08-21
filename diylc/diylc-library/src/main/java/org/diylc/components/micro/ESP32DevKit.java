@@ -21,8 +21,17 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -36,13 +45,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "ESP32 DevKit", category = "Controllers",
-    author = "Branislav Stojkovic", description = "ESP32 DevKit V1 DOIT Wi-Fi and Bluetooth Development Board",
+    author = "Branislav Stojkovic", description = "ESP32 DevKit Wi-Fi and Bluetooth Development Board (30-Pin / 38-Pin)",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -50,27 +60,67 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
+  public enum DevKitVersion {
+    DevKit_V1_30Pin("30-Pin (DevKit V1 / DOIT)"),
+    DevKitC_V4_38Pin("38-Pin (DevKitC V4)");
+
+    private final String label;
+
+    DevKitVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
+
   public static Color ESP_BLACK = Color.decode("#1E1E1E");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
-  public static Size BOARD_WIDTH = new Size(28.2d, SizeUnit.mm);
-  public static Size BOARD_LENGTH = new Size(51.8d, SizeUnit.mm);
-  public static Size TOP_MARGIN = new Size(6.7d, SizeUnit.mm);
-  public static Size ANTENNA_LENGTH = new Size(6.2d, SizeUnit.mm);
-  public static Size ANTENNA_WIDTH = new Size(20.0d, SizeUnit.mm);
-  public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
-  public static Size HOLE_DIAMETER = new Size(2.8d, SizeUnit.mm);
-  public static Size HOLE_EDGE_MARGIN = new Size(0.8d, SizeUnit.mm);
 
-  public static final String[] PIN_NAMES = new String[] {
-      // Left row (pins 0..14)
+  // 30-Pin (DOIT V1) Dimensions
+  public static Size BOARD_WIDTH_30 = new Size(28.2d, SizeUnit.mm);
+  public static Size BOARD_LENGTH_30 = new Size(51.8d, SizeUnit.mm);
+  public static Size TOP_MARGIN_30 = new Size(6.7d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH_30 = new Size(6.2d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH_30 = new Size(20.0d, SizeUnit.mm);
+  public static Size HOLE_DIAMETER_30 = new Size(2.8d, SizeUnit.mm);
+  public static Size HOLE_EDGE_MARGIN_30 = new Size(0.8d, SizeUnit.mm);
+
+  // 38-Pin (DevKitC V4) Dimensions
+  public static Size BOARD_WIDTH_38 = new Size(27.9d, SizeUnit.mm);
+  public static Size BOARD_LENGTH_38 = new Size(54.4d, SizeUnit.mm);
+  public static Size MAIN_BODY_LENGTH_38 = new Size(48.2d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH_38 = new Size(6.2d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH_38 = new Size(19.0d, SizeUnit.mm);
+
+  // Common Spacing
+  public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
+
+  public static final String[] PIN_NAMES_30 = new String[] {
+      // Left row (pins 0..14, top to bottom)
       "EN", "VP (GPIO36)", "VN (GPIO39)", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND1", "D13", "3V3",
-      // Right row (pins 15..29)
+      // Right row (pins 15..29, bottom to top)
       "VIN", "GND2", "D15", "D2", "D4", "D16 (RX2)", "D17 (TX2)", "D5", "D18", "D19", "D21", "RX0 (GPIO3)", "TX0 (GPIO1)", "D22", "D23"
   };
+
+  public static final String[] PIN_NAMES_38 = new String[] {
+      // Left row (pins 0..18, top to bottom)
+      "3V3", "EN", "VP (GPIO36)", "VN (GPIO39)", "GPIO34", "GPIO35", "GPIO32", "GPIO33",
+      "GPIO25", "GPIO26", "GPIO27", "GPIO14", "GPIO12", "GND1", "GPIO13",
+      "D2 (GPIO9)", "D3 (GPIO10)", "CMD (GPIO11)", "5V",
+      // Right row (pins 19..37, top to bottom)
+      "GND2", "GPIO23", "GPIO22", "TX0 (GPIO1)", "RX0 (GPIO3)", "GPIO21", "GND3",
+      "GPIO19", "GPIO18", "GPIO5", "GPIO17", "GPIO16", "GPIO4", "GPIO0", "GPIO2",
+      "GPIO15", "D1 (GPIO8)", "D0 (GPIO7)", "CLK (GPIO6)"
+  };
+
+  private DevKitVersion version = DevKitVersion.DevKit_V1_30Pin;
 
   public ESP32DevKit() {
     super();
@@ -78,10 +128,27 @@ public class ESP32DevKit extends AbstractMakerBoard {
     updateControlPoints();
   }
 
+  @EditableProperty(name = "Version")
+  public DevKitVersion getVersion() {
+    return version;
+  }
+
+  public void setVersion(DevKitVersion version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
-    if (index >= 0 && index < PIN_NAMES.length) {
-      return PIN_NAMES[index];
+    if (version == DevKitVersion.DevKit_V1_30Pin) {
+      if (index >= 0 && index < PIN_NAMES_30.length) {
+        return PIN_NAMES_30[index];
+      }
+    } else {
+      if (index >= 0 && index < PIN_NAMES_38.length) {
+        return PIN_NAMES_38[index];
+      }
     }
     return "Pin " + (index + 1);
   }
@@ -90,19 +157,31 @@ public class ESP32DevKit extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double rowSpacing = ROW_SPACING.convertToPixels(); // 200px
+    double rowSpacing = ROW_SPACING.convertToPixels(); // 200px (1.00")
 
-    double[][] relativeOffsets = new double[30][2];
-    for (int i = 0; i < 15; i++) {
-      relativeOffsets[i][0] = 0;
-      relativeOffsets[i][1] = i * spacing;
+    if (version == DevKitVersion.DevKit_V1_30Pin) {
+      double[][] relativeOffsets = new double[30][2];
+      for (int i = 0; i < 15; i++) {
+        relativeOffsets[i][0] = 0;
+        relativeOffsets[i][1] = i * spacing;
+      }
+      for (int i = 0; i < 15; i++) {
+        relativeOffsets[15 + i][0] = rowSpacing;
+        relativeOffsets[15 + i][1] = (14 - i) * spacing;
+      }
+      rotatePoints(firstPoint, relativeOffsets);
+    } else {
+      double[][] relativeOffsets = new double[PIN_NAMES_38.length][2];
+      for (int i = 0; i < 19; i++) {
+        relativeOffsets[i][0] = 0;
+        relativeOffsets[i][1] = i * spacing;
+      }
+      for (int i = 0; i < 19; i++) {
+        relativeOffsets[19 + i][0] = rowSpacing;
+        relativeOffsets[19 + i][1] = i * spacing;
+      }
+      rotatePoints(firstPoint, relativeOffsets);
     }
-    for (int i = 0; i < 15; i++) {
-      relativeOffsets[15 + i][0] = rowSpacing;
-      relativeOffsets[15 + i][1] = (14 - i) * spacing;
-    }
-
-    rotatePoints(firstPoint, relativeOffsets);
   }
 
   @Override
@@ -111,12 +190,29 @@ public class ESP32DevKit extends AbstractMakerBoard {
     double x = p0.getX();
     double y = p0.getY();
     double rowSpacing = ROW_SPACING.convertToPixels();
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_LENGTH.convertToPixels();
-    double topMargin = TOP_MARGIN.convertToPixels();
-    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
-    double boardY = y - topMargin;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+
+    if (version == DevKitVersion.DevKit_V1_30Pin) {
+      double boardW = BOARD_WIDTH_30.convertToPixels();
+      double boardH = BOARD_LENGTH_30.convertToPixels();
+      double topMargin = TOP_MARGIN_30.convertToPixels();
+      double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+      double boardY = y - topMargin;
+      return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+    } else {
+      double mainW = BOARD_WIDTH_38.convertToPixels();
+      double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
+      double antennaW = ANTENNA_WIDTH_38.convertToPixels();
+      double antennaH = ANTENNA_LENGTH_38.convertToPixels();
+
+      double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
+      double mainY = (y + 18 * PIN_SPACING.convertToPixels() / 2.0) - mainH / 2.0;
+      double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+      double antennaY = mainY - antennaH;
+
+      Area bodyArea = new Area(new RoundRectangle2D.Double(mainX, mainY, mainW, mainH, 8, 8));
+      bodyArea.add(new Area(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH + 1)));
+      return bodyArea;
+    }
   }
 
   @Override
@@ -136,24 +232,41 @@ public class ESP32DevKit extends AbstractMakerBoard {
     }
 
     double rowSpacing = ROW_SPACING.convertToPixels();
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_LENGTH.convertToPixels();
-    double topMargin = TOP_MARGIN.convertToPixels();
-    double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
-    double boardY = y - topMargin;
-
-    double antennaW = ANTENNA_WIDTH.convertToPixels();
-    double antennaH = ANTENNA_LENGTH.convertToPixels();
-    double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
-    double antennaY = boardY;
-
     Shape boardShape = getBodyShape();
-
     Composite oldComposite = applyAlpha(g2d, componentState);
 
     drawingObserver.startTracking();
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
-    g2d.fill(boardShape);
+    if (outlineMode) {
+      g2d.setColor(Constants.TRANSPARENT_COLOR);
+      g2d.fill(boardShape);
+    } else {
+      if (version == DevKitVersion.DevKit_V1_30Pin) {
+        g2d.setColor(bodyColor);
+        g2d.fill(boardShape);
+      } else {
+        double mainW = BOARD_WIDTH_38.convertToPixels();
+        double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
+        double antennaW = ANTENNA_WIDTH_38.convertToPixels();
+        double antennaH = ANTENNA_LENGTH_38.convertToPixels();
+        double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
+        double mainY = (y + 18 * PIN_SPACING.convertToPixels() / 2.0) - mainH / 2.0;
+        double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+        double antennaY = mainY - antennaH;
+
+        // Main board body
+        g2d.setColor(bodyColor);
+        g2d.fill(new RoundRectangle2D.Double(mainX, mainY, mainW, mainH, 8, 8));
+
+        // Antenna tab in slightly lighter color
+        Color antennaTabColor = new Color(
+            Math.min(255, bodyColor.getRed() + 32),
+            Math.min(255, bodyColor.getGreen() + 32),
+            Math.min(255, bodyColor.getBlue() + 32)
+        );
+        g2d.setColor(antennaTabColor);
+        g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
+      }
+    }
     drawingObserver.stopTracking();
 
     g2d.setColor(getFinalBorderColor(componentState, outlineMode));
@@ -161,19 +274,70 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Corner Mounting Holes (diameter 2.8mm, 0.8mm away from edges in both directions)
-      double holeDiameter = HOLE_DIAMETER.convertToPixels();
-      double holeRadius = holeDiameter / 2.0;
-      double edgeMargin = HOLE_EDGE_MARGIN.convertToPixels();
-      double leftHoleX = boardX + edgeMargin + holeRadius;
-      double rightHoleX = boardX + boardW - edgeMargin - holeRadius;
-      double topHoleY = boardY + edgeMargin + holeRadius;
-      double bottomHoleY = boardY + boardH - edgeMargin - holeRadius;
+      double antennaX;
+      double antennaY;
+      double antennaW;
+      double antennaH;
+      double shieldY;
+      double shieldH = new Size(18.0d, SizeUnit.mm).convertToPixels();
+      double shieldW = new Size(18.0d, SizeUnit.mm).convertToPixels();
+      double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
+      double usbY;
+      double btnLeftX;
+      double btnRightX;
+      double btnY;
+      double btnW = 20;
+      double btnH = 20;
+      double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
 
-      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+      if (version == DevKitVersion.DevKit_V1_30Pin) {
+        double boardW = BOARD_WIDTH_30.convertToPixels();
+        double boardH = BOARD_LENGTH_30.convertToPixels();
+        double topMargin = TOP_MARGIN_30.convertToPixels();
+        double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
+        double boardY = y - topMargin;
+
+        antennaW = ANTENNA_WIDTH_30.convertToPixels();
+        antennaH = ANTENNA_LENGTH_30.convertToPixels();
+        antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+        antennaY = boardY;
+        shieldY = boardY + antennaH + shift1mm;
+        usbY = boardY + boardH - 22;
+
+        // 4 Corner Mounting Holes (diameter 2.8mm, 0.8mm away from edges in both directions)
+        double holeDiameter = HOLE_DIAMETER_30.convertToPixels();
+        double holeRadius = holeDiameter / 2.0;
+        double edgeMargin = HOLE_EDGE_MARGIN_30.convertToPixels();
+        double leftHoleX = boardX + edgeMargin + holeRadius;
+        double rightHoleX = boardX + boardW - edgeMargin - holeRadius;
+        double topHoleY = boardY + edgeMargin + holeRadius;
+        double bottomHoleY = boardY + boardH - edgeMargin - holeRadius;
+
+        drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+        drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+        drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+        drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+
+        btnY = boardY + boardH - 25 - shift1mm;
+        btnLeftX = leftHoleX + 14 + shift1mm;
+        btnRightX = rightHoleX - 14 - shift1mm - btnW;
+      } else {
+        double mainW = BOARD_WIDTH_38.convertToPixels();
+        double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
+        double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
+        double mainY = (y + 18 * PIN_SPACING.convertToPixels() / 2.0) - mainH / 2.0;
+
+        antennaW = ANTENNA_WIDTH_38.convertToPixels();
+        antennaH = ANTENNA_LENGTH_38.convertToPixels();
+        antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
+        antennaY = mainY - antennaH;
+        shieldY = mainY + 10;
+        usbY = mainY + mainH - 22;
+
+        btnY = mainY + mainH - 25;
+        btnLeftX = mainX + 38;
+        btnRightX = mainX + mainW - 38 - btnW;
+      }
 
       // Antenna trace (gold/copper serpentine PCB trace)
       g2d.setColor(ANTENNA_COLOR);
@@ -195,29 +359,16 @@ public class ESP32DevKit extends AbstractMakerBoard {
       antPath.lineTo(antPadX + antPadW, antTopY);
       g2d.draw(antPath);
 
-      double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
-
       // ESP32-WROOM-32 metal shield module below antenna
-      double shieldW = new Size(18.0d, SizeUnit.mm).convertToPixels();
-      double shieldH = new Size(18.0d, SizeUnit.mm).convertToPixels();
-      double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
-      double shieldY = boardY + antennaH + shift1mm;
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
 
       // Micro-USB Jack at bottom
       double usbW = 58;
       double usbH = 34;
       double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
-      double usbY = boardY + boardH - 22;
       drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // EN & BOOT tactile buttons at bottom (flanking the Micro-USB port)
-      double btnW = 20;
-      double btnH = 20;
-      double btnY = boardY + boardH - 25 - shift1mm;
-      double btnLeftX = leftHoleX + 14 + shift1mm;
-      double btnRightX = rightHoleX - 14 - shift1mm - btnW;
-
       g2d.setColor(BUTTON_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
       g2d.fill(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
@@ -237,7 +388,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
       // Silkscreen
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "ESP32 DevKit V1", x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      String silkText = (version == DevKitVersion.DevKit_V1_30Pin) ? "ESP32 DevKit V1" : "ESP32 DevKitC V4";
+      StringUtils.drawCenteredText(g2d, silkText, x + rowSpacing / 2.0, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

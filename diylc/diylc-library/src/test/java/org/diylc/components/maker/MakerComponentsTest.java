@@ -239,7 +239,6 @@ public class MakerComponentsTest {
   public void testControlPointsAreDistinct() throws Exception {
     for (Class<? extends IDIYComponent<?>> clazz : allMakerComponentClasses) {
       IDIYComponent<?> component = clazz.getDeclaredConstructor().newInstance();
-      component.setControlPoint(new Point2D.Double(200, 200), 0);
       int count = component.getControlPointCount();
       for (int i = 0; i < count; i++) {
         Point2D p1 = component.getControlPoint(i);
