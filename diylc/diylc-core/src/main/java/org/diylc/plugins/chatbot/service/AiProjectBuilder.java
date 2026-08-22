@@ -2,6 +2,8 @@ package org.diylc.plugins.chatbot.service;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +31,8 @@ public class AiProjectBuilder {
     Map<String, String> metadata = getMetadata(project);
     List<String> tags = getTags(project);
 
-    List<AiComponent> components = project.getComponents().stream().map(AiProjectBuilder::mapComponent).toList();
+    double gridSpacingPx = project.getGridSpacing().convertToPixels();
+    List<AiComponent> components = project.getComponents().stream().map(c -> mapComponent(c, gridSpacingPx)).toList();
 
 //    List<Set<Node>> sets =
     List<Netlist> netlists = null;
@@ -80,22 +83,56 @@ public class AiProjectBuilder {
   private static List<String> getTags(Project project) {
 
     List<String> tags = new ArrayList<>();
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getCanonicalName().toLowerCase().contains("guitar"))) {
+    
+    // Helper: checks if any component's class name (lowercase) contains the given substring
+    java.util.function.Predicate<String> hasClass = sub ->
+        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains(sub));
+    
+    boolean isGuitar = project.getComponents().stream().anyMatch(x -> {
+      if (x.getClass().getName().toLowerCase().contains("guitar")) return true;
+      try {
+        ComponentType ct = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getClass());
+        return ct != null && "Guitar".equalsIgnoreCase(ct.getCategory());
+      } catch (Exception e) {
+        return false;
+      }
+    });
+    if (isGuitar) {
       tags.add("guitar");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("symbol"))) {
+    if (hasClass.test("symbol")) {
       tags.add("schematic");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("board")) &&
-        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("trace")) &&
-        project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("pad"))) {
-      tags.add("PCB");
+    if (hasClass.test("board") && hasClass.test("trace") && hasClass.test("pad")) {
+      tags.add("pcb");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("tube"))) {
+    if (hasClass.test("tube")) {
       tags.add("tube");
     }
-    if (project.getComponents().stream().anyMatch(x -> x.getClass().getName().toLowerCase().contains("vero"))) {
-      tags.add("vero/strip");
+    // Veroboard / stripboard (includes EurorackStripboard, VeroBoard, TriPadBoard)
+    if (hasClass.test("vero") || hasClass.test("tripad") || hasClass.test("eurorackstrip")) {
+      tags.add("veroboard");
+    }
+    // Perfboard / protoboard (PerfBoard, MarshallPerfBoard, ProtoBoard)
+    if (hasClass.test("perfboard") || hasClass.test("marshallperf") || hasClass.test("protoboard")) {
+      tags.add("perfboard");
+    }
+    // Turret / eyelet board
+    if (hasClass.test("eyeletboard") || hasClass.test("turret") || hasClass.test("eyelet")) {
+      tags.add("turret");
+    }
+    // Tag strip / terminal strip
+    if (hasClass.test("tagstrip") || hasClass.test("terminalstrip")) {
+      tags.add("tagboard");
+    }
+    // Breadboard
+    if (hasClass.test("breadboard")) {
+      tags.add("breadboard");
+    }
+    // Point-to-point: has hookup wire but no board at all
+    if (hasClass.test("hookupwire") && !hasClass.test("board") && !hasClass.test("breadboard")
+        && !hasClass.test("tagstrip") && !hasClass.test("terminalstrip")) {
+      tags.add("point-to-point");
     }
     return tags;
   }
@@ -120,47 +157,7 @@ public class AiProjectBuilder {
     return new AiSwitch(c.getName(), positions);
   }
 
-  static AiComponent mapComponent(IDIYComponent<?> component) {
-    ComponentType componentType = ComponentProcessor.getInstance()
-        .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-    List<PropertyWrapper> properties =
-        ComponentProcessor.getInstance().extractProperties(component.getClass());
-
-    AiPoint pos = null;
-    AiPoint fromPos = null;
-    AiPoint toPos = null;
-//    Map<String, Object> componentDescriptorMap = new HashMap<>();
-//    if (!component.isControlPointSticky(0)) {
-//      Point2D controlPoint1 = component.getControlPoint(0);
-//      if (component.getControlPointCount() > 1 && !component.isControlPointSticky(component.getControlPointCount() - 1)) {
-//        Point2D controlPoint2 = component.getControlPoint(component.getControlPointCount() - 1);
-//        fromPos = new AiPoint((int)Math.round(controlPoint1.getX()), (int)Math.round(controlPoint1.getY()));
-//        toPos = new AiPoint((int)Math.round(controlPoint2.getX()), (int)Math.round(controlPoint2.getY()));
-//      } else {
-//        pos = new AiPoint((int)Math.round(controlPoint1.getX()), (int)Math.round(controlPoint1.getY()));
-//      }
-//    }
-//
-//    if (component.getValue() != null && !PROPERTY_TYPES_TO_SKIP.contains(component.getValue().getClass())) {
-//      componentDescriptorMap.put("value", component.getValue().toString());
-//    }
-
-//    properties.forEach(p -> {
-//      if (PROPERTY_TYPES_TO_SKIP.contains(p.getType()))
-//        return;
-//      if (PROPERTY_NAMES_TO_SKIP.contains(p.getName().toLowerCase()))
-//        return;
-//
-//      try {
-//        p.readFrom(component);
-//        if (p.getValue() == null)
-//          return;
-//
-//        componentDescriptorMap.put(p.getName(), p.getValue().toString());
-//      } catch (Exception e) {
-//        LOG.warn("Error extracting properties", e);
-//      }
-//    });
+  static AiComponent mapComponent(IDIYComponent<?> component, double gridSpacingPx) {
 
     List<AiTerminal> terminals = new ArrayList<>();
 
@@ -169,15 +166,22 @@ public class AiProjectBuilder {
         Point2D controlPoint = component.getControlPoint(i);
         String nodeName = component.getControlPointNodeName(i);
         AiTerminal terminal = new AiTerminal(i, Integer.toString(i+1).equals(nodeName) ? null : nodeName,
-            new AiPoint((int)Math.round(controlPoint.getX()),
-                (int)Math.round(controlPoint.getY())));
+            createAiPoint(controlPoint, gridSpacingPx));
         terminals.add(terminal);
       }
     }
 
-    return new AiComponent(component.getName(), componentType.getName(),
+    String compType = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+    return new AiComponent(component.getName(), compType,
         component.getValue() == null ? null : component.getValue().toString(),
-         fromPos, toPos, pos, terminals.isEmpty() ? null : terminals);
+        terminals.isEmpty() ? null : terminals);
+  }
+
+  private static AiPoint createAiPoint(Point2D controlPoint, double gridSpacingPx) {
+
+    BigDecimal gridX = BigDecimal.valueOf(controlPoint.getX() / gridSpacingPx).setScale(2, RoundingMode.HALF_UP);
+    BigDecimal gridY = BigDecimal.valueOf(controlPoint.getY() / gridSpacingPx).setScale(2, RoundingMode.HALF_UP);
+    return new AiPoint(gridX, gridY);
   }
 
   static String mapTerminal(Node terminalRef) {

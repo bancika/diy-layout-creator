@@ -117,7 +117,7 @@ public class ChatbotService {
     return service;
   }
 
-  public String promptChatbot(String prompt) throws NotLoggedInException, CloudException {
+  public ChatbotResponse promptChatbot(String prompt) throws NotLoggedInException, CloudException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
@@ -126,20 +126,48 @@ public class ChatbotService {
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    File aiProjectFile = getAiProjectFile();
+    AiProject aiProject = extractAiProject();
+    File circuitFile = getCircuitFile(aiProject);
+    File clientAnalysisFile = getClientAnalysisFile(aiProject);
 
     try {
-      String response = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
+      String rawResponse = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile, prompt);
-      return Optional.ofNullable(response).orElse(SERVER_ERROR_PLEASE_TRY_AGAIN);
+          plugInPort.getCloudService().getMachineId(), fileName, circuitFile, clientAnalysisFile, prompt);
+      
+      LOG.info("Raw chatbot response: " + rawResponse);
+      
+      if (rawResponse == null || rawResponse.isBlank()) {
+          throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
+      }
+      
+      // Try to parse as ChatbotResponse (covers both standard chat and interactive edit)
+      ChatbotResponse response = new ChatbotResponse();
+      String trimmed = rawResponse.trim();
+      if (trimmed.startsWith("{")) {
+        try {
+          ObjectMapper mapper = new ObjectMapper();
+          response = mapper.readValue(trimmed, ChatbotResponse.class);
+        } catch (Exception parseEx) {
+          LOG.warn("Could not parse response as structured JSON, treating as plain text: " + parseEx.getMessage());
+          response.setString(rawResponse);
+        }
+      } else {
+        response.setString(rawResponse);
+      }
+      
+      return response;
+    } catch (CloudException ce) {
+      throw ce;
     } catch (Exception e) {
       LOG.error("Chatbot error", e);
       throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
-      // Clean up the temp file immediately after use
-      if (aiProjectFile != null && aiProjectFile.exists()) {
-        aiProjectFile.delete();
+      if (circuitFile != null && circuitFile.exists()) {
+        circuitFile.delete();
+      }
+      if (clientAnalysisFile != null && clientAnalysisFile.exists()) {
+        clientAnalysisFile.delete();
       }
     }
   }
@@ -153,12 +181,14 @@ public class ChatbotService {
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    File aiProjectFile = getAiProjectFile();
+    AiProject aiProject = extractAiProject();
+    File circuitFile = getCircuitFile(aiProject);
+    File clientAnalysisFile = getClientAnalysisFile(aiProject);
 
     try {
       String jsonResult = getService().analyzeCircuit(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile);
+          plugInPort.getCloudService().getMachineId(), fileName, circuitFile, clientAnalysisFile);
 
       if (jsonResult == null || jsonResult.trim().isEmpty()) {
         throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
@@ -169,77 +199,70 @@ public class ChatbotService {
       LOG.error("AI Analyzer error", e);
       throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
-      // Clean up the temp file immediately after use
-      if (aiProjectFile != null && aiProjectFile.exists()) {
-        aiProjectFile.delete();
+      if (circuitFile != null && circuitFile.exists()) {
+        circuitFile.delete();
+      }
+      if (clientAnalysisFile != null && clientAnalysisFile.exists()) {
+        clientAnalysisFile.delete();
       }
     }
   }
 
-  private File getAiProjectFile() {
-    File aiProjectFile = null;
-    AiProject aiProject = extractAiProject();
+  private File getCircuitFile(AiProject aiProject) {
     if (aiProject == null) {
       return null;
     }
     try {
-      String aiProjectStr = null;
-      try {
-        aiProjectStr = MAPPER.writeValueAsString(aiProject);
-      } catch (JsonProcessingException e) {
-        LOG.error("Could not serialize aiProject to JSON", e);
+      String aiProjectStr = MAPPER.writeValueAsString(aiProject);
+      File circuitFile = File.createTempFile("diylc_circuit_", ".txt");
+      try (FileWriter writer = new FileWriter(circuitFile)) {
+        writer.write(aiProjectStr);
       }
-      if (aiProjectStr != null) {
-        aiProjectFile = File.createTempFile("diylc_netlist_", ".txt");
-        try (FileWriter writer = new FileWriter(aiProjectFile)) {
-          writer.write("""
-              Take these notes into account when analyzing the circuit
-              - Coordinates are represented in pixels assuming 200px/in resolution.
-              - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
-              - Netlists of connected terminals are defined in the 'nets' structure.
-              - Connective components (wires, jumpers, traces, etc) are not part of the netlist, they are there to understand physical diagram but their conductive properties are already taken into account when constructing the netlist
-              - Analyze labels - they could provide clues about nearby terminals and what they represent.
-              """);
-          if (aiProject.switches() != null && !aiProject.switches().isEmpty()) {
-            writer.write("""
-              - Switches are defined in the 'switches' structure. Each switch will have a list of available position and the collection of internal terminals that are connected in each of the positions. Take the switching matrix into consideration when analyzing the circuit operation.
-              """);
-          }
-          if (aiProject.tags().contains("guitar")) {
-            IGuitarDiagramAnalyzer guitarDiagramAnalyzer =
-                ReflectionUtils.getGuitarDiagramAnalyzer();
-            if (guitarDiagramAnalyzer != null) {
-              try {
-                List<Netlist> netlists = plugInPort.extractNetlists(true);
-                writer.write("""
-                    - The circuit represents a guitar wiring diagram and below are some of the known characteristics in each combination of switch positions:
-                    """);
-                netlists.forEach(netlist -> {
-                  List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
-                  try {
-                    writer.write(netlist.getSwitchSetupString() + ": \n");
-                    for (String note : notes) {
-                      writer.write("  - " + note + "\n");
-                    }
-                  } catch (IOException ex) {
-                    LOG.warn("Could not write guitar diagram notes", ex);
-                  }
-                });
-              } catch (NetlistException | IOException ex) {
-                LOG.warn("Could not extract guitar diagram netlist", ex);
-              }
-            }
-          }
-          writer.write("\nBelow is the JSON describing the circuit in detail.\n");
-          writer.write(aiProjectStr);
-        }
-        // Make sure the temp file is deleted when the JVM exits
-        aiProjectFile.deleteOnExit();
-      }
+      circuitFile.deleteOnExit();
+      return circuitFile;
     } catch (Exception e) {
-      LOG.error("Error extracting or saving netlist", e);
+      LOG.error("Error saving circuit file", e);
+      return null;
     }
-    return aiProjectFile;
+  }
+
+  private File getClientAnalysisFile(AiProject aiProject) {
+    if (aiProject == null || !aiProject.tags().contains("guitar")) {
+      return null;
+    }
+    IGuitarDiagramAnalyzer guitarDiagramAnalyzer = null;
+    try {
+      guitarDiagramAnalyzer = ReflectionUtils.getGuitarDiagramAnalyzer();
+    } catch (Exception e) {
+      LOG.error("Could not get guitar diagram analyzer", e);
+      return null;
+    }
+    if (guitarDiagramAnalyzer == null) {
+      return null;
+    }
+    try {
+      List<Netlist> netlists = plugInPort.extractNetlists(true);
+      Map<String, List<String>> analysis = new LinkedHashMap<>();
+      for (Netlist netlist : netlists) {
+        List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
+        if (notes != null && !notes.isEmpty()) {
+          analysis.put(netlist.getSwitchSetupString(), notes);
+        }
+      }
+      if (analysis.isEmpty()) {
+        return null;
+      }
+      String analysisStr = MAPPER.writeValueAsString(analysis);
+      File analysisFile = File.createTempFile("diylc_client_analysis_", ".txt");
+      try (FileWriter writer = new FileWriter(analysisFile)) {
+        writer.write(analysisStr);
+      }
+      analysisFile.deleteOnExit();
+      return analysisFile;
+    } catch (Exception e) {
+      LOG.error("Could not extract guitar diagram notes", e);
+      return null;
+    }
   }
 
   private AiProject extractAiProject() {
