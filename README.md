@@ -4,7 +4,7 @@ DIY Layout Creator (DIYLC) is a specialized software tool designed for hobbyists
 
 It provides an intuitive, drag-and-drop interface for placing components, arranging connections, and visualizing circuit designs before assembly. With a built-in component library and customization options, it allows users to design layouts with precision and clarity. 
 
-🎸 **Perfect for guitar pedal builders, guitar, synth and Hi-Fi enthusiasts!** DIYLC is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.
+🎸 **Perfect for guitar pedal builders, guitar, synth, audio and HAM enthusiasts!** DIYLC is particularly useful for designing, analyzing, and debugging guitar wiring diagrams, helping musicians and builders plan and troubleshoot custom wiring configurations for pickups, switches, and controls. Its versatility makes it an ideal solution for DIY electronics projects, prototyping, and documentation.
 
 ### 🚀 Quick Links
 * **[⬇️ Download the latest release](https://github.com/bancika/diy-layout-creator/releases/latest)** for all platforms.
