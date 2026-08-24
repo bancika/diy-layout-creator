@@ -56,6 +56,7 @@ import javax.swing.Timer;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import org.apache.log4j.Logger;
+import org.diylc.announcements.AnnouncementUtils;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.swing.IDynamicSubmenuHandler;
@@ -288,7 +289,12 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void showMessage(String message, String title, int messageType) {
-    JOptionPane.showMessageDialog(this, message, title, messageType);
+    if (message != null && (message.toLowerCase().contains("<html>") || AnnouncementUtils.containsLink(message))) {
+      JComponent component = ClickableHtmlUtils.createClickableMessageComponent(message);
+      JOptionPane.showMessageDialog(this, component, title, messageType);
+    } else {
+      JOptionPane.showMessageDialog(this, message, title, messageType);
+    }
   }
 
   @Override

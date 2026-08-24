@@ -59,14 +59,19 @@ import org.diylc.swingframework.MemoryBar;
 import org.diylc.swingframework.miscutils.PercentageListCellRenderer;
 import org.diylc.swingframework.update.UpdateDialog;
 import org.diylc.swingframework.update.UpdateLabel;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JEditorPane;
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
 import org.diylc.announcements.AnnouncementProvider;
+import org.diylc.announcements.AnnouncementUtils;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.gui.ClickableHtmlUtils;
 import org.diylc.utils.IconLoader;
 
 public class StatusBar extends JPanel implements IPlugIn {
@@ -172,8 +177,7 @@ public class StatusBar extends JPanel implements IPlugIn {
       @Override
       public void complete(String result) {
         if (result != null && result.length() > 0) {
-          new BalloonTip(getUpdateLabel(), result, new EdgedBalloonStyle(UIManager.getColor("ToolTip.background"),
-              UIManager.getColor("ToolTip.foreground")), true);
+          showAnnouncementBalloon(result);
           announcementProvider.dismissed();
         }
       }
@@ -567,5 +571,52 @@ public class StatusBar extends JPanel implements IPlugIn {
         getStatusLabel().setText(finalStatus);
       }
     });
+  }
+
+  private void showAnnouncementBalloon(String result) {
+    String html = result;
+    final String firstUrl = AnnouncementUtils.extractFirstUrl(html);
+    final BalloonTip[] balloonTipHolder = new BalloonTip[1];
+
+    JEditorPane pane = ClickableHtmlUtils.createClickableHtmlPane(html, firstUrl, new Runnable() {
+
+      @Override
+      public void run() {
+        if (balloonTipHolder[0] != null) {
+          balloonTipHolder[0].closeBalloon();
+        }
+      }
+    });
+
+    Font font = UIManager.getFont("ToolTip.font");
+    if (font == null) {
+      font = UIManager.getFont("Label.font");
+    }
+    if (font != null) {
+      pane.setFont(font);
+    }
+    Color fg = UIManager.getColor("ToolTip.foreground");
+    if (fg != null) {
+      pane.setForeground(fg);
+    }
+
+    EdgedBalloonStyle style = new EdgedBalloonStyle(
+        UIManager.getColor("ToolTip.background"),
+        UIManager.getColor("ToolTip.foreground"));
+
+    final BalloonTip balloonTip = new BalloonTip(getUpdateLabel(), pane, style, true);
+    balloonTipHolder[0] = balloonTip;
+
+    if (firstUrl != null) {
+      balloonTip.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      balloonTip.addMouseListener(new MouseAdapter() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          ClickableHtmlUtils.openUrl(firstUrl);
+          balloonTip.closeBalloon();
+        }
+      });
+    }
   }
 }
