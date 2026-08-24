@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -103,9 +104,9 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       relativeOffsets[20 + i][0] = rowSpacing;
       relativeOffsets[20 + i][1] = i * spacing;
     }
-    // SWD Debug Header (40..42) at bottom center
+    // SWD Debug Header (40..42) at bottom center, aligned with bottom row of pins
     double swdX = rowSpacing / 2.0 - spacing;
-    double swdY = 20 * spacing;
+    double swdY = 19 * spacing;
     for (int i = 0; i < 3; i++) {
       relativeOffsets[40 + i][0] = swdX + i * spacing;
       relativeOffsets[40 + i][1] = swdY;
@@ -119,12 +120,13 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     double x = p0.getX();
     double y = p0.getY();
-    double rowSpacing = new Size(0.7d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 26;
-    double boardH = 21 * PIN_SPACING.convertToPixels() + 10;
-    double boardX = x - 13;
-    double boardY = y - 12;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double pin1OffsetX = new Size(1.61d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
+    return new Rectangle2D.Double(boardX, boardY, boardW, boardH);
   }
 
   @Override
@@ -143,11 +145,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double rowSpacing = new Size(0.7d, SizeUnit.in).convertToPixels();
-    double boardW = rowSpacing + 26;
-    double boardH = 21 * PIN_SPACING.convertToPixels() + 10;
-    double boardX = x - 13;
-    double boardY = y - 12;
+    double boardW = BOARD_WIDTH.convertToPixels();
+    double boardH = BOARD_LENGTH.convertToPixels();
+    double pin1OffsetX = new Size(1.61d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
 
     Shape boardShape = getBodyShape();
 
@@ -163,23 +166,52 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Micro USB
-      drawMetalConnector(g2d, boardX + (boardW - 55) / 2.0, boardY - 8, 55, 40, "USB");
+      // 4 Mounting holes (2.1mm diameter)
+      double holeDiameter = new Size(2.1d, SizeUnit.mm).convertToPixels();
+      double topHoleY = boardY + new Size(2.0d, SizeUnit.mm).convertToPixels();
+      double bottomHoleY = boardY + boardH - new Size(2.4d, SizeUnit.mm).convertToPixels();
+      double leftHoleX = boardX + new Size(4.8d, SizeUnit.mm).convertToPixels();
+      double rightHoleX = boardX + boardW - new Size(4.8d, SizeUnit.mm).convertToPixels();
+
+      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+
+      // Micro USB Connector
+      double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
+      double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
+      double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
+      drawMetalConnector(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
 
       // BOOTSEL button
+      double btnW = new Size(3.8d, SizeUnit.mm).convertToPixels();
+      double btnH = new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double btnY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
       g2d.setColor(Color.WHITE);
-      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - 30) / 2.0, boardY + 45, 30, 20, 3, 3));
+      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - btnW) / 2.0, btnY, btnW, btnH, 2, 2));
       g2d.setColor(Color.DARK_GRAY);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "BOOT", boardX + boardW / 2.0, boardY + 55, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "BOOT", boardX + boardW / 2.0, btnY + btnH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // RP2040 chip
-      drawChip(g2d, boardX + (boardW - 60) / 2.0, boardY + 120, 60, 60, "RP2040");
+      double chipSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
+      double chipX = boardX + (boardW - chipSize) / 2.0;
+      double chipY = boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
+      drawChip(g2d, chipX, chipY, chipSize, chipSize, "RP2040");
 
-      // Silkscreen text
+      // Raspberry Pi Logo at bottom of the board (~9mm height)
+      double logoSize = new Size(9.0d, SizeUnit.mm).convertToPixels();
+      double logoWidth = logoSize * 72.515 / 92.604;
+      double logoX = boardX + (boardW - logoWidth) / 2.0;
+      double logoY = boardY + new Size(35.5d, SizeUnit.mm).convertToPixels();
+      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+
+      // DEBUG silkscreen text above SWD pins
       g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "PICO", boardX + boardW / 2.0, boardY + 220, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "DEBUG", boardX + boardW / 2.0, boardY + new Size(46.8d, SizeUnit.mm).convertToPixels(),
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
