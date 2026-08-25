@@ -298,7 +298,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

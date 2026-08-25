@@ -75,9 +75,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color METAL_LABEL_COLOR = Color.decode("#555555");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
+  public static Color PAD_COLOR = Color.decode("#DAA520");
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
+  public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
+  public static Size HOLE_SIZE = new Size(0.035d, SizeUnit.in);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
 
@@ -661,6 +664,49 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.fill(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
       g2d.setColor(Color.DARK_GRAY);
       g2d.draw(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Helper to draw standard PCB through-hole solder pads (gold/copper pads with drill holes, square for Pin 1).
+   *
+   * @param g2d Graphics2D context
+   * @param startIndex First control point index
+   * @param count Number of pads to draw
+   * @param squarePin1 If true, the first pad (index == startIndex) is drawn as a square pad
+   * @param outlineMode Outline mode flag
+   * @param drawingObserver Observer
+   */
+  protected void drawPcbSolderPads(Graphics2D g2d, int startIndex, int count, boolean squarePin1, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+    int diameter = getClosestOdd((int) Math.round(PAD_SIZE.convertToPixels()));
+    int holeDiameter = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (squarePin1 && i == startIndex) {
+        // Pin 1 is a square solder pad
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+      } else {
+        // Round solder pads
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+      }
+
+      // Central drill hole
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
     }
     drawingObserver.stopTrackingContinuityArea();
   }

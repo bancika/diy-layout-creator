@@ -268,36 +268,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
    * Helper to draw GPIO solder pads (copper pads with drill holes, square for Pin 1).
    */
   protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
-    if (outlineMode) return;
-    int diameter = getClosestOdd((int) Math.round(PAD_SIZE.convertToPixels()));
-    int holeDiameter = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
-
-    drawingObserver.startTrackingContinuityArea(true);
-    for (int i = 0; i < 40 && i < controlPoints.length; i++) {
-      Point2D p = controlPoints[i];
-      if (i == 0) {
-        // Pin 1 is a square solder pad
-        g2d.setColor(PAD_COLOR);
-        g2d.fill(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
-        g2d.setColor(PAD_COLOR.darker());
-        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-        g2d.draw(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
-      } else {
-        // Pins 2..40 are round solder pads
-        g2d.setColor(PAD_COLOR);
-        g2d.fill(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
-        g2d.setColor(PAD_COLOR.darker());
-        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-        g2d.draw(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
-      }
-
-      // Central drill hole
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
-    }
-    drawingObserver.stopTrackingContinuityArea();
+    drawPcbSolderPads(g2d, 0, 40, true, outlineMode, drawingObserver);
   }
 
   @Override
