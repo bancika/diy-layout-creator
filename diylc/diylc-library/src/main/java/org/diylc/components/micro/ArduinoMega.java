@@ -59,7 +59,6 @@ public class ArduinoMega extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color ARDUINO_BLUE = Color.decode("#00878F");
-  public static Color ITALIAN_TEAL = Color.decode("#00979D");
   public static Color RESET_BTN_COLOR = Color.decode("#CC3333");
   public static Color SILK_COLOR = Color.WHITE;
 
