@@ -83,7 +83,10 @@ public class RaspberryPi extends AbstractMakerBoard {
       "GPIO13 (Pin 33)", "GND (Pin 34)",
       "GPIO19 (Pin 35)", "GPIO16 (Pin 36)",
       "GPIO26 (Pin 37)", "GPIO20 (Pin 38)",
-      "GND (Pin 39)", "GPIO21 (Pin 40)"
+      "GND (Pin 39)", "GPIO21 (Pin 40)",
+      "PoE TR0 (Pin 1)", "PoE TR1 (Pin 2)",
+      "PoE TR2 (Pin 3)", "PoE TR3 (Pin 4)",
+      "PCIe", "MIPI 1", "MIPI 0"
   };
 
   public RaspberryPi() {
@@ -106,7 +109,7 @@ public class RaspberryPi extends AbstractMakerBoard {
     double spacing = PIN_SPACING.convertToPixels();
 
     // 2x20 header: Pin 1 at (0,0), Pin 2 at (0, -spacing), Pin 3 at (spacing, 0), Pin 4 at (spacing, -spacing)...
-    double[][] relativeOffsets = new double[40][2];
+    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
     for (int col = 0; col < 20; col++) {
       int pinOdd = col * 2;      // Pin 1, 3, 5... (bottom/inner row of header)
       int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top/outer row of header)
@@ -115,6 +118,31 @@ public class RaspberryPi extends AbstractMakerBoard {
       relativeOffsets[pinEven][0] = col * spacing;
       relativeOffsets[pinEven][1] = -spacing;
     }
+
+    // 2x2 PoE header (pins 40..43) sitting 6mm above the bottom-right mounting hole
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + spacing / 2.0;
+    double poeCenterX = new Size(61.5d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+    double poeCenterY = new Size(46.5d, SizeUnit.mm).convertToPixels() - pin1OffsetY;
+
+    relativeOffsets[40] = new double[] {poeCenterX - spacing / 2.0, poeCenterY - spacing / 2.0};
+    relativeOffsets[41] = new double[] {poeCenterX - spacing / 2.0, poeCenterY + spacing / 2.0};
+    relativeOffsets[42] = new double[] {poeCenterX + spacing / 2.0, poeCenterY - spacing / 2.0};
+    relativeOffsets[43] = new double[] {poeCenterX + spacing / 2.0, poeCenterY + spacing / 2.0};
+
+    // PCIe connector (pin 44) on the left edge (center at X = 0.1" + 2.0mm, Y = 1.0")
+    double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
+    double pcieCenterX = new Size(0.1d, SizeUnit.in).convertToPixels() + pcieW / 2.0 - pin1OffsetX;
+    double pcieCenterY = new Size(1.0d, SizeUnit.in).convertToPixels() - pin1OffsetY;
+    relativeOffsets[44] = new double[] {pcieCenterX, pcieCenterY};
+
+    // MIPI 1 (pin 45) and MIPI 0 (pin 46) connectors on bottom edge
+    double mipiH = new Size(14.0d, SizeUnit.mm).convertToPixels();
+    double mipiCenterY = BOARD_HEIGHT.convertToPixels() - new Size(1.5d, SizeUnit.mm).convertToPixels() - mipiH / 2.0 - pin1OffsetY;
+    double mipi1CenterX = new Size(48.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+    double mipi0CenterX = new Size(54.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+    relativeOffsets[45] = new double[] {mipi1CenterX, mipiCenterY};
+    relativeOffsets[46] = new double[] {mipi0CenterX, mipiCenterY};
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -245,6 +273,44 @@ public class RaspberryPi extends AbstractMakerBoard {
           new Size(7.5d, SizeUnit.mm).convertToPixels(),
           new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI1");
 
+      // Two MIPI CSI/DSI connectors on bottom edge (MIPI 1 at 48.0mm, MIPI 0 at 54.0mm)
+      double mipiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
+      double mipiH = new Size(14.0d, SizeUnit.mm).convertToPixels();
+      double mipiY = boardY + boardH - mipiH - new Size(1.5d, SizeUnit.mm).convertToPixels();
+      double mipi1X = boardX + new Size(48.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
+      double mipi0X = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
+      drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
+      drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
+
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "MIPI 1", boardX + new Size(48.0d, SizeUnit.mm).convertToPixels(),
+          mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "MIPI 0", boardX + new Size(54.0d, SizeUnit.mm).convertToPixels(),
+          mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // PCI Express FPC connector on the left edge (0.1" from left edge, 1" from top edge)
+      double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
+      double pcieH = new Size(12.5d, SizeUnit.mm).convertToPixels();
+      double pcieX = boardX + new Size(0.1d, SizeUnit.in).convertToPixels();
+      double pcieY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() - pcieH / 2.0;
+      drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
+
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "PCIe", pcieX + pcieW / 2.0,
+          pcieY + pcieH + new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // 2x2 PoE header sitting 6mm above the bottom-right mounting hole
+      double poeX = boardX + new Size(61.5d, SizeUnit.mm).convertToPixels();
+      double poeY = boardY + new Size(52.5d, SizeUnit.mm).convertToPixels() - new Size(6.0d, SizeUnit.mm).convertToPixels();
+      drawPinHeader(g2d, poeX, poeY, 2, 2, PIN_SPACING.convertToPixels());
+
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "PoE", poeX,
+          poeY - PIN_SPACING.convertToPixels() - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
       // Raspberry Pi Silkscreen text below 40-pin header
       g2d.setColor(Color.WHITE);
       g2d.setFont(RPI_TITLE_FONT);
@@ -260,8 +326,8 @@ public class RaspberryPi extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw 40 GPIO header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    // Draw 40 GPIO header pins and 4 PoE header pins
+    drawPins(g2d, 0, 44, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
@@ -286,6 +352,13 @@ public class RaspberryPi extends AbstractMakerBoard {
     // GPIO Header
     g2d.setColor(HEADER_BODY_COLOR);
     g2d.fillRect(4, 5, 18, 3);
+
+    // PCIe & MIPI connectors & PoE
+    g2d.setColor(IC_BODY_COLOR);
+    g2d.fillRect(3, 13, 1, 4);
+    g2d.fillRect(17, height - 6, 1, 2);
+    g2d.fillRect(19, height - 6, 1, 2);
+    g2d.fillRect(width - 11, height - 9, 2, 2);
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 6));

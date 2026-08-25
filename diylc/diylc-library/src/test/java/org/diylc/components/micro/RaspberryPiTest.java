@@ -21,7 +21,7 @@ public class RaspberryPiTest {
   @Test
   public void testControlPointCountAndNames() {
     RaspberryPi pi = new RaspberryPi();
-    Assert.assertEquals(40, pi.getControlPointCount());
+    Assert.assertEquals(47, pi.getControlPointCount());
 
     for (int i = 0; i < pi.getControlPointCount(); i++) {
       String name = pi.getControlPointNodeName(i);
@@ -35,6 +35,13 @@ public class RaspberryPiTest {
     Assert.assertEquals("5V (Pin 4)", pi.getControlPointNodeName(3));
     Assert.assertEquals("GND (Pin 39)", pi.getControlPointNodeName(38));
     Assert.assertEquals("GPIO21 (Pin 40)", pi.getControlPointNodeName(39));
+    Assert.assertEquals("PoE TR0 (Pin 1)", pi.getControlPointNodeName(40));
+    Assert.assertEquals("PoE TR1 (Pin 2)", pi.getControlPointNodeName(41));
+    Assert.assertEquals("PoE TR2 (Pin 3)", pi.getControlPointNodeName(42));
+    Assert.assertEquals("PoE TR3 (Pin 4)", pi.getControlPointNodeName(43));
+    Assert.assertEquals("PCIe", pi.getControlPointNodeName(44));
+    Assert.assertEquals("MIPI 1", pi.getControlPointNodeName(45));
+    Assert.assertEquals("MIPI 0", pi.getControlPointNodeName(46));
   }
 
   @Test
@@ -97,6 +104,45 @@ public class RaspberryPiTest {
     double headerCenterX = (p0.getX() + pLastOdd.getX()) / 2.0;
     double expectedHeaderCenterX = bounds.getX() + new Size(32.5d, SizeUnit.mm).convertToPixels();
     Assert.assertEquals(expectedHeaderCenterX, headerCenterX, 0.1);
+
+    // PoE Header (pins 40..43) 2x2 header sitting 6mm above bottom-right mounting hole (X=61.5mm, Y=46.5mm)
+    double poeExpectedCenterX = bounds.getX() + new Size(61.5d, SizeUnit.mm).convertToPixels();
+    double poeExpectedCenterY = bounds.getY() + new Size(46.5d, SizeUnit.mm).convertToPixels();
+
+    Point2D p40 = pi.getControlPoint(40);
+    Point2D p41 = pi.getControlPoint(41);
+    Point2D p42 = pi.getControlPoint(42);
+    Point2D p43 = pi.getControlPoint(43);
+
+    Assert.assertEquals(poeExpectedCenterX - spacing / 2.0, p40.getX(), 0.1);
+    Assert.assertEquals(poeExpectedCenterY - spacing / 2.0, p40.getY(), 0.1);
+
+    Assert.assertEquals(poeExpectedCenterX - spacing / 2.0, p41.getX(), 0.1);
+    Assert.assertEquals(poeExpectedCenterY + spacing / 2.0, p41.getY(), 0.1);
+
+    Assert.assertEquals(poeExpectedCenterX + spacing / 2.0, p42.getX(), 0.1);
+    Assert.assertEquals(poeExpectedCenterY - spacing / 2.0, p42.getY(), 0.1);
+
+    Assert.assertEquals(poeExpectedCenterX + spacing / 2.0, p43.getX(), 0.1);
+    Assert.assertEquals(poeExpectedCenterY + spacing / 2.0, p43.getY(), 0.1);
+
+    // Connector control points (PCIe = 44, MIPI 1 = 45, MIPI 0 = 46)
+    Point2D pPcie = pi.getControlPoint(44);
+    Point2D pMipi1 = pi.getControlPoint(45);
+    Point2D pMipi0 = pi.getControlPoint(46);
+
+    double expectedPcieCenterX = bounds.getX() + new Size(0.1d, SizeUnit.in).convertToPixels() + new Size(4.0d, SizeUnit.mm).convertToPixels() / 2.0;
+    double expectedPcieCenterY = bounds.getY() + new Size(1.0d, SizeUnit.in).convertToPixels();
+    Assert.assertEquals(expectedPcieCenterX, pPcie.getX(), 0.1);
+    Assert.assertEquals(expectedPcieCenterY, pPcie.getY(), 0.1);
+
+    double expectedMipiCenterY = bounds.getY() + expectedHeight - new Size(1.5d, SizeUnit.mm).convertToPixels() - new Size(14.0d, SizeUnit.mm).convertToPixels() / 2.0;
+    double expectedMipi1CenterX = bounds.getX() + new Size(48.0d, SizeUnit.mm).convertToPixels();
+    double expectedMipi0CenterX = bounds.getX() + new Size(54.0d, SizeUnit.mm).convertToPixels();
+    Assert.assertEquals(expectedMipi1CenterX, pMipi1.getX(), 0.1);
+    Assert.assertEquals(expectedMipiCenterY, pMipi1.getY(), 0.1);
+    Assert.assertEquals(expectedMipi0CenterX, pMipi0.getX(), 0.1);
+    Assert.assertEquals(expectedMipiCenterY, pMipi0.getY(), 0.1);
   }
 
   @Test

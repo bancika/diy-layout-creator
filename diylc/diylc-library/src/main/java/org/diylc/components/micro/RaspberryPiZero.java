@@ -67,6 +67,13 @@ public class RaspberryPiZero extends AbstractMakerBoard {
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
+  public static final String[] PIN_NAMES;
+  static {
+    PIN_NAMES = new String[41];
+    System.arraycopy(RaspberryPi.PIN_NAMES, 0, PIN_NAMES, 0, 40);
+    PIN_NAMES[40] = "MIPI (CSI)";
+  }
+
   public RaspberryPiZero() {
     super();
     this.bodyColor = RPI_GREEN;
@@ -75,8 +82,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
-    if (index >= 0 && index < RaspberryPi.PIN_NAMES.length) {
-      return RaspberryPi.PIN_NAMES[index];
+    if (index >= 0 && index < PIN_NAMES.length) {
+      return PIN_NAMES[index];
     }
     return "Pin " + (index + 1);
   }
@@ -86,7 +93,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    double[][] relativeOffsets = new double[40][2];
+    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
     for (int col = 0; col < 20; col++) {
       int pinOdd = col * 2;      // Pin 1, 3, 5... (bottom/inner row of header)
       int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top/outer row of header)
@@ -95,6 +102,15 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       relativeOffsets[pinEven][0] = col * spacing;
       relativeOffsets[pinEven][1] = -spacing;
     }
+
+    // Camera Connector (CSI / MIPI) on right edge
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + spacing / 2.0;
+    double csiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
+    double csiH = new Size(16.5d, SizeUnit.mm).convertToPixels();
+    double csiCenterX = BOARD_WIDTH.convertToPixels() - new Size(4.2d, SizeUnit.mm).convertToPixels() + csiW / 2.0 - pin1OffsetX;
+    double csiCenterY = new Size(6.75d, SizeUnit.mm).convertToPixels() + csiH / 2.0 - pin1OffsetY;
+    relativeOffsets[40] = new double[] {csiCenterX, csiCenterY};
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -207,7 +223,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double csiH = new Size(16.5d, SizeUnit.mm).convertToPixels();
       double csiX = boardX + boardW - new Size(4.2d, SizeUnit.mm).convertToPixels();
       double csiY = boardY + new Size(6.75d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, csiX, csiY, csiW, csiH, "CSI");
+      drawFpcConnector(g2d, csiX, csiY, csiW, csiH, true, "");
 
       // Main SoC chip (Broadcom BCM2835 / RP3A0)
       double socW = new Size(12.0d, SizeUnit.mm).convertToPixels();
@@ -257,7 +273,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     int holeDiameter = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
 
     drawingObserver.startTrackingContinuityArea(true);
-    for (int i = 0; i < controlPoints.length; i++) {
+    for (int i = 0; i < 40 && i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
       if (i == 0) {
         // Pin 1 is a square solder pad

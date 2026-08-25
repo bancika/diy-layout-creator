@@ -22,7 +22,7 @@ public class RaspberryPiZeroTest {
   @Test
   public void testControlPointCountAndNames() {
     RaspberryPiZero pi = new RaspberryPiZero();
-    Assert.assertEquals(40, pi.getControlPointCount());
+    Assert.assertEquals(41, pi.getControlPointCount());
 
     for (int i = 0; i < pi.getControlPointCount(); i++) {
       String name = pi.getControlPointNodeName(i);
@@ -36,6 +36,7 @@ public class RaspberryPiZeroTest {
     Assert.assertEquals("5V (Pin 4)", pi.getControlPointNodeName(3));
     Assert.assertEquals("GND (Pin 39)", pi.getControlPointNodeName(38));
     Assert.assertEquals("GPIO21 (Pin 40)", pi.getControlPointNodeName(39));
+    Assert.assertEquals("MIPI (CSI)", pi.getControlPointNodeName(40));
   }
 
   @Test
@@ -98,6 +99,15 @@ public class RaspberryPiZeroTest {
     double headerCenterX = (p0.getX() + pLastOdd.getX()) / 2.0;
     double expectedHeaderCenterX = bounds.getX() + new Size(32.5d, SizeUnit.mm).convertToPixels();
     Assert.assertEquals(expectedHeaderCenterX, headerCenterX, 0.1);
+
+    // Camera Connector (CSI / MIPI) at pin index 40
+    Point2D pCsi = pi.getControlPoint(40);
+    double csiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
+    double csiH = new Size(16.5d, SizeUnit.mm).convertToPixels();
+    double expectedCsiCenterX = bounds.getX() + expectedWidth - new Size(4.2d, SizeUnit.mm).convertToPixels() + csiW / 2.0;
+    double expectedCsiCenterY = bounds.getY() + new Size(6.75d, SizeUnit.mm).convertToPixels() + csiH / 2.0;
+    Assert.assertEquals(expectedCsiCenterX, pCsi.getX(), 0.1);
+    Assert.assertEquals(expectedCsiCenterY, pCsi.getY(), 0.1);
   }
 
   @Test
