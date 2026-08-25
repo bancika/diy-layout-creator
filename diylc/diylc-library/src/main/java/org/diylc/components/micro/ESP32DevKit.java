@@ -76,7 +76,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     }
   }
 
-  public static Color ESP_BLACK = Color.decode("#1E1E1E");
+  public static Color ESP_BLACK = Color.decode("#3E3E3E");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");

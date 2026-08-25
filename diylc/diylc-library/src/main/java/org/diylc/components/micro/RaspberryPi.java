@@ -301,11 +301,9 @@ public class RaspberryPi extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "PCIe", pcieX + pcieW / 2.0,
           pcieY + pcieH + new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // 2x2 PoE header sitting 6mm above the bottom-right mounting hole
+      // 2x2 PoE header silkscreen label
       double poeX = boardX + new Size(61.5d, SizeUnit.mm).convertToPixels();
       double poeY = boardY + new Size(52.5d, SizeUnit.mm).convertToPixels() - new Size(6.0d, SizeUnit.mm).convertToPixels();
-      drawPinHeader(g2d, poeX, poeY, 2, 2, PIN_SPACING.convertToPixels());
-
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "PoE", poeX,
@@ -327,7 +325,7 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 40 GPIO header pins and 4 PoE header pins
-    drawPins(g2d, 0, 44, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 44, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

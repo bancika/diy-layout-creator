@@ -179,7 +179,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   /**
    * Helper to draw standard pin header pins at given control point indices.
    */
-  protected void drawPins(Graphics2D g2d, int startIndex, int count, boolean female, boolean outlineMode, IDrawingObserver drawingObserver) {
+  protected void drawPinHeader(Graphics2D g2d, int startIndex, int count, boolean female, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
     int pinPx = (int) Math.round(PIN_SIZE.convertToPixels());
     drawingObserver.startTrackingContinuityArea(true);
@@ -198,6 +198,13 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(new Rectangle2D.Double(p.getX() - pinPx / 2.0, p.getY() - pinPx / 2.0, pinPx, pinPx));
     }
+  }
+
+  /**
+   * Alias for {@link #drawPinHeader(Graphics2D, int, int, boolean, boolean, IDrawingObserver)}.
+   */
+  protected void drawPins(Graphics2D g2d, int startIndex, int count, boolean female, boolean outlineMode, IDrawingObserver drawingObserver) {
+    drawPinHeader(g2d, startIndex, count, female, outlineMode, drawingObserver);
   }
 
   /**
@@ -713,36 +720,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.setFont(SILK_FONT_SMALL);
       if (w >= 20 && h >= 10) {
         StringUtils.drawCenteredText(g2d, label, x + w / 2.0, y + h / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      }
-    }
-  }
-
-  /**
-   * Helper to draw a pin header grid at arbitrary coordinates (e.g. 2x2 PoE header).
-   */
-  protected void drawPinHeader(Graphics2D g2d, double centerX, double centerY, int cols, int rows, double pitch) {
-    int pinPx = (int) Math.round(PIN_SIZE.convertToPixels());
-    double totalW = cols * pitch;
-    double totalH = rows * pitch;
-    double startX = centerX - totalW / 2.0 + pitch / 2.0;
-    double startY = centerY - totalH / 2.0 + pitch / 2.0;
-
-    // Header body base
-    g2d.setColor(HEADER_BODY_COLOR);
-    g2d.fill(new RoundRectangle2D.Double(centerX - totalW / 2.0, centerY - totalH / 2.0, totalW, totalH, 2, 2));
-    g2d.setColor(HEADER_BORDER_COLOR);
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.draw(new RoundRectangle2D.Double(centerX - totalW / 2.0, centerY - totalH / 2.0, totalW, totalH, 2, 2));
-
-    // Pins
-    for (int c = 0; c < cols; c++) {
-      for (int r = 0; r < rows; r++) {
-        double px = startX + c * pitch;
-        double py = startY + r * pitch;
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(new Rectangle2D.Double(px - pinPx / 2.0, py - pinPx / 2.0, pinPx, pinPx));
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.draw(new Rectangle2D.Double(px - pinPx / 2.0, py - pinPx / 2.0, pinPx, pinPx));
       }
     }
   }

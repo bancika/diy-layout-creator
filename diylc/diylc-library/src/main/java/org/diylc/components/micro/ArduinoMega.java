@@ -322,7 +322,7 @@ public class ArduinoMega extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw header pins with continuity tracking
-    drawPins(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
