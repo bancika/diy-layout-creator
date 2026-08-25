@@ -27,7 +27,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -59,6 +61,10 @@ public class RaspberryPiZero extends AbstractMakerBoard {
   public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(65.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(30.0d, SizeUnit.mm);
+
+  public static Color PAD_COLOR = Color.decode("#DA8A67");
+  public static Size PAD_SIZE = new Size(0.075d, SizeUnit.in);
+  public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   public RaspberryPiZero() {
     super();
@@ -201,6 +207,15 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double logoY = socY + (socH - logoSize) / 2.0;
       drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
+      // White silkscreen outline around GPIO pads
+      g2d.setColor(Color.WHITE);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      double hdrBoxX = boardX + new Size(7.0d, SizeUnit.mm).convertToPixels();
+      double hdrBoxY = boardY + new Size(0.9d, SizeUnit.mm).convertToPixels();
+      double hdrBoxW = new Size(51.0d, SizeUnit.mm).convertToPixels();
+      double hdrBoxH = new Size(5.2d, SizeUnit.mm).convertToPixels();
+      g2d.draw(new Rectangle2D.Double(hdrBoxX, hdrBoxY, hdrBoxW, hdrBoxH));
+
       // Silkscreen "GPIO" label next to the top pins
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
@@ -212,9 +227,45 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawSolderPads(g2d, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
+  }
+
+  /**
+   * Helper to draw GPIO solder pads (copper pads with drill holes, square for Pin 1).
+   */
+  protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+    int diameter = getClosestOdd((int) Math.round(PAD_SIZE.convertToPixels()));
+    int holeDiameter = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = 0; i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (i == 0) {
+        // Pin 1 is a square solder pad
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+      } else {
+        // Pins 2..40 are round solder pads
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
+      }
+
+      // Central drill hole
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
+    }
+    drawingObserver.stopTrackingContinuityArea();
   }
 
   @Override
@@ -224,9 +275,11 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
 
-    // GPIO Header
-    g2d.setColor(HEADER_BODY_COLOR);
-    g2d.fillRect(5, 7, width - 10, 3);
+    // GPIO Solder Pads in icon
+    g2d.setColor(PAD_COLOR);
+    for (int x = 6; x <= width - 8; x += 3) {
+      g2d.fillRect(x, 7, 2, 2);
+    }
 
     // SoC
     g2d.setColor(IC_BODY_COLOR);
