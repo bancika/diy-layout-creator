@@ -29,6 +29,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -59,6 +60,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   public static Color NODEMCU_BLACK = Color.decode("#3E3E3E");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
@@ -66,8 +68,10 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(25.7d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(48.0d, SizeUnit.mm);
   public static Size TOP_MARGIN = new Size(6.22d, SizeUnit.mm);
-  public static Size ANTENNA_LENGTH = new Size(6.0d, SizeUnit.mm);
-  public static Size ANTENNA_WIDTH = new Size(16.0d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size SHIELD_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size SHIELD_LENGTH = new Size(15.0d, SizeUnit.mm);
   public static Size ROW_SPACING = new Size(0.9d, SizeUnit.in);
   public static Size HOLE_DISTANCE_X = new Size(21.0d, SizeUnit.mm);
   public static Size HOLE_DISTANCE_Y = new Size(44.0d, SizeUnit.mm);
@@ -153,7 +157,12 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     double antennaW = ANTENNA_WIDTH.convertToPixels();
     double antennaH = ANTENNA_LENGTH.convertToPixels();
     double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
-    double antennaY = boardY + new Size(1.0d, SizeUnit.mm).convertToPixels();
+    double antennaY = boardY;
+
+    double shieldW = SHIELD_WIDTH.convertToPixels();
+    double shieldH = SHIELD_LENGTH.convertToPixels();
+    double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
+    double shieldY = antennaY + antennaH;
 
     Shape boardShape = getBodyShape();
 
@@ -183,31 +192,10 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
       drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
-      // Antenna trace (gold/copper serpentine PCB trace)
-      g2d.setColor(ANTENNA_COLOR);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
-      Path2D.Double antPath = new Path2D.Double();
-      double antPadX = antennaX + 12;
-      double antPadW = antennaW - 24;
-      double antTopY = antennaY + 4;
-      double antMidY = antennaY + antennaH - 6;
-      antPath.moveTo(antPadX, antMidY);
-      antPath.lineTo(antPadX, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
-      antPath.lineTo(antPadX + antPadW, antMidY);
-      antPath.lineTo(antPadX + antPadW, antTopY);
-      g2d.draw(antPath);
+      // Antenna (dark rectangle underneath + gold serpentine trace)
+      drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
       // ESP-12 Metal shield module below antenna
-      double shieldW = new Size(16.0d, SizeUnit.mm).convertToPixels();
-      double shieldH = new Size(15.0d, SizeUnit.mm).convertToPixels();
-      double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
-      double shieldY = antennaY + antennaH + 2;
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
       // Micro-USB Jack at bottom

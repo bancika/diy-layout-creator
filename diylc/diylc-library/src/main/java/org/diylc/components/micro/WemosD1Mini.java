@@ -60,6 +60,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
   public static Color WEMOS_BLUE = Color.decode("#006699");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
@@ -243,29 +244,8 @@ public class WemosD1Mini extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Black module rectangle going from top of board down to the main chip / shield
-      g2d.setColor(BUTTON_BODY_COLOR);
-      g2d.fill(new Rectangle2D.Double(moduleX, boardY, moduleW, shieldY - boardY));
-
-      // Antenna trace (gold/copper serpentine PCB trace on top of the black module area)
-      g2d.setColor(ANTENNA_COLOR);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
-      Path2D.Double antPath = new Path2D.Double();
-      double antPadX = moduleX + new Size(1.5d, SizeUnit.mm).convertToPixels();
-      double antPadW = moduleW - new Size(3.0d, SizeUnit.mm).convertToPixels();
-      double antTopY = boardY + new Size(0.6d, SizeUnit.mm).convertToPixels();
-      double antMidY = boardY + ANTENNA_LENGTH.convertToPixels() - new Size(0.8d, SizeUnit.mm).convertToPixels();
-      antPath.moveTo(antPadX, antMidY);
-      antPath.lineTo(antPadX, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
-      antPath.lineTo(antPadX + antPadW, antMidY);
-      antPath.lineTo(antPadX + antPadW, antTopY);
-      g2d.draw(antPath);
+      // Antenna (dark rectangle underneath + gold serpentine trace)
+      drawPcbAntenna(g2d, moduleX, boardY, moduleW, moduleH);
 
       // ESP8266 Metal Shield (main chip module)
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");

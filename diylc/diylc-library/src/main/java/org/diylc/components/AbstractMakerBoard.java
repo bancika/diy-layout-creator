@@ -73,9 +73,13 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color IC_BORDER_COLOR = Color.decode("#333333");
   public static Color PIN_MARKER_COLOR = Color.decode("#555555");
   public static Color METAL_LABEL_COLOR = Color.decode("#555555");
+  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
+  public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
 
   public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
@@ -738,6 +742,48 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, label, x + w / 2.0, y + h / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
+  }
+
+  /**
+   * Helper to draw a standard ESP-style PCB meander antenna with a dark (#1E1E1E) substrate rectangle underneath.
+   *
+   * @param g2d Graphics2D context
+   * @param x top-left X coordinate of the antenna substrate rectangle
+   * @param y top-left Y coordinate of the antenna substrate rectangle
+   * @param width width of the antenna substrate rectangle (e.g. 15.0mm, matching main chip width)
+   * @param height height of the antenna substrate rectangle (e.g. 7.0mm)
+   */
+  protected void drawPcbAntenna(Graphics2D g2d, double x, double y, double width, double height) {
+    // Dark rectangle underneath (#1E1E1E)
+    g2d.setColor(ANTENNA_BG_COLOR);
+    g2d.fill(new Rectangle2D.Double(x, y, width, height));
+
+    // Serpentine antenna trace (gold/copper)
+    g2d.setColor(ANTENNA_COLOR);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
+    Path2D.Double antPath = new Path2D.Double();
+    double antPadX = x + new Size(1.5d, SizeUnit.mm).convertToPixels();
+    double antPadW = width - new Size(3.0d, SizeUnit.mm).convertToPixels();
+    double antTopY = y + new Size(1.3d, SizeUnit.mm).convertToPixels();
+    double antMidY = y + new Size(5.4d, SizeUnit.mm).convertToPixels();
+    antPath.moveTo(antPadX, antMidY);
+    antPath.lineTo(antPadX, antTopY);
+    antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
+    antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
+    antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
+    antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
+    antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
+    antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
+    antPath.lineTo(antPadX + antPadW, antMidY);
+    antPath.lineTo(antPadX + antPadW, antTopY);
+    g2d.draw(antPath);
+  }
+
+  /**
+   * Helper to draw a standard ESP-style PCB meander antenna using default 15.0mm x 7.0mm dimensions.
+   */
+  protected void drawPcbAntenna(Graphics2D g2d, double x, double y) {
+    drawPcbAntenna(g2d, x, y, ANTENNA_WIDTH.convertToPixels(), ANTENNA_LENGTH.convertToPixels());
   }
 
   /**

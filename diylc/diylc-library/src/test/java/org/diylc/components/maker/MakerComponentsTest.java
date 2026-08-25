@@ -58,7 +58,7 @@ public class MakerComponentsTest {
     }
   }
 
-  private final List<Class<? extends IDIYComponent<?>>> allMakerComponentClasses = Arrays.asList(
+  private final List<Class<? extends IDIYComponent<?>>> allMakerComponentClasses = Arrays.<Class<? extends IDIYComponent<?>>>asList(
       // Controllers
       ArduinoUno.class,
       ArduinoNano.class,

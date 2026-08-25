@@ -78,17 +78,19 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   public static Color ESP_BLACK = Color.decode("#3E3E3E");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
+  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
 
-  // 30-Pin (DOIT V1) Dimensions
   public static Size BOARD_WIDTH_30 = new Size(28.2d, SizeUnit.mm);
   public static Size BOARD_LENGTH_30 = new Size(51.8d, SizeUnit.mm);
   public static Size TOP_MARGIN_30 = new Size(6.7d, SizeUnit.mm);
-  public static Size ANTENNA_LENGTH_30 = new Size(6.2d, SizeUnit.mm);
-  public static Size ANTENNA_WIDTH_30 = new Size(20.0d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size SHIELD_WIDTH = new Size(15.0d, SizeUnit.mm);
+  public static Size SHIELD_LENGTH = new Size(18.0d, SizeUnit.mm);
   public static Size HOLE_DIAMETER_30 = new Size(2.8d, SizeUnit.mm);
   public static Size HOLE_EDGE_MARGIN_30 = new Size(0.8d, SizeUnit.mm);
 
@@ -97,7 +99,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
   public static Size BOARD_LENGTH_38 = new Size(54.4d, SizeUnit.mm);
   public static Size MAIN_BODY_LENGTH_38 = new Size(48.2d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH_38 = new Size(6.2d, SizeUnit.mm);
-  public static Size ANTENNA_WIDTH_38 = new Size(19.0d, SizeUnit.mm);
 
   // Common Spacing
   public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
@@ -201,7 +202,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     } else {
       double mainW = BOARD_WIDTH_38.convertToPixels();
       double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
-      double antennaW = ANTENNA_WIDTH_38.convertToPixels();
+      double antennaW = ANTENNA_WIDTH.convertToPixels();
       double antennaH = ANTENNA_LENGTH_38.convertToPixels();
 
       double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
@@ -246,7 +247,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
       } else {
         double mainW = BOARD_WIDTH_38.convertToPixels();
         double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
-        double antennaW = ANTENNA_WIDTH_38.convertToPixels();
+        double antennaW = ANTENNA_WIDTH.convertToPixels();
         double antennaH = ANTENNA_LENGTH_38.convertToPixels();
         double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
         double mainY = (y + 18 * PIN_SPACING.convertToPixels() / 2.0) - mainH / 2.0;
@@ -257,13 +258,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setColor(bodyColor);
         g2d.fill(new RoundRectangle2D.Double(mainX, mainY, mainW, mainH, 8, 8));
 
-        // Antenna tab in slightly lighter color
-        Color antennaTabColor = new Color(
-            Math.min(255, bodyColor.getRed() + 32),
-            Math.min(255, bodyColor.getGreen() + 32),
-            Math.min(255, bodyColor.getBlue() + 32)
-        );
-        g2d.setColor(antennaTabColor);
+        // Antenna tab in #1e1e1e
+        g2d.setColor(ANTENNA_BG_COLOR);
         g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
       }
     }
@@ -274,13 +270,13 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      double antennaX;
+      double antennaW = ANTENNA_WIDTH.convertToPixels();
+      double antennaH = (version == DevKitVersion.DevKit_V1_30Pin) ? ANTENNA_LENGTH.convertToPixels() : ANTENNA_LENGTH_38.convertToPixels();
+      double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
       double antennaY;
-      double antennaW;
-      double antennaH;
       double shieldY;
-      double shieldH = new Size(18.0d, SizeUnit.mm).convertToPixels();
-      double shieldW = new Size(18.0d, SizeUnit.mm).convertToPixels();
+      double shieldH = SHIELD_LENGTH.convertToPixels();
+      double shieldW = SHIELD_WIDTH.convertToPixels();
       double shieldX = (x + rowSpacing / 2.0) - shieldW / 2.0;
       double usbY;
       double btnLeftX;
@@ -297,11 +293,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
         double boardY = y - topMargin;
 
-        antennaW = ANTENNA_WIDTH_30.convertToPixels();
-        antennaH = ANTENNA_LENGTH_30.convertToPixels();
-        antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
         antennaY = boardY;
-        shieldY = boardY + antennaH + shift1mm;
+        shieldY = boardY + antennaH;
         usbY = boardY + boardH - 22;
 
         // 4 Corner Mounting Holes (diameter 2.8mm, 0.8mm away from edges in both directions)
@@ -327,11 +320,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double mainX = (x + rowSpacing / 2.0) - mainW / 2.0;
         double mainY = (y + 18 * PIN_SPACING.convertToPixels() / 2.0) - mainH / 2.0;
 
-        antennaW = ANTENNA_WIDTH_38.convertToPixels();
-        antennaH = ANTENNA_LENGTH_38.convertToPixels();
-        antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
         antennaY = mainY - antennaH;
-        shieldY = mainY + 10;
+        shieldY = mainY + 8;
         usbY = mainY + mainH - 22;
 
         btnY = mainY + mainH - 25;
@@ -339,25 +329,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         btnRightX = mainX + mainW - 38 - btnW;
       }
 
-      // Antenna trace (gold/copper serpentine PCB trace)
-      g2d.setColor(ANTENNA_COLOR);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
-      Path2D.Double antPath = new Path2D.Double();
-      double antPadX = antennaX + 16;
-      double antPadW = antennaW - 32;
-      double antTopY = antennaY + 10;
-      double antMidY = antennaY + antennaH - 12;
-      antPath.moveTo(antPadX, antMidY);
-      antPath.lineTo(antPadX, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
-      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
-      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
-      antPath.lineTo(antPadX + antPadW, antMidY);
-      antPath.lineTo(antPadX + antPadW, antTopY);
-      g2d.draw(antPath);
+      // Antenna (dark rectangle underneath + gold serpentine trace)
+      drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
       // ESP32-WROOM-32 metal shield module below antenna
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
