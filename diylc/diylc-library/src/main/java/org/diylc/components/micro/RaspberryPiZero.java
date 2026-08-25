@@ -99,9 +99,12 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     double y = p0.getY();
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 55;
-    double boardY = y - 45;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 12, 12);
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + PIN_SPACING.convertToPixels() / 2.0;
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
+    double cornerArc = new Size(6.0d, SizeUnit.mm).convertToPixels();
+    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerArc, cornerArc);
   }
 
   @Override
@@ -122,8 +125,10 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 55;
-    double boardY = y - 45;
+    double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
+    double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + PIN_SPACING.convertToPixels() / 2.0;
+    double boardX = x - pin1OffsetX;
+    double boardY = y - pin1OffsetY;
 
     Shape boardShape = getBodyShape();
 
@@ -132,30 +137,78 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
-    drawingObserver.stopTracking();
 
     g2d.setColor(getFinalBorderColor(componentState, outlineMode));
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      drawMountingHole(g2d, boardX + 25, boardY + 25, 20);
-      drawMountingHole(g2d, boardX + 25, boardY + boardH - 25, 20);
-      drawMountingHole(g2d, boardX + boardW - 25, boardY + 25, 20);
-      drawMountingHole(g2d, boardX + boardW - 25, boardY + boardH - 25, 20);
+      // 4 Mounting holes (diameter 2.75mm, located 3.5mm from board edges)
+      double holeDiameter = new Size(2.75d, SizeUnit.mm).convertToPixels();
+      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
+      drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
+          boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
-      // Mini HDMI & Dual Micro-USB
-      drawMetalConnector(g2d, boardX + 80, boardY + boardH - 8, 65, 40, "HDMI");
-      drawMetalConnector(g2d, boardX + 240, boardY + boardH - 8, 55, 40, "USB");
-      drawMetalConnector(g2d, boardX + 350, boardY + boardH - 8, 55, 40, "PWR");
+      // MicroSD card slot on the left edge
+      double sdW = new Size(11.0d, SizeUnit.mm).convertToPixels();
+      double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
+      double sdX = boardX + new Size(1.5d, SizeUnit.mm).convertToPixels();
+      double sdY = boardY + new Size(7.5d, SizeUnit.mm).convertToPixels();
+      drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
 
-      // SoC chip
-      drawChip(g2d, boardX + 150, boardY + 80, 80, 80, "RPi SoC");
+      // Mini HDMI Connector (center at X = 12.4mm, width = 11.2mm, height = 7.5mm, overhang = 1.5mm)
+      double hdmiW = new Size(11.2d, SizeUnit.mm).convertToPixels();
+      double hdmiH = new Size(7.5d, SizeUnit.mm).convertToPixels();
+      double hdmiX = boardX + new Size(12.4d, SizeUnit.mm).convertToPixels() - hdmiW / 2.0;
+      double hdmiY = boardY + boardH - new Size(6.0d, SizeUnit.mm).convertToPixels();
+      drawMetalConnector(g2d, hdmiX, hdmiY, hdmiW, hdmiH, "HDMI");
 
+      // Micro USB Data (center at X = 41.4mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
+      double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
+      double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
+      double usbX = boardX + new Size(41.4d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
+      double usbY = boardY + boardH - new Size(4.2d, SizeUnit.mm).convertToPixels();
+      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+
+      // Micro USB Power (center at X = 54.0mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
+      double pwrX = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
+      double pwrY = boardY + boardH - new Size(4.2d, SizeUnit.mm).convertToPixels();
+      drawMetalConnector(g2d, pwrX, pwrY, usbW, usbH, "PWR");
+
+      // Camera Connector (CSI) on right edge
+      double csiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
+      double csiH = new Size(16.5d, SizeUnit.mm).convertToPixels();
+      double csiX = boardX + boardW - new Size(4.2d, SizeUnit.mm).convertToPixels();
+      double csiY = boardY + new Size(6.75d, SizeUnit.mm).convertToPixels();
+      drawChip(g2d, csiX, csiY, csiW, csiH, "CSI");
+
+      // Main SoC chip (Broadcom BCM2835 / RP3A0)
+      double socW = new Size(12.0d, SizeUnit.mm).convertToPixels();
+      double socH = new Size(12.0d, SizeUnit.mm).convertToPixels();
+      double socX = boardX + new Size(19.5d, SizeUnit.mm).convertToPixels();
+      double socY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
+      drawChip(g2d, socX, socY, socW, socH, "");
+
+      // Raspberry Pi logo on SoC chip
+      double logoSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
+      double logoW = logoSize * (72.51 / 92.604);
+      double logoX = socX + (socW - logoW) / 2.0;
+      double logoY = socY + (socH - logoSize) / 2.0;
+      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+
+      // Silkscreen "GPIO" label next to the top pins
       g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "Pi Zero", boardX + 280, boardY + 100, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(47.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(7.8d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
+
+    drawingObserver.stopTracking();
 
     g2d.setTransform(oldTx);
 
@@ -167,18 +220,26 @@ public class RaspberryPiZero extends AbstractMakerBoard {
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.setColor(RPI_GREEN);
-    g2d.fill(new RoundRectangle2D.Double(2, 8, width - 4, height - 16, 4, 4));
+    g2d.fill(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
     g2d.setColor(RPI_GREEN.darker());
-    g2d.draw(new RoundRectangle2D.Double(2, 8, width - 4, height - 16, 4, 4));
+    g2d.draw(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
 
+    // GPIO Header
     g2d.setColor(HEADER_BODY_COLOR);
-    g2d.fillRect(6, 10, width - 12, 3);
+    g2d.fillRect(5, 7, width - 10, 3);
 
+    // SoC
     g2d.setColor(IC_BODY_COLOR);
-    g2d.fillRect(11, 15, 10, 6);
+    g2d.fillRect(10, 12, 6, 6);
+
+    // Connectors on bottom
+    g2d.setColor(USB_METAL_COLOR);
+    g2d.fillRect(6, height - 7, 4, 3);
+    g2d.fillRect(18, height - 7, 3, 3);
+    g2d.fillRect(23, height - 7, 3, 3);
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
-    StringUtils.drawCenteredText(g2d, "ZERO", width / 2, height / 2 + 5, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 15, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }
