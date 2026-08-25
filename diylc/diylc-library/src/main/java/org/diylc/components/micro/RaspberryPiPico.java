@@ -27,6 +27,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -57,9 +59,14 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color PICO_GREEN = Color.decode("#007A3D");
+  public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(21.0d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(51.0d, SizeUnit.mm);
+
+  public static Color PAD_COLOR = GOLD_COLOR;
+  public static Size PAD_SIZE = new Size(1.7d, SizeUnit.mm);
+  public static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
+  public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..19)
@@ -74,7 +81,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   public RaspberryPiPico() {
     super();
-    this.bodyColor = PICO_GREEN;
+    this.bodyColor = RPI_GREEN;
     updateControlPoints();
   }
 
@@ -126,7 +133,27 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     double pin1OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
     double boardX = x - pin1OffsetX;
     double boardY = y - pin1OffsetY;
-    return new Rectangle2D.Double(boardX, boardY, boardW, boardH);
+
+    Area boardArea = new Area(new Rectangle2D.Double(boardX, boardY, boardW, boardH));
+
+    double spacing = PIN_SPACING.convertToPixels();
+    int notchD = getClosestOdd((int) Math.round(NOTCH_SIZE.convertToPixels()));
+    double notchR = notchD / 2.0;
+
+    // Subtract left edge semi-circular notches
+    for (int i = 0; i < 20; i++) {
+      double py = boardY + pin1OffsetY + i * spacing;
+      boardArea.subtract(new Area(new Ellipse2D.Double(boardX - notchR, py - notchR, notchD, notchD)));
+    }
+
+    // Subtract right edge semi-circular notches
+    double rightEdge = boardX + boardW;
+    for (int i = 0; i < 20; i++) {
+      double py = boardY + pin1OffsetY + i * spacing;
+      boardArea.subtract(new Area(new Ellipse2D.Double(rightEdge - notchR, py - notchR, notchD, notchD)));
+    }
+
+    return boardArea;
   }
 
   @Override
@@ -159,25 +186,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
-    drawingObserver.stopTracking();
 
     g2d.setColor(getFinalBorderColor(componentState, outlineMode));
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Mounting holes (2.1mm diameter)
-      double holeDiameter = new Size(2.1d, SizeUnit.mm).convertToPixels();
-      double topHoleY = boardY + new Size(2.0d, SizeUnit.mm).convertToPixels();
-      double bottomHoleY = boardY + boardH - new Size(2.4d, SizeUnit.mm).convertToPixels();
-      double leftHoleX = boardX + new Size(4.8d, SizeUnit.mm).convertToPixels();
-      double rightHoleX = boardX + boardW - new Size(4.8d, SizeUnit.mm).convertToPixels();
-
-      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
-
       // Micro USB Connector
       double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
       double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
@@ -214,23 +228,125 @@ public class RaspberryPiPico extends AbstractMakerBoard {
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
-    g2d.setTransform(oldTx);
+    drawingObserver.stopTracking();
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawCastellatedPads(g2d, boardX, boardY, boardW, pin1OffsetX, pin1OffsetY, outlineMode, drawingObserver);
+
+    g2d.setTransform(oldTx);
 
     g2d.setComposite(oldComposite);
   }
 
+  /**
+   * Helper to draw Raspberry Pi Pico's castellated solder pads along the left and right edges
+   * and the SWD round pads at the bottom.
+   */
+  protected void drawCastellatedPads(Graphics2D g2d, double boardX, double boardY, double boardW,
+      double pin1OffsetX, double pin1OffsetY, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+
+    double spacing = PIN_SPACING.convertToPixels();
+    int padD = getClosestOdd((int) Math.round(PAD_SIZE.convertToPixels()));
+    int holeD = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
+    int notchD = getClosestOdd((int) Math.round(NOTCH_SIZE.convertToPixels()));
+    double padR = padD / 2.0;
+    double holeR = holeD / 2.0;
+    double notchR = notchD / 2.0;
+
+    drawingObserver.startTrackingContinuityArea(true);
+
+    // Left row (pins 0..19): castellated pads extending to left edge
+    for (int i = 0; i < 20; i++) {
+      double px = boardX + pin1OffsetX;
+      double py = boardY + pin1OffsetY + i * spacing;
+
+      Area padArea = new Area(new Rectangle2D.Double(boardX, py - padR, pin1OffsetX, padD));
+      padArea.add(new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(boardX - notchR, py - notchR, notchD, notchD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
+
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(padArea);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(padArea);
+
+      // Inner through-hole drill hole (white circle matching Zero and perfboard)
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+    }
+
+    // Right row (pins 20..39): castellated pads extending to right edge
+    double rightEdge = boardX + boardW;
+    for (int i = 0; i < 20; i++) {
+      double px = rightEdge - pin1OffsetX;
+      double py = boardY + pin1OffsetY + i * spacing;
+
+      Area padArea = new Area(new Rectangle2D.Double(px, py - padR, pin1OffsetX, padD));
+      padArea.add(new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(rightEdge - notchR, py - notchR, notchD, notchD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
+
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(padArea);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(padArea);
+
+      // Inner through-hole drill hole (white circle matching Zero and perfboard)
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+    }
+
+    // SWD Debug Header (pins 40..42): standard round solder pads at bottom
+    double swdX = boardX + (boardW - 2 * spacing) / 2.0;
+    double swdY = boardY + pin1OffsetY + 19 * spacing;
+    for (int i = 0; i < 3; i++) {
+      double px = swdX + i * spacing;
+      double py = swdY;
+
+      Area swdPadArea = new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD));
+      swdPadArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
+
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(swdPadArea);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(swdPadArea);
+
+      // Inner through-hole drill hole (white circle)
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+    }
+
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.setColor(PICO_GREEN);
+    g2d.setColor(RPI_GREEN);
     g2d.fill(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 3, 3));
-    g2d.setColor(PICO_GREEN.darker());
+    g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 3, 3));
 
+    // Castellated edge pads on left and right in icon
+    g2d.setColor(PAD_COLOR);
+    for (int y = 5; y <= height - 6; y += 3) {
+      g2d.fillRect(6, y, 3, 2);
+      g2d.fillRect(width - 9, y, 3, 2);
+    }
+
+    // USB Connector
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(11, 2, 10, 3);
 
+    // RP2040 chip
     g2d.setColor(IC_BODY_COLOR);
     g2d.fillRect(11, 12, 10, 10);
 

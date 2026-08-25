@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -62,8 +63,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(65.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(30.0d, SizeUnit.mm);
 
-  public static Color PAD_COLOR = Color.decode("#DA8A67");
-  public static Size PAD_SIZE = new Size(0.075d, SizeUnit.in);
+  public static Color PAD_COLOR = GOLD_COLOR;
+  public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   public RaspberryPiZero() {
@@ -110,7 +111,22 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     double boardX = x - pin1OffsetX;
     double boardY = y - pin1OffsetY;
     double cornerArc = new Size(6.0d, SizeUnit.mm).convertToPixels();
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerArc, cornerArc);
+
+    Area boardArea = new Area(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerArc, cornerArc));
+
+    double holeD = new Size(2.75d, SizeUnit.mm).convertToPixels();
+    double holeR = holeD / 2.0;
+    double mX1 = boardX + new Size(3.5d, SizeUnit.mm).convertToPixels();
+    double mX2 = boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels();
+    double mY1 = boardY + new Size(3.5d, SizeUnit.mm).convertToPixels();
+    double mY2 = boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels();
+
+    boardArea.subtract(new Area(new Ellipse2D.Double(mX1 - holeR, mY1 - holeR, holeD, holeD)));
+    boardArea.subtract(new Area(new Ellipse2D.Double(mX1 - holeR, mY2 - holeR, holeD, holeD)));
+    boardArea.subtract(new Area(new Ellipse2D.Double(mX2 - holeR, mY1 - holeR, holeD, holeD)));
+    boardArea.subtract(new Area(new Ellipse2D.Double(mX2 - holeR, mY2 - holeR, holeD, holeD)));
+
+    return boardArea;
   }
 
   @Override
