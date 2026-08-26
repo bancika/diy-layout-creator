@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -84,10 +85,22 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       "D0 (GPIO16)", "D1 (GPIO5)", "D2 (GPIO4)", "D3 (GPIO0)", "D4 (GPIO2)", "3V3_2", "GND3", "D5 (GPIO14)", "D6 (GPIO12)", "D7 (GPIO13)", "D8 (GPIO15)", "RX (GPIO3)", "TX (GPIO1)", "GND4", "3V3_3"
   };
 
+  protected boolean headers = false;
+
   public ESP8266NodeMCU() {
     super();
     this.bodyColor = NODEMCU_BLACK;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
+    invalidateCache();
   }
 
   @Override
@@ -238,7 +251,11 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    if (headers) {
+      drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    } else {
+      drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

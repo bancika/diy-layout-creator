@@ -112,4 +112,16 @@ public class ArduinoNanoTest {
     Point2D p0 = nano.getControlPoint(0);
     Assert.assertEquals(30.0, p0.getY() - bounds.getY(), 0.1);
   }
+
+  @Test
+  public void testHeadersProperty() {
+    ArduinoNano nano = new ArduinoNano();
+    Assert.assertFalse("Headers should be false by default", nano.getHeaders());
+
+    nano.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", nano.getHeaders());
+
+    nano.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", nano.getHeaders());
+  }
 }

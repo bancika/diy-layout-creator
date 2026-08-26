@@ -122,6 +122,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
   };
 
   private DevKitVersion version = DevKitVersion.DevKit_V1_30Pin;
+  protected boolean headers = false;
 
   public ESP32DevKit() {
     super();
@@ -137,6 +138,16 @@ public class ESP32DevKit extends AbstractMakerBoard {
   public void setVersion(DevKitVersion version) {
     this.version = version;
     updateControlPoints();
+    invalidateCache();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
     invalidateCache();
   }
 
@@ -367,7 +378,11 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    if (headers) {
+      drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    } else {
+      drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

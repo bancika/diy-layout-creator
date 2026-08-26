@@ -151,4 +151,38 @@ public class RaspberryPiPicoTest {
     Assert.assertEquals(p0Rot.getX() - spacing, p1Rot.getX(), 0.01);
     Assert.assertEquals(p0Rot.getY(), p1Rot.getY(), 0.01);
   }
+
+  @Test
+  public void testHeadersProperty() {
+    RaspberryPiPico pico = new RaspberryPiPico();
+    Assert.assertFalse("Headers should be false by default", pico.getHeaders());
+
+    pico.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", pico.getHeaders());
+
+    pico.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", pico.getHeaders());
+
+    // Test drawing with headers true and false
+    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    g2d.setClip(new Rectangle(0, 0, 600, 600));
+    Project project = new Project();
+    IDrawingObserver observer = new IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    pico.setHeaders(false);
+    pico.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    pico.setHeaders(true);
+    pico.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    g2d.dispose();
+  }
 }

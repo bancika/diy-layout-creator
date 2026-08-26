@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -74,10 +75,22 @@ public class ArduinoNano extends AbstractMakerBoard {
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
 
+  protected boolean headers = false;
+
   public ArduinoNano() {
     super();
     this.bodyColor = ARDUINO_BLUE;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
+    invalidateCache();
   }
 
   @Override
@@ -248,8 +261,12 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw pins
-    drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    // Draw pins or solder pads
+    if (headers) {
+      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    } else {
+      drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

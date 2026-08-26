@@ -45,6 +45,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -74,10 +75,22 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     PIN_NAMES[40] = "MIPI (CSI)";
   }
 
+  protected boolean headers = false;
+
   public RaspberryPiZero() {
     super();
     this.bodyColor = RPI_GREEN;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
+    invalidateCache();
   }
 
   @Override
@@ -259,7 +272,11 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawSolderPads(g2d, outlineMode, drawingObserver);
+    if (headers) {
+      drawPinHeader(g2d, 0, 40, false, outlineMode, drawingObserver);
+    } else {
+      drawSolderPads(g2d, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

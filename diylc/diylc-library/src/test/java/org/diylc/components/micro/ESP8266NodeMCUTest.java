@@ -102,4 +102,16 @@ public class ESP8266NodeMCUTest {
     Point2D p0 = mcu.getControlPoint(0);
     Assert.assertEquals(expectedTopMargin, p0.getY() - bounds.getY(), 0.1);
   }
+
+  @Test
+  public void testHeadersProperty() {
+    ESP8266NodeMCU mcu = new ESP8266NodeMCU();
+    Assert.assertFalse("Headers should be false by default", mcu.getHeaders());
+
+    mcu.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", mcu.getHeaders());
+
+    mcu.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", mcu.getHeaders());
+  }
 }

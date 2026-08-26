@@ -45,6 +45,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -79,10 +80,22 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       "SWCLK", "GND_SWD", "SWDIO"
   };
 
+  protected boolean headers = false;
+
   public RaspberryPiPico() {
     super();
     this.bodyColor = RPI_GREEN;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
+    invalidateCache();
   }
 
   @Override
@@ -230,9 +243,15 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
     drawingObserver.stopTracking();
 
-    drawCastellatedPads(g2d, boardX, boardY, boardW, pin1OffsetX, pin1OffsetY, outlineMode, drawingObserver);
+    if (!headers) {
+      drawCastellatedPads(g2d, boardX, boardY, boardW, pin1OffsetX, pin1OffsetY, outlineMode, drawingObserver);
+    }
 
     g2d.setTransform(oldTx);
+
+    if (headers) {
+      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

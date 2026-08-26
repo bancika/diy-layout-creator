@@ -125,4 +125,38 @@ public class WemosD1MiniTest {
 
     g2d.dispose();
   }
+
+  @Test
+  public void testHeadersProperty() {
+    WemosD1Mini mcu = new WemosD1Mini();
+    Assert.assertFalse("Headers should be false by default", mcu.getHeaders());
+
+    mcu.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", mcu.getHeaders());
+
+    mcu.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", mcu.getHeaders());
+
+    // Test drawing with headers true and false
+    BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    g2d.setClip(new Rectangle(0, 0, 400, 400));
+    Project project = new Project();
+    IDrawingObserver observer = new IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    mcu.setHeaders(false);
+    mcu.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    mcu.setHeaders(true);
+    mcu.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    g2d.dispose();
+  }
 }

@@ -153,6 +153,7 @@ public class Teensy extends AbstractMakerBoard {
   };
 
   private TeensyVersion version = TeensyVersion.Teensy_4_0;
+  protected boolean headers = false;
 
   public Teensy() {
     super();
@@ -168,6 +169,16 @@ public class Teensy extends AbstractMakerBoard {
   public void setVersion(TeensyVersion version) {
     this.version = version;
     updateControlPoints();
+    invalidateCache();
+  }
+
+  @EditableProperty(name = "Headers")
+  public boolean getHeaders() {
+    return headers;
+  }
+
+  public void setHeaders(boolean headers) {
+    this.headers = headers;
     invalidateCache();
   }
 
@@ -392,8 +403,12 @@ public class Teensy extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Render gold solder pads with drill holes (square for Pin 1 / GND)
-    drawSolderPads(g2d, outlineMode, drawingObserver);
+    // Render pin headers or gold solder pads with drill holes
+    if (headers) {
+      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    } else {
+      drawSolderPads(g2d, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }

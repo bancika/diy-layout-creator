@@ -350,4 +350,42 @@ public class TeensyTest {
     // Board should be green (like Pi Zero)
     Assert.assertEquals(Teensy.TEENSY_GREEN, teensy.getBodyColor());
   }
+
+  @Test
+  public void testHeadersProperty() {
+    Teensy teensy = new Teensy();
+    Assert.assertFalse("Headers should be false by default", teensy.getHeaders());
+
+    teensy.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", teensy.getHeaders());
+
+    teensy.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", teensy.getHeaders());
+
+    // Test drawing with headers true and false for both 4.0 and 4.1
+    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    g2d.setClip(new Rectangle(0, 0, 600, 600));
+    Project project = new Project();
+    IDrawingObserver observer = new IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    teensy.setHeaders(false);
+    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    teensy.setHeaders(true);
+    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    teensy.setVersion(Teensy.TeensyVersion.Teensy_4_1);
+    teensy.setHeaders(true);
+    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
+
+    g2d.dispose();
+  }
 }

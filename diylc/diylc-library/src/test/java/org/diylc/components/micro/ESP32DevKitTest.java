@@ -219,4 +219,16 @@ public class ESP32DevKitTest {
     Assert.assertEquals("3V3", devKit.getControlPointNodeName(14));
     Assert.assertEquals("D23", devKit.getControlPointNodeName(29));
   }
+
+  @Test
+  public void testHeadersProperty() {
+    ESP32DevKit devKit = new ESP32DevKit();
+    Assert.assertFalse("Headers should be false by default", devKit.getHeaders());
+
+    devKit.setHeaders(true);
+    Assert.assertTrue("Headers should be true after setter", devKit.getHeaders());
+
+    devKit.setHeaders(false);
+    Assert.assertFalse("Headers should be false after setter", devKit.getHeaders());
+  }
 }
