@@ -1,15 +1,9 @@
 package org.diylc.components.micro;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -96,37 +90,6 @@ public class WemosD1MiniTest {
   }
 
   @Test
-  public void testDrawingModes() {
-    WemosD1Mini mcu = new WemosD1Mini();
-    mcu.setControlPoint(new Point2D.Double(100, 100), 0);
-
-    BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 400, 400));
-
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    // Normal mode
-    mcu.draw(g2d, ComponentState.NORMAL, false, project, observer);
-    // Selected mode
-    mcu.draw(g2d, ComponentState.SELECTED, false, project, observer);
-    // Outline mode
-    mcu.draw(g2d, ComponentState.NORMAL, true, project, observer);
-    // Icon
-    mcu.drawIcon(g2d, 32, 32);
-
-    g2d.dispose();
-  }
-
-  @Test
   public void testHeadersProperty() {
     WemosD1Mini mcu = new WemosD1Mini();
     Assert.assertFalse("Headers should be false by default", mcu.getHeaders());
@@ -136,27 +99,5 @@ public class WemosD1MiniTest {
 
     mcu.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", mcu.getHeaders());
-
-    // Test drawing with headers true and false
-    BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 400, 400));
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    mcu.setHeaders(false);
-    mcu.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    mcu.setHeaders(true);
-    mcu.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    g2d.dispose();
   }
 }

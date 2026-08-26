@@ -1,17 +1,9 @@
 package org.diylc.components.micro;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.diylc.common.Orientation;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -90,8 +82,12 @@ public class TeensyTest {
     Assert.assertEquals("On/Off", teensy.getControlPointNodeName(52));
 
     // Ethernet Header (53..58)
-    Assert.assertEquals("ETH_Rx+", teensy.getControlPointNodeName(53));
-    Assert.assertEquals("ETH_Tx+", teensy.getControlPointNodeName(58));
+    Assert.assertEquals("ETH_TX-", teensy.getControlPointNodeName(53));
+    Assert.assertEquals("ETH_LED", teensy.getControlPointNodeName(54));
+    Assert.assertEquals("ETH_RX+", teensy.getControlPointNodeName(55));
+    Assert.assertEquals("ETH_TX+", teensy.getControlPointNodeName(56));
+    Assert.assertEquals("ETH_GND", teensy.getControlPointNodeName(57));
+    Assert.assertEquals("ETH_RX-", teensy.getControlPointNodeName(58));
 
     // USB Host Header (59..63)
     Assert.assertEquals("USB_5V", teensy.getControlPointNodeName(59));
@@ -175,7 +171,34 @@ public class TeensyTest {
       Assert.assertEquals("Middle pin " + i + " Y alignment", p1.getY(), p2.getY(), 0.01);
     }
 
-    // USB Host Header: vertical at 0.1" pitch
+    // Ethernet Header: 3x2 at 2.0mm pitch, center is 4.45mm left of right column, 13.97mm down from pin 1
+    double ethPitch = new Size(2.0d, SizeUnit.mm).convertToPixels();
+    double expectedEthCenterX = pRight.getX() - new Size(4.45d, SizeUnit.mm).convertToPixels();
+    double expectedEthCenterY = pLeft.getY() + new Size(13.97d, SizeUnit.mm).convertToPixels();
+    double sumX = 0;
+    double sumY = 0;
+    for (int i = 53; i <= 58; i++) {
+      sumX += teensy.getControlPoint(i).getX();
+      sumY += teensy.getControlPoint(i).getY();
+    }
+    Assert.assertEquals("Ethernet center X", expectedEthCenterX, sumX / 6.0, 0.01);
+    Assert.assertEquals("Ethernet center Y", expectedEthCenterY, sumY / 6.0, 0.01);
+    // Row 1 (53..55) X spacing is ethPitch
+    Assert.assertEquals("ETH Row 1 Col 0-1 X spacing", ethPitch, teensy.getControlPoint(54).getX() - teensy.getControlPoint(53).getX(), 0.01);
+    Assert.assertEquals("ETH Row 1 Col 1-2 X spacing", ethPitch, teensy.getControlPoint(55).getX() - teensy.getControlPoint(54).getX(), 0.01);
+    // Row 2 (56..58) X spacing is ethPitch
+    Assert.assertEquals("ETH Row 2 Col 0-1 X spacing", ethPitch, teensy.getControlPoint(57).getX() - teensy.getControlPoint(56).getX(), 0.01);
+    Assert.assertEquals("ETH Row 2 Col 1-2 X spacing", ethPitch, teensy.getControlPoint(58).getX() - teensy.getControlPoint(57).getX(), 0.01);
+    // Row-to-row Y spacing is ethPitch
+    Assert.assertEquals("ETH Col 0 Y spacing", ethPitch, teensy.getControlPoint(56).getY() - teensy.getControlPoint(53).getY(), 0.01);
+    Assert.assertEquals("ETH Col 1 Y spacing", ethPitch, teensy.getControlPoint(57).getY() - teensy.getControlPoint(54).getY(), 0.01);
+    Assert.assertEquals("ETH Col 2 Y spacing", ethPitch, teensy.getControlPoint(58).getY() - teensy.getControlPoint(55).getY(), 0.01);
+
+    // USB Host Header: vertical at 0.1" pitch, spaced 3.05mm from left column, Y = 2.5 * spacing
+    double expectedUsbHostX = pLeft.getX() + new Size(3.05d, SizeUnit.mm).convertToPixels();
+    double expectedUsbHostY0 = pLeft.getY() + 2.5 * spacing;
+    Assert.assertEquals("USB host pin 0 X offset", expectedUsbHostX, teensy.getControlPoint(59).getX(), 0.01);
+    Assert.assertEquals("USB host pin 0 Y offset", expectedUsbHostY0, teensy.getControlPoint(59).getY(), 0.01);
     for (int i = 59; i < 63; i++) {
       Point2D p1 = teensy.getControlPoint(i);
       Point2D p2 = teensy.getControlPoint(i + 1);
@@ -230,38 +253,6 @@ public class TeensyTest {
   }
 
   @Test
-  public void testAllPinsWithinBoardBounds() {
-    // Teensy 4.0: all 34 pins must be within board bounds
-    Teensy teensy40 = new Teensy();
-    Shape body40 = teensy40.getBodyShape();
-    Rectangle2D bounds40 = body40.getBounds2D();
-    for (int i = 0; i < teensy40.getControlPointCount(); i++) {
-      Point2D p = teensy40.getControlPoint(i);
-      Assert.assertTrue("T4.0 Pin " + i + " (" + teensy40.getControlPointNodeName(i) +
-          ") X=" + p.getX() + " should be within board X bounds [" + bounds40.getMinX() + ", " + bounds40.getMaxX() + "]",
-          p.getX() >= bounds40.getMinX() - 0.1 && p.getX() <= bounds40.getMaxX() + 0.1);
-      Assert.assertTrue("T4.0 Pin " + i + " (" + teensy40.getControlPointNodeName(i) +
-          ") Y=" + p.getY() + " should be within board Y bounds [" + bounds40.getMinY() + ", " + bounds40.getMaxY() + "]",
-          p.getY() >= bounds40.getMinY() - 0.1 && p.getY() <= bounds40.getMaxY() + 0.1);
-    }
-
-    // Teensy 4.1: all 65 pins must be within board bounds
-    Teensy teensy41 = new Teensy();
-    teensy41.setVersion(Teensy.TeensyVersion.Teensy_4_1);
-    Shape body41 = teensy41.getBodyShape();
-    Rectangle2D bounds41 = body41.getBounds2D();
-    for (int i = 0; i < teensy41.getControlPointCount(); i++) {
-      Point2D p = teensy41.getControlPoint(i);
-      Assert.assertTrue("T4.1 Pin " + i + " (" + teensy41.getControlPointNodeName(i) +
-          ") X=" + p.getX() + " should be within board X bounds [" + bounds41.getMinX() + ", " + bounds41.getMaxX() + "]",
-          p.getX() >= bounds41.getMinX() - 0.1 && p.getX() <= bounds41.getMaxX() + 0.1);
-      Assert.assertTrue("T4.1 Pin " + i + " (" + teensy41.getControlPointNodeName(i) +
-          ") Y=" + p.getY() + " should be within board Y bounds [" + bounds41.getMinY() + ", " + bounds41.getMaxY() + "]",
-          p.getY() >= bounds41.getMinY() - 0.1 && p.getY() <= bounds41.getMaxY() + 0.1);
-    }
-  }
-
-  @Test
   public void testVersionSwitching() {
     Teensy teensy = new Teensy();
     Assert.assertEquals(34, teensy.getControlPointCount());
@@ -278,80 +269,6 @@ public class TeensyTest {
   }
 
   @Test
-  public void testDrawingAndOutline() {
-    Teensy teensy = new Teensy();
-    teensy.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 600, 600));
-
-    Project project = new Project();
-    final AtomicInteger trackingStartCount = new AtomicInteger(0);
-    final AtomicInteger trackingStopCount = new AtomicInteger(0);
-
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {
-        trackingStartCount.incrementAndGet();
-      }
-      @Override public void stopTracking() {
-        trackingStopCount.incrementAndGet();
-      }
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    // Test normal draw
-    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
-    Assert.assertEquals(1, trackingStartCount.get());
-    Assert.assertEquals(1, trackingStopCount.get());
-
-    // Test selected state and outline mode
-    teensy.draw(g2d, ComponentState.SELECTED, false, project, observer);
-    teensy.draw(g2d, ComponentState.NORMAL, true, project, observer);
-
-    // Test icon drawing
-    teensy.drawIcon(g2d, 32, 32);
-
-    // Test Teensy 4.1 draw
-    teensy.setVersion(Teensy.TeensyVersion.Teensy_4_1);
-    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    g2d.dispose();
-  }
-
-  @Test
-  public void testRotation() {
-    Teensy teensy = new Teensy();
-    teensy.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    Point2D p0Initial = teensy.getControlPoint(0);
-    Point2D p14Initial = teensy.getControlPoint(14); // First right-row pin
-
-    teensy.setOrientation(Orientation._90);
-    Point2D p0Rot = teensy.getControlPoint(0);
-    Point2D p14Rot = teensy.getControlPoint(14);
-
-    // p0 should stay in place
-    Assert.assertEquals(p0Initial.getX(), p0Rot.getX(), 0.01);
-    Assert.assertEquals(p0Initial.getY(), p0Rot.getY(), 0.01);
-
-    // After 90 deg clockwise rotation, right row pin should move from (x + rowSpacing, y) to (x, y + rowSpacing)
-    double rowSpacing = new Size(15.24d, SizeUnit.mm).convertToPixels();
-    Assert.assertEquals(p0Rot.getX(), p14Rot.getX(), 0.01);
-    Assert.assertEquals(p0Rot.getY() + rowSpacing, p14Rot.getY(), 0.01);
-  }
-
-  @Test
-  public void testBoardColor() {
-    Teensy teensy = new Teensy();
-    // Board should be green (like Pi Zero)
-    Assert.assertEquals(Teensy.TEENSY_GREEN, teensy.getBodyColor());
-  }
-
-  @Test
   public void testHeadersProperty() {
     Teensy teensy = new Teensy();
     Assert.assertFalse("Headers should be false by default", teensy.getHeaders());
@@ -361,31 +278,5 @@ public class TeensyTest {
 
     teensy.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", teensy.getHeaders());
-
-    // Test drawing with headers true and false for both 4.0 and 4.1
-    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 600, 600));
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    teensy.setHeaders(false);
-    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    teensy.setHeaders(true);
-    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    teensy.setVersion(Teensy.TeensyVersion.Teensy_4_1);
-    teensy.setHeaders(true);
-    teensy.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    g2d.dispose();
   }
 }

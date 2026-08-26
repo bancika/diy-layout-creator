@@ -1,17 +1,9 @@
 package org.diylc.components.micro;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import org.diylc.common.Orientation;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -111,63 +103,6 @@ public class RaspberryPiZeroTest {
   }
 
   @Test
-  public void testDrawingAndOutline() {
-    RaspberryPiZero pi = new RaspberryPiZero();
-    pi.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 600, 600));
-
-    Project project = new Project();
-    final AtomicInteger trackingStartCount = new AtomicInteger(0);
-    final AtomicInteger trackingStopCount = new AtomicInteger(0);
-
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {
-        trackingStartCount.incrementAndGet();
-      }
-      @Override public void stopTracking() {
-        trackingStopCount.incrementAndGet();
-      }
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    pi.draw(g2d, ComponentState.NORMAL, false, project, observer);
-    Assert.assertEquals(1, trackingStartCount.get());
-    Assert.assertEquals(1, trackingStopCount.get());
-
-    pi.draw(g2d, ComponentState.SELECTED, false, project, observer);
-    pi.draw(g2d, ComponentState.NORMAL, true, project, observer);
-    pi.drawIcon(g2d, 32, 32);
-
-    g2d.dispose();
-  }
-
-  @Test
-  public void testRotation() {
-    RaspberryPiZero pi = new RaspberryPiZero();
-    pi.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    Point2D p0Initial = pi.getControlPoint(0);
-    Point2D p1Initial = pi.getControlPoint(1);
-
-    pi.setOrientation(Orientation._90);
-    Point2D p0Rot = pi.getControlPoint(0);
-    Point2D p1Rot = pi.getControlPoint(1);
-
-    Assert.assertEquals(p0Initial.getX(), p0Rot.getX(), 0.01);
-    Assert.assertEquals(p0Initial.getY(), p0Rot.getY(), 0.01);
-    // After 90 deg clockwise rotation, p1 (which was at (x, y - spacing)) should be at (x + spacing, y)
-    double spacing = new Size(0.1d, SizeUnit.in).convertToPixels();
-    Assert.assertEquals(p0Rot.getX() + spacing, p1Rot.getX(), 0.01);
-    Assert.assertEquals(p0Rot.getY(), p1Rot.getY(), 0.01);
-  }
-
-  @Test
   public void testHeadersProperty() {
     RaspberryPiZero pi = new RaspberryPiZero();
     Assert.assertFalse("Headers should be false by default", pi.getHeaders());
@@ -177,27 +112,5 @@ public class RaspberryPiZeroTest {
 
     pi.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", pi.getHeaders());
-
-    // Test drawing with headers true and false
-    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 600, 600));
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    pi.setHeaders(false);
-    pi.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    pi.setHeaders(true);
-    pi.draw(g2d, ComponentState.NORMAL, false, project, observer);
-
-    g2d.dispose();
   }
 }

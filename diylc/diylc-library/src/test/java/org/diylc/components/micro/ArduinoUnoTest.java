@@ -1,18 +1,7 @@
 package org.diylc.components.micro;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
-import org.diylc.common.Orientation;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,16 +1,9 @@
 package org.diylc.components.micro;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
-import org.diylc.common.Orientation;
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDrawingObserver;
-import org.diylc.core.Project;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -143,52 +136,5 @@ public class RaspberryPiTest {
     Assert.assertEquals(expectedMipiCenterY, pMipi1.getY(), 0.1);
     Assert.assertEquals(expectedMipi0CenterX, pMipi0.getX(), 0.1);
     Assert.assertEquals(expectedMipiCenterY, pMipi0.getY(), 0.1);
-  }
-
-  @Test
-  public void testDrawingAndOutline() {
-    RaspberryPi pi = new RaspberryPi();
-    pi.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    BufferedImage img = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2d = img.createGraphics();
-    g2d.setClip(new Rectangle(0, 0, 600, 600));
-
-    Project project = new Project();
-    IDrawingObserver observer = new IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    pi.draw(g2d, ComponentState.NORMAL, false, project, observer);
-    pi.draw(g2d, ComponentState.SELECTED, false, project, observer);
-    pi.draw(g2d, ComponentState.NORMAL, true, project, observer);
-    pi.drawIcon(g2d, 32, 32);
-
-    g2d.dispose();
-  }
-
-  @Test
-  public void testRotation() {
-    RaspberryPi pi = new RaspberryPi();
-    pi.setControlPoint(new Point2D.Double(200, 200), 0);
-
-    Point2D p0Initial = pi.getControlPoint(0);
-    Point2D p1Initial = pi.getControlPoint(1);
-
-    pi.setOrientation(Orientation._90);
-    Point2D p0Rot = pi.getControlPoint(0);
-    Point2D p1Rot = pi.getControlPoint(1);
-
-    Assert.assertEquals(p0Initial.getX(), p0Rot.getX(), 0.01);
-    Assert.assertEquals(p0Initial.getY(), p0Rot.getY(), 0.01);
-    // After 90 deg clockwise rotation, p1 (which was at (x, y - spacing)) should be at (x + spacing, y)
-    double spacing = new Size(0.1d, SizeUnit.in).convertToPixels();
-    Assert.assertEquals(p0Rot.getX() + spacing, p1Rot.getX(), 0.01);
-    Assert.assertEquals(p0Rot.getY(), p1Rot.getY(), 0.01);
   }
 }

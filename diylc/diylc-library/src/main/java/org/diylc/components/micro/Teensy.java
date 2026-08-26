@@ -144,8 +144,8 @@ public class Teensy extends AbstractMakerBoard {
       "34 (RX8)", "33 (MCLK2)",
       // Middle cluster (48..52, left to right near push button)
       "VBAT", "3.3V (Mid)", "GND (Mid)", "Program", "On/Off",
-      // Ethernet header (53..58, 2x3)
-      "ETH_Rx+", "ETH_LED", "ETH_Tx-", "ETH_Rx-", "ETH_GND", "ETH_Tx+",
+      // Ethernet header (53..58, 3x2)
+      "ETH_TX-", "ETH_LED", "ETH_RX+", "ETH_TX+", "ETH_GND", "ETH_RX-",
       // USB Host header (59..63, 1x5)
       "USB_5V", "USB_D-", "USB_D+", "USB_GND1", "USB_GND2",
       // VUSB (64)
@@ -242,29 +242,32 @@ public class Teensy extends AbstractMakerBoard {
         relativeOffsets[24 + i][1] = i * spacing;
       }
 
-      // Middle cluster (48..52): 5 pins near push button at Y=17*spacing
+      // Middle cluster (48..52): 5 pins near SD card / switch at Y=18*spacing (45.72mm)
       for (int k = 1; k <= 5; k++) {
         relativeOffsets[48 + k - 1][0] = k * spacing;
-        relativeOffsets[48 + k - 1][1] = 17 * spacing;
+        relativeOffsets[48 + k - 1][1] = 18 * spacing;
       }
 
-      // Ethernet Header (53..58): 2x3 header (2.0mm pitch)
+      // Ethernet Header (53..58): 3x2 header (2.0mm pitch, rotated 90 degrees)
+      // Center is 4.45mm left of right column, 13.97mm down from first pin
       double ethPitch = new Size(2.0d, SizeUnit.mm).convertToPixels();
-      double ethCenterX = rowSpacing / 2.0;
-      double ethBaseY = 5 * spacing;
-      // Col 1 (left): Rx+, LED, Tx-
-      relativeOffsets[53] = new double[] {ethCenterX - ethPitch / 2.0, ethBaseY - ethPitch};
-      relativeOffsets[54] = new double[] {ethCenterX - ethPitch / 2.0, ethBaseY};
-      relativeOffsets[55] = new double[] {ethCenterX - ethPitch / 2.0, ethBaseY + ethPitch};
-      // Col 2 (right): Rx-, GND, Tx+
-      relativeOffsets[56] = new double[] {ethCenterX + ethPitch / 2.0, ethBaseY - ethPitch};
-      relativeOffsets[57] = new double[] {ethCenterX + ethPitch / 2.0, ethBaseY};
-      relativeOffsets[58] = new double[] {ethCenterX + ethPitch / 2.0, ethBaseY + ethPitch};
+      double ethCenterX = rowSpacing - new Size(4.45d, SizeUnit.mm).convertToPixels();
+      double ethCenterY = new Size(13.97d, SizeUnit.mm).convertToPixels();
+      // Row 1 (top): TX-, LED, RX+
+      relativeOffsets[53] = new double[] {ethCenterX - ethPitch, ethCenterY - ethPitch / 2.0};
+      relativeOffsets[54] = new double[] {ethCenterX, ethCenterY - ethPitch / 2.0};
+      relativeOffsets[55] = new double[] {ethCenterX + ethPitch, ethCenterY - ethPitch / 2.0};
+      // Row 2 (bottom): TX+, GND, RX-
+      relativeOffsets[56] = new double[] {ethCenterX - ethPitch, ethCenterY + ethPitch / 2.0};
+      relativeOffsets[57] = new double[] {ethCenterX, ethCenterY + ethPitch / 2.0};
+      relativeOffsets[58] = new double[] {ethCenterX + ethPitch, ethCenterY + ethPitch / 2.0};
 
       // USB Host Header (59..63): 1x5 header (2.54mm pitch)
+      // Spaced 3.05mm center-to-center from left column, Y = (2.5 + i) * spacing
+      double usbHostX = new Size(3.05d, SizeUnit.mm).convertToPixels();
       for (int i = 0; i < 5; i++) {
-        relativeOffsets[59 + i][0] = spacing;
-        relativeOffsets[59 + i][1] = (4 + i) * spacing;
+        relativeOffsets[59 + i][0] = usbHostX;
+        relativeOffsets[59 + i][1] = (2.5 + i) * spacing;
       }
 
       // VUSB (64): near VIN at X=rowSpacing - spacing, Y=spacing
@@ -337,21 +340,25 @@ public class Teensy extends AbstractMakerBoard {
       drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Main MCU chip (NXP i.MX RT1062 BGA)
-      double chipW = new Size(7.5d, SizeUnit.mm).convertToPixels();
-      double chipH = new Size(7.5d, SizeUnit.mm).convertToPixels();
+      double chipW = (version == TeensyVersion.Teensy_4_0)
+          ? new Size(0.4d, SizeUnit.in).convertToPixels()
+          : new Size(12.0d, SizeUnit.mm).convertToPixels();
+      double chipH = (version == TeensyVersion.Teensy_4_0)
+          ? new Size(0.4d, SizeUnit.in).convertToPixels()
+          : new Size(12.0d, SizeUnit.mm).convertToPixels();
       double chipX = centerX - chipW / 2.0;
       double chipY = (version == TeensyVersion.Teensy_4_0)
-          ? boardY + new Size(9.5d, SizeUnit.mm).convertToPixels()
-          : boardY + new Size(19.0d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipW, chipH, "");
+          ? boardY + new Size(9.5d, SizeUnit.mm).convertToPixels() + new Size(0.1d, SizeUnit.in).convertToPixels()
+          : boardY + new Size(19.0d, SizeUnit.mm).convertToPixels() + new Size(0.15d, SizeUnit.in).convertToPixels();
+      drawChip(g2d, chipX, chipY, chipW, chipH, "iMXRT1062");
 
       // Pushbutton (Program button)
       double btnW = new Size(3.5d, SizeUnit.mm).convertToPixels();
       double btnH = new Size(3.0d, SizeUnit.mm).convertToPixels();
       double btnX = centerX - btnW / 2.0;
       double btnY = (version == TeensyVersion.Teensy_4_0)
-          ? boardY + new Size(24.5d, SizeUnit.mm).convertToPixels()
-          : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels();
+          ? boardY + PIN1_OFFSET_Y.convertToPixels() + 11.5 * PIN_SPACING.convertToPixels() - btnH / 2.0
+          : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
       g2d.setColor(BUTTON_BODY_COLOR);
       g2d.fill(new RoundRectangle2D.Double(btnX, btnY, btnW, btnH, 2, 2));
       g2d.setColor(BUTTON_BORDER_COLOR);
@@ -361,11 +368,11 @@ public class Teensy extends AbstractMakerBoard {
 
       // Teensy 4.1 extras: Ethernet PHY + SD card slot
       if (version == TeensyVersion.Teensy_4_1) {
-        // MicroSD card slot at bottom edge
+        // MicroSD card slot at bottom edge (12mm long, flush with bottom edge so it does not stick out)
         double sdW = new Size(12.0d, SizeUnit.mm).convertToPixels();
-        double sdH = new Size(14.0d, SizeUnit.mm).convertToPixels();
+        double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdX = centerX - sdW / 2.0;
-        double sdY = boardY + boardH - sdH + new Size(1.0d, SizeUnit.mm).convertToPixels();
+        double sdY = boardY + boardH - sdH;
         drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
       }
 
