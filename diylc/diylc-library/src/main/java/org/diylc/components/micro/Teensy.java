@@ -333,11 +333,11 @@ public class Teensy extends AbstractMakerBoard {
       double centerX = boardX + boardW / 2.0;
 
       // Micro-USB connector on top edge (overhangs edge slightly)
-      double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
-      double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
+      double usbW = USB_MICRO_WIDTH.convertToPixels();
+      double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbX = centerX - usbW / 2.0;
       double usbY = boardY - new Size(1.0d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Main MCU chip (NXP i.MX RT1062 BGA)
       double chipW = (version == TeensyVersion.Teensy_4_0)

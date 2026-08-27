@@ -154,7 +154,7 @@ public class TP4056Charger extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // USB Type-C Connector (Left Edge)
-      drawMetalConnector(g2d, boardX - 6, boardY + boardH / 2.0 - 18, 32, 36, "Type-C");
+      drawUsbC(g2d, boardX - 6, boardY + boardH / 2.0 - 18, 32, 36, "Type-C");
 
       // TP4056 Linear Charger IC (SOP-8)
       drawChip(g2d, boardX + 60, boardY + 20, 26, 32, "4056");

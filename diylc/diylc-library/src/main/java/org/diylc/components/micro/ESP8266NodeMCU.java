@@ -211,12 +211,13 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       // ESP-12 Metal shield module below antenna
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
-      // Micro-USB Jack at bottom
-      double usbW = 54;
-      double usbH = 32;
+      // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
+      double usbW = USB_MICRO_WIDTH.convertToPixels();
+      double usbH = USB_MICRO_LENGTH.convertToPixels();
+      double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
       double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
-      double usbY = boardY + boardH - 22;
-      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+      double usbY = boardY + boardH - usbH + usbOverhang;
+      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // RST & FLASH tactile buttons at bottom (flanking the Micro-USB port)
       double btnW = 18;

@@ -81,9 +81,9 @@ public class WemosD1Mini extends AbstractMakerBoard {
   public static Size SHIELD_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size SHIELD_LENGTH = new Size(14.54d, SizeUnit.mm);
 
-  public static Size USB_WIDTH = new Size(5.8d, SizeUnit.mm);
-  public static Size USB_LENGTH = new Size(3.3d, SizeUnit.mm);
-  public static Size USB_CUTOUT_WIDTH = new Size(6.8d, SizeUnit.mm);
+  public static Size USB_WIDTH = USB_MICRO_WIDTH;
+  public static Size USB_LENGTH = USB_MICRO_LENGTH;
+  public static Size USB_CUTOUT_WIDTH = new Size(8.0d, SizeUnit.mm);
   public static Size USB_CUTOUT_DEPTH = new Size(1.8d, SizeUnit.mm);
 
   public static Size RST_CUTOUT_WIDTH = new Size(2.0d, SizeUnit.mm);
@@ -263,12 +263,13 @@ public class WemosD1Mini extends AbstractMakerBoard {
       // ESP8266 Metal Shield (main chip module)
       drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
-      // Micro-USB Jack drawn flush with the bottom edge of the board
+      // Micro-USB Jack drawn with 0.5mm overhang at the bottom edge
       double usbW = USB_WIDTH.convertToPixels();
       double usbH = USB_LENGTH.convertToPixels();
+      double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
       double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
-      double usbY = bottomY - usbH;
-      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+      double usbY = bottomY - usbH + usbOverhang;
+      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Reset button: small black rectangle touching the board in the bottom left cutout, moved 2mm up
       double rstCutoutW = RST_CUTOUT_WIDTH.convertToPixels();

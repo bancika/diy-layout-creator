@@ -84,6 +84,35 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
 
+  // Standard USB Port Dimensions
+  public static Size USB_MICRO_WIDTH = new Size(7.5d, SizeUnit.mm);
+  public static Size USB_MICRO_LENGTH = new Size(5.6d, SizeUnit.mm);
+  public static Size USB_MICRO_OVERHANG = new Size(0.5d, SizeUnit.mm);
+
+  public static Size USB_C_WIDTH = new Size(8.94d, SizeUnit.mm);
+  public static Size USB_C_LENGTH = new Size(7.5d, SizeUnit.mm);
+  public static Size USB_C_OVERHANG = new Size(0.5d, SizeUnit.mm);
+
+  public static Size USB_A_WIDTH = new Size(14.5d, SizeUnit.mm);
+  public static Size USB_A_LENGTH = new Size(14.0d, SizeUnit.mm);
+  public static Size USB_A_DUAL_LENGTH = new Size(17.5d, SizeUnit.mm);
+
+  public static Size USB_B_WIDTH = new Size(0.45d, SizeUnit.in);
+  public static Size USB_B_LENGTH = new Size(0.51d, SizeUnit.in);
+  public static Size USB_B_OVERHANG = new Size(0.14d, SizeUnit.in);
+
+  public static Size USB_MINI_WIDTH = new Size(0.30d, SizeUnit.in);
+  public static Size USB_MINI_LENGTH = new Size(0.36d, SizeUnit.in);
+  public static Size USB_MINI_OVERHANG = new Size(0.05d, SizeUnit.in);
+
+  public enum UsbPortType {
+    MICRO,
+    TYPE_C,
+    TYPE_A,
+    TYPE_B,
+    MINI
+  }
+
   public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
   public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
@@ -775,7 +804,49 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw a metal USB connector / shield.
+   * Helper to draw a standard Micro-USB connector.
+   */
+  protected void drawMicroUsb(Graphics2D g2d, double x, double y, double w, double h, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw a standard USB Type-C connector.
+   */
+  protected void drawUsbC(Graphics2D g2d, double x, double y, double w, double h, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw a standard USB Type-A connector.
+   */
+  protected void drawUsbA(Graphics2D g2d, double x, double y, double w, double h, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw a standard USB Type-B connector.
+   */
+  protected void drawUsbB(Graphics2D g2d, double x, double y, double w, double h, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw a standard Mini-USB connector.
+   */
+  protected void drawMiniUsb(Graphics2D g2d, double x, double y, double w, double h, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw any standardized USB port type.
+   */
+  protected void drawUsbPort(Graphics2D g2d, double x, double y, double w, double h, UsbPortType type, String label) {
+    drawMetalConnector(g2d, x, y, w, h, label);
+  }
+
+  /**
+   * Helper to draw a metal connector / shield (e.g. RF shield cans, SD card slots, HDMI).
    */
   protected void drawMetalConnector(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(USB_METAL_COLOR);

@@ -4,6 +4,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -177,9 +178,9 @@ public class ESP32DevKitTest {
     Assert.assertNotNull(body);
     Rectangle2D bounds = body.getBounds2D();
 
-    double expectedWidth = new Size(28.2d, SizeUnit.mm).convertToPixels();
-    double expectedHeight = new Size(51.8d, SizeUnit.mm).convertToPixels();
-    double expectedTopMargin = new Size(6.7d, SizeUnit.mm).convertToPixels();
+    double expectedWidth = ESP32DevKit.BOARD_WIDTH_30.convertToPixels();
+    double expectedHeight = ESP32DevKit.BOARD_LENGTH_30.convertToPixels();
+    double expectedTopMargin = ESP32DevKit.TOP_MARGIN_30.convertToPixels();
 
     Assert.assertEquals(expectedWidth, bounds.getWidth(), 0.1);
     Assert.assertEquals(expectedHeight, bounds.getHeight(), 0.1);
@@ -197,8 +198,8 @@ public class ESP32DevKitTest {
     Assert.assertNotNull(body);
     Rectangle2D bounds = body.getBounds2D();
 
-    double expectedWidth = new Size(27.9d, SizeUnit.mm).convertToPixels();
-    double expectedTotalLength = new Size(54.4d, SizeUnit.mm).convertToPixels();
+    double expectedWidth = ESP32DevKit.BOARD_WIDTH_38.convertToPixels();
+    double expectedTotalLength = ESP32DevKit.BOARD_LENGTH_38.convertToPixels();
 
     Assert.assertEquals(expectedWidth, bounds.getWidth(), 0.1);
     Assert.assertEquals(expectedTotalLength, bounds.getHeight(), 0.1);
@@ -419,6 +420,67 @@ public class ESP32DevKitTest {
 
     // Icon drawing
     devKit.drawIcon(g2d, 32, 32);
+
+    g2d.dispose();
+  }
+
+  @Test
+  public void testUsbConstants() {
+    Assert.assertEquals(7.5d, AbstractMakerBoard.USB_MICRO_WIDTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_MICRO_WIDTH.getUnit());
+
+    Assert.assertEquals(5.6d, AbstractMakerBoard.USB_MICRO_LENGTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_MICRO_LENGTH.getUnit());
+
+    Assert.assertEquals(0.5d, AbstractMakerBoard.USB_MICRO_OVERHANG.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_MICRO_OVERHANG.getUnit());
+
+    Assert.assertEquals(8.94d, AbstractMakerBoard.USB_C_WIDTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_C_WIDTH.getUnit());
+
+    Assert.assertEquals(7.5d, AbstractMakerBoard.USB_C_LENGTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_C_LENGTH.getUnit());
+
+    Assert.assertEquals(14.5d, AbstractMakerBoard.USB_A_WIDTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_A_WIDTH.getUnit());
+
+    Assert.assertEquals(14.0d, AbstractMakerBoard.USB_A_LENGTH.getValue(), 0.001);
+    Assert.assertEquals(SizeUnit.mm, AbstractMakerBoard.USB_A_LENGTH.getUnit());
+  }
+
+  @Test
+  public void testAllESP32VersionsDrawing() {
+    java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(400, 400, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+    java.awt.Graphics2D g2d = img.createGraphics();
+    org.diylc.core.Project project = new org.diylc.core.Project();
+    org.diylc.core.IDrawingObserver observer = new org.diylc.core.IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    for (ESP32DevKit.DevKitVersion version : ESP32DevKit.DevKitVersion.values()) {
+      ESP32DevKit devKit = new ESP32DevKit();
+      devKit.setVersion(version);
+      devKit.setControlPoint(new Point2D.Double(100, 100), 0);
+
+      // Normal mode with solder pads
+      devKit.setHeaders(false);
+      devKit.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+
+      // Normal mode with pin headers
+      devKit.setHeaders(true);
+      devKit.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+
+      // Selected mode
+      devKit.draw(g2d, org.diylc.core.ComponentState.SELECTED, false, project, observer);
+
+      // Outline mode
+      devKit.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
+    }
 
     g2d.dispose();
   }

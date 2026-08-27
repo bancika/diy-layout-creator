@@ -167,7 +167,7 @@ public class MB102PowerSupply extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(boardX + 1, boardY + boardH / 2.0 - 5, 10, 10));
 
       // USB-A Connector (Center)
-      drawMetalConnector(g2d, boardX + 45, boardY + boardH / 2.0 - 22, 48, 44, "USB");
+      drawUsbA(g2d, boardX + 45, boardY + boardH / 2.0 - 22, 48, 44, "USB");
 
       // Push Button Latch Switch (Left-ish)
       g2d.setColor(Color.LIGHT_GRAY);

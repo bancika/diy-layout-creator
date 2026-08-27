@@ -78,15 +78,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
   }
 
   public static Color ESP_BLACK = Color.decode("#3E3E3E");
-  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
 
-  public static Size BOARD_WIDTH_30 = new Size(28.2d, SizeUnit.mm);
-  public static Size BOARD_LENGTH_30 = new Size(51.8d, SizeUnit.mm);
+  public static Size BOARD_WIDTH_30 = new Size(28.33d, SizeUnit.mm);
+  public static Size BOARD_LENGTH_30 = new Size(51.45d, SizeUnit.mm);
   public static Size TOP_MARGIN_30 = new Size(6.7d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
@@ -410,12 +409,13 @@ public class ESP32DevKit extends AbstractMakerBoard {
         drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
         drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
-        // Micro-USB Jack at bottom
-        double usbW = 58;
-        double usbH = 34;
+        // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
+        double usbW = USB_MICRO_WIDTH.convertToPixels();
+        double usbH = USB_MICRO_LENGTH.convertToPixels();
+        double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
         double usbX = centerX - usbW / 2.0;
-        double usbY = boardY + boardH - 22;
-        drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+        double usbY = boardY + boardH - usbH + usbOverhang;
+        drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom (flanking the Micro-USB port)
         double btnY = boardY + boardH - 25 - shift1mm;
@@ -456,16 +456,17 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double btnRightX = mainX + boardW - 49 - btnW;
         drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "BOOT", "RST");
 
-        // Two USB Type-C connectors at bottom edge (UART on left, USB on right)
-        // Each is 7x7mm, centered 6mm from the board edge, protruding 0.5mm below
-        double usbSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
+        // Two Micro-USB connectors at bottom edge (UART on left, USB on right)
+        // Each is 7.5x5.6mm, centered 6mm from the board edge, protruding 0.5mm below
+        double usbW = USB_MICRO_WIDTH.convertToPixels();
+        double usbH = USB_MICRO_LENGTH.convertToPixels();
+        double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
         double usbEdgeDist = new Size(6.0d, SizeUnit.mm).convertToPixels();
-        double usbOverhang = new Size(0.5d, SizeUnit.mm).convertToPixels();
-        double usbLeftX = mainX + usbEdgeDist - usbSize / 2.0;
-        double usbRightX = mainX + boardW - usbEdgeDist - usbSize / 2.0;
-        double usbY = mainY + boardH - usbSize + usbOverhang;
-        drawMetalConnector(g2d, usbLeftX, usbY, usbSize, usbSize, "UART");
-        drawMetalConnector(g2d, usbRightX, usbY, usbSize, usbSize, "USB");
+        double usbLeftX = mainX + usbEdgeDist - usbW / 2.0;
+        double usbRightX = mainX + boardW - usbEdgeDist - usbW / 2.0;
+        double usbY = mainY + boardH - usbH + usbOverhang;
+        drawMicroUsb(g2d, usbLeftX, usbY, usbW, usbH, "UART");
+        drawMicroUsb(g2d, usbRightX, usbY, usbW, usbH, "USB");
 
         // Silkscreen
         g2d.setColor(SILK_COLOR);
@@ -495,12 +496,13 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double shieldY = mainY + 8;
         drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
 
-        // Micro-USB Jack at bottom
-        double usbW = 58;
-        double usbH = 34;
+        // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
+        double usbW = USB_MICRO_WIDTH.convertToPixels();
+        double usbH = USB_MICRO_LENGTH.convertToPixels();
+        double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
         double usbX = centerX - usbW / 2.0;
-        double usbY = mainY + mainH - 22;
-        drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+        double usbY = mainY + mainH - usbH + usbOverhang;
+        drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom
         double btnY = mainY + mainH - 25;

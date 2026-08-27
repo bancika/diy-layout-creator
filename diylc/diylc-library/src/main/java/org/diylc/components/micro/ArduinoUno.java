@@ -240,10 +240,10 @@ public class ArduinoUno extends AbstractMakerBoard {
       drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
 
       // USB Type-B Jack & DC Power Jack
-      drawMetalConnector(g2d, boardX - new Size(0.14d, SizeUnit.in).convertToPixels(),
+      drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
           boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
-          new Size(0.51d, SizeUnit.in).convertToPixels(),
-          new Size(0.45d, SizeUnit.in).convertToPixels(), "USB");
+          USB_B_LENGTH.convertToPixels(),
+          USB_B_WIDTH.convertToPixels(), "USB");
       drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
           boardY + new Size(1.615d, SizeUnit.in).convertToPixels(),
           new Size(0.52d, SizeUnit.in).convertToPixels(),

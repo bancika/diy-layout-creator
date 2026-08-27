@@ -220,16 +220,17 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       drawMetalConnector(g2d, hdmiX, hdmiY, hdmiW, hdmiH, "HDMI");
 
       // Micro USB Data (center at X = 41.4mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
-      double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
-      double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
+      double usbW = USB_MICRO_WIDTH.convertToPixels();
+      double usbH = USB_MICRO_LENGTH.convertToPixels();
+      double usbOverhang = new Size(1.4d, SizeUnit.mm).convertToPixels();
       double usbX = boardX + new Size(41.4d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
-      double usbY = boardY + boardH - new Size(4.2d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, usbX, usbY, usbW, usbH, "USB");
+      double usbY = boardY + boardH - usbH + usbOverhang;
+      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Micro USB Power (center at X = 54.0mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
       double pwrX = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
-      double pwrY = boardY + boardH - new Size(4.2d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, pwrX, pwrY, usbW, usbH, "PWR");
+      double pwrY = boardY + boardH - usbH + usbOverhang;
+      drawMicroUsb(g2d, pwrX, pwrY, usbW, usbH, "PWR");
 
       // Camera Connector (CSI) on right edge
       double csiW = new Size(3.2d, SizeUnit.mm).convertToPixels();

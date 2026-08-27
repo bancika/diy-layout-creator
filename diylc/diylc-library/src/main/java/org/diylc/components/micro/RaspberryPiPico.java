@@ -206,10 +206,10 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Micro USB Connector
-      double usbW = new Size(7.5d, SizeUnit.mm).convertToPixels();
-      double usbH = new Size(5.6d, SizeUnit.mm).convertToPixels();
+      double usbW = USB_MICRO_WIDTH.convertToPixels();
+      double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
+      drawMicroUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
 
       // BOOTSEL button
       double btnW = new Size(3.8d, SizeUnit.mm).convertToPixels();

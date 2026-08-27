@@ -216,9 +216,10 @@ public class ArduinoNano extends AbstractMakerBoard {
       drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
       // Mini USB Jack at bottom (plain metal connector)
-      double usbW = new Size(0.30d, SizeUnit.in).convertToPixels();
-      double usbH = new Size(0.36d, SizeUnit.in).convertToPixels();
-      drawMetalConnector(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + new Size(0.05d, SizeUnit.in).convertToPixels(), usbW, usbH, "USB");
+      double usbW = USB_MINI_WIDTH.convertToPixels();
+      double usbH = USB_MINI_LENGTH.convertToPixels();
+      double usbOverhang = USB_MINI_OVERHANG.convertToPixels();
+      drawMiniUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
 
       // ATmega328P TQFP square chip rotated 45 degrees
       double chipSize = new Size(0.28d, SizeUnit.in).convertToPixels();

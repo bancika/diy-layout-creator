@@ -212,15 +212,15 @@ public class RaspberryPi extends AbstractMakerBoard {
 
       // USB & Ethernet Ports on the right edge
       // USB 3.0 (top): center Y = 9.0 mm from top edge (47.0 mm from bottom edge)
-      drawMetalConnector(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+      drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(2.0d, SizeUnit.mm).convertToPixels(),
-          new Size(17.5d, SizeUnit.mm).convertToPixels(),
+          USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 3.0");
 
       // USB 2.0 (middle): center Y = 26.9 mm from top edge (29.1 mm from bottom edge)
-      drawMetalConnector(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+      drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(19.9d, SizeUnit.mm).convertToPixels(),
-          new Size(17.5d, SizeUnit.mm).convertToPixels(),
+          USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 2.0");
 
       // Ethernet (bottom): center Y = 45.8 mm from top edge (10.2 mm from bottom edge)
@@ -256,10 +256,11 @@ public class RaspberryPi extends AbstractMakerBoard {
 
       // Bottom edge: USB-C Power & Micro-HDMI connectors
       // PWR (USB-C): center X = 11.2 mm
-      drawMetalConnector(g2d, boardX + new Size(6.7d, SizeUnit.mm).convertToPixels(),
+      double usbCW = USB_C_WIDTH.convertToPixels();
+      double usbCH = USB_C_LENGTH.convertToPixels();
+      drawUsbC(g2d, boardX + new Size(11.2d, SizeUnit.mm).convertToPixels() - usbCW / 2.0,
           boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
-          new Size(9.0d, SizeUnit.mm).convertToPixels(),
-          new Size(7.5d, SizeUnit.mm).convertToPixels(), "PWR");
+          usbCW, usbCH, "PWR");
 
       // HDMI0: center X = 25.8 mm
       drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
