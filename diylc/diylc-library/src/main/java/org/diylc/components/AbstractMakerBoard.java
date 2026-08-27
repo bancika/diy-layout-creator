@@ -810,8 +810,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     Path2D.Double antPath = new Path2D.Double();
     double antPadX = x + new Size(1.5d, SizeUnit.mm).convertToPixels();
     double antPadW = width - new Size(3.0d, SizeUnit.mm).convertToPixels();
-    double antTopY = y + new Size(1.3d, SizeUnit.mm).convertToPixels();
-    double antMidY = y + new Size(5.4d, SizeUnit.mm).convertToPixels();
+    double traceH = new Size(4.1d, SizeUnit.mm).convertToPixels();
+    double marginY = height > traceH ? (height - traceH) / 2.0 : height * 0.15;
+    double antTopY = y + marginY;
+    double antMidY = y + height - marginY;
     antPath.moveTo(antPadX, antMidY);
     antPath.lineTo(antPadX, antTopY);
     antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
