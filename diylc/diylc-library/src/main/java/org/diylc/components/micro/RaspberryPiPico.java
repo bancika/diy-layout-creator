@@ -52,13 +52,29 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Raspberry Pi Pico", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Raspberry Pi Pico RP2040 Microcontroller Board",
+    author = "Branislav Stojkovic", description = "Raspberry Pi Pico / Pico W RP2040 Microcontroller Board",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
 public class RaspberryPiPico extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
+
+  public enum PicoVersion {
+    PICO("Pi Pico"),
+    PICO_W("Pi Pico W");
+
+    private final String label;
+
+    PicoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
 
   public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(21.0d, SizeUnit.mm);
@@ -68,6 +84,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
   public static Size PAD_SIZE = new Size(1.7d, SizeUnit.mm);
   public static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
+
+  public static Size DEBUG_PAD_OFFSET_X = new Size(7.38d, SizeUnit.mm);
+  public static Size DEBUG_PAD_OFFSET_Y = new Size(19.8d, SizeUnit.mm);
+  public static Size WIFI_WIDTH = new Size(12.0d, SizeUnit.mm);
+  public static Size WIFI_LENGTH = new Size(10.0d, SizeUnit.mm);
+  public static Size WIFI_OFFSET_Y = new Size(34.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..19)
@@ -80,12 +102,27 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       "SWCLK", "GND_SWD", "SWDIO"
   };
 
+  protected PicoVersion version = PicoVersion.PICO;
   protected boolean headers = false;
 
   public RaspberryPiPico() {
     super();
     this.bodyColor = RPI_GREEN;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Version")
+  public PicoVersion getVersion() {
+    if (version == null) {
+      version = PicoVersion.PICO;
+    }
+    return version;
+  }
+
+  public void setVersion(PicoVersion version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
   }
 
   @EditableProperty(name = "Headers")
@@ -124,12 +161,27 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       relativeOffsets[20 + i][0] = rowSpacing;
       relativeOffsets[20 + i][1] = i * spacing;
     }
-    // SWD Debug Header (40..42) at bottom center, aligned with bottom row of pins
-    double swdX = rowSpacing / 2.0 - spacing;
-    double swdY = 19 * spacing;
-    for (int i = 0; i < 3; i++) {
-      relativeOffsets[40 + i][0] = swdX + i * spacing;
-      relativeOffsets[40 + i][1] = swdY;
+
+    if (getVersion() == PicoVersion.PICO_W) {
+      double pin1OffsetX = new Size(1.61d, SizeUnit.mm).convertToPixels();
+      double pin1OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
+      double midX = BOARD_WIDTH.convertToPixels() - DEBUG_PAD_OFFSET_X.convertToPixels() - pin1OffsetX;
+      double midY = BOARD_LENGTH.convertToPixels() - DEBUG_PAD_OFFSET_Y.convertToPixels() - pin1OffsetY;
+
+      relativeOffsets[40][0] = midX - spacing;
+      relativeOffsets[40][1] = midY;
+      relativeOffsets[41][0] = midX;
+      relativeOffsets[41][1] = midY;
+      relativeOffsets[42][0] = midX + spacing;
+      relativeOffsets[42][1] = midY;
+    } else {
+      // SWD Debug Header (40..42) at bottom center, aligned with bottom row of pins
+      double swdX = rowSpacing / 2.0 - spacing;
+      double swdY = 19 * spacing;
+      for (int i = 0; i < 3; i++) {
+        relativeOffsets[40 + i][0] = swdX + i * spacing;
+        relativeOffsets[40 + i][1] = swdY;
+      }
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -224,27 +276,58 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       // RP2040 chip
       double chipSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
       double chipX = boardX + (boardW - chipSize) / 2.0;
-      double chipY = boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
+      double chipY = (getVersion() == PicoVersion.PICO_W)
+          ? boardY + new Size(23.0d, SizeUnit.mm).convertToPixels() - new Size(0.1d, SizeUnit.in).convertToPixels()
+          : boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
       drawChip(g2d, chipX, chipY, chipSize, chipSize, "RP2040");
 
-      // Raspberry Pi Logo at bottom of the board (~9mm height)
-      double logoSize = new Size(9.0d, SizeUnit.mm).convertToPixels();
-      double logoWidth = logoSize * 72.515 / 92.604;
-      double logoX = boardX + (boardW - logoWidth) / 2.0;
-      double logoY = boardY + new Size(35.5d, SizeUnit.mm).convertToPixels();
-      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+      if (getVersion() == PicoVersion.PICO_W) {
+        double spacing = PIN_SPACING.convertToPixels();
+        double midDebugX = boardX + boardW - DEBUG_PAD_OFFSET_X.convertToPixels();
+        double midDebugY = boardY + boardH - DEBUG_PAD_OFFSET_Y.convertToPixels();
 
-      // DEBUG silkscreen text above SWD pins
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "DEBUG", boardX + boardW / 2.0, boardY + new Size(46.8d, SizeUnit.mm).convertToPixels(),
-          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        // DEBUG silkscreen text above SWD pins
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "DEBUG", midDebugX, midDebugY - new Size(2.2d, SizeUnit.mm).convertToPixels(),
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+        // Silkscreen outline box around 3 debug pins
+        double boxMarginX = new Size(1.2d, SizeUnit.mm).convertToPixels();
+        double boxMarginY = new Size(1.2d, SizeUnit.mm).convertToPixels();
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(
+            midDebugX - spacing - boxMarginX,
+            midDebugY - boxMarginY,
+            2 * spacing + 2 * boxMarginX,
+            2 * boxMarginY));
+
+        // Gray WiFi chip (metal shield) at the bottom of the board
+        double wifiW = WIFI_WIDTH.convertToPixels();
+        double wifiH = WIFI_LENGTH.convertToPixels();
+        double wifiX = boardX + (boardW - wifiW) / 2.0;
+        double wifiY = boardY + WIFI_OFFSET_Y.convertToPixels();
+        drawMetalConnector(g2d, wifiX, wifiY, wifiW, wifiH, "");
+      } else {
+        // Raspberry Pi Logo at bottom of the board (~9mm height)
+        double logoSize = new Size(9.0d, SizeUnit.mm).convertToPixels();
+        double logoWidth = logoSize * 72.515 / 92.604;
+        double logoX = boardX + (boardW - logoWidth) / 2.0;
+        double logoY = boardY + new Size(35.5d, SizeUnit.mm).convertToPixels();
+        drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+
+        // DEBUG silkscreen text above SWD pins
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "DEBUG", boardX + boardW / 2.0, boardY + new Size(47.8d, SizeUnit.mm).convertToPixels(),
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
     }
 
     drawingObserver.stopTracking();
 
     if (!headers) {
-      drawCastellatedPads(g2d, boardX, boardY, boardW, pin1OffsetX, pin1OffsetY, outlineMode, drawingObserver);
+      drawCastellatedPads(g2d, boardX, boardY, boardW, boardH, pin1OffsetX, pin1OffsetY, outlineMode, drawingObserver);
     }
 
     g2d.setTransform(oldTx);
@@ -258,9 +341,9 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   /**
    * Helper to draw Raspberry Pi Pico's castellated solder pads along the left and right edges
-   * and the SWD round pads at the bottom.
+   * and the SWD round pads.
    */
-  protected void drawCastellatedPads(Graphics2D g2d, double boardX, double boardY, double boardW,
+  protected void drawCastellatedPads(Graphics2D g2d, double boardX, double boardY, double boardW, double boardH,
       double pin1OffsetX, double pin1OffsetY, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
 
@@ -321,27 +404,51 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
     }
 
-    // SWD Debug Header (pins 40..42): standard round solder pads at bottom
-    double swdX = boardX + (boardW - 2 * spacing) / 2.0;
-    double swdY = boardY + pin1OffsetY + 19 * spacing;
-    for (int i = 0; i < 3; i++) {
-      double px = swdX + i * spacing;
-      double py = swdY;
+    // SWD Debug Header (pins 40..42): standard round solder pads
+    if (getVersion() == PicoVersion.PICO_W) {
+      double midX = boardX + boardW - DEBUG_PAD_OFFSET_X.convertToPixels();
+      double midY = boardY + boardH - DEBUG_PAD_OFFSET_Y.convertToPixels();
+      for (int i = 0; i < 3; i++) {
+        double px = midX + (i - 1) * spacing;
+        double py = midY;
 
-      Area swdPadArea = new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD));
-      swdPadArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
+        Area swdPadArea = new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD));
+        swdPadArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
 
-      g2d.setColor(PAD_COLOR);
-      g2d.fill(swdPadArea);
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(swdPadArea);
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(swdPadArea);
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(swdPadArea);
 
-      // Inner through-hole drill hole (white circle)
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+        // Inner through-hole drill hole (white circle)
+        g2d.setColor(Constants.CANVAS_COLOR);
+        g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+      }
+    } else {
+      double swdX = boardX + (boardW - 2 * spacing) / 2.0;
+      double swdY = boardY + pin1OffsetY + 19 * spacing;
+      for (int i = 0; i < 3; i++) {
+        double px = swdX + i * spacing;
+        double py = swdY;
+
+        Area swdPadArea = new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD));
+        swdPadArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
+
+        g2d.setColor(PAD_COLOR);
+        g2d.fill(swdPadArea);
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(swdPadArea);
+
+        // Inner through-hole drill hole (white circle)
+        g2d.setColor(Constants.CANVAS_COLOR);
+        g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+        g2d.setColor(PAD_COLOR.darker());
+        g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
+      }
     }
 
     drawingObserver.stopTrackingContinuityArea();

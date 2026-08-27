@@ -109,4 +109,105 @@ public class RaspberryPiPicoTest {
     pico.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", pico.getHeaders());
   }
+
+  @Test
+  public void testVersionProperty() {
+    RaspberryPiPico pico = new RaspberryPiPico();
+    Assert.assertEquals("Default version should be Pi Pico", RaspberryPiPico.PicoVersion.PICO, pico.getVersion());
+    Assert.assertEquals("Pi Pico", RaspberryPiPico.PicoVersion.PICO.toString());
+    Assert.assertEquals("Pi Pico W", RaspberryPiPico.PicoVersion.PICO_W.toString());
+
+    pico.setVersion(RaspberryPiPico.PicoVersion.PICO_W);
+    Assert.assertEquals("Version should be Pi Pico W after setter", RaspberryPiPico.PicoVersion.PICO_W, pico.getVersion());
+
+    pico.setVersion(RaspberryPiPico.PicoVersion.PICO);
+    Assert.assertEquals("Version should be Pi Pico after setter", RaspberryPiPico.PicoVersion.PICO, pico.getVersion());
+  }
+
+  @Test
+  public void testPicoWDimensionsAndPinGeometry() {
+    RaspberryPiPico pico = new RaspberryPiPico();
+    pico.setVersion(RaspberryPiPico.PicoVersion.PICO_W);
+
+    Assert.assertEquals(43, pico.getControlPointCount());
+
+    Shape body = pico.getBodyShape();
+    Assert.assertNotNull(body);
+    Rectangle2D bounds = body.getBounds2D();
+
+    // Board dimensions: 21 mm x 51 mm
+    double expectedWidth = new Size(21.0d, SizeUnit.mm).convertToPixels();
+    double expectedHeight = new Size(51.0d, SizeUnit.mm).convertToPixels();
+    Assert.assertEquals(expectedWidth, bounds.getWidth(), 0.1);
+    Assert.assertEquals(expectedHeight, bounds.getHeight(), 0.1);
+
+    // GP0 (Pin 0) and GP15 (Pin 19)
+    Point2D p0 = pico.getControlPoint(0);
+    Point2D p19 = pico.getControlPoint(19);
+    Point2D p20 = pico.getControlPoint(20);
+    Point2D p39 = pico.getControlPoint(39);
+
+    double expectedPin0OffsetX = new Size(1.61d, SizeUnit.mm).convertToPixels();
+    double expectedPin0OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
+    Assert.assertEquals(expectedPin0OffsetX, p0.getX() - bounds.getX(), 0.1);
+    Assert.assertEquals(expectedPin0OffsetY, p0.getY() - bounds.getY(), 0.1);
+
+    // SWD debug pins (40..42) on Pico W
+    Point2D p40 = pico.getControlPoint(40); // SWCLK
+    Point2D p41 = pico.getControlPoint(41); // GND_SWD (middle pin)
+    Point2D p42 = pico.getControlPoint(42); // SWDIO
+
+    // Center of middle debug pad (p41) lies 19.8mm from bottom edge and 7.38mm from right edge
+    double expectedDebugBottomDist = new Size(19.8d, SizeUnit.mm).convertToPixels();
+    double expectedDebugRightDist = new Size(7.38d, SizeUnit.mm).convertToPixels();
+
+    double actualDebugBottomDist = bounds.getY() + bounds.getHeight() - p41.getY();
+    double actualDebugRightDist = bounds.getX() + bounds.getWidth() - p41.getX();
+
+    Assert.assertEquals("Middle debug pad distance from bottom edge must be 19.8mm",
+        expectedDebugBottomDist, actualDebugBottomDist, 0.1);
+    Assert.assertEquals("Middle debug pad distance from right edge must be 7.38mm",
+        expectedDebugRightDist, actualDebugRightDist, 0.1);
+
+    // SWD pins should be horizontally aligned
+    Assert.assertEquals(p41.getY(), p40.getY(), 0.01);
+    Assert.assertEquals(p41.getY(), p42.getY(), 0.01);
+
+    // SWD pins should have 0.1" (2.54mm) spacing: p40 (left), p41 (middle), p42 (right)
+    double spacing = new Size(0.1d, SizeUnit.in).convertToPixels();
+    Assert.assertEquals("SWCLK (p40) to GND_SWD (p41) spacing must be 0.1 in", spacing, p41.getX() - p40.getX(), 0.01);
+    Assert.assertEquals("GND_SWD (p41) to SWDIO (p42) spacing must be 0.1 in", spacing, p42.getX() - p41.getX(), 0.01);
+  }
+
+  @Test
+  public void testPicoWDrawing() {
+    RaspberryPiPico pico = new RaspberryPiPico();
+    pico.setVersion(RaspberryPiPico.PicoVersion.PICO_W);
+
+    java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(400, 400, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+    java.awt.Graphics2D g2d = img.createGraphics();
+    g2d.setClip(new java.awt.Rectangle(0, 0, 400, 400));
+
+    org.diylc.core.Project project = new org.diylc.core.Project();
+    org.diylc.core.IDrawingObserver observer = new org.diylc.core.IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    // Draw with castellated pads
+    pico.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+    pico.draw(g2d, org.diylc.core.ComponentState.SELECTED, false, project, observer);
+    pico.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
+
+    // Draw with pin headers
+    pico.setHeaders(true);
+    pico.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+    pico.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
+
+    g2d.dispose();
+  }
 }
