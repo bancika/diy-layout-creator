@@ -60,7 +60,6 @@ public class ArduinoNano extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color ARDUINO_BLUE = Color.decode("#00878F");
-  public static Color RESET_BTN_COLOR = Color.decode("#CC3333");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
@@ -247,13 +246,15 @@ public class ArduinoNano extends AbstractMakerBoard {
       g2d.setTransform(oldChipTx);
 
       // Reset Button
-      double rstW = new Size(0.12d, SizeUnit.in).convertToPixels();
-      double rstH = new Size(0.10d, SizeUnit.in).convertToPixels();
-      g2d.setColor(RESET_BTN_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - rstW) / 2.0, boardY + new Size(0.68d, SizeUnit.in).convertToPixels(), rstW, rstH, 3, 3));
+      double btnW = BUTTON_WIDTH.convertToPixels();
+      double btnH = BUTTON_LENGTH.convertToPixels();
+      double btnX = boardX + (boardW - btnW) / 2.0;
+      double btnY = boardY + new Size(0.68d, SizeUnit.in).convertToPixels();
+      drawButton(g2d, btnX, btnY, btnW, btnH);
+
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, boardY + new Size(0.73d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Silkscreen
       g2d.setFont(SILK_FONT);

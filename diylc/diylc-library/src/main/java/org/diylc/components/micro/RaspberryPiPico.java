@@ -264,14 +264,15 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       drawMicroUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
 
       // BOOTSEL button
-      double btnW = new Size(3.8d, SizeUnit.mm).convertToPixels();
-      double btnH = new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double btnW = BUTTON_WIDTH.convertToPixels();
+      double btnH = BUTTON_LENGTH.convertToPixels();
+      double btnX = boardX + (boardW - btnW) / 2.0;
       double btnY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
+      drawButton(g2d, btnX, btnY, btnW, btnH);
+
       g2d.setColor(Color.WHITE);
-      g2d.fill(new RoundRectangle2D.Double(boardX + (boardW - btnW) / 2.0, btnY, btnW, btnH, 2, 2));
-      g2d.setColor(Color.DARK_GRAY);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "BOOT", boardX + boardW / 2.0, btnY + btnH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "BOOTSEL", boardX + boardW / 2.0, btnY - 7, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // RP2040 chip
       double chipSize = new Size(7.0d, SizeUnit.mm).convertToPixels();

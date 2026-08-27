@@ -62,9 +62,6 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
   public static Color NODEMCU_BLACK = Color.decode("#3E3E3E");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
-  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
-  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
-  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
   public static Size BOARD_WIDTH = new Size(25.7d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(48.0d, SizeUnit.mm);
@@ -220,24 +217,15 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // RST & FLASH tactile buttons at bottom (flanking the Micro-USB port)
-      double btnW = 18;
-      double btnH = 18;
-      double btnY = boardY + boardH - 25;
+      double btnW = BUTTON_LENGTH.convertToPixels();
+      double btnH = BUTTON_WIDTH.convertToPixels();
+      double btnY = boardY + boardH - 25 - new Size(2.0d, SizeUnit.mm).convertToPixels();
       double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
       double btnLeftX = leftHoleX + 10 + shift1mm;
       double btnRightX = rightHoleX - 10 - shift1mm - btnW;
 
-      g2d.setColor(BUTTON_BODY_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
-      g2d.fill(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
-      g2d.setColor(BUTTON_BORDER_COLOR);
-      g2d.draw(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
-      g2d.draw(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
-
-      // Button actuators
-      g2d.setColor(BUTTON_ACTUATOR_COLOR);
-      g2d.fillOval((int) (btnLeftX + btnW / 2.0 - 3.5), (int) (btnY + btnH / 2.0 - 3.5), 7, 7);
-      g2d.fillOval((int) (btnRightX + btnW / 2.0 - 3.5), (int) (btnY + btnH / 2.0 - 3.5), 7, 7);
+      drawButton(g2d, btnLeftX, btnY, btnW, btnH);
+      drawButton(g2d, btnRightX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);

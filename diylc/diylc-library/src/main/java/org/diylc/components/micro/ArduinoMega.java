@@ -59,7 +59,6 @@ public class ArduinoMega extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color ARDUINO_BLUE = Color.decode("#00878F");
-  public static Color RESET_BTN_COLOR = Color.decode("#CC3333");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(101.6d, SizeUnit.mm);
@@ -286,14 +285,16 @@ public class ArduinoMega extends AbstractMakerBoard {
           new Size(0.4d, SizeUnit.in).convertToPixels(), "ATmega2560");
 
       // Reset Button near USB
-      double rstBtnSize = new Size(0.09d, SizeUnit.in).convertToPixels();
-      g2d.setColor(RESET_BTN_COLOR);
-      g2d.fill(new Ellipse2D.Double(boardX + new Size(0.19d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), rstBtnSize, rstBtnSize));
+      double btnW = BUTTON_WIDTH.convertToPixels();
+      double btnH = BUTTON_LENGTH.convertToPixels();
+      double btnX = boardX + new Size(0.235d, SizeUnit.in).convertToPixels() - btnW / 2.0;
+      double btnY = boardY + new Size(0.1d, SizeUnit.in).convertToPixels();
+      drawButton(g2d, btnX, btnY, btnW, btnH);
+
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "RST", boardX + new Size(0.235d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.24d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "RST", btnX + btnW / 2.0,
+          btnY + btnH + new Size(1.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Arduino Infinity Logo
       drawArduinoLogo(g2d, boardX + new Size(1.2d, SizeUnit.in).convertToPixels(),

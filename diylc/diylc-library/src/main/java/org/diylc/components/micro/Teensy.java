@@ -76,9 +76,6 @@ public class Teensy extends AbstractMakerBoard {
 
   // Board color matches standard green PCB (like Pi Zero)
   public static Color TEENSY_GREEN = Color.decode("#1B5E20");
-  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
-  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
-  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Color PAD_COLOR = GOLD_COLOR;
@@ -353,18 +350,13 @@ public class Teensy extends AbstractMakerBoard {
       drawChip(g2d, chipX, chipY, chipW, chipH, "iMXRT1062");
 
       // Pushbutton (Program button)
-      double btnW = new Size(3.5d, SizeUnit.mm).convertToPixels();
-      double btnH = new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double btnW = BUTTON_WIDTH.convertToPixels();
+      double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = centerX - btnW / 2.0;
       double btnY = (version == TeensyVersion.Teensy_4_0)
           ? boardY + PIN1_OFFSET_Y.convertToPixels() + 11.5 * PIN_SPACING.convertToPixels() - btnH / 2.0
           : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
-      g2d.setColor(BUTTON_BODY_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(btnX, btnY, btnW, btnH, 2, 2));
-      g2d.setColor(BUTTON_BORDER_COLOR);
-      g2d.draw(new RoundRectangle2D.Double(btnX, btnY, btnW, btnH, 2, 2));
-      g2d.setColor(BUTTON_ACTUATOR_COLOR);
-      g2d.fillOval((int) (btnX + btnW / 2.0 - 2.5), (int) (btnY + btnH / 2.0 - 2.5), 5, 5);
+      drawButton(g2d, btnX, btnY, btnW, btnH);
 
       // Teensy 4.1 extras: Ethernet PHY + SD card slot
       if (version == TeensyVersion.Teensy_4_1) {
@@ -375,26 +367,6 @@ public class Teensy extends AbstractMakerBoard {
         double sdY = boardY + boardH - sdH;
         drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
       }
-
-      // Silkscreen white outline boxes around outer pins
-      g2d.setColor(Color.WHITE);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      int outerRowCount = (version == TeensyVersion.Teensy_4_0) ? 14 : 24;
-      double padBoxMargin = new Size(0.9d, SizeUnit.mm).convertToPixels();
-
-      // Left row silkscreen box
-      Point2D pLeftFirst = controlPoints[0];
-      Point2D pLeftLast = controlPoints[outerRowCount - 1];
-      g2d.draw(new Rectangle2D.Double(
-          pLeftFirst.getX() - padBoxMargin, pLeftFirst.getY() - padBoxMargin,
-          padBoxMargin * 2, (pLeftLast.getY() - pLeftFirst.getY()) + padBoxMargin * 2));
-
-      // Right row silkscreen box
-      Point2D pRightFirst = controlPoints[outerRowCount];
-      Point2D pRightLast = controlPoints[outerRowCount * 2 - 1];
-      g2d.draw(new Rectangle2D.Double(
-          pRightFirst.getX() - padBoxMargin, pRightFirst.getY() - padBoxMargin,
-          padBoxMargin * 2, (pRightLast.getY() - pRightFirst.getY()) + padBoxMargin * 2));
 
       // Silkscreen "TEENSY" label
       g2d.setColor(SILK_COLOR);

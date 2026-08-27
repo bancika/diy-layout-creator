@@ -76,6 +76,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color PAD_COLOR = Color.decode("#DAA520");
+  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
+  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
+  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
@@ -83,6 +86,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Size HOLE_SIZE = new Size(0.035d, SizeUnit.in);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
+  public static Size BUTTON_WIDTH = new Size(3.5d, SizeUnit.mm);
+  public static Size BUTTON_LENGTH = new Size(3.0d, SizeUnit.mm);
 
   // Standard USB Port Dimensions
   public static Size USB_MICRO_WIDTH = new Size(7.5d, SizeUnit.mm);
@@ -903,6 +908,38 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    */
   protected void drawPcbAntenna(Graphics2D g2d, double x, double y) {
     drawPcbAntenna(g2d, x, y, ANTENNA_WIDTH.convertToPixels(), ANTENNA_LENGTH.convertToPixels());
+  }
+
+  /**
+   * Helper to draw a standard SMD tactile push button (housing + circular actuator).
+   *
+   * @param g2d Graphics2D context
+   * @param x Top-left X coordinate of the button body
+   * @param y Top-left Y coordinate of the button body
+   * @param w Width of the button body
+   * @param h Height of the button body
+   */
+  protected void drawButton(Graphics2D g2d, double x, double y, double w, double h) {
+    g2d.setColor(BUTTON_BODY_COLOR);
+    g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 2, 2));
+    g2d.setColor(BUTTON_BORDER_COLOR);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    g2d.draw(new RoundRectangle2D.Double(x, y, w, h, 2, 2));
+
+    double actuatorD = Math.min(w, h) * 0.55;
+    g2d.setColor(BUTTON_ACTUATOR_COLOR);
+    g2d.fill(new Ellipse2D.Double(x + (w - actuatorD) / 2.0, y + (h - actuatorD) / 2.0, actuatorD, actuatorD));
+  }
+
+  /**
+   * Helper to draw a standard SMD tactile push button with default 3.5mm x 3.0mm dimensions.
+   *
+   * @param g2d Graphics2D context
+   * @param x Top-left X coordinate of the button body
+   * @param y Top-left Y coordinate of the button body
+   */
+  protected void drawButton(Graphics2D g2d, double x, double y) {
+    drawButton(g2d, x, y, BUTTON_WIDTH.convertToPixels(), BUTTON_LENGTH.convertToPixels());
   }
 
   /**

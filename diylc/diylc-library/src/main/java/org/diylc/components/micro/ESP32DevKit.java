@@ -79,9 +79,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   public static Color ESP_BLACK = Color.decode("#3E3E3E");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
-  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
-  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
-  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH_30 = new Size(28.33d, SizeUnit.mm);
@@ -369,10 +366,10 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
     if (!outlineMode) {
       double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
-      double btnW = 20;
-      double btnH = 20;
 
       if (version == DevKitVersion.DevKit_V1_30Pin) {
+        double btnW = BUTTON_LENGTH.convertToPixels();
+        double btnH = BUTTON_WIDTH.convertToPixels();
         double rowSpacing = ROW_SPACING.convertToPixels();
         double boardW = BOARD_WIDTH_30.convertToPixels();
         double boardH = BOARD_LENGTH_30.convertToPixels();
@@ -418,9 +415,9 @@ public class ESP32DevKit extends AbstractMakerBoard {
         drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom (flanking the Micro-USB port)
-        double btnY = boardY + boardH - 25 - shift1mm;
-        double btnLeftX = leftHoleX + 14 + shift1mm;
-        double btnRightX = rightHoleX - 14 - shift1mm - btnW;
+        double btnY = boardY + boardH - 25 - 1.5 * shift1mm;
+        double btnLeftX = leftHoleX + 14 + 0.5 * shift1mm;
+        double btnRightX = rightHoleX - 14 - 0.5 * shift1mm - btnW;
         drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "EN", "BOOT");
 
         // Silkscreen
@@ -429,6 +426,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         StringUtils.drawCenteredText(g2d, "ESP32 DevKit V1", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+        double btnW = BUTTON_WIDTH.convertToPixels();
+        double btnH = BUTTON_LENGTH.convertToPixels();
         double boardW = BOARD_WIDTH_S3.convertToPixels();
         double boardH = BOARD_LENGTH_S3.convertToPixels();
         double topMargin = TOP_MARGIN_S3.convertToPixels();
@@ -475,6 +474,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
       } else {
         // 38-Pin (DevKitC V4)
+        double btnW = BUTTON_LENGTH.convertToPixels();
+        double btnH = BUTTON_WIDTH.convertToPixels();
         double rowSpacing = ROW_SPACING.convertToPixels();
         double mainW = BOARD_WIDTH_38.convertToPixels();
         double mainH = MAIN_BODY_LENGTH_38.convertToPixels();
@@ -505,7 +506,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom
-        double btnY = mainY + mainH - 25;
+        double btnY = mainY + mainH - 25 - new Size(2.0d, SizeUnit.mm).convertToPixels();
         double btnLeftX = mainX + 38;
         double btnRightX = mainX + mainW - 38 - btnW;
         drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "EN", "BOOT");
@@ -533,17 +534,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
    */
   private void drawButtons(Graphics2D g2d, double btnLeftX, double btnRightX, double btnY, double btnW, double btnH,
       String leftLabel, String rightLabel) {
-    g2d.setColor(BUTTON_BODY_COLOR);
-    g2d.fill(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
-    g2d.fill(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
-    g2d.setColor(BUTTON_BORDER_COLOR);
-    g2d.draw(new RoundRectangle2D.Double(btnLeftX, btnY, btnW, btnH, 3, 3));
-    g2d.draw(new RoundRectangle2D.Double(btnRightX, btnY, btnW, btnH, 3, 3));
-
-    // Button actuators
-    g2d.setColor(BUTTON_ACTUATOR_COLOR);
-    g2d.fillOval((int) (btnLeftX + btnW / 2.0 - 4), (int) (btnY + btnH / 2.0 - 4), 8, 8);
-    g2d.fillOval((int) (btnRightX + btnW / 2.0 - 4), (int) (btnY + btnH / 2.0 - 4), 8, 8);
+    drawButton(g2d, btnLeftX, btnY, btnW, btnH);
+    drawButton(g2d, btnRightX, btnY, btnW, btnH);
 
     g2d.setColor(SILK_COLOR);
     g2d.setFont(SILK_FONT_SMALL);
