@@ -61,9 +61,9 @@ public class ESP32DevKit extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum DevKitVersion {
-    DevKit_V1_30Pin("30-Pin (DevKit V1 / DOIT)"),
-    DevKitC_V4_38Pin("38-Pin (DevKitC V4)"),
-    ESP32_S3_DevKitC_44Pin("44-Pin (9-S3 DevKitC-1)");
+    DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
+    DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
+    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)");
 
     private final String label;
 
