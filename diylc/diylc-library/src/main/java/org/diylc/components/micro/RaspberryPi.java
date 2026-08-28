@@ -89,6 +89,36 @@ public class RaspberryPi extends AbstractMakerBoard {
       "PCIe", "MIPI 1", "MIPI 0"
   };
 
+  public enum RaspberryPiVersion {
+    PI_3_B("Pi 3 (Model B+)"),
+    PI_4_B("Pi 4 (Model B)"),
+    PI_5("Pi 5");
+
+    private String label;
+
+    private RaspberryPiVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
+
+  private RaspberryPiVersion version = RaspberryPiVersion.PI_5;
+
+  @org.diylc.core.annotations.EditableProperty(name = "Version")
+  public RaspberryPiVersion getVersion() {
+    return version;
+  }
+
+  public void setVersion(RaspberryPiVersion version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
+  }
+
   public RaspberryPi() {
     super();
     this.bodyColor = RPI_GREEN;
@@ -119,11 +149,13 @@ public class RaspberryPi extends AbstractMakerBoard {
       relativeOffsets[pinEven][1] = -spacing;
     }
 
-    // 2x2 PoE header (pins 40..43) sitting 6mm above the bottom-right mounting hole
+    // 2x2 PoE header (pins 40..43)
     double pin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
     double pin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + spacing / 2.0;
+    double poeHoleY = (version == RaspberryPiVersion.PI_5) ? 52.5d : 3.5d;
+    double poeDir = (version == RaspberryPiVersion.PI_5) ? -6.0d : 6.0d;
     double poeCenterX = new Size(61.5d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
-    double poeCenterY = new Size(46.5d, SizeUnit.mm).convertToPixels() - pin1OffsetY;
+    double poeCenterY = new Size(poeHoleY + poeDir, SizeUnit.mm).convertToPixels() - pin1OffsetY;
 
     relativeOffsets[40] = new double[] {poeCenterX - spacing / 2.0, poeCenterY - spacing / 2.0};
     relativeOffsets[41] = new double[] {poeCenterX - spacing / 2.0, poeCenterY + spacing / 2.0};
@@ -211,21 +243,32 @@ public class RaspberryPi extends AbstractMakerBoard {
           boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
       // USB & Ethernet Ports on the right edge
-      // USB 3.0 (top): center Y = 9.0 mm from top edge (47.0 mm from bottom edge)
+      double topDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 45.75d : 47.0d;
+      double midDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 27.0d : 29.0d;
+      double botDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 9.0d : 10.25d;
+
+      double topCenterY = 56.0d - topDistFromBottom;
+      double middleCenterY = 56.0d - midDistFromBottom;
+      double bottomCenterY = 56.0d - botDistFromBottom;
+      
+      double ethernetCenterY = (version == RaspberryPiVersion.PI_4_B) ? topCenterY : bottomCenterY;
+      double topUsbCenterY = (version == RaspberryPiVersion.PI_4_B) ? bottomCenterY : topCenterY;
+
+      // Top USB slot (USB 3.0)
       drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(2.0d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(topUsbCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 3.0");
 
-      // USB 2.0 (middle): center Y = 26.9 mm from top edge (29.1 mm from bottom edge)
+      // USB 2.0 (middle)
       drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(19.9d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(middleCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 2.0");
 
-      // Ethernet (bottom): center Y = 45.8 mm from top edge (10.2 mm from bottom edge)
+      // Ethernet
       drawMetalConnector(g2d, boardX + boardW - new Size(18.0d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(37.8d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(ethernetCenterY - 8.0d, SizeUnit.mm).convertToPixels(),
           new Size(21.0d, SizeUnit.mm).convertToPixels(),
           new Size(16.0d, SizeUnit.mm).convertToPixels(), "ETHERNET");
 
@@ -303,18 +346,27 @@ public class RaspberryPi extends AbstractMakerBoard {
           pcieY + pcieH + new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // 2x2 PoE header silkscreen label
+      double poeLabelHoleY = (version == RaspberryPiVersion.PI_5) ? 52.5d : 3.5d;
+      double poeLabelDir = (version == RaspberryPiVersion.PI_5) ? -6.0d : 6.0d;
       double poeX = boardX + new Size(61.5d, SizeUnit.mm).convertToPixels();
-      double poeY = boardY + new Size(52.5d, SizeUnit.mm).convertToPixels() - new Size(6.0d, SizeUnit.mm).convertToPixels();
+      double poeY = boardY + new Size(poeLabelHoleY + poeLabelDir, SizeUnit.mm).convertToPixels();
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
+      double poeTextOffset = (version == RaspberryPiVersion.PI_5) ? 
+          -(PIN_SPACING.convertToPixels() + new Size(1.5d, SizeUnit.mm).convertToPixels()) : 
+          (PIN_SPACING.convertToPixels() + new Size(1.5d, SizeUnit.mm).convertToPixels());
       StringUtils.drawCenteredText(g2d, "PoE", poeX,
-          poeY - PIN_SPACING.convertToPixels() - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          poeY + poeTextOffset, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Raspberry Pi Silkscreen text below 40-pin header
       g2d.setColor(Color.WHITE);
       g2d.setFont(RPI_TITLE_FONT);
-      StringUtils.drawCenteredText(g2d, "Raspberry Pi", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(9.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      String versionLabel = version.toString();
+      if (versionLabel.contains("(")) {
+          versionLabel = versionLabel.substring(0, versionLabel.indexOf("(")).trim();
+      }
+      StringUtils.drawCenteredText(g2d, "Raspberry " + versionLabel, boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(14.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Raspberry Pi Logo to the left of the SoC (shrunk 20% to 10.4mm, moved 0.2" up)
       double logoSize = new Size(10.4d, SizeUnit.mm).convertToPixels();
@@ -340,9 +392,15 @@ public class RaspberryPi extends AbstractMakerBoard {
 
     // USB & Ethernet (Top USB 3.0, Middle USB 2.0, Bottom Ethernet)
     g2d.setColor(USB_METAL_COLOR);
-    g2d.fillRect(width - 8, 6, 6, 5);
-    g2d.fillRect(width - 8, 13, 6, 5);
-    g2d.fillRect(width - 9, 20, 7, 6);
+    if (version == RaspberryPiVersion.PI_4_B) {
+      g2d.fillRect(width - 9, 5, 7, 6);
+      g2d.fillRect(width - 8, 13, 6, 5);
+      g2d.fillRect(width - 8, 21, 6, 5);
+    } else {
+      g2d.fillRect(width - 8, 6, 6, 5);
+      g2d.fillRect(width - 8, 13, 6, 5);
+      g2d.fillRect(width - 9, 20, 7, 6);
+    }
 
     // SoC
     g2d.setColor(METAL_SHIELD_COLOR);
@@ -357,7 +415,11 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.fillRect(3, 13, 1, 4);
     g2d.fillRect(17, height - 6, 1, 2);
     g2d.fillRect(19, height - 6, 1, 2);
-    g2d.fillRect(width - 11, height - 9, 2, 2);
+    if (version == RaspberryPiVersion.PI_5) {
+      g2d.fillRect(width - 11, height - 9, 2, 2);
+    } else {
+      g2d.fillRect(width - 11, 9, 2, 2);
+    }
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 6));
