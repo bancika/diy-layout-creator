@@ -955,17 +955,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw a standard SMD tactile push button with default 3.5mm x 3.0mm dimensions.
-   *
-   * @param g2d Graphics2D context
-   * @param x Top-left X coordinate of the button body
-   * @param y Top-left Y coordinate of the button body
-   */
-  protected void drawButton(Graphics2D g2d, double x, double y) {
-    drawButton(g2d, x, y, BUTTON_WIDTH.convertToPixels(), BUTTON_LENGTH.convertToPixels());
-  }
-
-  /**
    * Helper to get outline border color.
    */
   protected Color getFinalBorderColor(ComponentState componentState, boolean outlineMode) {
