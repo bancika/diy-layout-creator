@@ -27,7 +27,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
@@ -58,7 +57,6 @@ public class ArduinoMega extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color ARDUINO_BLUE = Color.decode("#00878F");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(101.6d, SizeUnit.mm);
@@ -91,7 +89,7 @@ public class ArduinoMega extends AbstractMakerBoard {
 
   public ArduinoMega() {
     super();
-    this.bodyColor = ARDUINO_BLUE;
+    this.bodyColor = ARDUINO_TEAL;
     updateControlPoints();
   }
 
@@ -348,9 +346,9 @@ public class ArduinoMega extends AbstractMakerBoard {
     double dcY = boardY + boardH - dcH - 3;
 
     // Board PCB
-    g2d.setColor(ARDUINO_BLUE);
+    g2d.setColor(ARDUINO_TEAL);
     g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
-    g2d.setColor(ARDUINO_BLUE.darker());
+    g2d.setColor(ARDUINO_TEAL.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 

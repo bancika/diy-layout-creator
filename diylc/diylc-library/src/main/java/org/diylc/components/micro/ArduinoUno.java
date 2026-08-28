@@ -27,10 +27,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -45,6 +43,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -59,7 +58,24 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color ARDUINO_BLUE = Color.decode("#00878F");
+  public enum ArduinoUnoVersion {
+    REV3("UNO R3"),
+    R4_WIFI("UNO R4 WiFi");
+
+    private String label;
+
+    private ArduinoUnoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
+
+  private ArduinoUnoVersion version = ArduinoUnoVersion.REV3;
+
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
@@ -83,14 +99,35 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public ArduinoUno() {
     super();
-    this.bodyColor = ARDUINO_BLUE;
+    this.bodyColor = ARDUINO_TEAL;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Version")
+  public ArduinoUnoVersion getVersion() {
+    return version;
+  }
+
+  public void setVersion(ArduinoUnoVersion version) {
+    this.version = version;
+    if (version == ArduinoUnoVersion.R4_WIFI) {
+      this.bodyColor = ARDUINO_BLUE;
+    } else {
+      this.bodyColor = ARDUINO_TEAL;
+    }
+    updateControlPoints();
+    invalidateCache();
   }
 
   @Override
   public String getControlPointNodeName(int index) {
     if (index >= 0 && index < PIN_NAMES.length) {
       return PIN_NAMES[index];
+    }
+    if (version == ArduinoUnoVersion.R4_WIFI) {
+      if (index == 44) return "OFF";
+      if (index == 45) return "GND";
+      if (index == 46) return "VRTC";
     }
     return "Pin " + (index + 1);
   }
@@ -103,7 +140,8 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     // Reference: Pin 0 (NC) is at (boardX + 220.0, boardY + 400.0) [1100 mils, 100 mils from bottom-left]
     // Board is 539.78px wide, 419.78px high
-    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
+    int numPins = (version == ArduinoUnoVersion.R4_WIFI) ? 47 : 44;
+    double[][] relativeOffsets = new double[numPins][2];
 
     // Power header pins 0..7 (bottom left row)
     for (int i = 0; i < 8; i++) {
@@ -145,12 +183,21 @@ public class ArduinoUno extends AbstractMakerBoard {
     // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
     double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
     double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
+    if (version == ArduinoUnoVersion.R4_WIFI) {
+      icsp2Y += new Size(3.5d, SizeUnit.mm).convertToPixels();
+    }
     relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
     relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
     relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
     relativeOffsets[41] = new double[] {icsp2X - spacing, icsp2Y + spacing};
     relativeOffsets[42] = new double[] {icsp2X - 2 * spacing, icsp2Y};
     relativeOffsets[43] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
+
+    if (version == ArduinoUnoVersion.R4_WIFI) {
+      relativeOffsets[44] = new double[] {-4 * spacing, 0}; // OFF
+      relativeOffsets[45] = new double[] {-3 * spacing, 0}; // GND
+      relativeOffsets[46] = new double[] {-2 * spacing, 0}; // VRTC
+    }
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -238,21 +285,56 @@ public class ArduinoUno extends AbstractMakerBoard {
       drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter);
       drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
 
-      // USB Type-B Jack & DC Power Jack
-      drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
-          boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
-          USB_B_LENGTH.convertToPixels(),
-          USB_B_WIDTH.convertToPixels(), "USB");
+      if (version == ArduinoUnoVersion.R4_WIFI) {
+        double usbCW = USB_C_WIDTH.convertToPixels();
+        double usbCL = USB_C_LENGTH.convertToPixels();
+        double usbCY = boardY + new Size(15.5d, SizeUnit.mm).convertToPixels() - usbCW / 2.0;
+        drawUsbC(g2d, boardX - USB_C_OVERHANG.convertToPixels(), usbCY, usbCL, usbCW, "USB-C");
+      } else {
+        drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
+            boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
+            USB_B_LENGTH.convertToPixels(),
+            USB_B_WIDTH.convertToPixels(), "USB");
+      }
+
       drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
           boardY + new Size(1.615d, SizeUnit.in).convertToPixels(),
           new Size(0.52d, SizeUnit.in).convertToPixels(),
           new Size(0.355d, SizeUnit.in).convertToPixels(), "DC IN");
 
-      // ATmega328P DIP chip
-      drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(1.345d, SizeUnit.in).convertToPixels(),
-          new Size(1.46d, SizeUnit.in).convertToPixels(),
-          new Size(0.22d, SizeUnit.in).convertToPixels(), "ATmega328P");
+      if (version == ArduinoUnoVersion.R4_WIFI) {
+        double boardW = BOARD_WIDTH.convertToPixels();
+        double boardH = BOARD_HEIGHT.convertToPixels();
+
+        double antW = new Size(5d, SizeUnit.mm).convertToPixels();
+        double antH = new Size(15d, SizeUnit.mm).convertToPixels();
+        double antX = boardX;
+        double antY = boardY + boardH - new Size(13.5d, SizeUnit.mm).convertToPixels() - antH;
+        drawPcbAntenna(g2d, antX, antY, antW, antH);
+
+        double s3W = new Size(14d, SizeUnit.mm).convertToPixels();
+        double s3H = new Size(14d, SizeUnit.mm).convertToPixels();
+        double s3X = boardX + new Size(5.5d, SizeUnit.mm).convertToPixels();
+        double s3Y = boardY + boardH - new Size(14.0d, SizeUnit.mm).convertToPixels() - s3H;
+        drawMetalConnector(g2d, s3X, s3Y, s3W, s3H, "ESP32-S3");
+
+        double raW = new Size(10d, SizeUnit.mm).convertToPixels();
+        double raH = new Size(10d, SizeUnit.mm).convertToPixels();
+        double raX = boardX + boardW - new Size(11.5d, SizeUnit.mm).convertToPixels() - raW;
+        double raY = boardY + new Size(12d, SizeUnit.mm).convertToPixels();
+        g2d.setColor(Color.BLACK);
+        g2d.fill(new RoundRectangle2D.Double(raX, raY, raW, raH, 2, 2));
+        g2d.setColor(Color.DARK_GRAY);
+        g2d.draw(new RoundRectangle2D.Double(raX, raY, raW, raH, 2, 2));
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "RA4M1", raX + raW / 2.0, raY + raH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      } else {
+        drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
+            boardY + new Size(1.345d, SizeUnit.in).convertToPixels(),
+            new Size(1.46d, SizeUnit.in).convertToPixels(),
+            new Size(0.22d, SizeUnit.in).convertToPixels(), "ATmega328P");
+      }
 
       // Reset Button near USB
       double btnW = BUTTON_WIDTH.convertToPixels();
@@ -267,17 +349,21 @@ public class ArduinoUno extends AbstractMakerBoard {
           btnY + btnH + new Size(1.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Arduino Infinity Logo
-      drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.4411d, SizeUnit.in).convertToPixels());
+      drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(0.4411d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels());
 
       // Silkscreen text & branding
       g2d.setColor(SILK_COLOR);
+      
+      double arduinoX = boardX + new Size(1.5d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double arduinoY = boardY + new Size(0.775d, SizeUnit.in).convertToPixels() - new Size(4.0d, SizeUnit.mm).convertToPixels();
+      g2d.setFont(SILK_FONT_LARGE.deriveFont(SILK_FONT_LARGE.getSize2D() * 1.5f));
+      StringUtils.drawCenteredText(g2d, "ARDUINO", arduinoX, arduinoY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      
+      String subText = (version == ArduinoUnoVersion.R4_WIFI) ? "UNO R4 WIFI" : "UNO R3";
+      double subTextY = arduinoY + new Size(2.5d, SizeUnit.mm).convertToPixels();
       g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + new Size(1.5d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.775d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      g2d.setFont(SILK_FONT_LARGE);
-      StringUtils.drawCenteredText(g2d, "UNO", boardX + new Size(2.025d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.555d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, subText, arduinoX, subTextY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Header silkscreen labels
       g2d.setFont(SILK_FONT_SMALL);
@@ -287,6 +373,12 @@ public class ArduinoUno extends AbstractMakerBoard {
           boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + new Size(2.05d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          
+      // Text above right-most 3x2 header (ICSP / SPI)
+      String icspText = (version == ArduinoUnoVersion.R4_WIFI) ? "SPI" : "ICSP";
+      double icspLabelX = boardX + new Size(2.505d, SizeUnit.in).convertToPixels() + new Size(0.05d, SizeUnit.in).convertToPixels();
+      double icspLabelY = boardY + new Size(0.9d, SizeUnit.in).convertToPixels() - new Size(2.5d, SizeUnit.mm).convertToPixels();
+      StringUtils.drawCenteredText(g2d, icspText, icspLabelX, icspLabelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
@@ -317,9 +409,9 @@ public class ArduinoUno extends AbstractMakerBoard {
     double dcY = boardY + boardH - dcH - 3;
 
     // Board PCB
-    g2d.setColor(ARDUINO_BLUE);
+    g2d.setColor(this.bodyColor);
     g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
-    g2d.setColor(ARDUINO_BLUE.darker());
+    g2d.setColor(this.bodyColor.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
@@ -345,10 +437,11 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     // UNO text below logo
     g2d.setColor(SILK_COLOR);
-    int fontSize = Math.max(7, (int) Math.round(boardH * 0.28));
+    String iconText = (version == ArduinoUnoVersion.R4_WIFI) ? "R4 WIFI" : "UNO R3";
+    int fontSize = Math.max(5, (int) Math.round(boardH * 0.20));
     g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
     double textX = boardX + (boardW / 2.0) + 0.5;
-    StringUtils.drawCenteredText(g2d, "UNO", textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, iconText, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -59,7 +58,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color ARDUINO_BLUE = Color.decode("#00878F");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
@@ -78,7 +76,7 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public ArduinoNano() {
     super();
-    this.bodyColor = ARDUINO_BLUE;
+    this.bodyColor = ARDUINO_TEAL;
     updateControlPoints();
   }
 
@@ -280,9 +278,9 @@ public class ArduinoNano extends AbstractMakerBoard {
     double boardW = width - 12;
     double boardH = height - 4;
 
-    g2d.setColor(ARDUINO_BLUE);
+    g2d.setColor(ARDUINO_TEAL);
     g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
-    g2d.setColor(ARDUINO_BLUE.darker());
+    g2d.setColor(ARDUINO_TEAL.darker());
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
     // ICSP header at top

@@ -56,6 +56,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   private static final long serialVersionUID = 1L;
 
+  public static final Color ARDUINO_TEAL = Color.decode("#00878F");
+  public static final Color ARDUINO_BLUE = Color.decode("#015687");
+
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color HEADER_BODY_COLOR = Color.decode("#222222");
@@ -884,22 +887,42 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     g2d.setColor(ANTENNA_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     Path2D.Double antPath = new Path2D.Double();
-    double antPadX = x + new Size(1.5d, SizeUnit.mm).convertToPixels();
-    double antPadW = width - new Size(3.0d, SizeUnit.mm).convertToPixels();
-    double traceH = new Size(4.1d, SizeUnit.mm).convertToPixels();
-    double marginY = height > traceH ? (height - traceH) / 2.0 : height * 0.15;
-    double antTopY = y + marginY;
-    double antMidY = y + height - marginY;
-    antPath.moveTo(antPadX, antMidY);
-    antPath.lineTo(antPadX, antTopY);
-    antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
-    antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
-    antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
-    antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
-    antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
-    antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
-    antPath.lineTo(antPadX + antPadW, antMidY);
-    antPath.lineTo(antPadX + antPadW, antTopY);
+
+    if (width >= height) {
+      double antPadX = x + new Size(1.5d, SizeUnit.mm).convertToPixels();
+      double antPadW = width - new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double traceH = new Size(4.1d, SizeUnit.mm).convertToPixels();
+      double marginY = height > traceH ? (height - traceH) / 2.0 : height * 0.15;
+      double antTopY = y + marginY;
+      double antMidY = y + height - marginY;
+      antPath.moveTo(antPadX, antMidY);
+      antPath.lineTo(antPadX, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.25, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antMidY);
+      antPath.lineTo(antPadX + antPadW * 0.50, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antTopY);
+      antPath.lineTo(antPadX + antPadW * 0.75, antMidY);
+      antPath.lineTo(antPadX + antPadW, antMidY);
+      antPath.lineTo(antPadX + antPadW, antTopY);
+    } else {
+      double antPadY = y + new Size(1.5d, SizeUnit.mm).convertToPixels();
+      double antPadH = height - new Size(3.0d, SizeUnit.mm).convertToPixels();
+      double traceW = new Size(4.1d, SizeUnit.mm).convertToPixels();
+      double marginX = width > traceW ? (width - traceW) / 2.0 : width * 0.15;
+      double antLeftX = x + marginX;
+      double antRightX = x + width - marginX;
+      antPath.moveTo(antRightX, antPadY);
+      antPath.lineTo(antLeftX, antPadY);
+      antPath.lineTo(antLeftX, antPadY + antPadH * 0.25);
+      antPath.lineTo(antRightX, antPadY + antPadH * 0.25);
+      antPath.lineTo(antRightX, antPadY + antPadH * 0.50);
+      antPath.lineTo(antLeftX, antPadY + antPadH * 0.50);
+      antPath.lineTo(antLeftX, antPadY + antPadH * 0.75);
+      antPath.lineTo(antRightX, antPadY + antPadH * 0.75);
+      antPath.lineTo(antRightX, antPadY + antPadH);
+      antPath.lineTo(antLeftX, antPadY + antPadH);
+    }
     g2d.draw(antPath);
   }
 
