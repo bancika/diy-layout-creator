@@ -63,6 +63,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
   public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(65.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(30.0d, SizeUnit.mm);
+  public static Font RPI_TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
 
   public static Color PAD_COLOR = GOLD_COLOR;
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
@@ -70,17 +71,52 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES;
   static {
-    PIN_NAMES = new String[41];
+    PIN_NAMES = new String[45];
     System.arraycopy(RaspberryPi.PIN_NAMES, 0, PIN_NAMES, 0, 40);
     PIN_NAMES[40] = "MIPI (CSI)";
+    PIN_NAMES[41] = "RUN 1";
+    PIN_NAMES[42] = "RUN 2";
+    PIN_NAMES[43] = "TV 1";
+    PIN_NAMES[44] = "TV 2";
   }
 
+  public enum ZeroVersion {
+    PI_ZERO("Pi Zero"),
+    PI_ZERO_W("Pi Zero W");
+
+    private final String label;
+
+    ZeroVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
+
+  protected ZeroVersion version = ZeroVersion.PI_ZERO;
   protected boolean headers = false;
 
   public RaspberryPiZero() {
     super();
     this.bodyColor = RPI_GREEN;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Version")
+  public ZeroVersion getVersion() {
+    if (version == null) {
+      version = ZeroVersion.PI_ZERO;
+    }
+    return version;
+  }
+
+  public void setVersion(ZeroVersion version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
   }
 
   @EditableProperty(name = "Headers")
@@ -124,6 +160,16 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     double csiCenterX = BOARD_WIDTH.convertToPixels() - new Size(4.2d, SizeUnit.mm).convertToPixels() + csiW / 2.0 - pin1OffsetX;
     double csiCenterY = new Size(6.75d, SizeUnit.mm).convertToPixels() + csiH / 2.0 - pin1OffsetY;
     relativeOffsets[40] = new double[] {csiCenterX, csiCenterY};
+
+    // RUN and TV pads
+    double padX1 = 18 * spacing;
+    double padX2 = 19 * spacing;
+    double runY = 1 * spacing;
+    double tvY = 2 * spacing;
+    relativeOffsets[41] = new double[] {padX1, runY};
+    relativeOffsets[42] = new double[] {padX2, runY};
+    relativeOffsets[43] = new double[] {padX1, tvY};
+    relativeOffsets[44] = new double[] {padX2, tvY};
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -253,6 +299,12 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double logoY = socY + (socH - logoSize) / 2.0;
       drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
+      // Version label to the right of the SoC
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(RPI_TITLE_FONT);
+      StringUtils.drawCenteredText(g2d, "Raspberry " + getVersion().toString(), boardX + new Size(46.15d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(17.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
       // White silkscreen outline around GPIO pads
       g2d.setColor(Color.WHITE);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -265,8 +317,23 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       // Silkscreen "GPIO" label next to the top pins
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(47.5d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(7.8d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(42.5d, SizeUnit.mm).convertToPixels(),
+          y + PIN_SPACING.convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Silkscreen for RUN and TV pads
+      double spacing = PIN_SPACING.convertToPixels();
+      double runBoxX = x + 18 * spacing - spacing / 2.0;
+      double runBoxY = y + 1 * spacing - spacing / 2.0;
+      g2d.draw(new Rectangle2D.Double(runBoxX, runBoxY, spacing * 2, spacing));
+
+      double tvBoxX = x + 18 * spacing - spacing / 2.0;
+      double tvBoxY = y + 2 * spacing - spacing / 2.0;
+      g2d.draw(new Rectangle2D.Double(tvBoxX, tvBoxY, spacing * 2, spacing));
+
+      StringUtils.drawCenteredText(g2d, "RUN", runBoxX - new Size(1.0d, SizeUnit.mm).convertToPixels(),
+          runBoxY + spacing / 2.0, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "TV", tvBoxX - new Size(1.0d, SizeUnit.mm).convertToPixels(),
+          tvBoxY + spacing / 2.0, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
     }
 
     drawingObserver.stopTracking();
@@ -275,6 +342,10 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     if (headers) {
       drawPinHeader(g2d, 0, 40, false, outlineMode, drawingObserver);
+      // RUN and TV are typically left unpopulated even with headers
+      drawPcbSolderPads(g2d, 41, 2, true, outlineMode, drawingObserver);
+      drawPcbSolderPads(g2d, 43, 1, false, outlineMode, drawingObserver);
+      drawPcbSolderPads(g2d, 44, 1, true, outlineMode, drawingObserver);
     } else {
       drawSolderPads(g2d, outlineMode, drawingObserver);
     }
@@ -287,6 +358,9 @@ public class RaspberryPiZero extends AbstractMakerBoard {
    */
   protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
     drawPcbSolderPads(g2d, 0, 40, true, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 41, 2, true, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 43, 1, false, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 44, 1, true, outlineMode, drawingObserver);
   }
 
   @Override
