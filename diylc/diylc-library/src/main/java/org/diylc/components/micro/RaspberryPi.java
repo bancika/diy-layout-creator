@@ -26,11 +26,7 @@ import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.*;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -127,6 +123,12 @@ public class RaspberryPi extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
+    if (index == 44 && version != RaspberryPiVersion.PI_5) {
+      return "DISP";
+    }
+    if (index == 45 && version != RaspberryPiVersion.PI_5) {
+      return "CAM";
+    }
     if (index >= 0 && index < PIN_NAMES.length) {
       return PIN_NAMES[index];
     }
@@ -139,7 +141,8 @@ public class RaspberryPi extends AbstractMakerBoard {
     double spacing = PIN_SPACING.convertToPixels();
 
     // 2x20 header: Pin 1 at (0,0), Pin 2 at (0, -spacing), Pin 3 at (spacing, 0), Pin 4 at (spacing, -spacing)...
-    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
+    int numPins = (version == RaspberryPiVersion.PI_5) ? PIN_NAMES.length : PIN_NAMES.length - 1;
+    double[][] relativeOffsets = new double[numPins][2];
     for (int col = 0; col < 20; col++) {
       int pinOdd = col * 2;      // Pin 1, 3, 5... (bottom/inner row of header)
       int pinEven = col * 2 + 1; // Pin 2, 4, 6... (top/outer row of header)
@@ -162,19 +165,38 @@ public class RaspberryPi extends AbstractMakerBoard {
     relativeOffsets[42] = new double[] {poeCenterX + spacing / 2.0, poeCenterY - spacing / 2.0};
     relativeOffsets[43] = new double[] {poeCenterX + spacing / 2.0, poeCenterY + spacing / 2.0};
 
-    // PCIe connector (pin 44) on the left edge (center at X = 0.1" + 2.0mm, Y = 1.0")
-    double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
-    double pcieCenterX = new Size(0.1d, SizeUnit.in).convertToPixels() + pcieW / 2.0 - pin1OffsetX;
-    double pcieCenterY = new Size(1.0d, SizeUnit.in).convertToPixels() - pin1OffsetY;
-    relativeOffsets[44] = new double[] {pcieCenterX, pcieCenterY};
+    // Left edge connector (pin 44): PCIe for PI 5, MIPI (DISP) for PI 3 and 4
+    double leftEdgeCenterX;
+    double leftEdgeCenterY;
+    if (version == RaspberryPiVersion.PI_5) {
+      double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
+      leftEdgeCenterX = new Size(0.1d, SizeUnit.in).convertToPixels() + pcieW / 2.0 - pin1OffsetX;
+      leftEdgeCenterY = new Size(1.0d, SizeUnit.in).convertToPixels() - pin1OffsetY;
+    } else {
+      leftEdgeCenterX = new Size(4.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+      leftEdgeCenterY = BOARD_HEIGHT.convertToPixels() - new Size(28.0d, SizeUnit.mm).convertToPixels() - pin1OffsetY;
+    }
+    relativeOffsets[44] = new double[] {leftEdgeCenterX, leftEdgeCenterY};
 
     // MIPI 1 (pin 45) and MIPI 0 (pin 46) connectors on bottom edge
-    double mipiH = new Size(14.0d, SizeUnit.mm).convertToPixels();
-    double mipiCenterY = BOARD_HEIGHT.convertToPixels() - new Size(1.5d, SizeUnit.mm).convertToPixels() - mipiH / 2.0 - pin1OffsetY;
-    double mipi1CenterX = new Size(48.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
-    double mipi0CenterX = new Size(54.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+    double camH;
+    if (version == RaspberryPiVersion.PI_5) {
+      camH = 14.0d;
+    } else if (version == RaspberryPiVersion.PI_3_B) {
+      camH = 22.0d;
+    } else {
+      camH = 2.5d;
+    }
+    double mipiH = new Size(camH, SizeUnit.mm).convertToPixels();
+    double offset = (version == RaspberryPiVersion.PI_5) ? new Size(1.5d, SizeUnit.mm).convertToPixels() : 0.0d;
+    double mipiCenterY = BOARD_HEIGHT.convertToPixels() - offset - mipiH / 2.0 - pin1OffsetY;
+    double camXOffset = (version == RaspberryPiVersion.PI_4_B) ? 45.8d : 45.0d;
+    double mipi1CenterX = (version == RaspberryPiVersion.PI_5) ? new Size(48.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX : new Size(camXOffset, SizeUnit.mm).convertToPixels() - pin1OffsetX;
     relativeOffsets[45] = new double[] {mipi1CenterX, mipiCenterY};
-    relativeOffsets[46] = new double[] {mipi0CenterX, mipiCenterY};
+    if (version == RaspberryPiVersion.PI_5) {
+      double mipi0CenterX = new Size(54.0d, SizeUnit.mm).convertToPixels() - pin1OffsetX;
+      relativeOffsets[46] = new double[] {mipi0CenterX, mipiCenterY};
+    }
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -272,30 +294,30 @@ public class RaspberryPi extends AbstractMakerBoard {
           new Size(21.0d, SizeUnit.mm).convertToPixels(),
           new Size(16.0d, SizeUnit.mm).convertToPixels(), "ETHERNET");
 
-      // Broadcom SoC with metal heat spreader and chipped top-left corner (17x17mm)
-      double socX = boardX + new Size(32.5d, SizeUnit.mm).convertToPixels() - new Size(0.3d, SizeUnit.in).convertToPixels();
-      double socY = boardY + new Size(24.5d, SizeUnit.mm).convertToPixels();
-      double socW = new Size(17.0d, SizeUnit.mm).convertToPixels();
-      double socH = new Size(17.0d, SizeUnit.mm).convertToPixels();
-      double socCut = new Size(2.0d, SizeUnit.mm).convertToPixels();
+      // Broadcom SoC
+      double socW = (version == RaspberryPiVersion.PI_3_B) ? new Size(14.0d, SizeUnit.mm).convertToPixels() : new Size(17.0d, SizeUnit.mm).convertToPixels();
+      double socH = (version == RaspberryPiVersion.PI_3_B) ? new Size(14.0d, SizeUnit.mm).convertToPixels() : new Size(17.0d, SizeUnit.mm).convertToPixels();
+      double socX = (version == RaspberryPiVersion.PI_3_B) ? boardX + new Size(20.0d, SizeUnit.mm).convertToPixels() : boardX + new Size(32.5d, SizeUnit.mm).convertToPixels() - new Size(0.3d, SizeUnit.in).convertToPixels();
+      double socY = (version == RaspberryPiVersion.PI_3_B) ? boardY + new Size(17.0d, SizeUnit.mm).convertToPixels() : boardY + new Size(24.5d, SizeUnit.mm).convertToPixels();
 
-      Path2D.Double socShape = new Path2D.Double();
-      socShape.moveTo(socX + socCut, socY);
-      socShape.lineTo(socX + socW, socY);
-      socShape.lineTo(socX + socW, socY + socH);
-      socShape.lineTo(socX, socY + socH);
-      socShape.lineTo(socX, socY + socCut);
-      socShape.closePath();
+      String socName;
+      if (version == RaspberryPiVersion.PI_5) {
+        socName = "BCM2712";
+      } else if (version == RaspberryPiVersion.PI_4_B) {
+        socName = "BCM2711";
+      } else {
+        socName = "BCM2837";
+      }
 
-      g2d.setColor(USB_METAL_COLOR);
-      g2d.fill(socShape);
-      g2d.setColor(METAL_SHIELD_BORDER);
+      g2d.setColor(IC_BODY_COLOR);
+      g2d.fill(new Rectangle2D.Double(socX, socY, socW, socH));
+      g2d.setColor(IC_BORDER_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(socShape);
+      g2d.draw(new Rectangle2D.Double(socX, socY, socW, socH));
 
-      g2d.setColor(METAL_LABEL_COLOR);
+      g2d.setColor(IC_TEXT_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "BCM SoC", socX + socW / 2.0, socY + socH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, socName, socX + socW / 2.0, socY + socH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Bottom edge: USB-C Power & Micro-HDMI connectors
       // PWR (USB-C): center X = 11.2 mm
@@ -305,45 +327,129 @@ public class RaspberryPi extends AbstractMakerBoard {
           boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
           usbCW, usbCH, "PWR");
 
-      // HDMI0: center X = 25.8 mm
-      drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
-          boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
-          new Size(7.5d, SizeUnit.mm).convertToPixels(),
-          new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI0");
+      if (version == RaspberryPiVersion.PI_3_B) {
+        double hdmiW = new Size(15.0d, SizeUnit.mm).convertToPixels();
+        double hdmiH = new Size(11.5d, SizeUnit.mm).convertToPixels();
+        drawMetalConnector(g2d, boardX + new Size(32.0d, SizeUnit.mm).convertToPixels() - hdmiW / 2.0,
+            boardY + boardH - new Size(10.5d, SizeUnit.mm).convertToPixels(),
+            hdmiW, hdmiH, "HDMI");
+      } else {
+        // HDMI0: center X = 25.8 mm
+        drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
+            boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
+            new Size(7.5d, SizeUnit.mm).convertToPixels(),
+            new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI0");
 
-      // HDMI1: center X = 39.2 mm
-      drawMetalConnector(g2d, boardX + new Size(35.45d, SizeUnit.mm).convertToPixels(),
-          boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
-          new Size(7.5d, SizeUnit.mm).convertToPixels(),
-          new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI1");
+        // HDMI1: center X = 39.2 mm
+        drawMetalConnector(g2d, boardX + new Size(35.45d, SizeUnit.mm).convertToPixels(),
+            boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
+            new Size(7.5d, SizeUnit.mm).convertToPixels(),
+            new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI1");
+      }
 
-      // Two MIPI CSI/DSI connectors on bottom edge (MIPI 1 at 48.0mm, MIPI 0 at 54.0mm)
+      // MIPI CSI/DSI connectors on bottom edge
       double mipiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
       double mipiH = new Size(14.0d, SizeUnit.mm).convertToPixels();
       double mipiY = boardY + boardH - mipiH - new Size(1.5d, SizeUnit.mm).convertToPixels();
-      double mipi1X = boardX + new Size(48.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
-      double mipi0X = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
-      drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
-      drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
+      
+      if (version == RaspberryPiVersion.PI_5) {
+        double mipi1X = boardX + new Size(48.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
+        double mipi0X = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
+        drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
+        drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
 
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "MIPI 1", boardX + new Size(48.0d, SizeUnit.mm).convertToPixels(),
-          mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "MIPI 0", boardX + new Size(54.0d, SizeUnit.mm).convertToPixels(),
-          mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "MIPI 1", boardX + new Size(48.0d, SizeUnit.mm).convertToPixels(),
+            mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        StringUtils.drawCenteredText(g2d, "MIPI 0", boardX + new Size(54.0d, SizeUnit.mm).convertToPixels(),
+            mipiY - new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      } else {
+        double camW;
+        double camH;
+        if (version == RaspberryPiVersion.PI_3_B) {
+          camW = new Size(2.5d, SizeUnit.mm).convertToPixels();
+          camH = new Size(22.0d, SizeUnit.mm).convertToPixels();
+        } else {
+          camW = new Size(22.0d, SizeUnit.mm).convertToPixels();
+          camH = new Size(2.5d, SizeUnit.mm).convertToPixels();
+        }
+        double camXOffsetDraw = (version == RaspberryPiVersion.PI_4_B) ? 45.8d : 45.0d;
+        double camX = boardX + new Size(camXOffsetDraw, SizeUnit.mm).convertToPixels() - camW / 2.0;
+        double camY = boardY + boardH - camH;
+        
+        g2d.setColor(Color.decode("#181818"));
+        g2d.fill(new Rectangle2D.Double(camX, camY, camW, camH));
+        g2d.setColor(Color.decode("#333333"));
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(camX, camY, camW, camH));
 
-      // PCI Express FPC connector on the left edge (0.1" from left edge, 1" from top edge)
-      double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
-      double pcieH = new Size(12.5d, SizeUnit.mm).convertToPixels();
-      double pcieX = boardX + new Size(0.1d, SizeUnit.in).convertToPixels();
-      double pcieY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() - pcieH / 2.0;
-      drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "CAMERA", boardX + new Size(camXOffsetDraw, SizeUnit.mm).convertToPixels(),
+            camY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "PCIe", pcieX + pcieW / 2.0,
-          pcieY + pcieH + new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        // A/V Jack (4-pole stereo and composite)
+        double avBaseW = new Size(7.0d, SizeUnit.mm).convertToPixels();
+        double avBaseH = new Size(12.5d, SizeUnit.mm).convertToPixels();
+        double avTipW = new Size(5.0d, SizeUnit.mm).convertToPixels();
+        double avTipH = new Size(2.5d, SizeUnit.mm).convertToPixels();
+        
+        double avCenterX = boardX + new Size(camXOffsetDraw + 8.5d, SizeUnit.mm).convertToPixels();
+        double avY = boardY + boardH - avBaseH;
+
+        Path2D.Double avShape = new Path2D.Double();
+        avShape.moveTo(avCenterX - avBaseW / 2.0, avY);
+        avShape.lineTo(avCenterX + avBaseW / 2.0, avY);
+        avShape.lineTo(avCenterX + avBaseW / 2.0, avY + avBaseH);
+        avShape.lineTo(avCenterX + avTipW / 2.0, avY + avBaseH);
+        avShape.lineTo(avCenterX + avTipW / 2.0, avY + avBaseH + avTipH);
+        avShape.lineTo(avCenterX - avTipW / 2.0, avY + avBaseH + avTipH);
+        avShape.lineTo(avCenterX - avTipW / 2.0, avY + avBaseH);
+        avShape.lineTo(avCenterX - avBaseW / 2.0, avY + avBaseH);
+        avShape.closePath();
+        
+        g2d.setColor(Color.decode("#181818"));
+        g2d.fill(avShape);
+        g2d.setColor(Color.decode("#333333"));
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(avShape);
+        
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "A/V", avCenterX,
+            avY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
+
+      // Left edge connector: PCIe for PI 5, MIPI (DISP) for PI 3 and 4
+      if (version == RaspberryPiVersion.PI_5) {
+        double pcieW = new Size(4.0d, SizeUnit.mm).convertToPixels();
+        double pcieH = new Size(12.5d, SizeUnit.mm).convertToPixels();
+        double pcieX = boardX + new Size(0.1d, SizeUnit.in).convertToPixels();
+        double pcieY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() - pcieH / 2.0;
+        drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
+
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "PCIe", pcieX + pcieW / 2.0,
+            pcieY + pcieH + new Size(2.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      } else {
+        double dispW = new Size(2.5d, SizeUnit.mm).convertToPixels();
+        double dispH = new Size(22.0d, SizeUnit.mm).convertToPixels();
+        double dispX = boardX + new Size(4.0d, SizeUnit.mm).convertToPixels() - dispW / 2.0;
+        double dispY = boardY + boardH - new Size(28.0d, SizeUnit.mm).convertToPixels() - dispH / 2.0;
+        
+        g2d.setColor(Color.decode("#181818"));
+        g2d.fill(new Rectangle2D.Double(dispX, dispY, dispW, dispH));
+        g2d.setColor(Color.decode("#333333"));
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(dispX, dispY, dispW, dispH));
+
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, "DISPLAY", dispX + dispW / 2.0,
+            dispY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
 
       // 2x2 PoE header silkscreen label
       double poeLabelHoleY = (version == RaspberryPiVersion.PI_5) ? 52.5d : 3.5d;
@@ -403,8 +509,12 @@ public class RaspberryPi extends AbstractMakerBoard {
     }
 
     // SoC
-    g2d.setColor(METAL_SHIELD_COLOR);
-    g2d.fillRect(13, 14, 7, 7);
+    g2d.setColor(IC_BODY_COLOR);
+    if (version == RaspberryPiVersion.PI_3_B) {
+      g2d.fillRect(10, 11, 5, 5);
+    } else {
+      g2d.fillRect(13, 14, 7, 7);
+    }
 
     // GPIO Header
     g2d.setColor(HEADER_BODY_COLOR);
@@ -412,9 +522,19 @@ public class RaspberryPi extends AbstractMakerBoard {
 
     // PCIe & MIPI connectors & PoE
     g2d.setColor(IC_BODY_COLOR);
-    g2d.fillRect(3, 13, 1, 4);
-    g2d.fillRect(17, height - 6, 1, 2);
-    g2d.fillRect(19, height - 6, 1, 2);
+    if (version == RaspberryPiVersion.PI_5) {
+      g2d.fillRect(3, 13, 1, 4);
+      g2d.fillRect(17, height - 6, 1, 2);
+      g2d.fillRect(19, height - 6, 1, 2);
+    } else {
+      g2d.fillRect(3, 11, 1, 7); // DISP
+      if (version == RaspberryPiVersion.PI_3_B) {
+        g2d.fillRect(15, height - 11, 1, 7); // CAMERA vertical
+      } else {
+        g2d.fillRect(15, height - 5, 7, 1); // CAMERA horizontal
+      }
+      g2d.fillRect(23, height - 7, 2, 3); // A/V Jack
+    }
     if (version == RaspberryPiVersion.PI_5) {
       g2d.fillRect(width - 11, height - 9, 2, 2);
     } else {
