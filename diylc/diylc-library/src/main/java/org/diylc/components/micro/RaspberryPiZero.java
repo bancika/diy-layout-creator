@@ -388,6 +388,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
-    StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 15, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 21, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }
