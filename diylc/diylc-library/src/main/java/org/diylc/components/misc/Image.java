@@ -122,7 +122,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     double x;
     double y;
     if (getSizingMode() == ImageSizingMode.Scale) {
-      scaleX = scaleY = 1d * getScale().getValue() / 100d;
+      scaleX = scaleY = 1d * getScale().getValue().doubleValue() / 100d;
       x = point.getX();
       y = point.getY();
     } else {
@@ -299,7 +299,7 @@ public class Image extends AbstractTransparentComponent<Void> {
     if (getSizingMode() == ImageSizingMode.TwoPoints) {
       finalSecondPoint = getControlPoint(1);
     } else {
-      double scale = 1d * getScale().getValue() / 100d;
+      double scale = 1d * getScale().getValue().doubleValue() / 100d;
       ImageIcon iconImage = getImage();
       double w = (iconImage != null && iconImage.getIconWidth() > 0) ? iconImage.getIconWidth() * scale : 0;
       double h = (iconImage != null && iconImage.getIconHeight() > 0) ? iconImage.getIconHeight() * scale : 0;
