@@ -594,7 +594,7 @@ public class DrawingManager {
     try {
       g2dWrapper.transform(mirrorTx);
       if (Boolean.TRUE.equals(board.getUndersideTransparency())) {
-        g2dWrapper.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, MIRROR_ALPHA.getValue() / 100f));
+        g2dWrapper.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(MIRROR_ALPHA.getValue().doubleValue() / 100d)));
       }
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
     } catch (Exception e) {

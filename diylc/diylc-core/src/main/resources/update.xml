@@ -371,6 +371,10 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Made announcement bubbles and dialogs that contain links clickable</description>
 				</org.diylc.appframework.update.Change>
 			</changes>

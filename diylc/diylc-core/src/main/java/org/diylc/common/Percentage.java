@@ -22,22 +22,31 @@
 package org.diylc.common;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class Percentage implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 1L;
 
-  private int value;
+  private BigDecimal value;
 
-  public Percentage(int value) {
+  public Percentage(BigDecimal value) {
     this.value = value;
   }
 
-  public int getValue() {
+  public Percentage(double value) {
+    this.value = BigDecimal.valueOf(value);
+  }
+  
+  public Percentage(int value) {
+    this.value = BigDecimal.valueOf((long) value);
+  }
+
+  public BigDecimal getValue() {
     return value;
   }
 
-  public void setValue(int value) {
+  public void setValue(BigDecimal value) {
     this.value = value;
   }
 
@@ -45,7 +54,7 @@ public class Percentage implements Serializable, Cloneable {
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + value;
+    result = prime * result + ((value == null) ? 0 : value.stripTrailingZeros().hashCode());
     return result;
   }
 
@@ -58,14 +67,19 @@ public class Percentage implements Serializable, Cloneable {
     if (getClass() != obj.getClass())
       return false;
     Percentage other = (Percentage) obj;
-    if (value != other.value)
+    if (value == null) {
+      if (other.value != null)
+        return false;
+    } else if (value.compareTo(other.value) != 0)
       return false;
     return true;
   }
 
   @Override
   public String toString() {
-    return value + "%";
+    if (value == null) return "null%";
+    BigDecimal stripped = value.stripTrailingZeros();
+    return String.format("%s%%", stripped.toPlainString());
   }
 
   @Override

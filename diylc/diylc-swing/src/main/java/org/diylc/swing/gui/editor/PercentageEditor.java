@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.math.BigDecimal;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -46,6 +47,7 @@ public class PercentageEditor extends JPanel {
 
   private int minValue = 0;
   private int maxValue = 100;
+  private boolean isUpdating = false;
 
   public PercentageEditor(final PropertyWrapper property) {
     super();
@@ -69,39 +71,71 @@ public class PercentageEditor extends JPanel {
       valueField.setEnabled(false);
     }
 
-    slider.setMinimum(minValue);
-    slider.setMaximum(maxValue);
+    slider.setMinimum(minValue * 100);
+    slider.setMaximum(maxValue * 100);
+    slider.setMinorTickSpacing(100);
+
+    // Initialize values BEFORE adding the listener to avoid overwriting the property with integer
+    Object val = property.getValue();
+    if (val != null) {
+        BigDecimal bdVal = ((Percentage) val).getValue();
+        if (bdVal == null) bdVal = BigDecimal.ZERO;
+        slider.setValue((int) Math.round(bdVal.doubleValue() * 100));
+        valueField.setText(bdVal.stripTrailingZeros().toPlainString());
+    } else {
+        slider.setValue(minValue * 100);
+        valueField.setText(Integer.toString(minValue));
+    }
+    
+    slider.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mousePressed(java.awt.event.MouseEvent e) {
+            slider.setSnapToTicks(true);
+        }
+        @Override
+        public void mouseReleased(java.awt.event.MouseEvent e) {
+            slider.setSnapToTicks(false);
+        }
+    });
 
     slider.addChangeListener(new ChangeListener() {
 
       @Override
       public void stateChanged(ChangeEvent e) {
-        property.setChanged(true);
-        setBackground(oldBg);
-        slider.setBackground(oldBg);
-        
-        property.setValue(new Percentage(slider.getValue()));
-        valueField.setText(Integer.toString(slider.getValue()));
+        if (isUpdating) return;
+        isUpdating = true;
+        try {
+          property.setChanged(true);
+          setBackground(oldBg);
+          slider.setBackground(oldBg);
+          BigDecimal bd = BigDecimal.valueOf(slider.getValue()).divide(BigDecimal.valueOf(100)).stripTrailingZeros();
+          property.setValue(new Percentage(bd));
+          valueField.setText(bd.toPlainString());
+        } finally {
+          isUpdating = false;
+        }
       }
     });
 
-    Object val = property.getValue();
-    if (val != null) {
-        slider.setValue(((Percentage) val).getValue());
-    } else {
-        slider.setValue(minValue);
-    }
-
-    valueField.setText(Integer.toString(slider.getValue()));
-    valueField.setColumns(3);
+    valueField.setColumns(4);
     valueField.addKeyListener(new KeyAdapter() {
 
       @Override
       public void keyReleased(KeyEvent e) {
         try {
-          int newPosition = (int) Double.parseDouble(valueField.getText());
+          double newPosition = Double.parseDouble(valueField.getText());
           if (newPosition >= minValue && newPosition <= maxValue) {
-              slider.setValue(newPosition);
+              isUpdating = true;
+              try {
+                  slider.setValue((int) Math.round(newPosition * 100));
+                  property.setChanged(true);
+                  setBackground(oldBg);
+                  slider.setBackground(oldBg);
+                  // Use string parsing directly to avoid double floating point inaccuracy
+                  property.setValue(new Percentage(new BigDecimal(valueField.getText().trim())));
+              } finally {
+                  isUpdating = false;
+              }
           }
         } catch (Exception ex) {
         }

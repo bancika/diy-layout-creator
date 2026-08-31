@@ -105,7 +105,7 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
     double x;
     double y;
     if (getSizingMode() == ImageSizingMode.Scale) {
-      scaleX = scaleY = 1d * getScale().getValue() / 100d;
+      scaleX = scaleY = 1d * getScale().getValue().doubleValue() / 100d;
       x = point.getX();
       y = point.getY();
     } else {
@@ -290,7 +290,7 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
     if (getSizingMode() == ImageSizingMode.TwoPoints) {
       finalSecondPoint = getControlPoint(1);
     } else {
-      double scale = 1d * getScale().getValue() / 100d;
+      double scale = 1d * getScale().getValue().doubleValue() / 100d;
       SVGDiagram diagram = getSvgDiagram();
       double w = (diagram != null && diagram.getWidth() > 0) ? diagram.getWidth() * scale : 0;
       double h = (diagram != null && diagram.getHeight() > 0) ? diagram.getHeight() * scale : 0;
