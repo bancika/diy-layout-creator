@@ -72,47 +72,47 @@ public class ESP32DevKitTest {
       Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
     }
 
-    // Left row (0..18, top to bottom)
+    // Left row (J2: 0..18, top to bottom)
     Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
     Assert.assertEquals("EN", devKit.getControlPointNodeName(1));
-    Assert.assertEquals("VP (GPIO36)", devKit.getControlPointNodeName(2));
-    Assert.assertEquals("VN (GPIO39)", devKit.getControlPointNodeName(3));
-    Assert.assertEquals("GPIO34", devKit.getControlPointNodeName(4));
-    Assert.assertEquals("GPIO35", devKit.getControlPointNodeName(5));
-    Assert.assertEquals("GPIO32", devKit.getControlPointNodeName(6));
-    Assert.assertEquals("GPIO33", devKit.getControlPointNodeName(7));
-    Assert.assertEquals("GPIO25", devKit.getControlPointNodeName(8));
-    Assert.assertEquals("GPIO26", devKit.getControlPointNodeName(9));
-    Assert.assertEquals("GPIO27", devKit.getControlPointNodeName(10));
-    Assert.assertEquals("GPIO14", devKit.getControlPointNodeName(11));
-    Assert.assertEquals("GPIO12", devKit.getControlPointNodeName(12));
-    Assert.assertEquals("GND1", devKit.getControlPointNodeName(13));
-    Assert.assertEquals("GPIO13", devKit.getControlPointNodeName(14));
-    Assert.assertEquals("D2 (GPIO9)", devKit.getControlPointNodeName(15));
-    Assert.assertEquals("D3 (GPIO10)", devKit.getControlPointNodeName(16));
-    Assert.assertEquals("CMD (GPIO11)", devKit.getControlPointNodeName(17));
+    Assert.assertEquals("VP", devKit.getControlPointNodeName(2));
+    Assert.assertEquals("VN", devKit.getControlPointNodeName(3));
+    Assert.assertEquals("IO34", devKit.getControlPointNodeName(4));
+    Assert.assertEquals("IO35", devKit.getControlPointNodeName(5));
+    Assert.assertEquals("IO32", devKit.getControlPointNodeName(6));
+    Assert.assertEquals("IO33", devKit.getControlPointNodeName(7));
+    Assert.assertEquals("IO25", devKit.getControlPointNodeName(8));
+    Assert.assertEquals("IO26", devKit.getControlPointNodeName(9));
+    Assert.assertEquals("IO27", devKit.getControlPointNodeName(10));
+    Assert.assertEquals("IO14", devKit.getControlPointNodeName(11));
+    Assert.assertEquals("IO12", devKit.getControlPointNodeName(12));
+    Assert.assertEquals("GND", devKit.getControlPointNodeName(13));
+    Assert.assertEquals("IO13", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("D2", devKit.getControlPointNodeName(15));
+    Assert.assertEquals("D3", devKit.getControlPointNodeName(16));
+    Assert.assertEquals("CMD", devKit.getControlPointNodeName(17));
     Assert.assertEquals("5V", devKit.getControlPointNodeName(18));
 
-    // Right row (19..37, top to bottom)
-    Assert.assertEquals("GND2", devKit.getControlPointNodeName(19));
-    Assert.assertEquals("GPIO23", devKit.getControlPointNodeName(20));
-    Assert.assertEquals("GPIO22", devKit.getControlPointNodeName(21));
-    Assert.assertEquals("TX0 (GPIO1)", devKit.getControlPointNodeName(22));
-    Assert.assertEquals("RX0 (GPIO3)", devKit.getControlPointNodeName(23));
-    Assert.assertEquals("GPIO21", devKit.getControlPointNodeName(24));
-    Assert.assertEquals("GND3", devKit.getControlPointNodeName(25));
-    Assert.assertEquals("GPIO19", devKit.getControlPointNodeName(26));
-    Assert.assertEquals("GPIO18", devKit.getControlPointNodeName(27));
-    Assert.assertEquals("GPIO5", devKit.getControlPointNodeName(28));
-    Assert.assertEquals("GPIO17", devKit.getControlPointNodeName(29));
-    Assert.assertEquals("GPIO16", devKit.getControlPointNodeName(30));
-    Assert.assertEquals("GPIO4", devKit.getControlPointNodeName(31));
-    Assert.assertEquals("GPIO0", devKit.getControlPointNodeName(32));
-    Assert.assertEquals("GPIO2", devKit.getControlPointNodeName(33));
-    Assert.assertEquals("GPIO15", devKit.getControlPointNodeName(34));
-    Assert.assertEquals("D1 (GPIO8)", devKit.getControlPointNodeName(35));
-    Assert.assertEquals("D0 (GPIO7)", devKit.getControlPointNodeName(36));
-    Assert.assertEquals("CLK (GPIO6)", devKit.getControlPointNodeName(37));
+    // Right row (J3: 19..37, top to bottom)
+    Assert.assertEquals("GND", devKit.getControlPointNodeName(19));
+    Assert.assertEquals("IO23", devKit.getControlPointNodeName(20));
+    Assert.assertEquals("IO22", devKit.getControlPointNodeName(21));
+    Assert.assertEquals("TX", devKit.getControlPointNodeName(22));
+    Assert.assertEquals("RX", devKit.getControlPointNodeName(23));
+    Assert.assertEquals("IO21", devKit.getControlPointNodeName(24));
+    Assert.assertEquals("GND", devKit.getControlPointNodeName(25));
+    Assert.assertEquals("IO19", devKit.getControlPointNodeName(26));
+    Assert.assertEquals("IO18", devKit.getControlPointNodeName(27));
+    Assert.assertEquals("IO5", devKit.getControlPointNodeName(28));
+    Assert.assertEquals("IO17", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("IO16", devKit.getControlPointNodeName(30));
+    Assert.assertEquals("IO4", devKit.getControlPointNodeName(31));
+    Assert.assertEquals("IO0", devKit.getControlPointNodeName(32));
+    Assert.assertEquals("IO2", devKit.getControlPointNodeName(33));
+    Assert.assertEquals("IO15", devKit.getControlPointNodeName(34));
+    Assert.assertEquals("D1", devKit.getControlPointNodeName(35));
+    Assert.assertEquals("D0", devKit.getControlPointNodeName(36));
+    Assert.assertEquals("CLK", devKit.getControlPointNodeName(37));
   }
 
   @Test
@@ -218,53 +218,53 @@ public class ESP32DevKitTest {
       Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
     }
 
-    // Left row (0..21, top to bottom)
-    Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(0));
-    Assert.assertEquals("3V3_2", devKit.getControlPointNodeName(1));
+    // Left row (J1: 0..21, top to bottom)
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(1));
     Assert.assertEquals("RST", devKit.getControlPointNodeName(2));
-    Assert.assertEquals("GPIO4", devKit.getControlPointNodeName(3));
-    Assert.assertEquals("GPIO5", devKit.getControlPointNodeName(4));
-    Assert.assertEquals("GPIO6", devKit.getControlPointNodeName(5));
-    Assert.assertEquals("GPIO7", devKit.getControlPointNodeName(6));
-    Assert.assertEquals("GPIO15", devKit.getControlPointNodeName(7));
-    Assert.assertEquals("GPIO16", devKit.getControlPointNodeName(8));
-    Assert.assertEquals("GPIO17", devKit.getControlPointNodeName(9));
-    Assert.assertEquals("GPIO18", devKit.getControlPointNodeName(10));
-    Assert.assertEquals("GPIO8", devKit.getControlPointNodeName(11));
-    Assert.assertEquals("GPIO3", devKit.getControlPointNodeName(12));
-    Assert.assertEquals("GPIO46", devKit.getControlPointNodeName(13));
-    Assert.assertEquals("GPIO9", devKit.getControlPointNodeName(14));
-    Assert.assertEquals("GPIO10", devKit.getControlPointNodeName(15));
-    Assert.assertEquals("GPIO11", devKit.getControlPointNodeName(16));
-    Assert.assertEquals("GPIO12", devKit.getControlPointNodeName(17));
-    Assert.assertEquals("GPIO13", devKit.getControlPointNodeName(18));
-    Assert.assertEquals("GPIO14", devKit.getControlPointNodeName(19));
-    Assert.assertEquals("5V0", devKit.getControlPointNodeName(20));
-    Assert.assertEquals("GND1", devKit.getControlPointNodeName(21));
+    Assert.assertEquals("4", devKit.getControlPointNodeName(3));
+    Assert.assertEquals("5", devKit.getControlPointNodeName(4));
+    Assert.assertEquals("6", devKit.getControlPointNodeName(5));
+    Assert.assertEquals("7", devKit.getControlPointNodeName(6));
+    Assert.assertEquals("15", devKit.getControlPointNodeName(7));
+    Assert.assertEquals("16", devKit.getControlPointNodeName(8));
+    Assert.assertEquals("17", devKit.getControlPointNodeName(9));
+    Assert.assertEquals("18", devKit.getControlPointNodeName(10));
+    Assert.assertEquals("8", devKit.getControlPointNodeName(11));
+    Assert.assertEquals("3", devKit.getControlPointNodeName(12));
+    Assert.assertEquals("46", devKit.getControlPointNodeName(13));
+    Assert.assertEquals("9", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("10", devKit.getControlPointNodeName(15));
+    Assert.assertEquals("11", devKit.getControlPointNodeName(16));
+    Assert.assertEquals("12", devKit.getControlPointNodeName(17));
+    Assert.assertEquals("13", devKit.getControlPointNodeName(18));
+    Assert.assertEquals("14", devKit.getControlPointNodeName(19));
+    Assert.assertEquals("5V", devKit.getControlPointNodeName(20));
+    Assert.assertEquals("G", devKit.getControlPointNodeName(21));
 
-    // Right row (22..43, top to bottom)
-    Assert.assertEquals("GND2", devKit.getControlPointNodeName(22));
-    Assert.assertEquals("GPIO43 (U0TXD)", devKit.getControlPointNodeName(23));
-    Assert.assertEquals("GPIO44 (U0RXD)", devKit.getControlPointNodeName(24));
-    Assert.assertEquals("GPIO1", devKit.getControlPointNodeName(25));
-    Assert.assertEquals("GPIO2", devKit.getControlPointNodeName(26));
-    Assert.assertEquals("GPIO42", devKit.getControlPointNodeName(27));
-    Assert.assertEquals("GPIO41", devKit.getControlPointNodeName(28));
-    Assert.assertEquals("GPIO40", devKit.getControlPointNodeName(29));
-    Assert.assertEquals("GPIO39", devKit.getControlPointNodeName(30));
-    Assert.assertEquals("GPIO38", devKit.getControlPointNodeName(31));
-    Assert.assertEquals("GPIO37", devKit.getControlPointNodeName(32));
-    Assert.assertEquals("GPIO36", devKit.getControlPointNodeName(33));
-    Assert.assertEquals("GPIO35", devKit.getControlPointNodeName(34));
-    Assert.assertEquals("GPIO0 (BOOT)", devKit.getControlPointNodeName(35));
-    Assert.assertEquals("GPIO45", devKit.getControlPointNodeName(36));
-    Assert.assertEquals("GPIO48", devKit.getControlPointNodeName(37));
-    Assert.assertEquals("GPIO47", devKit.getControlPointNodeName(38));
-    Assert.assertEquals("GPIO21", devKit.getControlPointNodeName(39));
-    Assert.assertEquals("GPIO20 (USB D+)", devKit.getControlPointNodeName(40));
-    Assert.assertEquals("GPIO19 (USB D-)", devKit.getControlPointNodeName(41));
-    Assert.assertEquals("GND3", devKit.getControlPointNodeName(42));
-    Assert.assertEquals("GND4", devKit.getControlPointNodeName(43));
+    // Right row (J3: 22..43, top to bottom)
+    Assert.assertEquals("G", devKit.getControlPointNodeName(22));
+    Assert.assertEquals("TX", devKit.getControlPointNodeName(23));
+    Assert.assertEquals("RX", devKit.getControlPointNodeName(24));
+    Assert.assertEquals("1", devKit.getControlPointNodeName(25));
+    Assert.assertEquals("2", devKit.getControlPointNodeName(26));
+    Assert.assertEquals("42", devKit.getControlPointNodeName(27));
+    Assert.assertEquals("41", devKit.getControlPointNodeName(28));
+    Assert.assertEquals("40", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("39", devKit.getControlPointNodeName(30));
+    Assert.assertEquals("38", devKit.getControlPointNodeName(31));
+    Assert.assertEquals("37", devKit.getControlPointNodeName(32));
+    Assert.assertEquals("36", devKit.getControlPointNodeName(33));
+    Assert.assertEquals("35", devKit.getControlPointNodeName(34));
+    Assert.assertEquals("0", devKit.getControlPointNodeName(35));
+    Assert.assertEquals("45", devKit.getControlPointNodeName(36));
+    Assert.assertEquals("48", devKit.getControlPointNodeName(37));
+    Assert.assertEquals("47", devKit.getControlPointNodeName(38));
+    Assert.assertEquals("21", devKit.getControlPointNodeName(39));
+    Assert.assertEquals("20", devKit.getControlPointNodeName(40));
+    Assert.assertEquals("19", devKit.getControlPointNodeName(41));
+    Assert.assertEquals("G", devKit.getControlPointNodeName(42));
+    Assert.assertEquals("G", devKit.getControlPointNodeName(43));
   }
 
   @Test
@@ -322,12 +322,12 @@ public class ESP32DevKitTest {
     devKit.setVersion(ESP32DevKit.DevKitVersion.DevKitC_V4_38Pin);
     Assert.assertEquals(38, devKit.getControlPointCount());
     Assert.assertEquals("5V", devKit.getControlPointNodeName(18));
-    Assert.assertEquals("CLK (GPIO6)", devKit.getControlPointNodeName(37));
+    Assert.assertEquals("CLK", devKit.getControlPointNodeName(37));
 
     devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_S3_DevKitC_44Pin);
     Assert.assertEquals(44, devKit.getControlPointCount());
-    Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(0));
-    Assert.assertEquals("GND4", devKit.getControlPointNodeName(43));
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("G", devKit.getControlPointNodeName(43));
 
     devKit.setVersion(ESP32DevKit.DevKitVersion.DevKit_V1_30Pin);
     Assert.assertEquals(30, devKit.getControlPointCount());
@@ -480,8 +480,50 @@ public class ESP32DevKitTest {
 
       // Outline mode
       devKit.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
+
+      // Rotated drawing (all orientations)
+      for (org.diylc.common.Orientation orientation : org.diylc.common.Orientation.values()) {
+        devKit.setOrientation(orientation);
+        devKit.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+      }
     }
 
     g2d.dispose();
+  }
+
+  @Test
+  public void testPinLabelConstants() {
+    Assert.assertNotNull(ESP32DevKit.PIN_LABEL_OFFSET);
+    Assert.assertNotNull(ESP32DevKit.PIN_FONT);
+    Assert.assertEquals(8, ESP32DevKit.PIN_FONT.getSize());
+    Assert.assertEquals(1.8d, ESP32DevKit.PIN_LABEL_OFFSET.getValue(), 0.001);
+  }
+
+  @Test
+  public void testDisplayPinLabelFormatting() {
+    Assert.assertEquals("ABC", ESP32DevKit.getDisplayPinLabel("ABC (XYZ)"));
+    Assert.assertEquals("VP", ESP32DevKit.getDisplayPinLabel("VP (GPIO36)"));
+    Assert.assertEquals("VN", ESP32DevKit.getDisplayPinLabel("VN (GPIO39)"));
+    Assert.assertEquals("D16", ESP32DevKit.getDisplayPinLabel("D16 (RX2)"));
+    Assert.assertEquals("D17", ESP32DevKit.getDisplayPinLabel("D17 (TX2)"));
+    Assert.assertEquals("RX0", ESP32DevKit.getDisplayPinLabel("RX0 (GPIO3)"));
+    Assert.assertEquals("TX0", ESP32DevKit.getDisplayPinLabel("TX0 (GPIO1)"));
+    Assert.assertEquals("D2", ESP32DevKit.getDisplayPinLabel("D2 (GPIO9)"));
+    Assert.assertEquals("D3", ESP32DevKit.getDisplayPinLabel("D3 (GPIO10)"));
+    Assert.assertEquals("CMD", ESP32DevKit.getDisplayPinLabel("CMD (GPIO11)"));
+    Assert.assertEquals("GPIO43", ESP32DevKit.getDisplayPinLabel("GPIO43 (U0TXD)"));
+    Assert.assertEquals("GPIO44", ESP32DevKit.getDisplayPinLabel("GPIO44 (U0RXD)"));
+    Assert.assertEquals("GPIO0", ESP32DevKit.getDisplayPinLabel("GPIO0 (BOOT)"));
+    Assert.assertEquals("GPIO20", ESP32DevKit.getDisplayPinLabel("GPIO20 (USB D+)"));
+    Assert.assertEquals("GPIO19", ESP32DevKit.getDisplayPinLabel("GPIO19 (USB D-)"));
+
+    // Names without parentheses
+    Assert.assertEquals("EN", ESP32DevKit.getDisplayPinLabel("EN"));
+    Assert.assertEquals("D34", ESP32DevKit.getDisplayPinLabel("D34"));
+    Assert.assertEquals("3V3", ESP32DevKit.getDisplayPinLabel("3V3"));
+    Assert.assertEquals("3V3_1", ESP32DevKit.getDisplayPinLabel("3V3_1"));
+    Assert.assertEquals("GND1", ESP32DevKit.getDisplayPinLabel("GND1"));
+    Assert.assertEquals("", ESP32DevKit.getDisplayPinLabel(null));
+    Assert.assertEquals("", ESP32DevKit.getDisplayPinLabel(""));
   }
 }
