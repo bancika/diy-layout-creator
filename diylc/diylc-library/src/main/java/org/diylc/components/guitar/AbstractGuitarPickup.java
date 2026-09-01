@@ -294,8 +294,13 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
+  public boolean isStacked() {
+    return getPolarity() == Polarity.StackedNorth || getPolarity() == Polarity.StackedSouth;
+  }
+  
   public enum Polarity {
-    North("Single - North"), South("Single - South"), Humbucking("Humbucking - 4 leads");
+    North("Single - North"), South("Single - South"), Humbucking("Humbucking - 4 leads"),
+    StackedNorth("Stacked - North"), StackedSouth("Stacked - South");
     
     private String label;
 

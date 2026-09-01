@@ -182,20 +182,25 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
 
         @Override
         public void visit(TreeLeaf l) {
-          if ((l.toString().toLowerCase().contains("north")
-              && (l.toString().toLowerCase().contains("->")))
-              || (l.toString().toLowerCase().contains("south")
-                  && (l.toString().toLowerCase().contains("<-"))))
-            noiseCount++;
-          if ((l.toString().toLowerCase().contains("north")
-              && (l.toString().toLowerCase().contains("<-")))
-              || (l.toString().toLowerCase().contains("south")
-                  && (l.toString().toLowerCase().contains("->"))))
-            noiseCount--;
+          String s = l.toString().toLowerCase();
+          boolean isStacked = s.contains("stacked");
 
-          if (l.toString().toLowerCase().contains("->"))
+          if (!isStacked) {
+            if ((s.contains("north")
+                && (s.contains("->")))
+                || (s.contains("south")
+                    && (s.contains("<-"))))
+              noiseCount++;
+            if ((s.contains("north")
+                && (s.contains("<-")))
+                || (s.contains("south")
+                    && (s.contains("->"))))
+              noiseCount--;
+          }
+
+          if (s.contains("->"))
             positiveCount++;
-          if (l.toString().toLowerCase().contains("<-"))
+          if (s.contains("<-"))
             negativeCount++;
         }
       });
@@ -224,8 +229,9 @@ public class GuitarDiagramAnalyzer extends AbstractNetlistAnalyzer implements IN
           } else {
             TreeLeaf leaf = new TreeLeaf(pickup, 1, 2);
             Tree t = tree.locate(leaf, false);
-            if (t != null)
+            if (t != null) {
               pickupRoots.put(pickup, t);
+            }
           }
         }
       }

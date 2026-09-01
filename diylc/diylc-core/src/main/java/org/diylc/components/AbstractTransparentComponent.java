@@ -59,19 +59,19 @@ public abstract class AbstractTransparentComponent<T> extends AbstractComponent<
 
   public Composite applyAlpha(Graphics2D g2d, ComponentState componentState) {
     Composite oldComposite = g2d.getComposite();
-    int alpha = (OUTLINE_MODE_WHILE_DRAGGING && componentState == ComponentState.DRAGGING) ? 0 :
-        getAlpha().getValue();
+    double alpha = (OUTLINE_MODE_WHILE_DRAGGING && componentState == ComponentState.DRAGGING) ? 0 :
+        getAlpha().getValue().doubleValue();
     if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 100f));
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(alpha / 100d)));
     }
     return oldComposite;
   }
 
   public Composite applyAlpha(Graphics2D g2d) {
     Composite oldComposite = g2d.getComposite();
-    int alpha = getAlpha().getValue();
+    double alpha = getAlpha().getValue().doubleValue();
     if (alpha < MAX_ALPHA) {
-      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha / 100f));
+      g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(alpha / 100d)));
     }
     return oldComposite;
   }

@@ -22,6 +22,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayInputStream;
@@ -89,34 +90,34 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
       Project project, IDrawingObserver drawingObserver) {
-    double scaleX;
-    double scaleY;
     SVGDiagram svgDiagram = getSvgDiagram();
-    if (getSizingMode() == ImageSizingMode.Scale) {
-      scaleX = scaleY = 1d * getScale().getValue() / 100d;
-    } else {
-      Point2D secondPoint = getControlPoint(1);
-      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / svgDiagram.getWidth();
-      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / svgDiagram.getHeight();
-    }
-
-    Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(),
-        svgDiagram.getWidth() * scaleX, svgDiagram.getHeight() * scaleY))) {
+    if (svgDiagram == null || svgDiagram.getWidth() <= 0 || svgDiagram.getHeight() <= 0) {
       return;
     }
-    Composite oldComposite = applyAlpha(g2d, componentState);
 
+    Shape clip = g2d.getClip();
+    if (clip != null && !clip.intersects(getImageRectangle())) {
+      return;
+    }
+
+    double scaleX;
+    double scaleY;
     double x;
     double y;
     if (getSizingMode() == ImageSizingMode.Scale) {
+      scaleX = scaleY = 1d * getScale().getValue().doubleValue() / 100d;
       x = point.getX();
       y = point.getY();
     } else {
       Point2D secondPoint = getControlPoint(1);
+      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / svgDiagram.getWidth();
+      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / svgDiagram.getHeight();
       x = Math.min(point.getX(), secondPoint.getX());
       y = Math.min(point.getY(), secondPoint.getY());
     }
+
+    Composite oldComposite = applyAlpha(g2d, componentState);
+    AffineTransform oldTx = g2d.getTransform();
 
     if (getOrientation() != Orientation.DEFAULT) {
       double theta = getOrientation().toRadians();
@@ -139,9 +140,13 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
       g2d.scale(1 / scaleX, 1 / scaleY);
       g2d.setColor(SELECTION_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      g2d.drawRect((int) x, (int) y, (int) (svgDiagram.getWidth() * scaleX),
-          (int) (svgDiagram.getHeight() * scaleY));
+      g2d.drawRect((int) Math.round(x), (int) Math.round(y),
+          (int) Math.round(svgDiagram.getWidth() * scaleX),
+          (int) Math.round(svgDiagram.getHeight() * scaleY));
     }
+
+    g2d.setTransform(oldTx);
+    g2d.setComposite(oldComposite);
   }
 
   @Override
@@ -278,6 +283,39 @@ public class SVGImage extends AbstractTransparentComponent<Void> {
 
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
+  }
+
+  protected Point2D getFinalSecondPoint() {
+    Point2D finalSecondPoint;
+    if (getSizingMode() == ImageSizingMode.TwoPoints) {
+      finalSecondPoint = getControlPoint(1);
+    } else {
+      double scale = 1d * getScale().getValue().doubleValue() / 100d;
+      SVGDiagram diagram = getSvgDiagram();
+      double w = (diagram != null && diagram.getWidth() > 0) ? diagram.getWidth() * scale : 0;
+      double h = (diagram != null && diagram.getHeight() > 0) ? diagram.getHeight() * scale : 0;
+      finalSecondPoint = new Point2D.Double(point.getX() + w, point.getY() + h);
+    }
+    return finalSecondPoint;
+  }
+
+  protected Rectangle2D getImageRectangle() {
+    Point2D finalSecondPoint = getFinalSecondPoint();
+    double x = Math.min(point.getX(), finalSecondPoint.getX());
+    double y = Math.min(point.getY(), finalSecondPoint.getY());
+    double w = Math.abs(point.getX() - finalSecondPoint.getX());
+    double h = Math.abs(point.getY() - finalSecondPoint.getY());
+    Rectangle2D rect = new Rectangle2D.Double(x, y, w, h);
+    if (getOrientation() != null && getOrientation() != Orientation.DEFAULT) {
+      AffineTransform tx = AffineTransform.getRotateInstance(getOrientation().toRadians(), x, y);
+      return tx.createTransformedShape(rect).getBounds2D();
+    }
+    return rect;
+  }
+
+  @Override
+  public Rectangle2D getCachingBounds() {
+    return getImageRectangle();
   }
 
   public static enum ImageSizingMode {

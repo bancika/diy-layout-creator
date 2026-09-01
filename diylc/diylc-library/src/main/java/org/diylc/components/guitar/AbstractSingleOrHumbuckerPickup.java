@@ -60,8 +60,10 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
         break;     
     }
     
-    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South) {
-      StringUtils.drawCenteredText(g2d, getPolarity().name().substring(0, 1), (points[1].getX() + points[2].getX()) / 2 + dx, (points[1].getY() + points[2].getY()) / 2 + dy, HorizontalAlignment.CENTER,
+    if (getPolarity() == Polarity.North || getPolarity() == Polarity.South
+        || getPolarity() == Polarity.StackedNorth || getPolarity() == Polarity.StackedSouth) {
+      String label = (getPolarity() == Polarity.North || getPolarity() == Polarity.StackedNorth) ? "N" : "S";
+      StringUtils.drawCenteredText(g2d, label, (points[1].getX() + points[2].getX()) / 2 + dx, (points[1].getY() + points[2].getY()) / 2 + dy, HorizontalAlignment.CENTER,
           VerticalAlignment.CENTER);
     } else {
       StringUtils.drawCenteredText(g2d, "N", (points[0].getX() + points[1].getX()) / 2 + dx, (points[0].getY() + points[1].getY()) / 2 + dy, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -91,15 +93,15 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
           return null;
         return"North Start";
       case 1:
-        if (getPolarity() == Polarity.South)
+        if (getPolarity() == Polarity.South || getPolarity() == Polarity.StackedSouth)
           return "South Start";
-        if (getPolarity() == Polarity.North)
+        if (getPolarity() == Polarity.North || getPolarity() == Polarity.StackedNorth)
           return "North Start";
         return "North Finish";
       case 2:
-        if (getPolarity() == Polarity.South)
+        if (getPolarity() == Polarity.South || getPolarity() == Polarity.StackedSouth)
           return "South Finish";
-        if (getPolarity() == Polarity.North)
+        if (getPolarity() == Polarity.North || getPolarity() == Polarity.StackedNorth)
           return "North Finish";
         return "South Finish";
       case 3:
@@ -125,6 +127,8 @@ public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPick
         break;
       case North:
       case South:
+      case StackedNorth:
+      case StackedSouth:
         if (index1 == 1 && index2 == 2)
           return getPolarity().name() + "->";
         else if (index1 == 2 && index2 == 1)

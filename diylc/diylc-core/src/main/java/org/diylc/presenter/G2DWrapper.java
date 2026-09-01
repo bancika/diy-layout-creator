@@ -35,6 +35,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Area;
@@ -106,6 +107,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private String continuityMarker;
   private Shape lastShape;
 
+  public enum MirrorDirection {
+    NONE, HORIZONTAL, VERTICAL
+  }
+
+  private MirrorDirection mirrorDirection = MirrorDirection.NONE;
+
   private double zoom;
   private int zOrder;  
 
@@ -131,6 +138,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   
   public Graphics2D getCanvasGraphics() {
     return canvasGraphics;
+  }
+
+  public void setMirrorDirection(MirrorDirection mirrorDirection) {
+    this.mirrorDirection = mirrorDirection != null ? mirrorDirection : MirrorDirection.NONE;
+  }
+
+  public MirrorDirection getMirrorDirection() {
+    return mirrorDirection;
   }
 
   /**
@@ -332,7 +347,35 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawGlyphVector(GlyphVector g, float x, float y) {
-    canvasGraphics.drawGlyphVector(g, x, y);
+    if (g == null) {
+      return;
+    }
+    if (mirrorDirection != MirrorDirection.NONE) {
+      Rectangle2D bounds = g.getVisualBounds();
+      double width = bounds.getWidth();
+      double height = bounds.getHeight();
+      AffineTransform oldTx = canvasGraphics.getTransform();
+      AffineTransform flipTx = new AffineTransform();
+      if (mirrorDirection == MirrorDirection.HORIZONTAL) {
+        double cx = x + bounds.getX() + width / 2.0;
+        flipTx.translate(cx, 0);
+        flipTx.scale(-1.0, 1.0);
+        flipTx.translate(-cx, 0);
+      } else if (mirrorDirection == MirrorDirection.VERTICAL) {
+        double cy = y + bounds.getY() + height / 2.0;
+        flipTx.translate(0, cy);
+        flipTx.scale(1.0, -1.0);
+        flipTx.translate(0, -cy);
+      }
+      canvasGraphics.transform(flipTx);
+      try {
+        canvasGraphics.drawGlyphVector(g, x, y);
+      } finally {
+        canvasGraphics.setTransform(oldTx);
+      }
+    } else {
+      canvasGraphics.drawGlyphVector(g, x, y);
+    }
   }
 
   @Override
@@ -361,7 +404,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawString(String str, int x, int y) {
-    canvasGraphics.drawString(str, x, y);
+    if (str == null) {
+      return;
+    }
+    if (mirrorDirection != MirrorDirection.NONE) {
+      drawMirroredString(str, x, y);
+    } else {
+      canvasGraphics.drawString(str, x, y);
+    }
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
@@ -376,7 +426,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawString(String str, float x, float y) {
-    canvasGraphics.drawString(str, x, y);
+    if (str == null) {
+      return;
+    }
+    if (mirrorDirection != MirrorDirection.NONE) {
+      drawMirroredString(str, x, y);
+    } else {
+      canvasGraphics.drawString(str, x, y);
+    }
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
@@ -386,14 +443,87 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-    canvasGraphics.drawString(iterator, x, y);
-    // FIXME: process map
+    if (iterator == null) {
+      return;
+    }
+    if (mirrorDirection != MirrorDirection.NONE) {
+      drawMirroredString(iterator, x, y);
+    } else {
+      canvasGraphics.drawString(iterator, x, y);
+    }
   }
 
   @Override
   public void drawString(AttributedCharacterIterator iterator, float x, float y) {
-    canvasGraphics.drawString(iterator, x, y);
-    // FIXME: process map
+    if (iterator == null) {
+      return;
+    }
+    if (mirrorDirection != MirrorDirection.NONE) {
+      drawMirroredString(iterator, x, y);
+    } else {
+      canvasGraphics.drawString(iterator, x, y);
+    }
+  }
+
+  private void drawMirroredString(String str, float x, float y) {
+    FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
+    Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
+    double width = rect.getWidth();
+    double ascent = fontMetrics.getAscent();
+    double descent = fontMetrics.getDescent();
+
+    AffineTransform oldTx = canvasGraphics.getTransform();
+    AffineTransform flipTx = new AffineTransform();
+
+    if (mirrorDirection == MirrorDirection.HORIZONTAL) {
+      double cx = x + width / 2.0;
+      flipTx.translate(cx, 0);
+      flipTx.scale(-1.0, 1.0);
+      flipTx.translate(-cx, 0);
+    } else if (mirrorDirection == MirrorDirection.VERTICAL) {
+      double cy = y - (ascent - descent) / 2.0;
+      flipTx.translate(0, cy);
+      flipTx.scale(1.0, -1.0);
+      flipTx.translate(0, -cy);
+    }
+
+    canvasGraphics.transform(flipTx);
+    try {
+      canvasGraphics.drawString(str, x, y);
+    } finally {
+      canvasGraphics.setTransform(oldTx);
+    }
+  }
+
+  private void drawMirroredString(AttributedCharacterIterator iterator, float x, float y) {
+    FontRenderContext frc = canvasGraphics.getFontRenderContext();
+    TextLayout layout = new TextLayout(iterator, frc);
+    Rectangle2D bounds = layout.getBounds();
+    double width = bounds.getWidth();
+    double ascent = layout.getAscent();
+    double descent = layout.getDescent();
+
+    AffineTransform oldTx = canvasGraphics.getTransform();
+    AffineTransform flipTx = new AffineTransform();
+
+    if (mirrorDirection == MirrorDirection.HORIZONTAL) {
+      double cx = x + width / 2.0;
+      flipTx.translate(cx, 0);
+      flipTx.scale(-1.0, 1.0);
+      flipTx.translate(-cx, 0);
+    } else if (mirrorDirection == MirrorDirection.VERTICAL) {
+      double cy = y - (ascent - descent) / 2.0;
+      flipTx.translate(0, cy);
+      flipTx.scale(1.0, -1.0);
+      flipTx.translate(0, -cy);
+    }
+
+    canvasGraphics.transform(flipTx);
+    try {
+      canvasGraphics.drawString(iterator, x, y);
+    } finally {
+      canvasGraphics.setTransform(oldTx);
+    }
   }
 
   @Override

@@ -21,6 +21,7 @@ import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -105,56 +106,56 @@ public class Image extends AbstractTransparentComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    ImageIcon imageIcon = getImage();
+    if (imageIcon == null || imageIcon.getImage() == null || imageIcon.getIconWidth() <= 0
+        || imageIcon.getIconHeight() <= 0) {
+      return;
+    }
 
-    if (!getImageRectangle().intersects(g2d.getClipBounds())) {
+    Shape clip = g2d.getClip();
+    if (clip != null && !clip.intersects(getImageRectangle())) {
       return;
     }
 
     double scaleX;
     double scaleY;
-    ImageIcon imageIcon = getImage();
-    if (getSizingMode() == ImageSizingMode.Scale) {
-      scaleX = scaleY = 1d * getScale().getValue() / 100d;
-    } else {
-      Point2D secondPoint = getControlPoint(1);
-      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / imageIcon.getIconWidth();
-      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / imageIcon.getIconHeight();
-    }
-    
-    Shape clip = g2d.getClip().getBounds();
-    if (!clip.intersects(new Rectangle2D.Double(point.getX(), point.getY(), imageIcon.getIconWidth() * scaleX, imageIcon
-        .getIconHeight() * scaleY))) {
-      return;
-    }
-    Composite oldComposite = applyAlpha(g2d, componentState);
-    
     double x;
     double y;
-    if (getSizingMode() == ImageSizingMode.Scale)
-    {
+    if (getSizingMode() == ImageSizingMode.Scale) {
+      scaleX = scaleY = 1d * getScale().getValue().doubleValue() / 100d;
       x = point.getX();
       y = point.getY();
     } else {
       Point2D secondPoint = getControlPoint(1);
+      scaleX = 1d * Math.abs(point.getX() - secondPoint.getX()) / imageIcon.getIconWidth();
+      scaleY = 1d * Math.abs(point.getY() - secondPoint.getY()) / imageIcon.getIconHeight();
       x = Math.min(point.getX(), secondPoint.getX());
       y = Math.min(point.getY(), secondPoint.getY());
     }
-    
+
+    Composite oldComposite = applyAlpha(g2d, componentState);
+    AffineTransform oldTx = g2d.getTransform();
+
     if (getOrientation() != Orientation.DEFAULT) {
       double theta = getOrientation().toRadians();
       g2d.rotate(theta, x, y);
     }
 
     g2d.scale(scaleX, scaleY);
-    
-    g2d.drawImage(imageIcon.getImage(), (int) (x / scaleX), (int) (y / scaleY), null);
+
+    g2d.drawImage(imageIcon.getImage(), (int) Math.round(x / scaleX), (int) Math.round(y / scaleY), null);
     if (componentState == ComponentState.SELECTED) {
       g2d.setComposite(oldComposite);
       g2d.scale(1 / scaleX, 1 / scaleY);
       g2d.setColor(SELECTION_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-      g2d.drawRect((int)x, (int)y, (int) (imageIcon.getIconWidth() * scaleX), (int) (imageIcon.getIconHeight() * scaleY));
+      g2d.drawRect((int) Math.round(x), (int) Math.round(y),
+          (int) Math.round(imageIcon.getIconWidth() * scaleX),
+          (int) Math.round(imageIcon.getIconHeight() * scaleY));
     }
+
+    g2d.setTransform(oldTx);
+    g2d.setComposite(oldComposite);
   }
 
   @Override
@@ -296,22 +297,34 @@ public class Image extends AbstractTransparentComponent<Void> {
   protected Point2D getFinalSecondPoint() {
     Point2D finalSecondPoint;
     if (getSizingMode() == ImageSizingMode.TwoPoints) {
-      finalSecondPoint = secondPoint;
+      finalSecondPoint = getControlPoint(1);
     } else {
-      double scale = 1d * getScale().getValue() / 100d;
+      double scale = 1d * getScale().getValue().doubleValue() / 100d;
       ImageIcon iconImage = getImage();
-      finalSecondPoint = new Point2D.Double(point.getX() + iconImage.getIconWidth() * scale,
-              point.getY() + iconImage.getIconHeight() * scale);
+      double w = (iconImage != null && iconImage.getIconWidth() > 0) ? iconImage.getIconWidth() * scale : 0;
+      double h = (iconImage != null && iconImage.getIconHeight() > 0) ? iconImage.getIconHeight() * scale : 0;
+      finalSecondPoint = new Point2D.Double(point.getX() + w, point.getY() + h);
     }
     return finalSecondPoint;
   }
 
   protected Rectangle2D getImageRectangle() {
     Point2D finalSecondPoint = getFinalSecondPoint();
-    return new Rectangle2D.Double(Math.min(point.getX(), finalSecondPoint.getX()),
-            Math.min(point.getY(), finalSecondPoint.getY()),
-            Math.abs(point.getX() - finalSecondPoint.getX()),
-            Math.abs(point.getY() - finalSecondPoint.getY()));
+    double x = Math.min(point.getX(), finalSecondPoint.getX());
+    double y = Math.min(point.getY(), finalSecondPoint.getY());
+    double w = Math.abs(point.getX() - finalSecondPoint.getX());
+    double h = Math.abs(point.getY() - finalSecondPoint.getY());
+    Rectangle2D rect = new Rectangle2D.Double(x, y, w, h);
+    if (getOrientation() != null && getOrientation() != Orientation.DEFAULT) {
+      AffineTransform tx = AffineTransform.getRotateInstance(getOrientation().toRadians(), x, y);
+      return tx.createTransformedShape(rect).getBounds2D();
+    }
+    return rect;
+  }
+
+  @Override
+  public Rectangle2D getCachingBounds() {
+    return getImageRectangle();
   }
 
   public static enum ImageSizingMode {
