@@ -14,7 +14,7 @@ public class RaspberryPiZeroTest {
   @Test
   public void testControlPointCountAndNames() {
     RaspberryPiZero pi = new RaspberryPiZero();
-    Assert.assertEquals(41, pi.getControlPointCount());
+    Assert.assertEquals(45, pi.getControlPointCount());
 
     for (int i = 0; i < pi.getControlPointCount(); i++) {
       String name = pi.getControlPointNodeName(i);
@@ -29,6 +29,10 @@ public class RaspberryPiZeroTest {
     Assert.assertEquals("GND (Pin 39)", pi.getControlPointNodeName(38));
     Assert.assertEquals("GPIO21 (Pin 40)", pi.getControlPointNodeName(39));
     Assert.assertEquals("MIPI (CSI)", pi.getControlPointNodeName(40));
+    Assert.assertEquals("RUN 1", pi.getControlPointNodeName(41));
+    Assert.assertEquals("RUN 2", pi.getControlPointNodeName(42));
+    Assert.assertEquals("TV 1", pi.getControlPointNodeName(43));
+    Assert.assertEquals("TV 2", pi.getControlPointNodeName(44));
   }
 
   @Test

@@ -14,7 +14,7 @@ public class RaspberryPiTest {
   @Test
   public void testControlPointCountAndNames() {
     RaspberryPi pi = new RaspberryPi();
-    Assert.assertEquals(47, pi.getControlPointCount());
+    Assert.assertEquals(48, pi.getControlPointCount());
 
     for (int i = 0; i < pi.getControlPointCount(); i++) {
       String name = pi.getControlPointNodeName(i);
@@ -35,6 +35,7 @@ public class RaspberryPiTest {
     Assert.assertEquals("PCIe", pi.getControlPointNodeName(44));
     Assert.assertEquals("MIPI 1", pi.getControlPointNodeName(45));
     Assert.assertEquals("MIPI 0", pi.getControlPointNodeName(46));
+    Assert.assertEquals("UART", pi.getControlPointNodeName(47));
   }
 
   @Test
@@ -119,22 +120,28 @@ public class RaspberryPiTest {
     Assert.assertEquals(poeExpectedCenterX + spacing / 2.0, p43.getX(), 0.1);
     Assert.assertEquals(poeExpectedCenterY + spacing / 2.0, p43.getY(), 0.1);
 
-    // Connector control points (PCIe = 44, MIPI 1 = 45, MIPI 0 = 46)
+    // Connector control points (PCIe = 44, MIPI 1 = 45, MIPI 0 = 46, UART = 47)
     Point2D pPcie = pi.getControlPoint(44);
     Point2D pMipi1 = pi.getControlPoint(45);
     Point2D pMipi0 = pi.getControlPoint(46);
+    Point2D pUart = pi.getControlPoint(47);
 
-    double expectedPcieCenterX = bounds.getX() + new Size(0.1d, SizeUnit.in).convertToPixels() + new Size(4.0d, SizeUnit.mm).convertToPixels() / 2.0;
-    double expectedPcieCenterY = bounds.getY() + new Size(1.0d, SizeUnit.in).convertToPixels();
+    double expectedPcieCenterX = bounds.getX() + new Size(0.1d, SizeUnit.in).convertToPixels() - new Size(1.0d, SizeUnit.mm).convertToPixels() + new Size(3.0d, SizeUnit.mm).convertToPixels() / 2.0;
+    double expectedPcieCenterY = bounds.getY() + new Size(1.0d, SizeUnit.in).convertToPixels() + new Size(0.75d, SizeUnit.mm).convertToPixels();
     Assert.assertEquals(expectedPcieCenterX, pPcie.getX(), 0.1);
     Assert.assertEquals(expectedPcieCenterY, pPcie.getY(), 0.1);
 
-    double expectedMipiCenterY = bounds.getY() + expectedHeight - new Size(1.5d, SizeUnit.mm).convertToPixels() - new Size(14.0d, SizeUnit.mm).convertToPixels() / 2.0;
-    double expectedMipi1CenterX = bounds.getX() + new Size(48.0d, SizeUnit.mm).convertToPixels();
-    double expectedMipi0CenterX = bounds.getX() + new Size(54.0d, SizeUnit.mm).convertToPixels();
+    double expectedMipiCenterY = bounds.getY() + expectedHeight - new Size(1.0d, SizeUnit.mm).convertToPixels() - new Size(15.5d, SizeUnit.mm).convertToPixels() / 2.0;
+    double expectedMipi1CenterX = bounds.getX() + new Size(48.5d, SizeUnit.mm).convertToPixels();
+    double expectedMipi0CenterX = bounds.getX() + new Size(54.5d, SizeUnit.mm).convertToPixels();
     Assert.assertEquals(expectedMipi1CenterX, pMipi1.getX(), 0.1);
     Assert.assertEquals(expectedMipiCenterY, pMipi1.getY(), 0.1);
     Assert.assertEquals(expectedMipi0CenterX, pMipi0.getX(), 0.1);
     Assert.assertEquals(expectedMipiCenterY, pMipi0.getY(), 0.1);
+
+    double expectedUartCenterX = bounds.getX() + new Size(32.5d, SizeUnit.mm).convertToPixels();
+    double expectedUartCenterY = bounds.getY() + new Size(52.5d, SizeUnit.mm).convertToPixels();
+    Assert.assertEquals(expectedUartCenterX, pUart.getX(), 0.1);
+    Assert.assertEquals(expectedUartCenterY, pUart.getY(), 0.1);
   }
 }
