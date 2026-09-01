@@ -124,6 +124,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
   public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
+  public static Size PIN_LABEL_OFFSET = new Size(1.8d, SizeUnit.mm);
+  public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -249,6 +251,61 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    */
   protected void drawPins(Graphics2D g2d, int startIndex, int count, boolean female, boolean outlineMode, IDrawingObserver drawingObserver) {
     drawPinHeader(g2d, startIndex, count, female, outlineMode, drawingObserver);
+  }
+
+  /**
+   * Helper to format a pin name for silkscreen display by omitting any parenthesized content
+   * and any trailing underscore suffixes (e.g. "3V3_1" -> "3V3", "A0 (ADC0)" -> "A0").
+   */
+  public static String getDisplayPinLabel(String name) {
+    if (name == null) {
+      return "";
+    }
+    int parenIdx = name.indexOf('(');
+    if (parenIdx != -1) {
+      name = name.substring(0, parenIdx);
+    }
+    int underscoreIdx = name.indexOf('_');
+    if (underscoreIdx != -1) {
+      name = name.substring(0, underscoreIdx);
+    }
+    return name.trim();
+  }
+
+  /**
+   * Helper to draw rotated control point / pin names next to the pins for dual-row DIP/header boards.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated top-left pin X coordinate (P0.getX())
+   * @param y Unrotated top-left pin Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawPinLabels(Graphics2D g2d, double x, double y, double[][] offsets, Color silkColor) {
+    if (offsets == null || offsets.length == 0) return;
+    double labelOffset = PIN_LABEL_OFFSET.convertToPixels();
+    int count = offsets.length;
+    int half = count / 2;
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_FONT);
+
+    for (int i = 0; i < count; i++) {
+      String name = getControlPointNodeName(i);
+      String label = getDisplayPinLabel(name);
+      if (label.isEmpty()) {
+        continue;
+      }
+      double pinX = x + offsets[i][0];
+      double pinY = y + offsets[i][1];
+      double textX = (i < half) ? (pinX + labelOffset) : (pinX - labelOffset);
+      double textY = pinY;
+
+      AffineTransform oldLabelTx = g2d.getTransform();
+      g2d.rotate(Math.PI / 2, textX, textY);
+      StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setTransform(oldLabelTx);
+    }
   }
 
   /**

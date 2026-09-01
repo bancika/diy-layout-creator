@@ -24,10 +24,10 @@ public class ESP32DevKitTest {
       Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
     }
 
-    // Left row (0..14)
+    // Left row (0..14, top to bottom)
     Assert.assertEquals("EN", devKit.getControlPointNodeName(0));
-    Assert.assertEquals("VP (GPIO36)", devKit.getControlPointNodeName(1));
-    Assert.assertEquals("VN (GPIO39)", devKit.getControlPointNodeName(2));
+    Assert.assertEquals("VP", devKit.getControlPointNodeName(1));
+    Assert.assertEquals("VN", devKit.getControlPointNodeName(2));
     Assert.assertEquals("D34", devKit.getControlPointNodeName(3));
     Assert.assertEquals("D35", devKit.getControlPointNodeName(4));
     Assert.assertEquals("D32", devKit.getControlPointNodeName(5));
@@ -37,26 +37,26 @@ public class ESP32DevKitTest {
     Assert.assertEquals("D27", devKit.getControlPointNodeName(9));
     Assert.assertEquals("D14", devKit.getControlPointNodeName(10));
     Assert.assertEquals("D12", devKit.getControlPointNodeName(11));
-    Assert.assertEquals("GND1", devKit.getControlPointNodeName(12));
-    Assert.assertEquals("D13", devKit.getControlPointNodeName(13));
-    Assert.assertEquals("3V3", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("GND_3", devKit.getControlPointNodeName(12));
+    Assert.assertEquals("GND_1", devKit.getControlPointNodeName(13));
+    Assert.assertEquals("VIN", devKit.getControlPointNodeName(14));
 
-    // Right row (15..29)
-    Assert.assertEquals("VIN", devKit.getControlPointNodeName(15));
-    Assert.assertEquals("GND2", devKit.getControlPointNodeName(16));
-    Assert.assertEquals("D15", devKit.getControlPointNodeName(17));
-    Assert.assertEquals("D2", devKit.getControlPointNodeName(18));
-    Assert.assertEquals("D4", devKit.getControlPointNodeName(19));
-    Assert.assertEquals("D16 (RX2)", devKit.getControlPointNodeName(20));
-    Assert.assertEquals("D17 (TX2)", devKit.getControlPointNodeName(21));
+    // Right row (15..29, top to bottom)
+    Assert.assertEquals("D23", devKit.getControlPointNodeName(15));
+    Assert.assertEquals("D22", devKit.getControlPointNodeName(16));
+    Assert.assertEquals("TXD", devKit.getControlPointNodeName(17));
+    Assert.assertEquals("RXD", devKit.getControlPointNodeName(18));
+    Assert.assertEquals("D21", devKit.getControlPointNodeName(19));
+    Assert.assertEquals("D19", devKit.getControlPointNodeName(20));
+    Assert.assertEquals("D18", devKit.getControlPointNodeName(21));
     Assert.assertEquals("D5", devKit.getControlPointNodeName(22));
-    Assert.assertEquals("D18", devKit.getControlPointNodeName(23));
-    Assert.assertEquals("D19", devKit.getControlPointNodeName(24));
-    Assert.assertEquals("D21", devKit.getControlPointNodeName(25));
-    Assert.assertEquals("RX0 (GPIO3)", devKit.getControlPointNodeName(26));
-    Assert.assertEquals("TX0 (GPIO1)", devKit.getControlPointNodeName(27));
-    Assert.assertEquals("D22", devKit.getControlPointNodeName(28));
-    Assert.assertEquals("D23", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("TX2", devKit.getControlPointNodeName(23));
+    Assert.assertEquals("RX2", devKit.getControlPointNodeName(24));
+    Assert.assertEquals("D4", devKit.getControlPointNodeName(25));
+    Assert.assertEquals("D2", devKit.getControlPointNodeName(26));
+    Assert.assertEquals("D15", devKit.getControlPointNodeName(27));
+    Assert.assertEquals("GND_2", devKit.getControlPointNodeName(28));
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(29));
   }
 
   @Test
@@ -77,39 +77,39 @@ public class ESP32DevKitTest {
     Assert.assertEquals("EN", devKit.getControlPointNodeName(1));
     Assert.assertEquals("VP", devKit.getControlPointNodeName(2));
     Assert.assertEquals("VN", devKit.getControlPointNodeName(3));
-    Assert.assertEquals("IO34", devKit.getControlPointNodeName(4));
-    Assert.assertEquals("IO35", devKit.getControlPointNodeName(5));
-    Assert.assertEquals("IO32", devKit.getControlPointNodeName(6));
-    Assert.assertEquals("IO33", devKit.getControlPointNodeName(7));
-    Assert.assertEquals("IO25", devKit.getControlPointNodeName(8));
-    Assert.assertEquals("IO26", devKit.getControlPointNodeName(9));
-    Assert.assertEquals("IO27", devKit.getControlPointNodeName(10));
-    Assert.assertEquals("IO14", devKit.getControlPointNodeName(11));
-    Assert.assertEquals("IO12", devKit.getControlPointNodeName(12));
-    Assert.assertEquals("GND", devKit.getControlPointNodeName(13));
-    Assert.assertEquals("IO13", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("34", devKit.getControlPointNodeName(4));
+    Assert.assertEquals("35", devKit.getControlPointNodeName(5));
+    Assert.assertEquals("32", devKit.getControlPointNodeName(6));
+    Assert.assertEquals("33", devKit.getControlPointNodeName(7));
+    Assert.assertEquals("25", devKit.getControlPointNodeName(8));
+    Assert.assertEquals("26", devKit.getControlPointNodeName(9));
+    Assert.assertEquals("27", devKit.getControlPointNodeName(10));
+    Assert.assertEquals("14", devKit.getControlPointNodeName(11));
+    Assert.assertEquals("12", devKit.getControlPointNodeName(12));
+    Assert.assertEquals("GND_1", devKit.getControlPointNodeName(13));
+    Assert.assertEquals("13", devKit.getControlPointNodeName(14));
     Assert.assertEquals("D2", devKit.getControlPointNodeName(15));
     Assert.assertEquals("D3", devKit.getControlPointNodeName(16));
     Assert.assertEquals("CMD", devKit.getControlPointNodeName(17));
     Assert.assertEquals("5V", devKit.getControlPointNodeName(18));
 
     // Right row (J3: 19..37, top to bottom)
-    Assert.assertEquals("GND", devKit.getControlPointNodeName(19));
-    Assert.assertEquals("IO23", devKit.getControlPointNodeName(20));
-    Assert.assertEquals("IO22", devKit.getControlPointNodeName(21));
+    Assert.assertEquals("GND_2", devKit.getControlPointNodeName(19));
+    Assert.assertEquals("23", devKit.getControlPointNodeName(20));
+    Assert.assertEquals("22", devKit.getControlPointNodeName(21));
     Assert.assertEquals("TX", devKit.getControlPointNodeName(22));
     Assert.assertEquals("RX", devKit.getControlPointNodeName(23));
-    Assert.assertEquals("IO21", devKit.getControlPointNodeName(24));
-    Assert.assertEquals("GND", devKit.getControlPointNodeName(25));
-    Assert.assertEquals("IO19", devKit.getControlPointNodeName(26));
-    Assert.assertEquals("IO18", devKit.getControlPointNodeName(27));
-    Assert.assertEquals("IO5", devKit.getControlPointNodeName(28));
-    Assert.assertEquals("IO17", devKit.getControlPointNodeName(29));
-    Assert.assertEquals("IO16", devKit.getControlPointNodeName(30));
-    Assert.assertEquals("IO4", devKit.getControlPointNodeName(31));
-    Assert.assertEquals("IO0", devKit.getControlPointNodeName(32));
-    Assert.assertEquals("IO2", devKit.getControlPointNodeName(33));
-    Assert.assertEquals("IO15", devKit.getControlPointNodeName(34));
+    Assert.assertEquals("21", devKit.getControlPointNodeName(24));
+    Assert.assertEquals("GND_3", devKit.getControlPointNodeName(25));
+    Assert.assertEquals("19", devKit.getControlPointNodeName(26));
+    Assert.assertEquals("18", devKit.getControlPointNodeName(27));
+    Assert.assertEquals("5", devKit.getControlPointNodeName(28));
+    Assert.assertEquals("17", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("16", devKit.getControlPointNodeName(30));
+    Assert.assertEquals("4", devKit.getControlPointNodeName(31));
+    Assert.assertEquals("0", devKit.getControlPointNodeName(32));
+    Assert.assertEquals("2", devKit.getControlPointNodeName(33));
+    Assert.assertEquals("15", devKit.getControlPointNodeName(34));
     Assert.assertEquals("D1", devKit.getControlPointNodeName(35));
     Assert.assertEquals("D0", devKit.getControlPointNodeName(36));
     Assert.assertEquals("CLK", devKit.getControlPointNodeName(37));
@@ -137,7 +137,7 @@ public class ESP32DevKitTest {
 
     // Row spacing: 1.00" = 200px between Left row and Right row
     Point2D pLeftTop = devKit.getControlPoint(0);
-    Point2D pRightTop = devKit.getControlPoint(29);
+    Point2D pRightTop = devKit.getControlPoint(15);
     Assert.assertEquals(200.0, pLeftTop.distance(pRightTop), 0.01);
     Assert.assertEquals(pLeftTop.getY(), pRightTop.getY(), 0.01);
   }
@@ -219,8 +219,8 @@ public class ESP32DevKitTest {
     }
 
     // Left row (J1: 0..21, top to bottom)
-    Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
-    Assert.assertEquals("3V3", devKit.getControlPointNodeName(1));
+    Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("3V3_2", devKit.getControlPointNodeName(1));
     Assert.assertEquals("RST", devKit.getControlPointNodeName(2));
     Assert.assertEquals("4", devKit.getControlPointNodeName(3));
     Assert.assertEquals("5", devKit.getControlPointNodeName(4));
@@ -240,10 +240,10 @@ public class ESP32DevKitTest {
     Assert.assertEquals("13", devKit.getControlPointNodeName(18));
     Assert.assertEquals("14", devKit.getControlPointNodeName(19));
     Assert.assertEquals("5V", devKit.getControlPointNodeName(20));
-    Assert.assertEquals("G", devKit.getControlPointNodeName(21));
+    Assert.assertEquals("GND_1", devKit.getControlPointNodeName(21));
 
     // Right row (J3: 22..43, top to bottom)
-    Assert.assertEquals("G", devKit.getControlPointNodeName(22));
+    Assert.assertEquals("GND_2", devKit.getControlPointNodeName(22));
     Assert.assertEquals("TX", devKit.getControlPointNodeName(23));
     Assert.assertEquals("RX", devKit.getControlPointNodeName(24));
     Assert.assertEquals("1", devKit.getControlPointNodeName(25));
@@ -263,8 +263,8 @@ public class ESP32DevKitTest {
     Assert.assertEquals("21", devKit.getControlPointNodeName(39));
     Assert.assertEquals("20", devKit.getControlPointNodeName(40));
     Assert.assertEquals("19", devKit.getControlPointNodeName(41));
-    Assert.assertEquals("G", devKit.getControlPointNodeName(42));
-    Assert.assertEquals("G", devKit.getControlPointNodeName(43));
+    Assert.assertEquals("GND_3", devKit.getControlPointNodeName(42));
+    Assert.assertEquals("GND_4", devKit.getControlPointNodeName(43));
   }
 
   @Test
@@ -326,13 +326,13 @@ public class ESP32DevKitTest {
 
     devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_S3_DevKitC_44Pin);
     Assert.assertEquals(44, devKit.getControlPointCount());
-    Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
-    Assert.assertEquals("G", devKit.getControlPointNodeName(43));
+    Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("GND_4", devKit.getControlPointNodeName(43));
 
     devKit.setVersion(ESP32DevKit.DevKitVersion.DevKit_V1_30Pin);
     Assert.assertEquals(30, devKit.getControlPointCount());
-    Assert.assertEquals("3V3", devKit.getControlPointNodeName(14));
-    Assert.assertEquals("D23", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("VIN", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(29));
   }
 
   @Test
@@ -353,7 +353,7 @@ public class ESP32DevKitTest {
 
     // Original uses 1.0" (25.4mm) row spacing
     Point2D p30_left = devKit.getControlPoint(0);
-    Point2D p30_right = devKit.getControlPoint(29);
+    Point2D p30_right = devKit.getControlPoint(15);
     double spacing30 = Math.abs(p30_right.getX() - p30_left.getX());
 
     // S3 uses 22.86mm (~0.9") row spacing
@@ -521,7 +521,7 @@ public class ESP32DevKitTest {
     Assert.assertEquals("EN", ESP32DevKit.getDisplayPinLabel("EN"));
     Assert.assertEquals("D34", ESP32DevKit.getDisplayPinLabel("D34"));
     Assert.assertEquals("3V3", ESP32DevKit.getDisplayPinLabel("3V3"));
-    Assert.assertEquals("3V3_1", ESP32DevKit.getDisplayPinLabel("3V3_1"));
+    Assert.assertEquals("3V3", ESP32DevKit.getDisplayPinLabel("3V3_1"));
     Assert.assertEquals("GND1", ESP32DevKit.getDisplayPinLabel("GND1"));
     Assert.assertEquals("", ESP32DevKit.getDisplayPinLabel(null));
     Assert.assertEquals("", ESP32DevKit.getDisplayPinLabel(""));

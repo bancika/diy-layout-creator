@@ -60,8 +60,6 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Color NODEMCU_BLACK = Color.decode("#3E3E3E");
-  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
-  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color SILK_COLOR = Color.WHITE;
   public static Size BOARD_WIDTH = new Size(25.7d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(48.0d, SizeUnit.mm);
@@ -77,9 +75,9 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..14)
-      "A0 (ADC0)", "RSV1", "RSV2", "SD3", "SD2", "SD1", "CMD", "SD0", "CLK", "GND1", "3V3_1", "EN", "RST", "GND2", "VIN",
+      "A0", "RSV_1", "RSV_2", "SD3", "SD2", "SD1", "CMD", "SD0", "CLK", "GND_1", "3V3_1", "EN", "RST", "GND_2", "VIN",
       // Right row (pins 15..29)
-      "D0 (GPIO16)", "D1 (GPIO5)", "D2 (GPIO4)", "D3 (GPIO0)", "D4 (GPIO2)", "3V3_2", "GND3", "D5 (GPIO14)", "D6 (GPIO12)", "D7 (GPIO13)", "D8 (GPIO15)", "RX (GPIO3)", "TX (GPIO1)", "GND4", "3V3_3"
+      "D0", "D1", "D2", "D3", "D4", "3V3_2", "GND_3", "D5", "D6", "D7", "D8", "RX", "TX", "GND_4", "3V3_3"
   };
 
   protected boolean headers = false;
@@ -108,9 +106,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
     double rowSpacing = ROW_SPACING.convertToPixels(); // 180px
 
@@ -123,8 +119,13 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       relativeOffsets[15 + i][0] = rowSpacing;
       relativeOffsets[15 + i][1] = i * spacing;
     }
+    return relativeOffsets;
+  }
 
-    rotatePoints(firstPoint, relativeOffsets);
+  @Override
+  protected void updateControlPoints() {
+    Point2D firstPoint = controlPoints[0];
+    rotatePoints(firstPoint, getRelativeOffsets());
   }
 
   @Override
@@ -236,6 +237,9 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT);
       double labelY = shieldY + shieldH + new Size(4.0d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, "NodeMCU", x + rowSpacing / 2.0, labelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Pin labels
+      drawPinLabels(g2d, x, y, getRelativeOffsets(), SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);

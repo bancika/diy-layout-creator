@@ -100,10 +100,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
   // Common Spacing
   public static Size ROW_SPACING = new Size(1.0d, SizeUnit.in);
 
-  // Pin Label Silkscreen
-  public static Size PIN_LABEL_OFFSET = new Size(1.8d, SizeUnit.mm);
-  public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
-
   // ESP32-S3 DevKitC-1 (44-Pin) Dimensions
   // BOARD_LENGTH_S3 is the main PCB body only; antenna extends above separately
   public static Size BOARD_WIDTH_S3 = new Size(25.40d, SizeUnit.mm);
@@ -118,34 +114,34 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES_30 = new String[] {
       // Left row (pins 0..14, top to bottom)
-      "EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND3", "GND1", "VIN",
-      // Right row (pins 15..29, bottom to top)
-      "3V3", "GND2", "D15", "D2", "D4", "RX2", "TX2", "D5", "D18", "D19", "D21", "RXD", "TXD", "D22", "D23"
+      "EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND_3", "GND_1", "VIN",
+      // Right row (pins 15..29, top to bottom)
+      "D23", "D22", "TXD", "RXD", "D21", "D19", "D18", "D5", "TX2", "RX2", "D4", "D2", "D15", "GND_2", "3V3"
   };
 
   public static final String[] PIN_NAMES_38 = new String[] {
       // Left row (J2: pins 0..18, top to bottom)
       "3V3", "EN", "VP", "VN", "34", "35", "32", "33",
-      "25", "26", "27", "14", "12", "GND", "13",
+      "25", "26", "27", "14", "12", "GND_1", "13",
       "D2", "D3", "CMD", "5V",
       // Right row (J3: pins 19..37, top to bottom)
-      "GND", "23", "22", "TX", "RX", "21", "GND",
+      "GND_2", "23", "22", "TX", "RX", "21", "GND_3",
       "19", "18", "5", "17", "16", "4", "0", "2",
       "15", "D1", "D0", "CLK"
   };
 
   public static final String[] PIN_NAMES_S3_44 = new String[] {
       // Left row (J1: pins 0..21, top to bottom)
-      "3V3", "3V3", "RST", "4", "5", "6", "7",
+      "3V3_1", "3V3_2", "RST", "4", "5", "6", "7",
       "15", "16", "17", "18", "8", "3",
       "46", "9", "10", "11", "12", "13",
-      "14", "5V", "G",
+      "14", "5V", "GND_1",
       // Right row (J3: pins 22..43, top to bottom)
-      "G", "TX", "RX", "1", "2",
+      "GND_2", "TX", "RX", "1", "2",
       "42", "41", "40", "39", "38",
       "37", "36", "35", "0", "45",
       "48", "47", "21", "20", "19",
-      "G", "G"
+      "GND_3", "GND_4"
   };
 
   private DevKitVersion version = DevKitVersion.DevKit_V1_30Pin;
@@ -211,7 +207,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
       }
       for (int i = 0; i < 15; i++) {
         relativeOffsets[15 + i][0] = rowSpacing;
-        relativeOffsets[15 + i][1] = (14 - i) * spacing;
+        relativeOffsets[15 + i][1] = i * spacing;
       }
       return relativeOffsets;
     } else if (version == DevKitVersion.DevKitC_V4_38Pin) {
@@ -531,7 +527,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
       }
 
       // Draw pin labels next to control points
-      drawPinLabels(g2d, x, y);
+      drawPinLabels(g2d, x, y, getRelativeOffsets(), SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);
@@ -543,50 +539,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
     }
 
     g2d.setComposite(oldComposite);
-  }
-
-  /**
-   * Helper to format a pin name for silkscreen display by omitting any parenthesized content.
-   */
-  public static String getDisplayPinLabel(String name) {
-    if (name == null) {
-      return "";
-    }
-    int parenIdx = name.indexOf('(');
-    if (parenIdx != -1) {
-      name = name.substring(0, parenIdx);
-    }
-    return name.trim();
-  }
-
-  /**
-   * Helper to draw rotated control point / pin names next to the pins.
-   */
-  private void drawPinLabels(Graphics2D g2d, double x, double y) {
-    double[][] offsets = getRelativeOffsets();
-    double labelOffset = PIN_LABEL_OFFSET.convertToPixels();
-    int count = offsets.length;
-    int half = count / 2;
-
-    g2d.setColor(SILK_COLOR);
-    g2d.setFont(PIN_FONT);
-
-    for (int i = 0; i < count; i++) {
-      String name = getControlPointNodeName(i);
-      String label = getDisplayPinLabel(name);
-      if (label.isEmpty()) {
-        continue;
-      }
-      double pinX = x + offsets[i][0];
-      double pinY = y + offsets[i][1];
-      double textX = (i < half) ? (pinX + labelOffset) : (pinX - labelOffset);
-      double textY = pinY;
-
-      AffineTransform oldLabelTx = g2d.getTransform();
-      g2d.rotate(Math.PI / 2, textX, textY);
-      StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      g2d.setTransform(oldLabelTx);
-    }
   }
 
   /**
