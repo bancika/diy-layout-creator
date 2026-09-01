@@ -118,20 +118,20 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES_30 = new String[] {
       // Left row (pins 0..14, top to bottom)
-      "EN", "VP (GPIO36)", "VN (GPIO39)", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND1", "D13", "3V3",
+      "EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND3", "GND1", "VIN",
       // Right row (pins 15..29, bottom to top)
-      "VIN", "GND2", "D15", "D2", "D4", "D16 (RX2)", "D17 (TX2)", "D5", "D18", "D19", "D21", "RX0 (GPIO3)", "TX0 (GPIO1)", "D22", "D23"
+      "3V3", "GND2", "D15", "D2", "D4", "RX2", "TX2", "D5", "D18", "D19", "D21", "RXD", "TXD", "D22", "D23"
   };
 
   public static final String[] PIN_NAMES_38 = new String[] {
       // Left row (J2: pins 0..18, top to bottom)
-      "3V3", "EN", "VP", "VN", "IO34", "IO35", "IO32", "IO33",
-      "IO25", "IO26", "IO27", "IO14", "IO12", "GND", "IO13",
+      "3V3", "EN", "VP", "VN", "34", "35", "32", "33",
+      "25", "26", "27", "14", "12", "GND", "13",
       "D2", "D3", "CMD", "5V",
       // Right row (J3: pins 19..37, top to bottom)
-      "GND", "IO23", "IO22", "TX", "RX", "IO21", "GND",
-      "IO19", "IO18", "IO5", "IO17", "IO16", "IO4", "IO0", "IO2",
-      "IO15", "D1", "D0", "CLK"
+      "GND", "23", "22", "TX", "RX", "21", "GND",
+      "19", "18", "5", "17", "16", "4", "0", "2",
+      "15", "D1", "D0", "CLK"
   };
 
   public static final String[] PIN_NAMES_S3_44 = new String[] {
