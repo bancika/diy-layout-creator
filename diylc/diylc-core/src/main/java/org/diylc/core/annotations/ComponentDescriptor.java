@@ -28,6 +28,7 @@ import org.diylc.common.DefaultComponentTransformer;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.schematic.ISchematicFactory;
 
 /**
  * Annotation that needs to be used for each {@link IDIYComponent} implementation. Describes
@@ -123,9 +124,18 @@ public @interface ComponentDescriptor {
   boolean enableDatasheet() default false;
   
   /**
-   * If datasheet is enabled, this property determines how many columns define a component, e.g. in how many steps we can instantiate a component 
-   * 
+   * If datasheet is enabled, this property determines how many columns define a component, e.g. in how many steps we can instantiate a component
+   *
    * @return
    */
   int datasheetCreationStepCount() default 0;
+
+  /**
+   * Strategy that converts an instance of this component type into one or more schematic symbols
+   * when the schematic view is generated. When left at the default ({@link ISchematicFactory}
+   * itself, used here only as a "none" marker), a generic box symbol is produced instead.
+   *
+   * @return the schematic factory class, or {@code ISchematicFactory.class} when none is declared
+   */
+  Class<? extends ISchematicFactory> schematicFactory() default ISchematicFactory.class;
 }

@@ -68,6 +68,7 @@ public class Project implements Serializable, Cloneable {
   private Set<IDIYComponent<?>> lockedComponents;
   private Set<Integer> hiddenLayers;
   private Font font = DEFAULT_FONT;
+  private SchematicView schematicView;
 
   public Project() {
     components = new ArrayList<IDIYComponent<?>>();
@@ -194,6 +195,30 @@ public class Project implements Serializable, Cloneable {
     if (hiddenLayers == null)
       hiddenLayers = new HashSet<Integer>();
     return hiddenLayers;
+  }
+
+  /**
+   * @return the schematic representation of this project, or {@code null} if the user has never
+   *         opened the schematic view. Use {@link #getOrCreateSchematicView()} when a non-null
+   *         instance is required.
+   */
+  public SchematicView getSchematicView() {
+    return schematicView;
+  }
+
+  public void setSchematicView(SchematicView schematicView) {
+    this.schematicView = schematicView;
+  }
+
+  /**
+   * Lazily initializes and returns the {@link SchematicView}. Calling this method causes the
+   * schematic data to be persisted with the project from now on.
+   */
+  public SchematicView getOrCreateSchematicView() {
+    if (schematicView == null) {
+      schematicView = new SchematicView();
+    }
+    return schematicView;
   }
 
   public VersionNumber getFileVersion() {
@@ -323,6 +348,11 @@ public class Project implements Serializable, Cloneable {
         return false;
     } else if (!hiddenLayers.equals(other.hiddenLayers))
       return false;
+    if (schematicView == null) {
+      if (other.schematicView != null)
+        return false;
+    } else if (!schematicView.equals(other.schematicView))
+      return false;
     return true;
   }
 
@@ -358,7 +388,10 @@ public class Project implements Serializable, Cloneable {
     project.setWidth(this.getWidth());
     project.getLockedLayers().addAll(this.getLockedLayers());
     project.getHiddenLayers().addAll(this.getHiddenLayers());    
-    project.setFont(this.getFont());    
+    project.setFont(this.getFont());
+    if (this.schematicView != null) {
+      project.setSchematicView(this.schematicView.clone());
+    }
 
     Map<IDIYComponent<?>, IDIYComponent<?>> cloneMap = new HashMap<IDIYComponent<?>, IDIYComponent<?>>();
 
