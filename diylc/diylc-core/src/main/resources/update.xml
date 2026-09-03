@@ -391,6 +391,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>When transistor pinout is selected for TO-1, TO-92, TO-126, TO-220 transistor, the corresponding electrode name will be used as a node name in programmatical and AI analysis</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
