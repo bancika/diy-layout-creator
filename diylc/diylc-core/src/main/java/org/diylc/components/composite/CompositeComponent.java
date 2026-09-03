@@ -183,12 +183,6 @@ public class CompositeComponent extends AbstractComponent<Void> {
     return childComponents.get(childOf[index]).getControlPointNodeName(pointOf[index]);
   }
 
-  @Override
-  public String[] getSectionNames(int pointIndex) {
-    buildIndexIfNeeded();
-    return new String[] {childComponents.get(childOf[pointIndex]).getName()};
-  }
-
   /**
    * The composite is always rigid: it moves and rotates as a unit and never stretches. See design
    * decision D4 in {@code docs/plans/composite-building-blocks.md}.

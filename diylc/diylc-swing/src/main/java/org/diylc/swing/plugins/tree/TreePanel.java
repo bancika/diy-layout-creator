@@ -585,7 +585,7 @@ public class TreePanel extends JPanel {
       super();
       this.plugInPort = plugInPort;
       this.blockName = blockName;
-      putValue(AbstractAction.NAME, "Insert as Separate Components");
+      putValue(AbstractAction.NAME, "Insert as Grouped Components");
     }
 
     @Override

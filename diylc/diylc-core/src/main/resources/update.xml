@@ -370,6 +370,14 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Building blocks instantiate by default as a single component, inheriting control points and terminal nodes from all individual components but acting as a single component; still possible to instantiate individual components using 'Insert as Grouped Components' action from the context menu over a building block</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to set node name (or names) for some connectivity components (e.g. Solder Pad, Eyelet, PCB Terminal Block, etc); when combined into building blocks, these names will become node names of the composite component stamped from the building block</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
 				</org.diylc.appframework.update.Change>
