@@ -43,6 +43,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
 import org.diylc.presenter.ContinuityArea;
@@ -182,6 +183,10 @@ public class SchematicTabPlugin implements IPlugIn {
     wrapper.setGridSpacing(view.getGridSpacing());
     wrapper.setFont(layoutProject.getFont());
     wrapper.getComponents().addAll(view.getComponents());
+    // Wires are auto-routed and must never be touched by the user: lock the whole WIRING layer so
+    // they cannot be selected, dragged or detached from symbols. Symbols live on the COMPONENT
+    // layer and stay fully movable.
+    wrapper.getLockedLayers().add(IDIYComponent.WIRING);
     return wrapper;
   }
 

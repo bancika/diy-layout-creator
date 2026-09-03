@@ -21,7 +21,9 @@
 */
 package org.diylc.components.schematic;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -81,6 +83,11 @@ public class SchematicWire extends AbstractComponent<Void> implements IContinuit
     List<Point2D> points = getRoutePoints();
     if (points.size() < 2)
       return;
+    // The schematic renders wires on a locked layer (so they cannot be selected or detached), but
+    // locked components are painted at reduced alpha. A wire must stay solid, so force an opaque
+    // composite for its own drawing and restore it afterwards.
+    Composite oldComposite = g2d.getComposite();
+    g2d.setComposite(AlphaComposite.SrcOver);
     g2d.setColor(
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color);
@@ -91,6 +98,7 @@ public class SchematicWire extends AbstractComponent<Void> implements IContinuit
       path.lineTo(points.get(i).getX(), points.get(i).getY());
     }
     g2d.draw(path);
+    g2d.setComposite(oldComposite);
   }
 
   @Override
