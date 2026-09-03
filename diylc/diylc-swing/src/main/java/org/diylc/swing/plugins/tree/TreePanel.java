@@ -60,10 +60,12 @@ import org.apache.log4j.lf5.viewer.categoryexplorer.TreeModelAdapter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
@@ -434,6 +436,7 @@ public class TreePanel extends JPanel {
               }
             }
           } else if (getTreeModel().isLeaf(selectedNode)) {
+            popup.add(new InsertBlockAsGroupAction(plugInPort, payload.toString()));
             popup.add(shortcutSubmenu);
             popup.add(new DeleteBlockAction(plugInPort, swingUI, payload.toString()));
           }
@@ -561,6 +564,37 @@ public class TreePanel extends JPanel {
         }
 
         plugInPort.setSelection(newSelection, true);        
+      }
+    }
+  }
+
+  /**
+   * Left click on a building block node inserts it in composite mode (a single rigid component)
+   * by default - see design decision D10 in {@code docs/plans/composite-building-blocks.md}.
+   * This action offers the one extra click needed to fall back to the original behavior:
+   * every component of the block instantiated separately and auto-grouped.
+   */
+  public static class InsertBlockAsGroupAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private String blockName;
+
+    public InsertBlockAsGroupAction(IPlugInPort plugInPort, String blockName) {
+      super();
+      this.plugInPort = plugInPort;
+      this.blockName = blockName;
+      putValue(AbstractAction.NAME, "Insert as Separate Components");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      try {
+        plugInPort.loadBlock(blockName, BlockInstantiationMode.GROUP);
+      } catch (InvalidBlockException e1) {
+        LOG.error("Could not find building block: " + blockName, e1);
       }
     }
   }

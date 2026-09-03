@@ -59,6 +59,7 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.tree.TreePanel;
 import org.diylc.swing.plugins.tree.TreePanel.DeleteBlockAction;
+import org.diylc.swing.plugins.tree.TreePanel.InsertBlockAsGroupAction;
 import org.diylc.swing.plugins.tree.TreePanel.SelectAllAction;
 
 /**
@@ -456,6 +457,7 @@ class ComponentTabbedPane extends JTabbedPane {
             }
           }
         } else {
+          variantPopup.add(new InsertBlockAsGroupAction(plugInPort, blockName));
           variantPopup.add(shortcutSubmenu);
           variantPopup.add(new DeleteBlockAction(plugInPort, swingUI, blockName));
         }

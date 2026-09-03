@@ -123,9 +123,18 @@ public @interface ComponentDescriptor {
   boolean enableDatasheet() default false;
   
   /**
-   * If datasheet is enabled, this property determines how many columns define a component, e.g. in how many steps we can instantiate a component 
-   * 
+   * If datasheet is enabled, this property determines how many columns define a component, e.g. in how many steps we can instantiate a component
+   *
    * @return
    */
   int datasheetCreationStepCount() default 0;
+
+  /**
+   * @return true if the component type should not be listed in the palette (toolbox and
+   *         component tree), while still being resolvable via
+   *         {@code ComponentProcessor.extractComponentTypeFrom} for netlist, BOM and name
+   *         generation purposes. Used by component types that are only ever created
+   *         programmatically, e.g. {@code CompositeComponent}.
+   */
+  boolean hiddenInPalette() default false;
 }
