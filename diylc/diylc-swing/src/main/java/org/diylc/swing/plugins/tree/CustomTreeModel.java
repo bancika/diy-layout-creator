@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
 import org.diylc.common.IBlockProcessor;
@@ -143,7 +144,7 @@ public class CustomTreeModel implements TreeModel {
                     && System.currentTimeMillis() - previousActionTime > 100) {
                   previousActionTime = System.currentTimeMillis();
                   try {
-                    plugInPort.loadBlock(fav.getName());
+                    plugInPort.loadBlock(fav.getName(), BlockInstantiationMode.COMPOSITE);
                   } catch (InvalidBlockException e1) {
                     e1.printStackTrace();
                   }
@@ -174,7 +175,7 @@ public class CustomTreeModel implements TreeModel {
                   && System.currentTimeMillis() - previousActionTime > 100) {
                 previousActionTime = System.currentTimeMillis();
                 try {
-                  plugInPort.loadBlock(blockName);
+                  plugInPort.loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
                 } catch (InvalidBlockException e1) {
                   e1.printStackTrace();
                 }
@@ -212,7 +213,7 @@ public class CustomTreeModel implements TreeModel {
                   && System.currentTimeMillis() - previousActionTime > 100) {
                 previousActionTime = System.currentTimeMillis();
                 try {
-                  plugInPort.loadBlock(block);
+                  plugInPort.loadBlock(block, BlockInstantiationMode.COMPOSITE);
                 } catch (InvalidBlockException e1) {
                   e1.printStackTrace();
                 }

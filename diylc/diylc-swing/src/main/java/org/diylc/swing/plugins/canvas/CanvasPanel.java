@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.appframework.miscutils.IConfigurationManager;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IBlockProcessor;
@@ -227,7 +228,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
           if (clazz.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
             String blockName = clazz.substring(IBlockProcessor.BLOCK_PREFIX.length());
             try {
-              CanvasPanel.this.plugInPort.loadBlock(blockName);
+              CanvasPanel.this.plugInPort.loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
               // hack: fake mouse movement to repaint
               CanvasPanel.this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
             } catch (InvalidBlockException ex) {
@@ -264,7 +265,7 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (typeName.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
       String blockName = typeName.substring(IBlockProcessor.BLOCK_PREFIX.length());
       try {
-        plugInPort.loadBlock(blockName);
+        plugInPort.loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
       } catch (InvalidBlockException e) {
         LOG.error("Could not find block assigned to shortcut: " + blockName);
       }

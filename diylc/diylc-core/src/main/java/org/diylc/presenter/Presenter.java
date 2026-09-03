@@ -2844,11 +2844,6 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void loadBlock(String blockName) throws InvalidBlockException {
-    loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
-  }
-
-  @Override
   public void loadBlock(String blockName, BlockInstantiationMode mode) throws InvalidBlockException {
     List<IDIYComponent<?>> components =
         buildingBlockManager.loadBlock(blockName, currentProject.getComponents(), mode);

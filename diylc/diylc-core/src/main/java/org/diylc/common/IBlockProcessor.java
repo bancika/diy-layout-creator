@@ -40,12 +40,11 @@ public interface IBlockProcessor {
   void saveSelectionAsBlock(String blockName);
 
   /**
-   * Loads the block in {@link BlockInstantiationMode#COMPOSITE} mode, i.e. as a single rigid
-   * component. This is the default instantiation mode (see design decision D10 in
-   * {@code docs/plans/composite-building-blocks.md}).
+   * Loads the block in the given {@link BlockInstantiationMode}. {@link BlockInstantiationMode#COMPOSITE}
+   * (a single rigid component) is the default mode used by most call sites (see design decision D10 in
+   * {@code docs/plans/composite-building-blocks.md}); {@link BlockInstantiationMode#GROUP} instantiates
+   * the block as a group of loose components.
    */
-  void loadBlock(String blockName) throws InvalidBlockException;
-
   void loadBlock(String blockName, BlockInstantiationMode mode) throws InvalidBlockException;
 
   void deleteBlock(String blockName);
