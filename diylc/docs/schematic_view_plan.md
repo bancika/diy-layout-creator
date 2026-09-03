@@ -442,14 +442,15 @@ The schematic uses the **existing `DrawingManager` + `Presenter`** rendering pip
 **diylc-swing**
 - `SchematicTabPlugin` adds the Excel-style tab strip (**Layout | Schematic**) below the canvas. It owns a **second `Presenter` + `CanvasPlugin`**, so the schematic renders through the exact same `RulerScrollPane` — rulers, scroll bars, wheel/gesture zoom — as the layout canvas, with no extra controls. Selecting **Schematic** runs `SchematicSynchronizer` automatically and loads the resulting wrapper `Project` into the schematic presenter; selecting **Layout** swaps the visible scroll pane back. `CanvasPlugin.getCanvasScrollComponent()` exposes each scroll pane so the plugin can show/hide it.
 - The wrapper project **locks the `WIRING` layer**, so `SchematicWire`s cannot be selected, dragged or detached from symbols; symbols (on the `COMPONENT` layer) stay movable. `SchematicWire.draw()` forces an opaque composite so the lock-alpha dimming does not fade the wires.
+- When the user moves a symbol, `SchematicTabPlugin` listens for `EventType.PROJECT_MODIFIED` on the schematic presenter and calls `SchematicBuilder.rerouteWires()`, which re-computes every wire route from the current symbol pin positions so wires stay attached.
 - `SchematicMenuPlugin` / `SchematicViewFrame` / `SchematicPanel` — a detached-window viewer (*Analyze → Schematic View…*) that renders the `SchematicView` through a private `DrawingManager` and adds PNG export. Independent of the tab.
 
 Unit tests: `ManhattanRouterTest`, `GenericBoxSchematicFactoryTest` (library); `SchematicViewIntegrationTest` (swing — end-to-end build/sync/render).
 
 ### Not yet done (follow-ups)
 
-- Wires are fully inert (locked layer), but the schematic canvas is otherwise not **restricted**: there is no explicit block on add / delete / paste / value-edit of symbols, and no shared undo integration with the layout history.
-- Symbols moved on the schematic do not drag their wires along; wires only re-route on the next switch to the Schematic tab (targeted re-routing on mouse release is a follow-up).
+- Wires are fully inert (locked layer) and re-route automatically after a symbol move, but the schematic canvas is otherwise not **restricted**: there is no explicit block on add / delete / paste / value-edit of symbols, and no shared undo integration with the layout history.
+- Re-routing currently recomputes every wire on each move; targeted re-routing of only the affected wires, and crossing-aware routing, are follow-ups.
 - Shared undo/redo integration with the layout history.
 - Multi-section 1:N factories (`TubeSocket` → triode/pentode/duo-diode, `DIL_IC` → dual op-amps, switches).
 - Smarter placement (true connection-density clustering) and crossing-aware routing.

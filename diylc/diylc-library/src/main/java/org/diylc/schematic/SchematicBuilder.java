@@ -365,20 +365,28 @@ public class SchematicBuilder {
   }
 
   private static ManhattanRouter.Direction exitDirection(Pin pin) {
+    return exitDirection(pin.symbol, pin.location);
+  }
+
+  /**
+   * Guesses the direction a wire should leave the given pin: away from the symbol's centroid, along
+   * the dominant axis.
+   */
+  static ManhattanRouter.Direction exitDirection(IDIYComponent<?> symbol, Point2D pinLocation) {
     double cx = 0;
     double cy = 0;
-    int n = pin.symbol.getControlPointCount();
+    int n = symbol.getControlPointCount();
     if (n == 0) {
       return ManhattanRouter.Direction.NONE;
     }
     for (int i = 0; i < n; i++) {
-      cx += pin.symbol.getControlPoint(i).getX();
-      cy += pin.symbol.getControlPoint(i).getY();
+      cx += symbol.getControlPoint(i).getX();
+      cy += symbol.getControlPoint(i).getY();
     }
     cx /= n;
     cy /= n;
-    double dx = pin.location.getX() - cx;
-    double dy = pin.location.getY() - cy;
+    double dx = pinLocation.getX() - cx;
+    double dy = pinLocation.getY() - cy;
     if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
       return ManhattanRouter.Direction.NONE;
     }
@@ -386,6 +394,73 @@ public class SchematicBuilder {
       return dx < 0 ? ManhattanRouter.Direction.LEFT : ManhattanRouter.Direction.RIGHT;
     }
     return dy < 0 ? ManhattanRouter.Direction.UP : ManhattanRouter.Direction.DOWN;
+  }
+
+  /**
+   * Recomputes the route of every {@link SchematicWire} in the list from the current positions of
+   * the symbols it connects (looked up by component id). Used to re-route wires after the user moves
+   * a symbol on the schematic. Wires whose endpoints can no longer be resolved are left untouched.
+   *
+   * @return {@code true} if any wire route changed
+   */
+  public static boolean rerouteWires(List<IDIYComponent<?>> schematicComponents) {
+    Map<UUID, IDIYComponent<?>> symbolsById = new HashMap<UUID, IDIYComponent<?>>();
+    List<SchematicWire> wires = new ArrayList<SchematicWire>();
+    for (IDIYComponent<?> component : schematicComponents) {
+      if (component instanceof SchematicWire) {
+        wires.add((SchematicWire) component);
+      } else {
+        symbolsById.put(component.getId(), component);
+      }
+    }
+    // deterministic order so obstacle accumulation is stable
+    wires.sort(Comparator.comparing(w -> w.getId().toString()));
+
+    boolean changed = false;
+    List<Line2D> obstacles = new ArrayList<Line2D>();
+    for (SchematicWire wire : wires) {
+      IDIYComponent<?> source = symbolsById.get(wire.getSourceComponentId());
+      IDIYComponent<?> target = symbolsById.get(wire.getTargetComponentId());
+      if (source == null || target == null
+          || wire.getSourcePinIndex() >= source.getControlPointCount()
+          || wire.getTargetPinIndex() >= target.getControlPointCount()) {
+        // keep the existing route as an obstacle so other wires still avoid it
+        addSegments(obstacles, wire.getRoutePoints());
+        continue;
+      }
+      Point2D a = copyOf(source.getControlPoint(wire.getSourcePinIndex()));
+      Point2D b = copyOf(target.getControlPoint(wire.getTargetPinIndex()));
+      List<Point2D> route = ManhattanRouter.route(a, b, exitDirection(source, a),
+          exitDirection(target, b), obstacles, GRID);
+      if (!sameRoute(route, wire.getRoutePoints())) {
+        wire.setRoutePoints(route);
+        changed = true;
+      }
+      addSegments(obstacles, route);
+    }
+    return changed;
+  }
+
+  private static Point2D copyOf(Point2D p) {
+    return new Point2D.Double(p.getX(), p.getY());
+  }
+
+  private static void addSegments(List<Line2D> obstacles, List<Point2D> route) {
+    for (int i = 0; i < route.size() - 1; i++) {
+      obstacles.add(new Line2D.Double(route.get(i), route.get(i + 1)));
+    }
+  }
+
+  private static boolean sameRoute(List<Point2D> a, List<Point2D> b) {
+    if (a.size() != b.size()) {
+      return false;
+    }
+    for (int i = 0; i < a.size(); i++) {
+      if (a.get(i).distance(b.get(i)) > 0.5) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /* ------------------------------------------------------------------ misc */
