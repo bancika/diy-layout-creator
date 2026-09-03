@@ -31,6 +31,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
 
+import org.diylc.common.Percentage;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Node;
 import org.diylc.serialization.ProjectFileManager;
@@ -161,6 +162,31 @@ public class CompositeComponentTest {
     b.initBlockName("Different Block");
 
     assertFalse(a.equalsTo(b));
+  }
+
+  @Test
+  public void defaultsToFullyOpaque() {
+    assertEquals(new Percentage(100), twoChildComposite().getAlpha());
+  }
+
+  @Test
+  public void cloneCopiesAlpha() throws Exception {
+    CompositeComponent original = twoChildComposite();
+    original.setAlpha(new Percentage(40));
+
+    CompositeComponent clone = (CompositeComponent) original.clone();
+
+    assertEquals(new Percentage(40), clone.getAlpha());
+  }
+
+  @Test
+  public void equalsToRejectsDifferentAlpha() throws Exception {
+    CompositeComponent original = twoChildComposite();
+    CompositeComponent clone = (CompositeComponent) original.clone();
+    assertTrue(original.equalsTo(clone));
+
+    clone.setAlpha(new Percentage(50));
+    assertFalse(original.equalsTo(clone));
   }
 
   @Test

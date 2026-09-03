@@ -22,6 +22,7 @@
 package org.diylc.components.composite;
 
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.diylc.components.AbstractComponent;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -47,12 +49,6 @@ import org.diylc.utils.Constants;
  * so it can be placed, moved, rotated and wired up like any other component while the netlist,
  * BOM and AI project description still see its individual terminals (see
  * {@link #getControlPointNodeName(int)}).
- * <p>
- * The composite is intentionally a footprint, not a circuit model: it does not implement
- * {@code IContinuity} or {@code ISwitch}, so internal point-to-point connectivity and internal
- * switching are not represented (internal copper still conducts, since children draw through the
- * same drawing observer). Its own properties are the only ones exposed for editing; children are
- * frozen exactly as they were when the block was saved.
  *
  * @author Branislav Stojkovic
  */
@@ -69,7 +65,7 @@ import org.diylc.utils.Constants;
     enableCache = false,
     transformer = CompositeComponentTransformer.class,
     hiddenInPalette = true)
-public class CompositeComponent extends AbstractComponent<Void> {
+public class CompositeComponent extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
@@ -212,11 +208,13 @@ public class CompositeComponent extends AbstractComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    Composite oldComposite = applyAlpha(g2d, componentState);
     for (IDIYComponent<?> c : getChildComponents()) {
       // Children always draw in their normal state - the composite draws its own selection
       // outline below instead of letting every child paint its own highlight.
       c.draw(g2d, ComponentState.NORMAL, outlineMode, project, drawingObserver);
     }
+    g2d.setComposite(oldComposite);
 
     if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
       Rectangle2D bounds = getControlPointBounds();
@@ -288,6 +286,8 @@ public class CompositeComponent extends AbstractComponent<Void> {
     clone.setId(getId());
     clone.setName(getName());
     clone.blockName = this.blockName;
+    // matches AbstractComponent.clone(), which shallow-copies the Percentage reference
+    clone.setAlpha(getAlpha());
     List<IDIYComponent<?>> clonedComponents = new ArrayList<IDIYComponent<?>>(getChildComponents().size());
     for (IDIYComponent<?> c : getChildComponents()) {
       clonedComponents.add(c.clone());
@@ -310,7 +310,8 @@ public class CompositeComponent extends AbstractComponent<Void> {
       return false;
     }
     CompositeComponent o = (CompositeComponent) other;
-    if (!Objects.equals(getName(), o.getName()) || !Objects.equals(blockName, o.blockName)) {
+    if (!Objects.equals(getName(), o.getName()) || !Objects.equals(blockName, o.blockName)
+        || !Objects.equals(getAlpha(), o.getAlpha())) {
       return false;
     }
     List<IDIYComponent<?>> otherComponents = o.getChildComponents();
