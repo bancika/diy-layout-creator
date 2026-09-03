@@ -38,6 +38,7 @@ import org.diylc.components.schematic.SchematicWire;
 import org.diylc.core.IContinuity;
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
 import org.diylc.netlist.Group;
@@ -150,6 +151,9 @@ public class SchematicBuilder {
   static boolean isEligible(IDIYComponent<?> component) {
     if (component instanceof ICommonNode) {
       return true; // ground / common node symbols pass through
+    }
+    if (component instanceof ISwitch) {
+      return true; // switches are drawn as symbols (netlist is built with includeSwitches=false)
     }
     if (component instanceof IContinuity) {
       return false; // wires, traces, solder bridges, board strips

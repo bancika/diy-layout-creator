@@ -25,8 +25,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.diylc.components.semiconductors.ICSymbol;
+import org.diylc.components.electromechanical.MiniToggleSwitch;
 import org.diylc.components.schematic.SchematicBox;
+import org.diylc.components.semiconductors.ICSymbol;
 import org.junit.Test;
 
 public class GenericBoxSchematicFactoryTest {
@@ -54,6 +55,20 @@ public class GenericBoxSchematicFactoryTest {
     assertEquals(stickyNodes, mapping.getPinMapping().size());
     assertEquals(stickyNodes, mapping.getSchematicSymbol().getControlPointCount());
     assertEquals("IC1", mapping.getSchematicSymbol().getName());
+  }
+
+  @Test
+  public void switchesAreEligibleAndFallBackToABox() {
+    MiniToggleSwitch sw = new MiniToggleSwitch();
+    sw.setName("SW1");
+
+    assertTrue(SchematicBuilder.isEligible(sw));
+
+    List<SchematicSymbolMapping> mappings =
+        new GenericBoxSchematicFactory().createSchematicSymbols(sw);
+    assertEquals(1, mappings.size());
+    assertTrue(mappings.get(0).getSchematicSymbol() instanceof SchematicBox);
+    assertTrue(mappings.get(0).getSchematicSymbol().getControlPointCount() >= 2);
   }
 
   @Test

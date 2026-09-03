@@ -436,7 +436,7 @@ The schematic uses the **existing `DrawingManager` + `Presenter`** rendering pip
 - `SchematicBox` component (`org.diylc.components.schematic`) — generic box with configurable left/right/top/bottom comma-separated terminal lists, NAME/VALUE/BOTH/NONE display.
 - `SchematicWire` component — auto-routed Manhattan connection; implements `IContinuity`; stores source/target component id + pin index and the calculated `routePoints`; deep-cloned.
 - `ManhattanRouter` — straight / L / HVH / VHV routing with pin exit-direction preference and overlap/crossing cost scoring against existing segments.
-- `GenericBoxSchematicFactory` (default fallback) + `SchematicBuilder` (filter, symbol creation, connection-density grid placement, per-net wire chaining, canvas auto-resize) + `SchematicSynchronizer` (add/remove/keep-position incremental sync, full wire rebuild).
+- `GenericBoxSchematicFactory` (default fallback) + `SchematicBuilder` (filter, symbol creation, connection-density grid placement, per-net wire chaining, canvas auto-resize) + `SchematicSynchronizer` (add/remove/keep-position incremental sync, full wire rebuild). Switches (`ISwitch`, which extends `IContinuity`) are treated as regular symbols — the generic box fallback until a dedicated factory is added — since the netlist is built with `includeSwitches=false`.
 - Concrete factories: `Resistor`, `Capacitor`, `Diode`, `Transistor` (→ `BJTSymbol`), `Inductor`, `Potentiometer`, wired onto the common physical component types (resistors, film/ceramic/electrolytic/tantalum/mica caps, plastic/glass diodes, TO-1/92/126/220/3 transistors, radial/toroidal inductors, panel/trimmer/miniature pots).
 
 **diylc-swing**
