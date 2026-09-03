@@ -212,25 +212,9 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
     for (IDIYComponent<?> c : getChildComponents()) {
       // Children always draw in their normal state - the composite draws its own selection
       // outline below instead of letting every child paint its own highlight.
-      c.draw(g2d, ComponentState.NORMAL, outlineMode, project, drawingObserver);
+      c.draw(g2d, componentState, outlineMode, project, drawingObserver);
     }
     g2d.setComposite(oldComposite);
-
-    if (componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING) {
-      Rectangle2D bounds = getControlPointBounds();
-      if (bounds != null) {
-        // Keep the outline out of the hit-test area, same as guideline drawing elsewhere.
-        drawingObserver.stopTracking();
-        Color oldColor = g2d.getColor();
-        Stroke oldStroke = g2d.getStroke();
-        g2d.setColor(SELECTION_COLOR);
-        g2d.setStroke(Constants.DASHED_STROKE);
-        g2d.draw(bounds);
-        g2d.setColor(oldColor);
-        g2d.setStroke(oldStroke);
-        drawingObserver.startTracking();
-      }
-    }
   }
 
   private Rectangle2D getControlPointBounds() {
