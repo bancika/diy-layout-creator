@@ -114,7 +114,6 @@ public class ComponentProcessor {
     String keywordTag;
     List<String[]> datasheet = null;
     int datasheetCreationStepCount = 0;
-    boolean hiddenInPalette;
 
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
@@ -132,7 +131,6 @@ public class ComponentProcessor {
       keywordPolicy = annotation.keywordPolicy();
       keywordTag = annotation.keywordTag();
       cacheDrawing = annotation.enableCache();
-      hiddenInPalette = annotation.hiddenInPalette();
       if (annotation.enableDatasheet()) {
         datasheet = DatasheetService.getInstance().loadDatasheet(clazz);
         datasheetCreationStepCount = annotation.datasheetCreationStepCount();
@@ -163,7 +161,7 @@ public class ComponentProcessor {
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
             flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing, datasheet,
-            datasheetCreationStepCount, hiddenInPalette);
+            datasheetCreationStepCount);
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }
@@ -278,7 +276,7 @@ public class ComponentProcessor {
 
             // types created only programmatically (e.g. CompositeComponent) don't belong in the
             // palette, but still need to go through extractProperties() above so the cache is warm
-            if (componentType.isHiddenInPalette())
+            if (clazz.getAnnotation(ComponentDescriptor.class).hiddenInPalette())
               continue;
 
             List<ComponentType> nestedList;

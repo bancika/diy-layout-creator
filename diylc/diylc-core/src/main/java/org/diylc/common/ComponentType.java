@@ -56,7 +56,6 @@ public class ComponentType implements Serializable {
   private boolean enableCache;
   private List<String[]> datasheet;
   private int datasheetCreationStepCount;
-  private boolean hiddenInPalette;
 
   public ComponentType() {
   }
@@ -66,16 +65,6 @@ public class ComponentType implements Serializable {
       boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer,
       KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache, List<String[]> datasheet,
       int datasheetCreationStepCount) {
-    this(name, description, creationMethod, category, namePrefix, author, icon, instanceClass, zOrder,
-        flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, enableCache, datasheet,
-        datasheetCreationStepCount, false);
-  }
-
-  public ComponentType(String name, String description, CreationMethod creationMethod, String category,
-      String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
-      boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer,
-      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache, List<String[]> datasheet,
-      int datasheetCreationStepCount, boolean hiddenInPalette) {
     super();
     this.name = name;
     this.description = description;
@@ -95,7 +84,6 @@ public class ComponentType implements Serializable {
     this.enableCache = enableCache;
     this.datasheet = datasheet;
     this.datasheetCreationStepCount = datasheetCreationStepCount;
-    this.hiddenInPalette = hiddenInPalette;
   }
 
   public String getName() {
@@ -168,10 +156,6 @@ public class ComponentType implements Serializable {
   
   public int getDatasheetCreationStepCount() {
     return datasheetCreationStepCount;
-  }
-
-  public boolean isHiddenInPalette() {
-    return hiddenInPalette;
   }
 
   @Override
