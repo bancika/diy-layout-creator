@@ -73,7 +73,7 @@ public class CompositeComponent extends AbstractComponent<Void> {
 
   private static final long serialVersionUID = 1L;
 
-  private List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
+  private List<IDIYComponent<?>> childComponents = new ArrayList<IDIYComponent<?>>();
 
   // Name of the building block this instance was created from. Drives its display identity in
   // the BOM, netlist report and AI project description (see ComponentProcessor.getDisplayTypeName).
@@ -97,14 +97,14 @@ public class CompositeComponent extends AbstractComponent<Void> {
       return;
     }
     int total = 0;
-    for (IDIYComponent<?> c : components) {
+    for (IDIYComponent<?> c : childComponents) {
       total += c.getControlPointCount();
     }
     int[] newChildOf = new int[total];
     int[] newPointOf = new int[total];
     int idx = 0;
-    for (int ci = 0; ci < components.size(); ci++) {
-      IDIYComponent<?> c = components.get(ci);
+    for (int ci = 0; ci < childComponents.size(); ci++) {
+      IDIYComponent<?> c = childComponents.get(ci);
       int count = c.getControlPointCount();
       for (int pi = 0; pi < count; pi++) {
         newChildOf[idx] = ci;
@@ -119,11 +119,11 @@ public class CompositeComponent extends AbstractComponent<Void> {
   /**
    * @return the embedded child components, in save order. Never {@code null}.
    */
-  public List<IDIYComponent<?>> getComponents() {
-    if (components == null) {
-      components = new ArrayList<IDIYComponent<?>>();
+  public List<IDIYComponent<?>> getChildComponents() {
+    if (childComponents == null) {
+      childComponents = new ArrayList<IDIYComponent<?>>();
     }
-    return components;
+    return childComponents;
   }
 
   @EditableProperty(name = "Block", defaultable = false, sortOrder = 1)
@@ -150,43 +150,43 @@ public class CompositeComponent extends AbstractComponent<Void> {
   @Override
   public Point2D getControlPoint(int index) {
     buildIndexIfNeeded();
-    return components.get(childOf[index]).getControlPoint(pointOf[index]);
+    return childComponents.get(childOf[index]).getControlPoint(pointOf[index]);
   }
 
   @Override
   public void setControlPoint(Point2D point, int index) {
     buildIndexIfNeeded();
-    components.get(childOf[index]).setControlPoint(point, pointOf[index]);
+    childComponents.get(childOf[index]).setControlPoint(point, pointOf[index]);
   }
 
   @Override
   public boolean isControlPointSticky(int index) {
     buildIndexIfNeeded();
-    return components.get(childOf[index]).isControlPointSticky(pointOf[index]);
+    return childComponents.get(childOf[index]).isControlPointSticky(pointOf[index]);
   }
 
   @Override
   public boolean canControlPointOverlap(int index) {
     buildIndexIfNeeded();
-    return components.get(childOf[index]).canControlPointOverlap(pointOf[index]);
+    return childComponents.get(childOf[index]).canControlPointOverlap(pointOf[index]);
   }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
     buildIndexIfNeeded();
-    return components.get(childOf[index]).getControlPointVisibilityPolicy(pointOf[index]);
+    return childComponents.get(childOf[index]).getControlPointVisibilityPolicy(pointOf[index]);
   }
 
   @Override
   public String getControlPointNodeName(int index) {
     buildIndexIfNeeded();
-    return components.get(childOf[index]).getControlPointNodeName(pointOf[index]);
+    return childComponents.get(childOf[index]).getControlPointNodeName(pointOf[index]);
   }
 
   @Override
   public String[] getSectionNames(int pointIndex) {
     buildIndexIfNeeded();
-    return new String[] {components.get(childOf[pointIndex]).getName()};
+    return new String[] {childComponents.get(childOf[pointIndex]).getName()};
   }
 
   /**
@@ -200,7 +200,7 @@ public class CompositeComponent extends AbstractComponent<Void> {
 
   @Override
   public void createdIn(Project project) {
-    for (IDIYComponent<?> c : getComponents()) {
+    for (IDIYComponent<?> c : getChildComponents()) {
       c.createdIn(project);
     }
   }
@@ -218,7 +218,7 @@ public class CompositeComponent extends AbstractComponent<Void> {
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
-    for (IDIYComponent<?> c : getComponents()) {
+    for (IDIYComponent<?> c : getChildComponents()) {
       // Children always draw in their normal state - the composite draws its own selection
       // outline below instead of letting every child paint its own highlight.
       c.draw(g2d, ComponentState.NORMAL, outlineMode, project, drawingObserver);
@@ -294,11 +294,11 @@ public class CompositeComponent extends AbstractComponent<Void> {
     clone.setId(getId());
     clone.setName(getName());
     clone.blockName = this.blockName;
-    List<IDIYComponent<?>> clonedComponents = new ArrayList<IDIYComponent<?>>(getComponents().size());
-    for (IDIYComponent<?> c : getComponents()) {
+    List<IDIYComponent<?>> clonedComponents = new ArrayList<IDIYComponent<?>>(getChildComponents().size());
+    for (IDIYComponent<?> c : getChildComponents()) {
       clonedComponents.add(c.clone());
     }
-    clone.components = clonedComponents;
+    clone.childComponents = clonedComponents;
     return clone;
   }
 
@@ -319,12 +319,12 @@ public class CompositeComponent extends AbstractComponent<Void> {
     if (!Objects.equals(getName(), o.getName()) || !Objects.equals(blockName, o.blockName)) {
       return false;
     }
-    List<IDIYComponent<?>> otherComponents = o.getComponents();
-    if (getComponents().size() != otherComponents.size()) {
+    List<IDIYComponent<?>> otherComponents = o.getChildComponents();
+    if (getChildComponents().size() != otherComponents.size()) {
       return false;
     }
-    for (int i = 0; i < components.size(); i++) {
-      if (!components.get(i).equalsTo(otherComponents.get(i))) {
+    for (int i = 0; i < childComponents.size(); i++) {
+      if (!childComponents.get(i).equalsTo(otherComponents.get(i))) {
         return false;
       }
     }

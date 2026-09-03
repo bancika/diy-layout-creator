@@ -42,9 +42,9 @@ public class CompositeComponentTransformer implements IComponentTransformer {
   @Override
   public boolean canRotate(IDIYComponent<?> component) {
     CompositeComponent composite = (CompositeComponent) component;
-    if (composite.getComponents().isEmpty())
+    if (composite.getChildComponents().isEmpty())
       return false;
-    for (IDIYComponent<?> child : composite.getComponents()) {
+    for (IDIYComponent<?> child : composite.getChildComponents()) {
       if (!childTransformer(child).canRotate(child))
         return false;
     }
@@ -54,9 +54,9 @@ public class CompositeComponentTransformer implements IComponentTransformer {
   @Override
   public boolean canMirror(IDIYComponent<?> component) {
     CompositeComponent composite = (CompositeComponent) component;
-    if (composite.getComponents().isEmpty())
+    if (composite.getChildComponents().isEmpty())
       return false;
-    for (IDIYComponent<?> child : composite.getComponents()) {
+    for (IDIYComponent<?> child : composite.getChildComponents()) {
       if (!childTransformer(child).canMirror(child))
         return false;
     }
@@ -75,7 +75,7 @@ public class CompositeComponentTransformer implements IComponentTransformer {
   @Override
   public void rotate(IDIYComponent<?> component, Point2D center, int direction) {
     CompositeComponent composite = (CompositeComponent) component;
-    for (IDIYComponent<?> child : composite.getComponents()) {
+    for (IDIYComponent<?> child : composite.getChildComponents()) {
       childTransformer(child).rotate(child, center, direction);
     }
   }
@@ -83,7 +83,7 @@ public class CompositeComponentTransformer implements IComponentTransformer {
   @Override
   public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
     CompositeComponent composite = (CompositeComponent) component;
-    for (IDIYComponent<?> child : composite.getComponents()) {
+    for (IDIYComponent<?> child : composite.getChildComponents()) {
       childTransformer(child).mirror(child, center, direction);
     }
   }

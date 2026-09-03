@@ -109,8 +109,8 @@ public class BuildingBlockManagerTest {
 
     // children are namespaced under the composite's own name in the netlist, so their saved
     // names must survive untouched
-    assertEquals("R1", composite.getComponents().get(0).getName());
-    assertEquals("R2", composite.getComponents().get(1).getName());
+    assertEquals("R1", composite.getChildComponents().get(0).getName());
+    assertEquals("R2", composite.getChildComponents().get(1).getName());
   }
 
   @Test
@@ -125,9 +125,9 @@ public class BuildingBlockManagerTest {
         .loadBlock(BLOCK_NAME, existing, BlockInstantiationMode.COMPOSITE).get(0);
 
     assertNotEquals(first.getName(), second.getName());
-    assertEquals(first.getComponents().get(0).getName(), second.getComponents().get(0).getName());
+    assertEquals(first.getChildComponents().get(0).getName(), second.getChildComponents().get(0).getName());
     // but the underlying child components must be distinct objects with distinct ids
-    assertNotEquals(first.getComponents().get(0).getId(), second.getComponents().get(0).getId());
+    assertNotEquals(first.getChildComponents().get(0).getId(), second.getChildComponents().get(0).getId());
   }
 
   @Test(expected = InvalidBlockException.class)
@@ -155,6 +155,6 @@ public class BuildingBlockManagerTest {
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertTrue(((CompositeComponent) result.get(0)).getComponents().get(0) instanceof ISwitch);
+    assertTrue(((CompositeComponent) result.get(0)).getChildComponents().get(0) instanceof ISwitch);
   }
 }

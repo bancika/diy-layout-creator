@@ -47,9 +47,9 @@ public class CompositeComponentTest {
     CompositeComponent composite = new CompositeComponent();
     composite.setName("BLK1");
     composite.initBlockName("Test Block");
-    composite.getComponents().add(new TwoPointTestComponent("R1",
+    composite.getChildComponents().add(new TwoPointTestComponent("R1",
         new Point2D.Double(0, 0), new Point2D.Double(10, 0)));
-    composite.getComponents().add(new TwoPointTestComponent("R2",
+    composite.getChildComponents().add(new TwoPointTestComponent("R2",
         new Point2D.Double(20, 0), new Point2D.Double(30, 0)));
     return composite;
   }
@@ -79,14 +79,14 @@ public class CompositeComponentTest {
     assertEquals(new Point2D.Double(99, 99), composite.getControlPoint(2));
     // the sibling child's points must be untouched
     assertEquals(new Point2D.Double(30, 0), composite.getControlPoint(3));
-    TwoPointTestComponent r2 = (TwoPointTestComponent) composite.getComponents().get(1);
+    TwoPointTestComponent r2 = (TwoPointTestComponent) composite.getChildComponents().get(1);
     assertEquals(new Point2D.Double(99, 99), r2.getControlPoint(0));
   }
 
   @Test
   public void stickinessIsDelegatedPerChildPoint() {
     CompositeComponent composite = twoChildComposite();
-    ((TwoPointTestComponent) composite.getComponents().get(0)).setSticky(1, false);
+    ((TwoPointTestComponent) composite.getChildComponents().get(0)).setSticky(1, false);
 
     assertTrue(composite.isControlPointSticky(0));
     assertFalse(composite.isControlPointSticky(1));
@@ -134,12 +134,12 @@ public class CompositeComponentTest {
     // that needs a genuinely new component (e.g. BuildingBlockManager placing a fresh instance)
     // reassigns ids itself, exactly as it does for any other component's clone().
     CompositeComponent original = twoChildComposite();
-    UUID originalChildId = original.getComponents().get(0).getId();
+    UUID originalChildId = original.getChildComponents().get(0).getId();
 
     CompositeComponent clone = (CompositeComponent) original.clone();
 
     assertEquals(original.getId(), clone.getId());
-    assertEquals(originalChildId, clone.getComponents().get(0).getId());
+    assertEquals(originalChildId, clone.getChildComponents().get(0).getId());
   }
 
   @Test
@@ -192,7 +192,7 @@ public class CompositeComponentTest {
 
     g2d.dispose();
     // no exception means components list (empty) was never dereferenced as if populated
-    assertNotNull(blank.getComponents());
-    assertTrue(blank.getComponents().isEmpty());
+    assertNotNull(blank.getChildComponents());
+    assertTrue(blank.getChildComponents().isEmpty());
   }
 }

@@ -190,7 +190,7 @@ public class BuildingBlockManager {
     }
 
     CompositeComponent composite = new CompositeComponent();
-    composite.getComponents().addAll(childClones);
+    composite.getChildComponents().addAll(childClones);
     composite.initBlockName(blockName);
     composite.setId(UUID.randomUUID());
     ComponentType compositeType =
