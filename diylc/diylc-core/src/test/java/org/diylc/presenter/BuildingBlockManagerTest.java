@@ -22,11 +22,13 @@
 package org.diylc.presenter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.geom.Point2D;
@@ -38,6 +40,7 @@ import java.util.Map;
 
 import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.BlockInstantiationMode;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.composite.CompositeComponent;
@@ -138,6 +141,20 @@ public class BuildingBlockManagerTest {
   @Test(expected = InvalidBlockException.class)
   public void compositeModeThrowsOnUnknownBlock() throws InvalidBlockException {
     manager.loadBlock("NoSuchBlock", new ArrayList<IDIYComponent<?>>(), BlockInstantiationMode.COMPOSITE);
+  }
+
+  @Test
+  public void deleteBlockAlsoStripsItFromTheRecentlyUsedList() {
+    List<String> recent = new ArrayList<String>(Arrays.asList(
+        IBlockProcessor.BLOCK_PREFIX + BLOCK_NAME, "org.diylc.components.SomeComponent"));
+    when(configManager.readObject(eq(IPlugInPort.RECENT_COMPONENTS_KEY),
+        org.mockito.ArgumentMatchers.any())).thenReturn(recent);
+
+    manager.deleteBlock(BLOCK_NAME);
+
+    assertFalse(recent.contains(IBlockProcessor.BLOCK_PREFIX + BLOCK_NAME));
+    assertTrue(recent.contains("org.diylc.components.SomeComponent"));
+    verify(configManager).writeValue(eq(IPlugInPort.RECENT_COMPONENTS_KEY), eq(recent));
   }
 
   @Test

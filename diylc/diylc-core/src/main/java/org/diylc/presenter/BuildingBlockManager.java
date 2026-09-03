@@ -246,5 +246,11 @@ public class BuildingBlockManager {
       blocks.remove(blockName);
       configManager.writeValue(IBlockProcessor.BLOCKS_KEY, blocks);
     }
+
+    // drop the block from the recently used list too, so it doesn't linger as a dead entry
+    List<String> recent =
+        (List<String>) configManager.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
+    if (recent != null && recent.remove(IBlockProcessor.BLOCK_PREFIX + blockName))
+      configManager.writeValue(IPlugInPort.RECENT_COMPONENTS_KEY, recent);
   }
 }

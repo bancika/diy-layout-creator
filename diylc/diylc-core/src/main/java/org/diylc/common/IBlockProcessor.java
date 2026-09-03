@@ -25,8 +25,17 @@ import java.io.IOException;
 
 public interface IBlockProcessor {
 
-  public static final String BLOCKS_KEY = "buildingBlocks";  
+  public static final String BLOCKS_KEY = "buildingBlocks";
   public static final String DEFAULT_BLOCKS_IMPORTED_KEY = "defaultBlocksImported";
+
+  /**
+   * Prefix that marks a string as a reference to a building block rather than a component class
+   * name. Used wherever components and blocks share a single identifier list, such as keyboard
+   * shortcuts ({@code COMPONENT_SHORTCUT_KEY}) and the recently used list
+   * ({@link org.diylc.common.IPlugInPort#RECENT_COMPONENTS_KEY}). A block identifier looks like
+   * {@code "block:My Block Name"}.
+   */
+  public static final String BLOCK_PREFIX = "block:";
 
   void saveSelectionAsBlock(String blockName);
 

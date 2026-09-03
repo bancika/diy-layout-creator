@@ -47,6 +47,7 @@ import org.diylc.appframework.miscutils.IConfigurationManager;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.swing.plugins.tree.TreePanel;
@@ -223,6 +224,17 @@ public class CanvasPanel extends JComponent implements Autoscroll {
             (List<String>) configManager.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
         if (recent != null && !recent.isEmpty()) {
           String clazz = recent.get(0);
+          if (clazz.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
+            String blockName = clazz.substring(IBlockProcessor.BLOCK_PREFIX.length());
+            try {
+              CanvasPanel.this.plugInPort.loadBlock(blockName);
+              // hack: fake mouse movement to repaint
+              CanvasPanel.this.plugInPort.mouseMoved(getMousePosition(), false, false, false);
+            } catch (InvalidBlockException ex) {
+              LOG.error("Could not repeat last building block: " + blockName);
+            }
+            return;
+          }
           Map<String, List<ComponentType>> componentTypes =
               CanvasPanel.this.plugInPort.getComponentTypes();
           for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
@@ -249,8 +261,8 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     String typeName = shortcutMap.get("F" + i);
     if (typeName == null)
       return;
-    if (typeName.startsWith("block:")) {
-      String blockName = typeName.substring(6);
+    if (typeName.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
+      String blockName = typeName.substring(IBlockProcessor.BLOCK_PREFIX.length());
       try {
         plugInPort.loadBlock(blockName);
       } catch (InvalidBlockException e) {

@@ -63,6 +63,7 @@ import org.diylc.appframework.miscutils.IConfigListener;
 import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
@@ -315,7 +316,8 @@ public class TreePanel extends JPanel {
           TreeNode payload = (TreeNode) selectedNode;
           final ComponentType componentType = payload.getComponentType();
 
-          final String identifier = componentType == null ? "block:" + payload.toString()
+          final String identifier = componentType == null
+              ? IBlockProcessor.BLOCK_PREFIX + payload.toString()
               : componentType.getInstanceClass().getCanonicalName();
 
           JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
@@ -497,7 +499,8 @@ public class TreePanel extends JPanel {
 
         HashMap<String, String> shortcutMap = (HashMap<String, String>) ConfigurationManager
             .getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
-        String identifier = payload.getComponentType() == null ? "block:" + payload.toString()
+        String identifier = payload.getComponentType() == null
+            ? IBlockProcessor.BLOCK_PREFIX + payload.toString()
             : payload.getComponentType().getInstanceClass().getCanonicalName();
         if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
           for (String key : shortcutMap.keySet()) {

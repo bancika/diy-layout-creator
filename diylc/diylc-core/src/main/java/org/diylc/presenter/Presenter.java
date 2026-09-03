@@ -2855,6 +2855,8 @@ public class Presenter implements IPlugInPort {
     // a composite is a single, already-assembled component - nothing to auto-group
     boolean autoGroup = mode == BlockInstantiationMode.GROUP;
     pasteComponents(new ComponentTransferable(components, blockName), autoGroup, true);
+    // record the block in the recently used list, alongside component classes
+    InstantiationManager.addToRecentComponents(IBlockProcessor.BLOCK_PREFIX + blockName);
   }
 
   @Override
