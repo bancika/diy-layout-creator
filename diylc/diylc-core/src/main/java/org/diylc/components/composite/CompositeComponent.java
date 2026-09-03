@@ -65,7 +65,7 @@ import org.diylc.utils.Constants;
     enableCache = false,
     transformer = CompositeComponentTransformer.class,
     hiddenInPalette = true)
-public class CompositeComponent extends AbstractTransparentComponent<Void> {
+public class CompositeComponent extends AbstractTransparentComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -74,6 +74,9 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
   // Name of the building block this instance was created from. Drives its display identity in
   // the BOM, netlist report and AI project description (see ComponentProcessor.getDisplayTypeName).
   private String blockName;
+
+  // Free-form label the user can edit after placement, independent of blockName. Shown in the BOM.
+  private String value;
 
   // Flat index mapping a composite control point index to (child ordinal, child point index).
   // Rebuilt lazily since children never change after construction and the arrays are not
@@ -196,13 +199,14 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
   }
 
   @Override
-  public Void getValue() {
-    return null;
+  @EditableProperty
+  public String getValue() {
+    return value;
   }
 
   @Override
-  public void setValue(Void value) {
-    // no-op, composites have no value of their own
+  public void setValue(String value) {
+    this.value = value;
   }
 
   @Override
@@ -215,27 +219,6 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
       c.draw(g2d, componentState, outlineMode, project, drawingObserver);
     }
     g2d.setComposite(oldComposite);
-  }
-
-  private Rectangle2D getControlPointBounds() {
-    int count = getControlPointCount();
-    if (count == 0) {
-      return null;
-    }
-    double minX = Double.MAX_VALUE;
-    double minY = Double.MAX_VALUE;
-    double maxX = -Double.MAX_VALUE;
-    double maxY = -Double.MAX_VALUE;
-    for (int i = 0; i < count; i++) {
-      Point2D p = getControlPoint(i);
-      minX = Math.min(minX, p.getX());
-      minY = Math.min(minY, p.getY());
-      maxX = Math.max(maxX, p.getX());
-      maxY = Math.max(maxY, p.getY());
-    }
-    double margin = 4;
-    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
-        maxY - minY + 2 * margin);
   }
 
   @Override
@@ -265,11 +248,12 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
    * undo dirty-check in {@code Presenter.notifyProjectModifiedIfNeeded} relies on.
    */
   @Override
-  public IDIYComponent<Void> clone() throws CloneNotSupportedException {
+  public IDIYComponent<String> clone() throws CloneNotSupportedException {
     CompositeComponent clone = new CompositeComponent();
     clone.setId(getId());
     clone.setName(getName());
     clone.blockName = this.blockName;
+    clone.value = this.value;
     // matches AbstractComponent.clone(), which shallow-copies the Percentage reference
     clone.setAlpha(getAlpha());
     List<IDIYComponent<?>> clonedComponents = new ArrayList<IDIYComponent<?>>(getChildComponents().size());
@@ -295,7 +279,7 @@ public class CompositeComponent extends AbstractTransparentComponent<Void> {
     }
     CompositeComponent o = (CompositeComponent) other;
     if (!Objects.equals(getName(), o.getName()) || !Objects.equals(blockName, o.blockName)
-        || !Objects.equals(getAlpha(), o.getAlpha())) {
+        || !Objects.equals(value, o.value) || !Objects.equals(getAlpha(), o.getAlpha())) {
       return false;
     }
     List<IDIYComponent<?>> otherComponents = o.getChildComponents();
