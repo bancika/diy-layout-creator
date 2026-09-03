@@ -46,7 +46,7 @@ import org.diylc.utils.Constants;
  * loose ones. Wraps an embedded list of child components and aggregates their control points,
  * so it can be placed, moved, rotated and wired up like any other component while the netlist,
  * BOM and AI project description still see its individual terminals (see
- * {@link #getControlPointNodeName(int)} / {@link #getSectionNames(int)}).
+ * {@link #getControlPointNodeName(int)}).
  * <p>
  * The composite is intentionally a footprint, not a circuit model: it does not implement
  * {@code IContinuity} or {@code ISwitch}, so internal point-to-point connectivity and internal
