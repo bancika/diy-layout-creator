@@ -1,8 +1,7 @@
 # DIYLC Schematic View — Feature Specification
 
 > This is the original spec plus a running status section (§11). For how the shipped code is
-> actually put together and *why*, see [`ard/schematic-view-architecture.md`](ard/schematic-view-architecture.md)
-> and the decision records in [`ard/`](ard/README.md).
+> actually put together and *why*, see [`adr/schematic-view.md`](adr/schematic-view.md).
 
 ## Overview
 
