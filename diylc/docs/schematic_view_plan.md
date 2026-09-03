@@ -433,7 +433,7 @@ The schematic uses the **existing `DrawingManager` + `Presenter`** rendering pip
 - `INetlistProcessor.getContinuityAreas()` (implemented on `Presenter`) so the schematic can be built outside the presenter.
 
 **diylc-library**
-- `SchematicBox` component (`org.diylc.components.schematic`) — generic box with configurable left/right/top/bottom comma-separated terminal lists, NAME/VALUE/BOTH/NONE display.
+- `SchematicBox` component (`org.diylc.components.schematic`) — generic box with configurable left/right/top/bottom comma-separated terminal lists, NAME/VALUE/BOTH/NONE display. `setControlPoint` moves only the requested point (the presenter drags all of them together because `canPointMoveFreely` is false); the pin geometry is recomputed only when the node lists change, and then in place when the pin count is unchanged so held references stay valid.
 - `SchematicWire` component — auto-routed Manhattan connection; implements `IContinuity`; stores source/target component id + pin index and the calculated `routePoints`; deep-cloned.
 - `ManhattanRouter` — straight / L / HVH / VHV routing with pin exit-direction preference and overlap/crossing cost scoring against existing segments.
 - `GenericBoxSchematicFactory` (default fallback) + `SchematicBuilder` (filter, symbol creation, connection-density grid placement, per-net wire chaining, canvas auto-resize) + `SchematicSynchronizer` (add/remove/keep-position incremental sync, full wire rebuild). Switches (`ISwitch`, which extends `IContinuity`) are treated as regular symbols — the generic box fallback until a dedicated factory is added — since the netlist is built with `includeSwitches=false`.

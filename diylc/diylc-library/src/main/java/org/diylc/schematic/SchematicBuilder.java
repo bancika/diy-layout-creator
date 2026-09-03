@@ -285,15 +285,23 @@ public class SchematicBuilder {
 
   /** Translates every control point of the component so that control point 0 lands on the target. */
   static void moveAnchorTo(IDIYComponent<?> component, double targetX, double targetY) {
-    if (component.getControlPointCount() == 0) {
+    int count = component.getControlPointCount();
+    if (count == 0) {
       return;
     }
     Point2D anchor = component.getControlPoint(0);
     double dx = targetX - anchor.getX();
     double dy = targetY - anchor.getY();
-    for (int i = 0; i < component.getControlPointCount(); i++) {
+    // Snapshot the target positions before mutating: some components (e.g. SchematicBox) recompute
+    // all of their control points when control point 0 is set, so reading getControlPoint(i) inside
+    // the loop after that would double-apply the offset.
+    Point2D[] targets = new Point2D[count];
+    for (int i = 0; i < count; i++) {
       Point2D p = component.getControlPoint(i);
-      component.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
+      targets[i] = new Point2D.Double(p.getX() + dx, p.getY() + dy);
+    }
+    for (int i = 0; i < count; i++) {
+      component.setControlPoint(targets[i], i);
     }
   }
 

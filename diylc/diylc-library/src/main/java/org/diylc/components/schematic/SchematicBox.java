@@ -133,17 +133,25 @@ public class SchematicBox extends AbstractTransparentComponent<String> {
   }
 
   /**
-   * Rebuilds the control point array so that index 0 keeps its location and every other point is
-   * placed relative to it. Ordering: left side (top to bottom), right side (top to bottom), top side
-   * (left to right), bottom side (left to right).
+   * Recomputes the pin geometry from the anchor (control point 0) and the configured node counts.
+   * Ordering: left side (top to bottom), right side (top to bottom), top side (left to right),
+   * bottom side (left to right).
+   *
+   * <p>
+   * This is called on construction and whenever the node lists change — <b>not</b> from
+   * {@link #setControlPoint}. During a drag the presenter translates every control point by the
+   * same delta (because {@link #canPointMoveFreely} is {@code false}), which already keeps the pins
+   * on the box edge, so recomputing there would double-apply the delta. When the pin count is
+   * unchanged the existing {@link Point2D} objects are mutated in place so references held by the
+   * drawing/selection code stay valid.
+   * </p>
    */
   private void updateControlPoints() {
     nodeLabels = null;
     double spacing = pinSpacing();
     double leadLength = spacing;
-    Point2D anchor = controlPoints[0];
-    double firstPinX = anchor.getX();
-    double firstPinY = anchor.getY();
+    double firstPinX = controlPoints[0].getX();
+    double firstPinY = controlPoints[0].getY();
 
     double bodyX = firstPinX + leadLength;
     double bodyY = firstPinY - spacing;
@@ -172,7 +180,14 @@ public class SchematicBox extends AbstractTransparentComponent<String> {
     }
     // keep index 0 exactly where it was
     points.set(0, new Point2D.Double(firstPinX, firstPinY));
-    controlPoints = points.toArray(new Point2D[0]);
+
+    if (controlPoints.length == points.size()) {
+      for (int i = 0; i < points.size(); i++) {
+        controlPoints[i].setLocation(points.get(i));
+      }
+    } else {
+      controlPoints = points.toArray(new Point2D[0]);
+    }
   }
 
   private List<String> getNodeLabels() {
@@ -312,10 +327,9 @@ public class SchematicBox extends AbstractTransparentComponent<String> {
 
   @Override
   public void setControlPoint(Point2D point, int index) {
+    // Move only the requested point. The presenter drags every control point of the box together
+    // (canPointMoveFreely == false), so the pins stay on the edge without a recompute here.
     controlPoints[index].setLocation(point);
-    if (index == 0) {
-      updateControlPoints();
-    }
   }
 
   @Override
