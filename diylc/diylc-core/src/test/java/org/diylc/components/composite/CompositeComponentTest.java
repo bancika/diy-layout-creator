@@ -111,10 +111,10 @@ public class CompositeComponentTest {
     Node r2FirstPoint = new Node(composite, 2);
     Node r2SecondPoint = new Node(composite, 3);
 
-    assertEquals("BLK1.R1.1", r1FirstPoint.toString());
-    assertEquals("BLK1.R2.1", r2FirstPoint.toString());
+    assertEquals("BLK1.1", r1FirstPoint.toString());
+    assertEquals("BLK1.1", r2FirstPoint.toString());
     // local point index must reset per child, not keep growing with the flat composite index
-    assertEquals("BLK1.R2.2", r2SecondPoint.toString());
+    assertEquals("BLK1.2", r2SecondPoint.toString());
   }
 
   @Test
@@ -204,7 +204,7 @@ public class CompositeComponentTest {
     assertEquals(original.getBlockName(), reloaded.getBlockName());
     for (int i = 0; i < original.getControlPointCount(); i++)
       assertEquals(original.getControlPoint(i), reloaded.getControlPoint(i));
-    assertEquals("BLK1.R2.2", new Node(reloaded, 3).toString());
+    assertEquals("BLK1.2", new Node(reloaded, 3).toString());
   }
 
   @Test
