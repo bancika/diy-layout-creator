@@ -1,7 +1,7 @@
 # Schematic View
 
 How the Schematic View is built and **why** it looks the way it does. The original feature
-spec and its running status are in [`../schematic_view_plan.md`](../schematic_view_plan.md).
+spec and its running status are in [`../schematic_view_plan.md`](../plans/schematic_view_plan.md).
 
 ---
 
