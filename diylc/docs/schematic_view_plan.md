@@ -1,5 +1,9 @@
 # DIYLC Schematic View — Feature Specification
 
+> This is the original spec plus a running status section (§11). For how the shipped code is
+> actually put together and *why*, see [`ard/schematic-view-architecture.md`](ard/schematic-view-architecture.md)
+> and the decision records in [`ard/`](ard/README.md).
+
 ## Overview
 
 Add the ability to generate and display a schematic diagram representation of a physical layout project at any time. The schematic is derived from the existing netlist infrastructure and rendered using DIYLC's existing rendering pipeline. Users can view, rearrange, and export the schematic to verify their circuit at a glance.
