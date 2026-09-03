@@ -26,39 +26,45 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+import org.diylc.appframework.miscutils.IConfigurationManager;
 import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.Project;
+import org.diylc.core.SchematicView;
+import org.diylc.presenter.ContinuityArea;
+import org.diylc.presenter.Presenter;
+import org.diylc.schematic.SchematicSynchronizer;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
 
 /**
  * Adds an Excel-style tab strip below the canvas with two tabs, <b>Layout</b> and <b>Schematic</b>.
- * Selecting the Schematic tab regenerates the schematic from the current layout and swaps the canvas
- * area for a read-only {@link SchematicPanel}; selecting Layout swaps it back.
  *
  * <p>
- * Editing schematic symbols in place (drag / rotate / mirror with shared undo) via a restricted
- * {@code Presenter} is a planned follow-up; for now the schematic tab is a viewer with zoom, refresh
- * and export.
+ * The schematic tab reuses the regular canvas UI: its own {@link Presenter} + {@link CanvasPlugin}
+ * (the same {@code RulerScrollPane}, rulers, scroll bars and zoom-scroll) render a wrapper
+ * {@link Project} backed by the layout's {@link SchematicView}. Switching to the Schematic tab
+ * regenerates the schematic automatically ({@link SchematicSynchronizer}) and shows the schematic
+ * canvas; switching to Layout shows the layout canvas again.
+ * </p>
+ *
+ * <p>
+ * The schematic canvas is not restricted yet, so nothing prevents selecting or nudging symbols; a
+ * dedicated restricted mode (no add / delete / paste, shared undo) is a planned follow-up.
  * </p>
  *
  * @author Branislav Stojkovic
@@ -68,31 +74,37 @@ public class SchematicTabPlugin implements IPlugIn {
   private static final Logger LOG = Logger.getLogger(SchematicTabPlugin.class);
 
   private final ISwingUI swingUI;
-  private final CanvasPlugin canvasPlugin;
+  private final IConfigurationManager<?> configManager;
+  private final CanvasPlugin layoutCanvasPlugin;
+
   private IPlugInPort plugInPort;
+  private Presenter schematicPresenter;
+  private CanvasPlugin schematicCanvasPlugin;
+  private JComponent layoutScroll;
+  private JComponent schematicScroll;
+  private JToggleButton schematicTab;
 
-  private final SchematicPanel schematicPanel = new SchematicPanel();
-  private final List<JButton> schematicTools = new ArrayList<JButton>();
-  private JScrollPane schematicScroll;
-  private JComponent canvasScroll;
-
-  public SchematicTabPlugin(ISwingUI swingUI, CanvasPlugin canvasPlugin) {
+  public SchematicTabPlugin(ISwingUI swingUI, IConfigurationManager<?> configManager,
+      CanvasPlugin layoutCanvasPlugin) {
     this.swingUI = swingUI;
-    this.canvasPlugin = canvasPlugin;
+    this.configManager = configManager;
+    this.layoutCanvasPlugin = layoutCanvasPlugin;
   }
 
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
-    this.canvasScroll = canvasPlugin.getCanvasScrollComponent();
+    this.layoutScroll = layoutCanvasPlugin.getCanvasScrollComponent();
 
-    schematicScroll = new JScrollPane(schematicPanel);
-    schematicScroll.getVerticalScrollBar().setUnitIncrement(16);
-    schematicScroll.getHorizontalScrollBar().setUnitIncrement(16);
-    schematicScroll.setVisible(false);
+    // A second presenter + canvas plugin gives the schematic the exact same rendering, scrolling
+    // and zoom behaviour as the layout canvas.
+    this.schematicPresenter = new Presenter(swingUI, configManager, false);
+    this.schematicCanvasPlugin = new CanvasPlugin(swingUI, configManager);
+    this.schematicPresenter.installPlugin(() -> schematicCanvasPlugin);
+    this.schematicScroll = schematicCanvasPlugin.getCanvasScrollComponent();
+    this.schematicScroll.setVisible(false);
 
     try {
-      swingUI.injectGUIComponent(schematicScroll, SwingConstants.CENTER, false, null);
       swingUI.injectGUIComponent(buildTabBar(), SwingConstants.CENTER, false, null);
     } catch (BadPositionException e) {
       LOG.error("Could not install schematic tab", e);
@@ -107,18 +119,11 @@ public class SchematicTabPlugin implements IPlugIn {
 
     ButtonGroup group = new ButtonGroup();
     JToggleButton layoutTab = makeTab("Layout", true, e -> showLayout());
-    JToggleButton schematicTab = makeTab("Schematic", false, e -> showSchematic());
+    schematicTab = makeTab("Schematic", false, e -> showSchematic());
     group.add(layoutTab);
     group.add(schematicTab);
     bar.add(layoutTab);
     bar.add(schematicTab);
-
-    bar.add(Box.createHorizontalStrut(16));
-    schematicTools.add(addTool(bar, "Refresh", e -> refreshSchematic(true)));
-    schematicTools.add(addTool(bar, "Zoom −", e -> schematicPanel.setZoom(schematicPanel.getZoom() / 1.25d)));
-    schematicTools.add(addTool(bar, "Zoom +", e -> schematicPanel.setZoom(schematicPanel.getZoom() * 1.25d)));
-    schematicTools.add(addTool(bar, "Reset Zoom", e -> schematicPanel.setZoom(1d)));
-    setToolsEnabled(false);
 
     Dimension pref = bar.getPreferredSize();
     bar.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
@@ -134,55 +139,56 @@ public class SchematicTabPlugin implements IPlugIn {
     return button;
   }
 
-  private static JButton addTool(JToolBar bar, String label, ActionListener listener) {
-    JButton button = new JButton(new AbstractAction(label) {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        listener.actionPerformed(e);
-      }
-    });
-    button.setFocusPainted(false);
-    bar.add(button);
-    return button;
-  }
-
-  private void setToolsEnabled(boolean enabled) {
-    for (JButton button : schematicTools) {
-      button.setEnabled(enabled);
-    }
-  }
-
   private void showLayout() {
     schematicScroll.setVisible(false);
-    canvasScroll.setVisible(true);
-    setToolsEnabled(false);
+    layoutScroll.setVisible(true);
     relayout();
   }
 
   private void showSchematic() {
-    refreshSchematic(false);
-    canvasScroll.setVisible(false);
-    schematicScroll.setVisible(true);
-    setToolsEnabled(true);
-    relayout();
-  }
-
-  private void refreshSchematic(boolean reportErrors) {
+    Project wrapper;
     try {
-      schematicPanel.refresh(plugInPort.getCurrentProject(), plugInPort.getContinuityAreas());
+      wrapper = buildSchematicProject();
     } catch (Exception e) {
       LOG.error("Could not build schematic view", e);
-      if (reportErrors) {
-        swingUI.showMessage("Could not build the schematic view: " + e.getMessage(), "Schematic View",
-            ISwingUI.ERROR_MESSAGE);
-      }
+      swingUI.showMessage("Could not build the schematic view: " + e.getMessage(), "Schematic View",
+          ISwingUI.ERROR_MESSAGE);
+      return;
     }
+
+    schematicPresenter.loadProject(wrapper, true, null);
+    layoutScroll.setVisible(false);
+    schematicScroll.setVisible(true);
+    relayout();
+    SwingUtilities.invokeLater(() -> {
+      schematicCanvasPlugin.scrollToCenterAndShowContents();
+      relayout();
+    });
+  }
+
+  /** Regenerates the schematic from the current layout and wraps it in a renderable project. */
+  private Project buildSchematicProject() {
+    Project layoutProject = plugInPort.getCurrentProject();
+    java.util.List<ContinuityArea> areas = plugInPort.getContinuityAreas();
+    new SchematicSynchronizer().synchronize(layoutProject,
+        areas == null ? new java.util.ArrayList<>() : areas);
+
+    SchematicView view = layoutProject.getOrCreateSchematicView();
+    Project wrapper = new Project();
+    wrapper.setTitle(layoutProject.getTitle() + " — Schematic");
+    wrapper.setAuthor(layoutProject.getAuthor());
+    wrapper.setWidth(view.getWidth());
+    wrapper.setHeight(view.getHeight());
+    wrapper.setGridSpacing(view.getGridSpacing());
+    wrapper.setFont(layoutProject.getFont());
+    wrapper.getComponents().addAll(view.getComponents());
+    return wrapper;
   }
 
   private void relayout() {
-    JComponent parent = (JComponent) canvasScroll.getParent();
+    JComponent parent = layoutScroll.getParent() instanceof JComponent
+        ? (JComponent) layoutScroll.getParent()
+        : null;
     if (parent != null) {
       parent.revalidate();
       parent.repaint();

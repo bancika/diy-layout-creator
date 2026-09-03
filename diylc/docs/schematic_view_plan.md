@@ -440,15 +440,14 @@ The schematic uses the **existing `DrawingManager` + `Presenter`** rendering pip
 - Concrete factories: `Resistor`, `Capacitor`, `Diode`, `Transistor` (→ `BJTSymbol`), `Inductor`, `Potentiometer`, wired onto the common physical component types (resistors, film/ceramic/electrolytic/tantalum/mica caps, plastic/glass diodes, TO-1/92/126/220/3 transistors, radial/toroidal inductors, panel/trimmer/miniature pots).
 
 **diylc-swing**
-- `SchematicTabPlugin` adds the Excel-style tab strip (**Layout | Schematic**) below the canvas. Selecting **Schematic** runs `SchematicSynchronizer` and swaps the canvas area for a read-only `SchematicPanel` (with Refresh / Zoom controls in the tab strip); selecting **Layout** swaps it back. `CanvasPlugin.getCanvasScrollComponent()` exposes the layout scroll pane so the plugin can show/hide it.
-- `SchematicMenuPlugin` adds *Analyze → Schematic View…*, which opens the same viewer in a detached `SchematicViewFrame` window (adds PNG export).
-- `SchematicPanel` renders the generated `SchematicView` through the existing `DrawingManager` pipeline.
+- `SchematicTabPlugin` adds the Excel-style tab strip (**Layout | Schematic**) below the canvas. It owns a **second `Presenter` + `CanvasPlugin`**, so the schematic renders through the exact same `RulerScrollPane` — rulers, scroll bars, wheel/gesture zoom — as the layout canvas, with no extra controls. Selecting **Schematic** runs `SchematicSynchronizer` automatically and loads the resulting wrapper `Project` into the schematic presenter; selecting **Layout** swaps the visible scroll pane back. `CanvasPlugin.getCanvasScrollComponent()` exposes each scroll pane so the plugin can show/hide it.
+- `SchematicMenuPlugin` / `SchematicViewFrame` / `SchematicPanel` — a detached-window viewer (*Analyze → Schematic View…*) that renders the `SchematicView` through a private `DrawingManager` and adds PNG export. Independent of the tab.
 
 Unit tests: `ManhattanRouterTest`, `GenericBoxSchematicFactoryTest` (library); `SchematicViewIntegrationTest` (swing — end-to-end build/sync/render).
 
 ### Not yet done (follow-ups)
 
-- The schematic tab is **read-only**. Making it editable needs a **restricted second `Presenter`** wired into a real canvas (drag / multi-select / rotate / flip on symbols, drag-to-move re-routing on mouse release).
+- The schematic canvas is not **restricted** yet: selecting and nudging symbols is possible, but there is no explicit block on add / delete / paste / value-edit, and no shared undo integration with the layout history.
 - Shared undo/redo integration with the layout history.
 - Multi-section 1:N factories (`TubeSocket` → triode/pentode/duo-diode, `DIL_IC` → dual op-amps, switches).
 - Smarter placement (true connection-density clustering) and crossing-aware routing.
