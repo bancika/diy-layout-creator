@@ -395,6 +395,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Diode components now label their terminal nodes as 'A' (anode) and 'K' (cathode) instead of '1' and '2'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
