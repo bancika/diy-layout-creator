@@ -440,14 +440,15 @@ The schematic uses the **existing `DrawingManager` + `Presenter`** rendering pip
 - Concrete factories: `Resistor`, `Capacitor`, `Diode`, `Transistor` (→ `BJTSymbol`), `Inductor`, `Potentiometer`, wired onto the common physical component types (resistors, film/ceramic/electrolytic/tantalum/mica caps, plastic/glass diodes, TO-1/92/126/220/3 transistors, radial/toroidal inductors, panel/trimmer/miniature pots).
 
 **diylc-swing**
-- `SchematicMenuPlugin` adds *Analyze → Schematic View…*, which runs `SchematicSynchronizer` on the current project and opens `SchematicViewFrame`.
-- `SchematicViewFrame` / `SchematicPanel` — read-only viewer that renders the generated `SchematicView` through the existing `DrawingManager` pipeline, with zoom, refresh and PNG export.
+- `SchematicTabPlugin` adds the Excel-style tab strip (**Layout | Schematic**) below the canvas. Selecting **Schematic** runs `SchematicSynchronizer` and swaps the canvas area for a read-only `SchematicPanel` (with Refresh / Zoom controls in the tab strip); selecting **Layout** swaps it back. `CanvasPlugin.getCanvasScrollComponent()` exposes the layout scroll pane so the plugin can show/hide it.
+- `SchematicMenuPlugin` adds *Analyze → Schematic View…*, which opens the same viewer in a detached `SchematicViewFrame` window (adds PNG export).
+- `SchematicPanel` renders the generated `SchematicView` through the existing `DrawingManager` pipeline.
 
-Unit tests: `ManhattanRouterTest`, `GenericBoxSchematicFactoryTest`.
+Unit tests: `ManhattanRouterTest`, `GenericBoxSchematicFactoryTest` (library); `SchematicViewIntegrationTest` (swing — end-to-end build/sync/render).
 
 ### Not yet done (follow-ups)
 
-- Bottom-left Excel-style tab bar and an editable, **restricted second `Presenter`** for the schematic (drag / multi-select / rotate / flip on symbols, drag-to-move re-routing on mouse release). The current viewer is read-only.
+- The schematic tab is **read-only**. Making it editable needs a **restricted second `Presenter`** wired into a real canvas (drag / multi-select / rotate / flip on symbols, drag-to-move re-routing on mouse release).
 - Shared undo/redo integration with the layout history.
 - Multi-section 1:N factories (`TubeSocket` → triode/pentode/duo-diode, `DIL_IC` → dual op-amps, switches).
 - Smarter placement (true connection-density clustering) and crossing-aware routing.

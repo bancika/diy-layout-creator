@@ -147,7 +147,9 @@ public class MainFrame extends JFrame implements ISwingUI {
     presenter.installPlugin(() -> canvasPlugin);
     presenter.installPlugin(() -> new ComponentTree(this, canvasPlugin.getCanvasPanel()));
     presenter.installPlugin(() -> new ExplorerPlugin(this, canvasPlugin.getCanvasPanel()));
-    
+    presenter.installPlugin(
+        () -> new org.diylc.swing.plugins.schematic.SchematicTabPlugin(this, canvasPlugin));
+
     presenter.installPlugin(() -> new FramePlugin());
 
     presenter.installPlugin(() -> new AutoSavePlugin(this));
