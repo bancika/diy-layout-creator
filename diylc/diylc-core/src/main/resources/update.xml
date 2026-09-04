@@ -399,6 +399,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Capacitor components now label their terminal nodes as '+' and '-' instead of '1' and '2' when 'Polarized' property is ticked</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

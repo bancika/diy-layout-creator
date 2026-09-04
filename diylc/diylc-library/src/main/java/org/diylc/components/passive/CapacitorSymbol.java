@@ -96,6 +96,19 @@ public class CapacitorSymbol extends AbstractSchematicLeadedSymbol<Capacitance> 
     this.polarized = polarized;
   }
 
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (getPolarized()) {
+      switch (index) {
+        case 0:
+          return "+";
+        case 1:
+          return "-";
+      }
+    }
+    return super.getControlPointNodeName(index);
+  }
+
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(-Math.PI / 4, width / 2, height / 2);
     g2d.setColor(LEAD_COLOR);
