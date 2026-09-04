@@ -204,6 +204,19 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
   }
 
   @Override
+  public String getControlPointNodeName(int index) {
+    if (getPolarized()) {
+      switch (index) {
+        case 0:
+          return "+";
+        case 1:
+          return "-";
+      }
+    }
+    return super.getControlPointNodeName(index);
+  }
+
+  @Override
   protected Shape getBodyShape() {
     double lengthFinal = getLength().convertToPixels();
     double widthFinal = getWidth().convertToPixels();

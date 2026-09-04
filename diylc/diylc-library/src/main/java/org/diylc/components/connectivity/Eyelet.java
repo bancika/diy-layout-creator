@@ -62,6 +62,7 @@ public class Eyelet extends AbstractTransparentComponent<String> {
   private Color color = COLOR;
   private Point2D.Double point = new Point2D.Double(0, 0);
   private String value = "";
+  private String nodeName = "";
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -173,9 +174,22 @@ public class Eyelet extends AbstractTransparentComponent<String> {
     this.value = value;
   }
   
+  @EditableProperty(name = "Node Name", defaultable = false)
+  public String getNodeName() {
+    if (nodeName == null) {
+      nodeName = "";
+    }
+    return nodeName;
+  }
+
+  public void setNodeName(String nodeName) {
+    this.nodeName = nodeName;
+  }
+
   @Override
-  public String getControlPointNodeName(int index) {   
-    return null;
+  public String getControlPointNodeName(int index) {
+    String n = getNodeName();
+    return n.trim().isEmpty() ? null : n.trim();
   }
   
   @Override

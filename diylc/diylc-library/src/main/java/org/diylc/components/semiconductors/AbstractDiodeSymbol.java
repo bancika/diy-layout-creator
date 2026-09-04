@@ -85,6 +85,18 @@ public abstract class AbstractDiodeSymbol extends AbstractSchematicLeadedSymbol<
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {}
 
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "A";
+      case 1:
+        return "K";
+      default:
+        return null;
+    }
+  }
+
   @Deprecated
   @Override
   public Size getLength() {

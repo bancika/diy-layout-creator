@@ -27,11 +27,15 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.BuildingBlockPackage;
+import org.diylc.common.ComponentType;
 import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
+import org.diylc.components.composite.CompositeComponent;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.ISwitch;
 import org.diylc.serialization.ProjectFileManager;
 
 public class BuildingBlockManager {
@@ -119,19 +123,30 @@ public class BuildingBlockManager {
     return pkg.getBlocks().size();
   }
 
+  /**
+   * @param mode {@link BlockInstantiationMode#GROUP} reproduces the original behavior: every
+   *        component is cloned individually, with a fresh project-unique name, ready to be
+   *        pasted as an auto-grouped set of independent components.
+   *        {@link BlockInstantiationMode#COMPOSITE} clones the components and wraps them in a
+   *        single {@link CompositeComponent}, returned as the only element of the result list.
+   */
   @SuppressWarnings("unchecked")
   public List<IDIYComponent<?>> loadBlock(String blockName,
-      List<IDIYComponent<?>> existingComponents) throws InvalidBlockException {
-    LOG.debug(String.format("loadBlock(%s)", blockName));
+      List<IDIYComponent<?>> existingComponents, BlockInstantiationMode mode)
+      throws InvalidBlockException {
+    LOG.debug(String.format("loadBlock(%s, %s)", blockName, mode));
     Map<String, List<IDIYComponent<?>>> blocks = (Map<String, List<IDIYComponent<?>>>) configManager
         .readObject(IPlugInPort.BLOCKS_KEY, null);
-    if (blocks != null) {
-      Collection<IDIYComponent<?>> components = blocks.get(blockName);
-      if (components == null)
-        throw new InvalidBlockException();
-      // clear potential control point every time!
-      instantiationManager.setPotentialControlPoint(null);
-      // clone components
+    if (blocks == null)
+      throw new InvalidBlockException();
+    Collection<IDIYComponent<?>> components = blocks.get(blockName);
+    if (components == null)
+      throw new InvalidBlockException();
+    // clear potential control point every time!
+    instantiationManager.setPotentialControlPoint(null);
+
+    if (mode == BlockInstantiationMode.GROUP) {
+      // clone components, each getting its own fresh, project-unique name and id
       List<IDIYComponent<?>> clones = new ArrayList<IDIYComponent<?>>();
       List<IDIYComponent<?>> testComponents = new ArrayList<IDIYComponent<?>>(existingComponents);
       for (IDIYComponent<?> c : components)
@@ -147,8 +162,42 @@ public class BuildingBlockManager {
           LOG.error("Could not clone component: " + c);
         }
       return clones;
-    } else
-      throw new InvalidBlockException();
+    }
+
+    // COMPOSITE mode: clone components keeping their saved names. Those names are namespaced
+    // under the composite's own name in the netlist (e.g. "ARD1.PH1.3"), so running them through
+    // createUniqueName against the whole project would produce meaningless drift and break
+    // netlist labels between two instances of the same block.
+    List<IDIYComponent<?>> childClones = new ArrayList<IDIYComponent<?>>();
+    for (IDIYComponent<?> c : components) {
+      try {
+        IDIYComponent<?> clone = c.clone();
+        clone.setId(UUID.randomUUID());
+        childClones.add(clone);
+      } catch (CloneNotSupportedException e) {
+        LOG.error("Could not clone component: " + c);
+      }
+      // CompositeComponent does not implement ISwitch (see design decision D6): a switch placed
+      // inside a composite still draws and exposes its terminals, but contributes no switching
+      // behavior to the netlist. Flag it so this silent difference from group mode isn't a
+      // surprise.
+      if (c instanceof ISwitch) {
+        LOG.warn(String.format(
+            "Building block \"%s\" contains a switch (%s). Its switching behavior will not be "
+                + "reflected in the netlist when instantiated as a single component.",
+            blockName, c.getName()));
+      }
+    }
+
+    CompositeComponent composite = new CompositeComponent();
+    composite.getChildComponents().addAll(childClones);
+    composite.initBlockName(blockName);
+    composite.setId(UUID.randomUUID());
+    ComponentType compositeType =
+        ComponentProcessor.getInstance().extractComponentTypeFrom(CompositeComponent.class);
+    composite.setName(instantiationManager.createUniqueName(compositeType, existingComponents));
+
+    return Collections.singletonList((IDIYComponent<?>) composite);
   }
 
   @SuppressWarnings("unchecked")
@@ -197,5 +246,11 @@ public class BuildingBlockManager {
       blocks.remove(blockName);
       configManager.writeValue(IBlockProcessor.BLOCKS_KEY, blocks);
     }
+
+    // drop the block from the recently used list too, so it doesn't linger as a dead entry
+    List<String> recent =
+        (List<String>) configManager.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
+    if (recent != null && recent.remove(IBlockProcessor.BLOCK_PREFIX + blockName))
+      configManager.writeValue(IPlugInPort.RECENT_COMPONENTS_KEY, recent);
   }
 }

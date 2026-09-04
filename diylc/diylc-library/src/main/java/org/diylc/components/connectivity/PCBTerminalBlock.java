@@ -71,6 +71,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
   private Size pitch = new Size(0.2d, SizeUnit.in);
   private Size width = new Size(0.3d, SizeUnit.in);
   private ScrewPosition screwPosition = ScrewPosition.Offset;
+  private String nodeNames = "";
 
   public PCBTerminalBlock() {
     super();
@@ -330,10 +331,30 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
   }
 
 
+  @EditableProperty(name = "Node Names", defaultable = false)
+  public String getNodeNames() {
+    if (nodeNames == null) {
+      nodeNames = "";
+    }
+    return nodeNames;
+  }
+
+  public void setNodeNames(String nodeNames) {
+    this.nodeNames = nodeNames;
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
-    // we don't want the block to produce any nodes, it just makes connections
-    return null;
+    // By default the block produces no nodes, it just makes connections. Once the user
+    // assigns explicit node names, each labeled point becomes a named node; unlabeled
+    // points fall back to their ordinal number.
+    String raw = getNodeNames();
+    if (raw.trim().isEmpty()) {
+      return null;
+    }
+    String[] parts = raw.split(",", -1);
+    String label = index < parts.length ? parts[index].trim() : "";
+    return label.isEmpty() ? Integer.toString(index + 1) : label;
   }
 
   @Override

@@ -56,14 +56,14 @@ public class ComponentType implements Serializable {
   private boolean enableCache;
   private List<String[]> datasheet;
   private int datasheetCreationStepCount;
-  
-  public ComponentType() {  
+
+  public ComponentType() {
   }
 
   public ComponentType(String name, String description, CreationMethod creationMethod, String category,
       String namePrefix, String author, Icon icon, Class<? extends IDIYComponent<?>> instanceClass, double zOrder,
-      boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer, 
-      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache, List<String[]> datasheet, 
+      boolean flexibleZOrder, BomPolicy bomPolicy, boolean autoEdit, IComponentTransformer transformer,
+      KeywordPolicy keywordPolicy, String keywordTag, boolean enableCache, List<String[]> datasheet,
       int datasheetCreationStepCount) {
     super();
     this.name = name;

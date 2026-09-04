@@ -295,11 +295,6 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   }
   
   @Override
-  public String[] getSectionNames(int pointIndex) {   
-    return null;
-  }
-  
-  @Override
   public boolean canPointMoveFreely(int pointIndex) {   
     return true;
   }
