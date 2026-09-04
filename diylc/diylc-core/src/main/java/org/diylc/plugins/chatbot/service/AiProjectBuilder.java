@@ -175,7 +175,8 @@ public class AiProjectBuilder {
       }
     }
 
-    return new AiComponent(component.getName(), componentType.getName(),
+    return new AiComponent(component.getName(),
+        ComponentProcessor.getDisplayTypeName(component, componentType),
         component.getValue() == null ? null : component.getValue().toString(),
          fromPos, toPos, pos, terminals.isEmpty() ? null : terminals);
   }

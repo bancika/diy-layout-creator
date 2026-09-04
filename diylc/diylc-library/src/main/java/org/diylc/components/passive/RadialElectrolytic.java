@@ -72,6 +72,7 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> imp
   private boolean polarized = true;
   private boolean folded = false;
   private Size height = HEIGHT;
+  @Deprecated
   private boolean invert = false;
 
   public RadialElectrolytic() {
@@ -304,13 +305,26 @@ public class RadialElectrolytic extends AbstractRadialComponent<Capacitance> imp
     this.height = height;
   }
 
-  @EditableProperty(name = "Invert Polarity")
+//  @EditableProperty(name = "Invert Polarity")
   public boolean getInvert() {
     return invert;
   }
 
   public void setInvert(boolean invert) {
     this.invert = invert;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (getPolarized()) {
+      switch (index) {
+        case 0:
+          return getInvert() ? "-" : "+";
+        case 1:
+          return getInvert() ? "+" : "-";
+      }
+    }
+    return super.getControlPointNodeName(index);
   }
 
   @Override

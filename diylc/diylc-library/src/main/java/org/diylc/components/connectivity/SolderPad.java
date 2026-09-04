@@ -71,6 +71,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   private Size holeSize = HOLE_SIZE;
   private PCBLayer layer = PCBLayer._1;
   private HoleType holeType = HoleType.NTPH;
+  private String nodeName = "";
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -246,9 +247,22 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     return null;
   }
 
+  @EditableProperty(name = "Node Name", defaultable = false)
+  public String getNodeName() {
+    if (nodeName == null) {
+      nodeName = "";
+    }
+    return nodeName;
+  }
+
+  public void setNodeName(String nodeName) {
+    this.nodeName = nodeName;
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
-    return null;
+    String n = getNodeName();
+    return n.trim().isEmpty() ? null : n.trim();
   }
 
   @Override

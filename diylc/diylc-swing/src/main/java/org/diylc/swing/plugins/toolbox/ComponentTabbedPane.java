@@ -48,6 +48,7 @@ import org.diylc.appframework.miscutils.IConfigListener;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.core.IDIYComponent;
@@ -59,6 +60,7 @@ import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.tree.TreePanel;
 import org.diylc.swing.plugins.tree.TreePanel.DeleteBlockAction;
+import org.diylc.swing.plugins.tree.TreePanel.InsertBlockAsGroupAction;
 import org.diylc.swing.plugins.tree.TreePanel.SelectAllAction;
 
 /**
@@ -286,16 +288,22 @@ class ComponentTabbedPane extends JTabbedPane {
   private void refreshRecentComponentsToolbar(List<String> recentComponentClassList) {
     Container toolbar = getRecentToolbar();
     toolbar.removeAll();
-    for (String componentClassName : recentComponentClassList) {
-      ComponentType componentType;
+    for (String identifier : recentComponentClassList) {
       try {
-        componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) Class.forName(componentClassName));
-        Component button = ComponentButtonFactory.create(plugInPort, componentType,
-            createVariantPopup(componentType, null));
-        toolbar.add(button);
+        if (identifier.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
+          String blockName = identifier.substring(IBlockProcessor.BLOCK_PREFIX.length());
+          Component button = ComponentButtonFactory.createBuildingBlockButton(plugInPort, blockName,
+              createVariantPopup(null, blockName));
+          toolbar.add(button);
+        } else {
+          ComponentType componentType = ComponentProcessor.getInstance().extractComponentTypeFrom(
+              (Class<? extends IDIYComponent<?>>) Class.forName(identifier));
+          Component button = ComponentButtonFactory.create(plugInPort, componentType,
+              createVariantPopup(componentType, null));
+          toolbar.add(button);
+        }
       } catch (Exception e) {
-        LOG.error("Could not create recent component button for " + componentClassName, e);
+        LOG.error("Could not create recent component button for " + identifier, e);
       }
     }
   }
@@ -335,7 +343,8 @@ class ComponentTabbedPane extends JTabbedPane {
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         variantPopup.removeAll();
 
-        final String identifier = componentType == null ? "block:" + blockName
+        final String identifier = componentType == null
+            ? IBlockProcessor.BLOCK_PREFIX + blockName
             : componentType.getInstanceClass().getCanonicalName();
 
         JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
@@ -456,6 +465,7 @@ class ComponentTabbedPane extends JTabbedPane {
             }
           }
         } else {
+          variantPopup.add(new InsertBlockAsGroupAction(plugInPort, blockName));
           variantPopup.add(shortcutSubmenu);
           variantPopup.add(new DeleteBlockAction(plugInPort, swingUI, blockName));
         }

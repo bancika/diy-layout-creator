@@ -37,8 +37,10 @@ import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
@@ -142,7 +144,7 @@ public class CustomTreeModel implements TreeModel {
                     && System.currentTimeMillis() - previousActionTime > 100) {
                   previousActionTime = System.currentTimeMillis();
                   try {
-                    plugInPort.loadBlock(fav.getName());
+                    plugInPort.loadBlock(fav.getName(), BlockInstantiationMode.COMPOSITE);
                   } catch (InvalidBlockException e1) {
                     e1.printStackTrace();
                   }
@@ -155,8 +157,37 @@ public class CustomTreeModel implements TreeModel {
     }
 
     if (RECENTLY_USED.equals(category)) {
-      for (String className : this.recentComponents) {
-        ComponentType type = this.typesByClass.get(className);
+      for (String identifier : this.recentComponents) {
+        if (identifier.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
+          final String blockName = identifier.substring(IBlockProcessor.BLOCK_PREFIX.length());
+          // skip blocks that no longer exist
+          if (!this.blocks.contains(blockName))
+            continue;
+          if (this.searchText != null && !blockName.toLowerCase().contains(this.searchText))
+            continue;
+          visibleTypes.add(new TreeNode(blockName, new MouseAdapter() {
+
+            long previousActionTime = 0;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+              if (e == null || SwingUtilities.isLeftMouseButton(e)
+                  && System.currentTimeMillis() - previousActionTime > 100) {
+                previousActionTime = System.currentTimeMillis();
+                try {
+                  plugInPort.loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
+                } catch (InvalidBlockException e1) {
+                  e1.printStackTrace();
+                }
+              }
+            }
+          }, true));
+          continue;
+        }
+        final ComponentType type = this.typesByClass.get(identifier);
+        // skip unknown component classes
+        if (type == null)
+          continue;
         if (this.searchText == null || type.getName().toLowerCase().contains(this.searchText)) {
           visibleTypes.add(new TreeNode(type, new MouseAdapter() {
 
@@ -182,7 +213,7 @@ public class CustomTreeModel implements TreeModel {
                   && System.currentTimeMillis() - previousActionTime > 100) {
                 previousActionTime = System.currentTimeMillis();
                 try {
-                  plugInPort.loadBlock(block);
+                  plugInPort.loadBlock(block, BlockInstantiationMode.COMPOSITE);
                 } catch (InvalidBlockException e1) {
                   e1.printStackTrace();
                 }
@@ -233,10 +264,16 @@ public class CustomTreeModel implements TreeModel {
     }
 
     if (RECENTLY_USED.equals(category)) {
-      for (String className : this.recentComponents) {
-        ComponentType type = typesByClass.get(className);
-        if (type.getName().toLowerCase().contains(searchText))
-          return true;
+      for (String identifier : this.recentComponents) {
+        if (identifier.startsWith(IBlockProcessor.BLOCK_PREFIX)) {
+          if (identifier.substring(IBlockProcessor.BLOCK_PREFIX.length()).toLowerCase()
+              .contains(searchText))
+            return true;
+        } else {
+          ComponentType type = typesByClass.get(identifier);
+          if (type != null && type.getName().toLowerCase().contains(searchText))
+            return true;
+        }
       }
     }
 

@@ -272,6 +272,31 @@ public class InstantiationManager {
     return true;
   }
 
+  /**
+   * Pushes an identifier to the front of the recently used list, removing any earlier occurrence
+   * and trimming the list to {@link #MAX_RECENT_COMPONENTS}. If the identifier is already at the
+   * front nothing is written. The identifier is either a fully qualified component class name or a
+   * building block reference of the form {@code "block:<blockName>"} (see
+   * {@link IBlockProcessor#BLOCK_PREFIX}).
+   *
+   * @param identifier component class name or {@code "block:<blockName>"}
+   */
+  @SuppressWarnings("unchecked")
+  public static void addToRecentComponents(String identifier) {
+    List<String> recent = (List<String>) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.RECENT_COMPONENTS_KEY, new ArrayList<String>());
+    if (!recent.isEmpty() && recent.get(0).equals(identifier))
+      return;
+    // Remove if it's already somewhere in the list.
+    recent.remove(identifier);
+    // Add to the front of the list.
+    recent.add(0, identifier);
+    // Trim the list if necessary.
+    while (recent.size() > MAX_RECENT_COMPONENTS)
+      recent.remove(recent.size() - 1);
+    ConfigurationManager.getInstance().writeValue(IPlugInPort.RECENT_COMPONENTS_KEY, recent);
+  }
+
   @SuppressWarnings("unchecked")
   private List<IDIYComponent<?>> instantiateComponent(ComponentType componentType, Point2D point,
       Project currentProject) throws InstantiationException, IllegalAccessException, NoSuchMethodException, 
@@ -311,21 +336,7 @@ public class InstantiationManager {
     }
 
     // Write to recent components
-    List<String> recentComponentTypes =
-        (List<String>) ConfigurationManager.getInstance().readObject(IPlugInPort.RECENT_COMPONENTS_KEY,
-            new ArrayList<ComponentType>());
-    String className = componentType.getInstanceClass().getName();
-    if (recentComponentTypes.size() == 0 || !recentComponentTypes.get(0).equals(className)) {
-      // Remove if it's already somewhere in the list.
-      recentComponentTypes.remove(className);
-      // Add to the end of the list.
-      recentComponentTypes.add(0, className);
-      // Trim the list if necessary.
-      if (recentComponentTypes.size() > MAX_RECENT_COMPONENTS) {
-        recentComponentTypes.remove(recentComponentTypes.size() - 1);
-      }
-      ConfigurationManager.getInstance().writeValue(IPlugInPort.RECENT_COMPONENTS_KEY, recentComponentTypes);
-    }
+    addToRecentComponents(componentType.getInstanceClass().getName());
 
     List<IDIYComponent<?>> list = new ArrayList<IDIYComponent<?>>();
     list.add(component);
