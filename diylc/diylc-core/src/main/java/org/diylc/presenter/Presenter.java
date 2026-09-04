@@ -1060,9 +1060,9 @@ public class Presenter implements IPlugInPort {
     String regex = ".*" + criteria.toLowerCase() + ".*";
     for (IDIYComponent<?> c : currentProject.getComponents()) {
       ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      if ((c.getName() != null && c.getName().toLowerCase().matches(regex)) || 
+      if ((c.getName() != null && c.getName().toLowerCase().matches(regex)) ||
           (c.getValueForDisplay() != null && c.getValueForDisplay().toLowerCase().matches(regex)) ||
-          (type != null && type.getName().toLowerCase().matches(regex)))
+          (type != null && ComponentProcessor.getDisplayTypeName(c, type).toLowerCase().matches(regex)))
         matching.add(c);
     }
     updateSelection(matching);    
@@ -2844,9 +2844,14 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void loadBlock(String blockName) throws InvalidBlockException { 
-    List<IDIYComponent<?>> components = buildingBlockManager.loadBlock(blockName, currentProject.getComponents());
-    pasteComponents(new ComponentTransferable(components, blockName), true, true);
+  public void loadBlock(String blockName, BlockInstantiationMode mode) throws InvalidBlockException {
+    List<IDIYComponent<?>> components =
+        buildingBlockManager.loadBlock(blockName, currentProject.getComponents(), mode);
+    // a composite is a single, already-assembled component - nothing to auto-group
+    boolean autoGroup = mode == BlockInstantiationMode.GROUP;
+    pasteComponents(new ComponentTransferable(components, blockName), autoGroup, true);
+    // record the block in the recently used list, alongside component classes
+    InstantiationManager.addToRecentComponents(IBlockProcessor.BLOCK_PREFIX + blockName);
   }
 
   @Override

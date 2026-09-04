@@ -80,8 +80,6 @@ public class AiEditScriptEditorTest {
         @Override
         public String getInternalLinkName(int index1, int index2) { return null; }
         @Override
-        public String[] getSectionNames(int pointIndex) { return null; }
-        @Override
         public boolean canPointMoveFreely(int pointIndex) { return true; }
         
         @Override

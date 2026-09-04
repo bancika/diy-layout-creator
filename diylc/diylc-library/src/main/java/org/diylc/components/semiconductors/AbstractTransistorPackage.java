@@ -244,6 +244,9 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
   public String getControlPointNodeName(int index) {
     if (index >= 3)
       return null;
+    if (getPinout() != null) {
+       return getPinout().toPinout().substring(index, index + 1);
+    }
     return Integer.toString(index + 1);
   }
   

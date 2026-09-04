@@ -275,7 +275,8 @@ public class ComponentCatalogGenerator {
       return String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
     }
     if (value instanceof Percentage) {
-      return Integer.toString(((Percentage) value).getValue());
+      java.math.BigDecimal percentage = ((Percentage) value).getValue();
+      return percentage == null ? null : percentage.stripTrailingZeros().toPlainString();
     }
     if (value instanceof java.awt.Font) return null;
     if (value instanceof java.awt.Image) return null;
