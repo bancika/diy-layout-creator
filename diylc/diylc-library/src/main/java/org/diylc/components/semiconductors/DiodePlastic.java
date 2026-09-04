@@ -92,6 +92,18 @@ public class DiodePlastic extends AbstractLeadedComponent<String> implements IGe
     this.value = value;
   }
 
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "A";
+      case 1:
+        return "K";
+      default:
+        return null;
+    }
+  }
+
   public void drawIcon(Graphics2D g2d, int width, int height) {
     g2d.rotate(-Math.PI / 4, width / 2, height / 2);
     g2d.setColor(LEAD_COLOR_ICON);

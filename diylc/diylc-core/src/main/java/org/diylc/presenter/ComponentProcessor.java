@@ -39,6 +39,7 @@ import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.components.composite.CompositeComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 
@@ -113,7 +114,7 @@ public class ComponentProcessor {
     String keywordTag;
     List<String[]> datasheet = null;
     int datasheetCreationStepCount = 0;
-    
+
     if (clazz.isAnnotationPresent(ComponentDescriptor.class)) {
       ComponentDescriptor annotation = clazz.getAnnotation(ComponentDescriptor.class);
       name = annotation.name();
@@ -278,6 +279,11 @@ public class ComponentProcessor {
             // just to store in the cache
             ComponentProcessor.getInstance().extractProperties(clazz);
 
+            // types created only programmatically (e.g. CompositeComponent) don't belong in the
+            // palette, but still need to go through extractProperties() above so the cache is warm
+            if (clazz.getAnnotation(ComponentDescriptor.class).hiddenInPalette())
+              continue;
+
             List<ComponentType> nestedList;
             if (componentTypes.containsKey(componentType.getCategory())) {
               nestedList = componentTypes.get(componentType.getCategory());
@@ -427,6 +433,23 @@ public class ComponentProcessor {
     return transformer;
   }
   
+  /**
+   * @return the name that should represent the component's type to a human or to the AI, e.g. in
+   *         the BOM, the netlist report or the AI project description. For a
+   *         {@link CompositeComponent} this is the source building block's name (e.g.
+   *         "Arduino Uno") rather than the generic "Building Block" type name, since every
+   *         composite shares one {@link ComponentType} (see design decision D5 in
+   *         {@code docs/plans/composite-building-blocks.md}).
+   */
+  public static String getDisplayTypeName(IDIYComponent<?> component, ComponentType type) {
+    if (component instanceof CompositeComponent) {
+      String blockName = ((CompositeComponent) component).getBlockName();
+      if (blockName != null && !blockName.isEmpty())
+        return blockName;
+    }
+    return type.getName();
+  }
+
   public static boolean hasStickyPoint(IDIYComponent<?> c) {
     for (int i = 0; i < c.getControlPointCount(); i++)
       if (c.isControlPointSticky(0))

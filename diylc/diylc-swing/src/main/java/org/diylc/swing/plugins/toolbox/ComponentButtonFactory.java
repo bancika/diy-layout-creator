@@ -53,6 +53,7 @@ import org.diylc.appframework.miscutils.Utils;
 import org.diylc.swingframework.openide.DropDownButtonFactory;
 import com.google.common.collect.Lists;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
@@ -316,7 +317,7 @@ public class ComponentButtonFactory {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
-          plugInPort.loadBlock(blockName);
+          plugInPort.loadBlock(blockName, BlockInstantiationMode.COMPOSITE);
         } catch (InvalidBlockException e1) {
           LOG.error("Error loading building block", e1);
         }

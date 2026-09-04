@@ -71,6 +71,7 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   private int columnCount = 5;
   private Size spacing = PIN_SPACING;
   private Boolean shrouded = false;
+  private String nodeNames = "";
   
   private Color bodyColor = BODY_COLOR;
   private Color shroudColor = BODY_COLOR.darker();
@@ -340,6 +341,31 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
 
   public void setShroudColor(Color shroudColor) {
     this.shroudColor = shroudColor;
+  }
+
+  @EditableProperty(name = "Node Names", defaultable = false)
+  public String getNodeNames() {
+    if (nodeNames == null) {
+      nodeNames = "";
+    }
+    return nodeNames;
+  }
+
+  public void setNodeNames(String nodeNames) {
+    this.nodeNames = nodeNames;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    // Comma-separated list, one entry per pin in control point order. When the list is
+    // blank, or an individual entry is missing/blank, the pin keeps its ordinal number.
+    String raw = getNodeNames();
+    if (raw.trim().isEmpty()) {
+      return Integer.toString(index + 1);
+    }
+    String[] parts = raw.split(",", -1);
+    String label = index < parts.length ? parts[index].trim() : "";
+    return label.isEmpty() ? Integer.toString(index + 1) : label;
   }
 
   @Override

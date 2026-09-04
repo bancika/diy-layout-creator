@@ -138,13 +138,6 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
   String getInternalLinkName(int index1, int index2);
   
   /**   
-   * @param pointIndex  
-   * @return name of the internal section containing the specified point, or null if the component does not have internal sections.
-   * One point can be shared between multiple sections, in which case, the result may contain more than one element.
-   */
-  String[] getSectionNames(int pointIndex);
-  
-  /**   
    * @param pointIndex
    * @return true if the control point can move without affecting other points' position, false otherwise
    */

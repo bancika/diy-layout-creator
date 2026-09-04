@@ -138,4 +138,13 @@ public @interface ComponentDescriptor {
    * @return the schematic factory class, or {@code ISchematicFactory.class} when none is declared
    */
   Class<? extends ISchematicFactory> schematicFactory() default ISchematicFactory.class;
+
+  /**
+   * @return true if the component type should not be listed in the palette (toolbox and
+   *         component tree), while still being resolvable via
+   *         {@code ComponentProcessor.extractComponentTypeFrom} for netlist, BOM and name
+   *         generation purposes. Used by component types that are only ever created
+   *         programmatically, e.g. {@code CompositeComponent}.
+   */
+  boolean hiddenInPalette() default false;
 }
