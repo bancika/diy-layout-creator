@@ -60,10 +60,13 @@ import org.apache.log4j.lf5.viewer.categoryexplorer.TreeModelAdapter;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
 
+import org.diylc.common.BlockInstantiationMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.Favorite;
+import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.Favorite.FavoriteType;
+import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
@@ -313,7 +316,8 @@ public class TreePanel extends JPanel {
           TreeNode payload = (TreeNode) selectedNode;
           final ComponentType componentType = payload.getComponentType();
 
-          final String identifier = componentType == null ? "block:" + payload.toString()
+          final String identifier = componentType == null
+              ? IBlockProcessor.BLOCK_PREFIX + payload.toString()
               : componentType.getInstanceClass().getCanonicalName();
 
           JMenu shortcutSubmenu = new JMenu("Assign Shortcut");
@@ -434,6 +438,7 @@ public class TreePanel extends JPanel {
               }
             }
           } else if (getTreeModel().isLeaf(selectedNode)) {
+            popup.add(new InsertBlockAsGroupAction(plugInPort, payload.toString()));
             popup.add(shortcutSubmenu);
             popup.add(new DeleteBlockAction(plugInPort, swingUI, payload.toString()));
           }
@@ -494,7 +499,8 @@ public class TreePanel extends JPanel {
 
         HashMap<String, String> shortcutMap = (HashMap<String, String>) ConfigurationManager
             .getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
-        String identifier = payload.getComponentType() == null ? "block:" + payload.toString()
+        String identifier = payload.getComponentType() == null
+            ? IBlockProcessor.BLOCK_PREFIX + payload.toString()
             : payload.getComponentType().getInstanceClass().getCanonicalName();
         if (shortcutMap != null && shortcutMap.containsValue(identifier)) {
           for (String key : shortcutMap.keySet()) {
@@ -561,6 +567,37 @@ public class TreePanel extends JPanel {
         }
 
         plugInPort.setSelection(newSelection, true);        
+      }
+    }
+  }
+
+  /**
+   * Left click on a building block node inserts it in composite mode (a single rigid component)
+   * by default - see design decision D10 in {@code docs/plans/composite-building-blocks.md}.
+   * This action offers the one extra click needed to fall back to the original behavior:
+   * every component of the block instantiated separately and auto-grouped.
+   */
+  public static class InsertBlockAsGroupAction extends AbstractAction {
+
+    private static final long serialVersionUID = 1L;
+
+    private IPlugInPort plugInPort;
+    private String blockName;
+
+    public InsertBlockAsGroupAction(IPlugInPort plugInPort, String blockName) {
+      super();
+      this.plugInPort = plugInPort;
+      this.blockName = blockName;
+      putValue(AbstractAction.NAME, "Insert as Grouped Components");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      LOG.info(getValue(AbstractAction.NAME) + " triggered");
+      try {
+        plugInPort.loadBlock(blockName, BlockInstantiationMode.GROUP);
+      } catch (InvalidBlockException e1) {
+        LOG.error("Could not find building block: " + blockName, e1);
       }
     }
   }

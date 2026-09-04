@@ -81,6 +81,7 @@ public class BomMaker {
               (Class<? extends IDIYComponent<?>>) component.getClass());
       if (type.getBomPolicy() == BomPolicy.NEVER_SHOW)
         continue;
+      String typeName = ComponentProcessor.getDisplayTypeName(component, type);
       String name = component.getName();
       String value;
       try {
@@ -89,7 +90,7 @@ public class BomMaker {
         value = "<undefined>";
       }
       if ((name != null) && (value != null)) {
-        String key = type.getName() + "|" + value;
+        String key = typeName + "|" + value;
         if (entryMap.containsKey(key)) {
           BomEntry entry = entryMap.get(key);
           entry.setQuantity(entry.getQuantity() + 1);
@@ -98,7 +99,7 @@ public class BomMaker {
           }
         } else {
           entryMap.put(key,
-              new BomEntry(type.getName(), type.getBomPolicy() == BomPolicy.SHOW_ALL_NAMES ? name : type.getName(),
+              new BomEntry(typeName, type.getBomPolicy() == BomPolicy.SHOW_ALL_NAMES ? name : typeName,
                   value, 1));
         }
       }

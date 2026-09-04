@@ -370,6 +370,38 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Building blocks instantiate by default as a single component, inheriting control points and terminal nodes from all individual components but acting as a single component; still possible to instantiate individual components using 'Insert as Grouped Components' action from the context menu over a building block</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to set node name (or names) for some connectivity components (e.g. Solder Pad, Eyelet, PCB Terminal Block, etc); when combined into building blocks, these names will become node names of the composite component stamped from the building block</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include building blocks in the Recently Used category</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When saving building blocks, present a drop down list with most recently used building blocks for quick selection</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Prompt to confirm the overwrite when saving over the existing building blocks</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>When transistor pinout is selected for TO-1, TO-92, TO-126, TO-220 transistor, the corresponding electrode name will be used as a node name in programmatical and AI analysis</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Diode components now label their terminal nodes as 'A' (anode) and 'K' (cathode) instead of '1' and '2'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Capacitor components now label their terminal nodes as '+' and '-' instead of '1' and '2' when 'Polarized' property is ticked</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Percentage values such as transparency Alpha, image Scale, etc, can have decimal values and not just integers</description>
 				</org.diylc.appframework.update.Change>
