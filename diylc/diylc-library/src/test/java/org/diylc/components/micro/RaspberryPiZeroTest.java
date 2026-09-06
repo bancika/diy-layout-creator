@@ -117,4 +117,33 @@ public class RaspberryPiZeroTest {
     pi.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", pi.getHeaders());
   }
+
+  @Test
+  public void testVersionProperty() {
+    RaspberryPiZero pi = new RaspberryPiZero();
+    Assert.assertEquals("Default version should be Pi Zero", RaspberryPiZero.ZeroVersion.PI_ZERO,
+        pi.getVersion());
+    Assert.assertEquals("Pi Zero", RaspberryPiZero.ZeroVersion.PI_ZERO.toString());
+    Assert.assertEquals("Pi Zero W", RaspberryPiZero.ZeroVersion.PI_ZERO_W.toString());
+    Assert.assertEquals("Pi Zero 2 W", RaspberryPiZero.ZeroVersion.PI_ZERO_2_W.toString());
+
+    pi.setVersion(RaspberryPiZero.ZeroVersion.PI_ZERO_2_W);
+    Assert.assertEquals(RaspberryPiZero.ZeroVersion.PI_ZERO_2_W, pi.getVersion());
+  }
+
+  @Test
+  public void testZero2WGeometryMatchesZeroW() {
+    // The Zero 2 W keeps the 65 x 30 mm outline, the 40-pin header position and every connector;
+    // only the SoC package and the silkscreen name change.
+    RaspberryPiZero zeroW = new RaspberryPiZero();
+    zeroW.setVersion(RaspberryPiZero.ZeroVersion.PI_ZERO_W);
+    RaspberryPiZero zero2W = new RaspberryPiZero();
+    zero2W.setVersion(RaspberryPiZero.ZeroVersion.PI_ZERO_2_W);
+
+    Assert.assertEquals(zeroW.getControlPointCount(), zero2W.getControlPointCount());
+    Assert.assertEquals(zeroW.getBodyShape().getBounds2D(), zero2W.getBodyShape().getBounds2D());
+    for (int i = 0; i < zeroW.getControlPointCount(); i++) {
+      Assert.assertEquals("Pin " + i, zeroW.getControlPoint(i), zero2W.getControlPoint(i));
+    }
+  }
 }

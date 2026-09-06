@@ -52,7 +52,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Raspberry Pi Pico", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Raspberry Pi Pico / Pico W RP2040 Microcontroller Board",
+    author = "Branislav Stojkovic",
+    description = "Raspberry Pi Pico / Pico W (RP2040) and Pico 2 / Pico 2 W (RP2350) Microcontroller Board",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -62,7 +63,9 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   public enum PicoVersion {
     PICO("Pi Pico"),
-    PICO_W("Pi Pico W");
+    PICO_W("Pi Pico W"),
+    PICO_2("Pi Pico 2"),
+    PICO_2_W("Pi Pico 2 W");
 
     private final String label;
 
@@ -125,6 +128,21 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  /**
+   * True for the wireless variants, which carry the CYW43439 radio and move the SWD pads out of
+   * the bottom edge to make room for it.
+   */
+  private boolean isW() {
+    return getVersion() == PicoVersion.PICO_W || getVersion() == PicoVersion.PICO_2_W;
+  }
+
+  /**
+   * True for the RP2350 generation, which is pin- and size-identical to the RP2040 boards.
+   */
+  private boolean isV2() {
+    return getVersion() == PicoVersion.PICO_2 || getVersion() == PicoVersion.PICO_2_W;
+  }
+
   @EditableProperty(name = "Headers")
   public boolean getHeaders() {
     return headers;
@@ -162,7 +180,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       relativeOffsets[20 + i][1] = i * spacing;
     }
 
-    if (getVersion() == PicoVersion.PICO_W) {
+    if (isW()) {
       double pin1OffsetX = new Size(1.61d, SizeUnit.mm).convertToPixels();
       double pin1OffsetY = new Size(1.37d, SizeUnit.mm).convertToPixels();
       double midX = BOARD_WIDTH.convertToPixels() - DEBUG_PAD_OFFSET_X.convertToPixels() - pin1OffsetX;
@@ -202,21 +220,9 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     Area boardArea = new Area(new Rectangle2D.Double(boardX, boardY, boardW, boardH));
 
     double spacing = PIN_SPACING.convertToPixels();
-    int notchD = getClosestOdd((int) Math.round(NOTCH_SIZE.convertToPixels()));
-    double notchR = notchD / 2.0;
-
-    // Subtract left edge semi-circular notches
-    for (int i = 0; i < 20; i++) {
-      double py = boardY + pin1OffsetY + i * spacing;
-      boardArea.subtract(new Area(new Ellipse2D.Double(boardX - notchR, py - notchR, notchD, notchD)));
-    }
-
-    // Subtract right edge semi-circular notches
-    double rightEdge = boardX + boardW;
-    for (int i = 0; i < 20; i++) {
-      double py = boardY + pin1OffsetY + i * spacing;
-      boardArea.subtract(new Area(new Ellipse2D.Double(rightEdge - notchR, py - notchR, notchD, notchD)));
-    }
+    double pinY = boardY + pin1OffsetY;
+    subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX);
+    subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX + boardW);
 
     return boardArea;
   }
@@ -277,12 +283,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       // RP2040 chip
       double chipSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
       double chipX = boardX + (boardW - chipSize) / 2.0;
-      double chipY = (getVersion() == PicoVersion.PICO_W)
+      double chipY = isW()
           ? boardY + new Size(23.0d, SizeUnit.mm).convertToPixels() - new Size(0.1d, SizeUnit.in).convertToPixels()
           : boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipSize, chipSize, "RP2040");
+      drawChip(g2d, chipX, chipY, chipSize, chipSize, isV2() ? "RP2350" : "RP2040");
 
-      if (getVersion() == PicoVersion.PICO_W) {
+      if (isW()) {
         double spacing = PIN_SPACING.convertToPixels();
         double midDebugX = boardX + boardW - DEBUG_PAD_OFFSET_X.convertToPixels();
         double midDebugY = boardY + boardH - DEBUG_PAD_OFFSET_Y.convertToPixels();
@@ -340,6 +346,26 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setComposite(oldComposite);
   }
 
+  @Override
+  protected Size getCastellatedPadSize() {
+    return PAD_SIZE;
+  }
+
+  @Override
+  protected Size getCastellatedHoleSize() {
+    return HOLE_SIZE;
+  }
+
+  @Override
+  protected Size getCastellatedNotchSize() {
+    return NOTCH_SIZE;
+  }
+
+  @Override
+  protected Color getCastellatedPadColor() {
+    return PAD_COLOR;
+  }
+
   /**
    * Helper to draw Raspberry Pi Pico's castellated solder pads along the left and right edges
    * and the SWD round pads.
@@ -351,62 +377,20 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     double spacing = PIN_SPACING.convertToPixels();
     int padD = getClosestOdd((int) Math.round(PAD_SIZE.convertToPixels()));
     int holeD = getClosestOdd((int) Math.round(HOLE_SIZE.convertToPixels()));
-    int notchD = getClosestOdd((int) Math.round(NOTCH_SIZE.convertToPixels()));
     double padR = padD / 2.0;
     double holeR = holeD / 2.0;
-    double notchR = notchD / 2.0;
+    double pinY = boardY + pin1OffsetY;
+    double rightEdge = boardX + boardW;
+
+    // Left row (pins 0..19) and right row (pins 20..39)
+    drawCastellatedPads(g2d, boardX + pin1OffsetX, pinY, 20, spacing, boardX, outlineMode, drawingObserver);
+    drawCastellatedPads(g2d, rightEdge - pin1OffsetX, pinY, 20, spacing, rightEdge, outlineMode,
+        drawingObserver);
 
     drawingObserver.startTrackingContinuityArea(true);
 
-    // Left row (pins 0..19): castellated pads extending to left edge
-    for (int i = 0; i < 20; i++) {
-      double px = boardX + pin1OffsetX;
-      double py = boardY + pin1OffsetY + i * spacing;
-
-      Area padArea = new Area(new Rectangle2D.Double(boardX, py - padR, pin1OffsetX, padD));
-      padArea.add(new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD)));
-      padArea.subtract(new Area(new Ellipse2D.Double(boardX - notchR, py - notchR, notchD, notchD)));
-      padArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
-
-      g2d.setColor(PAD_COLOR);
-      g2d.fill(padArea);
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(padArea);
-
-      // Inner through-hole drill hole (white circle matching Zero and perfboard)
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
-    }
-
-    // Right row (pins 20..39): castellated pads extending to right edge
-    double rightEdge = boardX + boardW;
-    for (int i = 0; i < 20; i++) {
-      double px = rightEdge - pin1OffsetX;
-      double py = boardY + pin1OffsetY + i * spacing;
-
-      Area padArea = new Area(new Rectangle2D.Double(px, py - padR, pin1OffsetX, padD));
-      padArea.add(new Area(new Ellipse2D.Double(px - padR, py - padR, padD, padD)));
-      padArea.subtract(new Area(new Ellipse2D.Double(rightEdge - notchR, py - notchR, notchD, notchD)));
-      padArea.subtract(new Area(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD)));
-
-      g2d.setColor(PAD_COLOR);
-      g2d.fill(padArea);
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(padArea);
-
-      // Inner through-hole drill hole (white circle matching Zero and perfboard)
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
-      g2d.setColor(PAD_COLOR.darker());
-      g2d.draw(new Ellipse2D.Double(px - holeR, py - holeR, holeD, holeD));
-    }
-
     // SWD Debug Header (pins 40..42): standard round solder pads
-    if (getVersion() == PicoVersion.PICO_W) {
+    if (isW()) {
       double midX = boardX + boardW - DEBUG_PAD_OFFSET_X.convertToPixels();
       double midY = boardY + boardH - DEBUG_PAD_OFFSET_Y.convertToPixels();
       for (int i = 0; i < 3; i++) {

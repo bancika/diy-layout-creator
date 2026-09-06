@@ -52,7 +52,9 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "ESP32 DevKit", category = "Controllers",
-    author = "Branislav Stojkovic", description = "ESP32 DevKit Wi-Fi and Bluetooth Development Board (30-Pin / 38-Pin / 44-Pin S3)",
+    author = "Branislav Stojkovic",
+    description = "ESP32 DevKit Wi-Fi and Bluetooth Development Board "
+        + "(30-Pin / 38-Pin / 44-Pin S3 / 30-Pin C3 / 32-Pin C6)",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -63,7 +65,9 @@ public class ESP32DevKit extends AbstractMakerBoard {
   public enum DevKitVersion {
     DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
     DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
-    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)");
+    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)"),
+    ESP32_C3_DevKitM_1("ESP32-C3 DevKitM-1 (30-Pin)"),
+    ESP32_C6_DevKitC_1("ESP32-C6 DevKitC-1 (32-Pin)");
 
     private final String label;
 
@@ -130,6 +134,27 @@ public class ESP32DevKit extends AbstractMakerBoard {
       "15", "D1", "D0", "CLK"
   };
 
+  // ESP32-C3-DevKitM-1 and ESP32-C6-DevKitC-1 share the DevKitC form factor: 25.4 mm wide with
+  // 0.9" between the pin rows, an on-module PCB antenna at the top and the connectors at the
+  // bottom. Espressif publishes their outlines only as dimension drawings, so the body length is
+  // derived from the pin field plus the same top and bottom margins the S3 DevKitC-1 uses.
+  public static Size BOARD_WIDTH_RISCV = new Size(25.40d, SizeUnit.mm);
+  public static Size TOP_MARGIN_RISCV = new Size(1.40d, SizeUnit.mm);
+  public static Size BOTTOM_MARGIN_RISCV = new Size(8.0d, SizeUnit.mm);
+
+  // Module footprints are split into the shielded can and the antenna above it, so shield plus
+  // antenna adds up to the module's overall length: ESP32-C3-MINI-1 is 13.2 x 16.6 mm and
+  // ESP32-C6-WROOM-1 is 18.0 x 25.5 mm.
+  public static Size SHIELD_WIDTH_C3 = new Size(13.2d, SizeUnit.mm);
+  public static Size SHIELD_LENGTH_C3 = new Size(10.6d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH_C3 = new Size(13.2d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH_C3 = new Size(6.0d, SizeUnit.mm);
+
+  public static Size SHIELD_WIDTH_C6 = new Size(18.0d, SizeUnit.mm);
+  public static Size SHIELD_LENGTH_C6 = new Size(19.5d, SizeUnit.mm);
+  public static Size ANTENNA_WIDTH_C6 = new Size(18.0d, SizeUnit.mm);
+  public static Size ANTENNA_LENGTH_C6 = new Size(6.0d, SizeUnit.mm);
+
   public static final String[] PIN_NAMES_S3_44 = new String[] {
       // Left row (J1: pins 0..21, top to bottom)
       "3V3_1", "3V3_2", "RST", "4", "5", "6", "7",
@@ -144,6 +169,23 @@ public class ESP32DevKit extends AbstractMakerBoard {
       "GND_3", "GND_4"
   };
 
+  public static final String[] PIN_NAMES_C3_30 = new String[] {
+      // J1 (left row: pins 0..14, top to bottom)
+      "GND_1", "3V3_1", "3V3_2", "IO2", "IO3", "GND_2", "RST", "GND_3", "IO0", "IO1", "IO10",
+      "GND_4", "5V_1", "5V_2", "GND_5",
+      // J3 (right row: pins 15..29, top to bottom)
+      "GND_6", "TX", "RX", "GND_7", "IO9", "IO8", "GND_8", "IO7", "IO6", "IO5", "IO4", "GND_9",
+      "IO18", "IO19", "GND_10"
+  };
+
+  public static final String[] PIN_NAMES_C6_32 = new String[] {
+      // J1 (left row: pins 0..15, top to bottom)
+      "3V3", "RST", "4", "5", "6", "7", "0", "1", "8", "10", "11", "2", "3", "5V", "GND_1", "NC_1",
+      // J3 (right row: pins 16..31, top to bottom)
+      "GND_2", "TX", "RX", "15", "23", "22", "21", "20", "19", "18", "9", "GND_3", "13", "12",
+      "GND_4", "NC_2"
+  };
+
   private DevKitVersion version = DevKitVersion.DevKit_V1_30Pin;
   protected boolean headers = false;
 
@@ -155,7 +197,56 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   @EditableProperty(name = "Version")
   public DevKitVersion getVersion() {
+    if (version == null) {
+      version = DevKitVersion.DevKit_V1_30Pin;
+    }
     return version;
+  }
+
+  /**
+   * True for the RISC-V DevKits, which share one body outline and differ only in module size,
+   * pin count and how many USB connectors sit on the bottom edge.
+   */
+  private boolean isRiscV() {
+    return getVersion() == DevKitVersion.ESP32_C3_DevKitM_1
+        || getVersion() == DevKitVersion.ESP32_C6_DevKitC_1;
+  }
+
+  private String[] getPinNames() {
+    switch (getVersion()) {
+      case DevKitC_V4_38Pin:
+        return PIN_NAMES_38;
+      case ESP32_S3_DevKitC_44Pin:
+        return PIN_NAMES_S3_44;
+      case ESP32_C3_DevKitM_1:
+        return PIN_NAMES_C3_30;
+      case ESP32_C6_DevKitC_1:
+        return PIN_NAMES_C6_32;
+      default:
+        return PIN_NAMES_30;
+    }
+  }
+
+  private Size getRiscVShieldWidth() {
+    return getVersion() == DevKitVersion.ESP32_C3_DevKitM_1 ? SHIELD_WIDTH_C3 : SHIELD_WIDTH_C6;
+  }
+
+  private Size getRiscVShieldLength() {
+    return getVersion() == DevKitVersion.ESP32_C3_DevKitM_1 ? SHIELD_LENGTH_C3 : SHIELD_LENGTH_C6;
+  }
+
+  private Size getRiscVAntennaWidth() {
+    return getVersion() == DevKitVersion.ESP32_C3_DevKitM_1 ? ANTENNA_WIDTH_C3 : ANTENNA_WIDTH_C6;
+  }
+
+  private Size getRiscVAntennaLength() {
+    return getVersion() == DevKitVersion.ESP32_C3_DevKitM_1 ? ANTENNA_LENGTH_C3 : ANTENNA_LENGTH_C6;
+  }
+
+  private double getRiscVBoardLength() {
+    int pinsPerRow = getPinNames().length / 2;
+    return TOP_MARGIN_RISCV.convertToPixels() + (pinsPerRow - 1) * PIN_SPACING.convertToPixels()
+        + BOTTOM_MARGIN_RISCV.convertToPixels();
   }
 
   public void setVersion(DevKitVersion version) {
@@ -176,18 +267,9 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
-    if (version == DevKitVersion.DevKit_V1_30Pin) {
-      if (index >= 0 && index < PIN_NAMES_30.length) {
-        return PIN_NAMES_30[index];
-      }
-    } else if (version == DevKitVersion.DevKitC_V4_38Pin) {
-      if (index >= 0 && index < PIN_NAMES_38.length) {
-        return PIN_NAMES_38[index];
-      }
-    } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
-      if (index >= 0 && index < PIN_NAMES_S3_44.length) {
-        return PIN_NAMES_S3_44[index];
-      }
+    String[] pinNames = getPinNames();
+    if (index >= 0 && index < pinNames.length) {
+      return pinNames[index];
     }
     return "Pin " + (index + 1);
   }
@@ -198,7 +280,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
   private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
 
-    if (version == DevKitVersion.DevKit_V1_30Pin) {
+    if (getVersion() == DevKitVersion.DevKit_V1_30Pin) {
       double rowSpacing = ROW_SPACING.convertToPixels();
       double[][] relativeOffsets = new double[30][2];
       for (int i = 0; i < 15; i++) {
@@ -210,7 +292,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         relativeOffsets[15 + i][1] = i * spacing;
       }
       return relativeOffsets;
-    } else if (version == DevKitVersion.DevKitC_V4_38Pin) {
+    } else if (getVersion() == DevKitVersion.DevKitC_V4_38Pin) {
       double rowSpacing = ROW_SPACING.convertToPixels();
       double[][] relativeOffsets = new double[PIN_NAMES_38.length][2];
       for (int i = 0; i < 19; i++) {
@@ -222,7 +304,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         relativeOffsets[19 + i][1] = i * spacing;
       }
       return relativeOffsets;
-    } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+    } else if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
       double rowSpacingS3 = ROW_SPACING_S3.convertToPixels();
       double[][] relativeOffsets = new double[PIN_NAMES_S3_44.length][2];
       for (int i = 0; i < 22; i++) {
@@ -232,6 +314,19 @@ public class ESP32DevKit extends AbstractMakerBoard {
       for (int i = 0; i < 22; i++) {
         relativeOffsets[22 + i][0] = rowSpacingS3;
         relativeOffsets[22 + i][1] = i * spacing;
+      }
+      return relativeOffsets;
+    } else if (isRiscV()) {
+      double rowSpacing = ROW_SPACING_S3.convertToPixels();
+      int pinsPerRow = getPinNames().length / 2;
+      double[][] relativeOffsets = new double[pinsPerRow * 2][2];
+      for (int i = 0; i < pinsPerRow; i++) {
+        relativeOffsets[i][0] = 0;
+        relativeOffsets[i][1] = i * spacing;
+      }
+      for (int i = 0; i < pinsPerRow; i++) {
+        relativeOffsets[pinsPerRow + i][0] = rowSpacing;
+        relativeOffsets[pinsPerRow + i][1] = i * spacing;
       }
       return relativeOffsets;
     }
@@ -251,7 +346,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     double x = p0.getX();
     double y = p0.getY();
 
-    if (version == DevKitVersion.DevKit_V1_30Pin) {
+    if (getVersion() == DevKitVersion.DevKit_V1_30Pin) {
       double rowSpacing = ROW_SPACING.convertToPixels();
       double boardW = BOARD_WIDTH_30.convertToPixels();
       double boardH = BOARD_LENGTH_30.convertToPixels();
@@ -259,7 +354,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
       double boardX = (x + rowSpacing / 2.0) - boardW / 2.0;
       double boardY = y - topMargin;
       return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
-    } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+    } else if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
       double rowSpacingS3 = ROW_SPACING_S3.convertToPixels();
       double boardW = BOARD_WIDTH_S3.convertToPixels();
       double boardH = BOARD_LENGTH_S3.convertToPixels();
@@ -270,6 +365,22 @@ public class ESP32DevKit extends AbstractMakerBoard {
       double mainX = (x + rowSpacingS3 / 2.0) - boardW / 2.0;
       double mainY = y - topMargin;
       double antennaX = (x + rowSpacingS3 / 2.0) - antennaW / 2.0;
+      double antennaY = mainY - antennaH;
+
+      Area bodyArea = new Area(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
+      bodyArea.add(new Area(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH + 1)));
+      return bodyArea;
+    } else if (isRiscV()) {
+      double rowSpacing = ROW_SPACING_S3.convertToPixels();
+      double boardW = BOARD_WIDTH_RISCV.convertToPixels();
+      double boardH = getRiscVBoardLength();
+      double antennaW = getRiscVAntennaWidth().convertToPixels();
+      double antennaH = getRiscVAntennaLength().convertToPixels();
+      double topMargin = TOP_MARGIN_RISCV.convertToPixels();
+
+      double mainX = (x + rowSpacing / 2.0) - boardW / 2.0;
+      double mainY = y - topMargin;
+      double antennaX = (x + rowSpacing / 2.0) - antennaW / 2.0;
       double antennaY = mainY - antennaH;
 
       Area bodyArea = new Area(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
@@ -314,7 +425,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
     // Determine the center X for the current version
     double centerX;
-    if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+    if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin || isRiscV()) {
       centerX = x + ROW_SPACING_S3.convertToPixels() / 2.0;
     } else {
       centerX = x + ROW_SPACING.convertToPixels() / 2.0;
@@ -325,10 +436,10 @@ public class ESP32DevKit extends AbstractMakerBoard {
       g2d.setColor(Constants.TRANSPARENT_COLOR);
       g2d.fill(boardShape);
     } else {
-      if (version == DevKitVersion.DevKit_V1_30Pin) {
+      if (getVersion() == DevKitVersion.DevKit_V1_30Pin) {
         g2d.setColor(bodyColor);
         g2d.fill(boardShape);
-      } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+      } else if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
         double boardW = BOARD_WIDTH_S3.convertToPixels();
         double boardH = BOARD_LENGTH_S3.convertToPixels();
         double antennaW = ANTENNA_WIDTH_S3.convertToPixels();
@@ -341,6 +452,24 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double antennaY = mainY - antennaH;
 
         // Main board body (sharp rectangular edges)
+        g2d.setColor(bodyColor);
+        g2d.fill(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
+
+        // Antenna tab in #1e1e1e
+        g2d.setColor(ANTENNA_BG_COLOR);
+        g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
+      } else if (isRiscV()) {
+        double boardW = BOARD_WIDTH_RISCV.convertToPixels();
+        double boardH = getRiscVBoardLength();
+        double antennaW = getRiscVAntennaWidth().convertToPixels();
+        double antennaH = getRiscVAntennaLength().convertToPixels();
+        double topMargin = TOP_MARGIN_RISCV.convertToPixels();
+
+        double mainX = centerX - boardW / 2.0;
+        double mainY = y - topMargin;
+        double antennaX = centerX - antennaW / 2.0;
+        double antennaY = mainY - antennaH;
+
         g2d.setColor(bodyColor);
         g2d.fill(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
 
@@ -376,7 +505,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     if (!outlineMode) {
       double shift1mm = new Size(1.0d, SizeUnit.mm).convertToPixels();
 
-      if (version == DevKitVersion.DevKit_V1_30Pin) {
+      if (getVersion() == DevKitVersion.DevKit_V1_30Pin) {
         double btnW = BUTTON_LENGTH.convertToPixels();
         double btnH = BUTTON_WIDTH.convertToPixels();
         double rowSpacing = ROW_SPACING.convertToPixels();
@@ -434,7 +563,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, "ESP32 DevKit V1", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      } else if (version == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
+      } else if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin) {
         double btnW = BUTTON_WIDTH.convertToPixels();
         double btnH = BUTTON_LENGTH.convertToPixels();
         double boardW = BOARD_WIDTH_S3.convertToPixels();
@@ -480,6 +609,62 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, "ESP32-S3 DevKitC-1", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      } else if (isRiscV()) {
+        boolean isC3 = getVersion() == DevKitVersion.ESP32_C3_DevKitM_1;
+        double btnW = BUTTON_WIDTH.convertToPixels();
+        double btnH = BUTTON_LENGTH.convertToPixels();
+        double boardW = BOARD_WIDTH_RISCV.convertToPixels();
+        double boardH = getRiscVBoardLength();
+        double topMargin = TOP_MARGIN_RISCV.convertToPixels();
+        double antennaW = getRiscVAntennaWidth().convertToPixels();
+        double antennaH = getRiscVAntennaLength().convertToPixels();
+
+        double mainX = centerX - boardW / 2.0;
+        double mainY = y - topMargin;
+        double antennaX = centerX - antennaW / 2.0;
+        double antennaY = mainY - antennaH;
+
+        // Antenna at top (dark rectangle + gold serpentine trace)
+        drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+
+        // ESP32-C3-MINI-1 / ESP32-C6-WROOM-1 metal shield module below the antenna
+        double shieldW = getRiscVShieldWidth().convertToPixels();
+        double shieldH = getRiscVShieldLength().convertToPixels();
+        double shieldX = centerX - shieldW / 2.0;
+        double shieldY = mainY + 4;
+        drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH,
+            isC3 ? "ESP32-C3-MINI-1" : "ESP32-C6-WROOM-1");
+
+        // BOOT & RST tactile buttons flanking the connectors, inset clear of the pin columns
+        int pinsPerRow = getPinNames().length / 2;
+        double btnY = y + (pinsPerRow - 3.5) * PIN_SPACING.convertToPixels() - btnH / 2.0;
+        double btnLeftX = mainX + 49;
+        double btnRightX = mainX + boardW - 49 - btnW;
+        drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "BOOT", "RST");
+
+        // The C3 has a single Micro-USB port; the C6 has a USB-to-UART and a native port, both
+        // USB Type-C, on the bottom edge
+        if (isC3) {
+          double usbW = USB_MICRO_WIDTH.convertToPixels();
+          double usbH = USB_MICRO_LENGTH.convertToPixels();
+          double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
+          drawMicroUsb(g2d, centerX - usbW / 2.0, mainY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
+        } else {
+          double usbW = USB_C_WIDTH.convertToPixels();
+          double usbH = USB_C_LENGTH.convertToPixels();
+          double usbOverhang = USB_C_OVERHANG.convertToPixels();
+          double usbEdgeDist = new Size(6.5d, SizeUnit.mm).convertToPixels();
+          double usbY = mainY + boardH - usbH + usbOverhang;
+          drawUsbC(g2d, mainX + usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "UART");
+          drawUsbC(g2d, mainX + boardW - usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "USB");
+        }
+
+        // Silkscreen
+        g2d.setColor(SILK_COLOR);
+        g2d.setFont(SILK_FONT);
+        StringUtils.drawCenteredText(g2d, isC3 ? "ESP32-C3 DevKitM-1" : "ESP32-C6 DevKitC-1", centerX,
+            shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       } else {
         // 38-Pin (DevKitC V4)

@@ -30,6 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Locale;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -50,7 +51,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Arduino Uno", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Arduino Uno R3 Microcontroller Board",
+    author = "Branislav Stojkovic",
+    description = "Arduino Uno R3 / R4 WiFi / R4 Minima / Leonardo Microcontroller Board",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.BOARD,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -60,7 +62,9 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public enum ArduinoUnoVersion {
     REV3("UNO R3"),
-    R4_WIFI("UNO R4 WiFi");
+    R4_WIFI("UNO R4 WiFi"),
+    R4_MINIMA("UNO R4 Minima"),
+    LEONARDO("Leonardo");
 
     private String label;
 
@@ -97,6 +101,21 @@ public class ArduinoUno extends AbstractMakerBoard {
       "MISO_16U2", "5V_16U2", "SCK_16U2", "MOSI_16U2", "RST_16U2", "GND_16U2"
   };
 
+  // The Leonardo has no ATmega16U2 - the 32U4 speaks USB natively - so it carries only the main
+  // ICSP header, and I2C is shared with D2 / D3 rather than living solely on A4 / A5.
+  public static final String[] PIN_NAMES_LEONARDO = new String[] {
+      // Power Header (0..7)
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "D0 (RX)", "D1 (TX)", "D2 (SDA)", "D3 (~, SCL)", "D4", "D5 (~)", "D6 (~)", "D7",
+      // Digital High (22..31)
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37, ATmega32U4)
+      "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
+  };
+
   public ArduinoUno() {
     super();
     this.bodyColor = ARDUINO_TEAL;
@@ -105,12 +124,15 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   @EditableProperty(name = "Version")
   public ArduinoUnoVersion getVersion() {
+    if (version == null) {
+      version = ArduinoUnoVersion.REV3;
+    }
     return version;
   }
 
   public void setVersion(ArduinoUnoVersion version) {
     this.version = version;
-    if (version == ArduinoUnoVersion.R4_WIFI) {
+    if (isR4()) {
       this.bodyColor = ARDUINO_BLUE;
     } else {
       this.bodyColor = ARDUINO_TEAL;
@@ -119,12 +141,25 @@ public class ArduinoUno extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  /**
+   * True for the Renesas RA4M1 generation, which shares a USB-C connector and the extra
+   * OFF / GND / VRTC power header.
+   */
+  private boolean isR4() {
+    return getVersion() == ArduinoUnoVersion.R4_WIFI || getVersion() == ArduinoUnoVersion.R4_MINIMA;
+  }
+
+  private String[] getPinNames() {
+    return getVersion() == ArduinoUnoVersion.LEONARDO ? PIN_NAMES_LEONARDO : PIN_NAMES;
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
-    if (index >= 0 && index < PIN_NAMES.length) {
-      return PIN_NAMES[index];
+    String[] pinNames = getPinNames();
+    if (index >= 0 && index < pinNames.length) {
+      return pinNames[index];
     }
-    if (version == ArduinoUnoVersion.R4_WIFI) {
+    if (isR4()) {
       if (index == 44) return "OFF";
       if (index == 45) return "GND";
       if (index == 46) return "VRTC";
@@ -140,7 +175,7 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     // Reference: Pin 0 (NC) is at (boardX + 220.0, boardY + 400.0) [1100 mils, 100 mils from bottom-left]
     // Board is 539.78px wide, 419.78px high
-    int numPins = (version == ArduinoUnoVersion.R4_WIFI) ? 47 : 44;
+    int numPins = isR4() ? 47 : getPinNames().length;
     double[][] relativeOffsets = new double[numPins][2];
 
     // Power header pins 0..7 (bottom left row)
@@ -180,20 +215,22 @@ public class ArduinoUno extends AbstractMakerBoard {
     relativeOffsets[36] = new double[] {icspX, icspY + 2 * spacing};
     relativeOffsets[37] = new double[] {icspX + spacing, icspY + 2 * spacing};
 
-    // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
-    double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
-    double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
-    if (version == ArduinoUnoVersion.R4_WIFI) {
-      icsp2Y += new Size(3.5d, SizeUnit.mm).convertToPixels();
+    // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2, absent on the Leonardo
+    if (getVersion() != ArduinoUnoVersion.LEONARDO) {
+      double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
+      double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
+      if (isR4()) {
+        icsp2Y += new Size(3.5d, SizeUnit.mm).convertToPixels();
+      }
+      relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
+      relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
+      relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
+      relativeOffsets[41] = new double[] {icsp2X - spacing, icsp2Y + spacing};
+      relativeOffsets[42] = new double[] {icsp2X - 2 * spacing, icsp2Y};
+      relativeOffsets[43] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
     }
-    relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
-    relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
-    relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
-    relativeOffsets[41] = new double[] {icsp2X - spacing, icsp2Y + spacing};
-    relativeOffsets[42] = new double[] {icsp2X - 2 * spacing, icsp2Y};
-    relativeOffsets[43] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
 
-    if (version == ArduinoUnoVersion.R4_WIFI) {
+    if (isR4()) {
       relativeOffsets[44] = new double[] {-4 * spacing, 0}; // OFF
       relativeOffsets[45] = new double[] {-3 * spacing, 0}; // GND
       relativeOffsets[46] = new double[] {-2 * spacing, 0}; // VRTC
@@ -285,11 +322,16 @@ public class ArduinoUno extends AbstractMakerBoard {
       drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter);
       drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
 
-      if (version == ArduinoUnoVersion.R4_WIFI) {
+      if (isR4()) {
         double usbCW = USB_C_WIDTH.convertToPixels();
         double usbCL = USB_C_LENGTH.convertToPixels();
         double usbCY = boardY + new Size(15.5d, SizeUnit.mm).convertToPixels() - usbCW / 2.0;
         drawUsbC(g2d, boardX - USB_C_OVERHANG.convertToPixels(), usbCY, usbCL, usbCW, "USB-C");
+      } else if (getVersion() == ArduinoUnoVersion.LEONARDO) {
+        double microW = USB_MICRO_LENGTH.convertToPixels();
+        double microH = USB_MICRO_WIDTH.convertToPixels();
+        double microY = boardY + new Size(0.6d, SizeUnit.in).convertToPixels() - microH / 2.0;
+        drawMicroUsb(g2d, boardX - USB_MICRO_OVERHANG.convertToPixels(), microY, microW, microH, "USB");
       } else {
         drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
             boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
@@ -302,21 +344,24 @@ public class ArduinoUno extends AbstractMakerBoard {
           new Size(0.52d, SizeUnit.in).convertToPixels(),
           new Size(0.355d, SizeUnit.in).convertToPixels(), "DC IN");
 
-      if (version == ArduinoUnoVersion.R4_WIFI) {
+      if (isR4()) {
         double boardW = BOARD_WIDTH.convertToPixels();
         double boardH = BOARD_HEIGHT.convertToPixels();
 
-        double antW = new Size(5d, SizeUnit.mm).convertToPixels();
-        double antH = new Size(15d, SizeUnit.mm).convertToPixels();
-        double antX = boardX;
-        double antY = boardY + boardH - new Size(13.5d, SizeUnit.mm).convertToPixels() - antH;
-        drawPcbAntenna(g2d, antX, antY, antW, antH);
+        // The Minima is the same board without the radio: no antenna and no ESP32-S3 module
+        if (getVersion() == ArduinoUnoVersion.R4_WIFI) {
+          double antW = new Size(5d, SizeUnit.mm).convertToPixels();
+          double antH = new Size(15d, SizeUnit.mm).convertToPixels();
+          double antX = boardX;
+          double antY = boardY + boardH - new Size(13.5d, SizeUnit.mm).convertToPixels() - antH;
+          drawPcbAntenna(g2d, antX, antY, antW, antH);
 
-        double s3W = new Size(14d, SizeUnit.mm).convertToPixels();
-        double s3H = new Size(14d, SizeUnit.mm).convertToPixels();
-        double s3X = boardX + new Size(5.5d, SizeUnit.mm).convertToPixels();
-        double s3Y = boardY + boardH - new Size(14.0d, SizeUnit.mm).convertToPixels() - s3H;
-        drawMetalConnector(g2d, s3X, s3Y, s3W, s3H, "ESP32-S3");
+          double s3W = new Size(14d, SizeUnit.mm).convertToPixels();
+          double s3H = new Size(14d, SizeUnit.mm).convertToPixels();
+          double s3X = boardX + new Size(5.5d, SizeUnit.mm).convertToPixels();
+          double s3Y = boardY + boardH - new Size(14.0d, SizeUnit.mm).convertToPixels() - s3H;
+          drawMetalConnector(g2d, s3X, s3Y, s3W, s3H, "ESP32-S3");
+        }
 
         double raW = new Size(10d, SizeUnit.mm).convertToPixels();
         double raH = new Size(10d, SizeUnit.mm).convertToPixels();
@@ -329,6 +374,11 @@ public class ArduinoUno extends AbstractMakerBoard {
         g2d.setColor(Color.WHITE);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "RA4M1", raX + raW / 2.0, raY + raH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      } else if (getVersion() == ArduinoUnoVersion.LEONARDO) {
+        // The 32U4 is a square TQFP-44 where the R3 carries its DIP-28
+        double chipSize = new Size(0.4d, SizeUnit.in).convertToPixels();
+        drawChip(g2d, boardX + new Size(1.62d, SizeUnit.in).convertToPixels(),
+            boardY + new Size(1.255d, SizeUnit.in).convertToPixels(), chipSize, chipSize, "32U4");
       } else {
         drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
             boardY + new Size(1.345d, SizeUnit.in).convertToPixels(),
@@ -360,7 +410,7 @@ public class ArduinoUno extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT_LARGE.deriveFont(SILK_FONT_LARGE.getSize2D() * 1.5f));
       StringUtils.drawCenteredText(g2d, "ARDUINO", arduinoX, arduinoY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       
-      String subText = (version == ArduinoUnoVersion.R4_WIFI) ? "UNO R4 WIFI" : "UNO R3";
+      String subText = getVersion().toString().toUpperCase(Locale.ROOT);
       double subTextY = arduinoY + new Size(2.5d, SizeUnit.mm).convertToPixels();
       g2d.setFont(SILK_FONT_LARGE);
       StringUtils.drawCenteredText(g2d, subText, arduinoX, subTextY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -375,7 +425,7 @@ public class ArduinoUno extends AbstractMakerBoard {
           boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
           
       // Text above right-most 3x2 header (ICSP / SPI)
-      String icspText = (version == ArduinoUnoVersion.R4_WIFI) ? "SPI" : "ICSP";
+      String icspText = isR4() ? "SPI" : "ICSP";
       double icspLabelX = boardX + new Size(2.505d, SizeUnit.in).convertToPixels() + new Size(0.05d, SizeUnit.in).convertToPixels();
       double icspLabelY = boardY + new Size(0.9d, SizeUnit.in).convertToPixels() - new Size(2.5d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, icspText, icspLabelX, icspLabelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -437,7 +487,7 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     // UNO text below logo
     g2d.setColor(SILK_COLOR);
-    String iconText = (version == ArduinoUnoVersion.R4_WIFI) ? "R4 WIFI" : "UNO R3";
+    String iconText = getVersion().toString().toUpperCase(Locale.ROOT).replace("UNO R4 ", "R4 ");
     int fontSize = Math.max(5, (int) Math.round(boardH * 0.20));
     g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;

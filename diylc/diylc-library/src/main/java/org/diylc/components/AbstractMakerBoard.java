@@ -87,6 +87,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.035d, SizeUnit.in);
+  public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
   public static Size BUTTON_WIDTH = new Size(3.5d, SizeUnit.mm);
@@ -803,6 +804,95 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
     }
     drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Pad, drill-hole and edge-notch diameters used by {@link #drawCastellatedPads} and
+   * {@link #subtractCastellationNotches}. A board whose castellations differ from the package
+   * defaults overrides these rather than reimplementing the pad geometry.
+   */
+  protected Size getCastellatedPadSize() {
+    return PAD_SIZE;
+  }
+
+  protected Size getCastellatedHoleSize() {
+    return HOLE_SIZE;
+  }
+
+  protected Size getCastellatedNotchSize() {
+    return NOTCH_SIZE;
+  }
+
+  protected Color getCastellatedPadColor() {
+    return PAD_COLOR;
+  }
+
+  /**
+   * Helper to draw one column of castellated edge pads: a round through-hole pad joined to the
+   * board edge by a stub, with a semicircular notch bitten out of the edge itself. Pair it with
+   * {@link #subtractCastellationNotches} so the outline and the pads agree.
+   *
+   * <p>Unlike the control-point based pad helpers this one works in unrotated board coordinates,
+   * so it has to be called while the board rotation is still applied to {@code g2d}.
+   *
+   * @param g2d Graphics2D context, already transformed for board orientation
+   * @param pinX Unrotated X coordinate of the pad column
+   * @param pinY Unrotated Y coordinate of the first pad
+   * @param count Number of pads in the column
+   * @param spacing Pad pitch in pixels
+   * @param edgeX Unrotated X coordinate of the board edge the pads reach; the stub is drawn toward
+   *        it, so it may lie on either side of {@code pinX}
+   */
+  protected void drawCastellatedPads(Graphics2D g2d, double pinX, double pinY, int count, double spacing,
+      double edgeX, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) return;
+
+    int padD = getClosestOdd((int) Math.round(getCastellatedPadSize().convertToPixels()));
+    int holeD = getClosestOdd((int) Math.round(getCastellatedHoleSize().convertToPixels()));
+    int notchD = getClosestOdd((int) Math.round(getCastellatedNotchSize().convertToPixels()));
+    double padR = padD / 2.0;
+    double holeR = holeD / 2.0;
+    double notchR = notchD / 2.0;
+    double stubX = Math.min(pinX, edgeX);
+    double stubW = Math.abs(edgeX - pinX);
+    Color padColor = getCastellatedPadColor();
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = 0; i < count; i++) {
+      double py = pinY + i * spacing;
+
+      Area padArea = new Area(new Rectangle2D.Double(stubX, py - padR, stubW, padD));
+      padArea.add(new Area(new Ellipse2D.Double(pinX - padR, py - padR, padD, padD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(edgeX - notchR, py - notchR, notchD, notchD)));
+      padArea.subtract(new Area(new Ellipse2D.Double(pinX - holeR, py - holeR, holeD, holeD)));
+
+      g2d.setColor(padColor);
+      g2d.fill(padArea);
+      g2d.setColor(padColor.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(padArea);
+
+      // Inner through-hole drill hole (white circle matching Zero and perfboard)
+      g2d.setColor(Constants.CANVAS_COLOR);
+      g2d.fill(new Ellipse2D.Double(pinX - holeR, py - holeR, holeD, holeD));
+      g2d.setColor(padColor.darker());
+      g2d.draw(new Ellipse2D.Double(pinX - holeR, py - holeR, holeD, holeD));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Helper to bite the semicircular castellation notches for one column of pads out of a board
+   * outline, matching what {@link #drawCastellatedPads} draws along the same edge.
+   */
+  protected void subtractCastellationNotches(Area boardArea, double pinY, int count, double spacing,
+      double edgeX) {
+    int notchD = getClosestOdd((int) Math.round(getCastellatedNotchSize().convertToPixels()));
+    double notchR = notchD / 2.0;
+    for (int i = 0; i < count; i++) {
+      double py = pinY + i * spacing;
+      boardArea.subtract(new Area(new Ellipse2D.Double(edgeX - notchR, py - notchR, notchD, notchD)));
+    }
   }
 
   /**

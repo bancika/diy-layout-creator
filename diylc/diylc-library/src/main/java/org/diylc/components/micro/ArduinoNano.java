@@ -26,6 +26,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -50,7 +51,9 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Arduino Nano", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Arduino Nano Breadboard-Friendly Microcontroller Board",
+    author = "Branislav Stojkovic",
+    description = "Arduino Nano Breadboard-Friendly Microcontroller Board (classic, Every, 33 IoT, "
+        + "33 BLE, RP2040 Connect, Nano ESP32)",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -63,6 +66,55 @@ public class ArduinoNano extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
   public static Size BOARD_LENGTH = new Size(1.70d, SizeUnit.in);
 
+  public static final int PINS_PER_ROW = 15;
+
+  public enum NanoVersion {
+    CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
+    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
+    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
+    NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
+    NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
+    NANO_RP2040_CONNECT("Nano RP2040 Connect", "RP2040 CONNECT", "RP2040", "NINA-W102"),
+    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106");
+
+    private final String label;
+    private final String silkLabel;
+    private final String mcuLabel;
+    private final String moduleLabel;
+
+    NanoVersion(String label, String silkLabel, String mcuLabel, String moduleLabel) {
+      this.label = label;
+      this.silkLabel = silkLabel;
+      this.mcuLabel = mcuLabel;
+      this.moduleLabel = moduleLabel;
+    }
+
+    public String getSilkLabel() {
+      return silkLabel;
+    }
+
+    /**
+     * Marking of the separately visible MCU package, or null when the MCU is a die inside the
+     * module rather than its own part on the board.
+     */
+    public String getMcuLabel() {
+      return mcuLabel;
+    }
+
+    /**
+     * Marking of the part occupying the end of the board opposite the USB jack, where the classic
+     * Nano has its ICSP header. Null on the classic Nano, which has the header instead.
+     */
+    public String getModuleLabel() {
+      return moduleLabel;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+  }
+
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14, top to bottom)
       "D1 (TX)", "D0 (RX)", "RESET", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
@@ -72,12 +124,91 @@ public class ArduinoNano extends AbstractMakerBoard {
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
 
+  // The modern Nanos keep the classic 2x15 pin positions and annotate the bus pins on the
+  // silkscreen, but they have no 2x3 ICSP block: that end of the board carries the radio module or
+  // USB bridge instead, so they are 30 control points rather than 36.
+  public static final String[] PIN_NAMES_MODERN = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RESET", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (SCK)"
+  };
+
+  // The Nano ESP32 dual-labels its digital pins with the Espressif GPIO number, which is what the
+  // Arduino core exposes as Dn and what the ESP-IDF documentation refers to.
+  public static final String[] PIN_NAMES_ESP32 = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX/GPIO43)", "D0 (RX/GPIO44)", "RESET", "GND1", "D2 (GPIO5)", "D3 (GPIO6)", "D4 (GPIO7)",
+      "D5 (GPIO8)", "D6 (GPIO9)", "D7 (GPIO10)", "D8 (GPIO17)", "D9 (GPIO18)", "D10 (GPIO21)",
+      "D11 (MOSI/GPIO38)", "D12 (MISO/GPIO47)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "RST2", "5V", "A7 (GPIO14)", "A6 (GPIO13)", "A5 (SCL/GPIO12)", "A4 (SDA/GPIO11)",
+      "A3 (GPIO4)", "A2 (GPIO3)", "A1 (GPIO2)", "A0 (GPIO1)", "AREF", "3.3V", "D13 (SCK/GPIO48)"
+  };
+
+  protected NanoVersion version = NanoVersion.CLASSIC;
   protected boolean headers = false;
 
   public ArduinoNano() {
     super();
     this.bodyColor = ARDUINO_TEAL;
     updateControlPoints();
+  }
+
+  @EditableProperty(name = "Version")
+  public NanoVersion getVersion() {
+    if (version == null) {
+      version = NanoVersion.CLASSIC;
+    }
+    return version;
+  }
+
+  public void setVersion(NanoVersion version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
+  }
+
+  private String[] getPinNames() {
+    switch (getVersion()) {
+      case CLASSIC:
+        return PIN_NAMES;
+      case NANO_ESP32:
+        return PIN_NAMES_ESP32;
+      default:
+        return PIN_NAMES_MODERN;
+    }
+  }
+
+  private UsbPortType getUsbPortType() {
+    switch (getVersion()) {
+      case CLASSIC:
+        return UsbPortType.MINI;
+      case NANO_ESP32:
+        return UsbPortType.TYPE_C;
+      default:
+        return UsbPortType.MICRO;
+    }
+  }
+
+  /** Connector footprint {width, length, overhang} for a USB port type. */
+  private Size[] getUsbPortSizes(UsbPortType type) {
+    switch (type) {
+      case MINI:
+        return new Size[] {USB_MINI_WIDTH, USB_MINI_LENGTH, USB_MINI_OVERHANG};
+      case TYPE_C:
+        return new Size[] {USB_C_WIDTH, USB_C_LENGTH, USB_C_OVERHANG};
+      default:
+        return new Size[] {USB_MICRO_WIDTH, USB_MICRO_LENGTH, USB_MICRO_OVERHANG};
+    }
+  }
+
+  /**
+   * True for the boards whose end module is a shielded can. The Every's part there is a bare QFN
+   * USB bridge, so it is drawn as a chip instead.
+   */
+  private boolean hasShieldedModule() {
+    return getVersion() != NanoVersion.CLASSIC && getVersion() != NanoVersion.EVERY;
   }
 
   @EditableProperty(name = "Headers")
@@ -92,8 +223,9 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
-    if (index >= 0 && index < PIN_NAMES.length) {
-      return PIN_NAMES[index];
+    String[] pinNames = getPinNames();
+    if (index >= 0 && index < pinNames.length) {
+      return pinNames[index];
     }
     return "Pin " + (index + 1);
   }
@@ -104,7 +236,7 @@ public class ArduinoNano extends AbstractMakerBoard {
     double spacing = PIN_SPACING.convertToPixels(); // 20px (0.10")
     double rowSpacing = new Size(0.60d, SizeUnit.in).convertToPixels(); // 120px (0.60")
 
-    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
+    double[][] relativeOffsets = new double[getPinNames().length][2];
 
     // Left row (pins 0..14, top to bottom)
     for (int i = 0; i < 15; i++) {
@@ -116,6 +248,13 @@ public class ArduinoNano extends AbstractMakerBoard {
       relativeOffsets[15 + i][0] = rowSpacing;
       relativeOffsets[15 + i][1] = i * spacing;
     }
+    // Only the classic Nano populates the 2x3 ICSP block; on every later board that end of the
+    // PCB carries the radio module or USB bridge instead.
+    if (getVersion() != NanoVersion.CLASSIC) {
+      rotatePoints(firstPoint, relativeOffsets);
+      return;
+    }
+
     // ICSP header (2x3 pins, 30..35) flush with top edge:
     // Outer row is 0.05" (10px) from top edge (-20px / -0.10" relative to Pin 0)
     // Inner row is 0.15" (30px) from top edge (0px / 0.00" relative to Pin 0, aligned with Pin 0 & Pin 15)
@@ -157,7 +296,18 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     double boardX = x - boardMarginX;
     double boardY = y - boardMarginY;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerRadius * 2, cornerRadius * 2);
+    RoundRectangle2D outline =
+        new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, cornerRadius * 2, cornerRadius * 2);
+    if (getVersion() == NanoVersion.CLASSIC) {
+      return outline;
+    }
+
+    // Every later Nano has castellated edges, so the pad columns bite notches out of both sides
+    double spacing = PIN_SPACING.convertToPixels();
+    Area boardArea = new Area(outline);
+    subtractCastellationNotches(boardArea, y, PINS_PER_ROW, spacing, boardX);
+    subtractCastellationNotches(boardArea, y, PINS_PER_ROW, spacing, boardX + boardW);
+    return boardArea;
   }
 
   @Override
@@ -212,36 +362,63 @@ public class ArduinoNano extends AbstractMakerBoard {
       drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
       drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
-      // Mini USB Jack at bottom (plain metal connector)
-      double usbW = USB_MINI_WIDTH.convertToPixels();
-      double usbH = USB_MINI_LENGTH.convertToPixels();
-      double usbOverhang = USB_MINI_OVERHANG.convertToPixels();
-      drawMiniUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
+      // USB jack at bottom (plain metal connector)
+      UsbPortType usbType = getUsbPortType();
+      Size[] usbSizes = getUsbPortSizes(usbType);
+      double usbW = usbSizes[0].convertToPixels();
+      double usbH = usbSizes[1].convertToPixels();
+      double usbOverhang = usbSizes[2].convertToPixels();
+      drawUsbPort(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + usbOverhang, usbW, usbH,
+          usbType, "USB");
 
-      // ATmega328P TQFP square chip rotated 45 degrees
       double chipSize = new Size(0.28d, SizeUnit.in).convertToPixels();
       double chipCenterX = boardX + boardW / 2.0;
       double chipCenterY = boardY + new Size(1.06d, SizeUnit.in).convertToPixels();
 
-      AffineTransform oldChipTx = g2d.getTransform();
-      g2d.translate(chipCenterX, chipCenterY);
-      g2d.rotate(Math.PI / 4.0);
+      if (getVersion() == NanoVersion.CLASSIC) {
+        // The ATmega328P TQFP is mounted at 45 degrees on the classic Nano
+        AffineTransform oldChipTx = g2d.getTransform();
+        g2d.translate(chipCenterX, chipCenterY);
+        g2d.rotate(Math.PI / 4.0);
 
-      g2d.setColor(IC_BODY_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
-      g2d.setColor(IC_BORDER_COLOR);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
+        g2d.setColor(IC_BODY_COLOR);
+        g2d.fill(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
+        g2d.setColor(IC_BORDER_COLOR);
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
 
-      // Pin 1 dot
-      g2d.setColor(PIN_MARKER_COLOR);
-      g2d.fill(new Ellipse2D.Double(-chipSize / 2.0 + 3, -chipSize / 2.0 + 3, 3, 3));
+        // Pin 1 dot
+        g2d.setColor(PIN_MARKER_COLOR);
+        g2d.fill(new Ellipse2D.Double(-chipSize / 2.0 + 3, -chipSize / 2.0 + 3, 3, 3));
 
-      g2d.setColor(IC_TEXT_COLOR);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "m328P", 0, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        g2d.setColor(IC_TEXT_COLOR);
+        g2d.setFont(SILK_FONT_SMALL);
+        StringUtils.drawCenteredText(g2d, getVersion().getMcuLabel(), 0, 0, HorizontalAlignment.CENTER,
+            VerticalAlignment.CENTER);
 
-      g2d.setTransform(oldChipTx);
+        g2d.setTransform(oldChipTx);
+      } else if (getVersion().getMcuLabel() != null) {
+        // Later Nanos carry an axis-aligned QFN in the same spot, unless the MCU is a die inside
+        // the module at the far end of the board
+        drawChip(g2d, chipCenterX - chipSize / 2.0, chipCenterY - chipSize / 2.0, chipSize, chipSize,
+            getVersion().getMcuLabel());
+      }
+
+      // The end of the board opposite the USB jack: the classic Nano's ICSP header, and on every
+      // later board the part that identifies it at a glance
+      if (getVersion().getModuleLabel() != null) {
+        double moduleY = boardY + new Size(1.5d, SizeUnit.mm).convertToPixels();
+        if (hasShieldedModule()) {
+          double moduleW = new Size(10.0d, SizeUnit.mm).convertToPixels();
+          double moduleH = new Size(11.0d, SizeUnit.mm).convertToPixels();
+          drawMetalConnector(g2d, boardX + (boardW - moduleW) / 2.0, moduleY, moduleW, moduleH,
+              getVersion().getModuleLabel());
+        } else {
+          double bridgeSize = new Size(5.0d, SizeUnit.mm).convertToPixels();
+          drawChip(g2d, boardX + (boardW - bridgeSize) / 2.0, moduleY, bridgeSize, bridgeSize,
+              getVersion().getModuleLabel());
+        }
+      }
 
       // Reset Button
       double btnW = BUTTON_WIDTH.convertToPixels();
@@ -254,9 +431,20 @@ public class ArduinoNano extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "RST", boardX + boardW / 2.0, btnY - 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Silkscreen
+      // Silkscreen, dropped 1mm below the nominal 0.50" so it clears the chips above it
       g2d.setFont(SILK_FONT);
-      StringUtils.drawCenteredText(g2d, "NANO", boardX + boardW / 2.0, boardY + new Size(0.50d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, getVersion().getSilkLabel(), boardX + boardW / 2.0,
+          boardY + new Size(0.50d, SizeUnit.in).convertToPixels() + new Size(1.0d, SizeUnit.mm).convertToPixels(),
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    }
+
+    // Castellated pads bite into the board edge, so they are drawn while the board rotation is
+    // still applied rather than from the already-rotated control points
+    if (!headers && getVersion() != NanoVersion.CLASSIC) {
+      double spacing = PIN_SPACING.convertToPixels();
+      drawCastellatedPads(g2d, x, y, PINS_PER_ROW, spacing, boardX, outlineMode, drawingObserver);
+      drawCastellatedPads(g2d, x + rowSpacing, y, PINS_PER_ROW, spacing, boardX + boardW, outlineMode,
+          drawingObserver);
     }
 
     g2d.setTransform(oldTx);
@@ -264,7 +452,7 @@ public class ArduinoNano extends AbstractMakerBoard {
     // Draw pins or solder pads
     if (headers) {
       drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
-    } else {
+    } else if (getVersion() == NanoVersion.CLASSIC) {
       drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
     }
 

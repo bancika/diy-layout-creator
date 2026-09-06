@@ -329,10 +329,110 @@ public class ESP32DevKitTest {
     Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(0));
     Assert.assertEquals("GND_4", devKit.getControlPointNodeName(43));
 
+    devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_C3_DevKitM_1);
+    Assert.assertEquals(30, devKit.getControlPointCount());
+
+    devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_C6_DevKitC_1);
+    Assert.assertEquals(32, devKit.getControlPointCount());
+
     devKit.setVersion(ESP32DevKit.DevKitVersion.DevKit_V1_30Pin);
     Assert.assertEquals(30, devKit.getControlPointCount());
     Assert.assertEquals("VIN", devKit.getControlPointNodeName(14));
     Assert.assertEquals("3V3", devKit.getControlPointNodeName(29));
+  }
+
+  @Test
+  public void testControlPointCountAndNamesC3() {
+    ESP32DevKit devKit = new ESP32DevKit();
+    devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_C3_DevKitM_1);
+
+    Assert.assertEquals("ESP32-C3 DevKitM-1 (30-Pin)",
+        ESP32DevKit.DevKitVersion.ESP32_C3_DevKitM_1.toString());
+    Assert.assertEquals(30, devKit.getControlPointCount());
+
+    for (int i = 0; i < devKit.getControlPointCount(); i++) {
+      String name = devKit.getControlPointNodeName(i);
+      Assert.assertNotNull("Pin " + i + " name should not be null", name);
+      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
+    }
+
+    // J1, top to bottom
+    Assert.assertEquals("GND_1", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("3V3_1", devKit.getControlPointNodeName(1));
+    Assert.assertEquals("RST", devKit.getControlPointNodeName(6));
+    Assert.assertEquals("GND_5", devKit.getControlPointNodeName(14));
+    // J3, top to bottom
+    Assert.assertEquals("GND_6", devKit.getControlPointNodeName(15));
+    Assert.assertEquals("TX", devKit.getControlPointNodeName(16));
+    Assert.assertEquals("RX", devKit.getControlPointNodeName(17));
+    Assert.assertEquals("IO19", devKit.getControlPointNodeName(28));
+    Assert.assertEquals("GND_10", devKit.getControlPointNodeName(29));
+
+    // Duplicated power and ground pins collapse to one silkscreen label
+    Assert.assertEquals("GND", AbstractMakerBoard.getDisplayPinLabel(devKit.getControlPointNodeName(0)));
+    Assert.assertEquals("3V3", AbstractMakerBoard.getDisplayPinLabel(devKit.getControlPointNodeName(1)));
+  }
+
+  @Test
+  public void testControlPointCountAndNamesC6() {
+    ESP32DevKit devKit = new ESP32DevKit();
+    devKit.setVersion(ESP32DevKit.DevKitVersion.ESP32_C6_DevKitC_1);
+
+    Assert.assertEquals("ESP32-C6 DevKitC-1 (32-Pin)",
+        ESP32DevKit.DevKitVersion.ESP32_C6_DevKitC_1.toString());
+    Assert.assertEquals(32, devKit.getControlPointCount());
+
+    for (int i = 0; i < devKit.getControlPointCount(); i++) {
+      String name = devKit.getControlPointNodeName(i);
+      Assert.assertNotNull("Pin " + i + " name should not be null", name);
+      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
+    }
+
+    // J1, top to bottom
+    Assert.assertEquals("3V3", devKit.getControlPointNodeName(0));
+    Assert.assertEquals("RST", devKit.getControlPointNodeName(1));
+    Assert.assertEquals("5V", devKit.getControlPointNodeName(13));
+    Assert.assertEquals("GND_1", devKit.getControlPointNodeName(14));
+    Assert.assertEquals("NC_1", devKit.getControlPointNodeName(15));
+    // J3, top to bottom
+    Assert.assertEquals("GND_2", devKit.getControlPointNodeName(16));
+    Assert.assertEquals("TX", devKit.getControlPointNodeName(17));
+    Assert.assertEquals("RX", devKit.getControlPointNodeName(18));
+    Assert.assertEquals("12", devKit.getControlPointNodeName(29));
+    Assert.assertEquals("NC_2", devKit.getControlPointNodeName(31));
+  }
+
+  @Test
+  public void testRiscVPinGeometryAndBodyShape() {
+    double spacing = new Size(0.1d, SizeUnit.in).convertToPixels();
+    double rowSpacing = new Size(22.86d, SizeUnit.mm).convertToPixels();
+
+    for (ESP32DevKit.DevKitVersion version : new ESP32DevKit.DevKitVersion[] {
+        ESP32DevKit.DevKitVersion.ESP32_C3_DevKitM_1, ESP32DevKit.DevKitVersion.ESP32_C6_DevKitC_1}) {
+      ESP32DevKit devKit = new ESP32DevKit();
+      devKit.setVersion(version);
+      int pinsPerRow = devKit.getControlPointCount() / 2;
+
+      // Two straight columns on 0.1" pitch, 0.9" apart
+      for (int row = 0; row < 2; row++) {
+        for (int i = 0; i < pinsPerRow - 1; i++) {
+          Point2D p1 = devKit.getControlPoint(row * pinsPerRow + i);
+          Point2D p2 = devKit.getControlPoint(row * pinsPerRow + i + 1);
+          Assert.assertEquals(version + " pitch", spacing, p1.distance(p2), 0.01);
+          Assert.assertEquals(version + " column should be straight", p1.getX(), p2.getX(), 0.01);
+        }
+      }
+      Assert.assertEquals(version + " row spacing", rowSpacing,
+          devKit.getControlPoint(0).distance(devKit.getControlPoint(pinsPerRow)), 0.01);
+
+      // The body is 25.4 mm wide and the pin field is centred between the rows
+      Shape body = devKit.getBodyShape();
+      Rectangle2D bounds = body.getBounds2D();
+      Assert.assertEquals(version + " board width",
+          new Size(25.40d, SizeUnit.mm).convertToPixels(), bounds.getWidth(), 0.1);
+      double centerX = devKit.getControlPoint(0).getX() + rowSpacing / 2.0;
+      Assert.assertEquals(version + " pin field should be centred", centerX, bounds.getCenterX(), 0.1);
+    }
   }
 
   @Test

@@ -84,4 +84,90 @@ public class ArduinoUnoTest {
     Point2D pIcsp2_1 = uno.getControlPoint(39);
     Assert.assertEquals(20.0, pIcsp2_0.distance(pIcsp2_1), 0.01);
   }
+
+  @Test
+  public void testVersionProperty() {
+    ArduinoUno uno = new ArduinoUno();
+    Assert.assertEquals("Default version should be R3", ArduinoUno.ArduinoUnoVersion.REV3, uno.getVersion());
+    Assert.assertEquals("UNO R3", ArduinoUno.ArduinoUnoVersion.REV3.toString());
+    Assert.assertEquals("UNO R4 WiFi", ArduinoUno.ArduinoUnoVersion.R4_WIFI.toString());
+    Assert.assertEquals("UNO R4 Minima", ArduinoUno.ArduinoUnoVersion.R4_MINIMA.toString());
+    Assert.assertEquals("Leonardo", ArduinoUno.ArduinoUnoVersion.LEONARDO.toString());
+
+    uno.setVersion(ArduinoUno.ArduinoUnoVersion.R4_MINIMA);
+    Assert.assertEquals(ArduinoUno.ArduinoUnoVersion.R4_MINIMA, uno.getVersion());
+  }
+
+  @Test
+  public void testR4MinimaMatchesR4WiFi() {
+    // The Minima is the same board without the radio, so pin count and geometry are identical.
+    ArduinoUno wifi = new ArduinoUno();
+    wifi.setVersion(ArduinoUno.ArduinoUnoVersion.R4_WIFI);
+    ArduinoUno minima = new ArduinoUno();
+    minima.setVersion(ArduinoUno.ArduinoUnoVersion.R4_MINIMA);
+
+    Assert.assertEquals(47, wifi.getControlPointCount());
+    Assert.assertEquals(47, minima.getControlPointCount());
+    Assert.assertEquals(wifi.getBodyShape().getBounds2D(), minima.getBodyShape().getBounds2D());
+    for (int i = 0; i < wifi.getControlPointCount(); i++) {
+      Assert.assertEquals("Pin " + i, wifi.getControlPoint(i), minima.getControlPoint(i));
+      Assert.assertEquals("Pin " + i, wifi.getControlPointNodeName(i), minima.getControlPointNodeName(i));
+    }
+  }
+
+  @Test
+  public void testLeonardoDropsSecondIcspHeader() {
+    ArduinoUno leonardo = new ArduinoUno();
+    leonardo.setVersion(ArduinoUno.ArduinoUnoVersion.LEONARDO);
+
+    // No ATmega16U2, so the second 2x3 ICSP block is gone: 44 - 6 = 38 pins
+    Assert.assertEquals(38, leonardo.getControlPointCount());
+
+    // The shield footprint is unchanged, so the header pins land exactly where the R3's do
+    ArduinoUno r3 = new ArduinoUno();
+    Assert.assertEquals(r3.getBodyShape().getBounds2D(), leonardo.getBodyShape().getBounds2D());
+    for (int i = 0; i < leonardo.getControlPointCount(); i++) {
+      Assert.assertEquals("Pin " + i, r3.getControlPoint(i), leonardo.getControlPoint(i));
+    }
+
+    // I2C is shared with D2 / D3 on the Leonardo
+    Assert.assertEquals("D2 (SDA)", leonardo.getControlPointNodeName(16));
+    Assert.assertEquals("D3 (~, SCL)", leonardo.getControlPointNodeName(17));
+    Assert.assertEquals("GND_ICSP", leonardo.getControlPointNodeName(37));
+
+    for (int i = 0; i < leonardo.getControlPointCount(); i++) {
+      String name = leonardo.getControlPointNodeName(i);
+      Assert.assertNotNull("Pin " + i + " name should not be null", name);
+      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
+    }
+  }
+
+  @Test
+  public void testAllVersionsDrawing() {
+    java.awt.image.BufferedImage img =
+        new java.awt.image.BufferedImage(800, 800, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+    java.awt.Graphics2D g2d = img.createGraphics();
+    org.diylc.core.Project project = new org.diylc.core.Project();
+    org.diylc.core.IDrawingObserver observer = new org.diylc.core.IDrawingObserver() {
+      @Override public void startTracking() {}
+      @Override public void stopTracking() {}
+      @Override public void startTrackingContinuityArea(boolean positive) {}
+      @Override public void stopTrackingContinuityArea() {}
+      @Override public boolean isTrackingContinuityArea() { return false; }
+      @Override public void setContinuityMarker(String marker) {}
+    };
+
+    for (ArduinoUno.ArduinoUnoVersion version : ArduinoUno.ArduinoUnoVersion.values()) {
+      ArduinoUno uno = new ArduinoUno();
+      uno.setVersion(version);
+      uno.setControlPoint(new Point2D.Double(400, 400), 0);
+
+      uno.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
+      uno.draw(g2d, org.diylc.core.ComponentState.SELECTED, false, project, observer);
+      uno.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
+      uno.drawIcon(g2d, 32, 32);
+    }
+
+    g2d.dispose();
+  }
 }

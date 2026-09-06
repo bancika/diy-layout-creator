@@ -52,7 +52,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Raspberry Pi Zero", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Raspberry Pi Zero / Zero W Compact Single Board Computer",
+    author = "Branislav Stojkovic",
+    description = "Raspberry Pi Zero / Zero W / Zero 2 W Compact Single Board Computer",
     instanceNamePrefix = "SBC", zOrder = IDIYComponent.BOARD,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -82,7 +83,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
   public enum ZeroVersion {
     PI_ZERO("Pi Zero"),
-    PI_ZERO_W("Pi Zero W");
+    PI_ZERO_W("Pi Zero W"),
+    PI_ZERO_2_W("Pi Zero 2 W");
 
     private final String label;
 
@@ -299,10 +301,18 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double logoY = socY + (socH - logoSize) / 2.0;
       drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
-      // Version label to the right of the SoC
+      // Version label to the right of the SoC. "Raspberry Pi Zero 2 W" overruns the board edge at
+      // the title size, so step the font down when the label does not fit.
+      String versionLabel = "Raspberry " + getVersion().toString();
+      double labelCenterX = boardX + new Size(46.15d, SizeUnit.mm).convertToPixels();
+      double labelMaxWidth =
+          2 * (boardX + boardW - new Size(1.5d, SizeUnit.mm).convertToPixels() - labelCenterX);
       g2d.setColor(Color.WHITE);
       g2d.setFont(RPI_TITLE_FONT);
-      StringUtils.drawCenteredText(g2d, "Raspberry " + getVersion().toString(), boardX + new Size(46.15d, SizeUnit.mm).convertToPixels(),
+      if (g2d.getFontMetrics().stringWidth(versionLabel) > labelMaxWidth) {
+        g2d.setFont(SILK_FONT_LARGE);
+      }
+      StringUtils.drawCenteredText(g2d, versionLabel, labelCenterX,
           boardY + new Size(17.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // White silkscreen outline around GPIO pads

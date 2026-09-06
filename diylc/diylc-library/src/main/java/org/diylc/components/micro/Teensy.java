@@ -50,7 +50,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Teensy", category = "Controllers",
-    author = "Branislav Stojkovic", description = "PJRC Teensy 4.0 / 4.1 Development Board (ARM Cortex-M7, 600 MHz)",
+    author = "Branislav Stojkovic",
+    description = "PJRC Teensy 4.0 / 4.1 (Cortex-M7) and Teensy 3.2 (Cortex-M4) Development Board",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.BOARD,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -60,7 +61,8 @@ public class Teensy extends AbstractMakerBoard {
 
   public enum TeensyVersion {
     Teensy_4_0("Teensy 4.0"),
-    Teensy_4_1("Teensy 4.1");
+    Teensy_4_1("Teensy 4.1"),
+    Teensy_3_2("Teensy 3.2");
 
     private final String label;
 
@@ -90,6 +92,9 @@ public class Teensy extends AbstractMakerBoard {
   // 60.96 mm x 17.78 mm (2.4" x 0.7")
   public static Size BOARD_WIDTH_41 = new Size(17.78d, SizeUnit.mm);
   public static Size BOARD_LENGTH_41 = new Size(60.96d, SizeUnit.mm);
+
+  // ===== Teensy 3.2 dimensions =====
+  // The 3.2 shares the 4.0's 1.4" x 0.7" outline and pin positions, so it reuses BOARD_*_40.
 
   // Common pitch and spacing
   // Pin 1 offset from top and left edges is 0.05" (1.27 mm)
@@ -149,6 +154,23 @@ public class Teensy extends AbstractMakerBoard {
       "VUSB"
   };
 
+  // ===== Teensy 3.2 Pinout (34 pins total) =====
+  // Same edge-pin layout as the 4.0: two 1x14 rows, a 5-hole cluster on the bottom edge and the
+  // severable VUSB pad next to Vin. Labels follow the PJRC Teensy 3.2 pinout card.
+  public static final String[] PIN_NAMES_32 = new String[] {
+      // Left row (0..13)
+      "GND", "0 (RX1)", "1 (TX1)", "2", "3 (PWM)", "4 (PWM)", "5 (PWM)", "6 (PWM)", "7 (RX3)",
+      "8 (TX3)", "9 (RX2/PWM)", "10 (TX2/CS/PWM)", "11 (MOSI)", "12 (MISO)",
+      // Right row (14..27)
+      "Vin (3.6-6.0V)", "AGND", "3.3V (100mA)", "23 (A9/PWM)", "22 (A8/PWM)", "21 (A7/PWM)",
+      "20 (A6/PWM)", "19 (A5/SCL0)", "18 (A4/SDA0)", "17 (A3)", "16 (A2)", "15 (A1/CS)",
+      "14 (A0)", "13 (SCK/LED)",
+      // End row (28..32, left to right along bottom edge)
+      "VBAT", "3.3V (End)", "GND (End)", "Program", "A14/DAC",
+      // VUSB (33)
+      "VUSB"
+  };
+
   private TeensyVersion version = TeensyVersion.Teensy_4_0;
   protected boolean headers = false;
 
@@ -160,7 +182,26 @@ public class Teensy extends AbstractMakerBoard {
 
   @EditableProperty(name = "Version")
   public TeensyVersion getVersion() {
+    if (version == null) {
+      version = TeensyVersion.Teensy_4_0;
+    }
     return version;
+  }
+
+  /**
+   * True for the 1.4" x 0.7" boards, which share the 2x14 edge rows, the bottom five-hole cluster
+   * and the VUSB pad. Only the 4.1 has the longer body with the Ethernet and USB host headers.
+   */
+  private boolean isCompact() {
+    return getVersion() != TeensyVersion.Teensy_4_1;
+  }
+
+  private Size getBoardWidth() {
+    return isCompact() ? BOARD_WIDTH_40 : BOARD_WIDTH_41;
+  }
+
+  private Size getBoardLength() {
+    return isCompact() ? BOARD_LENGTH_40 : BOARD_LENGTH_41;
   }
 
   public void setVersion(TeensyVersion version) {
@@ -180,7 +221,14 @@ public class Teensy extends AbstractMakerBoard {
   }
 
   private String[] getPinNames() {
-    return (version == TeensyVersion.Teensy_4_0) ? PIN_NAMES_40 : PIN_NAMES_41;
+    switch (getVersion()) {
+      case Teensy_4_1:
+        return PIN_NAMES_41;
+      case Teensy_3_2:
+        return PIN_NAMES_32;
+      default:
+        return PIN_NAMES_40;
+    }
   }
 
   @Override
@@ -198,8 +246,8 @@ public class Teensy extends AbstractMakerBoard {
     double spacing = PIN_SPACING.convertToPixels();
     double rowSpacing = ROW_SPACING.convertToPixels();
 
-    if (version == TeensyVersion.Teensy_4_0) {
-      double[][] relativeOffsets = new double[PIN_NAMES_40.length][2];
+    if (isCompact()) {
+      double[][] relativeOffsets = new double[getPinNames().length][2];
 
       // Left row (0..13): X=0, Y=0..13*spacing
       for (int i = 0; i < 14; i++) {
@@ -281,8 +329,8 @@ public class Teensy extends AbstractMakerBoard {
     double x = p0.getX();
     double y = p0.getY();
 
-    double boardW = (version == TeensyVersion.Teensy_4_0) ? BOARD_WIDTH_40.convertToPixels() : BOARD_WIDTH_41.convertToPixels();
-    double boardH = (version == TeensyVersion.Teensy_4_0) ? BOARD_LENGTH_40.convertToPixels() : BOARD_LENGTH_41.convertToPixels();
+    double boardW = getBoardWidth().convertToPixels();
+    double boardH = getBoardLength().convertToPixels();
     double pin1OffsetX = PIN1_OFFSET_X.convertToPixels();
     double pin1OffsetY = PIN1_OFFSET_Y.convertToPixels();
 
@@ -336,30 +384,31 @@ public class Teensy extends AbstractMakerBoard {
       double usbY = boardY - new Size(1.0d, SizeUnit.mm).convertToPixels();
       drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
-      // Main MCU chip (NXP i.MX RT1062 BGA)
-      double chipW = (version == TeensyVersion.Teensy_4_0)
+      // Main MCU chip: NXP i.MX RT1062 BGA on the 4.x, Kinetis MK20DX256 LQFP-64 on the 3.2
+      double chipW = isCompact()
           ? new Size(0.4d, SizeUnit.in).convertToPixels()
           : new Size(12.0d, SizeUnit.mm).convertToPixels();
-      double chipH = (version == TeensyVersion.Teensy_4_0)
+      double chipH = isCompact()
           ? new Size(0.4d, SizeUnit.in).convertToPixels()
           : new Size(12.0d, SizeUnit.mm).convertToPixels();
       double chipX = centerX - chipW / 2.0;
-      double chipY = (version == TeensyVersion.Teensy_4_0)
+      double chipY = isCompact()
           ? boardY + new Size(9.5d, SizeUnit.mm).convertToPixels() + new Size(0.1d, SizeUnit.in).convertToPixels()
           : boardY + new Size(19.0d, SizeUnit.mm).convertToPixels() + new Size(0.15d, SizeUnit.in).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipW, chipH, "iMXRT1062");
+      drawChip(g2d, chipX, chipY, chipW, chipH,
+          getVersion() == TeensyVersion.Teensy_3_2 ? "MK20DX256" : "iMXRT1062");
 
       // Pushbutton (Program button)
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = centerX - btnW / 2.0;
-      double btnY = (version == TeensyVersion.Teensy_4_0)
+      double btnY = isCompact()
           ? boardY + PIN1_OFFSET_Y.convertToPixels() + 11.5 * PIN_SPACING.convertToPixels() - btnH / 2.0
           : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
       drawButton(g2d, btnX, btnY, btnW, btnH);
 
       // Teensy 4.1 extras: Ethernet PHY + SD card slot
-      if (version == TeensyVersion.Teensy_4_1) {
+      if (getVersion() == TeensyVersion.Teensy_4_1) {
         // MicroSD card slot at bottom edge (12mm long, flush with bottom edge so it does not stick out)
         double sdW = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
@@ -371,8 +420,8 @@ public class Teensy extends AbstractMakerBoard {
       // Silkscreen "TEENSY" label
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT);
-      String silkText = (version == TeensyVersion.Teensy_4_0) ? "Teensy 4.0" : "Teensy 4.1";
-      double textY = (version == TeensyVersion.Teensy_4_0)
+      String silkText = getVersion().toString();
+      double textY = isCompact()
           ? chipY + chipH + new Size(2.5d, SizeUnit.mm).convertToPixels()
           : chipY + chipH + new Size(3.0d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, silkText, centerX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

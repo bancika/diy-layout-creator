@@ -279,4 +279,49 @@ public class TeensyTest {
     teensy.setHeaders(false);
     Assert.assertFalse("Headers should be false after setter", teensy.getHeaders());
   }
+
+  @Test
+  public void testControlPointCountAndNames32() {
+    Teensy teensy = new Teensy();
+    teensy.setVersion(Teensy.TeensyVersion.Teensy_3_2);
+
+    Assert.assertEquals("Teensy 3.2", Teensy.TeensyVersion.Teensy_3_2.toString());
+    Assert.assertEquals(34, teensy.getControlPointCount());
+
+    for (int i = 0; i < teensy.getControlPointCount(); i++) {
+      String name = teensy.getControlPointNodeName(i);
+      Assert.assertNotNull("Pin " + i + " name should not be null", name);
+      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
+    }
+
+    // Left row starts at GND, right row at Vin
+    Assert.assertEquals("GND", teensy.getControlPointNodeName(0));
+    Assert.assertEquals("Vin (3.6-6.0V)", teensy.getControlPointNodeName(14));
+    Assert.assertEquals("AGND", teensy.getControlPointNodeName(15));
+    Assert.assertEquals("13 (SCK/LED)", teensy.getControlPointNodeName(27));
+    Assert.assertEquals("VUSB", teensy.getControlPointNodeName(33));
+  }
+
+  @Test
+  public void testPinGeometryAndBodyShape32() {
+    Teensy teensy = new Teensy();
+    teensy.setVersion(Teensy.TeensyVersion.Teensy_3_2);
+
+    // Same 2x14 edge rows on 0.1" pitch with 0.6" between them as the 4.0
+    for (int i = 0; i < 13; i++) {
+      Point2D p1 = teensy.getControlPoint(i);
+      Point2D p2 = teensy.getControlPoint(i + 1);
+      Assert.assertEquals(PIN_SPACING_PX, p1.distance(p2), 0.01);
+    }
+    Assert.assertEquals(Teensy.ROW_SPACING.convertToPixels(),
+        teensy.getControlPoint(0).distance(teensy.getControlPoint(14)), 0.01);
+
+    // The 3.2 shares the 4.0's outline
+    Shape body = teensy.getBodyShape();
+    Rectangle2D bounds = body.getBounds2D();
+    Assert.assertEquals(Teensy.BOARD_WIDTH_40.convertToPixels(), bounds.getWidth(), 0.1);
+    Assert.assertEquals(Teensy.BOARD_LENGTH_40.convertToPixels(), bounds.getHeight(), 0.1);
+  }
+
+  private static final double PIN_SPACING_PX = new Size(0.1d, SizeUnit.in).convertToPixels();
 }

@@ -122,6 +122,39 @@ public class RaspberryPiPicoTest {
 
     pico.setVersion(RaspberryPiPico.PicoVersion.PICO);
     Assert.assertEquals("Version should be Pi Pico after setter", RaspberryPiPico.PicoVersion.PICO, pico.getVersion());
+
+    Assert.assertEquals("Pi Pico 2", RaspberryPiPico.PicoVersion.PICO_2.toString());
+    Assert.assertEquals("Pi Pico 2 W", RaspberryPiPico.PicoVersion.PICO_2_W.toString());
+
+    pico.setVersion(RaspberryPiPico.PicoVersion.PICO_2_W);
+    Assert.assertEquals(RaspberryPiPico.PicoVersion.PICO_2_W, pico.getVersion());
+  }
+
+  @Test
+  public void testPico2GeometryMatchesPico() {
+    // The RP2350 boards are pin-, size- and connector-identical to their RP2040 counterparts, so
+    // the only visible difference is the chip marking.
+    assertGeometryMatches(RaspberryPiPico.PicoVersion.PICO, RaspberryPiPico.PicoVersion.PICO_2);
+    assertGeometryMatches(RaspberryPiPico.PicoVersion.PICO_W, RaspberryPiPico.PicoVersion.PICO_2_W);
+  }
+
+  private void assertGeometryMatches(RaspberryPiPico.PicoVersion a, RaspberryPiPico.PicoVersion b) {
+    RaspberryPiPico first = new RaspberryPiPico();
+    first.setVersion(a);
+    RaspberryPiPico second = new RaspberryPiPico();
+    second.setVersion(b);
+
+    Assert.assertEquals(a + " and " + b + " should have the same pin count",
+        first.getControlPointCount(), second.getControlPointCount());
+    Assert.assertEquals(a + " and " + b + " should have the same body bounds",
+        first.getBodyShape().getBounds2D(), second.getBodyShape().getBounds2D());
+
+    for (int i = 0; i < first.getControlPointCount(); i++) {
+      Assert.assertEquals("Pin " + i + " should sit at the same place on " + a + " and " + b,
+          first.getControlPoint(i), second.getControlPoint(i));
+      Assert.assertEquals("Pin " + i + " should have the same name on " + a + " and " + b,
+          first.getControlPointNodeName(i), second.getControlPointNodeName(i));
+    }
   }
 
   @Test
