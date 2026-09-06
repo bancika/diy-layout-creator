@@ -116,9 +116,21 @@ Extend these in place; add one geometry test and one draw smoke test per new var
 ### 4.5 Sourcing dimensions and pin names
 
 Every dimension constant and every pin array below must be cross-checked against vendor
-documentation (Espressif DevKit schematics, PJRC pinout cards, Arduino product pages, Seeed wiki)
-before it is committed. Where this document states a size or a pin count it is an estimate to
-scope the work, not a datasheet citation.
+documentation before it is committed. Where this document states a size or a pin count without
+naming a source, it is an estimate to scope the work, not a datasheet citation.
+
+What actually works as a source:
+
+- **Arduino** — `docs.arduino.cc/resources/pinouts/<SKU>-full-pinout.pdf` is canonical for PWM
+  tildes and silkscreen names; `docs.arduino.cc/resources/datasheets/<SKU>-datasheet.pdf` carries
+  the numbered header tables. The HTML product and cheat-sheet pages render client-side and yield
+  nothing to a fetch.
+- **Espressif** — the `esp-dev-kits` user guides carry complete J1/J3 header tables as HTML.
+- **PJRC** — pinout cards, not yet used for the Teensy 3.2 bottom cluster (see §5.1 item 4).
+
+Note that these PDFs need downloading and text extraction; a plain fetch returns binary. Do not
+assume variants of one board share a pinout — across the Nano family the PWM sets, the bus
+annotations and the power pins all differ per variant.
 
 ### 4.6 Build and verify
 
@@ -242,10 +254,22 @@ the module) and whether the end part is a shielded can or a bare QFN.
 `drawMiniUsb`, `drawMicroUsb`, `drawUsbC`, `drawMetalConnector` and `drawChip` all already exist
 in `AbstractMakerBoard`.
 
-Pin arrays: `PIN_NAMES` keeps the classic 36 entries. `PIN_NAMES_MODERN` is 30 entries — the same
-physical positions with the bus pins annotated (`A4 (SDA)` / `A5 (SCL)`, and `MOSI` / `MISO` /
-`SCK` where they land) and no ICSP block. `PIN_NAMES_ESP32` is the modern map with the Espressif
-GPIO dual-labelled, e.g. `D2 (GPIO5)`.
+Pin arrays: `PIN_NAMES` keeps the classic 36 entries. Each later board gets **its own 30-entry
+array**, transcribed from its official Arduino pinout diagram (`docs.arduino.cc/resources/pinouts/
+<SKU>-full-pinout.pdf`) rather than assumed from the classic. A single shared "modern" array was
+wrong: the PWM sets and the power pins genuinely differ.
+
+| Version | PWM pins | Position 17 | Position 18 | Position 27 |
+|---|---|---|---|---|
+| CLASSIC | D3 D5 D6 D9 D10 D11 | RST2 | 5V | AREF |
+| EVERY | D3 D5 D6 D9 D10 | RST2 | 5V | AREF |
+| NANO_33_IOT | D2 D3 D5 D6 D9 D10 | RST2 | 5V | AREF |
+| NANO_33_BLE / _SENSE | D2–D13 (all) | RST2 | 5V | AREF |
+| NANO_RP2040_CONNECT | D2–D13 (all) | **REC** (BOOTSEL) | 5V | AREF |
+| NANO_ESP32 | D0–D13 and A0–A7 | **B1** | **VUSB** | **B0** |
+
+`PIN_NAMES_ESP32` additionally dual-labels with the Espressif GPIO number, e.g. `D2 (~, GPIO5)`;
+those numbers are taken from the ABX00083 pinout diagram.
 
 `draw()` gains version switches for the MCU chip label (and whether it is drawn rotated 45° like
 the classic TQFP or axis-aligned like a QFN), the end module, and the USB connector helper. Board

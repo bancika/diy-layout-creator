@@ -117,33 +117,64 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RESET", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
       // Right row (15..29, top to bottom)
       "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
       // ICSP (30..35)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
 
-  // The modern Nanos keep the classic 2x15 pin positions and annotate the bus pins on the
-  // silkscreen, but they have no 2x3 ICSP block: that end of the board carries the radio module or
-  // USB bridge instead, so they are 30 control points rather than 36.
-  public static final String[] PIN_NAMES_MODERN = new String[] {
+  // Every board after the classic keeps the same 2x15 pin positions but has no 2x3 ICSP block --
+  // that end of the PCB carries the radio module or USB bridge -- so they are 30 control points.
+  // Each one's PWM set and power pins are taken from its official Arduino pinout diagram; they
+  // differ more than the shared outline suggests.
+
+  // Nano Every (ABX00028): PWM on D3, D5, D6, D9, D10 only, and D13 is SCK.
+  public static final String[] PIN_NAMES_EVERY = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RESET", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (SCK)"
+      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
   };
 
-  // The Nano ESP32 dual-labels its digital pins with the Espressif GPIO number, which is what the
-  // Arduino core exposes as Dn and what the ESP-IDF documentation refers to.
+  // Nano 33 IoT (ABX00027): the SAMD21 adds PWM on D2 relative to the Every.
+  public static final String[] PIN_NAMES_33_IOT = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
+  };
+
+  // Nano 33 BLE and BLE Sense (ABX00030): the nRF52840 routes PWM to every digital pin, D13
+  // included.
+  public static final String[] PIN_NAMES_33_BLE = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (~, SCK)"
+  };
+
+  // Nano RP2040 Connect (ABX00053): every RP2040 GPIO has a PWM slice. Note REC (BOOTSEL) where
+  // the other boards repeat RESET.
+  public static final String[] PIN_NAMES_RP2040 = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
+  };
+
+  // Nano ESP32 (ABX00083): PWM on every digital and analog pin, and the pins the other boards use
+  // for RESET and AREF are the B1 / B0 boot-mode pads. Dual-labelled with the Espressif GPIO
+  // number, which is what the ESP-IDF documentation refers to.
   public static final String[] PIN_NAMES_ESP32 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX/GPIO43)", "D0 (RX/GPIO44)", "RESET", "GND1", "D2 (GPIO5)", "D3 (GPIO6)", "D4 (GPIO7)",
-      "D5 (GPIO8)", "D6 (GPIO9)", "D7 (GPIO10)", "D8 (GPIO17)", "D9 (GPIO18)", "D10 (GPIO21)",
-      "D11 (MOSI/GPIO38)", "D12 (MISO/GPIO47)",
+      "D1 (~, TX/GPIO43)", "D0 (~, RX/GPIO44)", "RST1", "GND1", "D2 (~, GPIO5)", "D3 (~, GPIO6)",
+      "D4 (~, GPIO7)", "D5 (~, GPIO8)", "D6 (~, GPIO9)", "D7 (~, GPIO10)", "D8 (~, GPIO17)",
+      "D9 (~, GPIO18)", "D10 (~, GPIO21)", "D11 (~, MOSI/GPIO38)", "D12 (~, MISO/GPIO47)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7 (GPIO14)", "A6 (GPIO13)", "A5 (SCL/GPIO12)", "A4 (SDA/GPIO11)",
-      "A3 (GPIO4)", "A2 (GPIO3)", "A1 (GPIO2)", "A0 (GPIO1)", "AREF", "3.3V", "D13 (SCK/GPIO48)"
+      "VIN", "GND2", "B1", "VUSB", "A7 (~, GPIO14)", "A6 (~, GPIO13)", "A5 (~, SCL/GPIO12)",
+      "A4 (~, SDA/GPIO11)", "A3 (~, GPIO4)", "A2 (~, GPIO3)", "A1 (~, GPIO2)", "A0 (~, GPIO1)",
+      "B0", "3.3V", "D13 (~, SCK/GPIO48)"
   };
 
   protected NanoVersion version = NanoVersion.CLASSIC;
@@ -171,12 +202,19 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   private String[] getPinNames() {
     switch (getVersion()) {
-      case CLASSIC:
-        return PIN_NAMES;
+      case EVERY:
+        return PIN_NAMES_EVERY;
+      case NANO_33_IOT:
+        return PIN_NAMES_33_IOT;
+      case NANO_33_BLE:
+      case NANO_33_BLE_SENSE:
+        return PIN_NAMES_33_BLE;
+      case NANO_RP2040_CONNECT:
+        return PIN_NAMES_RP2040;
       case NANO_ESP32:
         return PIN_NAMES_ESP32;
       default:
-        return PIN_NAMES_MODERN;
+        return PIN_NAMES;
     }
   }
 

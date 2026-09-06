@@ -4,6 +4,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -25,7 +26,7 @@ public class ArduinoNanoTest {
     // Left row (0..14)
     Assert.assertEquals("D1 (TX)", nano.getControlPointNodeName(0));
     Assert.assertEquals("D0 (RX)", nano.getControlPointNodeName(1));
-    Assert.assertEquals("RESET", nano.getControlPointNodeName(2));
+    Assert.assertEquals("RST1", nano.getControlPointNodeName(2));
     Assert.assertEquals("GND1", nano.getControlPointNodeName(3));
     Assert.assertEquals("D2", nano.getControlPointNodeName(4));
     Assert.assertEquals("D3 (~)", nano.getControlPointNodeName(5));
@@ -220,8 +221,59 @@ public class ArduinoNanoTest {
     // The Nano ESP32 additionally carries the Espressif GPIO number
     ArduinoNano esp32 = new ArduinoNano();
     esp32.setVersion(ArduinoNano.NanoVersion.NANO_ESP32);
-    Assert.assertEquals("D2 (GPIO5)", esp32.getControlPointNodeName(4));
-    Assert.assertEquals("A4 (SDA/GPIO11)", esp32.getControlPointNodeName(22));
+    Assert.assertEquals("D2 (~, GPIO5)", esp32.getControlPointNodeName(4));
+    Assert.assertEquals("A4 (~, SDA/GPIO11)", esp32.getControlPointNodeName(22));
+  }
+
+  @Test
+  public void testPwmMarkingsPerVersion() {
+    // Each board's PWM set comes from its own Arduino pinout diagram, and they genuinely differ.
+    // Left row indices 4..14 are D2..D12; index 29 is D13.
+    assertPwm(ArduinoNano.NanoVersion.CLASSIC, "D3", "D5", "D6", "D9", "D10", "D11");
+    assertPwm(ArduinoNano.NanoVersion.EVERY, "D3", "D5", "D6", "D9", "D10");
+    assertPwm(ArduinoNano.NanoVersion.NANO_33_IOT, "D2", "D3", "D5", "D6", "D9", "D10");
+    assertPwm(ArduinoNano.NanoVersion.NANO_33_BLE,
+        "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13");
+    assertPwm(ArduinoNano.NanoVersion.NANO_RP2040_CONNECT,
+        "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13");
+  }
+
+  @Test
+  public void testPowerPinsPerVersion() {
+    // The RP2040 Connect exposes BOOTSEL where the others repeat RESET, and the Nano ESP32 uses
+    // that position and the AREF position for its boot-mode pads.
+    ArduinoNano rp2040 = new ArduinoNano();
+    rp2040.setVersion(ArduinoNano.NanoVersion.NANO_RP2040_CONNECT);
+    Assert.assertEquals("REC", rp2040.getControlPointNodeName(17));
+    Assert.assertEquals("5V", rp2040.getControlPointNodeName(18));
+
+    ArduinoNano esp32 = new ArduinoNano();
+    esp32.setVersion(ArduinoNano.NanoVersion.NANO_ESP32);
+    Assert.assertEquals("B1", esp32.getControlPointNodeName(17));
+    Assert.assertEquals("VUSB", esp32.getControlPointNodeName(18));
+    Assert.assertEquals("B0", esp32.getControlPointNodeName(27));
+
+    ArduinoNano classic = new ArduinoNano();
+    Assert.assertEquals("RST2", classic.getControlPointNodeName(17));
+    Assert.assertEquals("5V", classic.getControlPointNodeName(18));
+    Assert.assertEquals("AREF", classic.getControlPointNodeName(27));
+  }
+
+  /** Asserts that exactly the named digital pins carry the PWM tilde for this version. */
+  private void assertPwm(ArduinoNano.NanoVersion version, String... pwmPins) {
+    ArduinoNano nano = new ArduinoNano();
+    nano.setVersion(version);
+    java.util.Set<String> expected = new java.util.HashSet<String>(java.util.Arrays.asList(pwmPins));
+
+    for (int i = 0; i < nano.getControlPointCount(); i++) {
+      String name = nano.getControlPointNodeName(i);
+      String base = AbstractMakerBoard.getDisplayPinLabel(name);
+      if (!base.startsWith("D") || base.length() < 2 || !Character.isDigit(base.charAt(1))) {
+        continue;
+      }
+      boolean hasTilde = name.contains("~");
+      Assert.assertEquals(version + " " + base + " PWM marking", expected.contains(base), hasTilde);
+    }
   }
 
   @Test
