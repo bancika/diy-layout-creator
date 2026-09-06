@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.DiodeSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.AbstractLeadedComponent;
@@ -40,7 +41,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
+@ComponentDescriptor(schematicFactory = DiodeSchematicFactory.class,
+    name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableCache = true)

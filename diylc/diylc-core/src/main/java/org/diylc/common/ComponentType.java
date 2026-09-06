@@ -25,6 +25,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.KeywordPolicy;
+import org.diylc.schematic.ISchematicFactory;
 
 /**
  * Entity class used to describe a component type.
@@ -56,6 +57,7 @@ public class ComponentType implements Serializable {
   private boolean enableCache;
   private List<String[]> datasheet;
   private int datasheetCreationStepCount;
+  private Class<? extends ISchematicFactory> schematicFactoryClass;
 
   public ComponentType() {
   }
@@ -156,6 +158,18 @@ public class ComponentType implements Serializable {
   
   public int getDatasheetCreationStepCount() {
     return datasheetCreationStepCount;
+  }
+
+  /**
+   * @return the declared {@link ISchematicFactory} class for this type, or {@code null} when the
+   *         type relies on the generic box fallback.
+   */
+  public Class<? extends ISchematicFactory> getSchematicFactoryClass() {
+    return schematicFactoryClass;
+  }
+
+  public void setSchematicFactoryClass(Class<? extends ISchematicFactory> schematicFactoryClass) {
+    this.schematicFactoryClass = schematicFactoryClass;
   }
 
   @Override
