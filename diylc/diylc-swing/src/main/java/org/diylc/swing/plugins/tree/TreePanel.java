@@ -468,6 +468,20 @@ public class TreePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
+    public ComponentCellRenderer() {
+      setVerticalAlignment(SwingConstants.CENTER);
+      setVerticalTextPosition(SwingConstants.CENTER);
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+      Dimension d = super.getPreferredSize();
+      if (d != null) {
+        d.height = Math.max(d.height, 20);
+      }
+      return d;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public Component getTreeCellRendererComponent(final JTree tree, final Object value,
@@ -479,19 +493,17 @@ public class TreePanel extends JPanel {
       Object obj = value;
       if (obj != null && obj.getClass().equals(TreeNode.class)) {
         TreeNode payload = (TreeNode) obj;
+        setPreferredSize(null);
         if (payload.getComponentType() == null) {
           setToolTipText(null);
           if (leaf)
             setIcon(IconLoader.Component.getIcon());
-
-          setPreferredSize(new Dimension(250, 20));
         } else {
           setToolTipText("<html><b>" + payload.getComponentType().getName() + "</b><br>"
               + payload.getComponentType().getDescription() + "<br>Author: "
               + payload.getComponentType().getAuthor() + "<br><br>" + CLICK_TO_INSTANTIATE
               + "</html>");
           setIcon(payload.getComponentType().getIcon());
-          setPreferredSize(new Dimension(250, 32));
         }
 
         String shortCutHtml = "";
@@ -528,11 +540,25 @@ public class TreePanel extends JPanel {
           }
         }
 
+        int viewportWidth = tree.getVisibleRect().width;
+        if (viewportWidth <= 0 && tree.getParent() != null) {
+          viewportWidth = tree.getParent().getWidth();
+        }
+        if (viewportWidth <= 0 && tree.getWidth() > 0) {
+          viewportWidth = tree.getWidth();
+        }
+        if (viewportWidth <= 0) {
+          viewportWidth = 240;
+        }
+
+        int overhead = (payload.getComponentType() != null) ? 95 : 45;
+        int wrapWidth = Math.max(100, viewportWidth - overhead);
+
         // translate categories
-        setText("<html>"
+        setText("<html><div style=\"width: " + wrapWidth + "px;\">"
             + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay())
                 : payload.forDisplay())
-            + shortCutHtml + variantsHtml + "</html>");
+            + shortCutHtml + variantsHtml + "</div></html>");
       }
 
       return this;
