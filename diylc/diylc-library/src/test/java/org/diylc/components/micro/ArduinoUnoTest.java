@@ -1,6 +1,7 @@
 package org.diylc.components.micro;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -99,19 +100,43 @@ public class ArduinoUnoTest {
   }
 
   @Test
-  public void testR4MinimaMatchesR4WiFi() {
-    // The Minima is the same board without the radio, so pin count and geometry are identical.
+  public void testR4MinimaDropsBridgeIcspAndVrtcHeaders() {
     ArduinoUno wifi = new ArduinoUno();
     wifi.setVersion(ArduinoUno.ArduinoUnoVersion.R4_WIFI);
     ArduinoUno minima = new ArduinoUno();
     minima.setVersion(ArduinoUno.ArduinoUnoVersion.R4_MINIMA);
 
+    // The WiFi adds OFF / GND / VRTC to the 44 shared pins; the Minima has neither those nor the
+    // six second-ICSP pins, and carries a single SWD node instead: 44 - 6 + 1 = 39
     Assert.assertEquals(47, wifi.getControlPointCount());
-    Assert.assertEquals(47, minima.getControlPointCount());
+    Assert.assertEquals(39, minima.getControlPointCount());
+    Assert.assertEquals("OFF", wifi.getControlPointNodeName(44));
+    Assert.assertEquals("SWD", minima.getControlPointNodeName(38));
+
+    // Both R4 boards use the R3's reserved power header pin for boot mode selection
+    Assert.assertEquals("BOOT", minima.getControlPointNodeName(0));
+    Assert.assertEquals("BOOT", wifi.getControlPointNodeName(0));
+
+    // The shield footprint is shared, so every header pin lands where the WiFi's does
     Assert.assertEquals(wifi.getBodyShape().getBounds2D(), minima.getBodyShape().getBounds2D());
-    for (int i = 0; i < wifi.getControlPointCount(); i++) {
+    for (int i = 0; i < 38; i++) {
       Assert.assertEquals("Pin " + i, wifi.getControlPoint(i), minima.getControlPoint(i));
       Assert.assertEquals("Pin " + i, wifi.getControlPointNodeName(i), minima.getControlPointNodeName(i));
+    }
+
+    // The SWD connector sits in the top right quadrant, below the digital header
+    Point2D swd = minima.getControlPoint(38);
+    Rectangle2D bounds = minima.getBodyShape().getBounds2D();
+    Assert.assertTrue("SWD should be on the board", bounds.contains(swd));
+    Assert.assertTrue("SWD should be on the right half", swd.getX() > bounds.getCenterX());
+    Assert.assertTrue("SWD should be on the top half", swd.getY() < bounds.getCenterY());
+    Assert.assertTrue("SWD should be below the digital header",
+        swd.getY() > minima.getControlPoint(14).getY());
+
+    for (int i = 0; i < minima.getControlPointCount(); i++) {
+      String name = minima.getControlPointNodeName(i);
+      Assert.assertNotNull("Pin " + i + " name should not be null", name);
+      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
     }
   }
 
@@ -129,6 +154,9 @@ public class ArduinoUnoTest {
     for (int i = 0; i < leonardo.getControlPointCount(); i++) {
       Assert.assertEquals("Pin " + i, r3.getControlPoint(i), leonardo.getControlPoint(i));
     }
+
+    // The reserved power header pin is not a boot mode selector on the AVR boards
+    Assert.assertEquals("NC", leonardo.getControlPointNodeName(0));
 
     // I2C is shared with D2 / D3 on the Leonardo
     Assert.assertEquals("D2 (SDA)", leonardo.getControlPointNodeName(16));

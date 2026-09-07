@@ -61,10 +61,10 @@ public class ArduinoUno extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum ArduinoUnoVersion {
+    LEONARDO("Leonardo"),
     REV3("UNO R3"),
-    R4_WIFI("UNO R4 WiFi"),
     R4_MINIMA("UNO R4 Minima"),
-    LEONARDO("Leonardo");
+    R4_WIFI("UNO R4 WiFi");
 
     private String label;
 
@@ -84,6 +84,12 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(53.4d, SizeUnit.mm);
+
+  // Top left corner of the Minima's 10-pin SWD connector, measured from the board's top left corner
+  public static Size SWD_X = new Size(61.0d, SizeUnit.mm);
+  public static Size SWD_Y = new Size(9.5d, SizeUnit.mm);
+  public static Size SWD_WIDTH = new Size(2.5d, SizeUnit.mm);
+  public static Size SWD_HEIGHT = new Size(6.0d, SizeUnit.mm);
 
   // Pin names in sequence (44 pins total)
   public static final String[] PIN_NAMES = new String[] {
@@ -116,6 +122,24 @@ public class ArduinoUno extends AbstractMakerBoard {
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
 
+  // The Minima has no USB bridge chip either - the RA4M1 has native USB - so it drops the second
+  // ICSP header, and without the WiFi module it has no OFF / GND / VRTC header. In their place it
+  // carries a 10-pin SWD debug connector in the top right corner, modelled as a single node.
+  public static final String[] PIN_NAMES_R4_MINIMA = new String[] {
+      // Power Header (0..7)
+      "BOOT", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
+      // Digital High (22..31)
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37, RA4M1)
+      "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
+      // SWD Connector (38)
+      "SWD"
+  };
+
   public ArduinoUno() {
     super();
     this.bodyColor = ARDUINO_TEAL;
@@ -142,24 +166,44 @@ public class ArduinoUno extends AbstractMakerBoard {
   }
 
   /**
-   * True for the Renesas RA4M1 generation, which shares a USB-C connector and the extra
-   * OFF / GND / VRTC power header.
+   * True for the Renesas RA4M1 generation, which shares a USB-C connector and the RA4M1 in place of
+   * the ATmega328P.
    */
   private boolean isR4() {
     return getVersion() == ArduinoUnoVersion.R4_WIFI || getVersion() == ArduinoUnoVersion.R4_MINIMA;
   }
 
+  /**
+   * The second 2x3 ICSP header belongs to the USB bridge chip. The Leonardo's 32U4 and the Minima's
+   * RA4M1 speak USB natively, so neither board carries it.
+   */
+  private boolean hasBridgeIcspHeader() {
+    return getVersion() == ArduinoUnoVersion.REV3 || getVersion() == ArduinoUnoVersion.R4_WIFI;
+  }
+
   private String[] getPinNames() {
-    return getVersion() == ArduinoUnoVersion.LEONARDO ? PIN_NAMES_LEONARDO : PIN_NAMES;
+    switch (getVersion()) {
+      case LEONARDO:
+        return PIN_NAMES_LEONARDO;
+      case R4_MINIMA:
+        return PIN_NAMES_R4_MINIMA;
+      default:
+        return PIN_NAMES;
+    }
   }
 
   @Override
   public String getControlPointNodeName(int index) {
+    // The WiFi shares the R3 pin table except for the reserved power header pin, which both R4
+    // boards use for boot mode selection - the Minima says so in its own table
+    if (index == 0 && getVersion() == ArduinoUnoVersion.R4_WIFI) {
+      return "BOOT";
+    }
     String[] pinNames = getPinNames();
     if (index >= 0 && index < pinNames.length) {
       return pinNames[index];
     }
-    if (isR4()) {
+    if (getVersion() == ArduinoUnoVersion.R4_WIFI) {
       if (index == 44) return "OFF";
       if (index == 45) return "GND";
       if (index == 46) return "VRTC";
@@ -175,7 +219,9 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     // Reference: Pin 0 (NC) is at (boardX + 220.0, boardY + 400.0) [1100 mils, 100 mils from bottom-left]
     // Board is 539.78px wide, 419.78px high
-    int numPins = isR4() ? 47 : getPinNames().length;
+    // Only the WiFi adds the OFF / GND / VRTC header on top of the names listed for the version
+    int numPins =
+        getVersion() == ArduinoUnoVersion.R4_WIFI ? PIN_NAMES.length + 3 : getPinNames().length;
     double[][] relativeOffsets = new double[numPins][2];
 
     // Power header pins 0..7 (bottom left row)
@@ -215,8 +261,8 @@ public class ArduinoUno extends AbstractMakerBoard {
     relativeOffsets[36] = new double[] {icspX, icspY + 2 * spacing};
     relativeOffsets[37] = new double[] {icspX + spacing, icspY + 2 * spacing};
 
-    // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2, absent on the Leonardo
-    if (getVersion() != ArduinoUnoVersion.LEONARDO) {
+    // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
+    if (hasBridgeIcspHeader()) {
       double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
       double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
       if (isR4()) {
@@ -230,10 +276,20 @@ public class ArduinoUno extends AbstractMakerBoard {
       relativeOffsets[43] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
     }
 
-    if (isR4()) {
+    if (getVersion() == ArduinoUnoVersion.R4_WIFI) {
       relativeOffsets[44] = new double[] {-4 * spacing, 0}; // OFF
       relativeOffsets[45] = new double[] {-3 * spacing, 0}; // GND
       relativeOffsets[46] = new double[] {-2 * spacing, 0}; // VRTC
+    }
+
+    // The SWD connector (38) gets a single point in the middle of its body, the way the Pi models
+    // its flat-flex connectors, rather than ten points 1.27mm apart that nothing could reach
+    if (getVersion() == ArduinoUnoVersion.R4_MINIMA) {
+      relativeOffsets[38] = new double[] {
+          SWD_X.convertToPixels() + SWD_WIDTH.convertToPixels() / 2.0
+              - new Size(1.1d, SizeUnit.in).convertToPixels(),
+          SWD_Y.convertToPixels() + SWD_HEIGHT.convertToPixels() / 2.0
+              - new Size(2.0d, SizeUnit.in).convertToPixels()};
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -365,8 +421,12 @@ public class ArduinoUno extends AbstractMakerBoard {
 
         double raW = new Size(10d, SizeUnit.mm).convertToPixels();
         double raH = new Size(10d, SizeUnit.mm).convertToPixels();
-        double raX = boardX + boardW - new Size(11.5d, SizeUnit.mm).convertToPixels() - raW;
-        double raY = boardY + new Size(12d, SizeUnit.mm).convertToPixels();
+        // The Minima carries the RA4M1 further from the top right corner than the WiFi does
+        boolean minima = getVersion() == ArduinoUnoVersion.R4_MINIMA;
+        double raShiftX = minima ? new Size(8d, SizeUnit.mm).convertToPixels() : 0;
+        double raShiftY = minima ? new Size(4.5d, SizeUnit.mm).convertToPixels() : 0;
+        double raX = boardX + boardW - new Size(11.5d, SizeUnit.mm).convertToPixels() - raW - raShiftX;
+        double raY = boardY + new Size(12d, SizeUnit.mm).convertToPixels() + raShiftY;
         g2d.setColor(Color.BLACK);
         g2d.fill(new RoundRectangle2D.Double(raX, raY, raW, raH, 2, 2));
         g2d.setColor(Color.DARK_GRAY);
@@ -374,6 +434,20 @@ public class ArduinoUno extends AbstractMakerBoard {
         g2d.setColor(Color.WHITE);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "RA4M1", raX + raW / 2.0, raY + raH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+        if (getVersion() == ArduinoUnoVersion.R4_MINIMA) {
+          double swdW = SWD_WIDTH.convertToPixels();
+          double swdH = SWD_HEIGHT.convertToPixels();
+          double swdX = boardX + SWD_X.convertToPixels();
+          double swdY = boardY + SWD_Y.convertToPixels();
+          drawFpcConnector(g2d, swdX, swdY, swdW, swdH, true, "");
+
+          g2d.setColor(SILK_COLOR);
+          g2d.setFont(SILK_FONT_SMALL);
+          StringUtils.drawCenteredText(g2d, "SWD", swdX + swdW / 2.0,
+              swdY + swdH + new Size(1.5d, SizeUnit.mm).convertToPixels(),
+              HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        }
       } else if (getVersion() == ArduinoUnoVersion.LEONARDO) {
         // The 32U4 is a square TQFP-44 where the R3 carries its DIP-28
         double chipSize = new Size(0.4d, SizeUnit.in).convertToPixels();
@@ -398,15 +472,19 @@ public class ArduinoUno extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "RST", btnX + btnW / 2.0,
           btnY + btnH + new Size(1.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
+      // The Minima prints its branding lower, in the space the WiFi gives to the radio module
+      double brandShiftY = getVersion() == ArduinoUnoVersion.R4_MINIMA
+          ? new Size(24d, SizeUnit.mm).convertToPixels() : 0;
+
       // Arduino Infinity Logo
       drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels(),
-          boardY + new Size(0.4411d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels());
+          boardY + new Size(0.4411d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels() + brandShiftY);
 
       // Silkscreen text & branding
       g2d.setColor(SILK_COLOR);
       
       double arduinoX = boardX + new Size(1.5d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels();
-      double arduinoY = boardY + new Size(0.775d, SizeUnit.in).convertToPixels() - new Size(4.0d, SizeUnit.mm).convertToPixels();
+      double arduinoY = boardY + new Size(0.775d, SizeUnit.in).convertToPixels() - new Size(4.0d, SizeUnit.mm).convertToPixels() + brandShiftY;
       g2d.setFont(SILK_FONT_LARGE.deriveFont(SILK_FONT_LARGE.getSize2D() * 1.5f));
       StringUtils.drawCenteredText(g2d, "ARDUINO", arduinoX, arduinoY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       
@@ -433,8 +511,11 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw header pins with continuity tracking
-    drawPinHeader(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    // Draw header pins with continuity tracking; the Minima's SWD point sits inside the connector
+    // body drawn above and gets no header pin of its own
+    int headerPinCount = getVersion() == ArduinoUnoVersion.R4_MINIMA
+        ? controlPoints.length - 1 : controlPoints.length;
+    drawPinHeader(g2d, 0, headerPinCount, true, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
