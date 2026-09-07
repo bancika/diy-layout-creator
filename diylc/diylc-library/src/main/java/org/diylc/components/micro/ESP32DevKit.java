@@ -116,22 +116,58 @@ public class ESP32DevKit extends AbstractMakerBoard {
   public static Size SHIELD_WIDTH_S3 = new Size(16.0d, SizeUnit.mm);
   public static Size SHIELD_LENGTH_S3 = new Size(16.0d, SizeUnit.mm);
 
+  // Node names follow the convention used by the other boards in this package: the name a pin is
+  // identified by, followed by its alternate functions in parentheses. The silkscreen prints only
+  // a bare token, so each variant carries a parallel SILK_NAMES array with what is on the board.
+  // Function lists come from the Espressif esp-dev-kits user guides for the DevKitC boards; the
+  // DevKit V1 is a DOIT board with no vendor documentation, so its functions are those of the
+  // ESP32-WROOM-32 module it carries.
   public static final String[] PIN_NAMES_30 = new String[] {
       // Left row (pins 0..14, top to bottom)
-      "EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "GND_3", "GND_1", "VIN",
+      "EN (CHIP_PU, Reset)", "VP (GPIO36, ADC1_CH0, S_VP)", "VN (GPIO39, ADC1_CH3, S_VN)",
+      "GPIO34 (ADC1_CH6, VDET_1)", "GPIO35 (ADC1_CH7, VDET_2)",
+      "GPIO32 (ADC1_CH4, TOUCH_CH9, XTAL_32K_P)", "GPIO33 (ADC1_CH5, TOUCH_CH8, XTAL_32K_N)",
+      "GPIO25 (ADC2_CH8, DAC_1)", "GPIO26 (ADC2_CH9, DAC_2)", "GPIO27 (ADC2_CH7, TOUCH_CH7)",
+      "GPIO14 (ADC2_CH6, TOUCH_CH6, MTMS)", "GPIO12 (ADC2_CH5, TOUCH_CH5, MTDI)",
+      "GPIO13 (ADC2_CH4, TOUCH_CH4, MTCK)", "GND_1", "VIN",
       // Right row (pins 15..29, top to bottom)
-      "D23", "D22", "TXD", "RXD", "D21", "D19", "D18", "D5", "TX2", "RX2", "D4", "D2", "D15", "GND_2", "3V3"
+      "GPIO23", "GPIO22 (SCL)", "TX0 (GPIO1, U0TXD)", "RX0 (GPIO3, U0RXD)", "GPIO21 (SDA)",
+      "GPIO19", "GPIO18", "GPIO5", "TX2 (GPIO17, U2TXD)", "RX2 (GPIO16, U2RXD)",
+      "GPIO4 (ADC2_CH0, TOUCH_CH0)", "GPIO2 (ADC2_CH2, TOUCH_CH2)",
+      "GPIO15 (ADC2_CH3, TOUCH_CH3, MTDO)", "GND_2", "3V3"
+  };
+
+  public static final String[] SILK_NAMES_30 = new String[] {
+      // Left row (pins 0..14, top to bottom)
+      "EN", "VP", "VN", "D34", "D35", "D32", "D33", "D25", "D26", "D27", "D14", "D12", "D13", "GND", "VIN",
+      // Right row (pins 15..29, top to bottom)
+      "D23", "D22", "TX0", "RX0", "D21", "D19", "D18", "D5", "TX2", "RX2", "D4", "D2", "D15", "GND", "3V3"
   };
 
   public static final String[] PIN_NAMES_38 = new String[] {
       // Left row (J2: pins 0..18, top to bottom)
-      "3V3", "EN", "VP", "VN", "34", "35", "32", "33",
-      "25", "26", "27", "14", "12", "GND_1", "13",
-      "D2", "D3", "CMD", "5V",
+      "3V3", "EN (CHIP_PU, Reset)", "VP (GPIO36, ADC1_CH0, S_VP)", "VN (GPIO39, ADC1_CH3, S_VN)",
+      "GPIO34 (ADC1_CH6, VDET_1)", "GPIO35 (ADC1_CH7, VDET_2)",
+      "GPIO32 (ADC1_CH4, TOUCH_CH9, XTAL_32K_P)", "GPIO33 (ADC1_CH5, TOUCH_CH8, XTAL_32K_N)",
+      "GPIO25 (ADC2_CH8, DAC_1)", "GPIO26 (ADC2_CH9, DAC_2)", "GPIO27 (ADC2_CH7, TOUCH_CH7)",
+      "GPIO14 (ADC2_CH6, TOUCH_CH6, MTMS)", "GPIO12 (ADC2_CH5, TOUCH_CH5, MTDI)", "GND_1",
+      "GPIO13 (ADC2_CH4, TOUCH_CH4, MTCK)", "D2 (GPIO9, flash)", "D3 (GPIO10, flash)",
+      "CMD (GPIO11, flash)", "5V",
       // Right row (J3: pins 19..37, top to bottom)
-      "GND_2", "23", "22", "TX", "RX", "21", "GND_3",
-      "19", "18", "5", "17", "16", "4", "0", "2",
-      "15", "D1", "D0", "CLK"
+      "GND_2", "GPIO23", "GPIO22", "TX (GPIO1, U0TXD)", "RX (GPIO3, U0RXD)", "GPIO21", "GND_3",
+      "GPIO19", "GPIO18", "GPIO5", "GPIO17", "GPIO16", "GPIO4 (ADC2_CH0, TOUCH_CH0)",
+      "GPIO0 (ADC2_CH1, TOUCH_CH1, Boot)", "GPIO2 (ADC2_CH2, TOUCH_CH2)",
+      "GPIO15 (ADC2_CH3, TOUCH_CH3, MTDO)", "D1 (GPIO8, flash)", "D0 (GPIO7, flash)",
+      "CLK (GPIO6, flash)"
+  };
+
+  public static final String[] SILK_NAMES_38 = new String[] {
+      // Left row (J2: pins 0..18, top to bottom)
+      "3V3", "EN", "VP", "VN", "IO34", "IO35", "IO32", "IO33", "IO25", "IO26", "IO27", "IO14",
+      "IO12", "GND", "IO13", "D2", "D3", "CMD", "5V",
+      // Right row (J3: pins 19..37, top to bottom)
+      "GND", "IO23", "IO22", "TX", "RX", "IO21", "GND", "IO19", "IO18", "IO5", "IO17", "IO16",
+      "IO4", "IO0", "IO2", "IO15", "D1", "D0", "CLK"
   };
 
   // ESP32-C3-DevKitM-1 and ESP32-C6-DevKitC-1 share the DevKitC form factor: 25.4 mm wide with
@@ -157,33 +193,76 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES_S3_44 = new String[] {
       // Left row (J1: pins 0..21, top to bottom)
-      "3V3_1", "3V3_2", "RST", "4", "5", "6", "7",
-      "15", "16", "17", "18", "8", "3",
-      "46", "9", "10", "11", "12", "13",
-      "14", "5V", "GND_1",
+      "3V3_1", "3V3_2", "RST (EN)", "GPIO4 (RTC_GPIO4, TOUCH4, ADC1_CH3)",
+      "GPIO5 (RTC_GPIO5, TOUCH5, ADC1_CH4)", "GPIO6 (RTC_GPIO6, TOUCH6, ADC1_CH5)",
+      "GPIO7 (RTC_GPIO7, TOUCH7, ADC1_CH6)", "GPIO15 (U0RTS, ADC2_CH4, XTAL_32K_P)",
+      "GPIO16 (U0CTS, ADC2_CH5, XTAL_32K_N)", "GPIO17 (U1TXD, ADC2_CH6)",
+      "GPIO18 (U1RXD, ADC2_CH7, CLK_OUT3)", "GPIO8 (TOUCH8, ADC1_CH7, SUBSPICS1)",
+      "GPIO3 (RTC_GPIO3, TOUCH3, ADC1_CH2)", "GPIO46",
+      "GPIO9 (TOUCH9, ADC1_CH8, FSPIHD)", "GPIO10 (TOUCH10, ADC1_CH9, FSPICS0)",
+      "GPIO11 (TOUCH11, ADC2_CH0, FSPID)", "GPIO12 (TOUCH12, ADC2_CH1, FSPICLK)",
+      "GPIO13 (TOUCH13, ADC2_CH2, FSPIQ)", "GPIO14 (TOUCH14, ADC2_CH3, FSPIWP)", "5V", "GND_1",
       // Right row (J3: pins 22..43, top to bottom)
-      "GND_2", "TX", "RX", "1", "2",
-      "42", "41", "40", "39", "38",
-      "37", "36", "35", "0", "45",
-      "48", "47", "21", "20", "19",
-      "GND_3", "GND_4"
+      "GND_2", "TX (GPIO43, U0TXD, CLK_OUT1)", "RX (GPIO44, U0RXD, CLK_OUT2)",
+      "GPIO1 (RTC_GPIO1, TOUCH1, ADC1_CH0)", "GPIO2 (RTC_GPIO2, TOUCH2, ADC1_CH1)",
+      "GPIO42 (MTMS)", "GPIO41 (MTDI, CLK_OUT1)", "GPIO40 (MTDO, CLK_OUT2)",
+      "GPIO39 (MTCK, CLK_OUT3, SUBSPICS1)", "GPIO38 (FSPIWP, RGB LED)", "GPIO37 (SPIDQS, FSPIQ)",
+      "GPIO36 (SPIIO7, FSPICLK)", "GPIO35 (SPIIO6, FSPID)", "GPIO0 (RTC_GPIO0, Boot)", "GPIO45",
+      "GPIO48 (SPICLK_N)", "GPIO47 (SPICLK_P)", "GPIO21 (RTC_GPIO21)",
+      "GPIO20 (U1CTS, ADC2_CH9, USB_D+)", "GPIO19 (U1RTS, ADC2_CH8, USB_D-)", "GND_3", "GND_4"
+  };
+
+  public static final String[] SILK_NAMES_S3_44 = new String[] {
+      // Left row (J1: pins 0..21, top to bottom)
+      "3V3", "3V3", "RST", "4", "5", "6", "7", "15", "16", "17", "18", "8", "3", "46", "9", "10",
+      "11", "12", "13", "14", "5V", "G",
+      // Right row (J3: pins 22..43, top to bottom)
+      "G", "TX", "RX", "1", "2", "42", "41", "40", "39", "38", "37", "36", "35", "0", "45", "48",
+      "47", "21", "20", "19", "G", "G"
   };
 
   public static final String[] PIN_NAMES_C3_30 = new String[] {
       // J1 (left row: pins 0..14, top to bottom)
-      "GND_1", "3V3_1", "3V3_2", "IO2", "IO3", "GND_2", "RST", "GND_3", "IO0", "IO1", "IO10",
-      "GND_4", "5V_1", "5V_2", "GND_5",
+      "GND_1", "3V3_1", "3V3_2", "GPIO2 (ADC1_CH2, FSPIQ)", "GPIO3 (ADC1_CH3)", "GND_2",
+      "RST (CHIP_PU)", "GND_3", "GPIO0 (ADC1_CH0, XTAL_32K_P)", "GPIO1 (ADC1_CH1, XTAL_32K_N)",
+      "GPIO10 (FSPICS0)", "GND_4", "5V_1", "5V_2", "GND_5",
       // J3 (right row: pins 15..29, top to bottom)
-      "GND_6", "TX", "RX", "GND_7", "IO9", "IO8", "GND_8", "IO7", "IO6", "IO5", "IO4", "GND_9",
-      "IO18", "IO19", "GND_10"
+      "GND_6", "TX (GPIO21, U0TXD)", "RX (GPIO20, U0RXD)", "GND_7", "GPIO9", "GPIO8 (RGB LED)",
+      "GND_8", "GPIO7 (FSPID, MTDO)", "GPIO6 (FSPICLK, MTCK)", "GPIO5 (ADC2_CH0, FSPIWP, MTDI)",
+      "GPIO4 (ADC1_CH4, FSPIHD, MTMS)", "GND_9", "GPIO18 (USB_D-)", "GPIO19 (USB_D+)", "GND_10"
+  };
+
+  public static final String[] SILK_NAMES_C3_30 = new String[] {
+      // J1 (left row: pins 0..14, top to bottom)
+      "GND", "3V3", "3V3", "IO2", "IO3", "GND", "RST", "GND", "IO0", "IO1", "IO10", "GND", "5V",
+      "5V", "GND",
+      // J3 (right row: pins 15..29, top to bottom)
+      "GND", "TX", "RX", "GND", "IO9", "IO8", "GND", "IO7", "IO6", "IO5", "IO4", "GND", "IO18",
+      "IO19", "GND"
   };
 
   public static final String[] PIN_NAMES_C6_32 = new String[] {
       // J1 (left row: pins 0..15, top to bottom)
-      "3V3", "RST", "4", "5", "6", "7", "0", "1", "8", "10", "11", "2", "3", "5V", "GND_1", "NC_1",
+      "3V3", "RST", "GPIO4 (MTMS, LP_GPIO4, LP_UART_RXD, ADC1_CH4, FSPIHD)",
+      "GPIO5 (MTDI, LP_GPIO5, LP_UART_TXD, ADC1_CH5, FSPIWP)",
+      "GPIO6 (MTCK, LP_GPIO6, LP_I2C_SDA, ADC1_CH6, FSPICLK)",
+      "GPIO7 (MTDO, LP_GPIO7, LP_I2C_SCL, FSPID)",
+      "GPIO0 (XTAL_32K_P, LP_GPIO0, LP_UART_DTRN, ADC1_CH0)",
+      "GPIO1 (XTAL_32K_N, LP_GPIO1, LP_UART_DSRN, ADC1_CH1)", "GPIO8 (RGB LED)", "GPIO10",
+      "GPIO11", "GPIO2 (LP_GPIO2, LP_UART_RTSN, ADC1_CH2, FSPIQ)",
+      "GPIO3 (LP_GPIO3, LP_UART_CTSN, ADC1_CH3)", "5V", "GND_1", "NC_1",
       // J3 (right row: pins 16..31, top to bottom)
-      "GND_2", "TX", "RX", "15", "23", "22", "21", "20", "19", "18", "9", "GND_3", "13", "12",
-      "GND_4", "NC_2"
+      "GND_2", "TX (GPIO16, U0TXD, FSPICS0)", "RX (GPIO17, U0RXD, FSPICS1)", "GPIO15",
+      "GPIO23 (SDIO_DATA3)", "GPIO22 (SDIO_DATA2)", "GPIO21 (SDIO_DATA1, FSPICS5)",
+      "GPIO20 (SDIO_DATA0, FSPICS4)", "GPIO19 (SDIO_CLK, FSPICS3)", "GPIO18 (SDIO_CMD, FSPICS2)",
+      "GPIO9", "GND_3", "GPIO13 (USB_D+)", "GPIO12 (USB_D-)", "GND_4", "NC_2"
+  };
+
+  public static final String[] SILK_NAMES_C6_32 = new String[] {
+      // J1 (left row: pins 0..15, top to bottom)
+      "3V3", "RST", "4", "5", "6", "7", "0", "1", "8", "10", "11", "2", "3", "5V", "G", "NC",
+      // J3 (right row: pins 16..31, top to bottom)
+      "G", "TX", "RX", "15", "23", "22", "21", "20", "19", "18", "9", "G", "13", "12", "G", "NC"
   };
 
   private DevKitVersion version = DevKitVersion.DevKit_V1_30Pin;
@@ -225,6 +304,30 @@ public class ESP32DevKit extends AbstractMakerBoard {
       default:
         return PIN_NAMES_30;
     }
+  }
+
+  private String[] getSilkNames() {
+    switch (getVersion()) {
+      case DevKitC_V4_38Pin:
+        return SILK_NAMES_38;
+      case ESP32_S3_DevKitC_44Pin:
+        return SILK_NAMES_S3_44;
+      case ESP32_C3_DevKitM_1:
+        return SILK_NAMES_C3_30;
+      case ESP32_C6_DevKitC_1:
+        return SILK_NAMES_C6_32;
+      default:
+        return SILK_NAMES_30;
+    }
+  }
+
+  @Override
+  protected String getSilkPinLabel(int index) {
+    String[] silkNames = getSilkNames();
+    if (index >= 0 && index < silkNames.length) {
+      return silkNames[index];
+    }
+    return super.getSilkPinLabel(index);
   }
 
   private Size getRiscVShieldWidth() {

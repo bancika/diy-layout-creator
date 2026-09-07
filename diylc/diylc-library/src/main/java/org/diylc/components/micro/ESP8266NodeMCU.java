@@ -73,11 +73,27 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
   public static Size HOLE_DISTANCE_Y = new Size(44.0d, SizeUnit.mm);
   public static Size HOLE_DIAMETER = new Size(3.2d, SizeUnit.mm);
 
+  // Node names carry the GPIO number and function, because the NodeMCU's Dn labels are board
+  // aliases that do not follow the ESP8266's own numbering -- D1 is GPIO5, not GPIO1 -- and that
+  // mapping is the single thing people most often get wrong on this board. SILK_NAMES holds what
+  // is actually printed next to each pin.
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..14)
-      "A0", "RSV_1", "RSV_2", "SD3", "SD2", "SD1", "CMD", "SD0", "CLK", "GND_1", "3V3_1", "EN", "RST", "GND_2", "VIN",
+      "A0 (ADC0)", "RSV_1", "RSV_2", "SD3 (GPIO10, flash)", "SD2 (GPIO9, flash)",
+      "SD1 (GPIO8, flash)", "CMD (GPIO11, flash)", "SD0 (GPIO7, flash)", "CLK (GPIO6, flash)",
+      "GND_1", "3V3_1", "EN (CH_PD)", "RST", "GND_2", "VIN",
       // Right row (pins 15..29)
-      "D0", "D1", "D2", "D3", "D4", "3V3_2", "GND_3", "D5", "D6", "D7", "D8", "RX", "TX", "GND_4", "3V3_3"
+      "D0 (GPIO16, WAKE)", "D1 (GPIO5, SCL)", "D2 (GPIO4, SDA)", "D3 (GPIO0, FLASH)",
+      "D4 (GPIO2, LED)", "3V3_2", "GND_3", "D5 (GPIO14, HSPI SCLK)", "D6 (GPIO12, HSPI MISO)",
+      "D7 (GPIO13, HSPI MOSI)", "D8 (GPIO15, HSPI CS)", "RX (GPIO3, U0RXD)", "TX (GPIO1, U0TXD)",
+      "GND_4", "3V3_3"
+  };
+
+  public static final String[] SILK_NAMES = new String[] {
+      // Left row (pins 0..14)
+      "A0", "RSV", "RSV", "SD3", "SD2", "SD1", "CMD", "SD0", "CLK", "GND", "3V3", "EN", "RST", "GND", "VIN",
+      // Right row (pins 15..29)
+      "D0", "D1", "D2", "D3", "D4", "3V3", "GND", "D5", "D6", "D7", "D8", "RX", "TX", "GND", "3V3"
   };
 
   protected boolean headers = false;
@@ -104,6 +120,14 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       return PIN_NAMES[index];
     }
     return "Pin " + (index + 1);
+  }
+
+  @Override
+  protected String getSilkPinLabel(int index) {
+    if (index >= 0 && index < SILK_NAMES.length) {
+      return SILK_NAMES[index];
+    }
+    return super.getSilkPinLabel(index);
   }
 
   private double[][] getRelativeOffsets() {

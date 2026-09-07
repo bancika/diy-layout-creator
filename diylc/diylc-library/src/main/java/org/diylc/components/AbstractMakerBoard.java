@@ -47,6 +47,7 @@ import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.netlist.Node;
 import org.diylc.utils.Constants;
 
 /**
@@ -257,22 +258,31 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to format a pin name for silkscreen display by omitting any parenthesized content
-   * and any trailing underscore suffixes (e.g. "3V3_1" -> "3V3", "A0 (ADC0)" -> "A0").
+   * Helper to format a pin name for silkscreen display (e.g. "3V3_1" -> "3V3", "A0 (ADC0)" -> "A0").
+   *
+   * <p>Stripping the parenthesized annotation is the same operation the netlist performs, so it is
+   * delegated to {@link Node#sanitizeNodeName(String)} rather than duplicated. The silkscreen goes
+   * one step further and also drops the trailing disambiguator, because a board prints "GND" on
+   * every ground pin even though the netlist has to tell "GND_1" from "GND_2".
    */
   public static String getDisplayPinLabel(String name) {
-    if (name == null) {
+    String sanitized = Node.sanitizeNodeName(name);
+    if (sanitized == null) {
       return "";
     }
-    int parenIdx = name.indexOf('(');
-    if (parenIdx != -1) {
-      name = name.substring(0, parenIdx);
-    }
-    int underscoreIdx = name.indexOf('_');
-    if (underscoreIdx != -1) {
-      name = name.substring(0, underscoreIdx);
-    }
-    return name.trim();
+    int underscoreIdx = sanitized.indexOf('_');
+    return (underscoreIdx == -1 ? sanitized : sanitized.substring(0, underscoreIdx)).trim();
+  }
+
+  /**
+   * Silkscreen text printed next to a pin. Defaults to the node name with its annotation and
+   * disambiguator stripped, which is right whenever the node name is the silkscreen name plus
+   * extra detail. A board whose silkscreen genuinely differs from its node names -- the ESP
+   * DevKits print bare GPIO numbers while their nodes carry the full function list -- overrides
+   * this to return its own silkscreen label.
+   */
+  protected String getSilkPinLabel(int index) {
+    return getDisplayPinLabel(getControlPointNodeName(index));
   }
 
   /**
@@ -294,9 +304,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     g2d.setFont(PIN_FONT);
 
     for (int i = 0; i < count; i++) {
-      String name = getControlPointNodeName(i);
-      String label = getDisplayPinLabel(name);
-      if (label.isEmpty()) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
         continue;
       }
       double pinX = x + offsets[i][0];
