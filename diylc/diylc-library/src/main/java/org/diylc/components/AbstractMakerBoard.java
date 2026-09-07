@@ -79,6 +79,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
   public static Color PAD_COLOR = Color.decode("#DAA520");
+  public static Color CONNECTOR_PLASTIC_COLOR = Color.decode("#F5F5DC");
+  public static Color CONNECTOR_PLASTIC_BORDER = Color.decode("#333333");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");

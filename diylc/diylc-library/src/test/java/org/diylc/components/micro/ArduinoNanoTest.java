@@ -157,11 +157,11 @@ public class ArduinoNanoTest {
       ArduinoNano nano = new ArduinoNano();
       nano.setVersion(version);
 
-      int expected = version == ArduinoNano.NanoVersion.CLASSIC ? 36 : 30;
-      Assert.assertEquals(version + " pin count", expected, nano.getControlPointCount());
+      Assert.assertEquals(version + " pin count", expectedPinCount(version), nano.getControlPointCount());
       Assert.assertEquals(version + " outline should be unchanged",
           classicBody.getBounds2D(), nano.getBodyShape().getBounds2D());
-      for (int i = 0; i < nano.getControlPointCount(); i++) {
+      // The 2x15 pin field is identical on every version; anything past it is board-specific
+      for (int i = 0; i < 30; i++) {
         Assert.assertEquals(version + " pin " + i, classic.getControlPoint(i), nano.getControlPoint(i));
       }
     }
@@ -180,7 +180,8 @@ public class ArduinoNanoTest {
         Assert.assertEquals("MISO", nano.getControlPointNodeName(30));
         Assert.assertNull("The classic Nano has the header, not a module", version.getModuleLabel());
       } else {
-        Assert.assertEquals(version + " should stop at the pin rows", 30, nano.getControlPointCount());
+        Assert.assertEquals(version + " should have no ICSP block",
+            expectedPinCount(version), nano.getControlPointCount());
         Assert.assertNotNull(version + " should name the part in place of the ICSP block",
             version.getModuleLabel());
       }
@@ -236,6 +237,46 @@ public class ArduinoNanoTest {
         "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13");
     assertPwm(ArduinoNano.NanoVersion.NANO_RP2040_CONNECT,
         "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13");
+    assertPwm(ArduinoNano.NanoVersion.NANO_R4, "D3", "D5", "D6", "D9", "D10", "D11");
+  }
+
+  @Test
+  public void testNanoR4() {
+    ArduinoNano r4 = new ArduinoNano();
+    r4.setVersion(ArduinoNano.NanoVersion.NANO_R4);
+
+    Assert.assertEquals("Nano R4", ArduinoNano.NanoVersion.NANO_R4.toString());
+    // 2x15 header pins plus a point at the centre of the Qwiic socket
+    Assert.assertEquals(31, r4.getControlPointCount());
+
+    // JP2, top to bottom: D4 and D5 double as the CAN pins
+    Assert.assertEquals("D4 (CAN TX)", r4.getControlPointNodeName(6));
+    Assert.assertEquals("D5 (~, CAN RX)", r4.getControlPointNodeName(7));
+    Assert.assertEquals("D12 (MISO)", r4.getControlPointNodeName(14));
+
+    // JP1 reversed: BOOT replaces the classic's second RESET, and A0-A3 reach the DAC and OPAMP
+    Assert.assertEquals("BOOT", r4.getControlPointNodeName(17));
+    Assert.assertEquals("5V", r4.getControlPointNodeName(18));
+    Assert.assertEquals("A3 (OPAMP OUT)", r4.getControlPointNodeName(23));
+    Assert.assertEquals("A0 (DAC)", r4.getControlPointNodeName(26));
+    Assert.assertEquals("D13 (SCK)", r4.getControlPointNodeName(29));
+
+    Assert.assertEquals("RA4M1", ArduinoNano.NanoVersion.NANO_R4.getMcuLabel());
+    Assert.assertEquals("QWIIC", ArduinoNano.NanoVersion.NANO_R4.getModuleLabel());
+
+    // The Qwiic point sits at the centre of the drawn socket: horizontally between the pin rows,
+    // and vertically inside the connector body at the top of the board
+    Assert.assertEquals("QWIIC", r4.getControlPointNodeName(30));
+    Point2D qwiic = r4.getControlPoint(30);
+    Point2D leftPin = r4.getControlPoint(0);
+    Point2D rightPin = r4.getControlPoint(15);
+    Assert.assertEquals((leftPin.getX() + rightPin.getX()) / 2.0, qwiic.getX(), 0.1);
+
+    Rectangle2D bounds = r4.getBodyShape().getBounds2D();
+    double connectorTop = bounds.getY() + ArduinoNano.END_PART_OFFSET_Y.convertToPixels();
+    Assert.assertTrue("Qwiic point should sit inside the connector body",
+        qwiic.getY() > connectorTop
+            && qwiic.getY() < connectorTop + ArduinoNano.QWIIC_LENGTH.convertToPixels());
   }
 
   @Test
@@ -311,6 +352,18 @@ public class ArduinoNanoTest {
   }
 
   private static final double PIN_SPACING_PX = new Size(0.1d, SizeUnit.in).convertToPixels();
+
+  /** 36 for the classic with its ICSP block, 31 for the R4 with its Qwiic point, 30 otherwise. */
+  private static int expectedPinCount(ArduinoNano.NanoVersion version) {
+    switch (version) {
+      case CLASSIC:
+        return 36;
+      case NANO_R4:
+        return 31;
+      default:
+        return 30;
+    }
+  }
 
   @Test
   public void testAllVersionsDrawing() {

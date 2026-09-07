@@ -383,9 +383,9 @@ public class RaspberryPi extends AbstractMakerBoard {
         double uartX = boardX + new Size(32.5d, SizeUnit.mm).convertToPixels() - uartW / 2.0;
         double uartY = boardY + new Size(52.5d, SizeUnit.mm).convertToPixels() - uartH / 2.0;
         
-        g2d.setColor(Color.decode("#F5F5DC")); // cream/beige
+        g2d.setColor(CONNECTOR_PLASTIC_COLOR);
         g2d.fill(new Rectangle2D.Double(uartX, uartY, uartW, uartH));
-        g2d.setColor(Color.decode("#333333"));
+        g2d.setColor(CONNECTOR_PLASTIC_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new Rectangle2D.Double(uartX, uartY, uartW, uartH));
         
@@ -552,7 +552,7 @@ public class RaspberryPi extends AbstractMakerBoard {
       g2d.fillRect(2, 13, 1, 5);
       g2d.fillRect(18, height - 10, 1, 6);
       g2d.fillRect(20, height - 10, 1, 6);
-      g2d.setColor(Color.decode("#F5F5DC")); // UART
+      g2d.setColor(CONNECTOR_PLASTIC_COLOR); // UART
       g2d.fillRect(13, height - 5, 2, 1);
     } else {
       g2d.fillRect(3, 11, 1, 7); // DISP

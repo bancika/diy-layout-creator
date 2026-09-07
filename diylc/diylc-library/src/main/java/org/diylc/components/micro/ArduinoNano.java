@@ -53,7 +53,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Arduino Nano", category = "Controllers",
     author = "Branislav Stojkovic",
     description = "Arduino Nano Breadboard-Friendly Microcontroller Board (classic, Every, 33 IoT, "
-        + "33 BLE, RP2040 Connect, Nano ESP32)",
+        + "33 BLE, RP2040 Connect, Nano ESP32, Nano R4)",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -66,16 +66,29 @@ public class ArduinoNano extends AbstractMakerBoard {
   public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
   public static Size BOARD_LENGTH = new Size(1.70d, SizeUnit.in);
 
+  public static Size ROW_SPACING = new Size(0.60d, SizeUnit.in);
+  public static Size BOARD_MARGIN_Y = new Size(0.15d, SizeUnit.in);
+
+  // Where the part at the end of the board opposite the USB jack starts, and the footprint of the
+  // Nano R4's Qwiic socket. The R4's extra control point is derived from these, so the point and
+  // the drawn connector stay together.
+  public static Size END_PART_OFFSET_Y = new Size(1.5d, SizeUnit.mm);
+  public static Size QWIIC_WIDTH = new Size(6.5d, SizeUnit.mm);
+  public static Size QWIIC_LENGTH = new Size(4.5d, SizeUnit.mm);
+
   public static final int PINS_PER_ROW = 15;
 
+  // Ordered by label so the Version drop-down reads alphabetically. XStream serializes enum
+  // constants by name, so the order here is free to change without affecting existing .diy files.
   public enum NanoVersion {
     CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
-    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
-    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
     NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
     NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
-    NANO_RP2040_CONNECT("Nano RP2040 Connect", "RP2040 CONNECT", "RP2040", "NINA-W102"),
-    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106");
+    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
+    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
+    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
+    NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
+    NANO_RP2040_CONNECT("Nano RP2040 Connect", "RP2040 CONNECT", "RP2040", "NINA-W102");
 
     private final String label;
     private final String silkLabel;
@@ -158,9 +171,22 @@ public class ArduinoNano extends AbstractMakerBoard {
   // the other boards repeat RESET.
   public static final String[] PIN_NAMES_RP2040 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
       // Right row (15..29, top to bottom)
       "VIN", "GND2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
+  };
+
+  // Nano R4 (ABX00142): the Renesas RA4M1 board. Same PWM set as the classic, but D4 / D5 double as
+  // the CAN pins, A1-A3 reach the on-chip OPAMP, A0 is the DAC, and BOOT replaces the second RESET.
+  public static final String[] PIN_NAMES_R4 = new String[] {
+      // Left row (0..14, top to bottom)
+      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4 (CAN TX)", "D5 (~, CAN RX)", "D6 (~)",
+      "D7", "D8", "D9 (~)", "D10 (~, CS)", "D11 (~, MOSI)", "D12 (MISO)",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND2", "BOOT", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3 (OPAMP OUT)",
+      "A2 (OPAMP -)", "A1 (OPAMP +)", "A0 (DAC)", "AREF", "3.3V", "D13 (SCK)",
+      // Qwiic socket (30), a single point at the centre of the connector so a wire can land on it
+      "QWIIC"
   };
 
   // Nano ESP32 (ABX00083): PWM on every digital and analog pin, and the pins the other boards use
@@ -213,6 +239,8 @@ public class ArduinoNano extends AbstractMakerBoard {
         return PIN_NAMES_RP2040;
       case NANO_ESP32:
         return PIN_NAMES_ESP32;
+      case NANO_R4:
+        return PIN_NAMES_R4;
       default:
         return PIN_NAMES;
     }
@@ -223,6 +251,7 @@ public class ArduinoNano extends AbstractMakerBoard {
       case CLASSIC:
         return UsbPortType.MINI;
       case NANO_ESP32:
+      case NANO_R4:
         return UsbPortType.TYPE_C;
       default:
         return UsbPortType.MICRO;
@@ -242,11 +271,19 @@ public class ArduinoNano extends AbstractMakerBoard {
   }
 
   /**
-   * True for the boards whose end module is a shielded can. The Every's part there is a bare QFN
-   * USB bridge, so it is drawn as a chip instead.
+   * Number of control points that are actual header pins. The Nano R4's last point is the centre
+   * of its Qwiic socket, which takes a wire but is not a pin to be populated with a header.
    */
-  private boolean hasShieldedModule() {
-    return getVersion() != NanoVersion.CLASSIC && getVersion() != NanoVersion.EVERY;
+  private int getHeaderPinCount() {
+    return getVersion() == NanoVersion.NANO_R4 ? controlPoints.length - 1 : controlPoints.length;
+  }
+
+  /**
+   * True for the boards carrying their MCU as a package rotated 45 degrees, the way the classic
+   * Nano mounts its ATmega328P and the Every its ATmega4809.
+   */
+  private boolean isChipRotated() {
+    return getVersion() == NanoVersion.CLASSIC || getVersion() == NanoVersion.EVERY;
   }
 
   @EditableProperty(name = "Headers")
@@ -272,7 +309,7 @@ public class ArduinoNano extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels(); // 20px (0.10")
-    double rowSpacing = new Size(0.60d, SizeUnit.in).convertToPixels(); // 120px (0.60")
+    double rowSpacing = ROW_SPACING.convertToPixels(); // 120px (0.60")
 
     double[][] relativeOffsets = new double[getPinNames().length][2];
 
@@ -287,8 +324,14 @@ public class ArduinoNano extends AbstractMakerBoard {
       relativeOffsets[15 + i][1] = i * spacing;
     }
     // Only the classic Nano populates the 2x3 ICSP block; on every later board that end of the
-    // PCB carries the radio module or USB bridge instead.
+    // PCB carries the radio module, USB bridge or Qwiic socket instead.
     if (getVersion() != NanoVersion.CLASSIC) {
+      if (getVersion() == NanoVersion.NANO_R4) {
+        // Centre of the Qwiic socket, matching where draw() places it
+        relativeOffsets[30][0] = rowSpacing / 2.0;
+        relativeOffsets[30][1] = -BOARD_MARGIN_Y.convertToPixels() + END_PART_OFFSET_Y.convertToPixels()
+            + QWIIC_LENGTH.convertToPixels() / 2.0;
+      }
       rotatePoints(firstPoint, relativeOffsets);
       return;
     }
@@ -413,8 +456,9 @@ public class ArduinoNano extends AbstractMakerBoard {
       double chipCenterX = boardX + boardW / 2.0;
       double chipCenterY = boardY + new Size(1.06d, SizeUnit.in).convertToPixels();
 
-      if (getVersion() == NanoVersion.CLASSIC) {
-        // The ATmega328P TQFP is mounted at 45 degrees on the classic Nano
+      if (isChipRotated()) {
+        // The ATmega328P on the classic Nano and the ATmega4809 on the Every are both mounted at
+        // 45 degrees
         AffineTransform oldChipTx = g2d.getTransform();
         g2d.translate(chipCenterX, chipCenterY);
         g2d.rotate(Math.PI / 4.0);
@@ -445,16 +489,37 @@ public class ArduinoNano extends AbstractMakerBoard {
       // The end of the board opposite the USB jack: the classic Nano's ICSP header, and on every
       // later board the part that identifies it at a glance
       if (getVersion().getModuleLabel() != null) {
-        double moduleY = boardY + new Size(1.5d, SizeUnit.mm).convertToPixels();
-        if (hasShieldedModule()) {
-          double moduleW = new Size(10.0d, SizeUnit.mm).convertToPixels();
-          double moduleH = new Size(11.0d, SizeUnit.mm).convertToPixels();
-          drawMetalConnector(g2d, boardX + (boardW - moduleW) / 2.0, moduleY, moduleW, moduleH,
-              getVersion().getModuleLabel());
-        } else {
-          double bridgeSize = new Size(5.0d, SizeUnit.mm).convertToPixels();
-          drawChip(g2d, boardX + (boardW - bridgeSize) / 2.0, moduleY, bridgeSize, bridgeSize,
-              getVersion().getModuleLabel());
+        double moduleY = boardY + END_PART_OFFSET_Y.convertToPixels();
+        switch (getVersion()) {
+          case EVERY: {
+            // A bare QFN USB bridge rather than a shielded module
+            double bridgeSize = new Size(5.0d, SizeUnit.mm).convertToPixels();
+            drawChip(g2d, boardX + (boardW - bridgeSize) / 2.0, moduleY, bridgeSize, bridgeSize,
+                getVersion().getModuleLabel());
+            break;
+          }
+          case NANO_R4: {
+            // The Qwiic I2C socket is a 4-way JST-SH in beige plastic, not a shielded module
+            double qwiicW = QWIIC_WIDTH.convertToPixels();
+            double qwiicH = QWIIC_LENGTH.convertToPixels();
+            double qwiicX = boardX + (boardW - qwiicW) / 2.0;
+            g2d.setColor(CONNECTOR_PLASTIC_COLOR);
+            g2d.fill(new Rectangle2D.Double(qwiicX, moduleY, qwiicW, qwiicH));
+            g2d.setColor(CONNECTOR_PLASTIC_BORDER);
+            g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+            g2d.draw(new Rectangle2D.Double(qwiicX, moduleY, qwiicW, qwiicH));
+
+            g2d.setFont(SILK_FONT_SMALL);
+            StringUtils.drawCenteredText(g2d, getVersion().getModuleLabel(), qwiicX + qwiicW / 2.0,
+                moduleY + qwiicH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+            break;
+          }
+          default: {
+            double moduleW = new Size(10.0d, SizeUnit.mm).convertToPixels();
+            double moduleH = new Size(11.0d, SizeUnit.mm).convertToPixels();
+            drawMetalConnector(g2d, boardX + (boardW - moduleW) / 2.0, moduleY, moduleW, moduleH,
+                getVersion().getModuleLabel());
+          }
         }
       }
 
@@ -489,9 +554,9 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     // Draw pins or solder pads
     if (headers) {
-      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, getHeaderPinCount(), false, outlineMode, drawingObserver);
     } else if (getVersion() == NanoVersion.CLASSIC) {
-      drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+      drawPcbSolderPads(g2d, 0, getHeaderPinCount(), true, outlineMode, drawingObserver);
     }
 
     g2d.setComposite(oldComposite);

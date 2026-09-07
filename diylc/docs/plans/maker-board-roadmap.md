@@ -86,9 +86,13 @@ public void setVersion(XxxVersion version) {
 }
 ```
 
-New variants must be **appended** to the enum (XStream serializes enum constants by name;
-appending is backward compatible, reordering or removing is not). Keep the default constant and
-the null-guard so existing `.diy` files deserialize unchanged.
+XStream serializes enum constants **by name** — `.diy` files contain `<orientation>_90</orientation>`
+and the like, and no custom enum converter is registered — so adding constants and reordering them
+are both backward compatible. **Removing or renaming one is not.** Ordinals are used only by the
+rotation transformers (`Orientation`, `OrientationHV`, `Orientation45`), never by a `Version` enum,
+so a version enum may be sorted for a tidy drop-down; `ArduinoNano.NanoVersion` is ordered by label
+for exactly that reason. Keep the default constant and the null-guard so existing files deserialize
+unchanged.
 
 ### 4.3 Serialization safety checklist (per changed class)
 
@@ -267,6 +271,12 @@ wrong: the PWM sets and the power pins genuinely differ.
 | NANO_33_BLE / _SENSE | D2–D13 (all) | RST2 | 5V | AREF |
 | NANO_RP2040_CONNECT | D2–D13 (all) | **REC** (BOOTSEL) | 5V | AREF |
 | NANO_ESP32 | D0–D13 and A0–A7 | **B1** | **VUSB** | **B0** |
+| NANO_R4 | D3 D5 D6 D9 D10 D11 | **BOOT** | 5V | AREF |
+
+The Nano R4 (ABX00142, Renesas RA4M1) additionally annotates D4/D5 as the CAN pins, A0 as the DAC
+and A1–A3 as the on-chip OPAMP inputs and output, and its end-of-board part is the **Qwiic**
+JST-SH socket rather than a radio module — drawn with `drawFpcConnector`, since it is a connector
+and not a shielded can.
 
 `PIN_NAMES_ESP32` additionally dual-labels with the Espressif GPIO number, e.g. `D2 (~, GPIO5)`;
 those numbers are taken from the ABX00083 pinout diagram.
