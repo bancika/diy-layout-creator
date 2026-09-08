@@ -300,25 +300,44 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    */
   protected void drawPinLabels(Graphics2D g2d, double x, double y, double[][] offsets, Color silkColor) {
     if (offsets == null || offsets.length == 0) return;
+    drawPinLabels(g2d, x, y, offsets, offsets.length / 2, silkColor);
+  }
+
+  /**
+   * Variant for boards whose two pin rows do not take up the whole control point array, such as a
+   * board that carries an ICSP block or a connector after them. Control points past the two rows
+   * are left unlabelled.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated top-left pin X coordinate (P0.getX())
+   * @param y Unrotated top-left pin Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param pinsPerRow Number of pins in each of the two rows
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int pinsPerRow, Color silkColor) {
+    if (offsets == null || offsets.length == 0) return;
     double labelOffset = PIN_LABEL_OFFSET.convertToPixels();
-    int count = offsets.length;
-    int half = count / 2;
 
     g2d.setColor(silkColor);
     g2d.setFont(PIN_FONT);
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < 2 * pinsPerRow && i < offsets.length; i++) {
       String label = getSilkPinLabel(i);
       if (label == null || label.isEmpty()) {
         continue;
       }
+      boolean leftRow = i < pinsPerRow;
       double pinX = x + offsets[i][0];
       double pinY = y + offsets[i][1];
-      double textX = (i < half) ? (pinX + labelOffset) : (pinX - labelOffset);
+      double textX = leftRow ? (pinX + labelOffset) : (pinX - labelOffset);
       double textY = pinY;
 
+      // the two rows are mirrored so that each label reads away from the pin it belongs to, the
+      // way a board prints them
       AffineTransform oldLabelTx = g2d.getTransform();
-      g2d.rotate(Math.PI / 2, textX, textY);
+      g2d.rotate(leftRow ? Math.PI / 2 : -Math.PI / 2, textX, textY);
       StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setTransform(oldLabelTx);
     }

@@ -366,6 +366,51 @@ public class ArduinoNanoTest {
   }
 
   @Test
+  public void testSilkPinLabels() {
+    Assert.assertEquals(2 * ArduinoNano.PINS_PER_ROW, ArduinoNano.SILK_NAMES.length);
+    Assert.assertEquals(2 * ArduinoNano.PINS_PER_ROW, ArduinoNano.SILK_NAMES_RP2040.length);
+    Assert.assertEquals(2 * ArduinoNano.PINS_PER_ROW, ArduinoNano.SILK_NAMES_R4.length);
+    Assert.assertEquals(2 * ArduinoNano.PINS_PER_ROW, ArduinoNano.SILK_NAMES_ESP32.length);
+
+    ArduinoNano nano = new ArduinoNano();
+
+    // the silkscreen prints what is on the board, not the node name: both grounds and both resets
+    // are printed alike and the annotations are dropped
+    Assert.assertEquals("GND1", nano.getControlPointNodeName(3));
+    Assert.assertEquals("GND2", nano.getControlPointNodeName(16));
+    Assert.assertEquals("GND", nano.getSilkPinLabel(3));
+    Assert.assertEquals("GND", nano.getSilkPinLabel(16));
+    Assert.assertEquals("RST", nano.getSilkPinLabel(2));
+    Assert.assertEquals("RST", nano.getSilkPinLabel(17));
+    Assert.assertEquals("TX1", nano.getSilkPinLabel(0));
+    Assert.assertEquals("D3", nano.getSilkPinLabel(5));
+    Assert.assertEquals("3V3", nano.getSilkPinLabel(28));
+
+    // the pad the classic repeats RESET on carries the boot mode selector on the later boards
+    ArduinoNano rp2040 = new ArduinoNano();
+    rp2040.setVersion(ArduinoNano.NanoVersion.NANO_RP2040_CONNECT);
+    Assert.assertEquals("REC", rp2040.getSilkPinLabel(17));
+
+    ArduinoNano r4 = new ArduinoNano();
+    r4.setVersion(ArduinoNano.NanoVersion.NANO_R4);
+    Assert.assertEquals("BOOT", r4.getSilkPinLabel(17));
+
+    ArduinoNano esp32 = new ArduinoNano();
+    esp32.setVersion(ArduinoNano.NanoVersion.NANO_ESP32);
+    Assert.assertEquals("B1", esp32.getSilkPinLabel(17));
+    Assert.assertEquals("B0", esp32.getSilkPinLabel(27));
+
+    for (ArduinoNano.NanoVersion version : ArduinoNano.NanoVersion.values()) {
+      ArduinoNano board = new ArduinoNano();
+      board.setVersion(version);
+      for (int i = 0; i < board.getControlPointCount(); i++) {
+        Assert.assertNotNull(version + " pin " + i + " should have a silkscreen label",
+            board.getSilkPinLabel(i));
+      }
+    }
+  }
+
+  @Test
   public void testAllVersionsDrawing() {
     java.awt.image.BufferedImage img =
         new java.awt.image.BufferedImage(600, 600, java.awt.image.BufferedImage.TYPE_INT_ARGB);

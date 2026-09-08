@@ -203,6 +203,42 @@ public class ArduinoNano extends AbstractMakerBoard {
       "B0", "3.3V", "D13 (~, SCK/GPIO48)"
   };
 
+  // What the boards print next to the pads, which is shorter than the node name: the two grounds
+  // and the two resets are printed alike, the supply is "3V3", and the function annotations the
+  // node names carry are not on the silkscreen at all. The classic Nano's ICSP block and the R4's
+  // Qwiic socket are printed nowhere, so these arrays cover the two pin rows only.
+  public static final String[] SILK_NAMES = new String[] {
+      // Left row (0..14, top to bottom)
+      "TX1", "RX0", "RST", "GND", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND", "RST", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3V3", "D13"
+  };
+
+  // The RP2040 Connect puts the BOOTSEL pad where the other boards repeat RESET
+  public static final String[] SILK_NAMES_RP2040 = new String[] {
+      // Left row (0..14, top to bottom)
+      "TX1", "RX0", "RST", "GND", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND", "REC", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3V3", "D13"
+  };
+
+  // The R4 uses that same pad for boot mode selection
+  public static final String[] SILK_NAMES_R4 = new String[] {
+      // Left row (0..14, top to bottom)
+      "TX1", "RX0", "RST", "GND", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND", "BOOT", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3V3", "D13"
+  };
+
+  // The Nano ESP32 has the B1 / B0 boot-mode pads where the others carry the second RESET and
+  // AREF, and its 5V pad is fed straight from the USB bus
+  public static final String[] SILK_NAMES_ESP32 = new String[] {
+      // Left row (0..14, top to bottom)
+      "TX1", "RX0", "RST", "GND", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12",
+      // Right row (15..29, top to bottom)
+      "VIN", "GND", "B1", "VUSB", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "B0", "3V3", "D13"
+  };
+
   protected NanoVersion version = NanoVersion.CLASSIC;
   protected boolean headers = false;
 
@@ -244,6 +280,28 @@ public class ArduinoNano extends AbstractMakerBoard {
       default:
         return PIN_NAMES;
     }
+  }
+
+  private String[] getSilkNames() {
+    switch (getVersion()) {
+      case NANO_RP2040_CONNECT:
+        return SILK_NAMES_RP2040;
+      case NANO_ESP32:
+        return SILK_NAMES_ESP32;
+      case NANO_R4:
+        return SILK_NAMES_R4;
+      default:
+        return SILK_NAMES;
+    }
+  }
+
+  @Override
+  protected String getSilkPinLabel(int index) {
+    String[] silkNames = getSilkNames();
+    if (index >= 0 && index < silkNames.length) {
+      return silkNames[index];
+    }
+    return super.getSilkPinLabel(index);
   }
 
   private UsbPortType getUsbPortType() {
@@ -305,9 +363,7 @@ public class ArduinoNano extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels(); // 20px (0.10")
     double rowSpacing = ROW_SPACING.convertToPixels(); // 120px (0.60")
 
@@ -332,8 +388,7 @@ public class ArduinoNano extends AbstractMakerBoard {
         relativeOffsets[30][1] = -BOARD_MARGIN_Y.convertToPixels() + END_PART_OFFSET_Y.convertToPixels()
             + QWIIC_LENGTH.convertToPixels() / 2.0;
       }
-      rotatePoints(firstPoint, relativeOffsets);
-      return;
+      return relativeOffsets;
     }
 
     // ICSP header (2x3 pins, 30..35) flush with top edge:
@@ -359,7 +414,12 @@ public class ArduinoNano extends AbstractMakerBoard {
     // Pin 6 (GND_ICSP at col0X, inner row)
     relativeOffsets[35] = new double[] {col0X, icspInnerY};
 
-    rotatePoints(firstPoint, relativeOffsets);
+    return relativeOffsets;
+  }
+
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -539,6 +599,9 @@ public class ArduinoNano extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, getVersion().getSilkLabel(), boardX + boardW / 2.0,
           boardY + new Size(0.50d, SizeUnit.in).convertToPixels() + new Size(1.0d, SizeUnit.mm).convertToPixels(),
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Pad names, printed between the two rows the way they are on the board
+      drawPinLabels(g2d, x, y, getRelativeOffsets(), PINS_PER_ROW, SILK_COLOR);
     }
 
     // Castellated pads bite into the board edge, so they are drawn while the board rotation is
