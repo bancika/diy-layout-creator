@@ -47,11 +47,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Micro Servo (SG90 / 9g)", category = "Robotics",
-    author = "Branislav Stojkovic", description = "SG90 9g Micro Servo Motor with 3-Pin Lead Connector",
-    instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Micro Servo (SG90 / 9g)", category = "Robotics",
+//     author = "Branislav Stojkovic", description = "SG90 9g Micro Servo Motor with 3-Pin Lead Connector",
+//     instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class MicroServoSG90 extends AbstractMotor {
 
   private static final long serialVersionUID = 1L;

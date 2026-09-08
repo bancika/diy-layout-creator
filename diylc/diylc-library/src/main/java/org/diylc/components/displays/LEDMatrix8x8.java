@@ -49,11 +49,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "8x8 LED Matrix (MAX7219)", category = "Displays & Outputs",
-    author = "Branislav Stojkovic", description = "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
-    instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "8x8 LED Matrix (MAX7219)", category = "Displays & Outputs",
+//     author = "Branislav Stojkovic", description = "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
+//     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class LEDMatrix8x8 extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

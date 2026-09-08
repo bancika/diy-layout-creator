@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Real-Time Clock (DS3231)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "DS3231 High-Precision I2C Real-Time Clock Module with Battery Backup",
-    instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Real-Time Clock (DS3231)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "DS3231 High-Precision I2C Real-Time Clock Module with Battery Backup",
+//     instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class RTCModule extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

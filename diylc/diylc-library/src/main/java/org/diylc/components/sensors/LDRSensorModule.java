@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "LDR / Photoresistor Module", category = "Sensors",
-    author = "Branislav Stojkovic", description = "Light Dependent Resistor / Photoresistor Sensor Module with Digital/Analog Output",
-    instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "LDR / Photoresistor Module", category = "Sensors",
+//     author = "Branislav Stojkovic", description = "Light Dependent Resistor / Photoresistor Sensor Module with Digital/Analog Output",
+//     instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class LDRSensorModule extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

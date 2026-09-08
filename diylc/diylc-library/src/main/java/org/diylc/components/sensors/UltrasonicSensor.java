@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Ultrasonic Sensor (HC-SR04)", category = "Sensors",
-    author = "Branislav Stojkovic", description = "HC-SR04 Ultrasonic Distance Sensor Module",
-    instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Ultrasonic Sensor (HC-SR04)", category = "Sensors",
+//     author = "Branislav Stojkovic", description = "HC-SR04 Ultrasonic Distance Sensor Module",
+//     instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class UltrasonicSensor extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

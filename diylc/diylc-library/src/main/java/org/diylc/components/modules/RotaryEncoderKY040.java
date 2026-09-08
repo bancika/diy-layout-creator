@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Rotary Encoder (KY-040)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "KY-040 Incremental Rotary Encoder Module with Push Button",
-    instanceNamePrefix = "ENC", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Rotary Encoder (KY-040)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "KY-040 Incremental Rotary Encoder Module with Push Button",
+//     instanceNamePrefix = "ENC", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class RotaryEncoderKY040 extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

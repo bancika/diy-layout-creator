@@ -46,11 +46,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "2.4GHz RF Transceiver (NRF24L01+)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "NRF24L01+ 2.4GHz Wireless SPI Transceiver Module",
-    instanceNamePrefix = "RF", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "2.4GHz RF Transceiver (NRF24L01+)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "NRF24L01+ 2.4GHz Wireless SPI Transceiver Module",
+//     instanceNamePrefix = "RF", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class NRF24L01Transceiver extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "RFID Reader (RC522)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "MFRC522 13.56MHz RFID Reader/Writer SPI Module",
-    instanceNamePrefix = "RFID", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "RFID Reader (RC522)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "MFRC522 13.56MHz RFID Reader/Writer SPI Module",
+//     instanceNamePrefix = "RFID", zOrder = IDIYComponent.BOARD,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class RFIDRC522 extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

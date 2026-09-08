@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Bluetooth Module (HC-05 / HC-06)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "HC-05 / HC-06 Serial Bluetooth SPP Module Breakout",
-    instanceNamePrefix = "BT", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Bluetooth Module (HC-05 / HC-06)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "HC-05 / HC-06 Serial Bluetooth SPP Module Breakout",
+//     instanceNamePrefix = "BT", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class HC05Bluetooth extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

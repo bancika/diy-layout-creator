@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Temp/Pressure/Humidity Sensor (BME280)", category = "Sensors",
-    author = "Branislav Stojkovic", description = "BME280 / BMP280 Temperature, Humidity, and Pressure Sensor (I2C/SPI)",
-    instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Temp/Pressure/Humidity Sensor (BME280)", category = "Sensors",
+//     author = "Branislav Stojkovic", description = "BME280 / BMP280 Temperature, Humidity, and Pressure Sensor (I2C/SPI)",
+//     instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class BME280Sensor extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

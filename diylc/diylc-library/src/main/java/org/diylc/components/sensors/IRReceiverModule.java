@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "IR Receiver Module (KY-022)", category = "Sensors",
-    author = "Branislav Stojkovic", description = "38kHz Infrared Receiver Module (VS1838B) for remote control",
-    instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "IR Receiver Module (KY-022)", category = "Sensors",
+//     author = "Branislav Stojkovic", description = "38kHz Infrared Receiver Module (VS1838B) for remote control",
+//     instanceNamePrefix = "SEN", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class IRReceiverModule extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

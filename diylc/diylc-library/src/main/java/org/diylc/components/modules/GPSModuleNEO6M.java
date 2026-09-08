@@ -50,11 +50,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "GPS Module (NEO-6M)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "u-blox NEO-6M GPS Module with ceramic patch antenna",
-    instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "GPS Module (NEO-6M)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "u-blox NEO-6M GPS Module with ceramic patch antenna",
+//     instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class GPSModuleNEO6M extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

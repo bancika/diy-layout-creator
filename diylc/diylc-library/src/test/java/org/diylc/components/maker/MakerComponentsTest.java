@@ -28,6 +28,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.diylc.common.ComponentType;
 import org.diylc.common.DefaultComponentTransformer;
@@ -58,7 +60,7 @@ public class MakerComponentsTest {
     }
   }
 
-  private final List<Class<? extends IDIYComponent<?>>> allMakerComponentClasses = Arrays.<Class<? extends IDIYComponent<?>>>asList(
+  private final List<Class<? extends IDIYComponent<?>>> releasedMakerComponentClasses = Arrays.<Class<? extends IDIYComponent<?>>>asList(
       // Controllers
       ArduinoUno.class,
       ArduinoNano.class,
@@ -70,6 +72,13 @@ public class MakerComponentsTest {
       ESP8266NodeMCU.class,
       WemosD1Mini.class,
 
+      // Electro-Mechanical
+      BatteryHolder18650.class
+  );
+
+  // Staged for a later release: their @ComponentDescriptor annotations are commented out, so
+  // ComponentProcessor does not discover them and they have no ComponentType yet.
+  private final List<Class<? extends IDIYComponent<?>>> unreleasedMakerComponentClasses = Arrays.<Class<? extends IDIYComponent<?>>>asList(
       // Sensors
       UltrasonicSensor.class,
       PIRMotionSensor.class,
@@ -113,9 +122,6 @@ public class MakerComponentsTest {
       GPSModuleNEO6M.class,
       INA219CurrentSensor.class,
 
-      // Electro-Mechanical
-      BatteryHolder18650.class,
-
       // Robotics
       MicroServoSG90.class,
       NEMA17Stepper.class,
@@ -123,17 +129,17 @@ public class MakerComponentsTest {
       DCHobbyMotor.class
   );
 
+  private final List<Class<? extends IDIYComponent<?>>> allMakerComponentClasses =
+      Stream.concat(releasedMakerComponentClasses.stream(), unreleasedMakerComponentClasses.stream())
+          .collect(Collectors.toList());
+
   @Test
   public void testAllComponentDiscoveryAndCategories() {
     Map<String, List<ComponentType>> categories = ComponentProcessor.getInstance().getComponentTypes();
 
     Assert.assertTrue("Categories should contain 'Controllers'", categories.containsKey("Controllers"));
-    Assert.assertTrue("Categories should contain 'Sensors'", categories.containsKey("Sensors"));
-    Assert.assertTrue("Categories should contain 'Displays & Outputs'", categories.containsKey("Displays & Outputs"));
-    Assert.assertTrue("Categories should contain 'Modules & Breakouts'", categories.containsKey("Modules & Breakouts"));
-    Assert.assertTrue("Categories should contain 'Robotics'", categories.containsKey("Robotics"));
 
-    for (Class<? extends IDIYComponent<?>> clazz : allMakerComponentClasses) {
+    for (Class<? extends IDIYComponent<?>> clazz : releasedMakerComponentClasses) {
       ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom(clazz);
       Assert.assertNotNull("Component type should be extracted for " + clazz.getSimpleName(), type);
       Assert.assertNotNull("Icon should be non-null for " + clazz.getSimpleName(), type.getIcon());

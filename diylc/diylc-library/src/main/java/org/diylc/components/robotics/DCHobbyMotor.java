@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "DC Motor (130-Size / 3V-6V)", category = "Robotics",
-    author = "Branislav Stojkovic", description = "Standard 130-Size 3V-6V Toy and Hobby DC Motor with Solder Terminals",
-    instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "DC Motor (130-Size / 3V-6V)", category = "Robotics",
+//     author = "Branislav Stojkovic", description = "Standard 130-Size 3V-6V Toy and Hobby DC Motor with Solder Terminals",
+//     instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class DCHobbyMotor extends AbstractMotor {
 
   private static final long serialVersionUID = 1L;

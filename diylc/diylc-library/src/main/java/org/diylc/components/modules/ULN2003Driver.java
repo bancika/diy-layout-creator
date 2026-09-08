@@ -49,11 +49,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Stepper Driver Board (ULN2003)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "ULN2003 Stepper Motor Driver Board with 4 Status LEDs",
-    instanceNamePrefix = "MOD", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Stepper Driver Board (ULN2003)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "ULN2003 Stepper Motor Driver Board with 4 Status LEDs",
+//     instanceNamePrefix = "MOD", zOrder = IDIYComponent.BOARD,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class ULN2003Driver extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

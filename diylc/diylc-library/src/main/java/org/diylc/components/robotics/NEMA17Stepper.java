@@ -47,11 +47,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "NEMA 17 Stepper Motor", category = "Robotics",
-    author = "Branislav Stojkovic", description = "NEMA 17 42mm Hybrid Bipolar Stepper Motor with 4-Pin Connector",
-    instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "NEMA 17 Stepper Motor", category = "Robotics",
+//     author = "Branislav Stojkovic", description = "NEMA 17 42mm Hybrid Bipolar Stepper Motor with 4-Pin Connector",
+//     instanceNamePrefix = "MTR", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class NEMA17Stepper extends AbstractMotor {
 
   private static final long serialVersionUID = 1L;

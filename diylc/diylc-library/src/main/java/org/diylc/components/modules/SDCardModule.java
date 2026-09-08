@@ -47,11 +47,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "SD Card Reader Module", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "MicroSD Card SPI Interface Module with Level Shifter",
-    instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "SD Card Reader Module", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "MicroSD Card SPI Interface Module with Level Shifter",
+//     instanceNamePrefix = "MOD", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class SDCardModule extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

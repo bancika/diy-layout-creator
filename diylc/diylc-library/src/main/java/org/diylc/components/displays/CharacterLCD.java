@@ -49,11 +49,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Character LCD (16x2 / 20x4)", category = "Displays & Outputs",
-    author = "Branislav Stojkovic", description = "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
-    instanceNamePrefix = "LCD", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Character LCD (16x2 / 20x4)", category = "Displays & Outputs",
+//     author = "Branislav Stojkovic", description = "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
+//     instanceNamePrefix = "LCD", zOrder = IDIYComponent.BOARD,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class CharacterLCD extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

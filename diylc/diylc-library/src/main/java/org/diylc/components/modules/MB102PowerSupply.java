@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Breadboard Power Supply (MB102)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "MB102 Dual 3.3V/5V Breadboard Power Supply Module",
-    instanceNamePrefix = "PWR", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Breadboard Power Supply (MB102)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "MB102 Dual 3.3V/5V Breadboard Power Supply Module",
+//     instanceNamePrefix = "PWR", zOrder = IDIYComponent.BOARD,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class MB102PowerSupply extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

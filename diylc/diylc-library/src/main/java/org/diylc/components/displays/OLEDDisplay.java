@@ -49,11 +49,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "0.96\" OLED Display (SSD1306)", category = "Displays & Outputs",
-    author = "Branislav Stojkovic", description = "0.96\" Monochrome 128x64 OLED Display Module (I2C / SPI)",
-    instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "0.96\" OLED Display (SSD1306)", category = "Displays & Outputs",
+//     author = "Branislav Stojkovic", description = "0.96\" Monochrome 128x64 OLED Display Module (I2C / SPI)",
+//     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class OLEDDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;

@@ -48,11 +48,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Motor Driver (L298N)", category = "Modules & Breakouts",
-    author = "Branislav Stojkovic", description = "L298N Dual H-Bridge DC and Stepper Motor Driver Module with Heatsink",
-    instanceNamePrefix = "MOD", zOrder = IDIYComponent.BOARD,
-    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-    enableCache = true)
+// @ComponentDescriptor(name = "Motor Driver (L298N)", category = "Modules & Breakouts",
+//     author = "Branislav Stojkovic", description = "L298N Dual H-Bridge DC and Stepper Motor Driver Module with Heatsink",
+//     instanceNamePrefix = "MOD", zOrder = IDIYComponent.BOARD,
+//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+//     enableCache = true)
 public class L298NMotorDriver extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
