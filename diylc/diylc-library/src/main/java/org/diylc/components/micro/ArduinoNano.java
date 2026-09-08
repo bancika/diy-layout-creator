@@ -88,7 +88,9 @@ public class ArduinoNano extends AbstractMakerBoard {
     NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
     EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
     NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
-    NANO_RP2040_CONNECT("Nano RP2040 Connect", "RP2040 CONNECT", "RP2040", "NINA-W102");
+    // Silkscreened "CONNECT" rather than the full name, which does not fit between the two rows of
+    // pad names; the RP2040 package right below it carries the part number
+    NANO_RP2040_CONNECT("Nano RP2040 Connect", "CONNECT", "RP2040", "NINA-W102");
 
     private final String label;
     private final String silkLabel;
