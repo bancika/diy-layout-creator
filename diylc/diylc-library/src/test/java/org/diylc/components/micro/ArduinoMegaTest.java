@@ -140,6 +140,33 @@ public class ArduinoMegaTest {
   }
 
   @Test
+  public void testSilkPinLabels() {
+    Assert.assertEquals(ArduinoMega.PIN_NAMES.length, ArduinoMega.SILK_NAMES.length);
+
+    ArduinoMega mega = new ArduinoMega();
+
+    // the silkscreen carries what is printed on the board, which is not the node name: every
+    // ground says "GND" and the reserved first pin says nothing at all
+    Assert.assertEquals("GND1", mega.getControlPointNodeName(5));
+    Assert.assertEquals("GND2", mega.getControlPointNodeName(6));
+    Assert.assertEquals("GND", mega.getSilkPinLabel(5));
+    Assert.assertEquals("GND", mega.getSilkPinLabel(6));
+    Assert.assertEquals("", mega.getSilkPinLabel(0));
+    Assert.assertEquals("3V3", mega.getSilkPinLabel(3));
+    Assert.assertEquals("A15", mega.getSilkPinLabel(23));
+    Assert.assertEquals("RX0", mega.getSilkPinLabel(24));
+    Assert.assertEquals("TX0", mega.getSilkPinLabel(25));
+    Assert.assertEquals("~13", mega.getSilkPinLabel(37));
+    Assert.assertEquals("SCL", mega.getSilkPinLabel(41));
+    Assert.assertEquals("14", mega.getSilkPinLabel(42));
+    Assert.assertEquals("53", mega.getSilkPinLabel(81));
+
+    for (int i = 0; i < mega.getControlPointCount(); i++) {
+      Assert.assertNotNull("Pin " + i + " should have a silkscreen label", mega.getSilkPinLabel(i));
+    }
+  }
+
+  @Test
   public void testBodyShape() {
     ArduinoMega mega = new ArduinoMega();
 

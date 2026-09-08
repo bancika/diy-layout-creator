@@ -87,6 +87,34 @@ public class ArduinoMega extends AbstractMakerBoard {
       "MISO_16U2", "5V_16U2", "SCK_16U2", "MOSI_16U2", "RST_16U2", "GND_16U2"
   };
 
+  // What the board prints next to the headers, which is not the node name: every ground says
+  // "GND", the supply says "3V3", the digital pins carry bare numbers with a "~" on the PWM-capable
+  // ones, and the reserved first power pin is left blank. The ICSP pins are printed nowhere on the
+  // board, so their entries only keep this array parallel to PIN_NAMES.
+  public static final String[] SILK_NAMES = new String[] {
+      // Power Header (0..7)
+      "", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN",
+      // Analog Low A0..A7 (8..15)
+      "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7",
+      // Analog High A8..A15 (16..23)
+      "A8", "A9", "A10", "A11", "A12", "A13", "A14", "A15",
+      // Digital Low D0..D7 (24..31)
+      "RX0", "TX0", "~2", "~3", "~4", "~5", "~6", "~7",
+      // Digital High D8..D13, GND, AREF, SDA, SCL (32..41)
+      "~8", "~9", "~10", "~11", "~12", "~13", "GND", "AREF", "SDA", "SCL",
+      // Communication Header D14..D21 (42..49)
+      "14", "15", "16", "17", "18", "19", "20", "21",
+      // Double Digital 2x18 Header (50..85)
+      "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33",
+      "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45",
+      "46", "47", "48", "49", "50", "51", "52", "53",
+      "GND", "GND", "5V", "5V",
+      // Main ICSP Header (86..91)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND",
+      // Top-Left ICSP Header (92..97)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND"
+  };
+
   public ArduinoMega() {
     super();
     this.bodyColor = ARDUINO_TEAL;
@@ -102,8 +130,14 @@ public class ArduinoMega extends AbstractMakerBoard {
   }
 
   @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  protected String getSilkPinLabel(int index) {
+    if (index >= 0 && index < SILK_NAMES.length) {
+      return SILK_NAMES[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels(); // 20px for 0.1" (100 mils)
     double gap02 = new Size(0.2d, SizeUnit.in).convertToPixels(); // 40px for 0.2"
 
@@ -171,7 +205,9 @@ public class ArduinoMega extends AbstractMakerBoard {
 
     // Top-Left ICSP header (2x3 pins, 92..97) for ATmega16U2 near USB jack at (820, 1870) mils
     double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px: (820 - 1100) * 0.2
-    double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px: (100 - 1870) * 0.2
+    // far enough below the digital header for its rotated pin names to fit above the connector
+    double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels()
+        + new Size(3.5d, SizeUnit.mm).convertToPixels();
     relativeOffsets[92] = new double[] {icsp2X, icsp2Y};
     relativeOffsets[93] = new double[] {icsp2X, icsp2Y + spacing};
     relativeOffsets[94] = new double[] {icsp2X - spacing, icsp2Y};
@@ -179,7 +215,12 @@ public class ArduinoMega extends AbstractMakerBoard {
     relativeOffsets[96] = new double[] {icsp2X - 2 * spacing, icsp2Y};
     relativeOffsets[97] = new double[] {icsp2X - 2 * spacing, icsp2Y + spacing};
 
-    rotatePoints(firstPoint, relativeOffsets);
+    return relativeOffsets;
+  }
+
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -306,16 +347,23 @@ public class ArduinoMega extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "MEGA 2560", boardX + new Size(1.44d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.825d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Header silkscreen labels
+      // Header silkscreen labels; the captions sit beyond the rotated pin names, which take up the
+      // space right next to the headers themselves
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "POWER", boardX + new Size(1.45d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(1.75d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + new Size(3.15d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(1.75d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + new Size(1.85d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(0.34d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "COMMUNICATION", boardX + new Size(3.05d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(0.34d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Header pin names, printed above the power / analog row and below the digital row the way
+      // they are silkscreened on the board; the 2x18 block at the right edge is not a row
+      double[][] relativeOffsets = getRelativeOffsets();
+      drawRowPinLabels(g2d, x, y, relativeOffsets, 0, 24, false, SILK_COLOR);
+      drawRowPinLabels(g2d, x, y, relativeOffsets, 24, 26, true, SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);
