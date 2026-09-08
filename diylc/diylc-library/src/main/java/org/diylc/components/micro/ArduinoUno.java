@@ -107,6 +107,26 @@ public class ArduinoUno extends AbstractMakerBoard {
       "MISO_16U2", "5V_16U2", "SCK_16U2", "MOSI_16U2", "RST_16U2", "GND_16U2"
   };
 
+  // What the board actually prints next to the headers, which is not the node name: both grounds
+  // of the power header are silkscreened "GND", the supply is "3V3" rather than "3.3V", the digital
+  // pins carry bare numbers with a "~" on the PWM-capable ones, and the reserved first power pin is
+  // left blank. The ICSP pins are printed nowhere on the board, so their entries only keep this
+  // array parallel to PIN_NAMES.
+  public static final String[] SILK_NAMES = new String[] {
+      // Power Header (0..7)
+      "", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "RX0", "TX1", "2", "~3", "4", "~5", "~6", "7",
+      // Digital High (22..31)
+      "8", "~9", "~10", "~11", "12", "13", "GND", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND",
+      // Top-Left ICSP Header (38..43)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND"
+  };
+
   // The Leonardo has no ATmega16U2 - the 32U4 speaks USB natively - so it carries only the main
   // ICSP header, and I2C is shared with D2 / D3 rather than living solely on A4 / A5.
   public static final String[] PIN_NAMES_LEONARDO = new String[] {
@@ -120,6 +140,19 @@ public class ArduinoUno extends AbstractMakerBoard {
       "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, ATmega32U4)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
+  };
+
+  public static final String[] SILK_NAMES_LEONARDO = new String[] {
+      // Power Header (0..7)
+      "", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "RX0", "TX1", "2", "~3", "4", "~5", "~6", "7",
+      // Digital High (22..31)
+      "8", "~9", "~10", "~11", "12", "13", "GND", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND"
   };
 
   // The Minima has no USB bridge chip either - the RA4M1 has native USB - so it drops the second
@@ -138,6 +171,40 @@ public class ArduinoUno extends AbstractMakerBoard {
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
       // SWD Connector (38)
       "SWD"
+  };
+
+  // Both R4 boards use the power header pin the R3 leaves reserved to select boot mode, and print
+  // "BOOT" next to it
+  public static final String[] SILK_NAMES_R4_MINIMA = new String[] {
+      // Power Header (0..7)
+      "BOOT", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "RX0", "TX1", "2", "~3", "4", "~5", "~6", "7",
+      // Digital High (22..31)
+      "8", "~9", "~10", "~11", "12", "13", "GND", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND",
+      // SWD Connector (38)
+      "SWD"
+  };
+
+  public static final String[] SILK_NAMES_R4_WIFI = new String[] {
+      // Power Header (0..7)
+      "BOOT", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN",
+      // Analog Header (8..13)
+      "A0", "A1", "A2", "A3", "A4", "A5",
+      // Digital Low (14..21)
+      "RX0", "TX1", "2", "~3", "4", "~5", "~6", "7",
+      // Digital High (22..31)
+      "8", "~9", "~10", "~11", "12", "13", "GND", "AREF", "SDA", "SCL",
+      // Main ICSP Header (32..37)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND",
+      // Top-Left ICSP Header (38..43)
+      "MISO", "5V", "SCK", "MOSI", "RST", "GND",
+      // RTC Header (44..46)
+      "OFF", "GND", "VRTC"
   };
 
   public ArduinoUno() {
@@ -192,6 +259,28 @@ public class ArduinoUno extends AbstractMakerBoard {
     }
   }
 
+  private String[] getSilkNames() {
+    switch (getVersion()) {
+      case LEONARDO:
+        return SILK_NAMES_LEONARDO;
+      case R4_MINIMA:
+        return SILK_NAMES_R4_MINIMA;
+      case R4_WIFI:
+        return SILK_NAMES_R4_WIFI;
+      default:
+        return SILK_NAMES;
+    }
+  }
+
+  @Override
+  protected String getSilkPinLabel(int index) {
+    String[] silkNames = getSilkNames();
+    if (index >= 0 && index < silkNames.length) {
+      return silkNames[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
     // The WiFi shares the R3 pin table except for the reserved power header pin, which both R4
@@ -211,9 +300,7 @@ public class ArduinoUno extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels(); // 20px for 0.1" (100 mils)
     double gap02 = new Size(0.2d, SizeUnit.in).convertToPixels(); // 40px for 0.2"
 
@@ -264,10 +351,9 @@ public class ArduinoUno extends AbstractMakerBoard {
     // Top-Left ICSP header (2x3 pins, 38..43) for ATmega16U2
     if (hasBridgeIcspHeader()) {
       double icsp2X = -new Size(0.28d, SizeUnit.in).convertToPixels(); // -56.0 px
-      double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels(); // -354.0 px
-      if (isR4()) {
-        icsp2Y += new Size(3.5d, SizeUnit.mm).convertToPixels();
-      }
+      // far enough below the digital header for its rotated pin names to fit above the connector
+      double icsp2Y = -new Size(1.77d, SizeUnit.in).convertToPixels()
+          + new Size(3.5d, SizeUnit.mm).convertToPixels();
       relativeOffsets[38] = new double[] {icsp2X, icsp2Y};
       relativeOffsets[39] = new double[] {icsp2X, icsp2Y + spacing};
       relativeOffsets[40] = new double[] {icsp2X - spacing, icsp2Y};
@@ -292,7 +378,12 @@ public class ArduinoUno extends AbstractMakerBoard {
               - new Size(2.0d, SizeUnit.in).convertToPixels()};
     }
 
-    rotatePoints(firstPoint, relativeOffsets);
+    return relativeOffsets;
+  }
+
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -495,18 +586,29 @@ public class ArduinoUno extends AbstractMakerBoard {
 
       // Header silkscreen labels
       g2d.setFont(SILK_FONT_SMALL);
+      // the header captions sit beyond the rotated pin names, which take up the space right next to
+      // the headers themselves
       StringUtils.drawCenteredText(g2d, "POWER", boardX + new Size(1.45d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(1.75d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "ANALOG IN", boardX + new Size(2.25d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(1.85d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(1.75d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, "DIGITAL (PWM ~)", boardX + new Size(2.05d, SizeUnit.in).convertToPixels(),
-          boardY + new Size(0.275d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+          boardY + new Size(0.34d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
           
       // Text above right-most 3x2 header (ICSP / SPI)
       String icspText = isR4() ? "SPI" : "ICSP";
       double icspLabelX = boardX + new Size(2.505d, SizeUnit.in).convertToPixels() + new Size(0.05d, SizeUnit.in).convertToPixels();
       double icspLabelY = boardY + new Size(0.9d, SizeUnit.in).convertToPixels() - new Size(2.5d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, icspText, icspLabelX, icspLabelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Header pin names, printed above the power / analog row and below the digital row the way
+      // they are silkscreened on the board
+      double[][] relativeOffsets = getRelativeOffsets();
+      drawRowPinLabels(g2d, x, y, relativeOffsets, 0, 14, false, SILK_COLOR);
+      drawRowPinLabels(g2d, x, y, relativeOffsets, 14, 18, true, SILK_COLOR);
+      if (getVersion() == ArduinoUnoVersion.R4_WIFI) {
+        drawRowPinLabels(g2d, x, y, relativeOffsets, 44, 3, false, SILK_COLOR);
+      }
     }
 
     g2d.setTransform(oldTx);

@@ -171,6 +171,50 @@ public class ArduinoUnoTest {
   }
 
   @Test
+  public void testSilkPinLabels() {
+    Assert.assertEquals(ArduinoUno.PIN_NAMES.length, ArduinoUno.SILK_NAMES.length);
+    Assert.assertEquals(ArduinoUno.PIN_NAMES_LEONARDO.length,
+        ArduinoUno.SILK_NAMES_LEONARDO.length);
+    Assert.assertEquals(ArduinoUno.PIN_NAMES_R4_MINIMA.length,
+        ArduinoUno.SILK_NAMES_R4_MINIMA.length);
+    Assert.assertEquals(ArduinoUno.PIN_NAMES.length + 3, ArduinoUno.SILK_NAMES_R4_WIFI.length);
+
+    ArduinoUno uno = new ArduinoUno();
+
+    // the silkscreen carries what is printed on the board, which is not the node name: both grounds
+    // of the power header say "GND" and the reserved first pin says nothing at all
+    Assert.assertEquals("GND1", uno.getControlPointNodeName(5));
+    Assert.assertEquals("GND2", uno.getControlPointNodeName(6));
+    Assert.assertEquals("GND", uno.getSilkPinLabel(5));
+    Assert.assertEquals("GND", uno.getSilkPinLabel(6));
+    Assert.assertEquals("", uno.getSilkPinLabel(0));
+    Assert.assertEquals("3V3", uno.getSilkPinLabel(3));
+    Assert.assertEquals("A0", uno.getSilkPinLabel(8));
+    Assert.assertEquals("RX0", uno.getSilkPinLabel(14));
+    Assert.assertEquals("~3", uno.getSilkPinLabel(17));
+    Assert.assertEquals("SCL", uno.getSilkPinLabel(31));
+
+    ArduinoUno wifi = new ArduinoUno();
+    wifi.setVersion(ArduinoUno.ArduinoUnoVersion.R4_WIFI);
+    Assert.assertEquals("BOOT", wifi.getSilkPinLabel(0));
+    Assert.assertEquals("VRTC", wifi.getSilkPinLabel(46));
+
+    ArduinoUno minima = new ArduinoUno();
+    minima.setVersion(ArduinoUno.ArduinoUnoVersion.R4_MINIMA);
+    Assert.assertEquals("BOOT", minima.getSilkPinLabel(0));
+    Assert.assertEquals("SWD", minima.getSilkPinLabel(38));
+
+    for (ArduinoUno.ArduinoUnoVersion version : ArduinoUno.ArduinoUnoVersion.values()) {
+      ArduinoUno board = new ArduinoUno();
+      board.setVersion(version);
+      for (int i = 0; i < board.getControlPointCount(); i++) {
+        Assert.assertNotNull(version + " pin " + i + " should have a silkscreen label",
+            board.getSilkPinLabel(i));
+      }
+    }
+  }
+
+  @Test
   public void testAllVersionsDrawing() {
     java.awt.image.BufferedImage img =
         new java.awt.image.BufferedImage(800, 800, java.awt.image.BufferedImage.TYPE_INT_ARGB);

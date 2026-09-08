@@ -129,7 +129,11 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
   public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
   public static Size PIN_LABEL_OFFSET = new Size(1.8d, SizeUnit.mm);
+  public static Size PIN_ROW_LABEL_OFFSET = new Size(2.0d, SizeUnit.mm);
   public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
+  // labels along a row run across the board rather than down a column of pins, so they can afford
+  // a size the tightly stacked column labels cannot
+  public static Font PIN_ROW_FONT = new Font("SansSerif", Font.PLAIN, 9);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -316,6 +320,47 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       AffineTransform oldLabelTx = g2d.getTransform();
       g2d.rotate(Math.PI / 2, textX, textY);
       StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setTransform(oldLabelTx);
+    }
+  }
+
+  /**
+   * Helper to draw rotated pin names next to a horizontal row of pins, the way Arduino-style boards
+   * print their headers. Labels read top to bottom, are centered on the pin they belong to and
+   * start {@link #PIN_ROW_LABEL_OFFSET} away from it, growing away from the row.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated first control point X coordinate (P0.getX())
+   * @param y Unrotated first control point Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param startIndex Index of the first pin of the row
+   * @param count Number of pins in the row
+   * @param below True to print the labels below the row, false to print them above it
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawRowPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int startIndex, int count, boolean below, Color silkColor) {
+    if (offsets == null || offsets.length == 0) return;
+    double labelOffset = PIN_ROW_LABEL_OFFSET.convertToPixels();
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_ROW_FONT);
+
+    for (int i = startIndex; i < startIndex + count && i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      double pinX = x + offsets[i][0];
+      double pinY = y + offsets[i][1];
+
+      // the quarter turn maps the text advance direction onto -y, so a label above the row is
+      // anchored by its first character and one below the row by its last, which keeps both of
+      // them clear of the pin by the same gap
+      AffineTransform oldLabelTx = g2d.getTransform();
+      g2d.rotate(-Math.PI / 2, pinX, pinY);
+      StringUtils.drawCenteredText(g2d, label, pinX + (below ? -labelOffset : labelOffset), pinY,
+          below ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
       g2d.setTransform(oldLabelTx);
     }
   }
