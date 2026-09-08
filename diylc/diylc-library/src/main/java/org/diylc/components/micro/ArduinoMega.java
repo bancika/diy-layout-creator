@@ -108,7 +108,9 @@ public class ArduinoMega extends AbstractMakerBoard {
       "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33",
       "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45",
       "46", "47", "48", "49", "50", "51", "52", "53",
-      "GND", "GND", "5V", "5V",
+      // the block's power and ground rows are printed once for the pair, on the outer column,
+      // which is the only side with room for them next to the analog header and the mounting hole
+      "", "GND", "", "5V",
       // Main ICSP Header (86..91)
       "MISO", "5V", "SCK", "MOSI", "RST", "GND",
       // Top-Left ICSP Header (92..97)
@@ -183,16 +185,22 @@ public class ArduinoMega extends AbstractMakerBoard {
       relativeOffsets[42 + i][0] = d14X + i * spacing;
       relativeOffsets[42 + i][1] = topRowY;
     }
-    // Double digital header 2x18 at far right pins 50..85 (D22..D53, GNDx2, 5Vx2; X=3600, 3700 mils, Y=2000..300 mils)
+    // Double digital header 2x18 at far right pins 50..85 (D22..D53, GNDx2, 5Vx2; X=3600, 3700 mils,
+    // Y=2000..300 mils). The block is powered from its top row and grounded at the bottom one, so
+    // the two 5V pins sit alongside the digital header and D22..D53 fill the sixteen rows below.
     double d22InnerX = new Size(2.6d, SizeUnit.in).convertToPixels(); // 520px: (3700 - 1100) * 0.2
     double d22OuterX = new Size(2.7d, SizeUnit.in).convertToPixels(); // 540px: (3800 - 1100) * 0.2
-    for (int row = 0; row < 18; row++) {
-      double py = topRowY + row * spacing;
+    relativeOffsets[84] = new double[] {d22InnerX, topRowY};
+    relativeOffsets[85] = new double[] {d22OuterX, topRowY};
+    for (int row = 0; row < 16; row++) {
+      double py = topRowY + (row + 1) * spacing;
       relativeOffsets[50 + row * 2][0] = d22InnerX;
       relativeOffsets[50 + row * 2][1] = py;
       relativeOffsets[50 + row * 2 + 1][0] = d22OuterX;
       relativeOffsets[50 + row * 2 + 1][1] = py;
     }
+    relativeOffsets[82] = new double[] {d22InnerX, topRowY + 17 * spacing};
+    relativeOffsets[83] = new double[] {d22OuterX, topRowY + 17 * spacing};
     // Main ICSP header (2x3 pins, 86..91) for ATmega2560 at (2505, 1200) mils
     double icspX = new Size(1.405d, SizeUnit.in).convertToPixels(); // 281.0 px: (2505 - 1100) * 0.2
     double icspY = -new Size(1.1d, SizeUnit.in).convertToPixels();  // -220.0 px: (100 - 1200) * 0.2
@@ -323,11 +331,12 @@ public class ArduinoMega extends AbstractMakerBoard {
           new Size(0.4d, SizeUnit.in).convertToPixels(),
           new Size(0.4d, SizeUnit.in).convertToPixels(), "ATmega2560");
 
-      // Reset Button near USB
+      // Reset Button, which the Mega carries beside the ICSP header rather than by the USB jack
+      // the way the Uno does; it sits level with the middle row of the header
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
-      double btnX = boardX + new Size(0.235d, SizeUnit.in).convertToPixels() - btnW / 2.0;
-      double btnY = boardY + new Size(0.1d, SizeUnit.in).convertToPixels();
+      double btnX = boardX + new Size(2.72d, SizeUnit.in).convertToPixels();
+      double btnY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() - btnH / 2.0;
       drawButton(g2d, btnX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
@@ -359,11 +368,38 @@ public class ArduinoMega extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "COMMUNICATION", boardX + new Size(3.05d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.34d, SizeUnit.in).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
+      // Text below the 3x2 ICSP header rather than above it, where the Uno prints it: on the Mega
+      // that space belongs to a mounting hole. Clears the bottom edge of the MCU package as well.
+      double icspLabelX = boardX + new Size(2.505d, SizeUnit.in).convertToPixels() + new Size(0.05d, SizeUnit.in).convertToPixels();
+      double icspLabelY = boardY + new Size(1.1d, SizeUnit.in).convertToPixels() + new Size(2.5d, SizeUnit.mm).convertToPixels();
+      StringUtils.drawCenteredText(g2d, "ICSP", icspLabelX, icspLabelY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
       // Header pin names, printed above the power / analog row and below the digital row the way
       // they are silkscreened on the board; the 2x18 block at the right edge is not a row
       double[][] relativeOffsets = getRelativeOffsets();
       drawRowPinLabels(g2d, x, y, relativeOffsets, 0, 24, false, SILK_COLOR);
       drawRowPinLabels(g2d, x, y, relativeOffsets, 24, 26, true, SILK_COLOR);
+
+      // The 2x18 block prints its numbers upright rather than rotated like the header names, each
+      // on the far side of the column it belongs to
+      g2d.setColor(SILK_COLOR);
+      g2d.setFont(PIN_FONT);
+      double innerLabelOffset = PIN_LABEL_OFFSET.convertToPixels();
+      // the outer column has only the strip between it and the notched board edge to print in
+      double outerLabelOffset = new Size(1.27d, SizeUnit.mm).convertToPixels();
+      for (int i = 50; i < PIN_NAMES.length - 12; i++) {
+        String label = getSilkPinLabel(i);
+        if (label.isEmpty()) {
+          continue;
+        }
+        boolean outerColumn = (i - 50) % 2 == 1;
+        StringUtils.drawCenteredText(g2d, label,
+            outerColumn ? x + relativeOffsets[i][0] + outerLabelOffset
+                : x + relativeOffsets[i][0] - innerLabelOffset,
+            y + relativeOffsets[i][1],
+            outerColumn ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT,
+            VerticalAlignment.CENTER);
+      }
     }
 
     g2d.setTransform(oldTx);

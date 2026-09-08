@@ -140,6 +140,36 @@ public class ArduinoMegaTest {
   }
 
   @Test
+  public void testDoubleDigitalHeaderRowOrder() {
+    ArduinoMega mega = new ArduinoMega();
+    Point2D pD0 = mega.getControlPoint(24);
+
+    // The block is powered from its top row, level with the digital header, and grounded at the
+    // bottom one; D22..D53 fill the sixteen rows in between
+    Point2D p5vInner = mega.getControlPoint(84);
+    Point2D p5vOuter = mega.getControlPoint(85);
+    Assert.assertEquals(pD0.getY(), p5vInner.getY(), 0.01);
+    Assert.assertEquals(pD0.getY(), p5vOuter.getY(), 0.01);
+
+    Point2D pD22 = mega.getControlPoint(50);
+    Assert.assertEquals(20.0, pD22.getY() - p5vInner.getY(), 0.01);
+
+    Point2D pD53 = mega.getControlPoint(81);
+    Point2D pGndInner = mega.getControlPoint(82);
+    Point2D pGndOuter = mega.getControlPoint(83);
+    Assert.assertEquals(20.0, pGndInner.getY() - pD53.getY(), 0.01);
+    Assert.assertEquals(pGndInner.getY(), pGndOuter.getY(), 0.01);
+    Assert.assertEquals(340.0, pGndInner.getY() - p5vInner.getY(), 0.01);
+
+    // Even numbers run down the inner column and odd ones down the outer, power and ground
+    // included
+    Assert.assertEquals(p5vInner.getX(), pD22.getX(), 0.01);
+    Assert.assertEquals(p5vInner.getX(), pGndInner.getX(), 0.01);
+    Assert.assertEquals(p5vOuter.getX(), pGndOuter.getX(), 0.01);
+    Assert.assertEquals(20.0, p5vOuter.getX() - p5vInner.getX(), 0.01);
+  }
+
+  @Test
   public void testSilkPinLabels() {
     Assert.assertEquals(ArduinoMega.PIN_NAMES.length, ArduinoMega.SILK_NAMES.length);
 
@@ -160,6 +190,12 @@ public class ArduinoMegaTest {
     Assert.assertEquals("SCL", mega.getSilkPinLabel(41));
     Assert.assertEquals("14", mega.getSilkPinLabel(42));
     Assert.assertEquals("53", mega.getSilkPinLabel(81));
+
+    // the block's power and ground rows are printed once for the pair, on the outer column
+    Assert.assertEquals("", mega.getSilkPinLabel(82));
+    Assert.assertEquals("GND", mega.getSilkPinLabel(83));
+    Assert.assertEquals("", mega.getSilkPinLabel(84));
+    Assert.assertEquals("5V", mega.getSilkPinLabel(85));
 
     for (int i = 0; i < mega.getControlPointCount(); i++) {
       Assert.assertNotNull("Pin " + i + " should have a silkscreen label", mega.getSilkPinLabel(i));
