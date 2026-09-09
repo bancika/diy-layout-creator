@@ -37,6 +37,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardLogos;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -308,25 +310,25 @@ public class ArduinoMega extends AbstractMakerBoard {
     if (!outlineMode) {
       // Mounting holes (6 mounting holes from technical design)
       double holeDiameter = new Size(0.12d, SizeUnit.in).convertToPixels();
-      drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter); // (550, 100 mils)
-      drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);  // (600, 2000 mils)
-      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter); // (2600, 1400 mils)
-      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter); // (2600, 300 mils)
-      drawMountingHole(g2d, boardX + new Size(3.55d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);  // (3550, 2000 mils)
-      drawMountingHole(g2d, boardX + new Size(3.8d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter); // (3800, 100 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter); // (550, 100 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);  // (600, 2000 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter); // (2600, 1400 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter); // (2600, 300 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.55d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);  // (3550, 2000 mils)
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.8d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter); // (3800, 100 mils)
 
       // USB Type-B Jack & DC Power Jack
-      drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
+      MakerBoardPainter.drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
           boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
           USB_B_LENGTH.convertToPixels(),
           USB_B_WIDTH.convertToPixels(), "USB");
-      drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
+      MakerBoardPainter.drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
           boardY + new Size(1.625d, SizeUnit.in).convertToPixels(),
           new Size(0.52d, SizeUnit.in).convertToPixels(),
           new Size(0.35d, SizeUnit.in).convertToPixels(), "DC IN");
 
       // ATmega2560 square QFP chip
-      drawChip(g2d, boardX + new Size(1.825d, SizeUnit.in).convertToPixels(),
+      MakerBoardPainter.drawChip(g2d, boardX + new Size(1.825d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.825d, SizeUnit.in).convertToPixels(),
           new Size(0.4d, SizeUnit.in).convertToPixels(),
           new Size(0.4d, SizeUnit.in).convertToPixels(), "ATmega2560");
@@ -337,7 +339,7 @@ public class ArduinoMega extends AbstractMakerBoard {
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + new Size(2.72d, SizeUnit.in).convertToPixels();
       double btnY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() - btnH / 2.0;
-      drawButton(g2d, btnX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
@@ -345,7 +347,7 @@ public class ArduinoMega extends AbstractMakerBoard {
           btnY + btnH + new Size(1.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Arduino Infinity Logo
-      drawArduinoLogo(g2d, boardX + new Size(1.2d, SizeUnit.in).convertToPixels(),
+      MakerBoardLogos.drawArduinoLogo(g2d, boardX + new Size(1.2d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.4d, SizeUnit.in).convertToPixels());
 
       // Silkscreen text & branding
@@ -405,7 +407,7 @@ public class ArduinoMega extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw header pins with continuity tracking
-    drawPinHeader(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
@@ -454,7 +456,7 @@ public class ArduinoMega extends AbstractMakerBoard {
     double logoH = 45.33 * scale;
     double logoX = boardX + (boardW - logoW) / 2.0 + 1.0;
     double logoY = boardY + 3.5;
-    drawArduinoLogo(g2d, logoX, logoY, scale);
+    MakerBoardLogos.drawArduinoLogo(g2d, logoX, logoY, scale);
 
     // MEGA text below logo
     g2d.setColor(SILK_COLOR);

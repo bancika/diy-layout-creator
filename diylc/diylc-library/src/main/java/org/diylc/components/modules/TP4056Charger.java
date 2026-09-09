@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -154,14 +155,14 @@ public class TP4056Charger extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // USB Type-C Connector (Left Edge)
-      drawUsbC(g2d, boardX - 6, boardY + boardH / 2.0 - 18, 32, 36, "Type-C");
+      MakerBoardPainter.drawUsbC(g2d, boardX - 6, boardY + boardH / 2.0 - 18, 32, 36, "Type-C");
 
       // TP4056 Linear Charger IC (SOP-8)
-      drawChip(g2d, boardX + 60, boardY + 20, 26, 32, "4056");
+      MakerBoardPainter.drawChip(g2d, boardX + 60, boardY + 20, 26, 32, "4056");
 
       // DW01A Battery Protection IC & Dual MOSFET
-      drawChip(g2d, boardX + 110, boardY + 22, 18, 20, "DW01");
-      drawChip(g2d, boardX + 110, boardY + boardH - 44, 20, 24, "8205");
+      MakerBoardPainter.drawChip(g2d, boardX + 110, boardY + 22, 18, 20, "DW01");
+      MakerBoardPainter.drawChip(g2d, boardX + 110, boardY + boardH - 44, 20, 24, "8205");
 
       // Dual Status LEDs (Red = CHRG, Blue = STDBY)
       g2d.setColor(Color.RED);

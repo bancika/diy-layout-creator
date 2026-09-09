@@ -36,6 +36,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -140,16 +141,16 @@ public class SDCardModule extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes
-      drawMountingHole(g2d, boardX + 15, boardY + 15, 16);
-      drawMountingHole(g2d, boardX + 15, boardY + boardH - 15, 16);
-      drawMountingHole(g2d, boardX + boardW - 15, boardY + 15, 16);
-      drawMountingHole(g2d, boardX + boardW - 15, boardY + boardH - 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 15, boardY + 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 15, boardY + boardH - 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 15, boardY + 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 15, boardY + boardH - 15, 16);
 
       // MicroSD metal push-push slot
-      drawMetalConnector(g2d, boardX + boardW - 120, boardY + 25, 110, boardH - 50, "MicroSD");
+      MakerBoardPainter.drawMetalConnector(g2d, boardX + boardW - 120, boardY + 25, 110, boardH - 50, "MicroSD");
 
       // 74LVC125A Level Shifter chip
-      drawChip(g2d, boardX + 45, boardY + 40, 60, 45, "74LVC125");
+      MakerBoardPainter.drawChip(g2d, boardX + 45, boardY + 40, 60, 45, "74LVC125");
 
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
@@ -158,7 +159,7 @@ public class SDCardModule extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

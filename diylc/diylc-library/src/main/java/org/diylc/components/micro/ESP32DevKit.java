@@ -39,6 +39,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -624,14 +625,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double antennaY = boardY;
 
         // Antenna (dark rectangle underneath + gold serpentine trace)
-        drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+        MakerBoardPainter.drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
         // ESP32-WROOM-32 metal shield module below antenna
         double shieldW = SHIELD_WIDTH.convertToPixels();
         double shieldH = SHIELD_LENGTH.convertToPixels();
         double shieldX = centerX - shieldW / 2.0;
         double shieldY = boardY + antennaH;
-        drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
+        MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
 
         // 4 Corner Mounting Holes (diameter 2.8mm, 0.8mm away from edges in both directions)
         double holeDiameter = HOLE_DIAMETER_30.convertToPixels();
@@ -642,10 +643,10 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double topHoleY = boardY + edgeMargin + holeRadius;
         double bottomHoleY = boardY + boardH - edgeMargin - holeRadius;
 
-        drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
-        drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
-        drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
-        drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+        MakerBoardPainter.drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+        MakerBoardPainter.drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+        MakerBoardPainter.drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+        MakerBoardPainter.drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
         // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
         double usbW = USB_MICRO_WIDTH.convertToPixels();
@@ -653,7 +654,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
         double usbX = centerX - usbW / 2.0;
         double usbY = boardY + boardH - usbH + usbOverhang;
-        drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+        MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom (flanking the Micro-USB port)
         double btnY = boardY + boardH - 25 - 1.5 * shift1mm;
@@ -681,14 +682,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double antennaY = mainY - antennaH;
 
         // Antenna at top (dark rectangle + gold serpentine trace)
-        drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+        MakerBoardPainter.drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
         // ESP32-S3-WROOM-1 metal shield module below antenna
         double shieldW = SHIELD_WIDTH_S3.convertToPixels();
         double shieldH = SHIELD_LENGTH_S3.convertToPixels();
         double shieldX = centerX - shieldW / 2.0;
         double shieldY = mainY + 4;
-        drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-S3-WROOM-1");
+        MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-S3-WROOM-1");
 
         // BOOT & RESET tactile buttons (per DXF: BOOT on left near pin 13/14, RESET on right near pin 20/19)
         double btnY = y + 18.5 * PIN_SPACING.convertToPixels() - btnH / 2.0;
@@ -705,8 +706,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double usbLeftX = mainX + usbEdgeDist - usbW / 2.0;
         double usbRightX = mainX + boardW - usbEdgeDist - usbW / 2.0;
         double usbY = mainY + boardH - usbH + usbOverhang;
-        drawMicroUsb(g2d, usbLeftX, usbY, usbW, usbH, "UART");
-        drawMicroUsb(g2d, usbRightX, usbY, usbW, usbH, "USB");
+        MakerBoardPainter.drawMicroUsb(g2d, usbLeftX, usbY, usbW, usbH, "UART");
+        MakerBoardPainter.drawMicroUsb(g2d, usbRightX, usbY, usbW, usbH, "USB");
 
         // Silkscreen
         g2d.setColor(SILK_COLOR);
@@ -729,14 +730,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double antennaY = mainY - antennaH;
 
         // Antenna at top (dark rectangle + gold serpentine trace)
-        drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+        MakerBoardPainter.drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
         // ESP32-C3-MINI-1 / ESP32-C6-WROOM-1 metal shield module below the antenna
         double shieldW = getRiscVShieldWidth().convertToPixels();
         double shieldH = getRiscVShieldLength().convertToPixels();
         double shieldX = centerX - shieldW / 2.0;
         double shieldY = mainY + 4;
-        drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH,
+        MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH,
             isC3 ? "ESP32-C3-MINI-1" : "ESP32-C6-WROOM-1");
 
         // BOOT & RST tactile buttons flanking the connectors, inset clear of the pin columns
@@ -752,15 +753,15 @@ public class ESP32DevKit extends AbstractMakerBoard {
           double usbW = USB_MICRO_WIDTH.convertToPixels();
           double usbH = USB_MICRO_LENGTH.convertToPixels();
           double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
-          drawMicroUsb(g2d, centerX - usbW / 2.0, mainY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
+          MakerBoardPainter.drawMicroUsb(g2d, centerX - usbW / 2.0, mainY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
         } else {
           double usbW = USB_C_WIDTH.convertToPixels();
           double usbH = USB_C_LENGTH.convertToPixels();
           double usbOverhang = USB_C_OVERHANG.convertToPixels();
           double usbEdgeDist = new Size(6.5d, SizeUnit.mm).convertToPixels();
           double usbY = mainY + boardH - usbH + usbOverhang;
-          drawUsbC(g2d, mainX + usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "UART");
-          drawUsbC(g2d, mainX + boardW - usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "USB");
+          MakerBoardPainter.drawUsbC(g2d, mainX + usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "UART");
+          MakerBoardPainter.drawUsbC(g2d, mainX + boardW - usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "USB");
         }
 
         // Silkscreen
@@ -785,14 +786,14 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double antennaY = mainY - antennaH;
 
         // Antenna (dark rectangle underneath + gold serpentine trace)
-        drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+        MakerBoardPainter.drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
         // ESP32-WROOM-32 metal shield module below antenna
         double shieldW = SHIELD_WIDTH.convertToPixels();
         double shieldH = SHIELD_LENGTH.convertToPixels();
         double shieldX = centerX - shieldW / 2.0;
         double shieldY = mainY + 8;
-        drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
+        MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP32-WROOM-32");
 
         // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
         double usbW = USB_MICRO_WIDTH.convertToPixels();
@@ -800,7 +801,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
         double usbX = centerX - usbW / 2.0;
         double usbY = mainY + mainH - usbH + usbOverhang;
-        drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+        MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
         // EN & BOOT tactile buttons at bottom
         double btnY = mainY + mainH - 25 - new Size(2.0d, SizeUnit.mm).convertToPixels();
@@ -821,7 +822,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     if (headers) {
-      drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
       drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
     }
@@ -834,8 +835,8 @@ public class ESP32DevKit extends AbstractMakerBoard {
    */
   private void drawButtons(Graphics2D g2d, double btnLeftX, double btnRightX, double btnY, double btnW, double btnH,
       String leftLabel, String rightLabel) {
-    drawButton(g2d, btnLeftX, btnY, btnW, btnH);
-    drawButton(g2d, btnRightX, btnY, btnW, btnH);
+    MakerBoardPainter.drawButton(g2d, btnLeftX, btnY, btnW, btnH);
+    MakerBoardPainter.drawButton(g2d, btnRightX, btnY, btnW, btnH);
 
     g2d.setColor(SILK_COLOR);
     g2d.setFont(SILK_FONT_SMALL);

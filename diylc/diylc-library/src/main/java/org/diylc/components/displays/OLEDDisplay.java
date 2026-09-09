@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -170,10 +171,10 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Corner mounting holes
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + 16, boardY + boardSizePx - 16, 16);
-      drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + boardSizePx - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardSizePx - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + boardSizePx - 16, 16);
 
       // Glass OLED Panel
       double glassMarginX = 18;
@@ -198,7 +199,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

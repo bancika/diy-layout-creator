@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -293,10 +294,10 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
       } else {
         // TM1637 4-Digit Display Module
-        drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
-        drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 12);
-        drawMountingHole(g2d, boardX + boardW - 14, boardY + 14, 12);
-        drawMountingHole(g2d, boardX + boardW - 14, boardY + boardH - 14, 12);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 12);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + 14, 12);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + boardH - 14, 12);
 
         // Display Bezel (Center)
         double bezelW = new Size(30.0d, SizeUnit.mm).convertToPixels();
@@ -335,7 +336,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

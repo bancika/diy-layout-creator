@@ -36,6 +36,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -140,10 +141,10 @@ public class MPU6050 extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Corner mounting hole
-      drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 16);
 
       // Central QFN MPU-6050 chip
-      drawChip(g2d, boardX + 35, boardY + 20, 45, 45, "6050");
+      MakerBoardPainter.drawChip(g2d, boardX + 35, boardY + 20, 45, 45, "6050");
 
       // Silkscreen
       g2d.setColor(Color.WHITE);
@@ -153,7 +154,7 @@ public class MPU6050 extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -222,16 +223,16 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       double leftHoleX = (x + rowSpacing / 2.0) - holeDistX / 2.0;
       double rightHoleX = (x + rowSpacing / 2.0) + holeDistX / 2.0;
 
-      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
       // Antenna (dark rectangle underneath + gold serpentine trace)
-      drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
+      MakerBoardPainter.drawPcbAntenna(g2d, antennaX, antennaY, antennaW, antennaH);
 
       // ESP-12 Metal shield module below antenna
-      drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
+      MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
       // Micro-USB Jack at bottom (7.5mm x 5.6mm, 0.5mm overhang)
       double usbW = USB_MICRO_WIDTH.convertToPixels();
@@ -239,7 +240,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
       double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
       double usbY = boardY + boardH - usbH + usbOverhang;
-      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+      MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // RST & FLASH tactile buttons at bottom (flanking the Micro-USB port)
       double btnW = BUTTON_LENGTH.convertToPixels();
@@ -249,8 +250,8 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
       double btnLeftX = leftHoleX + 10 + shift1mm;
       double btnRightX = rightHoleX - 10 - shift1mm - btnW;
 
-      drawButton(g2d, btnLeftX, btnY, btnW, btnH);
-      drawButton(g2d, btnRightX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnLeftX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnRightX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
@@ -269,7 +270,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     if (headers) {
-      drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
       drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
     }

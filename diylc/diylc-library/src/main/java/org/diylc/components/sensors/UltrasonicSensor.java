@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -170,7 +171,7 @@ public class UltrasonicSensor extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "R", cyl2X + cylD / 2.0, cylY + cylD / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Center crystal oscillator & text
-      drawMetalConnector(g2d, boardX + boardW / 2.0 - 20, boardY + 25, 40, 20, "4MHz");
+      MakerBoardPainter.drawMetalConnector(g2d, boardX + boardW / 2.0 - 20, boardY + 25, 40, 20, "4MHz");
 
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
@@ -179,7 +180,7 @@ public class UltrasonicSensor extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

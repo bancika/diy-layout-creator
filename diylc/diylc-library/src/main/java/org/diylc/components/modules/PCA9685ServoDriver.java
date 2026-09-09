@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -258,10 +259,10 @@ public class PCA9685ServoDriver extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes with annular silver rings
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 15);
-      drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 15);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 15);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 15);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 15);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 15);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 15);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 15);
 
       // 2-Pin Screw Terminal Block — centered horizontally at top of the board
       double termW = 56.0;
@@ -280,7 +281,7 @@ public class PCA9685ServoDriver extends AbstractMakerBoard {
       double chipH = 50.0;
       double chipX = centerX - chipW / 2.0;
       double chipY = termY + termH + 6.0;
-      drawChip(g2d, chipX, chipY, chipW, chipH, "PCA9685");
+      MakerBoardPainter.drawChip(g2d, chipX, chipY, chipW, chipH, "PCA9685");
 
       // Large Filter Electrolytic Capacitor (Top-Left)
       double capX = boardX + 65.0;
@@ -390,14 +391,14 @@ public class PCA9685ServoDriver extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw I2C header pins (left & right)
-    drawPins(g2d, 0, 6, false, outlineMode, drawingObserver);
-    drawPins(g2d, 6, 6, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 6, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 6, 6, outlineMode, drawingObserver);
 
     // Draw screw terminal block matching PCBTerminalBlock style (V+, GND)
     drawTerminalBlock(g2d, 12, 2, true, -1, 34.0, outlineMode, drawingObserver);
 
     // Draw all 48 servo channel pins
-    drawPins(g2d, 14, 48, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 14, 48, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

@@ -188,7 +188,7 @@ public class HC05Bluetooth extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 6 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

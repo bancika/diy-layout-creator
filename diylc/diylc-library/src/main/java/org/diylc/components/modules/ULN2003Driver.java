@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -175,10 +176,10 @@ public class ULN2003Driver extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting Holes with silver solder rings in corners
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
 
       // Left edge unpopulated through-holes (IN5, IN6, IN7) below IN4
       for (int i = 4; i < 7; i++) {
@@ -288,13 +289,13 @@ public class ULN2003Driver extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw left input header pins (4 populated pins: IN1..IN4)
-    drawPins(g2d, 0, 4, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 4, outlineMode, drawingObserver);
 
     // Draw bottom power header pins (4 pins: GND, 5-12V, Jumper 1, Jumper 2)
-    drawPins(g2d, 4, 4, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 4, 4, outlineMode, drawingObserver);
 
     // Draw 5-Pin JST motor connector contacts
-    drawPins(g2d, 8, 5, true, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 8, 5, outlineMode, drawingObserver);
 
     if (!outlineMode) {
       // Black Jumper shunt cap installed over the two rightmost power selection pins (pins 6 & 7)

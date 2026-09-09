@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -167,10 +168,10 @@ public class INA219CurrentSensor extends AbstractMakerBoard {
     if (!outlineMode) {
       // 4 Large Gold Ring Mounting Holes in corners (20mm x 20mm pitch)
       double holeMargin = 10.0;
-      drawMountingHole(g2d, boardX + holeMargin, boardY + holeMargin, 13.0);
-      drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + holeMargin, 13.0);
-      drawMountingHole(g2d, boardX + holeMargin, boardY + boardH - holeMargin, 13.0);
-      drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + boardH - holeMargin, 13.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeMargin, boardY + holeMargin, 13.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + holeMargin, 13.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeMargin, boardY + boardH - holeMargin, 13.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + boardH - holeMargin, 13.0);
 
       // Top Blue Screw Terminal Block (5.08mm 2-pin block)
       double termW = 44.0;
@@ -281,7 +282,7 @@ public class INA219CurrentSensor extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw bottom 6 header pins
-    drawPins(g2d, 0, 6, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 6, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

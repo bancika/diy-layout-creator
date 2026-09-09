@@ -34,6 +34,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardLogos;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -251,13 +253,13 @@ public class RaspberryPi extends AbstractMakerBoard {
     if (!outlineMode) {
       // 4 Mounting holes (diameter 2.7mm, spaced 58mm apart horizontally and 49mm vertically)
       double holeDiameter = new Size(2.7d, SizeUnit.mm).convertToPixels();
-      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
       // USB & Ethernet Ports on the right edge
@@ -273,19 +275,19 @@ public class RaspberryPi extends AbstractMakerBoard {
       double topUsbCenterY = (version == RaspberryPiVersion.PI_4_B) ? bottomCenterY : topCenterY;
 
       // Top USB slot (USB 3.0)
-      drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(topUsbCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 3.0");
 
       // USB 2.0 (middle)
-      drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(middleCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 2.0");
 
       // Ethernet
-      drawMetalConnector(g2d, boardX + boardW - new Size(18.0d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMetalConnector(g2d, boardX + boardW - new Size(18.0d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(ethernetCenterY - 8.0d, SizeUnit.mm).convertToPixels(),
           new Size(21.0d, SizeUnit.mm).convertToPixels(),
           new Size(16.0d, SizeUnit.mm).convertToPixels(), "ETHERNET");
@@ -335,25 +337,25 @@ public class RaspberryPi extends AbstractMakerBoard {
       // PWR (USB-C): center X = 11.2 mm
       double usbCW = USB_C_WIDTH.convertToPixels();
       double usbCH = USB_C_LENGTH.convertToPixels();
-      drawUsbC(g2d, boardX + new Size(11.2d, SizeUnit.mm).convertToPixels() - usbCW / 2.0,
+      MakerBoardPainter.drawUsbC(g2d, boardX + new Size(11.2d, SizeUnit.mm).convertToPixels() - usbCW / 2.0,
           boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
           usbCW, usbCH, "PWR");
 
       if (version == RaspberryPiVersion.PI_3_B) {
         double hdmiW = new Size(15.0d, SizeUnit.mm).convertToPixels();
         double hdmiH = new Size(11.5d, SizeUnit.mm).convertToPixels();
-        drawMetalConnector(g2d, boardX + new Size(32.0d, SizeUnit.mm).convertToPixels() - hdmiW / 2.0,
+        MakerBoardPainter.drawMetalConnector(g2d, boardX + new Size(32.0d, SizeUnit.mm).convertToPixels() - hdmiW / 2.0,
             boardY + boardH - new Size(10.5d, SizeUnit.mm).convertToPixels(),
             hdmiW, hdmiH, "HDMI");
       } else {
         // HDMI0: center X = 25.8 mm
-        drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
+        MakerBoardPainter.drawMetalConnector(g2d, boardX + new Size(22.05d, SizeUnit.mm).convertToPixels(),
             boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
             new Size(7.5d, SizeUnit.mm).convertToPixels(),
             new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI0");
 
         // HDMI1: center X = 39.2 mm
-        drawMetalConnector(g2d, boardX + new Size(35.45d, SizeUnit.mm).convertToPixels(),
+        MakerBoardPainter.drawMetalConnector(g2d, boardX + new Size(35.45d, SizeUnit.mm).convertToPixels(),
             boardY + boardH - new Size(6.5d, SizeUnit.mm).convertToPixels(),
             new Size(7.5d, SizeUnit.mm).convertToPixels(),
             new Size(7.5d, SizeUnit.mm).convertToPixels(), "HDMI1");
@@ -367,8 +369,8 @@ public class RaspberryPi extends AbstractMakerBoard {
       if (version == RaspberryPiVersion.PI_5) {
         double mipi1X = boardX + new Size(48.5d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
         double mipi0X = boardX + new Size(54.5d, SizeUnit.mm).convertToPixels() - mipiW / 2.0;
-        drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
-        drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
+        MakerBoardPainter.drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
+        MakerBoardPainter.drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
 
         g2d.setColor(Color.WHITE);
         g2d.setFont(SILK_FONT_SMALL);
@@ -450,7 +452,7 @@ public class RaspberryPi extends AbstractMakerBoard {
         double pcieH = new Size(10.5d, SizeUnit.mm).convertToPixels();
         double pcieX = boardX + new Size(0.1d, SizeUnit.in).convertToPixels() - new Size(1.0d, SizeUnit.mm).convertToPixels();
         double pcieY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() + new Size(0.75d, SizeUnit.mm).convertToPixels() - pcieH / 2.0;
-        drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
+        MakerBoardPainter.drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
 
         g2d.setColor(Color.WHITE);
         g2d.setFont(SILK_FONT_SMALL);
@@ -501,13 +503,13 @@ public class RaspberryPi extends AbstractMakerBoard {
       double logoSize = new Size(10.4d, SizeUnit.mm).convertToPixels();
       double logoX = boardX + new Size(8.3d, SizeUnit.mm).convertToPixels();
       double logoY = boardY + new Size(26.5d, SizeUnit.mm).convertToPixels() - new Size(0.2d, SizeUnit.in).convertToPixels();
-      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+      MakerBoardLogos.drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
     }
 
     g2d.setTransform(oldTx);
 
     // Draw 40 GPIO header pins and 4 PoE header pins
-    drawPinHeader(g2d, 0, 44, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 44, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

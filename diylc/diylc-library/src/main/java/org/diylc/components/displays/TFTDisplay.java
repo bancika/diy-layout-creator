@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -144,10 +145,10 @@ public class TFTDisplay extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes in corners
-      drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + 20, boardY + boardH - 20, 20);
-      drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + boardW - 20, boardY + boardH - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + boardH - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + boardH - 20, 20);
 
       // Color Screen Area
       double screenMarginX = 35;
@@ -169,12 +170,12 @@ public class TFTDisplay extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "TFT 2.8\" 320x240 SPI", screenX + screenW / 2.0, screenY + 12, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // SD Card holder on right edge
-      drawMetalConnector(g2d, boardX + boardW - 28, boardY + 100, 36, 120, "SD");
+      MakerBoardPainter.drawMetalConnector(g2d, boardX + boardW - 28, boardY + 100, 36, 120, "SD");
     }
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

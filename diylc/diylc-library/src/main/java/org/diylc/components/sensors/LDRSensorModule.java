@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -152,7 +153,7 @@ public class LDRSensorModule extends AbstractMakerBoard {
       g2d.drawLine((int) ldrX - 6, (int) ldrY + 4, (int) ldrX + 6, (int) ldrY + 4);
 
       // LM393 comparator chip
-      drawChip(g2d, boardX + 15, boardY + 40, boardW - 30, 45, "LM393");
+      MakerBoardPainter.drawChip(g2d, boardX + 15, boardY + 40, boardW - 30, 45, "LM393");
 
       // Blue sensitivity trimpot
       g2d.setColor(Color.decode("#0088CC"));
@@ -168,7 +169,7 @@ public class LDRSensorModule extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -500,10 +501,10 @@ public class ArduinoNano extends AbstractMakerBoard {
       double leftHoleX = boardX + boardMarginX;
       double rightHoleX = boardX + boardW - boardMarginX;
 
-      drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
-      drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, leftHoleX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, rightHoleX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, leftHoleX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, rightHoleX, bottomHoleY, holeDiameter);
 
       // USB jack at bottom (plain metal connector)
       UsbPortType usbType = getUsbPortType();
@@ -511,8 +512,8 @@ public class ArduinoNano extends AbstractMakerBoard {
       double usbW = usbSizes[0].convertToPixels();
       double usbH = usbSizes[1].convertToPixels();
       double usbOverhang = usbSizes[2].convertToPixels();
-      drawUsbPort(g2d, boardX + (boardW - usbW) / 2.0, boardY + boardH - usbH + usbOverhang, usbW, usbH,
-          usbType, "USB");
+      MakerBoardPainter.drawMetalConnector(g2d, boardX + (boardW - usbW) / 2.0,
+          boardY + boardH - usbH + usbOverhang, usbW, usbH, "USB");
 
       double chipSize = new Size(0.28d, SizeUnit.in).convertToPixels();
       double chipCenterX = boardX + boardW / 2.0;
@@ -544,7 +545,7 @@ public class ArduinoNano extends AbstractMakerBoard {
       } else if (getVersion().getMcuLabel() != null) {
         // Later Nanos carry an axis-aligned QFN in the same spot, unless the MCU is a die inside
         // the module at the far end of the board
-        drawChip(g2d, chipCenterX - chipSize / 2.0, chipCenterY - chipSize / 2.0, chipSize, chipSize,
+        MakerBoardPainter.drawChip(g2d, chipCenterX - chipSize / 2.0, chipCenterY - chipSize / 2.0, chipSize, chipSize,
             getVersion().getMcuLabel());
       }
 
@@ -556,7 +557,7 @@ public class ArduinoNano extends AbstractMakerBoard {
           case EVERY: {
             // A bare QFN USB bridge rather than a shielded module
             double bridgeSize = new Size(5.0d, SizeUnit.mm).convertToPixels();
-            drawChip(g2d, boardX + (boardW - bridgeSize) / 2.0, moduleY, bridgeSize, bridgeSize,
+            MakerBoardPainter.drawChip(g2d, boardX + (boardW - bridgeSize) / 2.0, moduleY, bridgeSize, bridgeSize,
                 getVersion().getModuleLabel());
             break;
           }
@@ -579,7 +580,7 @@ public class ArduinoNano extends AbstractMakerBoard {
           default: {
             double moduleW = new Size(10.0d, SizeUnit.mm).convertToPixels();
             double moduleH = new Size(11.0d, SizeUnit.mm).convertToPixels();
-            drawMetalConnector(g2d, boardX + (boardW - moduleW) / 2.0, moduleY, moduleW, moduleH,
+            MakerBoardPainter.drawMetalConnector(g2d, boardX + (boardW - moduleW) / 2.0, moduleY, moduleW, moduleH,
                 getVersion().getModuleLabel());
           }
         }
@@ -590,7 +591,7 @@ public class ArduinoNano extends AbstractMakerBoard {
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + (boardW - btnW) / 2.0;
       double btnY = boardY + new Size(0.68d, SizeUnit.in).convertToPixels();
-      drawButton(g2d, btnX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
@@ -619,7 +620,7 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     // Draw pins or solder pads
     if (headers) {
-      drawPinHeader(g2d, 0, getHeaderPinCount(), false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, getHeaderPinCount(), outlineMode, drawingObserver);
     } else if (getVersion() == NanoVersion.CLASSIC) {
       drawPcbSolderPads(g2d, 0, getHeaderPinCount(), true, outlineMode, drawingObserver);
     }

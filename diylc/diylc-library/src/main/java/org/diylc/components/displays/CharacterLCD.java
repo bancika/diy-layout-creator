@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -221,10 +222,10 @@ public class CharacterLCD extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes in corners
-      drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + 20, boardY + boardH - 20, 20);
-      drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + boardW - 20, boardY + boardH - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + boardH - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + boardH - 20, 20);
 
       // Metal Bezel around screen
       double bezelMarginX = (lcdSize == LCDSize._16x2) ? 45 : 40;
@@ -257,7 +258,7 @@ public class CharacterLCD extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

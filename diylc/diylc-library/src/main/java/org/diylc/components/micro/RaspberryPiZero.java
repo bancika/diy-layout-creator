@@ -39,6 +39,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardLogos;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -244,13 +246,13 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     if (!outlineMode) {
       // 4 Mounting holes (diameter 2.75mm, located 3.5mm from board edges)
       double holeDiameter = new Size(2.75d, SizeUnit.mm).convertToPixels();
-      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - new Size(3.5d, SizeUnit.mm).convertToPixels(),
           boardY + boardH - new Size(3.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
       // MicroSD card slot on the left edge
@@ -258,14 +260,14 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
       double sdX = boardX + new Size(1.5d, SizeUnit.mm).convertToPixels();
       double sdY = boardY + new Size(7.5d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
+      MakerBoardPainter.drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
 
       // Mini HDMI Connector (center at X = 12.4mm, width = 11.2mm, height = 7.5mm, overhang = 1.5mm)
       double hdmiW = new Size(11.2d, SizeUnit.mm).convertToPixels();
       double hdmiH = new Size(7.5d, SizeUnit.mm).convertToPixels();
       double hdmiX = boardX + new Size(12.4d, SizeUnit.mm).convertToPixels() - hdmiW / 2.0;
       double hdmiY = boardY + boardH - new Size(6.0d, SizeUnit.mm).convertToPixels();
-      drawMetalConnector(g2d, hdmiX, hdmiY, hdmiW, hdmiH, "HDMI");
+      MakerBoardPainter.drawMetalConnector(g2d, hdmiX, hdmiY, hdmiW, hdmiH, "HDMI");
 
       // Micro USB Data (center at X = 41.4mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
       double usbW = USB_MICRO_WIDTH.convertToPixels();
@@ -273,33 +275,33 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double usbOverhang = new Size(1.4d, SizeUnit.mm).convertToPixels();
       double usbX = boardX + new Size(41.4d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
       double usbY = boardY + boardH - usbH + usbOverhang;
-      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+      MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Micro USB Power (center at X = 54.0mm, width = 7.5mm, height = 5.6mm, overhang = 1.4mm)
       double pwrX = boardX + new Size(54.0d, SizeUnit.mm).convertToPixels() - usbW / 2.0;
       double pwrY = boardY + boardH - usbH + usbOverhang;
-      drawMicroUsb(g2d, pwrX, pwrY, usbW, usbH, "PWR");
+      MakerBoardPainter.drawMicroUsb(g2d, pwrX, pwrY, usbW, usbH, "PWR");
 
       // Camera Connector (CSI) on right edge
       double csiW = new Size(3.2d, SizeUnit.mm).convertToPixels();
       double csiH = new Size(16.5d, SizeUnit.mm).convertToPixels();
       double csiX = boardX + boardW - new Size(4.2d, SizeUnit.mm).convertToPixels();
       double csiY = boardY + new Size(6.75d, SizeUnit.mm).convertToPixels();
-      drawFpcConnector(g2d, csiX, csiY, csiW, csiH, true, "");
+      MakerBoardPainter.drawFpcConnector(g2d, csiX, csiY, csiW, csiH, true, "");
 
       // Main SoC chip (Broadcom BCM2835 / RP3A0)
       double socW = new Size(12.0d, SizeUnit.mm).convertToPixels();
       double socH = new Size(12.0d, SizeUnit.mm).convertToPixels();
       double socX = boardX + new Size(19.5d, SizeUnit.mm).convertToPixels();
       double socY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, socX, socY, socW, socH, "");
+      MakerBoardPainter.drawChip(g2d, socX, socY, socW, socH, "");
 
       // Raspberry Pi logo on SoC chip
       double logoSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
       double logoW = logoSize * (72.51 / 92.604);
       double logoX = socX + (socW - logoW) / 2.0;
       double logoY = socY + (socH - logoSize) / 2.0;
-      drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+      MakerBoardLogos.drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
       // Version label to the right of the SoC. "Raspberry Pi Zero 2 W" overruns the board edge at
       // the title size, so step the font down when the label does not fit.
@@ -351,7 +353,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     if (headers) {
-      drawPinHeader(g2d, 0, 40, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, 40, outlineMode, drawingObserver);
       // RUN and TV are typically left unpopulated even with headers
       drawPcbSolderPads(g2d, 41, 2, true, outlineMode, drawingObserver);
       drawPcbSolderPads(g2d, 43, 1, false, outlineMode, drawingObserver);

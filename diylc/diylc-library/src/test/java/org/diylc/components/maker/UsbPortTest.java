@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.AbstractMakerBoard.UsbPortType;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
 import org.junit.Test;
@@ -68,48 +69,17 @@ public class UsbPortTest {
     BufferedImage img = new BufferedImage(400, 400, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = img.createGraphics();
 
-    TestMakerBoard board = new TestMakerBoard();
-    board.testDrawMethods(g2d);
+    MakerBoardPainter.drawMicroUsb(g2d, 10, 200, 60, 40, "USB");
+    MakerBoardPainter.drawMicroUsb(g2d, 100, 200, 40, 60, "USB");
+    MakerBoardPainter.drawUsbC(g2d, 10, 260, 60, 40, "Type-C");
+    MakerBoardPainter.drawUsbC(g2d, 100, 260, 40, 60, "Type-C");
+    MakerBoardPainter.drawUsbA(g2d, 10, 320, 60, 40, "USB 3.0");
+    MakerBoardPainter.drawUsbA(g2d, 100, 320, 40, 60, "USB 2.0");
+    MakerBoardPainter.drawUsbB(g2d, 200, 10, 60, 40, "USB");
+    MakerBoardPainter.drawMetalConnector(g2d, 200, 150, 60, 40, "SHIELD");
+    MakerBoardPainter.drawMetalConnector(g2d, 200, 220, 60, 40, null);
+    MakerBoardPainter.drawMetalConnector(g2d, 250, 220, 60, 40, "");
+
     g2d.dispose();
-  }
-
-  static class TestMakerBoard extends AbstractMakerBoard {
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    protected void updateControlPoints() {}
-
-    @Override
-    public java.awt.Shape getBodyShape() {
-      return null;
-    }
-
-    @Override
-    public void draw(Graphics2D g2d, org.diylc.core.ComponentState componentState, boolean outlineMode,
-        org.diylc.core.Project project, org.diylc.core.IDrawingObserver drawingObserver) {}
-
-    @Override
-    public void drawIcon(Graphics2D g2d, int width, int height) {}
-
-    public void testDrawMethods(Graphics2D g2d) {
-      // Horizontal and Vertical tests for all types
-      for (UsbPortType type : UsbPortType.values()) {
-        drawUsbPort(g2d, 10, 10, 60, 40, type, type.name());
-        drawUsbPort(g2d, 100, 10, 40, 60, type, type.name());
-        drawUsbPort(g2d, 10, 100, 60, 40, type, null);
-        drawUsbPort(g2d, 100, 100, 40, 60, type, "");
-      }
-      // Direct method calls
-      drawMicroUsb(g2d, 10, 200, 60, 40, "USB");
-      drawMicroUsb(g2d, 100, 200, 40, 60, "USB");
-      drawUsbC(g2d, 10, 260, 60, 40, "Type-C");
-      drawUsbC(g2d, 100, 260, 40, 60, "Type-C");
-      drawUsbA(g2d, 10, 320, 60, 40, "USB 3.0");
-      drawUsbA(g2d, 100, 320, 40, 60, "USB 2.0");
-      drawUsbB(g2d, 200, 10, 60, 40, "USB");
-      drawMiniUsb(g2d, 200, 80, 60, 40, "USB");
-      drawMetalConnector(g2d, 200, 150, 60, 40, "SHIELD");
-      drawUsbPort(g2d, 200, 220, 60, 40, null, "FALLBACK");
-    }
   }
 }

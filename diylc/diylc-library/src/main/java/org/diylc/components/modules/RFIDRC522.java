@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -145,10 +146,10 @@ public class RFIDRC522 extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting Holes
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 40, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 40, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 40, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 40, boardY + boardH - 16, 16);
 
       // Large PCB Loop Antenna (Left side)
       double antX = boardX + 25;
@@ -165,7 +166,7 @@ public class RFIDRC522 extends AbstractMakerBoard {
       // MFRC522 QFN IC (Center Right)
       double icX = boardX + boardW * 0.62;
       double icY = boardY + boardH / 2.0 - 18;
-      drawChip(g2d, icX, icY, 36, 36, "RC522");
+      MakerBoardPainter.drawChip(g2d, icX, icY, 36, 36, "RC522");
 
       // 27.120 MHz Crystal
       g2d.setColor(CRYSTAL_BODY);
@@ -190,7 +191,7 @@ public class RFIDRC522 extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 8 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

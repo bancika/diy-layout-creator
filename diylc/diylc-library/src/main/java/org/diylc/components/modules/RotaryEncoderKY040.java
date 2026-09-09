@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -142,8 +143,8 @@ public class RotaryEncoderKY040 extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Mounting Holes
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
 
       // Rotary Encoder Metal Body (Center Left)
       double cx = boardX + 90;
@@ -177,7 +178,7 @@ public class RotaryEncoderKY040 extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 5 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

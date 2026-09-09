@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -382,7 +383,7 @@ public class Teensy extends AbstractMakerBoard {
       double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbX = centerX - usbW / 2.0;
       double usbY = boardY - new Size(1.0d, SizeUnit.mm).convertToPixels();
-      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+      MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Main MCU chip: NXP i.MX RT1062 BGA on the 4.x, Kinetis MK20DX256 LQFP-64 on the 3.2
       double chipW = isCompact()
@@ -395,7 +396,7 @@ public class Teensy extends AbstractMakerBoard {
       double chipY = isCompact()
           ? boardY + new Size(9.5d, SizeUnit.mm).convertToPixels() + new Size(0.1d, SizeUnit.in).convertToPixels()
           : boardY + new Size(19.0d, SizeUnit.mm).convertToPixels() + new Size(0.15d, SizeUnit.in).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipW, chipH,
+      MakerBoardPainter.drawChip(g2d, chipX, chipY, chipW, chipH,
           getVersion() == TeensyVersion.Teensy_3_2 ? "MK20DX256" : "iMXRT1062");
 
       // Pushbutton (Program button)
@@ -405,7 +406,7 @@ public class Teensy extends AbstractMakerBoard {
       double btnY = isCompact()
           ? boardY + PIN1_OFFSET_Y.convertToPixels() + 11.5 * PIN_SPACING.convertToPixels() - btnH / 2.0
           : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
-      drawButton(g2d, btnX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
       // Teensy 4.1 extras: Ethernet PHY + SD card slot
       if (getVersion() == TeensyVersion.Teensy_4_1) {
@@ -414,7 +415,7 @@ public class Teensy extends AbstractMakerBoard {
         double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdX = centerX - sdW / 2.0;
         double sdY = boardY + boardH - sdH;
-        drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
+        MakerBoardPainter.drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
       }
 
       // Silkscreen "TEENSY" label
@@ -433,7 +434,7 @@ public class Teensy extends AbstractMakerBoard {
 
     // Render pin headers or gold solder pads with drill holes
     if (headers) {
-      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
       drawSolderPads(g2d, outlineMode, drawingObserver);
     }

@@ -39,6 +39,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -153,10 +154,10 @@ public class GPSModuleNEO6M extends AbstractMakerBoard {
     if (!outlineMode) {
       // 4 Small Mounting holes in the corners
       double holeMargin = 7.0;
-      drawMountingHole(g2d, boardX + holeMargin, boardY + holeMargin, 8.0);
-      drawMountingHole(g2d, boardX + holeMargin, boardY + boardH - holeMargin, 8.0);
-      drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + holeMargin, 8.0);
-      drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + boardH - holeMargin, 8.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeMargin, boardY + holeMargin, 8.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeMargin, boardY + boardH - holeMargin, 8.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + holeMargin, 8.0);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeMargin, boardY + boardH - holeMargin, 8.0);
 
       // Silkscreen pin labels (VCC, RX, TX, GND) placed neatly next to left header
       g2d.setColor(Color.WHITE);
@@ -219,7 +220,7 @@ public class GPSModuleNEO6M extends AbstractMakerBoard {
     }
 
     g2d.setTransform(oldTx);
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     g2d.setComposite(oldComposite);
   }
 

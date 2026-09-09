@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -163,10 +164,10 @@ public class SoilMoistureSensor extends AbstractMakerBoard {
       g2d.drawLine((int)(boardX + boardW * 0.35), (int)boardY + 4, (int)(boardX + boardW * 0.35), (int)(boardY + boardH - 4));
 
       // NE555 / TLC555 Oscillator Timer IC (Handle area)
-      drawChip(g2d, boardX + 45, boardY + boardH / 2.0 - 14, 28, 28, "555");
+      MakerBoardPainter.drawChip(g2d, boardX + 45, boardY + boardH / 2.0 - 14, 28, 28, "555");
 
       // 3.3V Voltage Regulator
-      drawChip(g2d, boardX + 85, boardY + boardH / 2.0 - 10, 18, 20, "");
+      MakerBoardPainter.drawChip(g2d, boardX + 85, boardY + boardH / 2.0 - 10, 18, 20, "");
 
       // Silk Screen Text
       g2d.setColor(Color.WHITE);
@@ -184,7 +185,7 @@ public class SoilMoistureSensor extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 3 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

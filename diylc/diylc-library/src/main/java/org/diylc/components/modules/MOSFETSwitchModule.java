@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -158,8 +159,8 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Mounting Holes
-      drawMountingHole(g2d, boardX + 14, boardY + 14, 14);
-      drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 14);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + 14, 14);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 14);
 
       // TO-220 Power MOSFET (Center)
       double mosX = boardX + 50;
@@ -193,7 +194,7 @@ public class MOSFETSwitchModule extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw control header pins on left
-    drawPins(g2d, 0, 3, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, 3, outlineMode, drawingObserver);
 
     // Draw dual terminal blocks on right matching PCBTerminalBlock style
     drawTerminalBlock(g2d, 3, 2, false, 1, 38.0, outlineMode, drawingObserver);

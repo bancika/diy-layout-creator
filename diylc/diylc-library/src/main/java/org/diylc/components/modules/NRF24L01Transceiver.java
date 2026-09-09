@@ -35,6 +35,7 @@ import java.awt.geom.RoundRectangle2D;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -167,7 +168,7 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
       double icX = boardX + 88.0;
       double icY = boardY + 20.0;
       double icSize = 32.0;
-      drawChip(g2d, icX, icY, icSize, icSize, "nRF24");
+      MakerBoardPainter.drawChip(g2d, icX, icY, icSize, icSize, "nRF24");
 
       // White corner silkscreen brackets around IC
       g2d.setColor(SILK_LINE_COLOR);
@@ -255,7 +256,7 @@ public class NRF24L01Transceiver extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 8 header pins on top-left edge
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

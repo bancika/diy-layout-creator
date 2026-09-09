@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -197,7 +198,7 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // MT3608 SOT23-6 Boost Controller IC (Bottom-Right / Center)
-      drawChip(g2d, boardX + 150.0, boardY + 78.0, 26.0, 22.0, "3608");
+      MakerBoardPainter.drawChip(g2d, boardX + 150.0, boardY + 78.0, 26.0, 22.0, "3608");
 
       // Silkscreen Text Labels (placed above/below pads without overlapping)
       g2d.setColor(Color.WHITE);

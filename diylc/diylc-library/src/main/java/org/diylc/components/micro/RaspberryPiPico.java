@@ -39,6 +39,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardLogos;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -285,16 +287,16 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       double holeCenterX = boardX + boardW / 2.0;
       double topHoleY = boardY + holeMarginY;
       double bottomHoleY = boardY + boardH - holeMarginY;
-      drawMountingHole(g2d, holeCenterX - holeDistX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, holeCenterX + holeDistX, topHoleY, holeDiameter);
-      drawMountingHole(g2d, holeCenterX - holeDistX, bottomHoleY, holeDiameter);
-      drawMountingHole(g2d, holeCenterX + holeDistX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, holeCenterX - holeDistX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, holeCenterX + holeDistX, topHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, holeCenterX - holeDistX, bottomHoleY, holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, holeCenterX + holeDistX, bottomHoleY, holeDiameter);
 
       // Micro USB Connector
       double usbW = USB_MICRO_WIDTH.convertToPixels();
       double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
-      drawMicroUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
+      MakerBoardPainter.drawMicroUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
 
       // BOOTSEL button, sitting left of the board center line
       double btnW = BOOTSEL_WIDTH.convertToPixels();
@@ -302,7 +304,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       double btnCenterX = boardX + boardW / 2.0 - BOOTSEL_OFFSET_X.convertToPixels();
       double btnX = btnCenterX - btnW / 2.0;
       double btnY = boardY + BOOTSEL_OFFSET_Y.convertToPixels();
-      drawButton(g2d, btnX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
       // the label does not fit next to the button unless it is turned to read bottom to top,
       // the way the real board prints it
@@ -322,7 +324,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       double chipY = isW()
           ? boardY + new Size(23.0d, SizeUnit.mm).convertToPixels() - new Size(0.1d, SizeUnit.in).convertToPixels()
           : boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
-      drawChip(g2d, chipX, chipY, chipSize, chipSize, isV2() ? "RP2350" : "RP2040");
+      MakerBoardPainter.drawChip(g2d, chipX, chipY, chipSize, chipSize, isV2() ? "RP2350" : "RP2040");
 
       if (isW()) {
         double spacing = PIN_SPACING.convertToPixels();
@@ -351,14 +353,14 @@ public class RaspberryPiPico extends AbstractMakerBoard {
         double wifiH = WIFI_LENGTH.convertToPixels();
         double wifiX = boardX + (boardW - wifiW) / 2.0;
         double wifiY = boardY + boardH - WIFI_OFFSET_Y.convertToPixels() - wifiH / 2.0;
-        drawMetalConnector(g2d, wifiX, wifiY, wifiW, wifiH, "");
+        MakerBoardPainter.drawMetalConnector(g2d, wifiX, wifiY, wifiW, wifiH, "");
       } else {
         // Raspberry Pi Logo at bottom of the board (~9mm height)
         double logoSize = new Size(9.0d, SizeUnit.mm).convertToPixels();
         double logoWidth = logoSize * 72.515 / 92.604;
         double logoX = boardX + (boardW - logoWidth) / 2.0;
         double logoY = boardY + new Size(35.5d, SizeUnit.mm).convertToPixels();
-        drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
+        MakerBoardLogos.drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
         // DEBUG silkscreen text above SWD pins
         g2d.setColor(Color.WHITE);
@@ -377,7 +379,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     if (headers) {
-      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     }
 
     g2d.setComposite(oldComposite);

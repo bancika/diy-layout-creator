@@ -38,6 +38,8 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardLogos;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -464,29 +466,29 @@ public class ArduinoUno extends AbstractMakerBoard {
     if (!outlineMode) {
       // Mounting holes
       double holeDiameter = new Size(0.12d, SizeUnit.in).convertToPixels();
-      drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter);
-      drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.7d, SizeUnit.in).convertToPixels(), holeDiameter);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(2.6d, SizeUnit.in).convertToPixels(), boardY + new Size(1.8d, SizeUnit.in).convertToPixels(), holeDiameter);
 
       if (isR4()) {
         double usbCW = USB_C_WIDTH.convertToPixels();
         double usbCL = USB_C_LENGTH.convertToPixels();
         double usbCY = boardY + new Size(15.5d, SizeUnit.mm).convertToPixels() - usbCW / 2.0;
-        drawUsbC(g2d, boardX - USB_C_OVERHANG.convertToPixels(), usbCY, usbCL, usbCW, "USB-C");
+        MakerBoardPainter.drawUsbC(g2d, boardX - USB_C_OVERHANG.convertToPixels(), usbCY, usbCL, usbCW, "USB-C");
       } else if (getVersion() == ArduinoUnoVersion.LEONARDO) {
         double microW = USB_MICRO_LENGTH.convertToPixels();
         double microH = USB_MICRO_WIDTH.convertToPixels();
         double microY = boardY + new Size(0.6d, SizeUnit.in).convertToPixels() - microH / 2.0;
-        drawMicroUsb(g2d, boardX - USB_MICRO_OVERHANG.convertToPixels(), microY, microW, microH, "USB");
+        MakerBoardPainter.drawMicroUsb(g2d, boardX - USB_MICRO_OVERHANG.convertToPixels(), microY, microW, microH, "USB");
       } else {
-        drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
+        MakerBoardPainter.drawUsbB(g2d, boardX - USB_B_OVERHANG.convertToPixels(),
             boardY + new Size(0.375d, SizeUnit.in).convertToPixels(),
             USB_B_LENGTH.convertToPixels(),
             USB_B_WIDTH.convertToPixels(), "USB");
       }
 
-      drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
+      MakerBoardPainter.drawChip(g2d, boardX - new Size(0.07d, SizeUnit.in).convertToPixels(),
           boardY + new Size(1.615d, SizeUnit.in).convertToPixels(),
           new Size(0.52d, SizeUnit.in).convertToPixels(),
           new Size(0.355d, SizeUnit.in).convertToPixels(), "DC IN");
@@ -501,13 +503,13 @@ public class ArduinoUno extends AbstractMakerBoard {
           double antH = new Size(15d, SizeUnit.mm).convertToPixels();
           double antX = boardX;
           double antY = boardY + boardH - new Size(13.5d, SizeUnit.mm).convertToPixels() - antH;
-          drawPcbAntenna(g2d, antX, antY, antW, antH);
+          MakerBoardPainter.drawPcbAntenna(g2d, antX, antY, antW, antH);
 
           double s3W = new Size(14d, SizeUnit.mm).convertToPixels();
           double s3H = new Size(14d, SizeUnit.mm).convertToPixels();
           double s3X = boardX + new Size(5.5d, SizeUnit.mm).convertToPixels();
           double s3Y = boardY + boardH - new Size(14.0d, SizeUnit.mm).convertToPixels() - s3H;
-          drawMetalConnector(g2d, s3X, s3Y, s3W, s3H, "ESP32-S3");
+          MakerBoardPainter.drawMetalConnector(g2d, s3X, s3Y, s3W, s3H, "ESP32-S3");
         }
 
         double raW = new Size(10d, SizeUnit.mm).convertToPixels();
@@ -531,7 +533,7 @@ public class ArduinoUno extends AbstractMakerBoard {
           double swdH = SWD_HEIGHT.convertToPixels();
           double swdX = boardX + SWD_X.convertToPixels();
           double swdY = boardY + SWD_Y.convertToPixels();
-          drawFpcConnector(g2d, swdX, swdY, swdW, swdH, true, "");
+          MakerBoardPainter.drawFpcConnector(g2d, swdX, swdY, swdW, swdH, true, "");
 
           g2d.setColor(SILK_COLOR);
           g2d.setFont(SILK_FONT_SMALL);
@@ -542,10 +544,10 @@ public class ArduinoUno extends AbstractMakerBoard {
       } else if (getVersion() == ArduinoUnoVersion.LEONARDO) {
         // The 32U4 is a square TQFP-44 where the R3 carries its DIP-28
         double chipSize = new Size(0.4d, SizeUnit.in).convertToPixels();
-        drawChip(g2d, boardX + new Size(1.62d, SizeUnit.in).convertToPixels(),
+        MakerBoardPainter.drawChip(g2d, boardX + new Size(1.62d, SizeUnit.in).convertToPixels(),
             boardY + new Size(1.255d, SizeUnit.in).convertToPixels(), chipSize, chipSize, "32U4");
       } else {
-        drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
+        MakerBoardPainter.drawChip(g2d, boardX + new Size(1.095d, SizeUnit.in).convertToPixels(),
             boardY + new Size(1.345d, SizeUnit.in).convertToPixels(),
             new Size(1.46d, SizeUnit.in).convertToPixels(),
             new Size(0.22d, SizeUnit.in).convertToPixels(), "ATmega328P");
@@ -556,7 +558,7 @@ public class ArduinoUno extends AbstractMakerBoard {
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + new Size(0.235d, SizeUnit.in).convertToPixels() - btnW / 2.0;
       double btnY = boardY + new Size(0.1d, SizeUnit.in).convertToPixels();
-      drawButton(g2d, btnX, btnY, btnW, btnH);
+      MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
@@ -568,7 +570,7 @@ public class ArduinoUno extends AbstractMakerBoard {
           ? new Size(24d, SizeUnit.mm).convertToPixels() : 0;
 
       // Arduino Infinity Logo
-      drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels(),
+      MakerBoardLogos.drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(0.4411d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels() + brandShiftY);
 
       // Silkscreen text & branding
@@ -617,7 +619,7 @@ public class ArduinoUno extends AbstractMakerBoard {
     // body drawn above and gets no header pin of its own
     int headerPinCount = getVersion() == ArduinoUnoVersion.R4_MINIMA
         ? controlPoints.length - 1 : controlPoints.length;
-    drawPinHeader(g2d, 0, headerPinCount, true, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, headerPinCount, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
@@ -666,7 +668,7 @@ public class ArduinoUno extends AbstractMakerBoard {
     double logoH = 45.33 * scale;
     double logoX = boardX + (boardW - logoW) / 2.0 + 1.0;
     double logoY = boardY + 3.5;
-    drawArduinoLogo(g2d, logoX, logoY, scale);
+    MakerBoardLogos.drawArduinoLogo(g2d, logoX, logoY, scale);
 
     // UNO text below logo
     g2d.setColor(SILK_COLOR);

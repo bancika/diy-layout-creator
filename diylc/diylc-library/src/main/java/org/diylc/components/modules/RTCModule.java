@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -144,8 +145,8 @@ public class RTCModule extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Mounting holes
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
 
       // Round CR2032 Coin Cell Battery holder
       double battD = boardH - 30;
@@ -163,10 +164,10 @@ public class RTCModule extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "CR2032", battX + battD / 2.0, battY + battD / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // DS3231 SOIC-16 IC
-      drawChip(g2d, boardX + 35, boardY + 25, 65, 50, "DS3231");
+      MakerBoardPainter.drawChip(g2d, boardX + 35, boardY + 25, 65, 50, "DS3231");
 
       // AT24C32 EEPROM
-      drawChip(g2d, boardX + 35, boardY + 90, 50, 35, "24C32");
+      MakerBoardPainter.drawChip(g2d, boardX + 35, boardY + 90, 50, 35, "24C32");
 
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
@@ -175,7 +176,7 @@ public class RTCModule extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

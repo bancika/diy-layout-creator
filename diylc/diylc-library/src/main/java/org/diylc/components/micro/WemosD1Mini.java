@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -258,10 +259,10 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // Antenna (dark rectangle underneath + gold serpentine trace)
-      drawPcbAntenna(g2d, moduleX, boardY, moduleW, moduleH);
+      MakerBoardPainter.drawPcbAntenna(g2d, moduleX, boardY, moduleW, moduleH);
 
       // ESP8266 Metal Shield (main chip module)
-      drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
+      MakerBoardPainter.drawMetalConnector(g2d, shieldX, shieldY, shieldW, shieldH, "ESP8266");
 
       // Micro-USB Jack drawn with 0.5mm overhang at the bottom edge
       double usbW = USB_WIDTH.convertToPixels();
@@ -269,7 +270,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
       double usbOverhang = USB_MICRO_OVERHANG.convertToPixels();
       double usbX = (x + rowSpacing / 2.0) - usbW / 2.0;
       double usbY = bottomY - usbH + usbOverhang;
-      drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
+      MakerBoardPainter.drawMicroUsb(g2d, usbX, usbY, usbW, usbH, "USB");
 
       // Reset button: small black rectangle touching the board in the bottom left cutout, moved 2mm up
       double rstCutoutW = RST_CUTOUT_WIDTH.convertToPixels();
@@ -313,7 +314,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     if (headers) {
-      drawPinHeader(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+      drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
       drawPcbSolderPads(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
     }

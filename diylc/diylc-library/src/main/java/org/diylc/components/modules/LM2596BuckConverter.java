@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -156,8 +157,8 @@ public class LM2596BuckConverter extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Diagonal Mounting holes
-      drawMountingHole(g2d, boardX + 50, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 50, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 50, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 50, boardY + boardH - 16, 16);
 
       // Input Capacitor (Left)
       g2d.setColor(Color.LIGHT_GRAY);

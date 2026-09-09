@@ -36,6 +36,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -204,10 +205,10 @@ public class RelayModule extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes
-      drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardH - 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + 16, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 16, 16);
 
       // Blue cubic relay blocks (Songle 10A style)
       int chCount = channels.getCount();
@@ -244,7 +245,7 @@ public class RelayModule extends AbstractMakerBoard {
     }
 
     // Draw control pins on right
-    drawPins(g2d, chCount * 3, 2 + chCount, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, chCount * 3, 2 + chCount, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -196,7 +197,7 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
       }
 
       // MAX7219 IC
-      drawChip(g2d, boardX + 20, matrixY + matrixSize + 15, boardW - 40, 45, "MAX7219");
+      MakerBoardPainter.drawChip(g2d, boardX + 20, matrixY + matrixSize + 15, boardW - 40, 45, "MAX7219");
 
       // Silkscreen
       g2d.setColor(Color.WHITE);
@@ -207,7 +208,7 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

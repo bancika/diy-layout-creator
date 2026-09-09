@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -167,7 +168,7 @@ public class MB102PowerSupply extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(boardX + 1, boardY + boardH / 2.0 - 5, 10, 10));
 
       // USB-A Connector (Center)
-      drawUsbA(g2d, boardX + 45, boardY + boardH / 2.0 - 22, 48, 44, "USB");
+      MakerBoardPainter.drawUsbA(g2d, boardX + 45, boardY + boardH / 2.0 - 22, 48, 44, "USB");
 
       // Push Button Latch Switch (Left-ish)
       g2d.setColor(Color.LIGHT_GRAY);
@@ -180,8 +181,8 @@ public class MB102PowerSupply extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(boardX + 85, boardY + 54, 10, 10));
 
       // AMS1117 Voltage Regulators (3.3V and 5.0V)
-      drawChip(g2d, boardX + 110, boardY + 70, 28, 22, "3.3V");
-      drawChip(g2d, boardX + 110, boardY + boardH - 92, 28, 22, "5.0V");
+      MakerBoardPainter.drawChip(g2d, boardX + 110, boardY + 70, 28, 22, "3.3V");
+      MakerBoardPainter.drawChip(g2d, boardX + 110, boardY + boardH - 92, 28, 22, "5.0V");
 
       // Voltage Selection Jumpers (Top & Bottom rail selectors)
       g2d.setColor(JUMPER_YELLOW);
@@ -206,7 +207,7 @@ public class MB102PowerSupply extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw header pins connecting to breadboard rails
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

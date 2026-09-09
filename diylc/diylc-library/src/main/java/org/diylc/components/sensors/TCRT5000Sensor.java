@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -152,7 +153,7 @@ public class TCRT5000Sensor extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(boardX - 6, boardY + boardH / 2.0 + 1, 14, 14));
 
       // LM393 Comparator IC (Center)
-      drawChip(g2d, boardX + 45, boardY + boardH / 2.0 - 14, 30, 28, "393");
+      MakerBoardPainter.drawChip(g2d, boardX + 45, boardY + boardH / 2.0 - 14, 30, 28, "393");
 
       // Sensitivity Trimmer Potentiometer (Right Center)
       g2d.setColor(POT_BLUE);
@@ -181,7 +182,7 @@ public class TCRT5000Sensor extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 4 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -142,8 +143,8 @@ public class PIRMotionSensor extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 2 Corner mounting holes
-      drawMountingHole(g2d, boardX + 15, boardY + 15, 16);
-      drawMountingHole(g2d, boardX + boardW - 15, boardY + 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 15, boardY + 15, 16);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 15, boardY + 15, 16);
 
       // Large central white Fresnel lens dome
       double domeD = new Size(20.0d, SizeUnit.mm).convertToPixels();
@@ -173,7 +174,7 @@ public class PIRMotionSensor extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

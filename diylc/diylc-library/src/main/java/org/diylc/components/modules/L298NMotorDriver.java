@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -163,10 +164,10 @@ public class L298NMotorDriver extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 4 Mounting holes
-      drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + 20, boardY + boardSizePx - 20, 20);
-      drawMountingHole(g2d, boardX + boardSizePx - 20, boardY + 20, 20);
-      drawMountingHole(g2d, boardX + boardSizePx - 20, boardY + boardSizePx - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + boardSizePx - 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 20, boardY + 20, 20);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 20, boardY + boardSizePx - 20, 20);
 
       // Large black aluminum heatsink in center
       double hsW = boardSizePx - 100;
@@ -185,7 +186,7 @@ public class L298NMotorDriver extends AbstractMakerBoard {
       }
 
       // L298 Multiwatt IC mounted to heatsink
-      drawChip(g2d, hsX + (hsW - 100) / 2.0, hsY + hsH - 15, 100, 30, "L298N");
+      MakerBoardPainter.drawChip(g2d, hsX + (hsW - 100) / 2.0, hsY + hsH - 15, 100, 30, "L298N");
 
       // Logic header black block
       g2d.setColor(HEADER_BODY_COLOR);
@@ -211,7 +212,7 @@ public class L298NMotorDriver extends AbstractMakerBoard {
     drawTerminalBlock(g2d, 5, 2, false, 1, 38.0, outlineMode, drawingObserver);
 
     // Draw logic header pins
-    drawPins(g2d, 7, 6, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 7, 6, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

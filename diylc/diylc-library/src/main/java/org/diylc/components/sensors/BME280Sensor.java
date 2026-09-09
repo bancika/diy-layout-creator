@@ -37,6 +37,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -142,7 +143,7 @@ public class BME280Sensor extends AbstractMakerBoard {
 
     if (!outlineMode) {
       // 1 Mounting Hole (Right side)
-      drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 20, 14);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 16, boardY + boardH - 20, 14);
 
       // BME280 Metal Sensor Can with vent hole (Center)
       double sx = boardX + 35;
@@ -156,7 +157,7 @@ public class BME280Sensor extends AbstractMakerBoard {
       g2d.fill(new Ellipse2D.Double(sx + 5, sy + 5, 4, 4));
 
       // LDO Voltage Regulator (Left)
-      drawChip(g2d, boardX + 12, boardY + boardH - 32, 16, 16, "");
+      MakerBoardPainter.drawChip(g2d, boardX + 12, boardY + boardH - 32, 16, 16, "");
 
       // Silk Screen Text
       g2d.setColor(Color.WHITE);
@@ -167,7 +168,7 @@ public class BME280Sensor extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw 6 header pins
-    drawPins(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
