@@ -88,11 +88,22 @@ public class RaspberryPiPico extends AbstractMakerBoard {
   public static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
 
+  public static Size MOUNTING_HOLE_DIAMETER = new Size(2.1d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_DISTANCE_X = new Size(11.4d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_MARGIN_Y = new Size(2.0d, SizeUnit.mm);
+
+  public static Size BOOTSEL_WIDTH = new Size(3.0d, SizeUnit.mm);
+  public static Size BOOTSEL_LENGTH = new Size(4.0d, SizeUnit.mm);
+  public static Size BOOTSEL_OFFSET_X = new Size(3.5d, SizeUnit.mm);
+  public static Size BOOTSEL_OFFSET_Y = new Size(10.0d, SizeUnit.mm);
+  public static Size BOOTSEL_LABEL_OFFSET = new Size(1.3d, SizeUnit.mm);
+
   public static Size DEBUG_PAD_OFFSET_X = new Size(7.38d, SizeUnit.mm);
   public static Size DEBUG_PAD_OFFSET_Y = new Size(19.8d, SizeUnit.mm);
   public static Size WIFI_WIDTH = new Size(12.0d, SizeUnit.mm);
-  public static Size WIFI_LENGTH = new Size(10.0d, SizeUnit.mm);
-  public static Size WIFI_OFFSET_Y = new Size(34.0d, SizeUnit.mm);
+  public static Size WIFI_LENGTH = new Size(11.0d, SizeUnit.mm);
+  // measured from the bottom board edge to the center of the shield, not to its top edge
+  public static Size WIFI_OFFSET_Y = new Size(12.2d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..19)
@@ -219,10 +230,14 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
     Area boardArea = new Area(new Rectangle2D.Double(boardX, boardY, boardW, boardH));
 
-    double spacing = PIN_SPACING.convertToPixels();
-    double pinY = boardY + pin1OffsetY;
-    subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX);
-    subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX + boardW);
+    // the H variant ships with headers already soldered on and has plain edges instead of the
+    // castellated ones
+    if (!headers) {
+      double spacing = PIN_SPACING.convertToPixels();
+      double pinY = boardY + pin1OffsetY;
+      subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX);
+      subtractCastellationNotches(boardArea, pinY, 20, spacing, boardX + boardW);
+    }
 
     return boardArea;
   }
@@ -263,22 +278,43 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
+      // Mounting holes, 2mm in from the top and bottom edges and symmetrical around the center line
+      double holeDiameter = MOUNTING_HOLE_DIAMETER.convertToPixels();
+      double holeDistX = MOUNTING_HOLE_DISTANCE_X.convertToPixels() / 2.0;
+      double holeMarginY = MOUNTING_HOLE_MARGIN_Y.convertToPixels();
+      double holeCenterX = boardX + boardW / 2.0;
+      double topHoleY = boardY + holeMarginY;
+      double bottomHoleY = boardY + boardH - holeMarginY;
+      drawMountingHole(g2d, holeCenterX - holeDistX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, holeCenterX + holeDistX, topHoleY, holeDiameter);
+      drawMountingHole(g2d, holeCenterX - holeDistX, bottomHoleY, holeDiameter);
+      drawMountingHole(g2d, holeCenterX + holeDistX, bottomHoleY, holeDiameter);
+
       // Micro USB Connector
       double usbW = USB_MICRO_WIDTH.convertToPixels();
       double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
       drawMicroUsb(g2d, boardX + (boardW - usbW) / 2.0, boardY - usbOverhang, usbW, usbH, "USB");
 
-      // BOOTSEL button
-      double btnW = BUTTON_WIDTH.convertToPixels();
-      double btnH = BUTTON_LENGTH.convertToPixels();
-      double btnX = boardX + (boardW - btnW) / 2.0;
-      double btnY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
+      // BOOTSEL button, sitting left of the board center line
+      double btnW = BOOTSEL_WIDTH.convertToPixels();
+      double btnH = BOOTSEL_LENGTH.convertToPixels();
+      double btnCenterX = boardX + boardW / 2.0 - BOOTSEL_OFFSET_X.convertToPixels();
+      double btnX = btnCenterX - btnW / 2.0;
+      double btnY = boardY + BOOTSEL_OFFSET_Y.convertToPixels();
       drawButton(g2d, btnX, btnY, btnW, btnH);
 
+      // the label does not fit next to the button unless it is turned to read bottom to top,
+      // the way the real board prints it
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "BOOTSEL", boardX + boardW / 2.0, btnY - 7, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      double labelX = btnX - BOOTSEL_LABEL_OFFSET.convertToPixels();
+      double labelY = btnY + btnH / 2.0;
+      AffineTransform oldLabelTx = g2d.getTransform();
+      g2d.rotate(-Math.PI / 2, labelX, labelY);
+      StringUtils.drawCenteredText(g2d, "BOOTSEL", labelX, labelY, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+      g2d.setTransform(oldLabelTx);
 
       // RP2040 chip
       double chipSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
@@ -309,11 +345,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
             2 * spacing + 2 * boxMarginX,
             2 * boxMarginY));
 
-        // Gray WiFi chip (metal shield) at the bottom of the board
+        // Shielded CYW43439 wireless module, occupying the spot the Pi logo takes on the
+        // non-wireless boards
         double wifiW = WIFI_WIDTH.convertToPixels();
         double wifiH = WIFI_LENGTH.convertToPixels();
         double wifiX = boardX + (boardW - wifiW) / 2.0;
-        double wifiY = boardY + WIFI_OFFSET_Y.convertToPixels();
+        double wifiY = boardY + boardH - WIFI_OFFSET_Y.convertToPixels() - wifiH / 2.0;
         drawMetalConnector(g2d, wifiX, wifiY, wifiW, wifiH, "");
       } else {
         // Raspberry Pi Logo at bottom of the board (~9mm height)
