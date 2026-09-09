@@ -323,5 +323,58 @@ public class TeensyTest {
     Assert.assertEquals(Teensy.BOARD_LENGTH_40.convertToPixels(), bounds.getHeight(), 0.1);
   }
 
+  @Test
+  public void testSilkPinLabels() {
+    // the silkscreen covers the two pin rows only; the bottom cluster and the VUSB pad are
+    // printed on the underside of the board
+    Assert.assertEquals(28, Teensy.SILK_NAMES_40.length);
+    Assert.assertEquals(48, Teensy.SILK_NAMES_41.length);
+    Assert.assertEquals(28, Teensy.SILK_NAMES_32.length);
+
+    Teensy teensy = new Teensy();
+
+    // the silkscreen carries what is printed on the board, which is not the node name: the
+    // alternate functions are dropped and the supply pads are spelled out
+    Assert.assertEquals("0 (RX1/CS1/CRX2)", teensy.getControlPointNodeName(1));
+    Assert.assertEquals("0", teensy.getSilkPinLabel(1));
+    Assert.assertEquals("GND", teensy.getSilkPinLabel(0));
+    Assert.assertEquals("VIN", teensy.getSilkPinLabel(14));
+    Assert.assertEquals("3.3V", teensy.getSilkPinLabel(16));
+    Assert.assertEquals("23", teensy.getSilkPinLabel(17));
+
+    // the three pads the compact boards have no room to print sit level with the five-hole cluster
+    // and the VUSB pad
+    Assert.assertEquals("", teensy.getSilkPinLabel(13));
+    Assert.assertEquals("", teensy.getSilkPinLabel(15));
+    Assert.assertEquals("", teensy.getSilkPinLabel(27));
+
+    Teensy teensy41 = new Teensy();
+    teensy41.setVersion(Teensy.TeensyVersion.Teensy_4_1);
+    // the longer board prints all of its pads, none of them being level with the cluster
+    Assert.assertEquals("12", teensy41.getSilkPinLabel(13));
+    Assert.assertEquals("GND", teensy41.getSilkPinLabel(25));
+    Assert.assertEquals("3.3V", teensy41.getSilkPinLabel(14));
+    Assert.assertEquals("32", teensy41.getSilkPinLabel(23));
+    Assert.assertEquals("VIN", teensy41.getSilkPinLabel(24));
+    Assert.assertEquals("33", teensy41.getSilkPinLabel(47));
+
+    Teensy teensy32 = new Teensy();
+    teensy32.setVersion(Teensy.TeensyVersion.Teensy_3_2);
+    Assert.assertEquals("AGND", teensy32.getControlPointNodeName(15));
+    Assert.assertEquals("", teensy32.getSilkPinLabel(13));
+    Assert.assertEquals("", teensy32.getSilkPinLabel(15));
+    Assert.assertEquals("", teensy32.getSilkPinLabel(27));
+    Assert.assertEquals("14", teensy32.getSilkPinLabel(26));
+
+    for (Teensy.TeensyVersion version : Teensy.TeensyVersion.values()) {
+      Teensy board = new Teensy();
+      board.setVersion(version);
+      for (int i = 0; i < board.getControlPointCount(); i++) {
+        Assert.assertNotNull(version + " pin " + i + " should have a silkscreen label",
+            board.getSilkPinLabel(i));
+      }
+    }
+  }
+
   private static final double PIN_SPACING_PX = new Size(0.1d, SizeUnit.in).convertToPixels();
 }

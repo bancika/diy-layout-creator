@@ -99,6 +99,8 @@ public class RaspberryPiPico extends AbstractMakerBoard {
   public static Size BOOTSEL_OFFSET_X = new Size(3.5d, SizeUnit.mm);
   public static Size BOOTSEL_OFFSET_Y = new Size(10.0d, SizeUnit.mm);
   public static Size BOOTSEL_LABEL_OFFSET = new Size(1.3d, SizeUnit.mm);
+  // measured from the top edge of the chip up to the middle of the model name
+  public static Size MODEL_LABEL_OFFSET = new Size(2.5d, SizeUnit.mm);
 
   public static Size DEBUG_PAD_OFFSET_X = new Size(7.38d, SizeUnit.mm);
   public static Size DEBUG_PAD_OFFSET_Y = new Size(19.8d, SizeUnit.mm);
@@ -325,6 +327,13 @@ public class RaspberryPiPico extends AbstractMakerBoard {
           ? boardY + new Size(23.0d, SizeUnit.mm).convertToPixels() - new Size(0.1d, SizeUnit.in).convertToPixels()
           : boardY + new Size(23.0d, SizeUnit.mm).convertToPixels();
       MakerBoardPainter.drawChip(g2d, chipX, chipY, chipSize, chipSize, isV2() ? "RP2350" : "RP2040");
+
+      // Model name, in the gap the board leaves between the BOOTSEL button and the chip
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(SILK_FONT);
+      StringUtils.drawCenteredText(g2d, getVersion().toString(), boardX + boardW / 2.0,
+          chipY - MODEL_LABEL_OFFSET.convertToPixels(), HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
 
       if (isW()) {
         double spacing = PIN_SPACING.convertToPixels();

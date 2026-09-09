@@ -84,6 +84,9 @@ public class Teensy extends AbstractMakerBoard {
   public static Color PAD_COLOR = GOLD_COLOR;
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
+  // PJRC prints the pad names tighter to the pads than the Arduino boards do
+  public static Size SILK_LABEL_OFFSET = new Size(1.6d, SizeUnit.mm);
+
   // ===== Teensy 4.0 dimensions (PJRC dimensions_teensy40.png) =====
   // 35.56 mm x 17.78 mm (1.4" x 0.7")
   public static Size BOARD_WIDTH_40 = new Size(17.78d, SizeUnit.mm);
@@ -125,6 +128,20 @@ public class Teensy extends AbstractMakerBoard {
       "VUSB"
   };
 
+  // What the board prints between the two rows, which is shorter than the node name: the
+  // alternate functions the node names carry are not silkscreened at all, and the pads of the
+  // bottom cluster and the severable VUSB pad are printed on the underside, so these arrays cover
+  // the two pin rows only.
+  //
+  // The compact boards leave three of them blank because there is no room for them: the two bottom
+  // pads sit level with the five-hole cluster and the right ground with the VUSB pad.
+  public static final String[] SILK_NAMES_40 = new String[] {
+      // Left row (0..13)
+      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
+      // Right row (14..27)
+      "VIN", "", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
+  };
+
   // ===== Teensy 4.1 Pinout (65 pins total) =====
   // Left row (0..23, top to bottom): GND, 0..12, 3.3V, 24..32
   // Right row (24..47, top to bottom): VIN, GND, 3.3V, 23..13, GND, 41..33
@@ -155,6 +172,15 @@ public class Teensy extends AbstractMakerBoard {
       "VUSB"
   };
 
+  public static final String[] SILK_NAMES_41 = new String[] {
+      // Left row (0..23)
+      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "3.3V", "24",
+      "25", "26", "27", "28", "29", "30", "31", "32",
+      // Right row (24..47)
+      "VIN", "GND", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13",
+      "GND", "41", "40", "39", "38", "37", "36", "35", "34", "33"
+  };
+
   // ===== Teensy 3.2 Pinout (34 pins total) =====
   // Same edge-pin layout as the 4.0: two 1x14 rows, a 5-hole cluster on the bottom edge and the
   // severable VUSB pad next to Vin. Labels follow the PJRC Teensy 3.2 pinout card.
@@ -170,6 +196,16 @@ public class Teensy extends AbstractMakerBoard {
       "VBAT", "3.3V (End)", "GND (End)", "Program", "A14/DAC",
       // VUSB (33)
       "VUSB"
+  };
+
+  // Sharing the 4.0's outline, the 3.2 has the same three pads it cannot print. The one it brings
+  // out to the header in their place is the analog ground, one pin below Vin, and that is the pad
+  // the VUSB pad sits level with.
+  public static final String[] SILK_NAMES_32 = new String[] {
+      // Left row (0..13)
+      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
+      // Right row (14..27)
+      "VIN", "", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
   };
 
   private TeensyVersion version = TeensyVersion.Teensy_4_0;
@@ -232,6 +268,21 @@ public class Teensy extends AbstractMakerBoard {
     }
   }
 
+  private String[] getSilkNames() {
+    switch (getVersion()) {
+      case Teensy_4_1:
+        return SILK_NAMES_41;
+      case Teensy_3_2:
+        return SILK_NAMES_32;
+      default:
+        return SILK_NAMES_40;
+    }
+  }
+
+  private int getPinsPerRow() {
+    return isCompact() ? 14 : 24;
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
     String[] names = getPinNames();
@@ -242,8 +293,20 @@ public class Teensy extends AbstractMakerBoard {
   }
 
   @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  protected String getSilkPinLabel(int index) {
+    String[] silkNames = getSilkNames();
+    if (index >= 0 && index < silkNames.length) {
+      return silkNames[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
+  @Override
+  protected Size getPinLabelOffset() {
+    return SILK_LABEL_OFFSET;
+  }
+
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
     double rowSpacing = ROW_SPACING.convertToPixels();
 
@@ -272,7 +335,7 @@ public class Teensy extends AbstractMakerBoard {
       relativeOffsets[33][0] = rowSpacing - spacing;
       relativeOffsets[33][1] = spacing;
 
-      rotatePoints(firstPoint, relativeOffsets);
+      return relativeOffsets;
     } else {
       double[][] relativeOffsets = new double[PIN_NAMES_41.length][2];
 
@@ -320,8 +383,13 @@ public class Teensy extends AbstractMakerBoard {
       relativeOffsets[64][0] = rowSpacing - spacing;
       relativeOffsets[64][1] = spacing;
 
-      rotatePoints(firstPoint, relativeOffsets);
+      return relativeOffsets;
     }
+  }
+
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -426,6 +494,9 @@ public class Teensy extends AbstractMakerBoard {
           ? chipY + chipH + new Size(2.5d, SizeUnit.mm).convertToPixels()
           : chipY + chipH + new Size(3.0d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, silkText, centerX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
+      // Pad names, printed between the two rows the way they are on the board
+      drawPinLabels(g2d, x, y, getRelativeOffsets(), getPinsPerRow(), SILK_COLOR);
     }
 
     drawingObserver.stopTracking();

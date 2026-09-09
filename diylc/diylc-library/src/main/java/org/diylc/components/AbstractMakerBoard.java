@@ -280,6 +280,14 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
+   * Gap between a pad and the name printed next to it. Boards that silkscreen their pad names
+   * tighter than the Arduino convention override this.
+   */
+  protected Size getPinLabelOffset() {
+    return PIN_LABEL_OFFSET;
+  }
+
+  /**
    * Helper to draw rotated control point / pin names next to the pins for dual-row DIP/header boards.
    *
    * @param g2d Graphics2D context (already transformed for board orientation)
@@ -308,7 +316,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   protected void drawPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
       int pinsPerRow, Color silkColor) {
     if (offsets == null || offsets.length == 0) return;
-    double labelOffset = PIN_LABEL_OFFSET.convertToPixels();
+    double labelOffset = getPinLabelOffset().convertToPixels();
 
     g2d.setColor(silkColor);
     g2d.setFont(PIN_FONT);
