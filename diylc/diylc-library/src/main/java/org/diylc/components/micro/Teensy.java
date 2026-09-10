@@ -61,9 +61,9 @@ public class Teensy extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum TeensyVersion {
+    Teensy_3_2("Teensy 3.2"),
     Teensy_4_0("Teensy 4.0"),
-    Teensy_4_1("Teensy 4.1"),
-    Teensy_3_2("Teensy 3.2");
+    Teensy_4_1("Teensy 4.1");
 
     private final String label;
 
