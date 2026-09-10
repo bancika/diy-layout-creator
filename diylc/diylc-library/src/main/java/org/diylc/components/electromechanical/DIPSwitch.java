@@ -41,6 +41,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
@@ -70,6 +71,7 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
   private SwitchCount switchCount = SwitchCount._8;
+  private Integer selectedPosition;
   private Size pinSpacing = new Size(0.1d, SizeUnit.in);
   private Size rowSpacing = new Size(0.3d, SizeUnit.in);
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -583,5 +585,17 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
     while (builder.length() < getSwitchCount().getValue())
       builder.append("0");
     return builder.toString();
+  }
+
+  @DynamicEditableProperty(source = DIPSwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

@@ -62,4 +62,9 @@ public class SwitchTestComponent extends TwoPointTestComponent implements ISwitc
   public boolean arePointsConnected(int index1, int index2, int position) {
     return position == 0;
   }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    // this stub always reports the first position, there is nothing to select
+  }
 }

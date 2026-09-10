@@ -497,5 +497,10 @@ public class NetlistBuilder {
     public boolean arePointsConnected(int index1, int index2, int position) {
       return false;
     }
+
+    @Override
+    public void setSelectedPosition(Integer selectedPosition) {
+      // a placeholder switch has a single position that is always current
+    }
   }
 }
