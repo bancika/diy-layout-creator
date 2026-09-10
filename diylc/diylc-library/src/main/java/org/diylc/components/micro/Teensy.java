@@ -134,9 +134,9 @@ public class Teensy extends AbstractMakerBoard {
   // pads sit level with the five-hole cluster and the right ground with the VUSB pad.
   public static final String[] SILK_NAMES_40 = new String[] {
       // Left row (0..13)
-      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
+      "G", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
       // Right row (14..27)
-      "VIN", "", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
+      "5V", "", "3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
   };
 
   // ===== Teensy 4.1 Pinout (65 pins total) =====
@@ -171,11 +171,11 @@ public class Teensy extends AbstractMakerBoard {
 
   public static final String[] SILK_NAMES_41 = new String[] {
       // Left row (0..23)
-      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "3.3V", "24",
+      "G", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "3.3V", "24",
       "25", "26", "27", "28", "29", "30", "31", "32",
       // Right row (24..47)
-      "VIN", "GND", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13",
-      "GND", "41", "40", "39", "38", "37", "36", "35", "34", "33"
+      "5V", "G", "3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13",
+      "G", "41", "40", "39", "38", "37", "36", "35", "34", "33"
   };
 
   // ===== Teensy 3.2 Pinout (34 pins total) =====
@@ -200,9 +200,9 @@ public class Teensy extends AbstractMakerBoard {
   // the VUSB pad sits level with.
   public static final String[] SILK_NAMES_32 = new String[] {
       // Left row (0..13)
-      "GND", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
+      "G", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "",
       // Right row (14..27)
-      "VIN", "", "3.3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
+      "5V", "", "3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", ""
   };
 
   private TeensyVersion version = TeensyVersion.Teensy_4_0;
