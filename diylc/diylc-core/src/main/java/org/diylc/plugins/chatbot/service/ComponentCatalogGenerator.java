@@ -38,6 +38,8 @@ import org.diylc.common.Percentage;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.measures.*;
+import org.diylc.plugins.chatbot.model.pinout.AiPinout;
+import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 
 /**
@@ -60,7 +62,7 @@ public class ComponentCatalogGenerator {
   private static final Logger LOG = Logger.getLogger(ComponentCatalogGenerator.class);
 
   /** Current DIYLC version — should match pom.xml */
-  private static final String VERSION = "6.2.0";
+  private static final String VERSION = "6.5.0";
 
   /**
    * Property types that are purely cosmetic and not useful for LLM-driven circuit editing.
@@ -82,6 +84,8 @@ public class ComponentCatalogGenerator {
 
     LOG.info("Generating component catalog in: " + outputDir);
 
+    new File(outputDir).mkdirs();
+
     ComponentProcessor processor = ComponentProcessor.getInstance();
     Map<String, List<ComponentType>> componentTypes = processor.getComponentTypes();
 
@@ -95,9 +99,7 @@ public class ComponentCatalogGenerator {
       for (ComponentType ct : entry.getValue()) {
         // Build full catalog entry
         Map<String, Object> comp = buildFullEntry(ct, processor);
-        if (comp != null) {
-          fullComponents.add(comp);
-        }
+        fullComponents.add(comp);
         // Build index entry
         Map<String, String> idx = new LinkedHashMap<>();
         idx.put("name", (String) comp.get("name"));
@@ -107,6 +109,13 @@ public class ComponentCatalogGenerator {
 
       indexEntries.sort((a, b) -> a.get("name").compareTo(b.get("name")));
       indexCategories.put(category, indexEntries);
+    }
+
+    // Component classes live in diylc-library and are found by scanning the runtime classpath, so
+    // running this with diylc-core alone finds nothing and used to write an empty catalog
+    if (fullComponents.isEmpty()) {
+      throw new IllegalStateException("No component types found. Run the generator with "
+          + "diylc-library on the classpath, not diylc-core alone.");
     }
 
     // Sort full components by category then name for consistency
@@ -158,6 +167,9 @@ public class ComponentCatalogGenerator {
     // Extract editable properties
     try {
       List<PropertyWrapper> properties = processor.extractProperties(ct.getInstanceClass());
+      // extractProperties follows Class.getMethods(), whose order the JVM does not promise, so
+      // sort the same way the property editor does to keep regenerated catalogs diffable
+      properties.sort(ComparatorFactory.getInstance().getDefaultPropertyComparator());
       List<Map<String, Object>> propList = new ArrayList<>();
 
       // Also read default values from a fresh instance
@@ -221,6 +233,15 @@ public class ComponentCatalogGenerator {
       }
     } catch (Exception e) {
       LOG.warn("Failed to extract properties for " + ct.getName(), e);
+    }
+
+    try {
+      AiPinout pinout = PinoutAnalyzer.analyze(ct, processor);
+      if (pinout != null) {
+        comp.put("pinout", pinout);
+      }
+    } catch (Exception e) {
+      LOG.warn("Failed to analyze pinout for " + ct.getName(), e);
     }
 
     return comp;

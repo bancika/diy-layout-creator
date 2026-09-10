@@ -38,6 +38,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.electromechanical.SwitchPositionPropertyValueSource;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -46,6 +47,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -77,6 +79,7 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
   transient protected Shape body;
   
   private boolean showMarkers = true;
+  private Integer selectedPosition;
 
   public S1Switch() {
     super();
@@ -315,5 +318,17 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
     int margin = 20;
     Rectangle2D bounds = getBody().getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @DynamicEditableProperty(source = SwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

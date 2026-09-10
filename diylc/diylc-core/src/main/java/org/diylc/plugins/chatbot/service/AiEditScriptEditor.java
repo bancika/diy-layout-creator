@@ -492,28 +492,31 @@ public class AiEditScriptEditor implements IProjectEditor {
     }
     
     int resolvedIndex = -1;
-    
-    // First, try to match by node name
-    for (int i = 0; i < comp.getControlPointCount(); i++) {
-      String nodeName = comp.getControlPointNodeName(i);
-      if (pinStr.equalsIgnoreCase(nodeName)) {
-        resolvedIndex = i;
-        break;
+
+    // A control point index is what both the project description and the component catalog give
+    // the model, so a numeric reference is an index and nothing else. Node names must not be tried
+    // first: they are usually the one-based lug numbers, which made "R1.1" land on the resistor's
+    // first lead and left the second lead unreachable.
+    try {
+      int pinIndex = Integer.parseInt(pinStr.trim());
+      if (pinIndex >= 0 && pinIndex < comp.getControlPointCount()) {
+        resolvedIndex = pinIndex;
       }
+    } catch (NumberFormatException e) {
+      // not an index, so it must be a node name
     }
-    
-    // Fallback: try parsing as index
+
+    // Fallback: match by node name, which covers references written as "Tip" or "+"
     if (resolvedIndex == -1) {
-      try {
-        int pinIndex = Integer.parseInt(pinStr);
-        if (pinIndex >= 0 && pinIndex < comp.getControlPointCount()) {
-          resolvedIndex = pinIndex;
+      for (int i = 0; i < comp.getControlPointCount(); i++) {
+        String nodeName = comp.getControlPointNodeName(i);
+        if (pinStr.equalsIgnoreCase(nodeName)) {
+          resolvedIndex = i;
+          break;
         }
-      } catch (NumberFormatException e) {
-        // Ignored
       }
     }
-    
+
     if (resolvedIndex == -1) {
       warnings.add("Terminal reference pin not found (name or index): " + terminalRef);
       return null;

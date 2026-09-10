@@ -459,7 +459,11 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
 
   @Override
   public String getControlPointNodeName(int index) {
-    return "TerminalStrip" + index;
+    // points are laid out row by row: the front row first, then the back row it is bonded to,
+    // then the optional center row
+    int terminal = index % getTerminalCount() + 1;
+    char row = (char) ('A' + index / getTerminalCount());
+    return row + Integer.toString(terminal);
   }
 
   @Override
