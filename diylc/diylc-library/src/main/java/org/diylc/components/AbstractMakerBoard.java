@@ -128,6 +128,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
   public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
   public static Size PIN_LABEL_OFFSET = new Size(1.6d, SizeUnit.mm);
+  // diagonal labels are anchored by both coordinates at once, so they sit closer to the pad than
+  // the straight ones without touching it
+  public static Size PIN_LABEL_CORNER_OFFSET = new Size(1.0d, SizeUnit.mm);
   public static Size PIN_ROW_LABEL_OFFSET = new Size(2.0d, SizeUnit.mm);
   public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
   // labels along a row run across the board rather than down a column of pins, so they can afford
@@ -328,6 +331,50 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       // way a board prints them
       AffineTransform oldLabelTx = g2d.getTransform();
       g2d.rotate(leftRow ? Math.PI / 2 : -Math.PI / 2, textX, textY);
+      StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      g2d.setTransform(oldLabelTx);
+    }
+  }
+
+  /**
+   * Variant for boards too crowded for labels that stand square to their row. Each label is turned
+   * 45 degrees and tucked into the corner of its pad on the side the row reads towards - the top
+   * right corner for the left row and the top left corner for the right one - which is the trick
+   * the Teensy 4.1 uses to fit its pad names between two rows a tenth of an inch apart.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated top-left pin X coordinate (P0.getX())
+   * @param y Unrotated top-left pin Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param pinsPerRow Number of pins in each of the two rows
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawDiagonalPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int pinsPerRow, Color silkColor) {
+    if (offsets == null || offsets.length == 0) return;
+    double cornerOffset = PIN_LABEL_CORNER_OFFSET.convertToPixels();
+    double straightOffset = PIN_LABEL_OFFSET.convertToPixels();
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_FONT);
+
+    for (int i = 0; i < 2 * pinsPerRow && i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      boolean leftRow = i < pinsPerRow;
+      // the pad that starts each row has the board edge above it rather than another pad, so it
+      // keeps the square on label the rest of the row has no room for
+      boolean square = i == 0 || i == pinsPerRow;
+      double offset = square ? straightOffset : cornerOffset;
+      double textX = x + offsets[i][0] + (leftRow ? offset : -offset);
+      double textY = y + offsets[i][1] - (square ? 0 : cornerOffset);
+
+      // the two rows slant away from each other so that each label runs along the diagonal gap
+      // between its own pad and the one above it
+      AffineTransform oldLabelTx = g2d.getTransform();
+      g2d.rotate((square ? Math.PI / 2 : Math.PI / 4) * (leftRow ? 1 : -1), textX, textY);
       StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       g2d.setTransform(oldLabelTx);
     }

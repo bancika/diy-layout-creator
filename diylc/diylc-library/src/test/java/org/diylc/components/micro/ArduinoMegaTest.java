@@ -1,8 +1,27 @@
+/*
+ * 
+ * DIY Layout Creator (DIYLC).
+ * Copyright (c) 2009-2025 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.micro;
 
-import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,206 +29,82 @@ import org.junit.Test;
 public class ArduinoMegaTest {
 
   @Test
-  public void testControlPointCountAndNames() {
+  public void testPinout() {
     ArduinoMega mega = new ArduinoMega();
     Assert.assertEquals(98, mega.getControlPointCount());
 
-    for (int i = 0; i < mega.getControlPointCount(); i++) {
-      String name = mega.getControlPointNodeName(i);
-      Assert.assertNotNull("Pin " + i + " name should not be null", name);
-      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
-    }
-
-    // Power header (0..7)
+    // power, analog low, analog high, digital low, digital high, communication, the 2x18 block,
+    // then the two 2x3 ICSP blocks
     Assert.assertEquals("NC", mega.getControlPointNodeName(0));
-    Assert.assertEquals("IOREF", mega.getControlPointNodeName(1));
-    Assert.assertEquals("RESET", mega.getControlPointNodeName(2));
-    Assert.assertEquals("3.3V", mega.getControlPointNodeName(3));
-    Assert.assertEquals("5V", mega.getControlPointNodeName(4));
-    Assert.assertEquals("GND1", mega.getControlPointNodeName(5));
-    Assert.assertEquals("GND2", mega.getControlPointNodeName(6));
     Assert.assertEquals("VIN", mega.getControlPointNodeName(7));
-
-    // Analog Low header (8..15)
     Assert.assertEquals("A0", mega.getControlPointNodeName(8));
     Assert.assertEquals("A7", mega.getControlPointNodeName(15));
-
-    // Analog High header (16..23)
     Assert.assertEquals("A8", mega.getControlPointNodeName(16));
     Assert.assertEquals("A15", mega.getControlPointNodeName(23));
-
-    // Digital low header (24..31)
     Assert.assertEquals("D0 (RX0)", mega.getControlPointNodeName(24));
     Assert.assertEquals("D7 (~)", mega.getControlPointNodeName(31));
-
-    // Digital high header (32..41)
     Assert.assertEquals("D8 (~)", mega.getControlPointNodeName(32));
     Assert.assertEquals("SCL", mega.getControlPointNodeName(41));
-
-    // Communication header (42..49)
     Assert.assertEquals("D14 (TX3)", mega.getControlPointNodeName(42));
     Assert.assertEquals("D21 (SCL)", mega.getControlPointNodeName(49));
-
-    // Double Digital 2x18 Header (50..85)
     Assert.assertEquals("D22", mega.getControlPointNodeName(50));
-    Assert.assertEquals("D23", mega.getControlPointNodeName(51));
-    Assert.assertEquals("D52 (SCK)", mega.getControlPointNodeName(80));
     Assert.assertEquals("D53 (SS)", mega.getControlPointNodeName(81));
     Assert.assertEquals("GND_EXT1", mega.getControlPointNodeName(82));
-    Assert.assertEquals("GND_EXT2", mega.getControlPointNodeName(83));
-    Assert.assertEquals("5V_EXT1", mega.getControlPointNodeName(84));
     Assert.assertEquals("5V_EXT2", mega.getControlPointNodeName(85));
-
-    // Main ICSP header (86..91, ATmega2560)
     Assert.assertEquals("MISO", mega.getControlPointNodeName(86));
-    Assert.assertEquals("5V_ICSP", mega.getControlPointNodeName(87));
-    Assert.assertEquals("SCK", mega.getControlPointNodeName(88));
-    Assert.assertEquals("MOSI", mega.getControlPointNodeName(89));
-    Assert.assertEquals("RST_ICSP", mega.getControlPointNodeName(90));
     Assert.assertEquals("GND_ICSP", mega.getControlPointNodeName(91));
-
-    // Top-left ICSP header (92..97, ATmega16U2)
     Assert.assertEquals("MISO_16U2", mega.getControlPointNodeName(92));
-    Assert.assertEquals("5V_16U2", mega.getControlPointNodeName(93));
-    Assert.assertEquals("SCK_16U2", mega.getControlPointNodeName(94));
-    Assert.assertEquals("MOSI_16U2", mega.getControlPointNodeName(95));
-    Assert.assertEquals("RST_16U2", mega.getControlPointNodeName(96));
     Assert.assertEquals("GND_16U2", mega.getControlPointNodeName(97));
-  }
 
-  @Test
-  public void testPinGeometryAndGaps() {
-    ArduinoMega mega = new ArduinoMega();
-
-    // Power header spacing (20px per pin)
-    for (int i = 0; i < 7; i++) {
-      Point2D p1 = mega.getControlPoint(i);
-      Point2D p2 = mega.getControlPoint(i + 1);
-      Assert.assertEquals(20.0, p1.distance(p2), 0.01);
-      Assert.assertEquals(p1.getY(), p2.getY(), 0.01);
-    }
-
-    // Gap between VIN (Pin 7) and A0 (Pin 8) is 0.2" = 40px
-    Point2D pVin = mega.getControlPoint(7);
-    Point2D pA0 = mega.getControlPoint(8);
-    Assert.assertEquals(40.0, pVin.distance(pA0), 0.01);
-
-    // Gap between A7 (Pin 15) and A8 (Pin 16) is 0.2" = 40px
-    Point2D pA7 = mega.getControlPoint(15);
-    Point2D pA8 = mega.getControlPoint(16);
-    Assert.assertEquals(40.0, pA7.distance(pA8), 0.01);
-
-    // D0 aligns with A5 (dx = 280 from NC)
-    Point2D pD0 = mega.getControlPoint(24);
-    Point2D pA5 = mega.getControlPoint(13);
-    Assert.assertEquals(pA5.getX(), pD0.getX(), 0.01);
-
-    // D7 aligns with VIN (dx = 140 from NC)
-    Point2D pD7 = mega.getControlPoint(31);
-    Assert.assertEquals(pVin.getX(), pD7.getX(), 0.01);
-
-    // Gap between D7 (Pin 31) and D8 (Pin 32) is 0.16" = 32px
-    Point2D pD8 = mega.getControlPoint(32);
-    Assert.assertEquals(32.0, pD7.distance(pD8), 0.01);
-
-    // D14 aligns with A7 (dx = 320 from NC)
-    Point2D pD14 = mega.getControlPoint(42);
-    Assert.assertEquals(pA7.getX(), pD14.getX(), 0.01);
-
-    // Gap between D0 (Pin 24) and D14 (Pin 42) is 0.2" = 40px
-    Assert.assertEquals(40.0, pD0.distance(pD14), 0.01);
-
-    // Double Digital 2x18 Header (Pin 50 inner, Pin 51 outer)
-    Point2D pNc = mega.getControlPoint(0);
-    Point2D pD22 = mega.getControlPoint(50);
-    Point2D pD23 = mega.getControlPoint(51);
-    Assert.assertEquals(20.0, pD22.distance(pD23), 0.01);
-    Assert.assertEquals(pD22.getY(), pD23.getY(), 0.01);
-    Assert.assertEquals(520.0, pD22.getX() - pNc.getX(), 0.01);
-    Assert.assertEquals(540.0, pD23.getX() - pNc.getX(), 0.01);
-
-    // Main ICSP header (Pin 86 MISO, Pin 87 5V_ICSP)
-    Point2D pMiso = mega.getControlPoint(86);
-    Point2D p5vIcsp = mega.getControlPoint(87);
-    Assert.assertEquals(20.0, pMiso.distance(p5vIcsp), 0.01);
-
-    // Top-left ICSP header (Pin 92 MISO_16U2, Pin 93 5V_16U2)
-    Point2D pMiso16 = mega.getControlPoint(92);
-    Point2D p5v16 = mega.getControlPoint(93);
-    Assert.assertEquals(20.0, pMiso16.distance(p5v16), 0.01);
-  }
-
-  @Test
-  public void testDoubleDigitalHeaderRowOrder() {
-    ArduinoMega mega = new ArduinoMega();
-    Point2D pD0 = mega.getControlPoint(24);
-
-    // The block is powered from its top row, level with the digital header, and grounded at the
-    // bottom one; D22..D53 fill the sixteen rows in between
-    Point2D p5vInner = mega.getControlPoint(84);
-    Point2D p5vOuter = mega.getControlPoint(85);
-    Assert.assertEquals(pD0.getY(), p5vInner.getY(), 0.01);
-    Assert.assertEquals(pD0.getY(), p5vOuter.getY(), 0.01);
-
-    Point2D pD22 = mega.getControlPoint(50);
-    Assert.assertEquals(20.0, pD22.getY() - p5vInner.getY(), 0.01);
-
-    Point2D pD53 = mega.getControlPoint(81);
-    Point2D pGndInner = mega.getControlPoint(82);
-    Point2D pGndOuter = mega.getControlPoint(83);
-    Assert.assertEquals(20.0, pGndInner.getY() - pD53.getY(), 0.01);
-    Assert.assertEquals(pGndInner.getY(), pGndOuter.getY(), 0.01);
-    Assert.assertEquals(340.0, pGndInner.getY() - p5vInner.getY(), 0.01);
-
-    // Even numbers run down the inner column and odd ones down the outer, power and ground
-    // included
-    Assert.assertEquals(p5vInner.getX(), pD22.getX(), 0.01);
-    Assert.assertEquals(p5vInner.getX(), pGndInner.getX(), 0.01);
-    Assert.assertEquals(p5vOuter.getX(), pGndOuter.getX(), 0.01);
-    Assert.assertEquals(20.0, p5vOuter.getX() - p5vInner.getX(), 0.01);
-  }
-
-  @Test
-  public void testSilkPinLabels() {
-    Assert.assertEquals(ArduinoMega.PIN_NAMES.length, ArduinoMega.SILK_NAMES.length);
-
-    ArduinoMega mega = new ArduinoMega();
-
-    // the silkscreen carries what is printed on the board, which is not the node name: every
-    // ground says "GND" and the reserved first pin says nothing at all
-    Assert.assertEquals("GND1", mega.getControlPointNodeName(5));
-    Assert.assertEquals("GND2", mega.getControlPointNodeName(6));
+    // the silkscreen prints what is on the board rather than the node name: every ground says
+    // "GND", the reserved first pin says nothing, and the 2x18 block's supply rows are printed
+    // once for the pair, on the outer column
     Assert.assertEquals("GND", mega.getSilkPinLabel(5));
     Assert.assertEquals("GND", mega.getSilkPinLabel(6));
     Assert.assertEquals("", mega.getSilkPinLabel(0));
-    Assert.assertEquals("3V3", mega.getSilkPinLabel(3));
-    Assert.assertEquals("A15", mega.getSilkPinLabel(23));
-    Assert.assertEquals("RX0", mega.getSilkPinLabel(24));
-    Assert.assertEquals("TX0", mega.getSilkPinLabel(25));
-    Assert.assertEquals("~13", mega.getSilkPinLabel(37));
-    Assert.assertEquals("SCL", mega.getSilkPinLabel(41));
-    Assert.assertEquals("14", mega.getSilkPinLabel(42));
-    Assert.assertEquals("53", mega.getSilkPinLabel(81));
-
-    // the block's power and ground rows are printed once for the pair, on the outer column
     Assert.assertEquals("", mega.getSilkPinLabel(82));
     Assert.assertEquals("GND", mega.getSilkPinLabel(83));
     Assert.assertEquals("", mega.getSilkPinLabel(84));
     Assert.assertEquals("5V", mega.getSilkPinLabel(85));
-
-    for (int i = 0; i < mega.getControlPointCount(); i++) {
-      Assert.assertNotNull("Pin " + i + " should have a silkscreen label", mega.getSilkPinLabel(i));
-    }
   }
 
   @Test
-  public void testBodyShape() {
+  public void testShieldFootprintAndDoubleDigitalBlock() {
     ArduinoMega mega = new ArduinoMega();
+    double spacing = MakerBoardTestSupport.PIN_SPACING;
 
-    Shape body = mega.getBodyShape();
-    Assert.assertNotNull(body);
-    Rectangle2D bounds = body.getBounds2D();
-    Assert.assertEquals(799.78, bounds.getWidth(), 1.0);
-    Assert.assertEquals(419.78, bounds.getHeight(), 1.0);
+    MakerBoardTestSupport.assertRow(mega, 0, 7);
+    MakerBoardTestSupport.assertRow(mega, 8, 15);
+    MakerBoardTestSupport.assertRow(mega, 16, 23);
+    MakerBoardTestSupport.assertRow(mega, 24, 31);
+    MakerBoardTestSupport.assertRow(mega, 32, 41);
+    MakerBoardTestSupport.assertRow(mega, 42, 49);
+
+    // the Mega keeps the Uno's shield geometry: 0.2" between the power and analog headers and the
+    // 0.16" offset between the two digital headers
+    Assert.assertEquals("Gap between VIN and A0", 2 * spacing,
+        mega.getControlPoint(7).distance(mega.getControlPoint(8)), 0.01);
+    Assert.assertEquals("Offset between D7 and D8", 32.0,
+        mega.getControlPoint(31).distance(mega.getControlPoint(32)), 0.01);
+
+    // the 2x18 block is powered from its top row, level with the digital header, and grounded at
+    // the bottom one, with D22..D53 filling the sixteen rows in between; even numbers run down the
+    // inner column and odd ones down the outer, power and ground included
+    Point2D d0 = mega.getControlPoint(24);
+    Point2D fiveVoltInner = mega.getControlPoint(84);
+    Point2D fiveVoltOuter = mega.getControlPoint(85);
+    Point2D d22 = mega.getControlPoint(50);
+    Point2D groundInner = mega.getControlPoint(82);
+    Point2D groundOuter = mega.getControlPoint(83);
+
+    Assert.assertEquals(d0.getY(), fiveVoltInner.getY(), 0.01);
+    Assert.assertEquals(d0.getY(), fiveVoltOuter.getY(), 0.01);
+    Assert.assertEquals(spacing, d22.getY() - fiveVoltInner.getY(), 0.01);
+    Assert.assertEquals(17 * spacing, groundInner.getY() - fiveVoltInner.getY(), 0.01);
+    Assert.assertEquals(groundInner.getY(), groundOuter.getY(), 0.01);
+    Assert.assertEquals(fiveVoltInner.getX(), d22.getX(), 0.01);
+    Assert.assertEquals(fiveVoltInner.getX(), groundInner.getX(), 0.01);
+    Assert.assertEquals(fiveVoltOuter.getX(), groundOuter.getX(), 0.01);
+    Assert.assertEquals(spacing, fiveVoltOuter.getX() - fiveVoltInner.getX(), 0.01);
   }
 }

@@ -84,6 +84,9 @@ public class Teensy extends AbstractMakerBoard {
   public static Color PAD_COLOR = GOLD_COLOR;
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
+  // gap between the Ethernet header pads and the silkscreen box printed around them
+  public static Size ETH_BOX_MARGIN = new Size(1.2d, SizeUnit.mm);
+
   // ===== Teensy 4.0 dimensions (PJRC dimensions_teensy40.png) =====
   // 35.56 mm x 17.78 mm (1.4" x 0.7")
   public static Size BOARD_WIDTH_40 = new Size(17.78d, SizeUnit.mm);
@@ -171,10 +174,10 @@ public class Teensy extends AbstractMakerBoard {
 
   public static final String[] SILK_NAMES_41 = new String[] {
       // Left row (0..23)
-      "G", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "3.3V", "24",
+      "G", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "3V", "24",
       "25", "26", "27", "28", "29", "30", "31", "32",
       // Right row (24..47)
-      "5V", "G", "3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13",
+      "5V", "", "3V", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13",
       "G", "41", "40", "39", "38", "37", "36", "35", "34", "33"
   };
 
@@ -448,10 +451,10 @@ public class Teensy extends AbstractMakerBoard {
       // Main MCU chip: NXP i.MX RT1062 BGA on the 4.x, Kinetis MK20DX256 LQFP-64 on the 3.2
       double chipW = isCompact()
           ? new Size(0.4d, SizeUnit.in).convertToPixels()
-          : new Size(12.0d, SizeUnit.mm).convertToPixels();
+          : new Size(11.0d, SizeUnit.mm).convertToPixels();
       double chipH = isCompact()
           ? new Size(0.4d, SizeUnit.in).convertToPixels()
-          : new Size(12.0d, SizeUnit.mm).convertToPixels();
+          : new Size(11.0d, SizeUnit.mm).convertToPixels();
       double chipX = centerX - chipW / 2.0;
       double chipY = isCompact()
           ? boardY + new Size(9.5d, SizeUnit.mm).convertToPixels() + new Size(0.1d, SizeUnit.in).convertToPixels()
@@ -476,6 +479,28 @@ public class Teensy extends AbstractMakerBoard {
         double sdX = centerX - sdW / 2.0;
         double sdY = boardY + boardH - sdH;
         MakerBoardPainter.drawMetalConnector(g2d, sdX, sdY, sdW, sdH, "SD");
+
+        // Silkscreen outline box grouping the six Ethernet pads, taken from the corner pads of the
+        // header so it follows them if the footprint moves
+        double[][] offsets = getRelativeOffsets();
+        double boxMargin = ETH_BOX_MARGIN.convertToPixels();
+        g2d.setColor(SILK_COLOR);
+        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+        g2d.draw(new Rectangle2D.Double(
+            x + offsets[53][0] - boxMargin,
+            y + offsets[53][1] - boxMargin,
+            offsets[58][0] - offsets[53][0] + 2 * boxMargin,
+            offsets[58][1] - offsets[53][1] + 2 * boxMargin));
+
+        // Silkscreen box around the USB host header, split so that the first pad sits in a square
+        // of its own the way the board marks pin 1. A half pitch margin is what squares it off.
+        double usbBoxMargin = PIN_SPACING.convertToPixels() / 2.0;
+        double usbBoxX = x + offsets[59][0] - usbBoxMargin;
+        double usbBoxY = y + offsets[59][1] - usbBoxMargin;
+        double usbBoxW = 2 * usbBoxMargin;
+        g2d.draw(new Rectangle2D.Double(usbBoxX, usbBoxY, usbBoxW,
+            offsets[63][1] - offsets[59][1] + 2 * usbBoxMargin));
+        g2d.draw(new Rectangle2D.Double(usbBoxX, usbBoxY, usbBoxW, usbBoxW));
       }
 
       // Silkscreen "TEENSY" label
@@ -488,7 +513,12 @@ public class Teensy extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, silkText, centerX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Pad names, printed between the two rows the way they are on the board
-      drawPinLabels(g2d, x, y, getRelativeOffsets(), getPinsPerRow(), SILK_COLOR);
+      // the 4.1 has to fit twenty four names down each side, so it prints them cornerwise
+      if (isCompact()) {
+        drawPinLabels(g2d, x, y, getRelativeOffsets(), getPinsPerRow(), SILK_COLOR);
+      } else {
+        drawDiagonalPinLabels(g2d, x, y, getRelativeOffsets(), getPinsPerRow(), SILK_COLOR);
+      }
     }
 
     drawingObserver.stopTracking();

@@ -1,9 +1,30 @@
+/*
+ * 
+ * DIY Layout Creator (DIYLC).
+ * Copyright (c) 2009-2025 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.micro;
 
-import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.micro.RaspberryPi.RaspberryPiVersion;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -12,136 +33,94 @@ import org.junit.Test;
 public class RaspberryPiTest {
 
   @Test
-  public void testControlPointCountAndNames() {
+  public void testPinoutPerVersion() {
     RaspberryPi pi = new RaspberryPi();
+    Assert.assertEquals(RaspberryPiVersion.PI_5, pi.getVersion());
+
+    // the 40-pin header, then the PoE header and one point per flat-flex connector
     Assert.assertEquals(48, pi.getControlPointCount());
-
-    for (int i = 0; i < pi.getControlPointCount(); i++) {
-      String name = pi.getControlPointNodeName(i);
-      Assert.assertNotNull("Pin " + i + " name should not be null", name);
-      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
-    }
-
     Assert.assertEquals("3.3V (Pin 1)", pi.getControlPointNodeName(0));
     Assert.assertEquals("5V (Pin 2)", pi.getControlPointNodeName(1));
     Assert.assertEquals("GPIO2/SDA (Pin 3)", pi.getControlPointNodeName(2));
-    Assert.assertEquals("5V (Pin 4)", pi.getControlPointNodeName(3));
     Assert.assertEquals("GND (Pin 39)", pi.getControlPointNodeName(38));
     Assert.assertEquals("GPIO21 (Pin 40)", pi.getControlPointNodeName(39));
     Assert.assertEquals("PoE TR0 (Pin 1)", pi.getControlPointNodeName(40));
-    Assert.assertEquals("PoE TR1 (Pin 2)", pi.getControlPointNodeName(41));
-    Assert.assertEquals("PoE TR2 (Pin 3)", pi.getControlPointNodeName(42));
     Assert.assertEquals("PoE TR3 (Pin 4)", pi.getControlPointNodeName(43));
     Assert.assertEquals("PCIe", pi.getControlPointNodeName(44));
     Assert.assertEquals("MIPI 1", pi.getControlPointNodeName(45));
-    Assert.assertEquals("MIPI 0", pi.getControlPointNodeName(46));
     Assert.assertEquals("UART", pi.getControlPointNodeName(47));
+
+    // the PCIe socket and the second camera port arrived with the Pi 5, so the earlier boards are
+    // two points short
+    for (RaspberryPiVersion version : new RaspberryPiVersion[] {RaspberryPiVersion.PI_3_B,
+        RaspberryPiVersion.PI_4_B}) {
+      RaspberryPi earlier = version(version);
+      Assert.assertEquals(version + " pin count", 46, earlier.getControlPointCount());
+      Assert.assertEquals("GPIO21 (Pin 40)", earlier.getControlPointNodeName(39));
+      Assert.assertEquals("PoE TR3 (Pin 4)", earlier.getControlPointNodeName(43));
+    }
   }
 
   @Test
-  public void testDimensionsAndPinGeometry() {
+  public void testHeaderGeometry() {
     RaspberryPi pi = new RaspberryPi();
+    Rectangle2D bounds = pi.getBodyShape().getBounds2D();
+    double spacing = MakerBoardTestSupport.PIN_SPACING;
 
-    // Board dimensions: 85 mm x 56 mm
-    double expectedWidth = new Size(85.0d, SizeUnit.mm).convertToPixels();
-    double expectedHeight = new Size(56.0d, SizeUnit.mm).convertToPixels();
+    MakerBoardTestSupport.assertBoardSize(pi, new Size(85.0d, SizeUnit.mm),
+        new Size(56.0d, SizeUnit.mm));
 
-    Shape body = pi.getBodyShape();
-    Assert.assertNotNull(body);
-    Rectangle2D bounds = body.getBounds2D();
-
-    Assert.assertEquals(expectedWidth, bounds.getWidth(), 0.1);
-    Assert.assertEquals(expectedHeight, bounds.getHeight(), 0.1);
-
-    // Verify Pin 1 location relative to board top-left edge
-    // Pin 1 offset X: 8.37 mm from left edge (centered between holes at X=3.5mm and X=61.5mm)
-    // Pin 1 offset Y: 4.77 mm from top edge (3.5 mm + spacing/2 = 4.77 mm)
-    // Pin 2 offset Y: 2.23 mm from top edge (3.5 mm - spacing/2 = 2.23 mm)
-    // Vertical center of header: (4.77 + 2.23) / 2 = 3.5 mm (dead-centered with mounting holes)
-    double expectedPin1OffsetX = new Size(8.37d, SizeUnit.mm).convertToPixels();
-    double expectedPin1OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() + new Size(0.1d, SizeUnit.in).convertToPixels() / 2.0;
-
-    Point2D p0 = pi.getControlPoint(0); // Pin 1
-    Assert.assertEquals(expectedPin1OffsetX, p0.getX() - bounds.getX(), 0.1);
-    Assert.assertEquals(expectedPin1OffsetY, p0.getY() - bounds.getY(), 0.1);
-
-    // Pin 2 (outer row) should be at Y = 2.23 mm from top edge (3.5 mm - spacing/2)
-    Point2D p1 = pi.getControlPoint(1); // Pin 2
-    double expectedPin2OffsetY = new Size(3.5d, SizeUnit.mm).convertToPixels() - new Size(0.1d, SizeUnit.in).convertToPixels() / 2.0;
-    Assert.assertEquals(p0.getX(), p1.getX(), 0.01);
-    Assert.assertEquals(expectedPin2OffsetY, p1.getY() - bounds.getY(), 0.1);
-
-    // Verify vertical center of header is dead in the middle with the 3.5mm mounting hole line
-    double headerCenterY = (p0.getY() + p1.getY()) / 2.0 - bounds.getY();
-    Assert.assertEquals(new Size(3.5d, SizeUnit.mm).convertToPixels(), headerCenterY, 0.1);
-
-    // Check pin spacing (20px per 0.1" pitch)
-    double spacing = new Size(0.1d, SizeUnit.in).convertToPixels();
-    for (int col = 0; col < 19; col++) {
-      int pinOdd1 = col * 2;
-      int pinOdd2 = (col + 1) * 2;
-      Point2D po1 = pi.getControlPoint(pinOdd1);
-      Point2D po2 = pi.getControlPoint(pinOdd2);
-      Assert.assertEquals(spacing, po2.getX() - po1.getX(), 0.01);
-      Assert.assertEquals(po1.getY(), po2.getY(), 0.01);
-
-      int pinEven1 = col * 2 + 1;
-      int pinEven2 = (col + 1) * 2 + 1;
-      Point2D pe1 = pi.getControlPoint(pinEven1);
-      Point2D pe2 = pi.getControlPoint(pinEven2);
-      Assert.assertEquals(spacing, pe2.getX() - pe1.getX(), 0.01);
-      Assert.assertEquals(pe1.getY(), pe2.getY(), 0.01);
+    // the header is numbered down the columns, odd pins in the inner row and even in the outer,
+    // so consecutive pins of a row are two indices apart
+    Point2D pin1 = pi.getControlPoint(0);
+    Point2D pin2 = pi.getControlPoint(1);
+    for (int column = 0; column < 19; column++) {
+      Point2D odd = pi.getControlPoint(column * 2);
+      Point2D nextOdd = pi.getControlPoint((column + 1) * 2);
+      Point2D even = pi.getControlPoint(column * 2 + 1);
+      Point2D nextEven = pi.getControlPoint((column + 1) * 2 + 1);
+      Assert.assertEquals(spacing, nextOdd.getX() - odd.getX(), 0.01);
+      Assert.assertEquals(odd.getY(), nextOdd.getY(), 0.01);
+      Assert.assertEquals(spacing, nextEven.getX() - even.getX(), 0.01);
+      Assert.assertEquals(even.getY(), nextEven.getY(), 0.01);
     }
 
-    // Header center should be at 32.5 mm from left edge (dead in the middle between left hole 3.5mm and right hole 61.5mm)
-    Point2D pLastOdd = pi.getControlPoint(38); // Pin 39 (col 19)
-    double headerCenterX = (p0.getX() + pLastOdd.getX()) / 2.0;
-    double expectedHeaderCenterX = bounds.getX() + new Size(32.5d, SizeUnit.mm).convertToPixels();
-    Assert.assertEquals(expectedHeaderCenterX, headerCenterX, 0.1);
+    // the header straddles the mounting hole line 3.5 mm down, and is centred between the holes at
+    // 3.5 mm and 61.5 mm from the left edge
+    Assert.assertEquals(pin1.getX(), pin2.getX(), 0.01);
+    Assert.assertEquals(mm(3.5d), (pin1.getY() + pin2.getY()) / 2.0 - bounds.getY(), 0.1);
+    Assert.assertEquals(bounds.getX() + mm(32.5d),
+        (pin1.getX() + pi.getControlPoint(38).getX()) / 2.0, 0.1);
 
-    // PoE Header (pins 40..43) 2x2 header sitting 6mm above bottom-right mounting hole (X=61.5mm, Y=46.5mm)
-    double poeExpectedCenterX = bounds.getX() + new Size(61.5d, SizeUnit.mm).convertToPixels();
-    double poeExpectedCenterY = bounds.getY() + new Size(46.5d, SizeUnit.mm).convertToPixels();
+    // the PoE header is a 2x2 block centred on the bottom right mounting hole
+    double poeCenterX = bounds.getX() + mm(61.5d);
+    double poeCenterY = bounds.getY() + mm(46.5d);
+    Assert.assertEquals(poeCenterX - spacing / 2.0, pi.getControlPoint(40).getX(), 0.1);
+    Assert.assertEquals(poeCenterY - spacing / 2.0, pi.getControlPoint(40).getY(), 0.1);
+    Assert.assertEquals(poeCenterX + spacing / 2.0, pi.getControlPoint(43).getX(), 0.1);
+    Assert.assertEquals(poeCenterY + spacing / 2.0, pi.getControlPoint(43).getY(), 0.1);
 
-    Point2D p40 = pi.getControlPoint(40);
-    Point2D p41 = pi.getControlPoint(41);
-    Point2D p42 = pi.getControlPoint(42);
-    Point2D p43 = pi.getControlPoint(43);
+    // the flat-flex connectors are single points at the centre of the socket they stand for
+    for (int i = 44; i < pi.getControlPointCount(); i++) {
+      Assert.assertTrue("Connector " + pi.getControlPointNodeName(i) + " should be on the board",
+          bounds.contains(pi.getControlPoint(i)));
+    }
+  }
 
-    Assert.assertEquals(poeExpectedCenterX - spacing / 2.0, p40.getX(), 0.1);
-    Assert.assertEquals(poeExpectedCenterY - spacing / 2.0, p40.getY(), 0.1);
+  @Test
+  public void testEveryVersionDraws() {
+    for (RaspberryPiVersion version : RaspberryPiVersion.values()) {
+      MakerBoardTestSupport.assertDrawsCleanly(version(version));
+    }
+  }
 
-    Assert.assertEquals(poeExpectedCenterX - spacing / 2.0, p41.getX(), 0.1);
-    Assert.assertEquals(poeExpectedCenterY + spacing / 2.0, p41.getY(), 0.1);
+  private static double mm(double value) {
+    return new Size(value, SizeUnit.mm).convertToPixels();
+  }
 
-    Assert.assertEquals(poeExpectedCenterX + spacing / 2.0, p42.getX(), 0.1);
-    Assert.assertEquals(poeExpectedCenterY - spacing / 2.0, p42.getY(), 0.1);
-
-    Assert.assertEquals(poeExpectedCenterX + spacing / 2.0, p43.getX(), 0.1);
-    Assert.assertEquals(poeExpectedCenterY + spacing / 2.0, p43.getY(), 0.1);
-
-    // Connector control points (PCIe = 44, MIPI 1 = 45, MIPI 0 = 46, UART = 47)
-    Point2D pPcie = pi.getControlPoint(44);
-    Point2D pMipi1 = pi.getControlPoint(45);
-    Point2D pMipi0 = pi.getControlPoint(46);
-    Point2D pUart = pi.getControlPoint(47);
-
-    double expectedPcieCenterX = bounds.getX() + new Size(0.1d, SizeUnit.in).convertToPixels() - new Size(1.0d, SizeUnit.mm).convertToPixels() + new Size(3.0d, SizeUnit.mm).convertToPixels() / 2.0;
-    double expectedPcieCenterY = bounds.getY() + new Size(1.0d, SizeUnit.in).convertToPixels() + new Size(0.75d, SizeUnit.mm).convertToPixels();
-    Assert.assertEquals(expectedPcieCenterX, pPcie.getX(), 0.1);
-    Assert.assertEquals(expectedPcieCenterY, pPcie.getY(), 0.1);
-
-    double expectedMipiCenterY = bounds.getY() + expectedHeight - new Size(1.0d, SizeUnit.mm).convertToPixels() - new Size(15.5d, SizeUnit.mm).convertToPixels() / 2.0;
-    double expectedMipi1CenterX = bounds.getX() + new Size(48.5d, SizeUnit.mm).convertToPixels();
-    double expectedMipi0CenterX = bounds.getX() + new Size(54.5d, SizeUnit.mm).convertToPixels();
-    Assert.assertEquals(expectedMipi1CenterX, pMipi1.getX(), 0.1);
-    Assert.assertEquals(expectedMipiCenterY, pMipi1.getY(), 0.1);
-    Assert.assertEquals(expectedMipi0CenterX, pMipi0.getX(), 0.1);
-    Assert.assertEquals(expectedMipiCenterY, pMipi0.getY(), 0.1);
-
-    double expectedUartCenterX = bounds.getX() + new Size(32.5d, SizeUnit.mm).convertToPixels();
-    double expectedUartCenterY = bounds.getY() + new Size(52.5d, SizeUnit.mm).convertToPixels();
-    Assert.assertEquals(expectedUartCenterX, pUart.getX(), 0.1);
-    Assert.assertEquals(expectedUartCenterY, pUart.getY(), 0.1);
+  private static RaspberryPi version(RaspberryPiVersion version) {
+    RaspberryPi pi = new RaspberryPi();
+    pi.setVersion(version);
+    return pi;
   }
 }

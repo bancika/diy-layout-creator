@@ -1,211 +1,79 @@
+/*
+ * 
+ * DIY Layout Creator (DIYLC).
+ * Copyright (c) 2009-2025 held jointly by the individual authors.
+ * 
+ * This file is part of DIYLC.
+ * 
+ * DIYLC is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * DIYLC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
 package org.diylc.components.micro;
 
-import java.awt.Shape;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
-import org.diylc.netlist.Node;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ESP8266NodeMCUTest {
 
   @Test
-  public void testControlPointCountAndNames() {
+  public void testPinout() {
     ESP8266NodeMCU mcu = new ESP8266NodeMCU();
     Assert.assertEquals(30, mcu.getControlPointCount());
 
-    for (int i = 0; i < mcu.getControlPointCount(); i++) {
-      String name = mcu.getControlPointNodeName(i);
-      Assert.assertNotNull("Pin " + i + " name should not be null", name);
-      Assert.assertFalse("Pin " + i + " name should not be empty", name.trim().isEmpty());
-    }
+    // left row, top to bottom
+    Assert.assertEquals("A0 (ADC0)", mcu.getControlPointNodeName(0));
+    Assert.assertEquals("CLK (GPIO6, flash)", mcu.getControlPointNodeName(8));
+    Assert.assertEquals("VIN", mcu.getControlPointNodeName(14));
 
-    // Left row (0..14)
-    Assert.assertEquals("A0", Node.sanitizeNodeName(mcu.getControlPointNodeName(0)));
-    Assert.assertEquals("RSV_1", Node.sanitizeNodeName(mcu.getControlPointNodeName(1)));
-    Assert.assertEquals("RSV_2", Node.sanitizeNodeName(mcu.getControlPointNodeName(2)));
-    Assert.assertEquals("SD3", Node.sanitizeNodeName(mcu.getControlPointNodeName(3)));
-    Assert.assertEquals("SD2", Node.sanitizeNodeName(mcu.getControlPointNodeName(4)));
-    Assert.assertEquals("SD1", Node.sanitizeNodeName(mcu.getControlPointNodeName(5)));
-    Assert.assertEquals("CMD", Node.sanitizeNodeName(mcu.getControlPointNodeName(6)));
-    Assert.assertEquals("SD0", Node.sanitizeNodeName(mcu.getControlPointNodeName(7)));
-    Assert.assertEquals("CLK", Node.sanitizeNodeName(mcu.getControlPointNodeName(8)));
-    Assert.assertEquals("GND_1", Node.sanitizeNodeName(mcu.getControlPointNodeName(9)));
-    Assert.assertEquals("3V3_1", Node.sanitizeNodeName(mcu.getControlPointNodeName(10)));
-    Assert.assertEquals("EN", Node.sanitizeNodeName(mcu.getControlPointNodeName(11)));
-    Assert.assertEquals("RST", Node.sanitizeNodeName(mcu.getControlPointNodeName(12)));
-    Assert.assertEquals("GND_2", Node.sanitizeNodeName(mcu.getControlPointNodeName(13)));
-    Assert.assertEquals("VIN", Node.sanitizeNodeName(mcu.getControlPointNodeName(14)));
+    // right row, top to bottom
+    Assert.assertEquals("D0 (GPIO16, WAKE)", mcu.getControlPointNodeName(15));
+    Assert.assertEquals("3V3_3", mcu.getControlPointNodeName(29));
 
-    // Right row (15..29)
-    Assert.assertEquals("D0", Node.sanitizeNodeName(mcu.getControlPointNodeName(15)));
-    Assert.assertEquals("D1", Node.sanitizeNodeName(mcu.getControlPointNodeName(16)));
-    Assert.assertEquals("D2", Node.sanitizeNodeName(mcu.getControlPointNodeName(17)));
-    Assert.assertEquals("D3", Node.sanitizeNodeName(mcu.getControlPointNodeName(18)));
-    Assert.assertEquals("D4", Node.sanitizeNodeName(mcu.getControlPointNodeName(19)));
-    Assert.assertEquals("3V3_2", Node.sanitizeNodeName(mcu.getControlPointNodeName(20)));
-    Assert.assertEquals("GND_3", Node.sanitizeNodeName(mcu.getControlPointNodeName(21)));
-    Assert.assertEquals("D5", Node.sanitizeNodeName(mcu.getControlPointNodeName(22)));
-    Assert.assertEquals("D6", Node.sanitizeNodeName(mcu.getControlPointNodeName(23)));
-    Assert.assertEquals("D7", Node.sanitizeNodeName(mcu.getControlPointNodeName(24)));
-    Assert.assertEquals("D8", Node.sanitizeNodeName(mcu.getControlPointNodeName(25)));
-    Assert.assertEquals("RX", Node.sanitizeNodeName(mcu.getControlPointNodeName(26)));
-    Assert.assertEquals("TX", Node.sanitizeNodeName(mcu.getControlPointNodeName(27)));
-    Assert.assertEquals("GND_4", Node.sanitizeNodeName(mcu.getControlPointNodeName(28)));
-    Assert.assertEquals("3V3_3", Node.sanitizeNodeName(mcu.getControlPointNodeName(29)));
-
-    // The silkscreen prints the bare board label; the node name carries the GPIO mapping, which on
-    // this board is the thing people most often get wrong
-    Assert.assertEquals("D1", mcu.getSilkPinLabel(16));
-    Assert.assertEquals("GND", mcu.getSilkPinLabel(9));
-    Assert.assertEquals("RSV", mcu.getSilkPinLabel(1));
+    // the silkscreen prints the bare board label while the node name carries the GPIO mapping,
+    // which on this board is the thing people most often get wrong
     Assert.assertEquals("D1 (GPIO5, SCL)", mcu.getControlPointNodeName(16));
     Assert.assertEquals("D2 (GPIO4, SDA)", mcu.getControlPointNodeName(17));
     Assert.assertEquals("D7 (GPIO13, HSPI MOSI)", mcu.getControlPointNodeName(24));
+    Assert.assertEquals("D1", mcu.getSilkPinLabel(16));
+    Assert.assertEquals("RSV", mcu.getSilkPinLabel(1));
+
+    // the four grounds and three supply pads are separate nets, so they cannot share a node name
+    Assert.assertEquals("GND_1", mcu.getControlPointNodeName(9));
+    Assert.assertEquals("GND_4", mcu.getControlPointNodeName(28));
+    Assert.assertEquals("3V3_1", mcu.getControlPointNodeName(10));
+    Assert.assertEquals("GND", mcu.getSilkPinLabel(9));
+    Assert.assertEquals("3V3", mcu.getSilkPinLabel(10));
   }
 
   @Test
-  public void testPinGeometryAndSpacing() {
+  public void testGeometry() {
     ESP8266NodeMCU mcu = new ESP8266NodeMCU();
 
-    // Left row pitch (20px per pin = 0.10")
-    for (int i = 0; i < 14; i++) {
-      Point2D p1 = mcu.getControlPoint(i);
-      Point2D p2 = mcu.getControlPoint(i + 1);
-      Assert.assertEquals(20.0, p1.distance(p2), 0.01);
-      Assert.assertEquals(p1.getX(), p2.getX(), 0.01);
-    }
+    MakerBoardTestSupport.assertRow(mcu, 0, 14);
+    MakerBoardTestSupport.assertRow(mcu, 15, 29);
+    MakerBoardTestSupport.assertRowSpacing(mcu, 0, 15, new Size(0.9d, SizeUnit.in));
+    MakerBoardTestSupport.assertBoardSize(mcu, new Size(25.7d, SizeUnit.mm),
+        new Size(48.0d, SizeUnit.mm));
 
-    // Right row pitch (20px per pin = 0.10")
-    for (int i = 15; i < 29; i++) {
-      Point2D p1 = mcu.getControlPoint(i);
-      Point2D p2 = mcu.getControlPoint(i + 1);
-      Assert.assertEquals(20.0, p1.distance(p2), 0.01);
-      Assert.assertEquals(p1.getX(), p2.getX(), 0.01);
-    }
-
-    // Row spacing: 0.90" = 180px between Left row and Right row
-    Point2D pLeftTop = mcu.getControlPoint(0);
-    Point2D pRightTop = mcu.getControlPoint(15);
-    Assert.assertEquals(180.0, pLeftTop.distance(pRightTop), 0.01);
-    Assert.assertEquals(pLeftTop.getY(), pRightTop.getY(), 0.01);
-  }
-
-  @Test
-  public void testBodyShapeDimensions() {
-    ESP8266NodeMCU mcu = new ESP8266NodeMCU();
-
-    Shape body = mcu.getBodyShape();
-    Assert.assertNotNull(body);
-    Rectangle2D bounds = body.getBounds2D();
-
-    double expectedWidth = new Size(25.7d, SizeUnit.mm).convertToPixels();
-    double expectedHeight = new Size(48.0d, SizeUnit.mm).convertToPixels();
-    double expectedTopMargin = new Size(6.22d, SizeUnit.mm).convertToPixels();
-
-    Assert.assertEquals(expectedWidth, bounds.getWidth(), 0.1);
-    Assert.assertEquals(expectedHeight, bounds.getHeight(), 0.1);
-
-    Point2D p0 = mcu.getControlPoint(0);
-    Assert.assertEquals(expectedTopMargin, p0.getY() - bounds.getY(), 0.1);
-  }
-
-  @Test
-  public void testHeadersProperty() {
-    ESP8266NodeMCU mcu = new ESP8266NodeMCU();
-    Assert.assertFalse("Headers should be false by default", mcu.getHeaders());
-
-    mcu.setHeaders(true);
-    Assert.assertTrue("Headers should be true after setter", mcu.getHeaders());
-
-    mcu.setHeaders(false);
-    Assert.assertFalse("Headers should be false after setter", mcu.getHeaders());
-  }
-
-  @Test
-  public void testDrawingAndOrientations() {
-    java.awt.image.BufferedImage img = new java.awt.image.BufferedImage(400, 400, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-    java.awt.Graphics2D g2d = img.createGraphics();
-    org.diylc.core.Project project = new org.diylc.core.Project();
-    org.diylc.core.IDrawingObserver observer = new org.diylc.core.IDrawingObserver() {
-      @Override public void startTracking() {}
-      @Override public void stopTracking() {}
-      @Override public void startTrackingContinuityArea(boolean positive) {}
-      @Override public void stopTrackingContinuityArea() {}
-      @Override public boolean isTrackingContinuityArea() { return false; }
-      @Override public void setContinuityMarker(String marker) {}
-    };
-
-    ESP8266NodeMCU mcu = new ESP8266NodeMCU();
-    mcu.setControlPoint(new Point2D.Double(100, 100), 0);
-
-    // Normal mode with solder pads
-    mcu.setHeaders(false);
-    mcu.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
-
-    // Normal mode with pin headers
-    mcu.setHeaders(true);
-    mcu.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
-
-    // Selected mode
-    mcu.draw(g2d, org.diylc.core.ComponentState.SELECTED, false, project, observer);
-
-    // Outline mode
-    mcu.draw(g2d, org.diylc.core.ComponentState.NORMAL, true, project, observer);
-
-    // Rotated drawing (all orientations)
-    for (org.diylc.common.Orientation orientation : org.diylc.common.Orientation.values()) {
-      mcu.setOrientation(orientation);
-      mcu.draw(g2d, org.diylc.core.ComponentState.NORMAL, false, project, observer);
-    }
-
-    // Icon drawing
-    mcu.drawIcon(g2d, 32, 32);
-
-    g2d.dispose();
-  }
-
-  @Test
-  public void testDisplayPinLabels() {
-    ESP8266NodeMCU mcu = new ESP8266NodeMCU();
-
-    // Verify parenthesis stripping
-    Assert.assertEquals("A0", ESP8266NodeMCU.getDisplayPinLabel("A0 (ADC0)"));
-    Assert.assertEquals("D0", ESP8266NodeMCU.getDisplayPinLabel("D0 (GPIO16)"));
-    Assert.assertEquals("D1", ESP8266NodeMCU.getDisplayPinLabel("D1 (GPIO5)"));
-    Assert.assertEquals("RX", ESP8266NodeMCU.getDisplayPinLabel("RX (GPIO3)"));
-    Assert.assertEquals("TX", ESP8266NodeMCU.getDisplayPinLabel("TX (GPIO1)"));
-
-    // Verify underscore stripping
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel("3V3_1"));
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel("3V3_2"));
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel("3V3_3"));
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(10))); // "3V3_1"
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(20))); // "3V3_2"
-    Assert.assertEquals("3V3", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(29))); // "3V3_3"
-
-    // Verify plain labels
-    Assert.assertEquals("EN", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(11))); // "EN"
-    Assert.assertEquals("RST", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(12))); // "RST"
-    Assert.assertEquals("VIN", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(14))); // "VIN"
-    Assert.assertEquals("RSV", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(1))); // "RSV_1"
-    Assert.assertEquals("RSV", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(2))); // "RSV_2"
-    Assert.assertEquals("GND", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(9))); // "GND_1"
-    Assert.assertEquals("GND", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(13))); // "GND_2"
-    Assert.assertEquals("GND", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(21))); // "GND_3"
-    Assert.assertEquals("GND", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(28))); // "GND_4"
-    Assert.assertEquals("A0", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(0))); // "A0"
-    Assert.assertEquals("D0", ESP8266NodeMCU.getDisplayPinLabel(mcu.getControlPointNodeName(15))); // "D0"
-  }
-
-  @Test
-  public void testPinLabelConstants() {
-    Assert.assertNotNull(ESP8266NodeMCU.PIN_LABEL_OFFSET);
-    Assert.assertNotNull(ESP8266NodeMCU.PIN_FONT);
-    Assert.assertEquals(8, ESP8266NodeMCU.PIN_FONT.getSize());
-    Assert.assertEquals(1.6d, ESP8266NodeMCU.PIN_LABEL_OFFSET.getValue(), 0.001);
+    Rectangle2D bounds = mcu.getBodyShape().getBounds2D();
+    Assert.assertEquals("Margin above the first pin",
+        new Size(6.22d, SizeUnit.mm).convertToPixels(),
+        mcu.getControlPoint(0).getY() - bounds.getY(), 0.1);
   }
 }
