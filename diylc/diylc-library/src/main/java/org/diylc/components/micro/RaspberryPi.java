@@ -489,6 +489,13 @@ public class RaspberryPi extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "PoE", poeX,
           poeY + poeTextOffset, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
+      // "GPIO" silkscreen below the 40-pin header, centered on the header span, which shares its
+      // center line with the board title
+      g2d.setColor(Color.WHITE);
+      g2d.setFont(SILK_FONT_SMALL);
+      StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
+          boardY + new Size(7.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+
       // Raspberry Pi Silkscreen text below 40-pin header
       g2d.setColor(Color.WHITE);
       g2d.setFont(RPI_TITLE_FONT);
