@@ -206,6 +206,6 @@ public class ESP8266NodeMCUTest {
     Assert.assertNotNull(ESP8266NodeMCU.PIN_LABEL_OFFSET);
     Assert.assertNotNull(ESP8266NodeMCU.PIN_FONT);
     Assert.assertEquals(8, ESP8266NodeMCU.PIN_FONT.getSize());
-    Assert.assertEquals(1.8d, ESP8266NodeMCU.PIN_LABEL_OFFSET.getValue(), 0.001);
+    Assert.assertEquals(1.6d, ESP8266NodeMCU.PIN_LABEL_OFFSET.getValue(), 0.001);
   }
 }

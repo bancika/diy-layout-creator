@@ -127,7 +127,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
   public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
   public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
-  public static Size PIN_LABEL_OFFSET = new Size(1.8d, SizeUnit.mm);
+  public static Size PIN_LABEL_OFFSET = new Size(1.6d, SizeUnit.mm);
   public static Size PIN_ROW_LABEL_OFFSET = new Size(2.0d, SizeUnit.mm);
   public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
   // labels along a row run across the board rather than down a column of pins, so they can afford
@@ -280,14 +280,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Gap between a pad and the name printed next to it. Boards that silkscreen their pad names
-   * tighter than the Arduino convention override this.
-   */
-  protected Size getPinLabelOffset() {
-    return PIN_LABEL_OFFSET;
-  }
-
-  /**
    * Helper to draw rotated control point / pin names next to the pins for dual-row DIP/header boards.
    *
    * @param g2d Graphics2D context (already transformed for board orientation)
@@ -316,7 +308,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   protected void drawPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
       int pinsPerRow, Color silkColor) {
     if (offsets == null || offsets.length == 0) return;
-    double labelOffset = getPinLabelOffset().convertToPixels();
+    double labelOffset = PIN_LABEL_OFFSET.convertToPixels();
 
     g2d.setColor(silkColor);
     g2d.setFont(PIN_FONT);

@@ -534,7 +534,7 @@ public class ESP32DevKitTest {
     Assert.assertNotNull(ESP32DevKit.PIN_LABEL_OFFSET);
     Assert.assertNotNull(ESP32DevKit.PIN_FONT);
     Assert.assertEquals(8, ESP32DevKit.PIN_FONT.getSize());
-    Assert.assertEquals(1.8d, ESP32DevKit.PIN_LABEL_OFFSET.getValue(), 0.001);
+    Assert.assertEquals(1.6d, ESP32DevKit.PIN_LABEL_OFFSET.getValue(), 0.001);
   }
 
   @Test

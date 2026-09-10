@@ -84,9 +84,6 @@ public class Teensy extends AbstractMakerBoard {
   public static Color PAD_COLOR = GOLD_COLOR;
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
-  // PJRC prints the pad names tighter to the pads than the Arduino boards do
-  public static Size SILK_LABEL_OFFSET = new Size(1.6d, SizeUnit.mm);
-
   // ===== Teensy 4.0 dimensions (PJRC dimensions_teensy40.png) =====
   // 35.56 mm x 17.78 mm (1.4" x 0.7")
   public static Size BOARD_WIDTH_40 = new Size(17.78d, SizeUnit.mm);
@@ -299,11 +296,6 @@ public class Teensy extends AbstractMakerBoard {
       return silkNames[index];
     }
     return super.getSilkPinLabel(index);
-  }
-
-  @Override
-  protected Size getPinLabelOffset() {
-    return SILK_LABEL_OFFSET;
   }
 
   private double[][] getRelativeOffsets() {
