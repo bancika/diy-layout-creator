@@ -418,7 +418,7 @@
 				<minor>5</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-09-04 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-09-11 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -459,7 +459,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Wemos D1 Mini</description>
+					<description>WeMos D1 Mini</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
