@@ -21,9 +21,7 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -81,11 +79,9 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     }
   }
 
-  public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(21.0d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(51.0d, SizeUnit.mm);
 
-  public static Color PAD_COLOR = GOLD_COLOR;
   public static Size PAD_SIZE = new Size(1.7d, SizeUnit.mm);
   public static Size HOLE_SIZE = new Size(0.8d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
@@ -310,7 +306,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
       // the label does not fit next to the button unless it is turned to read bottom to top,
       // the way the real board prints it
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       double labelX = btnX - BOOTSEL_LABEL_OFFSET.convertToPixels();
       double labelY = btnY + btnH / 2.0;
@@ -329,7 +325,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       MakerBoardPainter.drawChip(g2d, chipX, chipY, chipSize, chipSize, isV2() ? "RP2350" : "RP2040");
 
       // Model name, in the gap the board leaves between the BOOTSEL button and the chip
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT);
       StringUtils.drawCenteredText(g2d, getVersion().toString(), boardX + boardW / 2.0,
           chipY - MODEL_LABEL_OFFSET.convertToPixels(), HorizontalAlignment.CENTER,
@@ -341,7 +337,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
         double midDebugY = boardY + boardH - DEBUG_PAD_OFFSET_Y.convertToPixels();
 
         // DEBUG silkscreen text above SWD pins
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "DEBUG", midDebugX, midDebugY - new Size(2.2d, SizeUnit.mm).convertToPixels(),
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -372,7 +368,7 @@ public class RaspberryPiPico extends AbstractMakerBoard {
         MakerBoardLogos.drawRaspberryPiLogo(g2d, logoX, logoY, logoSize);
 
         // DEBUG silkscreen text above SWD pins
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "DEBUG", boardX + boardW / 2.0, boardY + new Size(47.8d, SizeUnit.mm).convertToPixels(),
             HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -407,11 +403,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
   @Override
   protected Size getCastellatedNotchSize() {
     return NOTCH_SIZE;
-  }
-
-  @Override
-  protected Color getCastellatedPadColor() {
-    return PAD_COLOR;
   }
 
   /**
@@ -509,8 +500,8 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setColor(IC_BODY_COLOR);
     g2d.fillRect(11, 12, 10, 10);
 
-    g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setColor(SILK_COLOR);
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "PICO", width / 2, height / 2 + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

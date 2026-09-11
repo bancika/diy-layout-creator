@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -81,10 +80,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
       return label;
     }
   }
-
-  public static Color ESP_BLACK = Color.decode("#3E3E3E");
-  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
-  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH_30 = new Size(28.33d, SizeUnit.mm);
   public static Size BOARD_LENGTH_30 = new Size(51.45d, SizeUnit.mm);
@@ -856,7 +851,7 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.fillRect(8, 6, width - 16, 12);
 
     g2d.setColor(SILK_COLOR);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ESP32", width / 2, height / 2 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

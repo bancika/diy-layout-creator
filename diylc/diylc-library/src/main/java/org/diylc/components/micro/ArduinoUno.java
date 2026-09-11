@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -81,8 +80,6 @@ public class ArduinoUno extends AbstractMakerBoard {
   }
 
   private ArduinoUnoVersion version = ArduinoUnoVersion.REV3;
-
-  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(53.4d, SizeUnit.mm);
@@ -520,13 +517,7 @@ public class ArduinoUno extends AbstractMakerBoard {
         double raShiftY = minima ? new Size(4.5d, SizeUnit.mm).convertToPixels() : 0;
         double raX = boardX + boardW - new Size(11.5d, SizeUnit.mm).convertToPixels() - raW - raShiftX;
         double raY = boardY + new Size(12d, SizeUnit.mm).convertToPixels() + raShiftY;
-        g2d.setColor(Color.BLACK);
-        g2d.fill(new RoundRectangle2D.Double(raX, raY, raW, raH, 2, 2));
-        g2d.setColor(Color.DARK_GRAY);
-        g2d.draw(new RoundRectangle2D.Double(raX, raY, raW, raH, 2, 2));
-        g2d.setColor(Color.WHITE);
-        g2d.setFont(SILK_FONT_SMALL);
-        StringUtils.drawCenteredText(g2d, "RA4M1", raX + raW / 2.0, raY + raH / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        MakerBoardPainter.drawChip(g2d, raX, raY, raW, raH, "RA4M1");
 
         if (getVersion() == ArduinoUnoVersion.R4_MINIMA) {
           double swdW = SWD_WIDTH.convertToPixels();
@@ -578,7 +569,7 @@ public class ArduinoUno extends AbstractMakerBoard {
       
       double arduinoX = boardX + new Size(1.5d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels();
       double arduinoY = boardY + new Size(0.775d, SizeUnit.in).convertToPixels() - new Size(4.0d, SizeUnit.mm).convertToPixels() + brandShiftY;
-      g2d.setFont(SILK_FONT_LARGE.deriveFont(SILK_FONT_LARGE.getSize2D() * 1.5f));
+      g2d.setFont(SILK_FONT_TITLE);
       StringUtils.drawCenteredText(g2d, "ARDUINO", arduinoX, arduinoY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       
       String subText = getVersion().toString().toUpperCase(Locale.ROOT);
@@ -674,7 +665,7 @@ public class ArduinoUno extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     String iconText = getVersion().toString().toUpperCase(Locale.ROOT).replace("UNO R4 ", "R4 ");
     int fontSize = Math.max(5, (int) Math.round(boardH * 0.20));
-    g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
+    g2d.setFont(ICON_FONT.deriveFont((float) fontSize));
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
     double textX = boardX + (boardW / 2.0) + 0.5;
     StringUtils.drawCenteredText(g2d, iconText, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

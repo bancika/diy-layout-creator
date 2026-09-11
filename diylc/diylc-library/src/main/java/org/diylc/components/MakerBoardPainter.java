@@ -103,7 +103,7 @@ public class MakerBoardPainter {
     }
 
     if (label != null && !label.isEmpty()) {
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(AbstractMakerBoard.SILK_COLOR);
       g2d.setFont(AbstractMakerBoard.SILK_FONT_SMALL);
       if (w >= 20 && h >= 10) {
         StringUtils.drawCenteredText(g2d, label, x + w / 2.0, y + h / 2.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

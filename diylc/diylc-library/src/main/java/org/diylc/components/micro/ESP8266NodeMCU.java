@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -60,8 +59,6 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color NODEMCU_BLACK = Color.decode("#3E3E3E");
-  public static Color SILK_COLOR = Color.WHITE;
   public static Size BOARD_WIDTH = new Size(25.7d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(48.0d, SizeUnit.mm);
   public static Size TOP_MARGIN = new Size(6.22d, SizeUnit.mm);
@@ -101,7 +98,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   public ESP8266NodeMCU() {
     super();
-    this.bodyColor = NODEMCU_BLACK;
+    this.bodyColor = ESP_BLACK;
     updateControlPoints();
   }
 
@@ -280,7 +277,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    g2d.setColor(NODEMCU_BLACK);
+    g2d.setColor(ESP_BLACK);
     g2d.fill(new RoundRectangle2D.Double(5, 2, width - 10, height - 4, 3, 3));
     g2d.setColor(Color.GRAY);
     g2d.draw(new RoundRectangle2D.Double(5, 2, width - 10, height - 4, 3, 3));
@@ -290,7 +287,7 @@ public class ESP8266NodeMCU extends AbstractMakerBoard {
     g2d.fillRect(8, 6, width - 16, 12);
 
     g2d.setColor(SILK_COLOR);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "8266", width / 2, height / 2 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

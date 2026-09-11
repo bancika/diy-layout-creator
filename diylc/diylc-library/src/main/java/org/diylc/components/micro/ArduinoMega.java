@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -58,8 +57,6 @@ import org.diylc.utils.Constants;
 public class ArduinoMega extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
-
-  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(101.6d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(53.4d, SizeUnit.mm);
@@ -461,7 +458,7 @@ public class ArduinoMega extends AbstractMakerBoard {
     // MEGA text below logo
     g2d.setColor(SILK_COLOR);
     int fontSize = Math.max(6, (int) Math.round(boardH * 0.26));
-    g2d.setFont(new Font("SansSerif", Font.BOLD, fontSize));
+    g2d.setFont(ICON_FONT.deriveFont((float) fontSize));
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
     double textX = boardX + (boardW / 2.0) + 0.5;
     StringUtils.drawCenteredText(g2d, "MEGA", textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);

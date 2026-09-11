@@ -21,9 +21,7 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.*;
@@ -56,10 +54,8 @@ public class RaspberryPi extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(85.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(56.0d, SizeUnit.mm);
-  public static Font RPI_TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
 
   public static final String[] PIN_NAMES = new String[] {
       "3.3V (Pin 1)", "5V (Pin 2)",
@@ -372,7 +368,7 @@ public class RaspberryPi extends AbstractMakerBoard {
         MakerBoardPainter.drawFpcConnector(g2d, mipi1X, mipiY, mipiW, mipiH, true, "");
         MakerBoardPainter.drawFpcConnector(g2d, mipi0X, mipiY, mipiW, mipiH, true, "");
 
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "MIPI 1", boardX + new Size(48.5d, SizeUnit.mm).convertToPixels(),
             mipiY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -391,7 +387,7 @@ public class RaspberryPi extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new Rectangle2D.Double(uartX, uartY, uartW, uartH));
         
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "UART", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
             uartY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -402,13 +398,13 @@ public class RaspberryPi extends AbstractMakerBoard {
         double camX = boardX + new Size(camXOffsetDraw, SizeUnit.mm).convertToPixels() - camW / 2.0;
         double camY = boardY + boardH - camH;
         
-        g2d.setColor(Color.decode("#181818"));
+        g2d.setColor(DARK_PLASTIC_COLOR);
         g2d.fill(new Rectangle2D.Double(camX, camY, camW, camH));
-        g2d.setColor(Color.decode("#333333"));
+        g2d.setColor(DARK_PLASTIC_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new Rectangle2D.Double(camX, camY, camW, camH));
 
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "CAMERA", boardX + new Size(camXOffsetDraw, SizeUnit.mm).convertToPixels(),
             camY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -434,13 +430,13 @@ public class RaspberryPi extends AbstractMakerBoard {
         avShape.lineTo(avCenterX - avBaseW / 2.0, avY + avBaseH);
         avShape.closePath();
         
-        g2d.setColor(Color.decode("#181818"));
+        g2d.setColor(DARK_PLASTIC_COLOR);
         g2d.fill(avShape);
-        g2d.setColor(Color.decode("#333333"));
+        g2d.setColor(DARK_PLASTIC_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(avShape);
         
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "A/V", avCenterX,
             avY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -454,7 +450,7 @@ public class RaspberryPi extends AbstractMakerBoard {
         double pcieY = boardY + new Size(1.0d, SizeUnit.in).convertToPixels() + new Size(0.75d, SizeUnit.mm).convertToPixels() - pcieH / 2.0;
         MakerBoardPainter.drawFpcConnector(g2d, pcieX, pcieY, pcieW, pcieH, true, "");
 
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "PCIe", pcieX + pcieW / 2.0,
             pcieY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -464,13 +460,13 @@ public class RaspberryPi extends AbstractMakerBoard {
         double dispX = boardX + new Size(4.0d, SizeUnit.mm).convertToPixels() - dispW / 2.0;
         double dispY = boardY + boardH - new Size(28.0d, SizeUnit.mm).convertToPixels() - dispH / 2.0;
         
-        g2d.setColor(Color.decode("#181818"));
+        g2d.setColor(DARK_PLASTIC_COLOR);
         g2d.fill(new Rectangle2D.Double(dispX, dispY, dispW, dispH));
-        g2d.setColor(Color.decode("#333333"));
+        g2d.setColor(DARK_PLASTIC_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new Rectangle2D.Double(dispX, dispY, dispW, dispH));
 
-        g2d.setColor(Color.WHITE);
+        g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT_SMALL);
         StringUtils.drawCenteredText(g2d, "DISPLAY", dispX + dispW / 2.0,
             dispY - new Size(1.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -481,7 +477,7 @@ public class RaspberryPi extends AbstractMakerBoard {
       double poeLabelDir = (version == RaspberryPiVersion.PI_5) ? -6.0d : 6.0d;
       double poeX = boardX + new Size(61.5d, SizeUnit.mm).convertToPixels();
       double poeY = boardY + new Size(poeLabelHoleY + poeLabelDir, SizeUnit.mm).convertToPixels();
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       double poeTextOffset = (version == RaspberryPiVersion.PI_5) ? 
           -(PIN_SPACING.convertToPixels() + new Size(1.5d, SizeUnit.mm).convertToPixels()) : 
@@ -491,14 +487,14 @@ public class RaspberryPi extends AbstractMakerBoard {
 
       // "GPIO" silkscreen below the 40-pin header, centered on the header span, which shares its
       // center line with the board title
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(7.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Raspberry Pi Silkscreen text below 40-pin header
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(RPI_TITLE_FONT);
+      g2d.setColor(SILK_COLOR);
+      g2d.setFont(SILK_FONT_TITLE);
       String versionLabel = version.toString();
       if (versionLabel.contains("(")) {
           versionLabel = versionLabel.substring(0, versionLabel.indexOf("(")).trim();
@@ -575,8 +571,8 @@ public class RaspberryPi extends AbstractMakerBoard {
       g2d.fillRect(width - 11, 9, 2, 2);
     }
 
-    g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 6));
+    g2d.setColor(SILK_COLOR);
+    g2d.setFont(ICON_FONT_LARGE);
     StringUtils.drawCenteredText(g2d, "RPi", 14, 25, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }
