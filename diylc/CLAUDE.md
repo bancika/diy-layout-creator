@@ -64,15 +64,16 @@ The formatter is `eclipse-java-google-style.xml` (Google Java Style):
 - **100-column** line limit.
 - Source encoding is **ISO-8859-1** — do not introduce non-ASCII characters into `.java` files. Use
   Unicode escapes or the resource bundles instead.
-- Braces on the same line; single-statement `if` bodies without braces are common in this codebase
-  and acceptable when you are matching the surrounding style.
+- Braces on the same line, and **always braces** — an `if`, `else`, `for` or `while` body gets a
+  block even when it is a single statement. Plenty of older code omits them; do not copy that when
+  you are writing new code, and add them when you are already editing the lines in question.
 - Imports: `java.*` first, then third-party, then `org.diylc.*`, separated by blank lines. No
   wildcard imports.
 - Constants are `UPPER_SNAKE_CASE`. Note that component appearance constants are deliberately
   `public static` and **not** `final` (`BODY_COLOR`, `DEFAULT_WIDTH`), so they can be overridden at
   runtime; keep that convention when adding new ones.
 - `private static final Logger LOG = Logger.getLogger(TheClass.class);` — log4j 1.2, declared first
-  among the static members.
+  among the static members. Only declare one on a class that actually needs it; see *Logging* below.
 
 ### Comments
 
@@ -92,6 +93,25 @@ g2d.setColor(bodyColor);
 
 Javadoc on public interfaces and abstract base classes in `diylc-core` is expected and should carry
 `@author`. Concrete component classes generally carry no Javadoc — do not add it just to fill space.
+
+### Logging
+
+Keep logging sparse, and prefer removing a log line to adding one. A logger earns its place on a
+class that has something a maintainer would want to read back: a swallowed failure, a slow or
+one-off initialisation, an external file or service that may not be there. Do not declare a `LOG`
+field that the class never uses.
+
+- `LOG.error` — something went wrong that the user or a bug report may need to explain.
+- `LOG.warn` — a recoverable surprise.
+- `LOG.info` — events that happen a handful of times per session, not per action.
+- `LOG.debug` — anything finer. Assume it is switched off in the field.
+
+Never log from code on a hot path: `draw`, control-point accessors, property getters, anything the
+canvas calls on every repaint or every mouse move. The cost is real and the output buries whatever
+else is in the log.
+
+Do not wrap code in `try`/`catch` only so that there is something to log. If the block cannot
+actually throw, the guard and the logger both come out.
 
 ### License header
 
