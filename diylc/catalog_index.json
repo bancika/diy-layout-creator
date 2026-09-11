@@ -84,7 +84,41 @@
       "name" : "Twisted Leads",
       "className" : "connectivity.TwistedWire"
     } ],
+    "Controllers" : [ {
+      "name" : "Arduino Mega 2560",
+      "className" : "micro.ArduinoMega"
+    }, {
+      "name" : "Arduino Nano",
+      "className" : "micro.ArduinoNano"
+    }, {
+      "name" : "Arduino Uno",
+      "className" : "micro.ArduinoUno"
+    }, {
+      "name" : "ESP32 DevKit",
+      "className" : "micro.ESP32DevKit"
+    }, {
+      "name" : "ESP8266 NodeMCU",
+      "className" : "micro.ESP8266NodeMCU"
+    }, {
+      "name" : "Raspberry Pi",
+      "className" : "micro.RaspberryPi"
+    }, {
+      "name" : "Raspberry Pi Pico",
+      "className" : "micro.RaspberryPiPico"
+    }, {
+      "name" : "Raspberry Pi Zero",
+      "className" : "micro.RaspberryPiZero"
+    }, {
+      "name" : "Teensy",
+      "className" : "micro.Teensy"
+    }, {
+      "name" : "WeMos D1 Mini",
+      "className" : "micro.WemosD1Mini"
+    } ],
     "Electro-Mechanical" : [ {
+      "name" : "18650 Battery Holder",
+      "className" : "electromechanical.BatteryHolder18650"
+    }, {
       "name" : "9V Battery Snap",
       "className" : "electromechanical.BatterySnap9V"
     }, {

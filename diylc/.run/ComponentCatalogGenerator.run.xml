@@ -1,8 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="ComponentCatalogGenerator" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="temurin-21" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <option name="MAIN_CLASS_NAME" value="org.diylc.plugins.chatbot.service.ComponentCatalogGenerator" />
-    <module name="diylc-library" />
+    <module name="diylc-swing" />
     <option name="PROGRAM_PARAMETERS" value="$PROJECT_DIR$" />
+    <option name="VM_PARAMETERS" value="-Dfile.encoding=UTF-8 --add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED --add-exports java.desktop/com.apple.eio=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.desktop/java.awt.geom=ALL-UNNAMED" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="org.diylc.*" />

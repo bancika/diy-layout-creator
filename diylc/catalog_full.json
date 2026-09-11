@@ -1827,6 +1827,3796 @@
       } ]
     }
   }, {
+    "name" : "Arduino Mega 2560",
+    "className" : "micro.ArduinoMega",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "Arduino Mega 2560 R3 High-I/O Microcontroller Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#00878F"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "NC"
+      }, {
+        "i" : 1,
+        "label" : "IOREF"
+      }, {
+        "i" : 2,
+        "label" : "RESET"
+      }, {
+        "i" : 3,
+        "label" : "3.3V"
+      }, {
+        "i" : 4,
+        "label" : "5V"
+      }, {
+        "i" : 5,
+        "label" : "GND1"
+      }, {
+        "i" : 6,
+        "label" : "GND2"
+      }, {
+        "i" : 7,
+        "label" : "VIN"
+      }, {
+        "i" : 8,
+        "label" : "A0"
+      }, {
+        "i" : 9,
+        "label" : "A1"
+      }, {
+        "i" : 10,
+        "label" : "A2"
+      }, {
+        "i" : 11,
+        "label" : "A3"
+      }, {
+        "i" : 12,
+        "label" : "A4"
+      }, {
+        "i" : 13,
+        "label" : "A5"
+      }, {
+        "i" : 14,
+        "label" : "A6"
+      }, {
+        "i" : 15,
+        "label" : "A7"
+      }, {
+        "i" : 16,
+        "label" : "A8"
+      }, {
+        "i" : 17,
+        "label" : "A9"
+      }, {
+        "i" : 18,
+        "label" : "A10"
+      }, {
+        "i" : 19,
+        "label" : "A11"
+      }, {
+        "i" : 20,
+        "label" : "A12"
+      }, {
+        "i" : 21,
+        "label" : "A13"
+      }, {
+        "i" : 22,
+        "label" : "A14"
+      }, {
+        "i" : 23,
+        "label" : "A15"
+      }, {
+        "i" : 24,
+        "label" : "D0 (RX0)"
+      }, {
+        "i" : 25,
+        "label" : "D1 (TX0)"
+      }, {
+        "i" : 26,
+        "label" : "D2 (~)"
+      }, {
+        "i" : 27,
+        "label" : "D3 (~)"
+      }, {
+        "i" : 28,
+        "label" : "D4 (~)"
+      }, {
+        "i" : 29,
+        "label" : "D5 (~)"
+      }, {
+        "i" : 30,
+        "label" : "D6 (~)"
+      }, {
+        "i" : 31,
+        "label" : "D7 (~)"
+      }, {
+        "i" : 32,
+        "label" : "D8 (~)"
+      }, {
+        "i" : 33,
+        "label" : "D9 (~)"
+      }, {
+        "i" : 34,
+        "label" : "D10 (~)"
+      }, {
+        "i" : 35,
+        "label" : "D11 (~)"
+      }, {
+        "i" : 36,
+        "label" : "D12 (~)"
+      }, {
+        "i" : 37,
+        "label" : "D13 (~)"
+      }, {
+        "i" : 38,
+        "label" : "GND3"
+      }, {
+        "i" : 39,
+        "label" : "AREF"
+      }, {
+        "i" : 40,
+        "label" : "SDA"
+      }, {
+        "i" : 41,
+        "label" : "SCL"
+      }, {
+        "i" : 42,
+        "label" : "D14 (TX3)"
+      }, {
+        "i" : 43,
+        "label" : "D15 (RX3)"
+      }, {
+        "i" : 44,
+        "label" : "D16 (TX2)"
+      }, {
+        "i" : 45,
+        "label" : "D17 (RX2)"
+      }, {
+        "i" : 46,
+        "label" : "D18 (TX1)"
+      }, {
+        "i" : 47,
+        "label" : "D19 (RX1)"
+      }, {
+        "i" : 48,
+        "label" : "D20 (SDA)"
+      }, {
+        "i" : 49,
+        "label" : "D21 (SCL)"
+      }, {
+        "i" : 50,
+        "label" : "D22"
+      }, {
+        "i" : 51,
+        "label" : "D23"
+      }, {
+        "i" : 52,
+        "label" : "D24"
+      }, {
+        "i" : 53,
+        "label" : "D25"
+      }, {
+        "i" : 54,
+        "label" : "D26"
+      }, {
+        "i" : 55,
+        "label" : "D27"
+      }, {
+        "i" : 56,
+        "label" : "D28"
+      }, {
+        "i" : 57,
+        "label" : "D29"
+      }, {
+        "i" : 58,
+        "label" : "D30"
+      }, {
+        "i" : 59,
+        "label" : "D31"
+      }, {
+        "i" : 60,
+        "label" : "D32"
+      }, {
+        "i" : 61,
+        "label" : "D33"
+      }, {
+        "i" : 62,
+        "label" : "D34"
+      }, {
+        "i" : 63,
+        "label" : "D35"
+      }, {
+        "i" : 64,
+        "label" : "D36"
+      }, {
+        "i" : 65,
+        "label" : "D37"
+      }, {
+        "i" : 66,
+        "label" : "D38"
+      }, {
+        "i" : 67,
+        "label" : "D39"
+      }, {
+        "i" : 68,
+        "label" : "D40"
+      }, {
+        "i" : 69,
+        "label" : "D41"
+      }, {
+        "i" : 70,
+        "label" : "D42"
+      }, {
+        "i" : 71,
+        "label" : "D43"
+      }, {
+        "i" : 72,
+        "label" : "D44"
+      }, {
+        "i" : 73,
+        "label" : "D45"
+      }, {
+        "i" : 74,
+        "label" : "D46"
+      }, {
+        "i" : 75,
+        "label" : "D47"
+      }, {
+        "i" : 76,
+        "label" : "D48"
+      }, {
+        "i" : 77,
+        "label" : "D49"
+      }, {
+        "i" : 78,
+        "label" : "D50 (MISO)"
+      }, {
+        "i" : 79,
+        "label" : "D51 (MOSI)"
+      }, {
+        "i" : 80,
+        "label" : "D52 (SCK)"
+      }, {
+        "i" : 81,
+        "label" : "D53 (SS)"
+      }, {
+        "i" : 82,
+        "label" : "GND_EXT1"
+      }, {
+        "i" : 83,
+        "label" : "GND_EXT2"
+      }, {
+        "i" : 84,
+        "label" : "5V_EXT1"
+      }, {
+        "i" : 85,
+        "label" : "5V_EXT2"
+      }, {
+        "i" : 86,
+        "label" : "MISO"
+      }, {
+        "i" : 87,
+        "label" : "5V_ICSP"
+      }, {
+        "i" : 88,
+        "label" : "SCK"
+      }, {
+        "i" : 89,
+        "label" : "MOSI"
+      }, {
+        "i" : 90,
+        "label" : "RST_ICSP"
+      }, {
+        "i" : 91,
+        "label" : "GND_ICSP"
+      }, {
+        "i" : 92,
+        "label" : "MISO_16U2"
+      }, {
+        "i" : 93,
+        "label" : "5V_16U2"
+      }, {
+        "i" : 94,
+        "label" : "SCK_16U2"
+      }, {
+        "i" : 95,
+        "label" : "MOSI_16U2"
+      }, {
+        "i" : 96,
+        "label" : "RST_16U2"
+      }, {
+        "i" : 97,
+        "label" : "GND_16U2"
+      } ]
+    }
+  }, {
+    "name" : "Arduino Nano",
+    "className" : "micro.ArduinoNano",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "Arduino Nano Breadboard-Friendly Microcontroller Board (classic, Every, 33 IoT, 33 BLE, RP2040 Connect, Nano ESP32, Nano R4)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#00878F"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "NanoVersion",
+      "possibleValues" : [ "CLASSIC", "NANO_33_BLE", "NANO_33_BLE_SENSE", "NANO_33_IOT", "NANO_ESP32", "EVERY", "NANO_R4", "NANO_RP2040_CONNECT" ],
+      "defaultValue" : "CLASSIC"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Version" ],
+      "variants" : [ {
+        "when" : {
+          "Version" : "CLASSIC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7"
+        }, {
+          "i" : 10,
+          "label" : "D8"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~)"
+        }, {
+          "i" : 14,
+          "label" : "D12"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "RST2"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5"
+        }, {
+          "i" : 22,
+          "label" : "A4"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13"
+        }, {
+          "i" : 30,
+          "label" : "MISO"
+        }, {
+          "i" : 31,
+          "label" : "5V_ICSP"
+        }, {
+          "i" : 32,
+          "label" : "SCK"
+        }, {
+          "i" : 33,
+          "label" : "MOSI"
+        }, {
+          "i" : 34,
+          "label" : "RST_ICSP"
+        }, {
+          "i" : 35,
+          "label" : "GND_ICSP"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_33_BLE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2 (~)"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4 (~)"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7 (~)"
+        }, {
+          "i" : 10,
+          "label" : "D8 (~)"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~, MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (~, MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "RST2"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0 (DAC0)"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (~, SCK)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_33_BLE_SENSE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2 (~)"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4 (~)"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7 (~)"
+        }, {
+          "i" : 10,
+          "label" : "D8 (~)"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~, MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (~, MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "RST2"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0 (DAC0)"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (~, SCK)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_33_IOT"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2 (~)"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7"
+        }, {
+          "i" : 10,
+          "label" : "D8"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "RST2"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0 (DAC0)"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (SCK)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_ESP32"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (~, TX/GPIO43)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (~, RX/GPIO44)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2 (~, GPIO5)"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~, GPIO6)"
+        }, {
+          "i" : 6,
+          "label" : "D4 (~, GPIO7)"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~, GPIO8)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~, GPIO9)"
+        }, {
+          "i" : 9,
+          "label" : "D7 (~, GPIO10)"
+        }, {
+          "i" : 10,
+          "label" : "D8 (~, GPIO17)"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~, GPIO18)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~, GPIO21)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~, MOSI/GPIO38)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (~, MISO/GPIO47)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "B1"
+        }, {
+          "i" : 18,
+          "label" : "VUSB"
+        }, {
+          "i" : 19,
+          "label" : "A7 (~, GPIO14)"
+        }, {
+          "i" : 20,
+          "label" : "A6 (~, GPIO13)"
+        }, {
+          "i" : 21,
+          "label" : "A5 (~, SCL/GPIO12)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (~, SDA/GPIO11)"
+        }, {
+          "i" : 23,
+          "label" : "A3 (~, GPIO4)"
+        }, {
+          "i" : 24,
+          "label" : "A2 (~, GPIO3)"
+        }, {
+          "i" : 25,
+          "label" : "A1 (~, GPIO2)"
+        }, {
+          "i" : 26,
+          "label" : "A0 (~, GPIO1)"
+        }, {
+          "i" : 27,
+          "label" : "B0"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (~, SCK/GPIO48)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "EVERY"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7"
+        }, {
+          "i" : 10,
+          "label" : "D8"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "RST2"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0 (DAC0)"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (SCK)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_R4"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND1"
+        }, {
+          "i" : 4,
+          "label" : "D2"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4 (CAN TX)"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~, CAN RX)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7"
+        }, {
+          "i" : 10,
+          "label" : "D8"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~, CS)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~, MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "BOOT"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3 (OPAMP OUT)"
+        }, {
+          "i" : 24,
+          "label" : "A2 (OPAMP -)"
+        }, {
+          "i" : 25,
+          "label" : "A1 (OPAMP +)"
+        }, {
+          "i" : 26,
+          "label" : "A0 (DAC)"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (SCK)"
+        }, {
+          "i" : 30,
+          "label" : "QWIIC"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "NANO_RP2040_CONNECT"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 1,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 2,
+          "label" : "RST1"
+        }, {
+          "i" : 3,
+          "label" : "GND_1"
+        }, {
+          "i" : 4,
+          "label" : "D2 (~)"
+        }, {
+          "i" : 5,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 6,
+          "label" : "D4 (~)"
+        }, {
+          "i" : 7,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 8,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 9,
+          "label" : "D7 (~)"
+        }, {
+          "i" : 10,
+          "label" : "D8 (~)"
+        }, {
+          "i" : 11,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 12,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 13,
+          "label" : "D11 (~, MOSI)"
+        }, {
+          "i" : 14,
+          "label" : "D12 (~, MISO)"
+        }, {
+          "i" : 15,
+          "label" : "VIN"
+        }, {
+          "i" : 16,
+          "label" : "GND2"
+        }, {
+          "i" : 17,
+          "label" : "REC"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "A7"
+        }, {
+          "i" : 20,
+          "label" : "A6"
+        }, {
+          "i" : 21,
+          "label" : "A5 (SCL)"
+        }, {
+          "i" : 22,
+          "label" : "A4 (SDA)"
+        }, {
+          "i" : 23,
+          "label" : "A3"
+        }, {
+          "i" : 24,
+          "label" : "A2"
+        }, {
+          "i" : 25,
+          "label" : "A1"
+        }, {
+          "i" : 26,
+          "label" : "A0"
+        }, {
+          "i" : 27,
+          "label" : "AREF"
+        }, {
+          "i" : 28,
+          "label" : "3.3V"
+        }, {
+          "i" : 29,
+          "label" : "D13 (~, SCK)"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "Arduino Uno",
+    "className" : "micro.ArduinoUno",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "Arduino Uno R3 / R4 WiFi / R4 Minima / Leonardo Microcontroller Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#00878F"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "ArduinoUnoVersion",
+      "possibleValues" : [ "LEONARDO", "REV3", "R4_MINIMA", "R4_WIFI" ],
+      "defaultValue" : "REV3"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Version" ],
+      "variants" : [ {
+        "when" : {
+          "Version" : "LEONARDO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "NC"
+        }, {
+          "i" : 1,
+          "label" : "IOREF"
+        }, {
+          "i" : 2,
+          "label" : "RESET"
+        }, {
+          "i" : 3,
+          "label" : "3.3V"
+        }, {
+          "i" : 4,
+          "label" : "5V"
+        }, {
+          "i" : 5,
+          "label" : "GND1"
+        }, {
+          "i" : 6,
+          "label" : "GND2"
+        }, {
+          "i" : 7,
+          "label" : "VIN"
+        }, {
+          "i" : 8,
+          "label" : "A0"
+        }, {
+          "i" : 9,
+          "label" : "A1"
+        }, {
+          "i" : 10,
+          "label" : "A2"
+        }, {
+          "i" : 11,
+          "label" : "A3"
+        }, {
+          "i" : 12,
+          "label" : "A4"
+        }, {
+          "i" : 13,
+          "label" : "A5"
+        }, {
+          "i" : 14,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 15,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 16,
+          "label" : "D2 (SDA)"
+        }, {
+          "i" : 17,
+          "label" : "D3 (~, SCL)"
+        }, {
+          "i" : 18,
+          "label" : "D4"
+        }, {
+          "i" : 19,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 20,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 21,
+          "label" : "D7"
+        }, {
+          "i" : 22,
+          "label" : "D8"
+        }, {
+          "i" : 23,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 24,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 25,
+          "label" : "D11 (~)"
+        }, {
+          "i" : 26,
+          "label" : "D12"
+        }, {
+          "i" : 27,
+          "label" : "D13"
+        }, {
+          "i" : 28,
+          "label" : "GND3"
+        }, {
+          "i" : 29,
+          "label" : "AREF"
+        }, {
+          "i" : 30,
+          "label" : "SDA"
+        }, {
+          "i" : 31,
+          "label" : "SCL"
+        }, {
+          "i" : 32,
+          "label" : "MISO"
+        }, {
+          "i" : 33,
+          "label" : "5V_ICSP"
+        }, {
+          "i" : 34,
+          "label" : "SCK"
+        }, {
+          "i" : 35,
+          "label" : "MOSI"
+        }, {
+          "i" : 36,
+          "label" : "RST_ICSP"
+        }, {
+          "i" : 37,
+          "label" : "GND_ICSP"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "REV3"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "NC"
+        }, {
+          "i" : 1,
+          "label" : "IOREF"
+        }, {
+          "i" : 2,
+          "label" : "RESET"
+        }, {
+          "i" : 3,
+          "label" : "3.3V"
+        }, {
+          "i" : 4,
+          "label" : "5V"
+        }, {
+          "i" : 5,
+          "label" : "GND1"
+        }, {
+          "i" : 6,
+          "label" : "GND2"
+        }, {
+          "i" : 7,
+          "label" : "VIN"
+        }, {
+          "i" : 8,
+          "label" : "A0"
+        }, {
+          "i" : 9,
+          "label" : "A1"
+        }, {
+          "i" : 10,
+          "label" : "A2"
+        }, {
+          "i" : 11,
+          "label" : "A3"
+        }, {
+          "i" : 12,
+          "label" : "A4"
+        }, {
+          "i" : 13,
+          "label" : "A5"
+        }, {
+          "i" : 14,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 15,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 16,
+          "label" : "D2"
+        }, {
+          "i" : 17,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 18,
+          "label" : "D4"
+        }, {
+          "i" : 19,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 20,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 21,
+          "label" : "D7"
+        }, {
+          "i" : 22,
+          "label" : "D8"
+        }, {
+          "i" : 23,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 24,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 25,
+          "label" : "D11 (~)"
+        }, {
+          "i" : 26,
+          "label" : "D12"
+        }, {
+          "i" : 27,
+          "label" : "D13"
+        }, {
+          "i" : 28,
+          "label" : "GND3"
+        }, {
+          "i" : 29,
+          "label" : "AREF"
+        }, {
+          "i" : 30,
+          "label" : "SDA"
+        }, {
+          "i" : 31,
+          "label" : "SCL"
+        }, {
+          "i" : 32,
+          "label" : "MISO"
+        }, {
+          "i" : 33,
+          "label" : "5V_ICSP"
+        }, {
+          "i" : 34,
+          "label" : "SCK"
+        }, {
+          "i" : 35,
+          "label" : "MOSI"
+        }, {
+          "i" : 36,
+          "label" : "RST_ICSP"
+        }, {
+          "i" : 37,
+          "label" : "GND_ICSP"
+        }, {
+          "i" : 38,
+          "label" : "MISO_16U2"
+        }, {
+          "i" : 39,
+          "label" : "5V_16U2"
+        }, {
+          "i" : 40,
+          "label" : "SCK_16U2"
+        }, {
+          "i" : 41,
+          "label" : "MOSI_16U2"
+        }, {
+          "i" : 42,
+          "label" : "RST_16U2"
+        }, {
+          "i" : 43,
+          "label" : "GND_16U2"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "R4_MINIMA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "BOOT"
+        }, {
+          "i" : 1,
+          "label" : "IOREF"
+        }, {
+          "i" : 2,
+          "label" : "RESET"
+        }, {
+          "i" : 3,
+          "label" : "3.3V"
+        }, {
+          "i" : 4,
+          "label" : "5V"
+        }, {
+          "i" : 5,
+          "label" : "GND1"
+        }, {
+          "i" : 6,
+          "label" : "GND2"
+        }, {
+          "i" : 7,
+          "label" : "VIN"
+        }, {
+          "i" : 8,
+          "label" : "A0"
+        }, {
+          "i" : 9,
+          "label" : "A1"
+        }, {
+          "i" : 10,
+          "label" : "A2"
+        }, {
+          "i" : 11,
+          "label" : "A3"
+        }, {
+          "i" : 12,
+          "label" : "A4"
+        }, {
+          "i" : 13,
+          "label" : "A5"
+        }, {
+          "i" : 14,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 15,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 16,
+          "label" : "D2"
+        }, {
+          "i" : 17,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 18,
+          "label" : "D4"
+        }, {
+          "i" : 19,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 20,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 21,
+          "label" : "D7"
+        }, {
+          "i" : 22,
+          "label" : "D8"
+        }, {
+          "i" : 23,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 24,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 25,
+          "label" : "D11 (~)"
+        }, {
+          "i" : 26,
+          "label" : "D12"
+        }, {
+          "i" : 27,
+          "label" : "D13"
+        }, {
+          "i" : 28,
+          "label" : "GND3"
+        }, {
+          "i" : 29,
+          "label" : "AREF"
+        }, {
+          "i" : 30,
+          "label" : "SDA"
+        }, {
+          "i" : 31,
+          "label" : "SCL"
+        }, {
+          "i" : 32,
+          "label" : "MISO"
+        }, {
+          "i" : 33,
+          "label" : "5V_ICSP"
+        }, {
+          "i" : 34,
+          "label" : "SCK"
+        }, {
+          "i" : 35,
+          "label" : "MOSI"
+        }, {
+          "i" : 36,
+          "label" : "RST_ICSP"
+        }, {
+          "i" : 37,
+          "label" : "GND_ICSP"
+        }, {
+          "i" : 38,
+          "label" : "SWD"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "R4_WIFI"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "BOOT"
+        }, {
+          "i" : 1,
+          "label" : "IOREF"
+        }, {
+          "i" : 2,
+          "label" : "RESET"
+        }, {
+          "i" : 3,
+          "label" : "3.3V"
+        }, {
+          "i" : 4,
+          "label" : "5V"
+        }, {
+          "i" : 5,
+          "label" : "GND1"
+        }, {
+          "i" : 6,
+          "label" : "GND2"
+        }, {
+          "i" : 7,
+          "label" : "VIN"
+        }, {
+          "i" : 8,
+          "label" : "A0"
+        }, {
+          "i" : 9,
+          "label" : "A1"
+        }, {
+          "i" : 10,
+          "label" : "A2"
+        }, {
+          "i" : 11,
+          "label" : "A3"
+        }, {
+          "i" : 12,
+          "label" : "A4"
+        }, {
+          "i" : 13,
+          "label" : "A5"
+        }, {
+          "i" : 14,
+          "label" : "D0 (RX)"
+        }, {
+          "i" : 15,
+          "label" : "D1 (TX)"
+        }, {
+          "i" : 16,
+          "label" : "D2"
+        }, {
+          "i" : 17,
+          "label" : "D3 (~)"
+        }, {
+          "i" : 18,
+          "label" : "D4"
+        }, {
+          "i" : 19,
+          "label" : "D5 (~)"
+        }, {
+          "i" : 20,
+          "label" : "D6 (~)"
+        }, {
+          "i" : 21,
+          "label" : "D7"
+        }, {
+          "i" : 22,
+          "label" : "D8"
+        }, {
+          "i" : 23,
+          "label" : "D9 (~)"
+        }, {
+          "i" : 24,
+          "label" : "D10 (~)"
+        }, {
+          "i" : 25,
+          "label" : "D11 (~)"
+        }, {
+          "i" : 26,
+          "label" : "D12"
+        }, {
+          "i" : 27,
+          "label" : "D13"
+        }, {
+          "i" : 28,
+          "label" : "GND3"
+        }, {
+          "i" : 29,
+          "label" : "AREF"
+        }, {
+          "i" : 30,
+          "label" : "SDA"
+        }, {
+          "i" : 31,
+          "label" : "SCL"
+        }, {
+          "i" : 32,
+          "label" : "MISO"
+        }, {
+          "i" : 33,
+          "label" : "5V_ICSP"
+        }, {
+          "i" : 34,
+          "label" : "SCK"
+        }, {
+          "i" : 35,
+          "label" : "MOSI"
+        }, {
+          "i" : 36,
+          "label" : "RST_ICSP"
+        }, {
+          "i" : 37,
+          "label" : "GND_ICSP"
+        }, {
+          "i" : 38,
+          "label" : "MISO_16U2"
+        }, {
+          "i" : 39,
+          "label" : "5V_16U2"
+        }, {
+          "i" : 40,
+          "label" : "SCK_16U2"
+        }, {
+          "i" : 41,
+          "label" : "MOSI_16U2"
+        }, {
+          "i" : 42,
+          "label" : "RST_16U2"
+        }, {
+          "i" : 43,
+          "label" : "GND_16U2"
+        }, {
+          "i" : 44,
+          "label" : "OFF"
+        }, {
+          "i" : 45,
+          "label" : "GND"
+        }, {
+          "i" : 46,
+          "label" : "VRTC"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "ESP32 DevKit",
+    "className" : "micro.ESP32DevKit",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "ESP32 DevKit Wi-Fi and Bluetooth Development Board (30-Pin / 38-Pin / 44-Pin S3 / 30-Pin C3 / 32-Pin C6)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#3E3E3E"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "DevKitVersion",
+      "possibleValues" : [ "DevKit_V1_30Pin", "DevKitC_V4_38Pin", "ESP32_S3_DevKitC_44Pin", "ESP32_C3_DevKitM_1", "ESP32_C6_DevKitC_1" ],
+      "defaultValue" : "DevKit_V1_30Pin"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Version" ],
+      "variants" : [ {
+        "when" : {
+          "Version" : "DevKit_V1_30Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "EN (CHIP_PU, Reset)"
+        }, {
+          "i" : 1,
+          "label" : "VP (GPIO36, ADC1_CH0, S_VP)"
+        }, {
+          "i" : 2,
+          "label" : "VN (GPIO39, ADC1_CH3, S_VN)"
+        }, {
+          "i" : 3,
+          "label" : "GPIO34 (ADC1_CH6, VDET_1)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO35 (ADC1_CH7, VDET_2)"
+        }, {
+          "i" : 5,
+          "label" : "GPIO32 (ADC1_CH4, TOUCH_CH9, XTAL_32K_P)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO33 (ADC1_CH5, TOUCH_CH8, XTAL_32K_N)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO25 (ADC2_CH8, DAC_1)"
+        }, {
+          "i" : 8,
+          "label" : "GPIO26 (ADC2_CH9, DAC_2)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO27 (ADC2_CH7, TOUCH_CH7)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO14 (ADC2_CH6, TOUCH_CH6, MTMS)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO12 (ADC2_CH5, TOUCH_CH5, MTDI)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO13 (ADC2_CH4, TOUCH_CH4, MTCK)"
+        }, {
+          "i" : 13,
+          "label" : "GND_1"
+        }, {
+          "i" : 14,
+          "label" : "VIN"
+        }, {
+          "i" : 15,
+          "label" : "GPIO23"
+        }, {
+          "i" : 16,
+          "label" : "GPIO22 (SCL)"
+        }, {
+          "i" : 17,
+          "label" : "TX0 (GPIO1, U0TXD)"
+        }, {
+          "i" : 18,
+          "label" : "RX0 (GPIO3, U0RXD)"
+        }, {
+          "i" : 19,
+          "label" : "GPIO21 (SDA)"
+        }, {
+          "i" : 20,
+          "label" : "GPIO19"
+        }, {
+          "i" : 21,
+          "label" : "GPIO18"
+        }, {
+          "i" : 22,
+          "label" : "GPIO5"
+        }, {
+          "i" : 23,
+          "label" : "TX2 (GPIO17, U2TXD)"
+        }, {
+          "i" : 24,
+          "label" : "RX2 (GPIO16, U2RXD)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO4 (ADC2_CH0, TOUCH_CH0)"
+        }, {
+          "i" : 26,
+          "label" : "GPIO2 (ADC2_CH2, TOUCH_CH2)"
+        }, {
+          "i" : 27,
+          "label" : "GPIO15 (ADC2_CH3, TOUCH_CH3, MTDO)"
+        }, {
+          "i" : 28,
+          "label" : "GND_2"
+        }, {
+          "i" : 29,
+          "label" : "3V3"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "DevKitC_V4_38Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3V3"
+        }, {
+          "i" : 1,
+          "label" : "EN (CHIP_PU, Reset)"
+        }, {
+          "i" : 2,
+          "label" : "VP (GPIO36, ADC1_CH0, S_VP)"
+        }, {
+          "i" : 3,
+          "label" : "VN (GPIO39, ADC1_CH3, S_VN)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO34 (ADC1_CH6, VDET_1)"
+        }, {
+          "i" : 5,
+          "label" : "GPIO35 (ADC1_CH7, VDET_2)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO32 (ADC1_CH4, TOUCH_CH9, XTAL_32K_P)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO33 (ADC1_CH5, TOUCH_CH8, XTAL_32K_N)"
+        }, {
+          "i" : 8,
+          "label" : "GPIO25 (ADC2_CH8, DAC_1)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO26 (ADC2_CH9, DAC_2)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO27 (ADC2_CH7, TOUCH_CH7)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO14 (ADC2_CH6, TOUCH_CH6, MTMS)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO12 (ADC2_CH5, TOUCH_CH5, MTDI)"
+        }, {
+          "i" : 13,
+          "label" : "GND_1"
+        }, {
+          "i" : 14,
+          "label" : "GPIO13 (ADC2_CH4, TOUCH_CH4, MTCK)"
+        }, {
+          "i" : 15,
+          "label" : "D2 (GPIO9, flash)"
+        }, {
+          "i" : 16,
+          "label" : "D3 (GPIO10, flash)"
+        }, {
+          "i" : 17,
+          "label" : "CMD (GPIO11, flash)"
+        }, {
+          "i" : 18,
+          "label" : "5V"
+        }, {
+          "i" : 19,
+          "label" : "GND_2"
+        }, {
+          "i" : 20,
+          "label" : "GPIO23"
+        }, {
+          "i" : 21,
+          "label" : "GPIO22"
+        }, {
+          "i" : 22,
+          "label" : "TX (GPIO1, U0TXD)"
+        }, {
+          "i" : 23,
+          "label" : "RX (GPIO3, U0RXD)"
+        }, {
+          "i" : 24,
+          "label" : "GPIO21"
+        }, {
+          "i" : 25,
+          "label" : "GND_3"
+        }, {
+          "i" : 26,
+          "label" : "GPIO19"
+        }, {
+          "i" : 27,
+          "label" : "GPIO18"
+        }, {
+          "i" : 28,
+          "label" : "GPIO5"
+        }, {
+          "i" : 29,
+          "label" : "GPIO17"
+        }, {
+          "i" : 30,
+          "label" : "GPIO16"
+        }, {
+          "i" : 31,
+          "label" : "GPIO4 (ADC2_CH0, TOUCH_CH0)"
+        }, {
+          "i" : 32,
+          "label" : "GPIO0 (ADC2_CH1, TOUCH_CH1, Boot)"
+        }, {
+          "i" : 33,
+          "label" : "GPIO2 (ADC2_CH2, TOUCH_CH2)"
+        }, {
+          "i" : 34,
+          "label" : "GPIO15 (ADC2_CH3, TOUCH_CH3, MTDO)"
+        }, {
+          "i" : 35,
+          "label" : "D1 (GPIO8, flash)"
+        }, {
+          "i" : 36,
+          "label" : "D0 (GPIO7, flash)"
+        }, {
+          "i" : 37,
+          "label" : "CLK (GPIO6, flash)"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "ESP32_S3_DevKitC_44Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3V3_1"
+        }, {
+          "i" : 1,
+          "label" : "3V3_2"
+        }, {
+          "i" : 2,
+          "label" : "RST (EN)"
+        }, {
+          "i" : 3,
+          "label" : "GPIO4 (RTC_GPIO4, TOUCH4, ADC1_CH3)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO5 (RTC_GPIO5, TOUCH5, ADC1_CH4)"
+        }, {
+          "i" : 5,
+          "label" : "GPIO6 (RTC_GPIO6, TOUCH6, ADC1_CH5)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO7 (RTC_GPIO7, TOUCH7, ADC1_CH6)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO15 (U0RTS, ADC2_CH4, XTAL_32K_P)"
+        }, {
+          "i" : 8,
+          "label" : "GPIO16 (U0CTS, ADC2_CH5, XTAL_32K_N)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO17 (U1TXD, ADC2_CH6)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO18 (U1RXD, ADC2_CH7, CLK_OUT3)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO8 (TOUCH8, ADC1_CH7, SUBSPICS1)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO3 (RTC_GPIO3, TOUCH3, ADC1_CH2)"
+        }, {
+          "i" : 13,
+          "label" : "GPIO46"
+        }, {
+          "i" : 14,
+          "label" : "GPIO9 (TOUCH9, ADC1_CH8, FSPIHD)"
+        }, {
+          "i" : 15,
+          "label" : "GPIO10 (TOUCH10, ADC1_CH9, FSPICS0)"
+        }, {
+          "i" : 16,
+          "label" : "GPIO11 (TOUCH11, ADC2_CH0, FSPID)"
+        }, {
+          "i" : 17,
+          "label" : "GPIO12 (TOUCH12, ADC2_CH1, FSPICLK)"
+        }, {
+          "i" : 18,
+          "label" : "GPIO13 (TOUCH13, ADC2_CH2, FSPIQ)"
+        }, {
+          "i" : 19,
+          "label" : "GPIO14 (TOUCH14, ADC2_CH3, FSPIWP)"
+        }, {
+          "i" : 20,
+          "label" : "5V"
+        }, {
+          "i" : 21,
+          "label" : "GND_1"
+        }, {
+          "i" : 22,
+          "label" : "GND_2"
+        }, {
+          "i" : 23,
+          "label" : "TX (GPIO43, U0TXD, CLK_OUT1)"
+        }, {
+          "i" : 24,
+          "label" : "RX (GPIO44, U0RXD, CLK_OUT2)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO1 (RTC_GPIO1, TOUCH1, ADC1_CH0)"
+        }, {
+          "i" : 26,
+          "label" : "GPIO2 (RTC_GPIO2, TOUCH2, ADC1_CH1)"
+        }, {
+          "i" : 27,
+          "label" : "GPIO42 (MTMS)"
+        }, {
+          "i" : 28,
+          "label" : "GPIO41 (MTDI, CLK_OUT1)"
+        }, {
+          "i" : 29,
+          "label" : "GPIO40 (MTDO, CLK_OUT2)"
+        }, {
+          "i" : 30,
+          "label" : "GPIO39 (MTCK, CLK_OUT3, SUBSPICS1)"
+        }, {
+          "i" : 31,
+          "label" : "GPIO38 (FSPIWP, RGB LED)"
+        }, {
+          "i" : 32,
+          "label" : "GPIO37 (SPIDQS, FSPIQ)"
+        }, {
+          "i" : 33,
+          "label" : "GPIO36 (SPIIO7, FSPICLK)"
+        }, {
+          "i" : 34,
+          "label" : "GPIO35 (SPIIO6, FSPID)"
+        }, {
+          "i" : 35,
+          "label" : "GPIO0 (RTC_GPIO0, Boot)"
+        }, {
+          "i" : 36,
+          "label" : "GPIO45"
+        }, {
+          "i" : 37,
+          "label" : "GPIO48 (SPICLK_N)"
+        }, {
+          "i" : 38,
+          "label" : "GPIO47 (SPICLK_P)"
+        }, {
+          "i" : 39,
+          "label" : "GPIO21 (RTC_GPIO21)"
+        }, {
+          "i" : 40,
+          "label" : "GPIO20 (U1CTS, ADC2_CH9, USB_D+)"
+        }, {
+          "i" : 41,
+          "label" : "GPIO19 (U1RTS, ADC2_CH8, USB_D-)"
+        }, {
+          "i" : 42,
+          "label" : "GND_3"
+        }, {
+          "i" : 43,
+          "label" : "GND_4"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "ESP32_C3_DevKitM_1"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND_1"
+        }, {
+          "i" : 1,
+          "label" : "3V3_1"
+        }, {
+          "i" : 2,
+          "label" : "3V3_2"
+        }, {
+          "i" : 3,
+          "label" : "GPIO2 (ADC1_CH2, FSPIQ)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO3 (ADC1_CH3)"
+        }, {
+          "i" : 5,
+          "label" : "GND_2"
+        }, {
+          "i" : 6,
+          "label" : "RST (CHIP_PU)"
+        }, {
+          "i" : 7,
+          "label" : "GND_3"
+        }, {
+          "i" : 8,
+          "label" : "GPIO0 (ADC1_CH0, XTAL_32K_P)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO1 (ADC1_CH1, XTAL_32K_N)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO10 (FSPICS0)"
+        }, {
+          "i" : 11,
+          "label" : "GND_4"
+        }, {
+          "i" : 12,
+          "label" : "5V_1"
+        }, {
+          "i" : 13,
+          "label" : "5V_2"
+        }, {
+          "i" : 14,
+          "label" : "GND_5"
+        }, {
+          "i" : 15,
+          "label" : "GND_6"
+        }, {
+          "i" : 16,
+          "label" : "TX (GPIO21, U0TXD)"
+        }, {
+          "i" : 17,
+          "label" : "RX (GPIO20, U0RXD)"
+        }, {
+          "i" : 18,
+          "label" : "GND_7"
+        }, {
+          "i" : 19,
+          "label" : "GPIO9"
+        }, {
+          "i" : 20,
+          "label" : "GPIO8 (RGB LED)"
+        }, {
+          "i" : 21,
+          "label" : "GND_8"
+        }, {
+          "i" : 22,
+          "label" : "GPIO7 (FSPID, MTDO)"
+        }, {
+          "i" : 23,
+          "label" : "GPIO6 (FSPICLK, MTCK)"
+        }, {
+          "i" : 24,
+          "label" : "GPIO5 (ADC2_CH0, FSPIWP, MTDI)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO4 (ADC1_CH4, FSPIHD, MTMS)"
+        }, {
+          "i" : 26,
+          "label" : "GND_9"
+        }, {
+          "i" : 27,
+          "label" : "GPIO18 (USB_D-)"
+        }, {
+          "i" : 28,
+          "label" : "GPIO19 (USB_D+)"
+        }, {
+          "i" : 29,
+          "label" : "GND_10"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "ESP32_C6_DevKitC_1"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3V3"
+        }, {
+          "i" : 1,
+          "label" : "RST"
+        }, {
+          "i" : 2,
+          "label" : "GPIO4 (MTMS, LP_GPIO4, LP_UART_RXD, ADC1_CH4, FSPIHD)"
+        }, {
+          "i" : 3,
+          "label" : "GPIO5 (MTDI, LP_GPIO5, LP_UART_TXD, ADC1_CH5, FSPIWP)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO6 (MTCK, LP_GPIO6, LP_I2C_SDA, ADC1_CH6, FSPICLK)"
+        }, {
+          "i" : 5,
+          "label" : "GPIO7 (MTDO, LP_GPIO7, LP_I2C_SCL, FSPID)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO0 (XTAL_32K_P, LP_GPIO0, LP_UART_DTRN, ADC1_CH0)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO1 (XTAL_32K_N, LP_GPIO1, LP_UART_DSRN, ADC1_CH1)"
+        }, {
+          "i" : 8,
+          "label" : "GPIO8 (RGB LED)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO10"
+        }, {
+          "i" : 10,
+          "label" : "GPIO11"
+        }, {
+          "i" : 11,
+          "label" : "GPIO2 (LP_GPIO2, LP_UART_RTSN, ADC1_CH2, FSPIQ)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO3 (LP_GPIO3, LP_UART_CTSN, ADC1_CH3)"
+        }, {
+          "i" : 13,
+          "label" : "5V"
+        }, {
+          "i" : 14,
+          "label" : "GND_1"
+        }, {
+          "i" : 15,
+          "label" : "NC_1"
+        }, {
+          "i" : 16,
+          "label" : "GND_2"
+        }, {
+          "i" : 17,
+          "label" : "TX (GPIO16, U0TXD, FSPICS0)"
+        }, {
+          "i" : 18,
+          "label" : "RX (GPIO17, U0RXD, FSPICS1)"
+        }, {
+          "i" : 19,
+          "label" : "GPIO15"
+        }, {
+          "i" : 20,
+          "label" : "GPIO23 (SDIO_DATA3)"
+        }, {
+          "i" : 21,
+          "label" : "GPIO22 (SDIO_DATA2)"
+        }, {
+          "i" : 22,
+          "label" : "GPIO21 (SDIO_DATA1, FSPICS5)"
+        }, {
+          "i" : 23,
+          "label" : "GPIO20 (SDIO_DATA0, FSPICS4)"
+        }, {
+          "i" : 24,
+          "label" : "GPIO19 (SDIO_CLK, FSPICS3)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO18 (SDIO_CMD, FSPICS2)"
+        }, {
+          "i" : 26,
+          "label" : "GPIO9"
+        }, {
+          "i" : 27,
+          "label" : "GND_3"
+        }, {
+          "i" : 28,
+          "label" : "GPIO13 (USB_D+)"
+        }, {
+          "i" : 29,
+          "label" : "GPIO12 (USB_D-)"
+        }, {
+          "i" : 30,
+          "label" : "GND_4"
+        }, {
+          "i" : 31,
+          "label" : "NC_2"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "ESP8266 NodeMCU",
+    "className" : "micro.ESP8266NodeMCU",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "ESP8266 NodeMCU V2/V3 Wi-Fi Development Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#3E3E3E"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "A0 (ADC0)"
+      }, {
+        "i" : 1,
+        "label" : "RSV_1"
+      }, {
+        "i" : 2,
+        "label" : "RSV_2"
+      }, {
+        "i" : 3,
+        "label" : "SD3 (GPIO10, flash)"
+      }, {
+        "i" : 4,
+        "label" : "SD2 (GPIO9, flash)"
+      }, {
+        "i" : 5,
+        "label" : "SD1 (GPIO8, flash)"
+      }, {
+        "i" : 6,
+        "label" : "CMD (GPIO11, flash)"
+      }, {
+        "i" : 7,
+        "label" : "SD0 (GPIO7, flash)"
+      }, {
+        "i" : 8,
+        "label" : "CLK (GPIO6, flash)"
+      }, {
+        "i" : 9,
+        "label" : "GND_1"
+      }, {
+        "i" : 10,
+        "label" : "3V3_1"
+      }, {
+        "i" : 11,
+        "label" : "EN (CH_PD)"
+      }, {
+        "i" : 12,
+        "label" : "RST"
+      }, {
+        "i" : 13,
+        "label" : "GND_2"
+      }, {
+        "i" : 14,
+        "label" : "VIN"
+      }, {
+        "i" : 15,
+        "label" : "D0 (GPIO16, WAKE)"
+      }, {
+        "i" : 16,
+        "label" : "D1 (GPIO5, SCL)"
+      }, {
+        "i" : 17,
+        "label" : "D2 (GPIO4, SDA)"
+      }, {
+        "i" : 18,
+        "label" : "D3 (GPIO0, FLASH)"
+      }, {
+        "i" : 19,
+        "label" : "D4 (GPIO2, LED)"
+      }, {
+        "i" : 20,
+        "label" : "3V3_2"
+      }, {
+        "i" : 21,
+        "label" : "GND_3"
+      }, {
+        "i" : 22,
+        "label" : "D5 (GPIO14, HSPI SCLK)"
+      }, {
+        "i" : 23,
+        "label" : "D6 (GPIO12, HSPI MISO)"
+      }, {
+        "i" : 24,
+        "label" : "D7 (GPIO13, HSPI MOSI)"
+      }, {
+        "i" : 25,
+        "label" : "D8 (GPIO15, HSPI CS)"
+      }, {
+        "i" : 26,
+        "label" : "RX (GPIO3, U0RXD)"
+      }, {
+        "i" : 27,
+        "label" : "TX (GPIO1, U0TXD)"
+      }, {
+        "i" : 28,
+        "label" : "GND_4"
+      }, {
+        "i" : 29,
+        "label" : "3V3_3"
+      } ]
+    }
+  }, {
+    "name" : "Raspberry Pi",
+    "className" : "micro.RaspberryPi",
+    "category" : "Controllers",
+    "namePrefix" : "SBC",
+    "description" : "Raspberry Pi 3/4/5 Single Board Computer with 40-pin GPIO",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1B5E20"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "RaspberryPiVersion",
+      "possibleValues" : [ "PI_3_B", "PI_4_B", "PI_5" ],
+      "defaultValue" : "PI_5"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Version" ],
+      "variants" : [ {
+        "when" : {
+          "Version" : "PI_3_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3.3V (Pin 1)"
+        }, {
+          "i" : 1,
+          "label" : "5V (Pin 2)"
+        }, {
+          "i" : 2,
+          "label" : "GPIO2/SDA (Pin 3)"
+        }, {
+          "i" : 3,
+          "label" : "5V (Pin 4)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO3/SCL (Pin 5)"
+        }, {
+          "i" : 5,
+          "label" : "GND (Pin 6)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO4 (Pin 7)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO14/TXD (Pin 8)"
+        }, {
+          "i" : 8,
+          "label" : "GND (Pin 9)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO15/RXD (Pin 10)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO17 (Pin 11)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO18 (Pin 12)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO27 (Pin 13)"
+        }, {
+          "i" : 13,
+          "label" : "GND (Pin 14)"
+        }, {
+          "i" : 14,
+          "label" : "GPIO22 (Pin 15)"
+        }, {
+          "i" : 15,
+          "label" : "GPIO23 (Pin 16)"
+        }, {
+          "i" : 16,
+          "label" : "3.3V (Pin 17)"
+        }, {
+          "i" : 17,
+          "label" : "GPIO24 (Pin 18)"
+        }, {
+          "i" : 18,
+          "label" : "GPIO10/MOSI (Pin 19)"
+        }, {
+          "i" : 19,
+          "label" : "GND (Pin 20)"
+        }, {
+          "i" : 20,
+          "label" : "GPIO9/MISO (Pin 21)"
+        }, {
+          "i" : 21,
+          "label" : "GPIO25 (Pin 22)"
+        }, {
+          "i" : 22,
+          "label" : "GPIO11/SCLK (Pin 23)"
+        }, {
+          "i" : 23,
+          "label" : "GPIO8/CE0 (Pin 24)"
+        }, {
+          "i" : 24,
+          "label" : "GND (Pin 25)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO7/CE1 (Pin 26)"
+        }, {
+          "i" : 26,
+          "label" : "ID_SD (Pin 27)"
+        }, {
+          "i" : 27,
+          "label" : "ID_SC (Pin 28)"
+        }, {
+          "i" : 28,
+          "label" : "GPIO5 (Pin 29)"
+        }, {
+          "i" : 29,
+          "label" : "GND (Pin 30)"
+        }, {
+          "i" : 30,
+          "label" : "GPIO6 (Pin 31)"
+        }, {
+          "i" : 31,
+          "label" : "GPIO12 (Pin 32)"
+        }, {
+          "i" : 32,
+          "label" : "GPIO13 (Pin 33)"
+        }, {
+          "i" : 33,
+          "label" : "GND (Pin 34)"
+        }, {
+          "i" : 34,
+          "label" : "GPIO19 (Pin 35)"
+        }, {
+          "i" : 35,
+          "label" : "GPIO16 (Pin 36)"
+        }, {
+          "i" : 36,
+          "label" : "GPIO26 (Pin 37)"
+        }, {
+          "i" : 37,
+          "label" : "GPIO20 (Pin 38)"
+        }, {
+          "i" : 38,
+          "label" : "GND (Pin 39)"
+        }, {
+          "i" : 39,
+          "label" : "GPIO21 (Pin 40)"
+        }, {
+          "i" : 40,
+          "label" : "PoE TR0 (Pin 1)"
+        }, {
+          "i" : 41,
+          "label" : "PoE TR1 (Pin 2)"
+        }, {
+          "i" : 42,
+          "label" : "PoE TR2 (Pin 3)"
+        }, {
+          "i" : 43,
+          "label" : "PoE TR3 (Pin 4)"
+        }, {
+          "i" : 44,
+          "label" : "DISP"
+        }, {
+          "i" : 45,
+          "label" : "CAM"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "PI_4_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3.3V (Pin 1)"
+        }, {
+          "i" : 1,
+          "label" : "5V (Pin 2)"
+        }, {
+          "i" : 2,
+          "label" : "GPIO2/SDA (Pin 3)"
+        }, {
+          "i" : 3,
+          "label" : "5V (Pin 4)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO3/SCL (Pin 5)"
+        }, {
+          "i" : 5,
+          "label" : "GND (Pin 6)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO4 (Pin 7)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO14/TXD (Pin 8)"
+        }, {
+          "i" : 8,
+          "label" : "GND (Pin 9)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO15/RXD (Pin 10)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO17 (Pin 11)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO18 (Pin 12)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO27 (Pin 13)"
+        }, {
+          "i" : 13,
+          "label" : "GND (Pin 14)"
+        }, {
+          "i" : 14,
+          "label" : "GPIO22 (Pin 15)"
+        }, {
+          "i" : 15,
+          "label" : "GPIO23 (Pin 16)"
+        }, {
+          "i" : 16,
+          "label" : "3.3V (Pin 17)"
+        }, {
+          "i" : 17,
+          "label" : "GPIO24 (Pin 18)"
+        }, {
+          "i" : 18,
+          "label" : "GPIO10/MOSI (Pin 19)"
+        }, {
+          "i" : 19,
+          "label" : "GND (Pin 20)"
+        }, {
+          "i" : 20,
+          "label" : "GPIO9/MISO (Pin 21)"
+        }, {
+          "i" : 21,
+          "label" : "GPIO25 (Pin 22)"
+        }, {
+          "i" : 22,
+          "label" : "GPIO11/SCLK (Pin 23)"
+        }, {
+          "i" : 23,
+          "label" : "GPIO8/CE0 (Pin 24)"
+        }, {
+          "i" : 24,
+          "label" : "GND (Pin 25)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO7/CE1 (Pin 26)"
+        }, {
+          "i" : 26,
+          "label" : "ID_SD (Pin 27)"
+        }, {
+          "i" : 27,
+          "label" : "ID_SC (Pin 28)"
+        }, {
+          "i" : 28,
+          "label" : "GPIO5 (Pin 29)"
+        }, {
+          "i" : 29,
+          "label" : "GND (Pin 30)"
+        }, {
+          "i" : 30,
+          "label" : "GPIO6 (Pin 31)"
+        }, {
+          "i" : 31,
+          "label" : "GPIO12 (Pin 32)"
+        }, {
+          "i" : 32,
+          "label" : "GPIO13 (Pin 33)"
+        }, {
+          "i" : 33,
+          "label" : "GND (Pin 34)"
+        }, {
+          "i" : 34,
+          "label" : "GPIO19 (Pin 35)"
+        }, {
+          "i" : 35,
+          "label" : "GPIO16 (Pin 36)"
+        }, {
+          "i" : 36,
+          "label" : "GPIO26 (Pin 37)"
+        }, {
+          "i" : 37,
+          "label" : "GPIO20 (Pin 38)"
+        }, {
+          "i" : 38,
+          "label" : "GND (Pin 39)"
+        }, {
+          "i" : 39,
+          "label" : "GPIO21 (Pin 40)"
+        }, {
+          "i" : 40,
+          "label" : "PoE TR0 (Pin 1)"
+        }, {
+          "i" : 41,
+          "label" : "PoE TR1 (Pin 2)"
+        }, {
+          "i" : 42,
+          "label" : "PoE TR2 (Pin 3)"
+        }, {
+          "i" : 43,
+          "label" : "PoE TR3 (Pin 4)"
+        }, {
+          "i" : 44,
+          "label" : "DISP"
+        }, {
+          "i" : 45,
+          "label" : "CAM"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "PI_5"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "3.3V (Pin 1)"
+        }, {
+          "i" : 1,
+          "label" : "5V (Pin 2)"
+        }, {
+          "i" : 2,
+          "label" : "GPIO2/SDA (Pin 3)"
+        }, {
+          "i" : 3,
+          "label" : "5V (Pin 4)"
+        }, {
+          "i" : 4,
+          "label" : "GPIO3/SCL (Pin 5)"
+        }, {
+          "i" : 5,
+          "label" : "GND (Pin 6)"
+        }, {
+          "i" : 6,
+          "label" : "GPIO4 (Pin 7)"
+        }, {
+          "i" : 7,
+          "label" : "GPIO14/TXD (Pin 8)"
+        }, {
+          "i" : 8,
+          "label" : "GND (Pin 9)"
+        }, {
+          "i" : 9,
+          "label" : "GPIO15/RXD (Pin 10)"
+        }, {
+          "i" : 10,
+          "label" : "GPIO17 (Pin 11)"
+        }, {
+          "i" : 11,
+          "label" : "GPIO18 (Pin 12)"
+        }, {
+          "i" : 12,
+          "label" : "GPIO27 (Pin 13)"
+        }, {
+          "i" : 13,
+          "label" : "GND (Pin 14)"
+        }, {
+          "i" : 14,
+          "label" : "GPIO22 (Pin 15)"
+        }, {
+          "i" : 15,
+          "label" : "GPIO23 (Pin 16)"
+        }, {
+          "i" : 16,
+          "label" : "3.3V (Pin 17)"
+        }, {
+          "i" : 17,
+          "label" : "GPIO24 (Pin 18)"
+        }, {
+          "i" : 18,
+          "label" : "GPIO10/MOSI (Pin 19)"
+        }, {
+          "i" : 19,
+          "label" : "GND (Pin 20)"
+        }, {
+          "i" : 20,
+          "label" : "GPIO9/MISO (Pin 21)"
+        }, {
+          "i" : 21,
+          "label" : "GPIO25 (Pin 22)"
+        }, {
+          "i" : 22,
+          "label" : "GPIO11/SCLK (Pin 23)"
+        }, {
+          "i" : 23,
+          "label" : "GPIO8/CE0 (Pin 24)"
+        }, {
+          "i" : 24,
+          "label" : "GND (Pin 25)"
+        }, {
+          "i" : 25,
+          "label" : "GPIO7/CE1 (Pin 26)"
+        }, {
+          "i" : 26,
+          "label" : "ID_SD (Pin 27)"
+        }, {
+          "i" : 27,
+          "label" : "ID_SC (Pin 28)"
+        }, {
+          "i" : 28,
+          "label" : "GPIO5 (Pin 29)"
+        }, {
+          "i" : 29,
+          "label" : "GND (Pin 30)"
+        }, {
+          "i" : 30,
+          "label" : "GPIO6 (Pin 31)"
+        }, {
+          "i" : 31,
+          "label" : "GPIO12 (Pin 32)"
+        }, {
+          "i" : 32,
+          "label" : "GPIO13 (Pin 33)"
+        }, {
+          "i" : 33,
+          "label" : "GND (Pin 34)"
+        }, {
+          "i" : 34,
+          "label" : "GPIO19 (Pin 35)"
+        }, {
+          "i" : 35,
+          "label" : "GPIO16 (Pin 36)"
+        }, {
+          "i" : 36,
+          "label" : "GPIO26 (Pin 37)"
+        }, {
+          "i" : 37,
+          "label" : "GPIO20 (Pin 38)"
+        }, {
+          "i" : 38,
+          "label" : "GND (Pin 39)"
+        }, {
+          "i" : 39,
+          "label" : "GPIO21 (Pin 40)"
+        }, {
+          "i" : 40,
+          "label" : "PoE TR0 (Pin 1)"
+        }, {
+          "i" : 41,
+          "label" : "PoE TR1 (Pin 2)"
+        }, {
+          "i" : 42,
+          "label" : "PoE TR2 (Pin 3)"
+        }, {
+          "i" : 43,
+          "label" : "PoE TR3 (Pin 4)"
+        }, {
+          "i" : 44,
+          "label" : "PCIe"
+        }, {
+          "i" : 45,
+          "label" : "MIPI 1"
+        }, {
+          "i" : 46,
+          "label" : "MIPI 0"
+        }, {
+          "i" : 47,
+          "label" : "UART"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "Raspberry Pi Pico",
+    "className" : "micro.RaspberryPiPico",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "Raspberry Pi Pico / Pico W (RP2040) and Pico 2 / Pico 2 W (RP2350) Microcontroller Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1B5E20"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "PicoVersion",
+      "possibleValues" : [ "PICO", "PICO_W", "PICO_2", "PICO_2_W" ],
+      "defaultValue" : "PICO"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "GP0"
+      }, {
+        "i" : 1,
+        "label" : "GP1"
+      }, {
+        "i" : 2,
+        "label" : "GND1"
+      }, {
+        "i" : 3,
+        "label" : "GP2"
+      }, {
+        "i" : 4,
+        "label" : "GP3"
+      }, {
+        "i" : 5,
+        "label" : "GP4"
+      }, {
+        "i" : 6,
+        "label" : "GP5"
+      }, {
+        "i" : 7,
+        "label" : "GND2"
+      }, {
+        "i" : 8,
+        "label" : "GP6"
+      }, {
+        "i" : 9,
+        "label" : "GP7"
+      }, {
+        "i" : 10,
+        "label" : "GP8"
+      }, {
+        "i" : 11,
+        "label" : "GP9"
+      }, {
+        "i" : 12,
+        "label" : "GND3"
+      }, {
+        "i" : 13,
+        "label" : "GP10"
+      }, {
+        "i" : 14,
+        "label" : "GP11"
+      }, {
+        "i" : 15,
+        "label" : "GP12"
+      }, {
+        "i" : 16,
+        "label" : "GP13"
+      }, {
+        "i" : 17,
+        "label" : "GND4"
+      }, {
+        "i" : 18,
+        "label" : "GP14"
+      }, {
+        "i" : 19,
+        "label" : "GP15"
+      }, {
+        "i" : 20,
+        "label" : "VBUS"
+      }, {
+        "i" : 21,
+        "label" : "VSYS"
+      }, {
+        "i" : 22,
+        "label" : "GND5"
+      }, {
+        "i" : 23,
+        "label" : "3V3_EN"
+      }, {
+        "i" : 24,
+        "label" : "3V3 (OUT)"
+      }, {
+        "i" : 25,
+        "label" : "ADC_VREF"
+      }, {
+        "i" : 26,
+        "label" : "GP28"
+      }, {
+        "i" : 27,
+        "label" : "GND6"
+      }, {
+        "i" : 28,
+        "label" : "GP27"
+      }, {
+        "i" : 29,
+        "label" : "GP26"
+      }, {
+        "i" : 30,
+        "label" : "RUN"
+      }, {
+        "i" : 31,
+        "label" : "GP22"
+      }, {
+        "i" : 32,
+        "label" : "GND7"
+      }, {
+        "i" : 33,
+        "label" : "GP21"
+      }, {
+        "i" : 34,
+        "label" : "GP20"
+      }, {
+        "i" : 35,
+        "label" : "GP19"
+      }, {
+        "i" : 36,
+        "label" : "GP18"
+      }, {
+        "i" : 37,
+        "label" : "GND8"
+      }, {
+        "i" : 38,
+        "label" : "GP17"
+      }, {
+        "i" : 39,
+        "label" : "GP16"
+      }, {
+        "i" : 40,
+        "label" : "SWCLK"
+      }, {
+        "i" : 41,
+        "label" : "GND_SWD"
+      }, {
+        "i" : 42,
+        "label" : "SWDIO"
+      } ]
+    }
+  }, {
+    "name" : "Raspberry Pi Zero",
+    "className" : "micro.RaspberryPiZero",
+    "category" : "Controllers",
+    "namePrefix" : "SBC",
+    "description" : "Raspberry Pi Zero / Zero W / Zero 2 W Compact Single Board Computer",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1B5E20"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "ZeroVersion",
+      "possibleValues" : [ "PI_ZERO", "PI_ZERO_W", "PI_ZERO_2_W" ],
+      "defaultValue" : "PI_ZERO"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "3.3V (Pin 1)"
+      }, {
+        "i" : 1,
+        "label" : "5V (Pin 2)"
+      }, {
+        "i" : 2,
+        "label" : "GPIO2/SDA (Pin 3)"
+      }, {
+        "i" : 3,
+        "label" : "5V (Pin 4)"
+      }, {
+        "i" : 4,
+        "label" : "GPIO3/SCL (Pin 5)"
+      }, {
+        "i" : 5,
+        "label" : "GND (Pin 6)"
+      }, {
+        "i" : 6,
+        "label" : "GPIO4 (Pin 7)"
+      }, {
+        "i" : 7,
+        "label" : "GPIO14/TXD (Pin 8)"
+      }, {
+        "i" : 8,
+        "label" : "GND (Pin 9)"
+      }, {
+        "i" : 9,
+        "label" : "GPIO15/RXD (Pin 10)"
+      }, {
+        "i" : 10,
+        "label" : "GPIO17 (Pin 11)"
+      }, {
+        "i" : 11,
+        "label" : "GPIO18 (Pin 12)"
+      }, {
+        "i" : 12,
+        "label" : "GPIO27 (Pin 13)"
+      }, {
+        "i" : 13,
+        "label" : "GND (Pin 14)"
+      }, {
+        "i" : 14,
+        "label" : "GPIO22 (Pin 15)"
+      }, {
+        "i" : 15,
+        "label" : "GPIO23 (Pin 16)"
+      }, {
+        "i" : 16,
+        "label" : "3.3V (Pin 17)"
+      }, {
+        "i" : 17,
+        "label" : "GPIO24 (Pin 18)"
+      }, {
+        "i" : 18,
+        "label" : "GPIO10/MOSI (Pin 19)"
+      }, {
+        "i" : 19,
+        "label" : "GND (Pin 20)"
+      }, {
+        "i" : 20,
+        "label" : "GPIO9/MISO (Pin 21)"
+      }, {
+        "i" : 21,
+        "label" : "GPIO25 (Pin 22)"
+      }, {
+        "i" : 22,
+        "label" : "GPIO11/SCLK (Pin 23)"
+      }, {
+        "i" : 23,
+        "label" : "GPIO8/CE0 (Pin 24)"
+      }, {
+        "i" : 24,
+        "label" : "GND (Pin 25)"
+      }, {
+        "i" : 25,
+        "label" : "GPIO7/CE1 (Pin 26)"
+      }, {
+        "i" : 26,
+        "label" : "ID_SD (Pin 27)"
+      }, {
+        "i" : 27,
+        "label" : "ID_SC (Pin 28)"
+      }, {
+        "i" : 28,
+        "label" : "GPIO5 (Pin 29)"
+      }, {
+        "i" : 29,
+        "label" : "GND (Pin 30)"
+      }, {
+        "i" : 30,
+        "label" : "GPIO6 (Pin 31)"
+      }, {
+        "i" : 31,
+        "label" : "GPIO12 (Pin 32)"
+      }, {
+        "i" : 32,
+        "label" : "GPIO13 (Pin 33)"
+      }, {
+        "i" : 33,
+        "label" : "GND (Pin 34)"
+      }, {
+        "i" : 34,
+        "label" : "GPIO19 (Pin 35)"
+      }, {
+        "i" : 35,
+        "label" : "GPIO16 (Pin 36)"
+      }, {
+        "i" : 36,
+        "label" : "GPIO26 (Pin 37)"
+      }, {
+        "i" : 37,
+        "label" : "GPIO20 (Pin 38)"
+      }, {
+        "i" : 38,
+        "label" : "GND (Pin 39)"
+      }, {
+        "i" : 39,
+        "label" : "GPIO21 (Pin 40)"
+      }, {
+        "i" : 40,
+        "label" : "MIPI (CSI)"
+      }, {
+        "i" : 41,
+        "label" : "RUN 1"
+      }, {
+        "i" : 42,
+        "label" : "RUN 2"
+      }, {
+        "i" : 43,
+        "label" : "TV 1"
+      }, {
+        "i" : 44,
+        "label" : "TV 2"
+      } ]
+    }
+  }, {
+    "name" : "Teensy",
+    "className" : "micro.Teensy",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "PJRC Teensy 4.0 / 4.1 (Cortex-M7) and Teensy 3.2 (Cortex-M4) Development Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1B5E20"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Version",
+      "type" : "TeensyVersion",
+      "possibleValues" : [ "Teensy_3_2", "Teensy_4_0", "Teensy_4_1" ],
+      "defaultValue" : "Teensy_4_0"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Version" ],
+      "variants" : [ {
+        "when" : {
+          "Version" : "Teensy_3_2"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "0 (RX1)"
+        }, {
+          "i" : 2,
+          "label" : "1 (TX1)"
+        }, {
+          "i" : 3,
+          "label" : "2"
+        }, {
+          "i" : 4,
+          "label" : "3 (PWM)"
+        }, {
+          "i" : 5,
+          "label" : "4 (PWM)"
+        }, {
+          "i" : 6,
+          "label" : "5 (PWM)"
+        }, {
+          "i" : 7,
+          "label" : "6 (PWM)"
+        }, {
+          "i" : 8,
+          "label" : "7 (RX3)"
+        }, {
+          "i" : 9,
+          "label" : "8 (TX3)"
+        }, {
+          "i" : 10,
+          "label" : "9 (RX2/PWM)"
+        }, {
+          "i" : 11,
+          "label" : "10 (TX2/CS/PWM)"
+        }, {
+          "i" : 12,
+          "label" : "11 (MOSI)"
+        }, {
+          "i" : 13,
+          "label" : "12 (MISO)"
+        }, {
+          "i" : 14,
+          "label" : "Vin (3.6-6.0V)"
+        }, {
+          "i" : 15,
+          "label" : "AGND"
+        }, {
+          "i" : 16,
+          "label" : "3.3V (100mA)"
+        }, {
+          "i" : 17,
+          "label" : "23 (A9/PWM)"
+        }, {
+          "i" : 18,
+          "label" : "22 (A8/PWM)"
+        }, {
+          "i" : 19,
+          "label" : "21 (A7/PWM)"
+        }, {
+          "i" : 20,
+          "label" : "20 (A6/PWM)"
+        }, {
+          "i" : 21,
+          "label" : "19 (A5/SCL0)"
+        }, {
+          "i" : 22,
+          "label" : "18 (A4/SDA0)"
+        }, {
+          "i" : 23,
+          "label" : "17 (A3)"
+        }, {
+          "i" : 24,
+          "label" : "16 (A2)"
+        }, {
+          "i" : 25,
+          "label" : "15 (A1/CS)"
+        }, {
+          "i" : 26,
+          "label" : "14 (A0)"
+        }, {
+          "i" : 27,
+          "label" : "13 (SCK/LED)"
+        }, {
+          "i" : 28,
+          "label" : "VBAT"
+        }, {
+          "i" : 29,
+          "label" : "3.3V (End)"
+        }, {
+          "i" : 30,
+          "label" : "GND (End)"
+        }, {
+          "i" : 31,
+          "label" : "Program"
+        }, {
+          "i" : 32,
+          "label" : "A14/DAC"
+        }, {
+          "i" : 33,
+          "label" : "VUSB"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "Teensy_4_0"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "0 (RX1/CS1/CRX2)"
+        }, {
+          "i" : 2,
+          "label" : "1 (TX1/MISO1/CTX2)"
+        }, {
+          "i" : 3,
+          "label" : "2 (OUT2)"
+        }, {
+          "i" : 4,
+          "label" : "3 (LRCLK2)"
+        }, {
+          "i" : 5,
+          "label" : "4 (BCLK2)"
+        }, {
+          "i" : 6,
+          "label" : "5 (IN2)"
+        }, {
+          "i" : 7,
+          "label" : "6 (OUT1D)"
+        }, {
+          "i" : 8,
+          "label" : "7 (RX2/OUT1A)"
+        }, {
+          "i" : 9,
+          "label" : "8 (TX2/IN1)"
+        }, {
+          "i" : 10,
+          "label" : "9 (OUT1C)"
+        }, {
+          "i" : 11,
+          "label" : "10 (CS/MQSR)"
+        }, {
+          "i" : 12,
+          "label" : "11 (MOSI/CTX1)"
+        }, {
+          "i" : 13,
+          "label" : "12 (MISO/MQSL)"
+        }, {
+          "i" : 14,
+          "label" : "VIN (3.6-5.5V)"
+        }, {
+          "i" : 15,
+          "label" : "GND"
+        }, {
+          "i" : 16,
+          "label" : "3.3V (250mA)"
+        }, {
+          "i" : 17,
+          "label" : "23 (A9/CRX1)"
+        }, {
+          "i" : 18,
+          "label" : "22 (A8/CTX1)"
+        }, {
+          "i" : 19,
+          "label" : "21 (A7/RX5)"
+        }, {
+          "i" : 20,
+          "label" : "20 (A6/TX5)"
+        }, {
+          "i" : 21,
+          "label" : "19 (A5/SCL0)"
+        }, {
+          "i" : 22,
+          "label" : "18 (A4/SDA0)"
+        }, {
+          "i" : 23,
+          "label" : "17 (A3/TX4/SDA1)"
+        }, {
+          "i" : 24,
+          "label" : "16 (A2/RX4/SCL1)"
+        }, {
+          "i" : 25,
+          "label" : "15 (A1/RX3/SPDIF IN)"
+        }, {
+          "i" : 26,
+          "label" : "14 (A0/TX3/SPDIF OUT)"
+        }, {
+          "i" : 27,
+          "label" : "13 (SCK/CRX1/LED)"
+        }, {
+          "i" : 28,
+          "label" : "VBAT"
+        }, {
+          "i" : 29,
+          "label" : "3.3V (End)"
+        }, {
+          "i" : 30,
+          "label" : "GND (End)"
+        }, {
+          "i" : 31,
+          "label" : "Program"
+        }, {
+          "i" : 32,
+          "label" : "On/Off"
+        }, {
+          "i" : 33,
+          "label" : "VUSB"
+        } ]
+      }, {
+        "when" : {
+          "Version" : "Teensy_4_1"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "0 (RX1/CS1/CRX2)"
+        }, {
+          "i" : 2,
+          "label" : "1 (TX1/MISO1/CTX2)"
+        }, {
+          "i" : 3,
+          "label" : "2 (OUT2)"
+        }, {
+          "i" : 4,
+          "label" : "3 (LRCLK2)"
+        }, {
+          "i" : 5,
+          "label" : "4 (BCLK2)"
+        }, {
+          "i" : 6,
+          "label" : "5 (IN2)"
+        }, {
+          "i" : 7,
+          "label" : "6 (OUT1D)"
+        }, {
+          "i" : 8,
+          "label" : "7 (RX2/OUT1A)"
+        }, {
+          "i" : 9,
+          "label" : "8 (TX2/IN1)"
+        }, {
+          "i" : 10,
+          "label" : "9 (OUT1C)"
+        }, {
+          "i" : 11,
+          "label" : "10 (CS/MQSR)"
+        }, {
+          "i" : 12,
+          "label" : "11 (MOSI/CTX1)"
+        }, {
+          "i" : 13,
+          "label" : "12 (MISO/MQSL)"
+        }, {
+          "i" : 14,
+          "label" : "3.3V"
+        }, {
+          "i" : 15,
+          "label" : "24 (A10/TX6/SCL2)"
+        }, {
+          "i" : 16,
+          "label" : "25 (A11/RX6/SDA2)"
+        }, {
+          "i" : 17,
+          "label" : "26 (A12/MOSI1)"
+        }, {
+          "i" : 18,
+          "label" : "27 (A13/SCK1)"
+        }, {
+          "i" : 19,
+          "label" : "28 (RX7)"
+        }, {
+          "i" : 20,
+          "label" : "29 (TX7)"
+        }, {
+          "i" : 21,
+          "label" : "30 (CRX3)"
+        }, {
+          "i" : 22,
+          "label" : "31 (CTX3)"
+        }, {
+          "i" : 23,
+          "label" : "32 (OUT1B)"
+        }, {
+          "i" : 24,
+          "label" : "VIN (3.6-5.5V)"
+        }, {
+          "i" : 25,
+          "label" : "GND"
+        }, {
+          "i" : 26,
+          "label" : "3.3V (250mA)"
+        }, {
+          "i" : 27,
+          "label" : "23 (A9/CRX1)"
+        }, {
+          "i" : 28,
+          "label" : "22 (A8/CTX1)"
+        }, {
+          "i" : 29,
+          "label" : "21 (A7/RX5)"
+        }, {
+          "i" : 30,
+          "label" : "20 (A6/TX5)"
+        }, {
+          "i" : 31,
+          "label" : "19 (A5/SCL)"
+        }, {
+          "i" : 32,
+          "label" : "18 (A4/SDA)"
+        }, {
+          "i" : 33,
+          "label" : "17 (A3/TX4/SDA1)"
+        }, {
+          "i" : 34,
+          "label" : "16 (A2/RX4/SCL1)"
+        }, {
+          "i" : 35,
+          "label" : "15 (A1/RX3/SPDIF IN)"
+        }, {
+          "i" : 36,
+          "label" : "14 (A0/TX3/SPDIF OUT)"
+        }, {
+          "i" : 37,
+          "label" : "13 (SCK/LED)"
+        }, {
+          "i" : 38,
+          "label" : "GND"
+        }, {
+          "i" : 39,
+          "label" : "41 (A17)"
+        }, {
+          "i" : 40,
+          "label" : "40 (A16)"
+        }, {
+          "i" : 41,
+          "label" : "39 (A15/MISO1)"
+        }, {
+          "i" : 42,
+          "label" : "38 (A14/CS1)"
+        }, {
+          "i" : 43,
+          "label" : "37 (CS)"
+        }, {
+          "i" : 44,
+          "label" : "36 (CS)"
+        }, {
+          "i" : 45,
+          "label" : "35 (TX8)"
+        }, {
+          "i" : 46,
+          "label" : "34 (RX8)"
+        }, {
+          "i" : 47,
+          "label" : "33 (MCLK2)"
+        }, {
+          "i" : 48,
+          "label" : "VBAT"
+        }, {
+          "i" : 49,
+          "label" : "3.3V (Mid)"
+        }, {
+          "i" : 50,
+          "label" : "GND (Mid)"
+        }, {
+          "i" : 51,
+          "label" : "Program"
+        }, {
+          "i" : 52,
+          "label" : "On/Off"
+        }, {
+          "i" : 53,
+          "label" : "ETH_TX-"
+        }, {
+          "i" : 54,
+          "label" : "ETH_LED"
+        }, {
+          "i" : 55,
+          "label" : "ETH_RX+"
+        }, {
+          "i" : 56,
+          "label" : "ETH_TX+"
+        }, {
+          "i" : 57,
+          "label" : "ETH_GND"
+        }, {
+          "i" : 58,
+          "label" : "ETH_RX-"
+        }, {
+          "i" : 59,
+          "label" : "USB_5V"
+        }, {
+          "i" : 60,
+          "label" : "USB_D-"
+        }, {
+          "i" : 61,
+          "label" : "USB_D+"
+        }, {
+          "i" : 62,
+          "label" : "USB_GND1"
+        }, {
+          "i" : 63,
+          "label" : "USB_GND2"
+        }, {
+          "i" : 64,
+          "label" : "VUSB"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "WeMos D1 Mini",
+    "className" : "micro.WemosD1Mini",
+    "category" : "Controllers",
+    "namePrefix" : "MCU",
+    "description" : "WeMos D1 Mini ESP8266 Wi-Fi Development Board",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#006699"
+    }, {
+      "name" : "Headers",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "RST"
+      }, {
+        "i" : 1,
+        "label" : "A0"
+      }, {
+        "i" : 2,
+        "label" : "D0 (GPIO16)"
+      }, {
+        "i" : 3,
+        "label" : "D5 (GPIO14)"
+      }, {
+        "i" : 4,
+        "label" : "D6 (GPIO12)"
+      }, {
+        "i" : 5,
+        "label" : "D7 (GPIO13)"
+      }, {
+        "i" : 6,
+        "label" : "D8 (GPIO15)"
+      }, {
+        "i" : 7,
+        "label" : "3V3"
+      }, {
+        "i" : 8,
+        "label" : "5V"
+      }, {
+        "i" : 9,
+        "label" : "G (GND)"
+      }, {
+        "i" : 10,
+        "label" : "D4 (GPIO2)"
+      }, {
+        "i" : 11,
+        "label" : "D3 (GPIO0)"
+      }, {
+        "i" : 12,
+        "label" : "D2 (GPIO4)"
+      }, {
+        "i" : 13,
+        "label" : "D1 (GPIO5)"
+      }, {
+        "i" : 14,
+        "label" : "RX (GPIO3)"
+      }, {
+        "i" : 15,
+        "label" : "TX (GPIO1)"
+      } ]
+    }
+  }, {
+    "name" : "18650 Battery Holder",
+    "className" : "electromechanical.BatteryHolder18650",
+    "category" : "Electro-Mechanical",
+    "namePrefix" : "BTR",
+    "description" : "PCB-mount 18650 Li-ion Battery Holder (1S or 2S)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Cell Count",
+      "type" : "CellCount",
+      "possibleValues" : [ "_1S", "_2S" ],
+      "defaultValue" : "_1S"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "+ (VCC)"
+      }, {
+        "i" : 1,
+        "label" : "- (GND)"
+      } ]
+    }
+  }, {
     "name" : "9V Battery Snap",
     "className" : "electromechanical.BatterySnap9V",
     "category" : "Electro-Mechanical",

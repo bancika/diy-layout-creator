@@ -114,8 +114,8 @@ public class ComponentCatalogGenerator {
     // Component classes live in diylc-library and are found by scanning the runtime classpath, so
     // running this with diylc-core alone finds nothing and used to write an empty catalog
     if (fullComponents.isEmpty()) {
-      throw new IllegalStateException("No component types found. Run the generator with "
-          + "diylc-library on the classpath, not diylc-core alone.");
+      throw new IllegalStateException("No component types found. Run the generator from the "
+          + "diylc-swing module, which puts diylc-library on the classpath.");
     }
 
     // Sort full components by category then name for consistency
