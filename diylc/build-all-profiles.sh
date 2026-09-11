@@ -13,6 +13,41 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SWING_MODULE_DIR="${PROJECT_DIR}/diylc-swing"
 DEPLOY_DIR="${DEPLOY_DIR:-${PROJECT_DIR}/deploy}"
 
+# Docker must be up before jpackage-based profiles can run
+ensure_docker_running() {
+    if ! command -v docker &> /dev/null; then
+        echo "ERROR: docker is not installed or not on PATH"
+        exit 1
+    fi
+
+    if docker info &> /dev/null; then
+        echo "Docker is already running"
+        return
+    fi
+
+    echo "Docker is not running, attempting to start it..."
+    if [[ "$(uname)" == "Darwin" ]]; then
+        open -a Docker
+    elif command -v systemctl &> /dev/null; then
+        sudo systemctl start docker
+    else
+        echo "ERROR: Don't know how to start Docker on this platform"
+        exit 1
+    fi
+
+    # the daemon keeps refusing connections for a while after the app itself launches
+    for _ in $(seq 1 60); do
+        if docker info &> /dev/null; then
+            echo "Docker is running"
+            return
+        fi
+        sleep 2
+    done
+
+    echo "ERROR: Timed out waiting for Docker to start"
+    exit 1
+}
+
 # List of profiles to build
 PROFILES=(
     "universal-zip"
@@ -30,6 +65,9 @@ echo "Project directory: ${PROJECT_DIR}"
 echo "Swing module directory: ${SWING_MODULE_DIR}"
 echo "Deployment directory: ${DEPLOY_DIR}"
 echo "Tests: Skipped"
+echo ""
+
+ensure_docker_running
 echo ""
 
 # Create deployment directory if it doesn't exist
