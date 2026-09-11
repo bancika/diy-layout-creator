@@ -461,6 +461,10 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>WeMos D1 Mini</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded AI models to faster and smarter versions across all tier, especially Supporter and Pro</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
