@@ -72,6 +72,7 @@ public class NetlistBuilder {
       if (!(c instanceof IContinuity && !(c instanceof ISwitch)) && !(c instanceof ICommonNode)) {
         // regular components, create a node per control point
         for (int i = 0; i < c.getControlPointCount(); i++) {
+          // Node renders the name through Node.sanitizeNodeName; here it only marks a named point
           String nodeName = c.getControlPointNodeName(i);
           if (c.isControlPointSticky(i) && nodeName != null
               && (!includeSwitches || !ISwitch.class.isAssignableFrom(type.getInstanceClass()))) {

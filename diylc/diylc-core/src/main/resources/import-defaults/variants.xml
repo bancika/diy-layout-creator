@@ -5080,4 +5080,279 @@
         </org.diylc.core.Template>
       </list>
     </entry>
+    <entry>
+      <string>org.diylc.components.micro.ArduinoNano</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Nano (ATmega328)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>CLASSIC</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano 33 BLE</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_33_BLE</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano 33 BLE Sense</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_33_BLE_SENSE</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano 33 IoT</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_33_IOT</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano ESP32</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_ESP32</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano Every</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>EVERY</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano R4</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_R4</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Nano RP2040 Connect</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoNano_-NanoVersion>NANO_RP2040_CONNECT</diylc.micro.ArduinoNano_-NanoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.ArduinoUno</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Leonardo</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoUno_-ArduinoUnoVersion>LEONARDO</diylc.micro.ArduinoUno_-ArduinoUnoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>UNO R3</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoUno_-ArduinoUnoVersion>REV3</diylc.micro.ArduinoUno_-ArduinoUnoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>UNO R4 Minima</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoUno_-ArduinoUnoVersion>R4_MINIMA</diylc.micro.ArduinoUno_-ArduinoUnoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>UNO R4 WiFi</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ArduinoUno_-ArduinoUnoVersion>R4_WIFI</diylc.micro.ArduinoUno_-ArduinoUnoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.ESP32DevKit</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>ESP32 DevKit V1 (30-Pin)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ESP32DevKit_-DevKitVersion>DevKit_V1_30Pin</diylc.micro.ESP32DevKit_-DevKitVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>ESP32 DevKitC V4 (38-Pin)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ESP32DevKit_-DevKitVersion>DevKitC_V4_38Pin</diylc.micro.ESP32DevKit_-DevKitVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>ESP32-S3 DevKitC-1 (44-Pin)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ESP32DevKit_-DevKitVersion>ESP32_S3_DevKitC_44Pin</diylc.micro.ESP32DevKit_-DevKitVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>ESP32-C3 DevKitM-1 (30-Pin)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ESP32DevKit_-DevKitVersion>ESP32_C3_DevKitM_1</diylc.micro.ESP32DevKit_-DevKitVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>ESP32-C6 DevKitC-1 (32-Pin)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.ESP32DevKit_-DevKitVersion>ESP32_C6_DevKitC_1</diylc.micro.ESP32DevKit_-DevKitVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.RaspberryPi</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Pi 3 (Model B+)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPi_-RaspberryPiVersion>PI_3_B</diylc.micro.RaspberryPi_-RaspberryPiVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi 4 (Model B)</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPi_-RaspberryPiVersion>PI_4_B</diylc.micro.RaspberryPi_-RaspberryPiVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi 5</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPi_-RaspberryPiVersion>PI_5</diylc.micro.RaspberryPi_-RaspberryPiVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.RaspberryPiPico</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Pi Pico</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiPico_-PicoVersion>PICO</diylc.micro.RaspberryPiPico_-PicoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi Pico W</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiPico_-PicoVersion>PICO_W</diylc.micro.RaspberryPiPico_-PicoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi Pico 2</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiPico_-PicoVersion>PICO_2</diylc.micro.RaspberryPiPico_-PicoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi Pico 2 W</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiPico_-PicoVersion>PICO_2_W</diylc.micro.RaspberryPiPico_-PicoVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.RaspberryPiZero</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Pi Zero</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiZero_-ZeroVersion>PI_ZERO</diylc.micro.RaspberryPiZero_-ZeroVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi Zero W</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiZero_-ZeroVersion>PI_ZERO_W</diylc.micro.RaspberryPiZero_-ZeroVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Pi Zero 2 W</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.RaspberryPiZero_-ZeroVersion>PI_ZERO_2_W</diylc.micro.RaspberryPiZero_-ZeroVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.micro.Teensy</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Teensy 3.2</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.Teensy_-TeensyVersion>Teensy_3_2</diylc.micro.Teensy_-TeensyVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Teensy 4.0</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.Teensy_-TeensyVersion>Teensy_4_0</diylc.micro.Teensy_-TeensyVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Teensy 4.1</name>
+          <values>
+            <entry><string>Version</string><diylc.micro.Teensy_-TeensyVersion>Teensy_4_1</diylc.micro.Teensy_-TeensyVersion></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
   </map>

@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
+import org.diylc.core.IDIYComponent;
 
 import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
@@ -377,7 +378,7 @@ public class GuitarDiagramAnalyzerTests {
     SingleCoilPickup pickup = new SingleCoilPickup();
     pickup.setName("Pickup");
     pickup.setPolarity(Polarity.StackedNorth);
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup));
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 1);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -399,7 +400,7 @@ public class GuitarDiagramAnalyzerTests {
     SingleCoilPickup pickup2 = new SingleCoilPickup();
     pickup2.setName("Pickup2");
     pickup2.setPolarity(Polarity.StackedSouth);
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -422,7 +423,7 @@ public class GuitarDiagramAnalyzerTests {
     SingleCoilPickup pickup2 = new SingleCoilPickup();
     pickup2.setName("Pickup2");
     pickup2.setPolarity(Polarity.StackedSouth);
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 1);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -445,7 +446,7 @@ public class GuitarDiagramAnalyzerTests {
     SingleCoilPickup pickup2 = new SingleCoilPickup();
     pickup2.setName("Pickup2");
     pickup2.setPolarity(Polarity.North);
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 1);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2);
     netlist.add(tipGroup).add(sleeveGroup);
@@ -467,7 +468,7 @@ public class GuitarDiagramAnalyzerTests {
     pickup1.setPolarity(Polarity.StackedNorth);
     HumbuckerPickup pickup2 = new HumbuckerPickup();
     pickup2.setName("Pickup2");
-    Netlist netlist = new Netlist(Arrays.asList(jack, pickup1, pickup2));
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup1, pickup2));
     Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 0);
     Group coilTapGroup = new Group().connect(pickup2, 1).connect(pickup2, 2);
     Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 3);

@@ -52,7 +52,28 @@ public class Node implements Comparable<Node> {
   }
   
   public String getDisplayName() {
-    return component.getControlPointNodeName(pointIndex);
+    return sanitizeNodeName(component.getControlPointNodeName(pointIndex));
+  }
+
+  /**
+   * Strips the parenthesized annotation off a raw control point name, so a netlist reads
+   * <code>MCU1.D11</code> rather than <code>MCU1.D11 (~, MOSI)</code>. The bare name identifies the
+   * pin; everything in parentheses documents its alternate functions and only adds noise here.
+   *
+   * <p>A trailing disambiguator such as the <code>_1</code> in <code>GND_1</code> is deliberately
+   * kept, because those mark genuinely different pins that a netlist has to tell apart.
+   *
+   * @param nodeName raw name from {@link IDIYComponent#getControlPointNodeName(int)}
+   * @return the sanitized name, or null if the raw name was null
+   */
+  public static String sanitizeNodeName(String nodeName) {
+    if (nodeName == null) {
+      return null;
+    }
+    int parenIndex = nodeName.indexOf('(');
+    String sanitized = (parenIndex == -1 ? nodeName : nodeName.substring(0, parenIndex)).trim();
+    // Never let sanitizing leave a pin nameless
+    return sanitized.isEmpty() ? nodeName.trim() : sanitized;
   }
   
   public Point2D getPoint2D() {
