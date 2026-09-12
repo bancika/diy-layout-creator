@@ -18,7 +18,6 @@
  */
 package org.diylc.swing.plugins.analyze;
 
-import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.*;
 import org.diylc.swing.ActionFactory;
@@ -42,8 +41,6 @@ import java.util.List;
  * @author Branislav Stojkovic
  */
 public class AnalyzeMenuPlugin implements IPlugIn {
-
-  private static final Logger LOG = Logger.getLogger(AnalyzeMenuPlugin.class);
 
   private static final String ANALYZE_TITLE = "Analyze";
   private static final String EXPORT_TITLE = "Export";
