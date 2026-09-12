@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.diylc.components.schematic.SchematicWire;
+import org.diylc.components.connectivity.OrthogonalLine;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
@@ -75,7 +75,7 @@ public class SchematicSynchronizer {
     Map<UUID, List<UUID>> map = view.getPhysicalToSchematicMap();
     Map<UUID, IDIYComponent<?>> symbolsById = new HashMap<UUID, IDIYComponent<?>>();
     for (IDIYComponent<?> component : view.getComponents()) {
-      if (!(component instanceof SchematicWire)) {
+      if (!(component instanceof OrthogonalLine)) {
         symbolsById.put(component.getId(), component);
       }
     }
@@ -153,7 +153,7 @@ public class SchematicSynchronizer {
 
     Netlist netlist = builder.extractNetlist(project,
         continuityAreas == null ? new ArrayList<ContinuityArea>() : continuityAreas);
-    List<SchematicWire> wires = builder.createWires(netlist, entriesByPhysicalId);
+    List<OrthogonalLine> wires = builder.createWires(netlist, entriesByPhysicalId);
 
     List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(keptSymbols);
     result.addAll(wires);

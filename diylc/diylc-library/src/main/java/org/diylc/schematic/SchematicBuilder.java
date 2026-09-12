@@ -21,7 +21,6 @@
 */
 package org.diylc.schematic;
 
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,7 +33,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
-import org.diylc.components.schematic.SchematicWire;
+import org.diylc.common.OrientationHV;
+import org.diylc.components.connectivity.OrthogonalLine;
 import org.diylc.core.IContinuity;
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
@@ -53,7 +53,7 @@ import org.diylc.presenter.ContinuityArea;
  * Generates the initial {@link SchematicView} for a layout {@link Project}. Every eligible physical
  * component is turned into one or more schematic symbols via its {@link ISchematicFactory} (or the
  * {@link GenericBoxSchematicFactory} fallback), symbols are placed on a connection-density aware
- * grid and the nets from the layout netlist are drawn as auto-routed {@link SchematicWire}s.
+ * grid and the nets from the layout netlist are drawn as {@link OrthogonalLine}s.
  *
  * @author Branislav Stojkovic
  */
@@ -120,7 +120,7 @@ public class SchematicBuilder {
 
     placeSymbols(eligible, entriesByPhysicalId, netlist);
 
-    List<SchematicWire> wires = createWires(netlist, entriesByPhysicalId);
+    List<OrthogonalLine> wires = createWires(netlist, entriesByPhysicalId);
     schematicComponents.addAll(wires);
 
     schematicComponents.sort(Comparator.comparingDouble(SchematicBuilder::zOrderOf));
@@ -311,13 +311,12 @@ public class SchematicBuilder {
 
   /* ------------------------------------------------------------------ wiring */
 
-  List<SchematicWire> createWires(Netlist netlist,
+  List<OrthogonalLine> createWires(Netlist netlist,
       Map<UUID, List<SymbolEntry>> entriesByPhysicalId) {
-    List<SchematicWire> wires = new ArrayList<SchematicWire>();
+    List<OrthogonalLine> wires = new ArrayList<OrthogonalLine>();
     if (netlist == null) {
       return wires;
     }
-    List<Line2D> obstacles = new ArrayList<Line2D>();
 
     for (Group group : netlist.getSortedGroups()) {
       List<Pin> pins = new ArrayList<Pin>();
@@ -346,19 +345,7 @@ public class SchematicBuilder {
       for (int i = 0; i < pins.size() - 1; i++) {
         Pin a = pins.get(i);
         Pin b = pins.get(i + 1);
-        SchematicWire wire = new SchematicWire();
-        wire.setId(UUID.randomUUID());
-        wire.setSourceComponentId(a.symbol.getId());
-        wire.setSourcePinIndex(a.pinIndex);
-        wire.setTargetComponentId(b.symbol.getId());
-        wire.setTargetPinIndex(b.pinIndex);
-        List<Point2D> route = ManhattanRouter.route(a.location, b.location, exitDirection(a),
-            exitDirection(b), obstacles, GRID);
-        wire.setRoutePoints(route);
-        for (int s = 0; s < route.size() - 1; s++) {
-          obstacles.add(new Line2D.Double(route.get(s), route.get(s + 1)));
-        }
-        wires.add(wire);
+        wires.add(createWire(a, b));
       }
     }
     return wires;
@@ -376,20 +363,46 @@ public class SchematicBuilder {
     }
   }
 
-  private static ManhattanRouter.Direction exitDirection(Pin pin) {
-    return exitDirection(pin.symbol, pin.location);
+  /**
+   * Connects two pins with a wire whose single bend point is placed so that the wire leaves the
+   * first pin along the axis that pin faces. {@link OrthogonalLine} derives the rest of the route
+   * from that one point, and keeps deriving it as the sticky endpoints follow the symbols around.
+   */
+  private static OrthogonalLine createWire(Pin a, Pin b) {
+    OrthogonalLine wire = new OrthogonalLine();
+    wire.setId(UUID.randomUUID());
+    wire.setControlPoint(copyOf(a.location), 0);
+    wire.setControlPoint(bendPoint(a, b), 1);
+    wire.setControlPoint(copyOf(b.location), 2);
+    return wire;
+  }
+
+  private static Point2D bendPoint(Pin a, Pin b) {
+    Point2D from = a.location;
+    Point2D to = b.location;
+    // pins that already share a row or a column need no bend; a handle sitting on the first pin
+    // collapses the route to a straight run
+    if (Math.abs(from.getX() - to.getX()) < 1 || Math.abs(from.getY() - to.getY()) < 1) {
+      return copyOf(from);
+    }
+    if (exitDirection(a.symbol, from) == OrientationHV.VERTICAL) {
+      // on the first pin's column, which swallows the leading horizontal run
+      return new Point2D.Double(from.getX(), snap((from.getY() + to.getY()) / 2));
+    }
+    // on the second pin's row, which swallows the trailing vertical run
+    return new Point2D.Double(snap((from.getX() + to.getX()) / 2), to.getY());
   }
 
   /**
-   * Guesses the direction a wire should leave the given pin: away from the symbol's centroid, along
-   * the dominant axis.
+   * Guesses whether a wire should leave the given pin horizontally or vertically: away from the
+   * symbol's centroid, along the dominant axis.
    */
-  static ManhattanRouter.Direction exitDirection(IDIYComponent<?> symbol, Point2D pinLocation) {
+  static OrientationHV exitDirection(IDIYComponent<?> symbol, Point2D pinLocation) {
     double cx = 0;
     double cy = 0;
     int n = symbol.getControlPointCount();
     if (n == 0) {
-      return ManhattanRouter.Direction.NONE;
+      return OrientationHV.HORIZONTAL;
     }
     for (int i = 0; i < n; i++) {
       cx += symbol.getControlPoint(i).getX();
@@ -399,80 +412,11 @@ public class SchematicBuilder {
     cy /= n;
     double dx = pinLocation.getX() - cx;
     double dy = pinLocation.getY() - cy;
-    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
-      return ManhattanRouter.Direction.NONE;
-    }
-    if (Math.abs(dx) >= Math.abs(dy)) {
-      return dx < 0 ? ManhattanRouter.Direction.LEFT : ManhattanRouter.Direction.RIGHT;
-    }
-    return dy < 0 ? ManhattanRouter.Direction.UP : ManhattanRouter.Direction.DOWN;
-  }
-
-  /**
-   * Recomputes the route of every {@link SchematicWire} in the list from the current positions of
-   * the symbols it connects (looked up by component id). Used to re-route wires after the user moves
-   * a symbol on the schematic. Wires whose endpoints can no longer be resolved are left untouched.
-   *
-   * @return {@code true} if any wire route changed
-   */
-  public static boolean rerouteWires(List<IDIYComponent<?>> schematicComponents) {
-    Map<UUID, IDIYComponent<?>> symbolsById = new HashMap<UUID, IDIYComponent<?>>();
-    List<SchematicWire> wires = new ArrayList<SchematicWire>();
-    for (IDIYComponent<?> component : schematicComponents) {
-      if (component instanceof SchematicWire) {
-        wires.add((SchematicWire) component);
-      } else {
-        symbolsById.put(component.getId(), component);
-      }
-    }
-    // deterministic order so obstacle accumulation is stable
-    wires.sort(Comparator.comparing(w -> w.getId().toString()));
-
-    boolean changed = false;
-    List<Line2D> obstacles = new ArrayList<Line2D>();
-    for (SchematicWire wire : wires) {
-      IDIYComponent<?> source = symbolsById.get(wire.getSourceComponentId());
-      IDIYComponent<?> target = symbolsById.get(wire.getTargetComponentId());
-      if (source == null || target == null
-          || wire.getSourcePinIndex() >= source.getControlPointCount()
-          || wire.getTargetPinIndex() >= target.getControlPointCount()) {
-        // keep the existing route as an obstacle so other wires still avoid it
-        addSegments(obstacles, wire.getRoutePoints());
-        continue;
-      }
-      Point2D a = copyOf(source.getControlPoint(wire.getSourcePinIndex()));
-      Point2D b = copyOf(target.getControlPoint(wire.getTargetPinIndex()));
-      List<Point2D> route = ManhattanRouter.route(a, b, exitDirection(source, a),
-          exitDirection(target, b), obstacles, GRID);
-      if (!sameRoute(route, wire.getRoutePoints())) {
-        wire.setRoutePoints(route);
-        changed = true;
-      }
-      addSegments(obstacles, route);
-    }
-    return changed;
+    return Math.abs(dx) >= Math.abs(dy) ? OrientationHV.HORIZONTAL : OrientationHV.VERTICAL;
   }
 
   private static Point2D copyOf(Point2D p) {
     return new Point2D.Double(p.getX(), p.getY());
-  }
-
-  private static void addSegments(List<Line2D> obstacles, List<Point2D> route) {
-    for (int i = 0; i < route.size() - 1; i++) {
-      obstacles.add(new Line2D.Double(route.get(i), route.get(i + 1)));
-    }
-  }
-
-  private static boolean sameRoute(List<Point2D> a, List<Point2D> b) {
-    if (a.size() != b.size()) {
-      return false;
-    }
-    for (int i = 0; i < a.size(); i++) {
-      if (a.get(i).distance(b.get(i)) > 0.5) {
-        return false;
-      }
-    }
-    return true;
   }
 
   /* ------------------------------------------------------------------ misc */

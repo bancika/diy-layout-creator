@@ -43,12 +43,10 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
-import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
 import org.diylc.presenter.ContinuityArea;
 import org.diylc.presenter.Presenter;
-import org.diylc.schematic.SchematicBuilder;
 import org.diylc.schematic.SchematicSynchronizer;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
@@ -86,7 +84,6 @@ public class SchematicTabPlugin implements IPlugIn {
   private JComponent schematicScroll;
   private JToggleButton schematicTab;
   private Project schematicProject;
-  private boolean rerouting;
 
   public SchematicTabPlugin(ISwingUI swingUI, IConfigurationManager<?> configManager,
       CanvasPlugin layoutCanvasPlugin) {
@@ -105,7 +102,6 @@ public class SchematicTabPlugin implements IPlugIn {
     this.schematicPresenter = new Presenter(swingUI, configManager, false);
     this.schematicCanvasPlugin = new CanvasPlugin(swingUI, configManager);
     this.schematicPresenter.installPlugin(() -> schematicCanvasPlugin);
-    this.schematicPresenter.installPlugin(SchematicChangeListener::new);
     this.schematicScroll = schematicCanvasPlugin.getCanvasScrollComponent();
     this.schematicScroll.setVisible(false);
 
@@ -188,10 +184,6 @@ public class SchematicTabPlugin implements IPlugIn {
     wrapper.setGridSpacing(view.getGridSpacing());
     wrapper.setFont(layoutProject.getFont());
     wrapper.getComponents().addAll(view.getComponents());
-    // Wires are auto-routed and must never be touched by the user: lock the whole WIRING layer so
-    // they cannot be selected, dragged or detached from symbols. Symbols live on the COMPONENT
-    // layer and stay fully movable.
-    wrapper.getLockedLayers().add(IDIYComponent.WIRING);
     return wrapper;
   }
 
@@ -205,23 +197,6 @@ public class SchematicTabPlugin implements IPlugIn {
     }
   }
 
-  /** Re-routes the wires attached to any symbol the user just moved on the schematic canvas. */
-  private void onSchematicModified() {
-    if (rerouting || schematicProject == null) {
-      return;
-    }
-    rerouting = true;
-    try {
-      if (SchematicBuilder.rerouteWires(schematicProject.getComponents())) {
-        schematicPresenter.refresh();
-      }
-    } catch (Exception e) {
-      LOG.error("Could not re-route schematic wires", e);
-    } finally {
-      rerouting = false;
-    }
-  }
-
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.noneOf(EventType.class);
@@ -230,26 +205,5 @@ public class SchematicTabPlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     // no-op
-  }
-
-  /** Listens on the schematic presenter for symbol moves and triggers wire re-routing. */
-  private class SchematicChangeListener implements IPlugIn {
-
-    @Override
-    public void connect(IPlugInPort plugInPort) {
-      // nothing to do; we only need the message subscription
-    }
-
-    @Override
-    public EnumSet<EventType> getSubscribedEventTypes() {
-      return EnumSet.of(EventType.PROJECT_MODIFIED);
-    }
-
-    @Override
-    public void processMessage(EventType eventType, Object... params) {
-      if (eventType == EventType.PROJECT_MODIFIED) {
-        SwingUtilities.invokeLater(SchematicTabPlugin.this::onSchematicModified);
-      }
-    }
   }
 }

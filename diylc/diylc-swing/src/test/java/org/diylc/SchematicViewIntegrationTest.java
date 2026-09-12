@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import org.diylc.components.schematic.SchematicWire;
+import org.diylc.components.connectivity.OrthogonalLine;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
 import org.diylc.schematic.SchematicBuilder;
@@ -36,8 +36,8 @@ public class SchematicViewIntegrationTest extends TestBase {
     assertEquals(2, view.getPhysicalToSchematicMap().size());
 
     long symbolCount =
-        view.getComponents().stream().filter(c -> !(c instanceof SchematicWire)).count();
-    long wireCount = view.getComponents().stream().filter(c -> c instanceof SchematicWire).count();
+        view.getComponents().stream().filter(c -> !(c instanceof OrthogonalLine)).count();
+    long wireCount = view.getComponents().stream().filter(c -> c instanceof OrthogonalLine).count();
     assertEquals(2, symbolCount);
     assertTrue("expected the shared node to produce a wire", wireCount >= 1);
   }

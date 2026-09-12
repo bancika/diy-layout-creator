@@ -212,3 +212,36 @@ The test covers the routing template in both start directions, the degenerate
 shapes, the invariant that every produced segment is axis aligned, point-count
 changes, and the transformer contract that rotating the component yields exactly
 the rotated route.
+
+## 9. The schematic generator now uses it
+
+`Right Angle Line` replaced the generated-schematic wire, and two classes came
+out with it.
+
+`SchematicWire` stored a full point list plus the ids of the two symbols and pins
+it joined, because it had no other way to find its endpoints again. `ManhattanRouter`
+picked a route for it by scoring candidate paths against an obstacle list. When the
+user moved a symbol, `SchematicBuilder.rerouteWires` walked every wire, looked its
+symbols up by id and asked the router for a fresh path.
+
+None of that is needed now. `Right Angle Line` has sticky endpoints, so the
+framework moves them with the symbol they sit on, and the component re-derives its
+own route from the bend point on every repaint. `SchematicBuilder` picks that one
+bend point when it creates the wire, placing it on the first pin's column or the
+second pin's row according to which way the pin faces, and never touches the wire
+again.
+
+Three consequences worth knowing:
+
+- **Wires are editable now.** `SchematicTabPlugin` used to lock the whole `WIRING`
+  layer so that auto-routed wires could not be selected or dragged. That lock is
+  gone, both because sticky endpoints need it gone and because a hand-adjustable
+  wire is the point of the swap. It also retires the opaque-composite workaround
+  `SchematicWire.draw` needed to escape the reduced alpha that locked components
+  are painted with.
+- **Obstacle avoidance is gone.** The router used to steer a new route away from
+  overlapping or crossing the wires already placed. Nothing replaces that, so a
+  dense schematic can produce wires that run over each other. The user can now drag
+  them apart, which was impossible before.
+- **The reroute listener is gone.** `SchematicChangeListener` existed only to call
+  `rerouteWires` after every project modification. Nothing subscribes in its place.
