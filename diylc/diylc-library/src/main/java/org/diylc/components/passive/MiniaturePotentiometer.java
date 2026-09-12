@@ -12,6 +12,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.PotentiometerSchematicFactory;
 
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
@@ -30,7 +31,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Potentiometer (Miniature)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = PotentiometerSchematicFactory.class,
+    name = "Potentiometer (Miniature)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "9mm Alpha style miniature potentiometers", zOrder = IDIYComponent.COMPONENT,
     transformer = MiniaturePotentiometerTransformer.class)

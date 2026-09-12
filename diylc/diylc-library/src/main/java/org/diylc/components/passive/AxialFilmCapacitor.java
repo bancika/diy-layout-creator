@@ -24,6 +24,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
+import org.diylc.schematic.CapacitorSchematicFactory;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -31,7 +32,8 @@ import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
-@ComponentDescriptor(name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial film capacitor, similar to Mallory 150s", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,
