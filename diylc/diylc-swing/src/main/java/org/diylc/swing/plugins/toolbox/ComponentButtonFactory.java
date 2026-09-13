@@ -94,6 +94,19 @@ public class ComponentButtonFactory {
 
     button.addMouseListener(new MouseAdapter() {
 
+      /**
+       * Runs after the button has already fired its action for this click, so re-arming the slot
+       * here is what decides the mode: a double click instantiates the component up front so that
+       * it follows the cursor and drops in a single gesture, the way dragging it onto the canvas
+       * does, instead of asking for a point at a time.
+       */
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() > 1) {
+          plugInPort.setNewComponentTypeSlot(componentType, null, null, true);
+        }
+      }
+
       @Override
       public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON3) {

@@ -667,11 +667,16 @@ public class Presenter implements IPlugInPort {
   private void addPendingComponentsToProject(Point2D scaledPoint, ComponentType componentTypeSlot, Template template, String[] model,
       Project oldProject) {
     List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
-    Point2D firstPoint = componentSlot.get(0).getControlPoint(0);
-    // don't allow to create component with the same points
-    if (scaledPoint == null || scaledPoint.equals(firstPoint))
+    if (scaledPoint == null) {
       return;
-    // componentSlot.get(0).setControlPoint(scaledPoint, 1);
+    }
+    // A slot with no first control point was instantiated up front and already carries its default
+    // shape, so it legitimately lands with the first control point under the cursor. Only reject a
+    // degenerate component when the user is placing it point by point.
+    boolean instantiatedUpFront = instantiationManager.getFirstControlPoint() == null;
+    if (!instantiatedUpFront && scaledPoint.equals(componentSlot.get(0).getControlPoint(0))) {
+      return;
+    }
     List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>();
     for (IDIYComponent<?> component : componentSlot) {
       addComponent(component, true);
@@ -691,7 +696,7 @@ public class Presenter implements IPlugInPort {
       editSelection();
     }
     if (configManager.readBoolean(IPlugInPort.CONTINUOUS_CREATION_KEY, false)) {
-      setNewComponentTypeSlot(componentTypeSlot, template, model, false);
+      setNewComponentTypeSlot(componentTypeSlot, template, model, instantiatedUpFront);
     } else {
       setNewComponentTypeSlot(null, null, null, false);
     }
@@ -844,16 +849,17 @@ public class Presenter implements IPlugInPort {
       } else if (isSnapToObjects()) {
         CalcUtils.snapPointToObjects(previousScaledPoint, currentProject.getGridSpacing(), null, currentProject.getComponents());
       }
-      boolean refresh = false;
-      switch (instantiationManager.getComponentTypeSlot().getCreationMethod()) {
-        case POINT_BY_POINT:
-          refresh = instantiationManager.updatePointByPoint(previousScaledPoint);
-          break;
-        case SINGLE_CLICK:
-          refresh =
-              instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
-                  currentProject.getGridSpacing());
-          break;
+      // What the cursor does is decided by how the slot was armed rather than by the creation
+      // method: a slot instantiated up front carries a whole component that follows the cursor,
+      // while a point-by-point slot only stretches once the first point has been clicked.
+      boolean refresh;
+      if (instantiationManager.getComponentSlot() != null
+          && instantiationManager.getFirstControlPoint() == null) {
+        refresh =
+            instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
+                currentProject.getGridSpacing());
+      } else {
+        refresh = instantiationManager.updatePointByPoint(previousScaledPoint);
       }
       if (refresh) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);

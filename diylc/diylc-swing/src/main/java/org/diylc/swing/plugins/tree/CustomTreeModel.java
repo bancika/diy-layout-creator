@@ -123,13 +123,7 @@ public class CustomTreeModel implements TreeModel {
         if (fav.getType() == FavoriteType.Component) {
           ComponentType type = this.typesByClass.get(fav.getName());
           if (this.searchText == null || type.getName().toLowerCase().contains(this.searchText)) {
-            visibleTypes.add(new TreeNode(type, new MouseAdapter() {
-
-              @Override
-              public void mouseClicked(MouseEvent e) {
-                plugInPort.setNewComponentTypeSlot(type, null, null, false);
-              }
-            }));
+            visibleTypes.add(new TreeNode(type, createComponentClickListener(type)));
           }
         } else {
           // block
@@ -189,13 +183,7 @@ public class CustomTreeModel implements TreeModel {
         if (type == null)
           continue;
         if (this.searchText == null || type.getName().toLowerCase().contains(this.searchText)) {
-          visibleTypes.add(new TreeNode(type, new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, null, false);
-            }
-          }));
+          visibleTypes.add(new TreeNode(type, createComponentClickListener(type)));
         }
       }
     }
@@ -230,15 +218,27 @@ public class CustomTreeModel implements TreeModel {
             || category.toLowerCase().contains(this.searchText.toLowerCase()) ||
 
             typeMatches(this.searchText, type))
-          visibleTypes.add(new TreeNode(type, new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-              plugInPort.setNewComponentTypeSlot(type, null, null, false);
-            }
-          }));
+          visibleTypes.add(new TreeNode(type, createComponentClickListener(type)));
     this.visibleLeaves.put(category, visibleTypes);
     return visibleTypes;
+  }
+
+  /**
+   * Arms the slot for the specified type. A double click instantiates the component up front so
+   * that it follows the cursor and drops in a single gesture, the way dragging it onto the canvas
+   * does, instead of asking for a point at a time.
+   *
+   * @param type
+   * @return listener to attach to the tree node.
+   */
+  private MouseAdapter createComponentClickListener(ComponentType type) {
+    return new MouseAdapter() {
+
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        plugInPort.setNewComponentTypeSlot(type, null, null, e != null && e.getClickCount() > 1);
+      }
+    };
   }
 
   private boolean typeMatches(String searchText, ComponentType type) {

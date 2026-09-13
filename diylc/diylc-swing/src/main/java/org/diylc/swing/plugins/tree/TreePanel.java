@@ -258,17 +258,15 @@ public class TreePanel extends JPanel {
         /**
          * Prefer release over click: {@code mouseClicked} is not posted if the cursor moves
          * between press and release (common with DnD or hand jitter), while selection may still
-         * change — then re-clicks on the same row fire no selection event.
+         * change - then re-clicks on the same row fire no selection event. Every release is
+         * forwarded rather than only the first, so that the listener can tell a double click from
+         * a single one; re-arming the slot on the second release is harmless.
          */
         @Override
         public void mouseReleased(MouseEvent e) {
           if (SwingUtilities.isRightMouseButton(e) || e.isPopupTrigger()) {
             return;
           }
-          if (e.getClickCount() != 1) {
-            return;
-          }
-
           TreePath path = tree.getPathForLocation(e.getX(), e.getY());
           if (path == null) {
             path = tree.getClosestPathForLocation(e.getX(), e.getY());
