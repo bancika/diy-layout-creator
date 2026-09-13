@@ -233,15 +233,36 @@ again.
 
 Three consequences worth knowing:
 
-- **Wires are editable now.** `SchematicTabPlugin` used to lock the whole `WIRING`
-  layer so that auto-routed wires could not be selected or dragged. That lock is
-  gone, both because sticky endpoints need it gone and because a hand-adjustable
-  wire is the point of the swap. It also retires the opaque-composite workaround
-  `SchematicWire.draw` needed to escape the reduced alpha that locked components
-  are painted with.
+- **Wires stay locked, and that is what forces the regeneration.** The whole
+  `WIRING` layer is locked in the schematic wrapper project so a wire cannot be
+  selected, dragged or deleted. `Presenter.includeStuckComponents` skips locked
+  components, so a locked wire is invisible to the sticky-point expansion that
+  drags attached endpoints along with a moved symbol. Locking and automatic
+  reconnection are therefore coupled: the wires have to be regenerated explicitly.
+  `SchematicTabPlugin` re-runs `SchematicSynchronizer` on `PROJECT_MODIFIED`,
+  which keeps the placed symbols and rebuilds every wire from their current pin
+  positions. That covers moving a whole symbol and, importantly, dragging a single
+  pin of one.
+- **Locked components are painted at half alpha.** On a schematic where every wire
+  is locked that washes out the entire drawing.
+  `SchematicConfigurationManager` wraps the application's configuration for the
+  schematic canvas alone and reports `lockedAlpha` as false, leaving the user's own
+  setting untouched on the layout canvas. This replaces the opaque-composite
+  workaround the old wire class carried inside its `draw`.
 - **Obstacle avoidance is gone.** The router used to steer a new route away from
   overlapping or crossing the wires already placed. Nothing replaces that, so a
-  dense schematic can produce wires that run over each other. The user can now drag
-  them apart, which was impossible before.
-- **The reroute listener is gone.** `SchematicChangeListener` existed only to call
-  `rerouteWires` after every project modification. Nothing subscribes in its place.
+  dense schematic can produce wires that run over each other.
+
+### Wires are ordered under the symbols
+
+The schematic used to be sorted by z-order, which puts `WIRING` above `COMPONENT`.
+`SchematicBuilder.SCHEMATIC_ORDER` replaces that sort in both the builder and the
+synchronizer, ranking wires first and falling back to z-order for everything else.
+It is the right paint order for a schematic, symbols drawing over the wires behind
+them, and it keeps clicks reaching the symbols even if the wiring layer is ever
+unlocked, since the canvas hands a click to the last matching component in the
+list.
+
+Three tests in `SchematicViewIntegrationTest` pin the behaviour down: that wires
+are ordered before symbols, that the generated wires' endpoints sit on symbol pins,
+and that stretching a symbol by one pin and re-syncing puts them back on pins.

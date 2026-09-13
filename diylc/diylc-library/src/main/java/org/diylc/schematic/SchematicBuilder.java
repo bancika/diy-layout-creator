@@ -123,7 +123,7 @@ public class SchematicBuilder {
     List<OrthogonalLine> wires = createWires(netlist, entriesByPhysicalId);
     schematicComponents.addAll(wires);
 
-    schematicComponents.sort(Comparator.comparingDouble(SchematicBuilder::zOrderOf));
+    schematicComponents.sort(SCHEMATIC_ORDER);
 
     SchematicView view = project.getOrCreateSchematicView();
     view.getComponents().clear();
@@ -440,6 +440,17 @@ public class SchematicBuilder {
       view.setHeight(new org.diylc.core.measures.Size(maxY, org.diylc.core.measures.SizeUnit.px));
     }
   }
+
+  /**
+   * Paint and hit-test order for the schematic view. Wires go underneath the symbols, and not where
+   * their {@link IDIYComponent#WIRING} z-order would otherwise put them, because the canvas hands a
+   * click to the last matching component in this list. A wire runs right up to the pin it connects
+   * to and its hit area is widened to three pixels, so a wire drawn on top would swallow the clicks
+   * meant for the symbol underneath it and the user could not drag the symbol at all.
+   */
+  static final Comparator<IDIYComponent<?>> SCHEMATIC_ORDER =
+      Comparator.comparingInt((IDIYComponent<?> c) -> c instanceof OrthogonalLine ? 0 : 1)
+          .thenComparingDouble(SchematicBuilder::zOrderOf);
 
   static double zOrderOf(IDIYComponent<?> component) {
     ComponentType type = ComponentProcessor.getInstance()

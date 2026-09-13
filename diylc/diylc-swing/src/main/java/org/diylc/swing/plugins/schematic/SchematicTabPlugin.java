@@ -43,6 +43,7 @@ import org.diylc.common.BadPositionException;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
 import org.diylc.presenter.ContinuityArea;
@@ -63,8 +64,10 @@ import org.diylc.swing.plugins.canvas.CanvasPlugin;
  * </p>
  *
  * <p>
- * The schematic canvas is not restricted yet, so nothing prevents selecting or nudging symbols; a
- * dedicated restricted mode (no add / delete / paste, shared undo) is a planned follow-up.
+ * Symbols are movable; the generated wires are not. The whole wiring layer is locked so that a wire
+ * cannot be selected, dragged or deleted, and because a locked component is skipped by the sticky
+ * point expansion that would otherwise drag its endpoints along, the wires are regenerated from the
+ * symbols' current pin positions after every change.
  * </p>
  *
  * @author Branislav Stojkovic
@@ -84,6 +87,7 @@ public class SchematicTabPlugin implements IPlugIn {
   private JComponent schematicScroll;
   private JToggleButton schematicTab;
   private Project schematicProject;
+  private boolean rewiring;
 
   public SchematicTabPlugin(ISwingUI swingUI, IConfigurationManager<?> configManager,
       CanvasPlugin layoutCanvasPlugin) {
@@ -99,9 +103,11 @@ public class SchematicTabPlugin implements IPlugIn {
 
     // A second presenter + canvas plugin gives the schematic the exact same rendering, scrolling
     // and zoom behaviour as the layout canvas.
-    this.schematicPresenter = new Presenter(swingUI, configManager, false);
-    this.schematicCanvasPlugin = new CanvasPlugin(swingUI, configManager);
+    IConfigurationManager<?> schematicConfig = SchematicConfigurationManager.wrap(configManager);
+    this.schematicPresenter = new Presenter(swingUI, schematicConfig, false);
+    this.schematicCanvasPlugin = new CanvasPlugin(swingUI, schematicConfig);
     this.schematicPresenter.installPlugin(() -> schematicCanvasPlugin);
+    this.schematicPresenter.installPlugin(SchematicChangeListener::new);
     this.schematicScroll = schematicCanvasPlugin.getCanvasScrollComponent();
     this.schematicScroll.setVisible(false);
 
@@ -184,6 +190,10 @@ public class SchematicTabPlugin implements IPlugIn {
     wrapper.setGridSpacing(view.getGridSpacing());
     wrapper.setFont(layoutProject.getFont());
     wrapper.getComponents().addAll(view.getComponents());
+    // Generated wires must never be touched by the user: lock the whole WIRING layer so they cannot
+    // be selected, dragged or detached from symbols. Symbols live on the COMPONENT layer and stay
+    // fully movable.
+    wrapper.getLockedLayers().add(IDIYComponent.WIRING);
     return wrapper;
   }
 
@@ -197,6 +207,32 @@ public class SchematicTabPlugin implements IPlugIn {
     }
   }
 
+  /**
+   * Regenerates the wires from the symbols' current pin positions. A locked wire is invisible to the
+   * sticky point expansion that moves attached endpoints along with a dragged component, so this is
+   * what keeps the drawing connected after the user moves a symbol.
+   */
+  private void onSchematicModified() {
+    if (rewiring || schematicProject == null) {
+      return;
+    }
+    rewiring = true;
+    try {
+      Project layoutProject = plugInPort.getCurrentProject();
+      new SchematicSynchronizer().synchronize(layoutProject, plugInPort.getContinuityAreas());
+      SchematicView view = layoutProject.getOrCreateSchematicView();
+      schematicProject.setWidth(view.getWidth());
+      schematicProject.setHeight(view.getHeight());
+      schematicProject.getComponents().clear();
+      schematicProject.getComponents().addAll(view.getComponents());
+      schematicPresenter.refresh();
+    } catch (Exception e) {
+      LOG.error("Could not re-wire the schematic", e);
+    } finally {
+      rewiring = false;
+    }
+  }
+
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
     return EnumSet.noneOf(EventType.class);
@@ -205,5 +241,26 @@ public class SchematicTabPlugin implements IPlugIn {
   @Override
   public void processMessage(EventType eventType, Object... params) {
     // no-op
+  }
+
+  /** Listens on the schematic presenter for symbol moves and triggers the re-wiring. */
+  private class SchematicChangeListener implements IPlugIn {
+
+    @Override
+    public void connect(IPlugInPort plugInPort) {
+      // nothing to do; we only need the message subscription
+    }
+
+    @Override
+    public EnumSet<EventType> getSubscribedEventTypes() {
+      return EnumSet.of(EventType.PROJECT_MODIFIED);
+    }
+
+    @Override
+    public void processMessage(EventType eventType, Object... params) {
+      if (eventType == EventType.PROJECT_MODIFIED) {
+        SwingUtilities.invokeLater(SchematicTabPlugin.this::onSchematicModified);
+      }
+    }
   }
 }

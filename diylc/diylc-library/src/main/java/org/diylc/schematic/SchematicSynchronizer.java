@@ -157,7 +157,7 @@ public class SchematicSynchronizer {
 
     List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(keptSymbols);
     result.addAll(wires);
-    result.sort(java.util.Comparator.comparingDouble(SchematicBuilder::zOrderOf));
+    result.sort(SchematicBuilder.SCHEMATIC_ORDER);
 
     view.getComponents().clear();
     view.getComponents().addAll(result);
