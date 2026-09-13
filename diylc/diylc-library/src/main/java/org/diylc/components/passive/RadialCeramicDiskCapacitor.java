@@ -27,6 +27,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import org.diylc.components.transform.SimpleComponentTransformer;
+import org.diylc.schematic.CapacitorSchematicFactory;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -36,7 +37,8 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Ceramic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Ceramic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Standard radial ceramic capacitor", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
