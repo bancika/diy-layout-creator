@@ -52,6 +52,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
 
   public static Color GUIDELINE_COLOR = Color.blue;
   public static Size DEFAULT_SIZE = new Size(1d, SizeUnit.in);
+  public static double CREATION_CURVATURE = 0.1;
 
   // for backward compatibility
   protected Point2D[] controlPoints = null;
@@ -285,6 +286,31 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     // p[2] = findThirdPoint(p[3], p[4]);
     // }
     // }
+  }
+
+  /**
+   * Bows the curve to one side instead of leaving the intermediate points on the straight line
+   * joining the ends, so that a freshly created component reads as a curve that can be reshaped
+   * rather than as a rigid line. The sine envelope vanishes at both ends and peaks in the middle,
+   * which yields a symmetric arc for any point count. The offset always points down the screen so
+   * that the wire sags the same way no matter which end was drawn first.
+   */
+  @Override
+  protected Point2D getStretchedPoint(Point2D first, Point2D second, int index) {
+    Point2D p = super.getStretchedPoint(first, second, index);
+    double dx = second.getX() - first.getX();
+    double dy = second.getY() - first.getY();
+    double length = Math.hypot(dx, dy);
+    if (length == 0) {
+      return p;
+    }
+    if (dx < 0 || (dx == 0 && dy > 0)) {
+      dx = -dx;
+      dy = -dy;
+    }
+    double t = (double) index / (getControlPointCount() - 1);
+    double offset = CREATION_CURVATURE * length * Math.sin(Math.PI * t);
+    return new Point2D.Double(p.getX() - dy / length * offset, p.getY() + dx / length * offset);
   }
 
   private Point2D findThirdPoint(Point2D p0, Point2D p) {

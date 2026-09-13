@@ -35,6 +35,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractOrthogonalComponent;
 import org.diylc.components.transform.OrthogonalComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -49,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
     instanceNamePrefix = "LN", description = "Line with rounded right angle turns and optional arrows",
     zOrder = IDIYComponent.WIRING, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Schematic",
-    transformer = OrthogonalComponentTransformer.class, enableCache = false)
+    transformer = OrthogonalComponentTransformer.class, enableCache = false, creationMethod = CreationMethod.POINT_BY_POINT)
 public class OrthogonalLine extends AbstractOrthogonalComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;

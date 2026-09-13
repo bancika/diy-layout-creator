@@ -38,6 +38,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -50,7 +51,8 @@ import org.diylc.utils.Constants;
     category = "Connectivity", instanceNamePrefix = "W",
     description = "A pair of flexible leads twisted tightly together", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
-    transformer = SimpleComponentTransformer.class, enableCache = true)
+    transformer = SimpleComponentTransformer.class, enableCache = true,
+    creationMethod = CreationMethod.POINT_BY_POINT)
 public class TwistedWire extends AbstractCurvedComponent<Void> implements IContinuity {
 
   private static final long serialVersionUID = 1L;

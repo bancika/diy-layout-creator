@@ -123,23 +123,21 @@ public class InstantiationManager {
     firstControlPoint = scaledPoint;
     componentSlot = instantiateComponent(componentTypeSlot, firstControlPoint, currentProject);
 
-    // Set the other control point to the same location, we'll
-    // move it later when mouse moves.
-    componentSlot.get(0).setControlPoint(firstControlPoint, 0);
-    componentSlot.get(0).setControlPoint(firstControlPoint, 1);
+    // Collapse the component onto the first point, we'll stretch it later when mouse moves.
+    componentSlot.get(0).stretchBetween(firstControlPoint, firstControlPoint);
   }
 
   /**
-   * Updates component in the slot with the new second control point.
-   * 
+   * Updates component in the slot with the new end control point.
+   *
    * @param scaledPoint
    * @return true, if any change is made
    */
   public boolean updatePointByPoint(Point2D scaledPoint) {
     boolean changeMade = !scaledPoint.equals(potentialControlPoint);
     potentialControlPoint = scaledPoint;
-    if (componentSlot != null && !componentSlot.isEmpty()) {
-      componentSlot.get(0).setControlPoint(scaledPoint, 1);
+    if (componentSlot != null && !componentSlot.isEmpty() && firstControlPoint != null) {
+      componentSlot.get(0).stretchBetween(firstControlPoint, scaledPoint);
     }
     return changeMade;
   }

@@ -30,6 +30,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.CreationMethod;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -40,7 +41,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
-    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
+    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
     transformer = SimpleComponentTransformer.class, enableCache = false)
 public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
 
