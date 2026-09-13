@@ -481,6 +481,14 @@
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added 'Right Angle Wire' and 'Right Angle Line' components that route between two points using only horizontal and vertical runs with rounded corners</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Double click on a component type in the tree or the toolbar to instantiate it at once, even for those that are intended to be placed point-by-point</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>All curved components ('Curved Trace', 'Hookup Wire', 'Twisted Leads') are now getting created between the two points by default instead of getting created with some preset shape and length</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

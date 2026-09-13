@@ -289,11 +289,18 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
   }
 
   /**
-   * Bows the curve to one side instead of leaving the intermediate points on the straight line
-   * joining the ends, so that a freshly created component reads as a curve that can be reshaped
-   * rather than as a rigid line. The sine envelope vanishes at both ends and peaks in the middle,
-   * which yields a symmetric arc for any point count. The offset always points down the screen so
-   * that the wire sags the same way no matter which end was drawn first.
+   * Waves the curve from side to side instead of leaving the intermediate points on the straight
+   * line joining the ends, so that a freshly created component reads as a slack wire that can be
+   * reshaped rather than as a rigid line. Successive handles go to opposite sides, which turns the
+   * default four point curve into an S, while the points that lie on the curve itself stay on the
+   * straight line and the sine envelope fades the excursions out towards both ends. The first
+   * excursion always points down the screen so that the shape does not depend on which end was
+   * drawn first.
+   * <p>
+   * Keeping the on-curve points on the line is what makes the wave survive: a handle either side
+   * of one of them then comes out as its exact mirror, which is the continuity rule that the
+   * smoothing in {@link #draw} enforces, so that pass leaves the shape alone instead of pulling
+   * one handle across to satisfy it.
    */
   @Override
   protected Point2D getStretchedPoint(Point2D first, Point2D second, int index) {
@@ -301,7 +308,7 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
     double dx = second.getX() - first.getX();
     double dy = second.getY() - first.getY();
     double length = Math.hypot(dx, dy);
-    if (length == 0) {
+    if (length == 0 || isOnCurve(index)) {
       return p;
     }
     if (dx < 0 || (dx == 0 && dy > 0)) {
@@ -309,8 +316,42 @@ public abstract class AbstractCurvedComponent<T> extends AbstractTransparentComp
       dy = -dy;
     }
     double t = (double) index / (getControlPointCount() - 1);
-    double offset = CREATION_CURVATURE * length * Math.sin(Math.PI * t);
+    double offset = getStretchedSide(index) * CREATION_CURVATURE * length * Math.sin(Math.PI * t);
     return new Point2D.Double(p.getX() - dy / length * offset, p.getY() + dx / length * offset);
+  }
+
+  /**
+   * @param index
+   * @return true if the control point at the specified index lies on the curve rather than pulling
+   *         it from the side, which follows from how {@link #draw} chains the segments together.
+   */
+  private boolean isOnCurve(int index) {
+    if (index == 0 || index == getControlPointCount() - 1) {
+      return true;
+    }
+    if (getPointCount() == PointCount.FIVE) {
+      return index == 2;
+    }
+    if (getPointCount() == PointCount.SEVEN) {
+      return index == 3;
+    }
+    return false;
+  }
+
+  /**
+   * @param index
+   * @return which side of the straight line the handle at the specified index is pushed to,
+   *         counting handles rather than control points so that an on-curve point in between does
+   *         not break the alternation.
+   */
+  private int getStretchedSide(int index) {
+    int handleCount = 0;
+    for (int i = 1; i < index; i++) {
+      if (!isOnCurve(i)) {
+        handleCount++;
+      }
+    }
+    return handleCount % 2 == 0 ? 1 : -1;
   }
 
   private Point2D findThirdPoint(Point2D p0, Point2D p) {
