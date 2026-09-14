@@ -24,17 +24,20 @@ package org.diylc.components.composite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.diylc.common.Percentage;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Node;
 import org.diylc.serialization.ProjectFileManager;
+import org.diylc.testcomponents.OnePointTestComponent;
 import org.diylc.testcomponents.TwoPointTestComponent;
 import org.junit.Test;
 
@@ -53,6 +56,32 @@ public class CompositeComponentTest {
     composite.getChildComponents().add(new TwoPointTestComponent("R2",
         new Point2D.Double(20, 0), new Point2D.Double(30, 0)));
     return composite;
+  }
+
+  private CompositeComponent customBoard(IDIYComponent<?>... children) {
+    CompositeComponent composite = new CompositeComponent();
+    composite.setName("BLK1");
+    composite.initBlockName("Custom Board");
+    composite.getChildComponents().addAll(Arrays.asList(children));
+    return composite;
+  }
+
+  private OnePointTestComponent pad(String name, String nodeName) {
+    return new OnePointTestComponent(name, nodeName, new Point2D.Double(0, 0));
+  }
+
+  // Stands in for a blank board: its corner points keep the default "1" and "2" node names but
+  // are not sticky.
+  private TwoPointTestComponent blankBoard() {
+    TwoPointTestComponent board = new TwoPointTestComponent("Board1", new Point2D.Double(0, 0),
+        new Point2D.Double(100, 100));
+    board.setSticky(0, false);
+    board.setSticky(1, false);
+    return board;
+  }
+
+  private TwoPointTestComponent twoPoint(String name) {
+    return new TwoPointTestComponent(name, new Point2D.Double(0, 0), new Point2D.Double(10, 0));
   }
 
   @Test
@@ -103,18 +132,94 @@ public class CompositeComponentTest {
   }
 
   @Test
-  public void nodeNamingProducesHierarchicalNetlistLabels() {
-    // Design decision D3: Node.toString() should read "<composite>.<child>.<local point name>"
+  public void clashingPinsOfMultiPointChildrenAreQualifiedWithTheChildName() {
     CompositeComponent composite = twoChildComposite();
 
-    Node r1FirstPoint = new Node(composite, 0);
-    Node r2FirstPoint = new Node(composite, 2);
-    Node r2SecondPoint = new Node(composite, 3);
-
-    assertEquals("BLK1.1", r1FirstPoint.toString());
-    assertEquals("BLK1.1", r2FirstPoint.toString());
+    assertEquals("R1.1", composite.getControlPointNodeName(0));
+    assertEquals("R1.2", composite.getControlPointNodeName(1));
+    assertEquals("BLK1.R2.1", new Node(composite, 2).toString());
     // local point index must reset per child, not keep growing with the flat composite index
-    assertEquals("BLK1.2", r2SecondPoint.toString());
+    assertEquals("BLK1.R2.2", new Node(composite, 3).toString());
+  }
+
+  @Test
+  public void uniquePadNamesPassThroughWithoutThePadName() {
+    CompositeComponent composite =
+        customBoard(blankBoard(), pad("Pad3", "VCC"), pad("Pad7", "SDA"));
+
+    assertEquals("VCC", composite.getControlPointNodeName(2));
+    assertEquals("SDA", composite.getControlPointNodeName(3));
+    assertEquals("BLK1.VCC", new Node(composite, 2).toString());
+  }
+
+  @Test
+  public void nonStickyPointsDoNotForceARename() {
+    CompositeComponent composite = customBoard(blankBoard(), pad("Pad1", "1"));
+
+    assertEquals("1", composite.getControlPointNodeName(2));
+  }
+
+  @Test
+  public void padsSharingANameGetNumericSuffixesInSaveOrder() {
+    CompositeComponent composite = customBoard(blankBoard(), pad("Pad1", "GND"),
+        pad("Pad2", "VCC"), pad("Pad3", "GND"), pad("Pad4", "GND"));
+
+    assertEquals("GND_1", composite.getControlPointNodeName(2));
+    assertEquals("VCC", composite.getControlPointNodeName(3));
+    assertEquals("GND_2", composite.getControlPointNodeName(4));
+    assertEquals("GND_3", composite.getControlPointNodeName(5));
+  }
+
+  @Test
+  public void suffixesSkipNamesThatAreAlreadyTaken() {
+    CompositeComponent composite =
+        customBoard(pad("Pad1", "GND"), pad("Pad2", "GND_1"), pad("Pad3", "GND"));
+
+    assertEquals("GND_2", composite.getControlPointNodeName(0));
+    assertEquals("GND_1", composite.getControlPointNodeName(1));
+    assertEquals("GND_3", composite.getControlPointNodeName(2));
+  }
+
+  @Test
+  public void padClashingWithAPinOfAMultiPointChildKeepsItsName() {
+    CompositeComponent composite = customBoard(pad("Pad1", "1"), twoPoint("R1"));
+
+    assertEquals("1", composite.getControlPointNodeName(0));
+    assertEquals("R1.1", composite.getControlPointNodeName(1));
+    assertEquals("2", composite.getControlPointNodeName(2));
+  }
+
+  @Test
+  public void childrenSharingANameAreStillDistinguished() {
+    // renaming in the property editor does not enforce uniqueness, so a block can hold two "R1"s
+    CompositeComponent composite = customBoard(twoPoint("R1"), twoPoint("R1"));
+
+    assertEquals("R1.1_1", composite.getControlPointNodeName(0));
+    assertEquals("R1.2_1", composite.getControlPointNodeName(1));
+    assertEquals("R1.1_2", composite.getControlPointNodeName(2));
+    assertEquals("R1.2_2", composite.getControlPointNodeName(3));
+  }
+
+  @Test
+  public void unnamedPointsAreNotTerminals() {
+    CompositeComponent composite =
+        customBoard(pad("Pad1", null), pad("Pad2", null), pad("Pad3", "VCC"));
+
+    assertNull(composite.getControlPointNodeName(0));
+    assertNull(composite.getControlPointNodeName(1));
+    assertEquals("VCC", composite.getControlPointNodeName(2));
+  }
+
+  @Test
+  public void instancesOfTheSameBlockResolveIdenticalNames() throws Exception {
+    CompositeComponent original = customBoard(blankBoard(), pad("Pad1", "GND"),
+        pad("Pad2", "GND"), twoPoint("R1"), twoPoint("R2"));
+
+    CompositeComponent clone = (CompositeComponent) original.clone();
+
+    for (int i = 0; i < original.getControlPointCount(); i++) {
+      assertEquals(original.getControlPointNodeName(i), clone.getControlPointNodeName(i));
+    }
   }
 
   @Test
@@ -204,7 +309,7 @@ public class CompositeComponentTest {
     assertEquals(original.getBlockName(), reloaded.getBlockName());
     for (int i = 0; i < original.getControlPointCount(); i++)
       assertEquals(original.getControlPoint(i), reloaded.getControlPoint(i));
-    assertEquals("BLK1.2", new Node(reloaded, 3).toString());
+    assertEquals("BLK1.R2.2", new Node(reloaded, 3).toString());
   }
 
   @Test

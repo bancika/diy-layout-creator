@@ -26,7 +26,7 @@ click; group mode costs one extra click.
 |---|---|---|---|
 | D1 | Where child definitions live | Embedded in the instance, serialized into the `.diy` file | Projects stay portable; a file opens correctly on a machine that does not have the block in its local config. Blocks in config remain the *template*, not a live dependency. |
 | D2 | Which control points are exposed | All of them, delegated straight through to children | No curation UI needed, and `isControlPointSticky` / `getControlPointVisibilityPolicy` come along for free with correct per-child semantics. |
-| D3 | Terminal naming | `getSectionNames(i)` returns the child's name; `getControlPointNodeName(i)` returns the child's node name | `Node.toString()` already renders `component.getName() + "." + section + "." + nodeName`, so a netlist node reads `ARD1.PH1.3` with no changes to the netlist code. |
+| D3 | Terminal naming | A child's node name is exposed unchanged when it is unique within the composite. Clashes are resolved by qualifying pins of multi-point children with the child's name (`R1.1`), then numbering whatever still clashes in save order (`GND_1`, `GND_2`) | Blocks are also used to build custom maker boards from a blank board and solder pads, where the pad's Node Name is the terminal name and its component name (`Pad3`) is an arbitrary leftover of the project the block was saved in. Children are frozen (D8), so every instance of a block resolves identical names. `Node.toString()` prefixes the composite's name, so a netlist node reads `BLK1.VCC` or `BLK1.R1.1`. |
 | D4 | Geometry | Rigid — `canPointMoveFreely(i)` returns `false` for every index | This is already a first-class concept used by ~60 components (`DIL_IC`, `Breadboard`, `TubeSocket`…). No new plumbing. |
 | D5 | Type identity | One shared `ComponentType`; the instance carries a `blockName` field, and the handful of type-name consumers prefer it | `ComponentProcessor` caches `ComponentType` per Java class, so per-block types would mean changing the cache key of a widely used singleton. The field approach has a much smaller blast radius. |
 | D6 | Electrical modelling | The composite is **not** `IContinuity` and **not** `ISwitch` | A composite is a footprint that exposes terminals, not a circuit model. Internal point-to-point continuity and internal switching are explicitly out of scope. |
@@ -67,10 +67,10 @@ components by translating *every* control point by the same delta via
 child. Rigidity is enforced by `canPointMoveFreely`, never by `setControlPoint`
 refusing a write.
 
-**Node naming.** `Node.getDisplayName()` prefixes the node name with
-`getSectionNames(pointIndex)[0]` when there is exactly one section, and
-`Node.toString()` prefixes that with the component name. Returning the child's
-name as the section gives hierarchical netlist labels for free.
+**Node naming.** `Node.toString()` prefixes the node name with the component
+name, so whatever the composite returns from `getControlPointNodeName` reads as
+`BLK1.<name>` in the netlist with no changes to the netlist code. Only resolving
+clashes between children's names is new (D3).
 
 Three things do *not* come for free and are the substance of the work: type
 identity (D5), palette visibility (§4.2), and a correct deep `clone()` (§7).
@@ -131,8 +131,7 @@ deserialization, which the lazy getter handles.
 | `isControlPointSticky(i)` | Delegate |
 | `canControlPointOverlap(i)` | Delegate |
 | `getControlPointVisibilityPolicy(i)` | Delegate |
-| `getControlPointNodeName(i)` | Child's node name, prefixed with the child's own section name when it has exactly one |
-| `getSectionNames(i)` | `new String[] { child.getName() }` |
+| `getControlPointNodeName(i)` | Resolved once alongside the index arrays (D3). Only sticky, named points take part in clash detection, so a board's non-sticky corner points never force a pad to be renamed |
 | `canPointMoveFreely(i)` | `false` (D4) |
 | `createdIn(project)` | Forward to every child |
 
@@ -202,10 +201,10 @@ left behind.
 
 - `GROUP` — exactly today's behaviour.
 - `COMPOSITE` — clone the stored components with fresh UUIDs but **keep their
-  saved names unchanged**. Child names are namespaced under the composite's name
+  saved names unchanged**. Child names surface in terminal names when pins clash
   (D3), so running them through `createUniqueName` against the project would
-  produce meaningless drift (`R1` becoming `R37`) and break netlist labels
-  between two instances of the same block. Then wrap them in a
+  produce meaningless drift (`R1` becoming `R37`) and make two instances of the
+  same block resolve different netlist labels. Then wrap them in a
   `CompositeComponent`, set `blockName`, and give the composite itself a
   project-unique name via `createUniqueName`.
 
@@ -312,7 +311,7 @@ selections.
 
 **Naming collisions.** Two instances of the same block deliberately carry
 identically named children (§4.4). Netlist labels stay unique because they are
-prefixed with the composite's own name (`ARD1.PH1.3` vs `ARD2.PH1.3`). Any code
+prefixed with the composite's own name (`ARD1.R1.1` vs `ARD2.R1.1`). Any code
 that assumes component names are globally unique across the project would be
 affected — none is known, but worth watching.
 
@@ -320,8 +319,8 @@ affected — none is known, but worth watching.
 
 - **Unit** — point count equals the sum over children; `getControlPoint(i)`
   tracks the child after the child moves; `canPointMoveFreely` is false for
-  every index; `getSectionNames`/`getControlPointNodeName` produce
-  `ARD1.PH1.3` through `Node.toString()`.
+  every index; `getControlPointNodeName` passes unique names through, qualifies
+  clashing pins of multi-point children and numbers the remaining clashes (D3).
 - **Clone isolation** — clone a composite, move the clone, assert the original's
   points did not move.
 - **Round trip** — save a project containing a composite, reload it, assert the
