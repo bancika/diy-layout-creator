@@ -24,8 +24,6 @@ It provides an intuitive, drag-and-drop interface for placing components, arrang
 
 The **Official DIYLC Guide (v1.0)** is a comprehensive 174-page eBook that goes way beyond the basics. It features step-by-step design workflows for everything from multi-layer PCBs to hot-rodded point-to-point tube amps. Learn to master advanced tools like the Virtual Multimeter, Netlist generation, the Guitar Wiring Analyzer, and the new AI Assistant.
 
-🎉 **Launch Special:** Get **40% off** during our 14-day introductory sale! Buying v1.0 guarantees you free lifetime updates as the app evolves.
-
 👉 **[Click here to grab your copy!](https://www.diy-fever.com/diylc-book)**
 
 *Active Patreon supporters get an additional 50% off or a completely free copy. Check the [Patreon feed](https://www.patreon.com/c/user?u=5213116) for your VIP link!*
