@@ -489,6 +489,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>All curved components ('Curved Trace', 'Hookup Wire', 'Twisted Leads') are now getting created between the two points by default instead of getting created with some preset shape and length</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improve terminal node naming within building blocks to ensure no duplicates by adding a name of the nested component as a prefix</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
