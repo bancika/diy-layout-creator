@@ -30,6 +30,7 @@ import java.util.EnumSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -44,13 +45,16 @@ import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IView;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.ContinuityArea;
 import org.diylc.presenter.Presenter;
 import org.diylc.schematic.SchematicSynchronizer;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.plugins.canvas.CanvasPlugin;
+import org.diylc.utils.IconLoader;
 
 /**
  * Adds an Excel-style tab strip below the canvas with two tabs, <b>Layout</b> and <b>Schematic</b>.
@@ -86,6 +90,7 @@ public class SchematicTabPlugin implements IPlugIn {
   private JComponent layoutScroll;
   private JComponent schematicScroll;
   private JToggleButton schematicTab;
+  private JButton regenerateButton;
   private Project schematicProject;
   private boolean rewiring;
 
@@ -132,6 +137,9 @@ public class SchematicTabPlugin implements IPlugIn {
     bar.add(layoutTab);
     bar.add(schematicTab);
 
+    bar.addSeparator();
+    bar.add(buildRegenerateButton());
+
     Dimension pref = bar.getPreferredSize();
     bar.setMaximumSize(new Dimension(Integer.MAX_VALUE, pref.height));
     bar.setMinimumSize(new Dimension(0, pref.height));
@@ -146,9 +154,43 @@ public class SchematicTabPlugin implements IPlugIn {
     return button;
   }
 
+  private JButton buildRegenerateButton() {
+    regenerateButton =
+        new JButton(LangUtil.translate("Regenerate"), IconLoader.MagicWand.getIcon());
+    regenerateButton.setToolTipText(LangUtil.translate("Lay the schematic out again from scratch"));
+    regenerateButton.setFocusPainted(false);
+    regenerateButton.setFont(regenerateButton.getFont().deriveFont(Font.PLAIN));
+    // the layout tab is the one showing when the bar is built
+    regenerateButton.setEnabled(false);
+    regenerateButton.addActionListener(e -> regenerate());
+    return regenerateButton;
+  }
+
+  /**
+   * Throws the current schematic away and lays it out again from the layout. How the symbols are
+   * arranged is the user's own work and the synchronizer never touches it, so this is the only place
+   * that discards it — which is why it asks first.
+   */
+  private void regenerate() {
+    int choice = swingUI.showConfirmDialog(
+        LangUtil.translate("Discard the current arrangement and lay the schematic out again?"),
+        LangUtil.translate("Regenerate Schematic"), IView.YES_NO_OPTION, IView.WARNING_MESSAGE);
+    if (choice != IView.YES_OPTION) {
+      return;
+    }
+    SchematicView view = plugInPort.getCurrentProject().getSchematicView();
+    if (view != null) {
+      // an empty view is exactly what makes the synchronizer fall back to a full build
+      view.getComponents().clear();
+      view.getPhysicalToSchematicMap().clear();
+    }
+    showSchematic();
+  }
+
   private void showLayout() {
     schematicScroll.setVisible(false);
     layoutScroll.setVisible(true);
+    regenerateButton.setEnabled(false);
     relayout();
   }
 
@@ -167,6 +209,7 @@ public class SchematicTabPlugin implements IPlugIn {
     schematicPresenter.loadProject(wrapper, true, null);
     layoutScroll.setVisible(false);
     schematicScroll.setVisible(true);
+    regenerateButton.setEnabled(true);
     relayout();
     SwingUtilities.invokeLater(() -> {
       schematicCanvasPlugin.scrollToCenterAndShowContents();

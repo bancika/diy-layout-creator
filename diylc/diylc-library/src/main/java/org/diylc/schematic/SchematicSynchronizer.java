@@ -64,6 +64,13 @@ public class SchematicSynchronizer {
   /**
    * Synchronizes the schematic view. If the project has no schematic view yet, or it is empty, a
    * full {@link SchematicBuilder#build} is performed instead.
+   *
+   * <p>
+   * Symbols the user has arranged keep their position for as long as the component behind them is
+   * still in the layout. Improvements to the placement algorithm deliberately do not reach an
+   * already generated schematic: re-laying one out has to be an explicit action, never a side
+   * effect of opening the view.
+   * </p>
    */
   public void synchronize(Project project, List<ContinuityArea> continuityAreas) {
     SchematicView view = project.getSchematicView();
@@ -88,6 +95,12 @@ public class SchematicSynchronizer {
     List<IDIYComponent<?>> keptSymbols = new ArrayList<IDIYComponent<?>>();
     Map<UUID, List<SymbolEntry>> entriesByPhysicalId = new LinkedHashMap<UUID, List<SymbolEntry>>();
     Map<UUID, List<UUID>> newMap = new LinkedHashMap<UUID, List<UUID>>();
+
+    // the netlist is needed up front so that newly added components are stood upright against their
+    // rails exactly the way a full build would place them
+    Netlist netlist = builder.extractNetlist(project,
+        continuityAreas == null ? new ArrayList<ContinuityArea>() : continuityAreas);
+    Map<UUID, Map<Integer, String>> railPins = SchematicBuilder.railPins(netlist);
 
     int occupiedSlots = map.size();
 
@@ -124,9 +137,10 @@ public class SchematicSynchronizer {
         }
         // place any brand new sub-symbols (e.g. section count grew) that had no counterpart
         if (resolvedEntries.size() > existingIds.size()) {
-          SchematicBuilder.placeAtGridSlot(
-              resolvedEntries.subList(existingIds.size(), resolvedEntries.size()), occupiedSlots++,
-              occupiedSlots + 1);
+          List<SymbolEntry> added =
+              resolvedEntries.subList(existingIds.size(), resolvedEntries.size());
+          SchematicBuilder.orientSymbols(added, railPins.get(physicalId));
+          SchematicBuilder.placeAtGridSlot(added, occupiedSlots++, occupiedSlots + 1);
         }
       } else {
         // new component
@@ -134,6 +148,7 @@ public class SchematicSynchronizer {
         for (SymbolEntry e : freshEntries) {
           resolvedIds.add(e.symbol.getId());
         }
+        SchematicBuilder.orientSymbols(freshEntries, railPins.get(physicalId));
         SchematicBuilder.placeAtGridSlot(freshEntries, occupiedSlots++, occupiedSlots + 1);
       }
 
@@ -151,12 +166,11 @@ public class SchematicSynchronizer {
       LOG.debug("Removing schematic symbols for " + removed.size() + " deleted component(s)");
     }
 
-    Netlist netlist = builder.extractNetlist(project,
-        continuityAreas == null ? new ArrayList<ContinuityArea>() : continuityAreas);
-    List<OrthogonalLine> wires = builder.createWires(netlist, entriesByPhysicalId);
+    SchematicBuilder.Wiring wiring = builder.createWires(netlist, entriesByPhysicalId);
 
     List<IDIYComponent<?>> result = new ArrayList<IDIYComponent<?>>(keptSymbols);
-    result.addAll(wires);
+    result.addAll(wiring.getStubs());
+    result.addAll(wiring.getWires());
     result.sort(SchematicBuilder.SCHEMATIC_ORDER);
 
     view.getComponents().clear();

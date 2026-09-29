@@ -53,6 +53,9 @@ public abstract class AbstractSimpleSchematicFactory implements ISchematicFactor
     symbol.setId(UUID.randomUUID());
     symbol.setName(physicalComponent.getName());
     copyValue(physicalComponent, symbol);
+    // leaded symbols are born with a one-inch lead span, which leaves far more bare lead than body
+    // and runs into whatever sits in the neighbouring cell; pull them in to the schematic pitch
+    SchematicBuilder.applyPitch(symbol, false, false);
 
     List<Integer> physicalPins = new ArrayList<Integer>();
     for (int i = 0; i < physicalComponent.getControlPointCount()

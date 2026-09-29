@@ -21,7 +21,9 @@
 */
 package org.diylc.schematic;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -34,13 +36,18 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.OrientationHV;
+import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.connectivity.OrthogonalLine;
+import org.diylc.components.misc.CommonNode;
+import org.diylc.components.misc.GroundSymbol;
 import org.diylc.core.IContinuity;
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.SchematicView;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistBuilder;
@@ -55,6 +62,12 @@ import org.diylc.presenter.ContinuityArea;
  * {@link GenericBoxSchematicFactory} fallback), symbols are placed on a connection-density aware
  * grid and the nets from the layout netlist are drawn as {@link OrthogonalLine}s.
  *
+ * <p>
+ * Nets that carry a common node (ground, supply rails) are not wired up at all. Each pin on such a
+ * net gets its own ground or common-node stub drawn right next to it, which is how schematics are
+ * conventionally drawn and keeps the densest net in the circuit from crossing the whole drawing.
+ * </p>
+ *
  * @author Branislav Stojkovic
  */
 public class SchematicBuilder {
@@ -67,9 +80,25 @@ public class SchematicBuilder {
   public static final double CELL_SIZE = 220d;
   public static final double MARGIN = 120d;
 
+  /**
+   * Pin-to-pin span given to every two-terminal symbol. {@link AbstractLeadedComponent} defaults to
+   * a one-inch span (200px) while the schematic symbol bodies are only 0.05in to 0.3in long, so the
+   * default leaves 70 to 95 pixels of bare lead on each side — more lead than body, running well
+   * into the neighbouring cell. Half an inch clears the longest body with a short stub either side
+   * and lands on the 0.1in schematic grid.
+   */
+  public static final double SYMBOL_PITCH = new Size(0.5d, SizeUnit.in).convertToPixels();
+
+  /** The label {@link GroundSymbol} reports; every other common-node label is treated as a supply. */
+  private static final String GROUND_LABEL = "GND";
+
+  /** Smallest net that may be taken for the ground backbone. */
+  private static final int MIN_BACKBONE_SIZE = 4;
+
   private final Map<Class<? extends ISchematicFactory>, ISchematicFactory> factoryCache =
       new HashMap<Class<? extends ISchematicFactory>, ISchematicFactory>();
   private final GenericBoxSchematicFactory genericFactory = new GenericBoxSchematicFactory();
+  private final WireRouter router = new WireRouter();
 
   /**
    * One schematic symbol produced from a physical component together with the physical-&gt;schematic
@@ -82,6 +111,24 @@ public class SchematicBuilder {
     SymbolEntry(IDIYComponent<?> symbol, Map<Integer, Integer> pinMapping) {
       this.symbol = symbol;
       this.pinMapping = pinMapping;
+    }
+  }
+
+  /**
+   * Everything the wiring pass produces: the routed wires for ordinary signal nets, and the ground
+   * and supply stubs that stand in for the rail nets.
+   */
+  static class Wiring {
+
+    private final List<OrthogonalLine> wires = new ArrayList<OrthogonalLine>();
+    private final List<IDIYComponent<?>> stubs = new ArrayList<IDIYComponent<?>>();
+
+    List<OrthogonalLine> getWires() {
+      return wires;
+    }
+
+    List<IDIYComponent<?>> getStubs() {
+      return stubs;
     }
   }
 
@@ -120,8 +167,9 @@ public class SchematicBuilder {
 
     placeSymbols(eligible, entriesByPhysicalId, netlist);
 
-    List<OrthogonalLine> wires = createWires(netlist, entriesByPhysicalId);
-    schematicComponents.addAll(wires);
+    Wiring wiring = createWires(netlist, entriesByPhysicalId);
+    schematicComponents.addAll(wiring.getStubs());
+    schematicComponents.addAll(wiring.getWires());
 
     schematicComponents.sort(SCHEMATIC_ORDER);
 
@@ -150,7 +198,9 @@ public class SchematicBuilder {
 
   static boolean isEligible(IDIYComponent<?> component) {
     if (component instanceof ICommonNode) {
-      return true; // ground / common node symbols pass through
+      // ground and supply nodes are not placed as symbols of their own; every pin on their net gets
+      // a freshly generated stub during wiring instead
+      return false;
     }
     if (component instanceof ISwitch) {
       return true; // switches are drawn as symbols (netlist is built with includeSwitches=false)
@@ -168,25 +218,7 @@ public class SchematicBuilder {
 
   /* ------------------------------------------------------------------ symbol creation */
 
-  @SuppressWarnings("unchecked")
   List<SymbolEntry> createSymbols(IDIYComponent<?> physical) {
-    if (physical instanceof ICommonNode) {
-      try {
-        IDIYComponent<?> clone = physical.clone();
-        clone.setId(UUID.randomUUID());
-        Map<Integer, Integer> identity = new HashMap<Integer, Integer>();
-        for (int i = 0; i < physical.getControlPointCount(); i++) {
-          identity.put(i, i);
-        }
-        List<SymbolEntry> list = new ArrayList<SymbolEntry>();
-        list.add(new SymbolEntry(clone, identity));
-        return list;
-      } catch (CloneNotSupportedException e) {
-        LOG.warn("Could not clone common-node component " + physical.getName(), e);
-        return new ArrayList<SymbolEntry>();
-      }
-    }
-
     ISchematicFactory factory = resolveFactory(physical);
     List<SchematicSymbolMapping> mappings;
     try {
@@ -239,20 +271,78 @@ public class SchematicBuilder {
 
   private void placeSymbols(List<IDIYComponent<?>> eligible,
       Map<UUID, List<SymbolEntry>> entriesByPhysicalId, Netlist netlist) {
-    Map<UUID, Integer> degree = connectionDegree(netlist);
+    Map<UUID, Map<Integer, String>> railPins = railPins(netlist);
 
-    List<IDIYComponent<?>> ordered = new ArrayList<IDIYComponent<?>>(eligible);
-    ordered.sort(Comparator.comparingInt((IDIYComponent<?> c) -> -degree.getOrDefault(c.getId(), 0)));
-
-    int count = 0;
-    for (IDIYComponent<?> physical : ordered) {
+    // attitude first: the placement measures each symbol, so it has to see its final geometry
+    for (IDIYComponent<?> physical : eligible) {
       List<SymbolEntry> entries = entriesByPhysicalId.get(physical.getId());
-      if (entries == null) {
+      if (entries != null) {
+        orientSymbols(entries, railPins.get(physical.getId()));
+      }
+    }
+
+    new LayeredPlacement().place(eligible, entriesByPhysicalId, netlist);
+  }
+
+  /**
+   * Chooses the resting attitude of every two-terminal symbol of one component. A part with a leg on
+   * a rail is a shunt element and stands upright with that leg pointing at the rail it belongs to;
+   * everything else passes signal along the drawing and lies down.
+   *
+   * @param rails pin index -&gt; rail label for this component, or null when it touches no rail
+   */
+  static void orientSymbols(List<SymbolEntry> entries, Map<Integer, String> rails) {
+    for (SymbolEntry entry : entries) {
+      String railLabel = null;
+      int railPin = -1;
+      if (rails != null) {
+        for (Map.Entry<Integer, Integer> mapped : entry.pinMapping.entrySet()) {
+          String label = rails.get(mapped.getKey());
+          if (label != null && mapped.getValue() < 2) {
+            railLabel = label;
+            railPin = mapped.getValue();
+            break;
+          }
+        }
+      }
+      if (railLabel == null) {
+        applyPitch(entry.symbol, false, false);
         continue;
       }
-      placeAtGridSlot(entries, count, ordered.size());
-      count++;
+      // a ground symbol is drawn downward from its point, so the grounded leg belongs at the bottom;
+      // supply labels sit above the part the way they are drawn on paper
+      boolean railAtBottom = GROUND_LABEL.equals(railLabel);
+      applyPitch(entry.symbol, true, (railPin == 0) == railAtBottom);
     }
+  }
+
+  /**
+   * Rewrites the two terminals of a leaded symbol so that they sit {@link #SYMBOL_PITCH} apart,
+   * centred on wherever the symbol already is. Rigid multi-pin symbols are left untouched — their
+   * geometry comes from an anchor and a pin spacing, not from the terminals.
+   *
+   * <p>
+   * The midpoint is preserved, which is what keeps the label control point (index 2, positioned
+   * relative to the centre by the constructor) correct without having to move it as well.
+   * </p>
+   *
+   * @param vertical stand the symbol upright rather than lying it down
+   * @param flip     put control point 0 at the far end (bottom when upright, right when lying down)
+   */
+  static void applyPitch(IDIYComponent<?> symbol, boolean vertical, boolean flip) {
+    if (!(symbol instanceof AbstractLeadedComponent) || symbol.getControlPointCount() < 2) {
+      return;
+    }
+    Point2D first = symbol.getControlPoint(0);
+    Point2D second = symbol.getControlPoint(1);
+    double cx = (first.getX() + second.getX()) / 2;
+    double cy = (first.getY() + second.getY()) / 2;
+    double half = SYMBOL_PITCH / 2;
+    Point2D near =
+        vertical ? new Point2D.Double(cx, cy - half) : new Point2D.Double(cx - half, cy);
+    Point2D far = vertical ? new Point2D.Double(cx, cy + half) : new Point2D.Double(cx + half, cy);
+    symbol.setControlPoint(flip ? far : near, 0);
+    symbol.setControlPoint(flip ? near : far, 1);
   }
 
   /** Places every symbol of {@code entries} into grid cell {@code slot} of {@code totalSlots}. */
@@ -269,18 +359,76 @@ public class SchematicBuilder {
     }
   }
 
-  private static Map<UUID, Integer> connectionDegree(Netlist netlist) {
-    Map<UUID, Integer> degree = new HashMap<UUID, Integer>();
+  /**
+   * Collects, per physical component, which of its control points sit on a rail net and under which
+   * label, so that placement can stand shunt parts upright.
+   */
+  static Map<UUID, Map<Integer, String>> railPins(Netlist netlist) {
+    Map<UUID, Map<Integer, String>> result = new HashMap<UUID, Map<Integer, String>>();
     if (netlist == null) {
-      return degree;
+      return result;
     }
     for (Group group : netlist.getGroups()) {
+      String label = railLabelOf(group);
+      if (label == null) {
+        continue;
+      }
       for (Node node : group.getNodes()) {
-        UUID id = node.getComponent().getId();
-        degree.merge(id, group.getNodes().size() - 1, Integer::sum);
+        if (node.getComponent() instanceof ICommonNode) {
+          continue;
+        }
+        result.computeIfAbsent(node.getComponent().getId(), k -> new HashMap<Integer, String>())
+            .put(node.getPointIndex(), label);
       }
     }
-    return degree;
+    return result;
+  }
+
+  /**
+   * {@link NetlistBuilder} emits a single node per common-node label, so a rail net is recognised by
+   * the one common-node member it carries rather than by its size.
+   *
+   * @return the rail label of the net, or null when it is an ordinary signal net
+   */
+  static String railLabelOf(Group group) {
+    for (Node node : group.getNodes()) {
+      if (node.getComponent() instanceof ICommonNode) {
+        return ((ICommonNode) node.getComponent()).getCommonNodeLabel();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Picks out the net that behaves like ground: the busiest one that carries no declared rail.
+   *
+   * <p>
+   * Only about one project in eight places a ground symbol, so in most circuits ground arrives as an
+   * ordinary net that simply happens to touch a large share of the components. Left in the layout
+   * graph it makes every part adjacent to every other and flattens the drawing into a single column;
+   * left in the wiring it is chained from one side of the schematic to the other and crosses
+   * everything in between.
+   * </p>
+   *
+   * @return the backbone net, or null when no net is big enough to be taken for one
+   */
+  static Group backboneNet(Netlist netlist) {
+    if (netlist == null) {
+      return null;
+    }
+    Group largest = null;
+    int largestSize = 0;
+    for (Group group : netlist.getSortedGroups()) {
+      if (railLabelOf(group) != null) {
+        continue;
+      }
+      int size = group.getNodes().size();
+      if (size > largestSize) {
+        largestSize = size;
+        largest = group;
+      }
+    }
+    return largestSize >= MIN_BACKBONE_SIZE ? largest : null;
   }
 
   /** Translates every control point of the component so that control point 0 lands on the target. */
@@ -311,12 +459,17 @@ public class SchematicBuilder {
 
   /* ------------------------------------------------------------------ wiring */
 
-  List<OrthogonalLine> createWires(Netlist netlist,
-      Map<UUID, List<SymbolEntry>> entriesByPhysicalId) {
-    List<OrthogonalLine> wires = new ArrayList<OrthogonalLine>();
+  Wiring createWires(Netlist netlist, Map<UUID, List<SymbolEntry>> entriesByPhysicalId) {
+    Wiring wiring = new Wiring();
     if (netlist == null) {
-      return wires;
+      return wiring;
     }
+
+    Map<UUID, Rectangle2D> bodies = symbolBodies(entriesByPhysicalId);
+    // wires already routed become obstacles for the ones that follow, so a dense net does not end up
+    // drawing every connection on top of the last
+    List<Line2D> placed = new ArrayList<Line2D>();
+    Group backbone = backboneNet(netlist);
 
     for (Group group : netlist.getSortedGroups()) {
       List<Pin> pins = new ArrayList<Pin>();
@@ -336,6 +489,23 @@ public class SchematicBuilder {
               new Point2D.Double(location.getX(), location.getY())));
         }
       }
+
+      String railLabel = railLabelOf(group);
+      if (railLabel == null && group == backbone) {
+        // an unlabelled ground net says the same thing drawn as stubs as it does chained across the
+        // whole drawing, and every stub ties back to the same net, so nothing is claimed that is not
+        // already true of the circuit
+        railLabel = GROUND_LABEL;
+      }
+      if (railLabel != null) {
+        // rails are never routed: a lone stub on each pin says the same thing without dragging the
+        // busiest net in the circuit across the drawing
+        for (Pin pin : pins) {
+          wiring.getStubs().add(createRailStub(railLabel, pin.location));
+        }
+        continue;
+      }
+
       if (pins.size() < 2) {
         continue;
       }
@@ -345,10 +515,27 @@ public class SchematicBuilder {
       for (int i = 0; i < pins.size() - 1; i++) {
         Pin a = pins.get(i);
         Pin b = pins.get(i + 1);
-        wires.add(createWire(a, b));
+        OrthogonalLine wire = createWire(a, b, bodies, placed);
+        wiring.getWires().add(wire);
+        placed.addAll(segmentsOf(wire));
       }
     }
-    return wires;
+    return wiring;
+  }
+
+  /** Creates the ground or supply symbol that stands in for one pin's connection to a rail. */
+  private static IDIYComponent<?> createRailStub(String label, Point2D location) {
+    IDIYComponent<?> stub;
+    if (GROUND_LABEL.equals(label)) {
+      stub = new GroundSymbol();
+    } else {
+      CommonNode node = new CommonNode();
+      node.setValue(label);
+      stub = node;
+    }
+    stub.setId(UUID.randomUUID());
+    stub.setControlPoint(copyOf(location), 0);
+    return stub;
   }
 
   private static class Pin {
@@ -368,42 +555,94 @@ public class SchematicBuilder {
    * first pin along the axis that pin faces. {@link OrthogonalLine} derives the rest of the route
    * from that one point, and keeps deriving it as the sticky endpoints follow the symbols around.
    */
-  private static OrthogonalLine createWire(Pin a, Pin b) {
+  private OrthogonalLine createWire(Pin a, Pin b, Map<UUID, Rectangle2D> bodies,
+      List<Line2D> placed) {
+    List<Rectangle2D> obstacles = new ArrayList<Rectangle2D>();
+    for (Map.Entry<UUID, Rectangle2D> entry : bodies.entrySet()) {
+      // the wire starts and ends on these two symbols, so their own boxes are not obstacles
+      if (!entry.getKey().equals(a.symbol.getId()) && !entry.getKey().equals(b.symbol.getId())) {
+        obstacles.add(entry.getValue());
+      }
+    }
+    WireRouter.Route route = router.route(a.location, exitDirection(a.symbol, a.location),
+        b.location, exitDirection(b.symbol, b.location), obstacles, placed);
+
     OrthogonalLine wire = new OrthogonalLine();
     wire.setId(UUID.randomUUID());
+    wire.setStartDirection(route.getStartDirection());
     wire.setControlPoint(copyOf(a.location), 0);
-    wire.setControlPoint(bendPoint(a, b), 1);
+    wire.setControlPoint(route.getBendPoint(), 1);
     wire.setControlPoint(copyOf(b.location), 2);
     return wire;
   }
 
-  private static Point2D bendPoint(Pin a, Pin b) {
-    Point2D from = a.location;
-    Point2D to = b.location;
-    // pins that already share a row or a column need no bend; a handle sitting on the first pin
-    // collapses the route to a straight run
-    if (Math.abs(from.getX() - to.getX()) < 1 || Math.abs(from.getY() - to.getY()) < 1) {
-      return copyOf(from);
+  /** @return the boxes spanned by each symbol's control points, keyed by symbol id. */
+  private static Map<UUID, Rectangle2D> symbolBodies(
+      Map<UUID, List<SymbolEntry>> entriesByPhysicalId) {
+    Map<UUID, Rectangle2D> bodies = new LinkedHashMap<UUID, Rectangle2D>();
+    for (List<SymbolEntry> entries : entriesByPhysicalId.values()) {
+      for (SymbolEntry entry : entries) {
+        Rectangle2D bounds = boundsOf(entry.symbol);
+        if (bounds != null) {
+          bodies.put(entry.symbol.getId(), bounds);
+        }
+      }
     }
-    if (exitDirection(a.symbol, from) == OrientationHV.VERTICAL) {
-      // on the first pin's column, which swallows the leading horizontal run
-      return new Point2D.Double(from.getX(), snap((from.getY() + to.getY()) / 2));
+    return bodies;
+  }
+
+  private static Rectangle2D boundsOf(IDIYComponent<?> symbol) {
+    int count = symbol.getControlPointCount();
+    if (count == 0) {
+      return null;
     }
-    // on the second pin's row, which swallows the trailing vertical run
-    return new Point2D.Double(snap((from.getX() + to.getX()) / 2), to.getY());
+    double minX = Double.MAX_VALUE;
+    double minY = Double.MAX_VALUE;
+    double maxX = -Double.MAX_VALUE;
+    double maxY = -Double.MAX_VALUE;
+    for (int i = 0; i < count; i++) {
+      Point2D p = symbol.getControlPoint(i);
+      minX = Math.min(minX, p.getX());
+      minY = Math.min(minY, p.getY());
+      maxX = Math.max(maxX, p.getX());
+      maxY = Math.max(maxY, p.getY());
+    }
+    return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+  }
+
+  private static List<Line2D> segmentsOf(OrthogonalLine wire) {
+    List<Point2D> vertices = WireRouter.vertices(wire.getControlPoint(0), wire.getControlPoint(1),
+        wire.getControlPoint(2), wire.getStartDirection());
+    List<Line2D> segments = new ArrayList<Line2D>();
+    for (int i = 1; i < vertices.size(); i++) {
+      segments.add(new Line2D.Double(vertices.get(i - 1), vertices.get(i)));
+    }
+    return segments;
   }
 
   /**
-   * Guesses whether a wire should leave the given pin horizontally or vertically: away from the
-   * symbol's centroid, along the dominant axis.
+   * Works out which way a wire should leave a pin.
+   *
+   * <p>
+   * A two terminal symbol has an axis of its own and its leads run along it, so a wire has to carry
+   * on in that direction or it will bend the moment it leaves the lead. Anything else - a box, a
+   * transistor - has its pins pointing away from the body, which the centroid finds well enough.
+   * </p>
    */
   static OrientationHV exitDirection(IDIYComponent<?> symbol, Point2D pinLocation) {
-    double cx = 0;
-    double cy = 0;
     int n = symbol.getControlPointCount();
     if (n == 0) {
       return OrientationHV.HORIZONTAL;
     }
+    if (symbol instanceof AbstractLeadedComponent && n >= 2) {
+      Point2D first = symbol.getControlPoint(0);
+      Point2D second = symbol.getControlPoint(1);
+      return Math.abs(second.getX() - first.getX()) >= Math.abs(second.getY() - first.getY())
+          ? OrientationHV.HORIZONTAL
+          : OrientationHV.VERTICAL;
+    }
+    double cx = 0;
+    double cy = 0;
     for (int i = 0; i < n; i++) {
       cx += symbol.getControlPoint(i).getX();
       cy += symbol.getControlPoint(i).getY();
@@ -434,10 +673,10 @@ public class SchematicBuilder {
     maxX += MARGIN;
     maxY += MARGIN;
     if (maxX > view.getWidth().convertToPixels()) {
-      view.setWidth(new org.diylc.core.measures.Size(maxX, org.diylc.core.measures.SizeUnit.px));
+      view.setWidth(new Size(maxX, SizeUnit.px));
     }
     if (maxY > view.getHeight().convertToPixels()) {
-      view.setHeight(new org.diylc.core.measures.Size(maxY, org.diylc.core.measures.SizeUnit.px));
+      view.setHeight(new Size(maxY, SizeUnit.px));
     }
   }
 
@@ -452,6 +691,7 @@ public class SchematicBuilder {
       Comparator.comparingInt((IDIYComponent<?> c) -> c instanceof OrthogonalLine ? 0 : 1)
           .thenComparingDouble(SchematicBuilder::zOrderOf);
 
+  @SuppressWarnings("unchecked")
   static double zOrderOf(IDIYComponent<?> component) {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
