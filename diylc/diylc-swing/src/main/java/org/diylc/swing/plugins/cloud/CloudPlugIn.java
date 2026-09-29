@@ -23,7 +23,6 @@ package org.diylc.swing.plugins.cloud;
 
 import java.util.EnumSet;
 
-import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.plugins.cloud.service.CloudService;
 
@@ -40,8 +39,6 @@ import org.diylc.swing.plugins.cloud.actions.*;
 public class CloudPlugIn implements IPlugIn {
 
   private static final String ONLINE_TITLE = "Cloud";
-
-  private final static Logger LOG = Logger.getLogger(CloudPlugIn.class);
 
   private ISwingUI swingUI;
   private IPlugInPort plugInPort;

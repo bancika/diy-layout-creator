@@ -1,20 +1,24 @@
 /*
- * 
- * DIY Layout Creator (DIYLC). Copyright (c) 2009-2025 held jointly by the individual authors.
- * 
- * This file is part of DIYLC.
- * 
- * DIYLC is free software: you can redistribute it and/or modify it under the terms of the GNU
- * General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * 
- * DIYLC is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
- * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
- * Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with DIYLC. If not, see
- * <http://www.gnu.org/licenses/>.
- */
+
+    DIY Layout Creator (DIYLC).
+    Copyright (c) 2009-2025 held jointly by the individual authors.
+
+    This file is part of DIYLC.
+
+    DIYLC is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DIYLC is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package org.diylc.components.connectivity;
 
 import java.awt.AlphaComposite;
@@ -27,8 +31,8 @@ import java.awt.Stroke;
 import java.awt.geom.Path2D;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.components.AbstractCurvedComponent;
-import org.diylc.components.transform.SimpleComponentTransformer;
+import org.diylc.components.AbstractOrthogonalComponent;
+import org.diylc.components.transform.OrthogonalComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IContinuity;
@@ -39,11 +43,11 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
-    flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
-    transformer = SimpleComponentTransformer.class, enableCache = false)
-public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
+@ComponentDescriptor(name = "Right Angle Wire", author = "Branislav Stojkovic", category = "Connectivity",
+    instanceNamePrefix = "W", description = "Wire that runs horizontally and vertically and turns at right angles",
+    zOrder = IDIYComponent.WIRING, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
+    transformer = OrthogonalComponentTransformer.class, enableCache = false, creationMethod = CreationMethod.POINT_BY_POINT)
+public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -52,7 +56,7 @@ public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinu
   public static double INSULATION_THICKNESS_PCT = 0.3;
 
   protected AWG gauge = AWG._22;
-  
+
   protected boolean striped = false;
   protected Color stripeColor = STRIPE_COLOR;
 
@@ -85,8 +89,8 @@ public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinu
         tracingStroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
         break;
     }
-    Shape s = stroke.createStrokedShape(curve);    
-        
+    Shape s = stroke.createStrokedShape(curve);
+
     if (stroke == tracingStroke) {
       g2d.fill(s);
       drawingObserver.stopTracking();
@@ -103,14 +107,14 @@ public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinu
       g2d.setComposite(oldComposite);
       drawingObserver.stopTracking();
     }
-    
+
     if (getStriped()) {
       stroke = ObjectCache.getInstance().fetchStroke(thickness, new float[] { thickness / 2, thickness * 2 }, thickness * 10, BasicStroke.CAP_BUTT);
       Shape stripe = stroke.createStrokedShape(curve);
-      g2d.setColor(getStripeColor());      
-      g2d.fill(stripe);      
-    }    
-    
+      g2d.setColor(getStripeColor());
+      g2d.fill(stripe);
+    }
+
     if (componentState == ComponentState.NORMAL) {
       g2d.setColor(color.darker());
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
@@ -138,8 +142,9 @@ public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinu
 
   @EditableProperty(name = "Stripe Color")
   public Color getStripeColor() {
-    if (stripeColor == null)
+    if (stripeColor == null) {
       stripeColor = STRIPE_COLOR;
+    }
     return stripeColor;
   }
 

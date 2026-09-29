@@ -23,7 +23,6 @@ package org.diylc.swing.plugins.cloud.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.apache.log4j.Logger;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.swing.ISwingUI;
@@ -35,7 +34,6 @@ import org.diylc.utils.IconLoader;
 
 public class ChangePasswordAction extends AbstractAction {
   private static final long serialVersionUID = 1L;
-  private static final Logger LOG = Logger.getLogger(ChangePasswordAction.class);
   private final CloudPlugIn cloudPlugIn;
 
   public ChangePasswordAction(CloudPlugIn cloudPlugIn) {

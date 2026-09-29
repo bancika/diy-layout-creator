@@ -474,7 +474,35 @@
 				<minor>6</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-09-04 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-09-29 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Right Angle Wire' and 'Right Angle Line' components that route between two points using only horizontal and vertical runs with rounded corners</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Double click on a component type in the tree or the toolbar to instantiate it at once, even for those that are intended to be placed point-by-point</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>All curved components ('Curved Trace', 'Hookup Wire', 'Twisted Leads') are now getting created between the two points by default instead of getting created with some preset shape and length</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improve terminal node naming within building blocks to ensure no duplicates by adding a name of the nested component as a prefix</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>7</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-09-29 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
