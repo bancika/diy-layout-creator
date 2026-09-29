@@ -376,11 +376,6 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
     this.boardColor = bodyColor;
   }
   
-  @Override
-  public String getControlPointNodeName(int index) {
-    return "TerminalStrip" + index;
-  }
-  
   @EditableProperty(name = "Mounting Lugs")
   public TagStripMount getMount() {
     return mount;

@@ -201,7 +201,7 @@ public class CurrentSourceSymbol extends AbstractSchematicLeadedSymbol<String> {
 
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + "." + (index == 0 ? "+" : "-");
+    return index == 0 ? "+" : "-";
   }
 
   public enum SourceStyle {

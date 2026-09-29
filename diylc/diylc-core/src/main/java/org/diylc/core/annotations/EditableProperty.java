@@ -80,8 +80,16 @@ public @interface EditableProperty {
 
   /**
    * Optional parameter in case we want to force an order of properties.
-   * 
+   *
    * @return
    */
   int sortOrder() default 100;
+
+  /**
+   * Overrides how the AI component catalog decides whether this property changes the component's
+   * terminals. The generator works this out by observation, so the default is almost always right.
+   *
+   * @return
+   */
+  PinoutDriver pinoutDriver() default PinoutDriver.AUTO;
 }
