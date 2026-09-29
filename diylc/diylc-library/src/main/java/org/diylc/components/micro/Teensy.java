@@ -21,9 +21,7 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -76,13 +74,6 @@ public class Teensy extends AbstractMakerBoard {
       return label;
     }
   }
-
-  // Board color matches standard green PCB (like Pi Zero)
-  public static Color TEENSY_GREEN = Color.decode("#1B5E20");
-  public static Color SILK_COLOR = Color.WHITE;
-
-  public static Color PAD_COLOR = GOLD_COLOR;
-  public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   // gap between the Ethernet header pads and the silkscreen box printed around them
   public static Size ETH_BOX_MARGIN = new Size(1.2d, SizeUnit.mm);
@@ -564,8 +555,8 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(12, 2, 8, 3);
 
-    g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setColor(SILK_COLOR);
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "TEENSY", width / 2, height / 2 + 8,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }

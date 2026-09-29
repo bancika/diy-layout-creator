@@ -28,8 +28,12 @@ import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.AbstractTransparentComponent;
@@ -83,6 +87,7 @@ public class CompositeComponent extends AbstractTransparentComponent<String> {
   // serialized (transient).
   private transient int[] childOf;
   private transient int[] pointOf;
+  private transient String[] nodeNameOf;
 
   /**
    * Required no-arg constructor, used reflectively by {@code ComponentProcessor} and XStream.
@@ -111,8 +116,77 @@ public class CompositeComponent extends AbstractTransparentComponent<String> {
         idx++;
       }
     }
-    childOf = newChildOf;
+    nodeNameOf = buildNodeNames(newChildOf, newPointOf);
     pointOf = newPointOf;
+    // assigned last, it is what marks the index as built
+    childOf = newChildOf;
+  }
+
+  /**
+   * Resolves the node names the composite exposes. A child's own node name is kept unchanged
+   * whenever it is unique, so the pads of a custom board read "VCC" rather than "Pad3.VCC" - the
+   * pad's component name is an arbitrary leftover from the project the block was saved in.
+   * Clashing names are resolved in two passes: pins of multi-point children are qualified with the
+   * child's name ("R1.1", "R2.1"), then whatever still clashes, typically several pads sharing a
+   * name, gets a numeric suffix in save order ("GND_1", "GND_2").
+   *
+   * <p>Only sticky, named points take part. Non-sticky points never become netlist nodes, and a
+   * board's corner points would otherwise force a rename on a pad that shares their default
+   * numeric name.
+   */
+  private String[] buildNodeNames(int[] newChildOf, int[] newPointOf) {
+    String[] names = new String[newChildOf.length];
+    boolean[] terminal = new boolean[newChildOf.length];
+    for (int i = 0; i < names.length; i++) {
+      IDIYComponent<?> child = childComponents.get(newChildOf[i]);
+      names[i] = child.getControlPointNodeName(newPointOf[i]);
+      terminal[i] = names[i] != null && child.isControlPointSticky(newPointOf[i]);
+    }
+
+    Set<String> clashing = findClashingNames(names, terminal);
+    for (int i = 0; i < names.length; i++) {
+      IDIYComponent<?> child = childComponents.get(newChildOf[i]);
+      String childName = child.getName();
+      if (terminal[i] && clashing.contains(names[i]) && child.getControlPointCount() > 1
+          && childName != null && !childName.trim().isEmpty()) {
+        names[i] = childName.trim() + "." + names[i];
+      }
+    }
+
+    clashing = findClashingNames(names, terminal);
+    if (clashing.isEmpty()) {
+      return names;
+    }
+    Set<String> taken = new HashSet<String>();
+    for (int i = 0; i < names.length; i++) {
+      if (terminal[i] && !clashing.contains(names[i])) {
+        taken.add(names[i]);
+      }
+    }
+    Map<String, Integer> nextSuffix = new HashMap<String, Integer>();
+    for (int i = 0; i < names.length; i++) {
+      if (terminal[i] && clashing.contains(names[i])) {
+        int suffix = nextSuffix.getOrDefault(names[i], 1);
+        while (taken.contains(names[i] + "_" + suffix)) {
+          suffix++;
+        }
+        nextSuffix.put(names[i], suffix + 1);
+        names[i] = names[i] + "_" + suffix;
+        taken.add(names[i]);
+      }
+    }
+    return names;
+  }
+
+  private static Set<String> findClashingNames(String[] names, boolean[] terminal) {
+    Set<String> seen = new HashSet<String>();
+    Set<String> clashing = new HashSet<String>();
+    for (int i = 0; i < names.length; i++) {
+      if (terminal[i] && !seen.add(names[i])) {
+        clashing.add(names[i]);
+      }
+    }
+    return clashing;
   }
 
   /**
@@ -179,7 +253,7 @@ public class CompositeComponent extends AbstractTransparentComponent<String> {
   @Override
   public String getControlPointNodeName(int index) {
     buildIndexIfNeeded();
-    return childComponents.get(childOf[index]).getControlPointNodeName(pointOf[index]);
+    return nodeNameOf[index];
   }
 
   /**

@@ -23,7 +23,6 @@ package org.diylc.swing.plugins.cloud.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.apache.log4j.Logger;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.service.CloudException;
@@ -36,7 +35,6 @@ import org.diylc.utils.IconLoader;
 
 public class LoginAction extends AbstractAction {
   private static final long serialVersionUID = 1L;
-  private static final Logger LOG = Logger.getLogger(LoginAction.class);
   private final CloudPlugIn cloudPlugIn;
 
   public LoginAction(CloudPlugIn cloudPlugIn) {

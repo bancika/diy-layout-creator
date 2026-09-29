@@ -21,7 +21,6 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -61,8 +60,6 @@ import org.diylc.utils.Constants;
 public class ArduinoNano extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
-
-  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(0.73d, SizeUnit.in);
   public static Size BOARD_LENGTH = new Size(1.70d, SizeUnit.in);

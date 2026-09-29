@@ -21,9 +21,7 @@
  */
 package org.diylc.components.micro;
 
-import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -63,14 +61,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public static Color RPI_GREEN = Color.decode("#1B5E20");
   public static Size BOARD_WIDTH = new Size(65.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(30.0d, SizeUnit.mm);
-  public static Font RPI_TITLE_FONT = new Font("SansSerif", Font.BOLD, 20);
-
-  public static Color PAD_COLOR = GOLD_COLOR;
-  public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
-  public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES;
   static {
@@ -309,8 +301,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double labelCenterX = boardX + new Size(46.15d, SizeUnit.mm).convertToPixels();
       double labelMaxWidth =
           2 * (boardX + boardW - new Size(1.5d, SizeUnit.mm).convertToPixels() - labelCenterX);
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(RPI_TITLE_FONT);
+      g2d.setColor(SILK_COLOR);
+      g2d.setFont(SILK_FONT_TITLE);
       if (g2d.getFontMetrics().stringWidth(versionLabel) > labelMaxWidth) {
         g2d.setFont(SILK_FONT_LARGE);
       }
@@ -318,7 +310,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
           boardY + new Size(17.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // White silkscreen outline around GPIO pads
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       double hdrBoxX = boardX + new Size(7.0d, SizeUnit.mm).convertToPixels();
       double hdrBoxY = boardY + new Size(0.9d, SizeUnit.mm).convertToPixels();
@@ -327,7 +319,7 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       g2d.draw(new Rectangle2D.Double(hdrBoxX, hdrBoxY, hdrBoxW, hdrBoxH));
 
       // Silkscreen "GPIO" label next to the top pins
-      g2d.setColor(Color.WHITE);
+      g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_SMALL);
       StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(42.5d, SizeUnit.mm).convertToPixels(),
           y + PIN_SPACING.convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -398,8 +390,8 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.fillRect(18, height - 7, 3, 3);
     g2d.fillRect(23, height - 7, 3, 3);
 
-    g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setColor(SILK_COLOR);
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 21, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

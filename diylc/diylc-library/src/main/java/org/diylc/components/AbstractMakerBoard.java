@@ -58,6 +58,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   public static final Color ARDUINO_TEAL = Color.decode("#00878F");
   public static final Color ARDUINO_BLUE = Color.decode("#015687");
+  public static final Color RPI_GREEN = Color.decode("#1B5E20");
+  public static final Color TEENSY_GREEN = Color.decode("#1B5E20");
+  public static final Color ESP_BLACK = Color.decode("#3E3E3E");
+  public static final Color WEMOS_BLUE = Color.decode("#006699");
 
   public static Color PIN_COLOR = Color.decode("#00B2EE");
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
@@ -78,17 +82,20 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color METAL_LABEL_COLOR = Color.decode("#555555");
   public static Color ANTENNA_COLOR = Color.decode("#DAA520");
   public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
-  public static Color PAD_COLOR = Color.decode("#DAA520");
+  public static Color PAD_COLOR = GOLD_COLOR;
   public static Color CONNECTOR_PLASTIC_COLOR = Color.decode("#F5F5DC");
   public static Color CONNECTOR_PLASTIC_BORDER = Color.decode("#333333");
   public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
   public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
+  public static Color DARK_PLASTIC_COLOR = Color.decode("#181818");
+  public static Color DARK_PLASTIC_BORDER = Color.decode("#333333");
+  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
-  public static Size HOLE_SIZE = new Size(0.035d, SizeUnit.in);
+  public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
@@ -124,18 +131,24 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     MINI
   }
 
-  public static Font SILK_FONT_SMALL = new Font("SansSerif", Font.PLAIN, 10);
-  public static Font SILK_FONT = new Font("SansSerif", Font.BOLD, 11);
-  public static Font SILK_FONT_LARGE = new Font("SansSerif", Font.BOLD, 13);
+  public static String SILK_FONT_FAMILY = "SansSerif";
+  public static Font SILK_FONT_TINY = new Font(SILK_FONT_FAMILY, Font.BOLD, 9);
+  public static Font SILK_FONT_SMALL = new Font(SILK_FONT_FAMILY, Font.PLAIN, 10);
+  public static Font SILK_FONT = new Font(SILK_FONT_FAMILY, Font.BOLD, 11);
+  public static Font SILK_FONT_LARGE = new Font(SILK_FONT_FAMILY, Font.BOLD, 13);
+  public static Font SILK_FONT_TITLE = new Font(SILK_FONT_FAMILY, Font.BOLD, 20);
+  // the toolbox icon is a fixed 32x32 box, so its lettering does not scale with the board
+  public static Font ICON_FONT = new Font(SILK_FONT_FAMILY, Font.BOLD, 5);
+  public static Font ICON_FONT_LARGE = new Font(SILK_FONT_FAMILY, Font.BOLD, 6);
   public static Size PIN_LABEL_OFFSET = new Size(1.6d, SizeUnit.mm);
   // diagonal labels are anchored by both coordinates at once, so they sit closer to the pad than
   // the straight ones without touching it
   public static Size PIN_LABEL_CORNER_OFFSET = new Size(1.0d, SizeUnit.mm);
   public static Size PIN_ROW_LABEL_OFFSET = new Size(2.0d, SizeUnit.mm);
-  public static Font PIN_FONT = new Font("SansSerif", Font.PLAIN, 8);
+  public static Font PIN_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 8);
   // labels along a row run across the board rather than down a column of pins, so they can afford
   // a size the tightly stacked column labels cannot
-  public static Font PIN_ROW_FONT = new Font("SansSerif", Font.PLAIN, 9);
+  public static Font PIN_ROW_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 9);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};

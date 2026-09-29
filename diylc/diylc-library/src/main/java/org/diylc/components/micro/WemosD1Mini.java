@@ -23,7 +23,6 @@ package org.diylc.components.micro;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -51,22 +50,14 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Wemos D1 Mini", category = "Controllers",
-    author = "Branislav Stojkovic", description = "Wemos D1 Mini ESP8266 Wi-Fi Development Board",
+@ComponentDescriptor(name = "WeMos D1 Mini", category = "Controllers",
+    author = "Branislav Stojkovic", description = "WeMos D1 Mini ESP8266 Wi-Fi Development Board",
     instanceNamePrefix = "MCU", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
 public class WemosD1Mini extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
-
-  public static Color WEMOS_BLUE = Color.decode("#006699");
-  public static Color ANTENNA_COLOR = Color.decode("#DAA520");
-  public static Color ANTENNA_BG_COLOR = Color.decode("#1E1E1E");
-  public static Color BUTTON_BODY_COLOR = Color.decode("#383838");
-  public static Color BUTTON_BORDER_COLOR = Color.decode("#666666");
-  public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
-  public static Color SILK_COLOR = Color.WHITE;
 
   public static Size BOARD_WIDTH = new Size(1.0d, SizeUnit.in);
   public static Size BOARD_LENGTH = new Size(1.34d, SizeUnit.in);
@@ -285,7 +276,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
       // Reset button label on the board next to the button
       g2d.setColor(SILK_COLOR);
-      g2d.setFont(new Font("SansSerif", Font.BOLD, 9));
+      g2d.setFont(SILK_FONT_TINY);
       double rstLabelX = boardX + rstCutoutW + new Size(0.4d, SizeUnit.mm).convertToPixels();
       StringUtils.drawCenteredText(g2d, "RST", rstLabelX, btnY + btnH / 2.0,
           HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
@@ -297,7 +288,7 @@ public class WemosD1Mini extends AbstractMakerBoard {
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
       // Silkscreen: Pin labels
-      g2d.setFont(new Font("SansSerif", Font.BOLD, 9));
+      g2d.setFont(SILK_FONT_TINY);
       double spacing = PIN_SPACING.convertToPixels();
       double labelOffset = new Size(1.4d, SizeUnit.mm).convertToPixels();
       for (int i = 0; i < 8; i++) {
@@ -376,8 +367,8 @@ public class WemosD1Mini extends AbstractMakerBoard {
     g2d.fill(new RoundRectangle2D.Double(width / 2.0 - 3, height - 8, 6, 4, 1, 1));
 
     // Text
-    g2d.setColor(Color.WHITE);
-    g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
+    g2d.setColor(SILK_COLOR);
+    g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "D1", width / 2.0, height / 2.0 + 9, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 }

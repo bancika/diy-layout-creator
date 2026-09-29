@@ -106,6 +106,17 @@ public interface IDIYComponent<T> extends Serializable, Cloneable {
   void setControlPoint(Point2D point, int index);
 
   /**
+   * Positions the component so that it spans the two points, which is how components created with
+   * <code>CreationMethod.POINT_BY_POINT</code> are shaped while the user is placing them. The first
+   * and the last control point go to the two ends; where the points in between land is up to the
+   * component.
+   *
+   * @param first
+   * @param second
+   */
+  void stretchBetween(Point2D first, Point2D second);
+
+  /**
    * @param index
    * @return true, if the specified control point may stick to control points of other components.
    */
