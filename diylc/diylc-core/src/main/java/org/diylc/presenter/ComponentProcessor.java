@@ -162,6 +162,11 @@ public class ComponentProcessor {
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
             flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing, datasheet,
             datasheetCreationStepCount);
+    Class<? extends org.diylc.schematic.ISchematicFactory> schematicFactory =
+        clazz.getAnnotation(ComponentDescriptor.class).schematicFactory();
+    if (schematicFactory != null && schematicFactory != org.diylc.schematic.ISchematicFactory.class) {
+      componentType.setSchematicFactoryClass(schematicFactory);
+    }
     componentTypeMap.put(clazz.getName(), componentType);
     return componentType;
   }

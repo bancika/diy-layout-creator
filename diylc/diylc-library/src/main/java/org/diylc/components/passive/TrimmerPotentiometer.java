@@ -30,6 +30,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.PotentiometerSchematicFactory;
 
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
@@ -48,7 +49,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = PotentiometerSchematicFactory.class,
+    name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT,
     transformer = TrimmerTransformer.class)

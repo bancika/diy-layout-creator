@@ -353,6 +353,14 @@ public class CanvasPlugin implements IPlugIn{
     return canvasPanel;
   }
 
+  /**
+   * @return the scroll pane that hosts the layout canvas, so other plugins (e.g. the schematic tab)
+   *         can show or hide it when switching views.
+   */
+  public javax.swing.JComponent getCanvasScrollComponent() {
+    return getScrollPane();
+  }
+
   private RulerScrollPane getScrollPane() {
     if (scrollPane == null) {
       String subdivision = configManager.readString(
