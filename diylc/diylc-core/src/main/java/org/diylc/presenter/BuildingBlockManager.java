@@ -164,10 +164,10 @@ public class BuildingBlockManager {
       return clones;
     }
 
-    // COMPOSITE mode: clone components keeping their saved names. Those names are namespaced
-    // under the composite's own name in the netlist (e.g. "ARD1.PH1.3"), so running them through
-    // createUniqueName against the whole project would produce meaningless drift and break
-    // netlist labels between two instances of the same block.
+    // COMPOSITE mode: clone components keeping their saved names. Those names surface in the
+    // composite's terminal names when pins clash (e.g. "BLK1.R1.1"), so running them through
+    // createUniqueName against the whole project would produce meaningless drift and make two
+    // instances of the same block resolve different netlist labels.
     List<IDIYComponent<?>> childClones = new ArrayList<IDIYComponent<?>>();
     for (IDIYComponent<?> c : components) {
       try {

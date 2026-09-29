@@ -130,6 +130,32 @@ public class AbstractOrthogonalComponentTest {
     assertPoint(100, 50, c.getControlPoint(2));
   }
 
+  // --- stretching ---
+
+  @Test
+  public void stretchBetween_keepsTheEndsAndStaysAxisAligned() {
+    OrthogonalTestComponent c = component(0, 0, 100, 50, 60, 20);
+    c.stretchBetween(new Point2D.Double(10, 10), new Point2D.Double(210, 110));
+    assertPoint(10, 10, c.getControlPoint(0));
+    assertPoint(210, 110, c.getControlPoint(2));
+    assertAxisAligned(c);
+  }
+
+  @Test
+  public void stretchBetween_placesTheBendsWhereSetPointCountWould() {
+    OrthogonalTestComponent stretched = component(0, 0, 100, 50, 60, 20);
+    stretched.setPointCount(PointCount.FIVE);
+    stretched.stretchBetween(new Point2D.Double(0, 0), new Point2D.Double(100, 50));
+
+    OrthogonalTestComponent expanded = component(0, 0, 100, 50, 60, 20);
+    expanded.setPointCount(PointCount.FIVE);
+
+    for (int i = 0; i < expanded.getControlPointCount(); i++) {
+      assertPoint(expanded.getControlPoint(i).getX(), expanded.getControlPoint(i).getY(),
+          stretched.getControlPoint(i));
+    }
+  }
+
   // --- transformer ---
 
   @Test

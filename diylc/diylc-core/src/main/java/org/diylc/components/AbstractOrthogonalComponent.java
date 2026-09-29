@@ -237,22 +237,38 @@ public abstract class AbstractOrthogonalComponent<T> extends AbstractTransparent
     newPoints[0] = start;
     newPoints[pointCount.count - 1] = end;
 
-    // spread the bend points so that the route comes out as an even staircase: they advance evenly
-    // along the axis the route travels last, and sit halfway between those steps on the other axis
     int bendCount = pointCount.count - 2;
-    boolean horizontalFirst = getStartDirection() == OrientationHV.HORIZONTAL;
     for (int i = 1; i <= bendCount; i++) {
-      double along = (double) i / bendCount;
-      double across = (2d * i - 1) / (2d * bendCount);
-      double tx = horizontalFirst ? across : along;
-      double ty = horizontalFirst ? along : across;
-      newPoints[i] =
-          new Point2D.Double(start.getX() + (end.getX() - start.getX()) * tx, start.getY()
-              + (end.getY() - start.getY()) * ty);
+      newPoints[i] = getBendPoint(start, end, i, bendCount);
     }
 
     this.controlPoints = newPoints;
     this.pointCount = pointCount;
+  }
+
+  @Override
+  protected Point2D getStretchedPoint(Point2D first, Point2D second, int index) {
+    return getBendPoint(first, second, index, getControlPointCount() - 2);
+  }
+
+  /**
+   * Spreads the bend points so that the route comes out as an even staircase: they advance evenly
+   * along the axis the route travels last, and sit halfway between those steps on the other axis.
+   *
+   * @param start
+   * @param end
+   * @param index
+   * @param bendCount number of control points between the two ends
+   * @return position of the bend point at the specified index.
+   */
+  private Point2D getBendPoint(Point2D start, Point2D end, int index, int bendCount) {
+    double along = (double) index / bendCount;
+    double across = (2d * index - 1) / (2d * bendCount);
+    boolean horizontalFirst = getStartDirection() == OrientationHV.HORIZONTAL;
+    double tx = horizontalFirst ? across : along;
+    double ty = horizontalFirst ? along : across;
+    return new Point2D.Double(start.getX() + (end.getX() - start.getX()) * tx, start.getY()
+        + (end.getY() - start.getY()) * ty);
   }
 
   /**

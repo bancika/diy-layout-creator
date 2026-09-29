@@ -295,8 +295,38 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
   }
   
   @Override
-  public boolean canPointMoveFreely(int pointIndex) {   
+  public boolean canPointMoveFreely(int pointIndex) {
     return true;
+  }
+
+  @Override
+  public void stretchBetween(Point2D first, Point2D second) {
+    int count = getControlPointCount();
+    // fresh instances because implementations are free to keep the point objects they are handed
+    setControlPoint(new Point2D.Double(first.getX(), first.getY()), 0);
+    if (count > 1) {
+      setControlPoint(new Point2D.Double(second.getX(), second.getY()), count - 1);
+    }
+    for (int i = 1; i < count - 1; i++) {
+      setControlPoint(getStretchedPoint(first, second, i), i);
+    }
+  }
+
+  /**
+   * Decides where a control point that is neither of the two ends lands when the component is
+   * stretched between them, see {@link #stretchBetween(Point2D, Point2D)}. The default spaces the
+   * points evenly along the straight line joining the ends. Override to place a point that carries
+   * a meaning of its own, such as one that positions a label.
+   *
+   * @param first
+   * @param second
+   * @param index
+   * @return position of the control point at the specified index.
+   */
+  protected Point2D getStretchedPoint(Point2D first, Point2D second, int index) {
+    double t = (double) index / (getControlPointCount() - 1);
+    return new Point2D.Double(first.getX() + t * (second.getX() - first.getX()),
+        first.getY() + t * (second.getY() - first.getY()));
   }
   
   @Override
