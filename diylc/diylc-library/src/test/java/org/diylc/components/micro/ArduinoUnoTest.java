@@ -24,6 +24,7 @@ package org.diylc.components.micro;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.components.micro.ArduinoUno.ArduinoUnoVersion;
 import org.junit.Assert;
 import org.junit.Test;

@@ -21,6 +21,7 @@
  */
 package org.diylc.components.micro;
 
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.components.micro.ArduinoNano.NanoVersion;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;

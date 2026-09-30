@@ -139,6 +139,11 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
+  }
+
   /**
    * True for the wireless variants, which carry the CYW43439 radio and move the SWD pads out of
    * the bottom edge to make room for it.

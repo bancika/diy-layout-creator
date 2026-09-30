@@ -23,7 +23,6 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -50,11 +49,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "8x8 LED Matrix (MAX7219)", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
-//     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "8x8 LED Matrix (MAX7219)", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
+    instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class LEDMatrix8x8 extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
@@ -66,6 +65,16 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(32.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(50.0d, SizeUnit.mm);
+  // the matrix block is very nearly as wide as the board it sits on
+  public static Size MATRIX_SIZE = new Size(30.0d, SizeUnit.mm);
+  public static Size MATRIX_TOP_MARGIN = new Size(3.8d, SizeUnit.mm);
+  // clearance from the bottom edge to the input pin row; the output row sits a board apart from it
+  public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
+  public static Size HEADER_SPACING = new Size(44.0d, SizeUnit.mm);
+  public static Size CHIP_MARGIN_X = new Size(2.54d, SizeUnit.mm);
+  public static Size CHIP_LENGTH = new Size(5.7d, SizeUnit.mm);
+  public static Size CHIP_GAP = new Size(1.9d, SizeUnit.mm);
+  public static Size SILK_OFFSET = new Size(2.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Input Header (0..4)
@@ -105,16 +114,13 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    double[][] relativeOffsets = new double[10][2];
+    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
-    // Input header (0..4) at bottom
+    // the input row sits near the bottom edge and the output row the same distance from the top
+    double topY = -HEADER_SPACING.convertToPixels();
     for (int i = 0; i < 5; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
-    }
-    // Output header (5..9) at top
-    double topY = -new Size(44.0d, SizeUnit.mm).convertToPixels();
-    for (int i = 0; i < 5; i++) {
       relativeOffsets[5 + i][0] = i * spacing;
       relativeOffsets[5 + i][1] = topY;
     }
@@ -122,16 +128,21 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
     rotatePoints(firstPoint, relativeOffsets);
   }
 
+  /** Left edge of the board, derived so that the five-pin rows sit centred across it. */
+  private double getBoardX(double x) {
+    double spacing = PIN_SPACING.convertToPixels();
+    return x - (BOARD_WIDTH.convertToPixels() - 4 * spacing) / 2.0;
+  }
+
+  private double getBoardY(double y) {
+    return y - BOARD_HEIGHT.convertToPixels() + HEADER_OFFSET.convertToPixels();
+  }
+
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double x = p0.getX();
-    double y = p0.getY();
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - (boardW - 4 * PIN_SPACING.convertToPixels()) / 2.0;
-    double boardY = y - boardH + 20;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 8, 8);
+    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()),
+        BOARD_WIDTH.convertToPixels(), BOARD_HEIGHT.convertToPixels(), 8, 8);
   }
 
   @Override
@@ -152,8 +163,8 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - (boardW - 4 * PIN_SPACING.convertToPixels()) / 2.0;
-    double boardY = y - boardH + 20;
+    double boardX = getBoardX(x);
+    double boardY = getBoardY(y);
 
     Shape boardShape = getBodyShape();
 
@@ -169,10 +180,9 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 8x8 LED Matrix block (square 32mm)
-      double matrixSize = boardW - 10;
-      double matrixX = boardX + 5;
-      double matrixY = boardY + 30;
+      double matrixSize = MATRIX_SIZE.convertToPixels();
+      double matrixX = boardX + (boardW - matrixSize) / 2.0;
+      double matrixY = boardY + MATRIX_TOP_MARGIN.convertToPixels();
 
       g2d.setColor(MATRIX_BODY);
       g2d.fill(new RoundRectangle2D.Double(matrixX, matrixY, matrixSize, matrixSize, 6, 6));
@@ -196,14 +206,21 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
         }
       }
 
-      // MAX7219 IC
-      MakerBoardPainter.drawChip(g2d, boardX + 20, matrixY + matrixSize + 15, boardW - 40, 45, "MAX7219");
+      double chipMarginX = CHIP_MARGIN_X.convertToPixels();
+      MakerBoardPainter.drawChip(g2d, boardX + chipMarginX,
+          matrixY + matrixSize + CHIP_GAP.convertToPixels(), boardW - 2 * chipMarginX,
+          CHIP_LENGTH.convertToPixels(), "MAX7219");
 
-      // Silkscreen
+      // each label sits just inside the board from the row it names
       g2d.setColor(Color.WHITE);
       g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "IN", x + 2 * PIN_SPACING.convertToPixels(), y - 16, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT", x + 2 * PIN_SPACING.convertToPixels(), y - boardH + 34, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      double silkOffset = SILK_OFFSET.convertToPixels();
+      double silkX = x + 2 * PIN_SPACING.convertToPixels();
+      StringUtils.drawCenteredText(g2d, "IN", silkX, y - silkOffset, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+      StringUtils.drawCenteredText(g2d, "OUT", silkX,
+          y - HEADER_SPACING.convertToPixels() + silkOffset, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);

@@ -90,6 +90,11 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color DARK_PLASTIC_COLOR = Color.decode("#181818");
   public static Color DARK_PLASTIC_BORDER = Color.decode("#333333");
+  public static Color RGB_LED_BODY_COLOR = Color.decode("#FDFEFE");
+  public static Color RGB_LED_BODY_BORDER = Color.decode("#D0D3D4");
+  public static Color RGB_LED_LENS_COLOR = Color.decode("#EAECEE");
+  public static Color RGB_LED_LENS_BORDER = Color.decode("#BDC3C7");
+  public static Color RGB_LED_CHIP_COLOR = Color.decode("#333333");
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
@@ -222,6 +227,26 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   @Override
   public void setValue(Void value) {}
+
+  /**
+   * The variant this board is set to, or {@code null} for a board that is sold in only one form.
+   * Boards name their variant property differently -- {@code Version}, {@code Size}, {@code Type} --
+   * so each one that has one answers here for itself.
+   */
+  protected String getVariantLabel() {
+    return null;
+  }
+
+  /**
+   * These boards have no value in the usual sense, so the BOM's value column carries the variant
+   * instead. It is not cosmetic: {@code BomMaker} groups rows on type name plus value, so without
+   * it every variant of a board collapses into a single row and a BOM cannot say which one to buy.
+   */
+  @Override
+  public String getValueForDisplay() {
+    String variant = getVariantLabel();
+    return variant == null ? "" : variant;
+  }
 
   protected abstract void updateControlPoints();
 

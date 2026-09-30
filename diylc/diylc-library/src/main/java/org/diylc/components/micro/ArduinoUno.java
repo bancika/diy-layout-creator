@@ -231,6 +231,11 @@ public class ArduinoUno extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
+  }
+
   /**
    * True for the Renesas RA4M1 generation, which shares a USB-C connector and the RA4M1 in place of
    * the ATmega328P.

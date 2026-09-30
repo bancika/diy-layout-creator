@@ -239,4 +239,33 @@ public class MakerBoardPainter {
     g2d.setColor(AbstractMakerBoard.BUTTON_ACTUATOR_COLOR);
     g2d.fill(new Ellipse2D.Double(x + (w - actuatorD) / 2.0, y + (h - actuatorD) / 2.0, actuatorD, actuatorD));
   }
+
+  /**
+   * Helper to draw an addressable RGB LED in a 5050 package -- the white body, the milky phosphor
+   * lens over it and the driver die visible through the lens. Shared by every WS2812B part, so
+   * strips, rings and sticks all render the same LED.
+   *
+   * @param g2d Graphics2D context
+   * @param cx centre X coordinate of the package
+   * @param cy centre Y coordinate of the package
+   * @param size edge length of the square package; lens and die scale with it
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size) {
+    double half = size / 2.0;
+    g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_COLOR);
+    g2d.fill(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
+    g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_BORDER);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(0.5f));
+    g2d.draw(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
+
+    double lensR = half * 0.7;
+    g2d.setColor(AbstractMakerBoard.RGB_LED_LENS_COLOR);
+    g2d.fill(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
+    g2d.setColor(AbstractMakerBoard.RGB_LED_LENS_BORDER);
+    g2d.draw(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
+
+    double dieSize = Math.max(2.0, lensR * 0.4);
+    g2d.setColor(AbstractMakerBoard.RGB_LED_CHIP_COLOR);
+    g2d.fill(new Rectangle2D.Double(cx - dieSize / 2.0, cy - dieSize / 2.0, dieSize, dieSize));
+  }
 }

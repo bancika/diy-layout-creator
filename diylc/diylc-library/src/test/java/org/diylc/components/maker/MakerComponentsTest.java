@@ -72,6 +72,15 @@ public class MakerComponentsTest {
       ESP8266NodeMCU.class,
       WemosD1Mini.class,
 
+      // Displays & Outputs
+      CharacterLCD.class,
+      OLEDDisplay.class,
+      SevenSegmentDisplay.class,
+      LEDMatrix8x8.class,
+      TFTDisplay.class,
+      WS2812BStick.class,
+      WS2812BRing.class,
+
       // Electro-Mechanical
       BatteryHolder18650.class
   );
@@ -89,15 +98,6 @@ public class MakerComponentsTest {
       SoilMoistureSensor.class,
       TCRT5000Sensor.class,
       IRReceiverModule.class,
-
-      // Displays & Outputs
-      CharacterLCD.class,
-      OLEDDisplay.class,
-      SevenSegmentDisplay.class,
-      LEDMatrix8x8.class,
-      TFTDisplay.class,
-      WS2812BStick.class,
-      WS2812BRing.class,
 
       // Modules & Breakouts
       LogicLevelConverter.class,

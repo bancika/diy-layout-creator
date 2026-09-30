@@ -354,6 +354,11 @@ public class ESP32DevKit extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
+  }
+
   @EditableProperty(name = "Headers")
   public boolean getHeaders() {
     return headers;

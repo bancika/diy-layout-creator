@@ -113,6 +113,12 @@ public class RaspberryPi extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    RaspberryPiVersion version = getVersion();
+    return version == null ? null : version.toString();
+  }
+
   public RaspberryPi() {
     super();
     this.bodyColor = RPI_GREEN;

@@ -23,7 +23,6 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -32,12 +31,10 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.diylc.awt.StringUtils;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -49,30 +46,28 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "NeoPixel Stick (8x WS2812B)", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "8-LED Addressable RGB WS2812B NeoPixel Stick",
-//     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "NeoPixel Stick (8x WS2812B)", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "8-LED Addressable RGB WS2812B NeoPixel Stick",
+    instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class WS2812BStick extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
   public static Color NEO_BLACK = Color.decode("#111111");
-  public static Color LED_PACKAGE = Color.decode("#FDFEFE");
-  public static Color LED_BORDER = Color.decode("#D0D3D4");
-  public static Color LED_DIFFUSER = Color.decode("#EAECEE");
-  public static Color DIFFUSER_BORDER = Color.decode("#BDC3C7");
-  public static Color CHIP_DOT_COLOR = Color.decode("#333333");
 
-  public static Font PIN_LABEL_FONT = new Font("SansSerif", Font.BOLD, 9);
+  public static Size BOARD_WIDTH = new Size(51.1d, SizeUnit.mm);
+  public static Size BOARD_HEIGHT = new Size(10.22d, SizeUnit.mm);
+  public static Size LED_SIZE = new Size(5.0d, SizeUnit.mm);
+  public static Size PAD_INSET = new Size(2.0d, SizeUnit.mm);
 
-  public static Size BOARD_WIDTH = new Size(53.0d, SizeUnit.mm);
-  public static Size BOARD_HEIGHT = new Size(10.2d, SizeUnit.mm);
-
+  // Each end carries four pads in the order GND, data, power, GND. Both grounds on an end are the
+  // same net on the board, so they are numbered only to keep the node names distinct; the
+  // silkscreen prints "GND" for all four.
   private static final String[] PIN_NAMES = {
-      "DIN", "+5V (In)", "GND (In)", "GND (In)",
-      "DOUT", "+5V (Out)", "GND (Out)", "GND (Out)"
+      "GND_1", "DIN", "+5V_1", "GND_2",
+      "GND_3", "DOUT", "+5V_2", "GND_4"
   };
 
   public WS2812BStick() {
@@ -93,33 +88,36 @@ public class WS2812BStick extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double w = BOARD_WIDTH.convertToPixels();
+    // the two pad columns sit the same distance in from each end of the board
+    double columnSpacing = BOARD_WIDTH.convertToPixels() - 2 * PAD_INSET.convertToPixels();
 
-    // 8 pins total:
-    // Left input header (4 pins): 0 = DIN, 1 = +5V, 2 = GND, 3 = GND
-    // Right output header (4 pins): 4 = DOUT, 5 = +5V, 6 = GND, 7 = GND
-    double[][] relativeOffsets = new double[][] {
-      { 0, 0 },
-      { 0, spacing },
-      { 0, spacing * 2 },
-      { 0, spacing * 3 },
-      { w - 20, 0 },
-      { w - 20, spacing },
-      { w - 20, spacing * 2 },
-      { w - 20, spacing * 3 }
-    };
+    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
+    for (int i = 0; i < 4; i++) {
+      relativeOffsets[i][0] = 0;
+      relativeOffsets[i][1] = i * spacing;
+      relativeOffsets[4 + i][0] = columnSpacing;
+      relativeOffsets[4 + i][1] = i * spacing;
+    }
 
     rotatePoints(firstPoint, relativeOffsets);
+  }
+
+  /** Left edge of the board; the first pad column sits {@code PAD_INSET} in from it. */
+  private double getBoardX(double x) {
+    return x - PAD_INSET.convertToPixels();
+  }
+
+  /** Top edge of the board, derived so that the four-pad column is centred across its width. */
+  private double getBoardY(double y) {
+    double padSpan = 3 * PIN_SPACING.convertToPixels();
+    return y - (BOARD_HEIGHT.convertToPixels() - padSpan) / 2.0;
   }
 
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double x = p0.getX();
-    double y = p0.getY();
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_HEIGHT.convertToPixels();
-    return new RoundRectangle2D.Double(x - 10, y - 10, boardW, boardH, 4, 4);
+    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()),
+        BOARD_WIDTH.convertToPixels(), BOARD_HEIGHT.convertToPixels(), 4, 4);
   }
 
   @Override
@@ -140,8 +138,8 @@ public class WS2812BStick extends AbstractMakerBoard {
 
     double boardW = BOARD_WIDTH.convertToPixels();
     double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = x - 10;
-    double boardY = y - 10;
+    double boardX = getBoardX(x);
+    double boardY = getBoardY(y);
 
     Shape boardShape = getBodyShape();
 
@@ -157,49 +155,14 @@ public class WS2812BStick extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 8x 5050 SMD WS2812B RGB LEDs (centered between left and right pin areas)
-      double spacing = PIN_SPACING.convertToPixels();
-      double ledAreaStartX = boardX + 68;
-      double ledAreaEndX = boardX + boardW - 68;
-      double ledPitch = (ledAreaEndX - ledAreaStartX) / 7.0;
+      // Eight 5mm packages in a row, centred along the board. The pad names are printed on the back
+      // of the real board, so this face carries no silkscreen.
+      double ledSize = LED_SIZE.convertToPixels();
+      double fieldInset = (boardW - 8 * ledSize) / 2.0;
 
       for (int i = 0; i < 8; i++) {
-        double lx = ledAreaStartX + i * ledPitch;
-        double ly = boardY + boardH / 2.0;
-
-        // 5050 White Package (28x28)
-        g2d.setColor(LED_PACKAGE);
-        g2d.fill(new RoundRectangle2D.Double(lx - 14, ly - 14, 28, 28, 3, 3));
-        g2d.setColor(LED_BORDER);
-        g2d.draw(new RoundRectangle2D.Double(lx - 14, ly - 14, 28, 28, 3, 3));
-
-        // Circular milky phosphor/lens
-        g2d.setColor(LED_DIFFUSER);
-        g2d.fill(new Ellipse2D.Double(lx - 10, ly - 10, 20, 20));
-        g2d.setColor(DIFFUSER_BORDER);
-        g2d.draw(new Ellipse2D.Double(lx - 10, ly - 10, 20, 20));
-
-        // Internal tiny IC dot
-        g2d.setColor(CHIP_DOT_COLOR);
-        g2d.fill(new Rectangle2D.Double(lx - 2.5, ly - 2.5, 5, 5));
-      }
-
-      // Silk Screen Pin Labels — all 4 pins labeled on both sides with clean spacing
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(PIN_LABEL_FONT);
-
-      // Left Input Header Labels (DIN, 5V, GND, GND)
-      String[] inLabels = {"DIN", "5V", "GND", "GND"};
-      for (int i = 0; i < 4; i++) {
-        StringUtils.drawCenteredText(g2d, inLabels[i], boardX + 23, y + i * spacing,
-            HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-      }
-
-      // Right Output Header Labels (DOUT, 5V, GND, GND)
-      String[] outLabels = {"DOUT", "5V", "GND", "GND"};
-      for (int i = 0; i < 4; i++) {
-        StringUtils.drawCenteredText(g2d, outLabels[i], boardX + boardW - 23, y + i * spacing,
-            HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+        MakerBoardPainter.drawAddressableLed(g2d, boardX + fieldInset + (i + 0.5) * ledSize,
+            boardY + boardH / 2.0, ledSize);
       }
     }
 

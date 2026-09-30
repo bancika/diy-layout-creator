@@ -262,6 +262,11 @@ public class ArduinoNano extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
+  }
+
   private String[] getPinNames() {
     switch (getVersion()) {
       case EVERY:

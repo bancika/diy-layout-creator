@@ -23,15 +23,12 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -39,6 +36,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -51,19 +49,22 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "NeoPixel Ring (WS2812B)", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "Addressable RGB WS2812B NeoPixel Ring (12/16/24 LEDs)",
-//     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "NeoPixel Ring (WS2812B)", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "Addressable RGB WS2812B NeoPixel Ring (12/16/24 LEDs)",
+    instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class WS2812BRing extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
   public enum RingSize {
-    _12_LED("12 LEDs (37mm OD)", 12, 37.0, 27.0),
-    _16_LED("16 LEDs (44.5mm OD)", 16, 44.5, 32.0),
-    _24_LED("24 LEDs (66mm OD)", 24, 66.0, 52.0);
+    // Outer and inner diameters are the figures Adafruit publishes for each ring. They are not
+    // decoration: getMidRadius() averages them, and that radius places the pads, the LEDs and the
+    // control points, so an inner diameter that is out by a millimetre moves every one of them.
+    _12_LED("12 LEDs (36.8mm OD)", 12, 36.8, 23.3),
+    _16_LED("16 LEDs (44.5mm OD)", 16, 44.5, 31.7),
+    _24_LED("24 LEDs (65.5mm OD)", 24, 65.5, 52.3);
 
     private final String label;
     private final int ledCount;
@@ -83,15 +84,7 @@ public class WS2812BRing extends AbstractMakerBoard {
     public double getInnerDiameterMm() { return innerDiameterMm; }
   }
 
-  // Colors shared with WS2812BStick
   public static Color NEO_BLACK = Color.decode("#111111");
-  public static Color LED_PACKAGE = Color.decode("#FDFEFE");
-  public static Color LED_BORDER = Color.decode("#D0D3D4");
-  public static Color LED_DIFFUSER = Color.decode("#EAECEE");
-  public static Color DIFFUSER_BORDER = Color.decode("#BDC3C7");
-  public static Color CHIP_DOT_COLOR = Color.decode("#333333");
-  public static Color SOLDER_PAD_COLOR = Color.decode("#D4AC0D");
-  public static Color SOLDER_PAD_BORDER = Color.decode("#9A7D0A");
 
   private static final String[] PIN_NAMES = {"DIN", "+5V", "GND", "DOUT"};
 
@@ -112,6 +105,12 @@ public class WS2812BRing extends AbstractMakerBoard {
     this.ringSize = ringSize;
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    RingSize ringSize = getRingSize();
+    return ringSize == null ? null : ringSize.toString();
   }
 
   @Override
@@ -210,32 +209,12 @@ public class WS2812BRing extends AbstractMakerBoard {
     if (!outlineMode) {
       int ledCount = ringSize.getLedCount();
       double ledSize = Math.max(8.0, Math.min(15.0, (2 * Math.PI * midR / ledCount) * 0.60));
-      double halfLed = ledSize / 2.0;
 
       // Draw all LEDs around the circular ring
       for (int i = 0; i < ledCount; i++) {
         double angle = 2 * Math.PI * i / ledCount - Math.PI / 2.0;
-        double lx = cx + midR * Math.cos(angle);
-        double ly = cy + midR * Math.sin(angle);
-
-        // 5050 White Package
-        g2d.setColor(LED_PACKAGE);
-        g2d.fill(new RoundRectangle2D.Double(lx - halfLed, ly - halfLed, ledSize, ledSize, 2, 2));
-        g2d.setColor(LED_BORDER);
-        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(0.5f));
-        g2d.draw(new RoundRectangle2D.Double(lx - halfLed, ly - halfLed, ledSize, ledSize, 2, 2));
-
-        // Milky phosphor lens
-        double diffR = halfLed * 0.7;
-        g2d.setColor(LED_DIFFUSER);
-        g2d.fill(new Ellipse2D.Double(lx - diffR, ly - diffR, diffR * 2, diffR * 2));
-        g2d.setColor(DIFFUSER_BORDER);
-        g2d.draw(new Ellipse2D.Double(lx - diffR, ly - diffR, diffR * 2, diffR * 2));
-
-        // Tiny IC dot
-        g2d.setColor(CHIP_DOT_COLOR);
-        double dotS = Math.max(2.0, diffR * 0.4);
-        g2d.fill(new Rectangle2D.Double(lx - dotS / 2.0, ly - dotS / 2.0, dotS, dotS));
+        MakerBoardPainter.drawAddressableLed(g2d, cx + midR * Math.cos(angle),
+            cy + midR * Math.sin(angle), ledSize);
       }
 
       // Center silkscreen text
@@ -244,17 +223,8 @@ public class WS2812BRing extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "NeoPixel", cx, cy - 6, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       StringUtils.drawCenteredText(g2d, ringSize.getLedCount() + "x LED", cx, cy + 6, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Silkscreen labels next to the 4 solder pads on the ring
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(new Font("SansSerif", Font.BOLD, 8));
-      String[] labels = new String[] {"DIN", "5V", "GND", "DOUT"};
-      for (int i = 0; i < 4; i++) {
-        double theta = getPadAngle(i);
-        double labelR = innerR + 5;
-        double px = cx + labelR * Math.cos(theta);
-        double py = cy + labelR * Math.sin(theta);
-        StringUtils.drawCenteredText(g2d, labels[i], px, py, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      }
+      // The four pads sit one pin spacing apart along the arc, which leaves each of them far less
+      // room than its name needs, so the names are left to the node tooltips and the netlist.
     }
 
     g2d.setTransform(oldTx);

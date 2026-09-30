@@ -50,11 +50,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "0.96\" OLED Display (SSD1306)", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "0.96\" Monochrome 128x64 OLED Display Module (I2C / SPI)",
-//     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "0.96\" OLED Display (SSD1306)", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "0.96\" Monochrome 128x64 OLED Display Module (I2C / SPI)",
+    instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class OLEDDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
@@ -70,10 +70,25 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
   public static Color OLED_BLUE = Color.decode("#004488");
   public static Color GLASS_COLOR = Color.decode("#0D1B2A");
+  public static Color GLASS_BORDER_COLOR = Color.decode("#334E68");
+  public static Color ACTIVE_AREA_COLOR = Color.decode("#060D15");
   public static Color PIXEL_BLUE = Color.decode("#00D4FF");
-  public static Color PIXEL_YELLOW = Color.decode("#FFD700");
 
   public static Size BOARD_SIZE = new Size(27.0d, SizeUnit.mm);
+  // The panel is nearly as wide as the board but much shorter, which leaves bare PCB above it for
+  // the header and below it for the lower mounting holes.
+  public static Size GLASS_WIDTH = new Size(26.7d, SizeUnit.mm);
+  public static Size GLASS_LENGTH = new Size(19.3d, SizeUnit.mm);
+  // 128 x 64 pixels on a 0.17mm pitch. The lit area is much smaller than the panel around it and
+  // roughly twice as wide as it is tall, which is what makes the part read as a display.
+  public static Size ACTIVE_WIDTH = new Size(21.744d, SizeUnit.mm);
+  public static Size ACTIVE_LENGTH = new Size(10.864d, SizeUnit.mm);
+  // Centre-to-centre in both directions, which is how the hole pattern is specified and what a
+  // builder drills to; the inset from the board edge falls out of it.
+  public static Size MOUNTING_HOLE_SPACING = new Size(24.0d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
+  // clearance from the top edge to the pin row
+  public static Size HEADER_OFFSET = new Size(1.8d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SCL", "SDA"};
   public static final String[] PIN_NAMES_SPI = new String[] {"GND", "VCC", "D0 (CLK)", "D1 (MOSI)", "RES", "DC", "CS"};
@@ -98,6 +113,12 @@ public class OLEDDisplay extends AbstractMakerBoard {
   }
 
   @Override
+  protected String getVariantLabel() {
+    OLEDInterface oledInterface = getOledInterface();
+    return oledInterface == null ? null : oledInterface.toString();
+  }
+
+  @Override
   public String getControlPointNodeName(int index) {
     if (oledInterface == OLEDInterface.I2C_4Pin) {
       if (index >= 0 && index < PIN_NAMES_I2C.length) return PIN_NAMES_I2C[index];
@@ -107,15 +128,27 @@ public class OLEDDisplay extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
+  private int getPinCount() {
+    return oledInterface == OLEDInterface.I2C_4Pin ? PIN_NAMES_I2C.length : PIN_NAMES_SPI.length;
+  }
+
+  /** Left edge of the board, derived so that the pin row sits centred on the top edge. */
+  private double getBoardX(double x) {
+    double spacing = PIN_SPACING.convertToPixels();
+    return x - (BOARD_SIZE.convertToPixels() - (getPinCount() - 1) * spacing) / 2.0;
+  }
+
+  private double getBoardY(double y) {
+    return y - HEADER_OFFSET.convertToPixels();
+  }
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    int count = (oledInterface == OLEDInterface.I2C_4Pin) ? 4 : 7;
-    double[][] relativeOffsets = new double[count][2];
-
-    for (int i = 0; i < count; i++) {
+    double[][] relativeOffsets = new double[getPinCount()][2];
+    for (int i = 0; i < relativeOffsets.length; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
     }
@@ -126,13 +159,9 @@ public class OLEDDisplay extends AbstractMakerBoard {
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double x = p0.getX();
-    double y = p0.getY();
     double boardSizePx = BOARD_SIZE.convertToPixels();
-    int count = (oledInterface == OLEDInterface.I2C_4Pin) ? 4 : 7;
-    double boardX = x - (boardSizePx - (count - 1) * PIN_SPACING.convertToPixels()) / 2.0;
-    double boardY = y - 14;
-    return new RoundRectangle2D.Double(boardX, boardY, boardSizePx, boardSizePx, 8, 8);
+    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()), boardSizePx,
+        boardSizePx, 8, 8);
   }
 
   @Override
@@ -152,9 +181,8 @@ public class OLEDDisplay extends AbstractMakerBoard {
     }
 
     double boardSizePx = BOARD_SIZE.convertToPixels();
-    int count = (oledInterface == OLEDInterface.I2C_4Pin) ? 4 : 7;
-    double boardX = x - (boardSizePx - (count - 1) * PIN_SPACING.convertToPixels()) / 2.0;
-    double boardY = y - 14;
+    double boardX = getBoardX(x);
+    double boardY = getBoardY(y);
 
     Shape boardShape = getBodyShape();
 
@@ -170,31 +198,34 @@ public class OLEDDisplay extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Corner mounting holes
-      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + 16, 16);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + 16, boardY + boardSizePx - 16, 16);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + 16, 16);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - 16, boardY + boardSizePx - 16, 16);
+      double holeInset = (boardSizePx - MOUNTING_HOLE_SPACING.convertToPixels()) / 2.0;
+      double holeSize = MOUNTING_HOLE_SIZE.convertToPixels();
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - holeInset, boardY + holeInset,
+          holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardSizePx - holeInset,
+          holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - holeInset,
+          boardY + boardSizePx - holeInset, holeSize);
 
-      // Glass OLED Panel
-      double glassMarginX = 18;
-      double glassW = boardSizePx - 2 * glassMarginX;
-      double glassH = boardSizePx - 65;
-      double glassX = boardX + glassMarginX;
-      double glassY = boardY + 45;
+      // The two rows of holes are inset equally, so centring the panel in the board is what centres
+      // it between them and keeps it clear of all four.
+      double glassW = GLASS_WIDTH.convertToPixels();
+      double glassH = GLASS_LENGTH.convertToPixels();
+      double glassX = boardX + (boardSizePx - glassW) / 2.0;
+      double glassY = boardY + (boardSizePx - glassH) / 2.0;
 
       g2d.setColor(GLASS_COLOR);
       g2d.fill(new RoundRectangle2D.Double(glassX, glassY, glassW, glassH, 4, 4));
-      g2d.setColor(Color.decode("#334E68"));
+      g2d.setColor(GLASS_BORDER_COLOR);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(new RoundRectangle2D.Double(glassX, glassY, glassW, glassH, 4, 4));
 
-      // Display demo graphics (yellow top banner + blue body)
-      g2d.setColor(PIXEL_YELLOW);
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "SSD1306 128x64", glassX + glassW / 2.0, glassY + 15, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-
-      g2d.setColor(PIXEL_BLUE);
-      StringUtils.drawCenteredText(g2d, "OLED DISPLAY", glassX + glassW / 2.0, glassY + glassH / 2.0 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      double activeW = ACTIVE_WIDTH.convertToPixels();
+      double activeH = ACTIVE_LENGTH.convertToPixels();
+      g2d.setColor(ACTIVE_AREA_COLOR);
+      g2d.fill(new RoundRectangle2D.Double(glassX + (glassW - activeW) / 2.0,
+          glassY + (glassH - activeH) / 2.0, activeW, activeH, 2, 2));
     }
 
     g2d.setTransform(oldTx);

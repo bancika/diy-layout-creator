@@ -23,6 +23,7 @@ package org.diylc.components.micro;
 
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 

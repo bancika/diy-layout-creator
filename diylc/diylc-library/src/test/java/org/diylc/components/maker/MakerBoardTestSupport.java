@@ -19,7 +19,7 @@
  * along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package org.diylc.components.micro;
+package org.diylc.components.maker;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
@@ -40,12 +40,12 @@ import org.junit.Assert;
  *
  * <p>What every board has in common -- naming all of its pins, keeping them apart, drawing in each
  * state, rotating -- is asserted once for all of them in {@code MakerComponentsTest}, but only for
- * the version each board starts with. The tests in this package cover what is specific to a board:
+ * the version each board starts with. The per-board tests cover what is specific to a board:
  * its pinout, its geometry and the way those change from one version to the next.
  */
-class MakerBoardTestSupport {
+public class MakerBoardTestSupport {
 
-  static final double PIN_SPACING = new Size(0.1d, SizeUnit.in).convertToPixels();
+  public static final double PIN_SPACING = new Size(0.1d, SizeUnit.in).convertToPixels();
 
   private static final Project PROJECT = new Project();
 
@@ -73,7 +73,7 @@ class MakerBoardTestSupport {
   };
 
   /** Asserts that pins {@code from} through {@code to} form a straight row on 0.1" pitch. */
-  static void assertRow(AbstractMakerBoard board, int from, int to) {
+  public static void assertRow(AbstractMakerBoard board, int from, int to) {
     assertRow(board, from, to, PIN_SPACING);
   }
 
@@ -81,7 +81,7 @@ class MakerBoardTestSupport {
    * Asserts that pins {@code from} through {@code to} form a straight row on the given pitch. The
    * axis comes from the first pair, so a row that bends part way along fails.
    */
-  static void assertRow(AbstractMakerBoard board, int from, int to, double pitch) {
+  public static void assertRow(AbstractMakerBoard board, int from, int to, double pitch) {
     boolean vertical = Math.abs(
         board.getControlPoint(from).getX() - board.getControlPoint(from + 1).getX()) < 0.01;
     for (int i = from; i < to; i++) {
@@ -95,7 +95,7 @@ class MakerBoardTestSupport {
   }
 
   /** Asserts the distance between the first pins of two parallel rows. */
-  static void assertRowSpacing(AbstractMakerBoard board, int first, int second, Size spacing) {
+  public static void assertRowSpacing(AbstractMakerBoard board, int first, int second, Size spacing) {
     Point2D p1 = board.getControlPoint(first);
     Point2D p2 = board.getControlPoint(second);
     Assert.assertEquals("Row spacing", spacing.convertToPixels(), p1.distance(p2), 0.01);
@@ -103,7 +103,7 @@ class MakerBoardTestSupport {
   }
 
   /** Asserts the outline size, which is what a shield, a case or an enclosure has to fit. */
-  static void assertBoardSize(AbstractMakerBoard board, Size width, Size length) {
+  public static void assertBoardSize(AbstractMakerBoard board, Size width, Size length) {
     Rectangle2D bounds = board.getBodyShape().getBounds2D();
     Assert.assertEquals("Board width", width.convertToPixels(), bounds.getWidth(), 0.1);
     Assert.assertEquals("Board length", length.convertToPixels(), bounds.getHeight(), 0.1);
@@ -114,7 +114,7 @@ class MakerBoardTestSupport {
    * control points in the same place. A revision that keeps its footprint has to keep its pin
    * positions too, or switching the version moves every connection in an existing file.
    */
-  static void assertSharedFootprint(AbstractMakerBoard reference, AbstractMakerBoard variant,
+  public static void assertSharedFootprint(AbstractMakerBoard reference, AbstractMakerBoard variant,
       int sharedPins) {
     Assert.assertEquals("Outline", reference.getBodyShape().getBounds2D(),
         variant.getBodyShape().getBounds2D());
@@ -124,7 +124,7 @@ class MakerBoardTestSupport {
   }
 
   /** Draws the board in every state and orientation; anything that throws fails the test. */
-  static void assertDrawsCleanly(AbstractMakerBoard board) {
+  public static void assertDrawsCleanly(AbstractMakerBoard board) {
     BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = image.createGraphics();
     Orientation original = board.getOrientation();

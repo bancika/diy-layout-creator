@@ -496,5 +496,49 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>7</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-09-30 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Character LCD - 16x2 and 20x4, with I2C backpack or 16-pin parallel interface</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>0.96" OLED Display (SSD1306) - I2C and SPI</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>7-Segment Display - 1-digit 0.56 inch, 4-digit in 0.36 inch and 0.56 inch, and TM1637 driver module</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>8x8 LED Matrix (MAX7219)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>TFT Touch Screen (ILI9341) - 2.8 inch 240x320 with touch and SD card slot</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Ring (WS2812B) - 12, 16 and 24 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Stick (WS2812B) - 8 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Bill of Materials now lists the selected variant of microcontroller boards and displays, so different versions of the same board are no longer merged into a single row</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

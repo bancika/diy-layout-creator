@@ -50,11 +50,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "Character LCD (16x2 / 20x4)", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
-//     instanceNamePrefix = "LCD", zOrder = IDIYComponent.BOARD,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "Character LCD (16x2 / 20x4)", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
+    instanceNamePrefix = "LCD", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class CharacterLCD extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
@@ -93,9 +93,11 @@ public class CharacterLCD extends AbstractMakerBoard {
     @Override public String toString() { return label; }
   }
 
+  // clearance from the top edge to the pin row
+  public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
+
   public static Color PCB_GREEN = Color.decode("#1B5E20");
   public static Color SCREEN_BG = Color.decode("#1E88E5");
-  public static Color SCREEN_TEXT = Color.decode("#FFFFFF");
   public static Color BEZEL_COLOR = Color.decode("#212121");
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SDA", "SCL"};
@@ -137,6 +139,17 @@ public class CharacterLCD extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  // Both properties decide which part you buy, so the BOM carries them together.
+  @Override
+  protected String getVariantLabel() {
+    LCDSize lcdSize = getLcdSize();
+    if (lcdSize == null) {
+      return null;
+    }
+    LCDInterface lcdInterface = getLcdInterface();
+    return lcdInterface == null ? lcdSize.toString() : lcdSize + ", " + lcdInterface;
+  }
+
   @EditableProperty(name = "Backlight Color")
   public Color getScreenColor() {
     return screenColor;
@@ -157,15 +170,36 @@ public class CharacterLCD extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
+  private int getPinCount() {
+    return lcdInterface == LCDInterface.I2C_Backpack ? PIN_NAMES_I2C.length
+        : PIN_NAMES_PARALLEL.length;
+  }
+
+  private double getBoardWidth() {
+    return new Size(lcdSize.getWidthMm(), SizeUnit.mm).convertToPixels();
+  }
+
+  private double getBoardLength() {
+    return new Size(lcdSize.getHeightMm(), SizeUnit.mm).convertToPixels();
+  }
+
+  /** Left edge of the board, derived so that the pin row sits centred on the top edge. */
+  private double getBoardX(double x) {
+    double spacing = PIN_SPACING.convertToPixels();
+    return x - (getBoardWidth() - (getPinCount() - 1) * spacing) / 2.0;
+  }
+
+  private double getBoardY(double y) {
+    return y - HEADER_OFFSET.convertToPixels();
+  }
+
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    int pinCount = (lcdInterface == LCDInterface.I2C_Backpack) ? 4 : 16;
-    double[][] relativeOffsets = new double[pinCount][2];
-
-    for (int i = 0; i < pinCount; i++) {
+    double[][] relativeOffsets = new double[getPinCount()][2];
+    for (int i = 0; i < relativeOffsets.length; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
     }
@@ -176,13 +210,8 @@ public class CharacterLCD extends AbstractMakerBoard {
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double x = p0.getX();
-    double y = p0.getY();
-    double boardW = new Size(lcdSize.getWidthMm(), SizeUnit.mm).convertToPixels();
-    double boardH = new Size(lcdSize.getHeightMm(), SizeUnit.mm).convertToPixels();
-    double boardX = x - 60;
-    double boardY = y - 20;
-    return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 10, 10);
+    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()), getBoardWidth(),
+        getBoardLength(), 10, 10);
   }
 
   @Override
@@ -201,11 +230,10 @@ public class CharacterLCD extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double boardW = new Size(lcdSize.getWidthMm(), SizeUnit.mm).convertToPixels();
-    double boardH = new Size(lcdSize.getHeightMm(), SizeUnit.mm).convertToPixels();
-
-    double boardX = x - 60;
-    double boardY = y - 20;
+    double boardW = getBoardWidth();
+    double boardH = getBoardLength();
+    double boardX = getBoardX(x);
+    double boardY = getBoardY(y);
 
     Shape boardShape = getBodyShape();
 
@@ -246,14 +274,6 @@ public class CharacterLCD extends AbstractMakerBoard {
 
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));
-
-      // Render character boxes
-      g2d.setColor(SCREEN_TEXT);
-      g2d.setFont(new Font("Monospaced", Font.BOLD, (lcdSize == LCDSize._16x2) ? 14 : 11));
-      String line1 = (lcdSize == LCDSize._16x2) ? "HELLO WORLD! 16x2" : "DIYLC LCD MODULE";
-      String line2 = (lcdSize == LCDSize._16x2) ? "DIY LAYOUT CREATOR" : "20x4 CHARACTER LCD";
-      StringUtils.drawCenteredText(g2d, line1, screenX + screenW / 2.0, screenY + screenH / 3.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, line2, screenX + screenW / 2.0, screenY + screenH * 2.0 / 3.0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
     }
 
     g2d.setTransform(oldTx);
