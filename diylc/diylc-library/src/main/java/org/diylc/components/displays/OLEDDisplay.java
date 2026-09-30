@@ -60,8 +60,10 @@ public class OLEDDisplay extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum OLEDInterface {
-    I2C_4Pin("I2C (4-Pin: GND, VCC, SCL, SDA)"),
-    SPI_7Pin("SPI (7-Pin: GND, VCC, D0, D1, RES, DC, CS)");
+    // Labels stay short because they reach the BOM's value column through getVariantLabel; the pin
+    // legend they used to carry is already in the node names.
+    I2C_4Pin("I2C"),
+    SPI_7Pin("SPI");
 
     private final String label;
     OLEDInterface(String label) { this.label = label; }

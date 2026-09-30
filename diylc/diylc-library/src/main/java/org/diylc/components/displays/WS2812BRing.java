@@ -30,11 +30,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
-import org.diylc.awt.StringUtils;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
@@ -59,34 +56,81 @@ public class WS2812BRing extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum RingSize {
-    // Outer and inner diameters are the figures Adafruit publishes for each ring. They are not
-    // decoration: getMidRadius() averages them, and that radius places the pads, the LEDs and the
-    // control points, so an inner diameter that is out by a millimetre moves every one of them.
-    _12_LED("12 LEDs (36.8mm OD)", 12, 36.8, 23.3),
-    _16_LED("16 LEDs (44.5mm OD)", 16, 44.5, 31.7),
-    _24_LED("24 LEDs (65.5mm OD)", 24, 65.5, 52.3);
+    // The rings are dimensioned in inches, so both diameters are exact conversions of the measured
+    // figures (1.45 / 0.92, 1.75 / 1.25, 2.58 / 2.06) rather than roundings. LEDs are placed on the
+    // midpoint between the two rims. The measured LED circles are 1.16, 1.5 and 2.3 inches, which
+    // the midpoint reproduces exactly on the 16-LED ring and misses by 0.64 mm on the 12 and
+    // 0.51 mm on the 24 -- accepted deliberately rather than carrying a third diameter per ring.
+    // Pads sit in the gaps between consecutive LEDs and are not grouped together, so each ring
+    // lists its pads in order around the circle with the number of LEDs that follow each one
+    // before the next. The final figure wraps back round to the first pad, which means the gaps
+    // must sum to the LED count; the constructor checks that rather than trusting a transcription.
+    _12_LED("12 LEDs", 12, 36.83, 23.368,
+        new String[] {"OUT", "IN", "GND", "PWR"},
+        new int[] {2, 4, 2, 4}),
+    _16_LED("16 LEDs", 16, 44.45, 31.75,
+        new String[] {"IN", "OUT", "G_1", "G_2", "V+_1", "V+_2"},
+        new int[] {2, 5, 1, 4, 1, 3}),
+    _24_LED("24 LEDs", 24, 65.532, 52.324,
+        new String[] {"OUT", "IN", "G_1", "G_2", "PWR_1", "PWR_2"},
+        new int[] {2, 8, 2, 2, 2, 8});
 
     private final String label;
     private final int ledCount;
     private final double outerDiameterMm;
     private final double innerDiameterMm;
+    private final String[] padNames;
+    private final int[] padGapIndex;
 
-    RingSize(String label, int ledCount, double outerDiameterMm, double innerDiameterMm) {
+    RingSize(String label, int ledCount, double outerDiameterMm, double innerDiameterMm,
+        String[] padNames, int[] ledsAfterPad) {
       this.label = label;
       this.ledCount = ledCount;
       this.outerDiameterMm = outerDiameterMm;
       this.innerDiameterMm = innerDiameterMm;
+      this.padNames = padNames;
+      this.padGapIndex = new int[padNames.length];
+      int gap = 0;
+      for (int i = 0; i < padNames.length; i++) {
+        padGapIndex[i] = gap;
+        gap += ledsAfterPad[i];
+      }
+      if (gap != ledCount) {
+        throw new IllegalArgumentException(
+            label + ": pad gaps sum to " + gap + " but the ring carries " + ledCount + " LEDs");
+      }
     }
 
     @Override public String toString() { return label; }
     public int getLedCount() { return ledCount; }
     public double getOuterDiameterMm() { return outerDiameterMm; }
     public double getInnerDiameterMm() { return innerDiameterMm; }
+    public String[] getPadNames() { return padNames; }
+
+    /** Which gap between LEDs the pad at {@code index} sits in, counted from the first pad. */
+    public int getPadGapIndex(int index) { return padGapIndex[index]; }
   }
 
   public static Color NEO_BLACK = Color.decode("#111111");
 
-  private static final String[] PIN_NAMES = {"DIN", "+5V", "GND", "DOUT"};
+  // Pads are small and sit near the rim; these are what the ring overrides the inherited solder
+  // pad footprint with, the default being sized for a breakout board rather than a ring.
+  public static Size PAD_WIDTH = new Size(1.6d, SizeUnit.mm);
+  public static Size PAD_LENGTH = new Size(1.3d, SizeUnit.mm);
+  public static Size PAD_HOLE = new Size(0.7d, SizeUnit.mm);
+  public static Size PAD_EDGE_INSET = new Size(1.4d, SizeUnit.mm);
+
+  // The ring is drawn lit: unlit it is a black disc with white specks on it, which reads as no
+  // particular part. The sequence runs yellow - orange - red - purple - blue - green and wraps
+  // back into yellow, so the gradient is continuous the whole way round rather than breaking at
+  // whichever LED happens to be first.
+  public static Color[] GRADIENT_ANCHORS = new Color[] {
+      Color.decode("#FFEE00"), Color.decode("#FF8800"), Color.decode("#FF1122"),
+      Color.decode("#AA22EE"), Color.decode("#2255FF"), Color.decode("#22DD44")};
+
+  public static Color[] LED_COLORS_12 = buildGradient(12);
+  public static Color[] LED_COLORS_16 = buildGradient(16);
+  public static Color[] LED_COLORS_24 = buildGradient(24);
 
   private RingSize ringSize = RingSize._16_LED;
 
@@ -115,37 +159,105 @@ public class WS2812BRing extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
-    if (index >= 0 && index < PIN_NAMES.length) {
-      return PIN_NAMES[index];
+    String[] padNames = ringSize.getPadNames();
+    if (index >= 0 && index < padNames.length) {
+      return padNames[index];
     }
     return Integer.toString(index + 1);
   }
 
+  @Override
+  protected Size getSolderPadWidth() {
+    return PAD_WIDTH;
+  }
+
+  @Override
+  protected Size getSolderPadLength() {
+    return PAD_LENGTH;
+  }
+
+  @Override
+  protected Size getSolderPadHoleSize() {
+    return PAD_HOLE;
+  }
+
+  /** The circle the LED centres sit on: the midpoint between the inner and outer rims. */
   private double getMidRadius() {
     double outerR = new Size(ringSize.getOuterDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
     double innerR = new Size(ringSize.getInnerDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
     return (outerR + innerR) / 2.0;
   }
 
+  /**
+   * Spreads {@link #GRADIENT_ANCHORS} evenly over {@code count} LEDs, interpolating between
+   * neighbouring anchors and treating the anchors as a loop so the last LED runs back into the
+   * first. Called once per palette at class load rather than per repaint.
+   */
+  private static Color[] buildGradient(int count) {
+    Color[] colors = new Color[count];
+    int anchorCount = GRADIENT_ANCHORS.length;
+    for (int i = 0; i < count; i++) {
+      double position = (double) i * anchorCount / count;
+      int anchor = (int) position;
+      double blend = position - anchor;
+      Color from = GRADIENT_ANCHORS[anchor];
+      Color to = GRADIENT_ANCHORS[(anchor + 1) % anchorCount];
+      colors[i] = new Color(
+          (int) Math.round(from.getRed() + (to.getRed() - from.getRed()) * blend),
+          (int) Math.round(from.getGreen() + (to.getGreen() - from.getGreen()) * blend),
+          (int) Math.round(from.getBlue() + (to.getBlue() - from.getBlue()) * blend));
+    }
+    return colors;
+  }
+
+  private Color[] getLedColors() {
+    switch (ringSize) {
+      case _12_LED:
+        return LED_COLORS_12;
+      case _16_LED:
+        return LED_COLORS_16;
+      case _24_LED:
+        return LED_COLORS_24;
+      default:
+        // a ring size added later still renders before it is given a palette of its own
+        return buildGradient(ringSize.getLedCount());
+    }
+  }
+
+  /**
+   * Pads sit out towards the rim rather than on the circle the LEDs occupy. This has to be the one
+   * place the radius is decided: {@link #updateControlPoints()} offsets every pad from the first
+   * one by it, and {@link #getCenter()} works backwards from the first pad to find the middle of
+   * the ring, so the two disagreeing would leave the body drawn away from its own control points.
+   */
+  private double getPadRadius() {
+    double outerR = new Size(ringSize.getOuterDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
+    return outerR - PAD_EDGE_INSET.convertToPixels();
+  }
+
+  /**
+   * Pads are not grouped: each one sits in a gap between two consecutive LEDs, the gaps being the
+   * ones {@link RingSize} records. The sequence is anchored at the gap just past the bottom of the
+   * ring and runs clockwise from there; where it starts is arbitrary, since the component rotates.
+   */
   private double getPadAngle(int index) {
-    double spacing = PIN_SPACING.convertToPixels();
-    double midR = getMidRadius();
-    double deltaTheta = spacing / midR;
-    // 4 pads placed symmetrically at the bottom of the circular ring (near angle PI / 2)
-    return Math.PI / 2.0 + (index - 1.5) * deltaTheta;
+    int ledCount = ringSize.getLedCount();
+    double gap = ringSize.getPadGapIndex(index) + ledCount / 2.0 + 0.5;
+    return 2 * Math.PI * gap / ledCount - Math.PI / 2.0;
   }
 
   @Override
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
-    double midR = getMidRadius();
+    double padR = getPadRadius();
     double theta0 = getPadAngle(0);
 
-    double[][] relativeOffsets = new double[4][2];
-    for (int i = 0; i < 4; i++) {
+    int padCount = ringSize.getPadNames().length;
+    double[][] relativeOffsets = new double[padCount][2];
+    for (int i = 0; i < padCount; i++) {
       double theta = getPadAngle(i);
-      relativeOffsets[i][0] = midR * (Math.cos(theta) - Math.cos(theta0));
-      relativeOffsets[i][1] = midR * (Math.sin(theta) - Math.sin(theta0));
+      relativeOffsets[i][0] = padR * (Math.cos(theta) - Math.cos(theta0));
+      relativeOffsets[i][1] = padR * (Math.sin(theta) - Math.sin(theta0));
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -153,10 +265,10 @@ public class WS2812BRing extends AbstractMakerBoard {
 
   private Point2D getCenter() {
     Point2D p0 = controlPoints[0];
-    double midR = getMidRadius();
+    double padR = getPadRadius();
     double theta0 = getPadAngle(0);
-    // When unrotated, center is at p0 - (midR*cos(theta0), midR*sin(theta0))
-    return new Point2D.Double(p0.getX() - midR * Math.cos(theta0), p0.getY() - midR * Math.sin(theta0));
+    // unrotated, the centre sits one pad radius back along the first pad's angle
+    return new Point2D.Double(p0.getX() - padR * Math.cos(theta0), p0.getY() - padR * Math.sin(theta0));
   }
 
   @Override
@@ -188,7 +300,6 @@ public class WS2812BRing extends AbstractMakerBoard {
 
     double outerR = new Size(ringSize.getOuterDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
     double innerR = new Size(ringSize.getInnerDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
-    double midR = (outerR + innerR) / 2.0;
 
     // Annular ring shape: outer circle minus inner circle
     Area outerArea = new Area(new Ellipse2D.Double(cx - outerR, cy - outerR, outerR * 2, outerR * 2));
@@ -208,29 +319,24 @@ public class WS2812BRing extends AbstractMakerBoard {
 
     if (!outlineMode) {
       int ledCount = ringSize.getLedCount();
-      double ledSize = Math.max(8.0, Math.min(15.0, (2 * Math.PI * midR / ledCount) * 0.60));
+      double ledR = getMidRadius();
+      double ledSize = RGB_LED_SIZE.convertToPixels();
+      Color[] ledColors = getLedColors();
 
       // Draw all LEDs around the circular ring
       for (int i = 0; i < ledCount; i++) {
         double angle = 2 * Math.PI * i / ledCount - Math.PI / 2.0;
-        MakerBoardPainter.drawAddressableLed(g2d, cx + midR * Math.cos(angle),
-            cy + midR * Math.sin(angle), ledSize);
+        MakerBoardPainter.drawAddressableLed(g2d, cx + ledR * Math.cos(angle),
+            cy + ledR * Math.sin(angle), ledSize, ledColors[i % ledColors.length]);
       }
 
-      // Center silkscreen text
-      g2d.setColor(Color.decode("#666666"));
-      g2d.setFont(SILK_FONT_SMALL);
-      StringUtils.drawCenteredText(g2d, "NeoPixel", cx, cy - 6, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, ringSize.getLedCount() + "x LED", cx, cy + 6, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
-
-      // The four pads sit one pin spacing apart along the arc, which leaves each of them far less
-      // room than its name needs, so the names are left to the node tooltips and the netlist.
+      // Pad names are left to the node tooltips and the netlist: a pad sits in the gap between two
+      // LEDs, which is nowhere near enough room for its name.
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw the 4 solder pads directly on the circular ring PCB
-    drawSolderPads(g2d, 0, 4, outlineMode, drawingObserver);
+    drawSolderPads(g2d, 0, ringSize.getPadNames().length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

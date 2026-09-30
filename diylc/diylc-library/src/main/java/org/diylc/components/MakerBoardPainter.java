@@ -251,7 +251,17 @@ public class MakerBoardPainter {
    * @param size edge length of the square package; lens and die scale with it
    */
   public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size) {
+    drawAddressableLed(g2d, cx, cy, size, null);
+  }
+
+  /**
+   * Draws one 5050 addressable RGB package. A {@code litColor} shows the LED emitting that colour;
+   * {@code null} draws it dark, which is how an unpowered part looks sitting on a layout.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor) {
     double half = size / 2.0;
+
     g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
     g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_BORDER);
@@ -259,13 +269,13 @@ public class MakerBoardPainter {
     g2d.draw(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
 
     double lensR = half * 0.7;
-    g2d.setColor(AbstractMakerBoard.RGB_LED_LENS_COLOR);
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_LENS_COLOR : litColor);
     g2d.fill(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
-    g2d.setColor(AbstractMakerBoard.RGB_LED_LENS_BORDER);
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_LENS_BORDER : litColor.darker());
     g2d.draw(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
 
     double dieSize = Math.max(2.0, lensR * 0.4);
-    g2d.setColor(AbstractMakerBoard.RGB_LED_CHIP_COLOR);
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : litColor.brighter());
     g2d.fill(new Rectangle2D.Double(cx - dieSize / 2.0, cy - dieSize / 2.0, dieSize, dieSize));
   }
 }

@@ -46,7 +46,7 @@ Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY
 | Class | Variants today | Assessment |
 |---|---|---|
 | `SevenSegmentDisplay` | 1-digit 10-pin, 4-digit 12-pin, TM1637 module | **Best-*written* file in the set**, which is not the same as the best-sourced one. The segment-mask table is genuinely good, the 10-pin structure is corroborated, and the glyph itself is now the standard unit-grid construction: an upright 10 × 18 box with segments two units thick, mitred at 45 degrees so neighbours meet at a shared vertex, each outlined in the face colour so that they still read as separate segments. That replaced a set of hand-tuned polygons and retired both `SEGMENT_GAP` (the construction separates by outline rather than by gap) and `SLANT_DEGREES` (it is drawn upright, as the source is). What remains unchecked is everything *around* the glyph. The per-package dimensions now live on the `DisplayType` constants rather than in scattered branches, and the enum has been split so that the two bare four-digit packages — 0.36" and 0.56" — are separate variants sharing one pin array. The 0.56" set is what this class has always carried and remains unverified; the 0.36" set is now largely maintainer-supplied — body 30 × 14 mm, 7.5 mm digit pitch, 0.4" row spacing — leaving only its digit width inferred. See §11.10 and §11.11. |
-| `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths placing pads on the mid-radius arc, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. |
+| `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. Its diameters, pad count and pad placement have all since been corrected from Adafruit's pages and the maintainer's measurements; the pads now sit on their own radius near the rim, each in one of the real uneven gaps between LEDs (§11.9). The LED packages are the real 5 mm 5050 part, shared with the Stick as `AbstractMakerBoard.RGB_LED_SIZE` — they had been drawn at a clamped 8-15 px, barely 1-2 mm — and the ring renders lit, in a continuous yellow-orange-red-purple-blue-green gradient with a palette per variant. |
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data, correct 80 × 36 and 98 × 60 mm bodies. All screen and bezel geometry in raw pixels, including an eyeballed `bezelMarginX = (16x2) ? 45 : 40`. Allocates a `Font` inside `draw()`. |
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names and a correct 27 mm square body, but **the glass is drawn near-square** when the 0.96" SSD1306 active area is a roughly 2:1 letterbox. No size variants. |
 | `LEDMatrix8x8` | none | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. **Missing the 4-in-1 32x8 module.** |
@@ -90,6 +90,12 @@ ground is almost certainly wrong.
    the point of a pad label, so the names are left to the node tooltips and the netlist, as on the
    Stick. The array also duplicated `PIN_NAMES` and had already drifted from it, printing `5V`
    where the node name says `+5V`.
+
+   The centre silkscreen went the same way afterwards. A two-line `NeoPixel` / `N x LED` caption was
+   drawn at the middle of the component, which on a ring is the hole rather than the board — the
+   text floated in empty space, and the variant it announced is already in the BOM value, the
+   property editor and the component name. Dropping it retired the class's last uses of
+   `StringUtils`, `HorizontalAlignment` and `VerticalAlignment`, which were removed with it.
 7. **Connectors are not centred on their edge.** In `CharacterLCD` and `TFTDisplay` the header
    starts at the control-point origin while the board is placed by a raw pixel offset (−60 and −70
    respectively), so the connector sits in a corner instead of centred where the product has it.
@@ -97,11 +103,12 @@ ground is almost certainly wrong.
    and only its vertical offset was a raw pixel value. This is the visible face of D7, and it
    resolves when the geometry is re-derived from `Size` constants in item 6.
 
-8. **The Ring's pad arc and LED arc coincide.** Both the solder pads and the LEDs are placed on the
-   mid-radius circle, so the four pads sit on top of LEDs at the bottom of the ring. Nothing is
-   hidden — `drawSolderPads` runs last, after the transform is restored, so the pads draw over the
-   LEDs — but on the real board the pads occupy a gap in the LED sequence rather than sharing it.
-   Whether the LED ring should skip the pad positions is a fidelity question for item 10.
+8. **The Ring's pad arc and LED arc coincide** — **resolved, with §11.9.** Both the solder pads and
+   the LEDs were placed on the mid-radius circle, so the four pads sat on top of LEDs at the bottom
+   of the ring. Nothing was hidden — `drawSolderPads` runs last, after the transform is restored, so
+   the pads drew over the LEDs — but on the real board the pads occupy a gap in the LED sequence
+   rather than sharing it. They now sit on their own radius near the outer edge, each in a named gap
+   between two consecutive LEDs; §11.9 carries the sequences.
 
 9. **`LEDMatrix8x8`'s `OUT` label sits inside the matrix block.** The output header row is 3.46 mm
    below the top edge and the matrix starts 3.8 mm below it, so the strip between them is too
@@ -112,12 +119,19 @@ ground is almost certainly wrong.
    to its matrix, which is item 10.
 
 10. **Every one of the Ring's six diameters was wrong.** The enum carried 37.0/27.0, 44.5/32.0 and
-    66.0/52.0 for the 12, 16 and 24 LED rings; Adafruit publishes 36.8/23.3, 44.5/31.7 and
-    65.5/52.3. The outer diameters were near-misses but the inner ones were not — the 12-LED ring
-    was out by 3.7 mm on a 36.8 mm part. That is not cosmetic: `getMidRadius()` averages the two,
-    and that radius places the pads, the LEDs and the control points, so the 12-ring's geometry sat
-    about a millimetre out everywhere. This was the first substantive error item 10 turned up, and
-    it is the argument for finishing the sweep rather than trusting the remaining drafts.
+    66.0/52.0 for the 12, 16 and 24 LED rings. The outer diameters were near-misses but the inner
+    ones were not — the 12-LED ring was out by 3.7 mm on a 36.8 mm part. That is not cosmetic:
+    `getMidRadius()` averages the two and every LED sits on that radius, so the 12-ring's LED circle
+    sat about a millimetre out. The enum now carries exact conversions of the maintainer's measured
+    figures — 1.45"/0.92", 1.75"/1.25" and 2.58"/2.06" — which corroborate Adafruit's published
+    36.8/23.3, 44.5/31.7 and 65.5/52.3 to within a rounding. This was the first substantive error
+    item 10 turned up, and it is the argument for finishing the sweep rather than trusting the
+    remaining drafts.
+
+    The LED circle was measured too — 1.16", 1.5" and 2.3" — and deliberately **not** stored. The
+    mid-radius reproduces the 16-LED circle exactly and misses the other two by 0.64 mm and
+    0.51 mm, judged not worth a third diameter per ring. The measured values are recorded in the
+    enum's comment so that the derivation reads as a decision rather than an oversight.
 
 Items 6 through 9 were found by rendering the components, not by reading them; item 10 was found by
 checking a vendor page. Since no regression
@@ -164,7 +178,7 @@ Ordered by risk, not by file size. None of these is a compatibility concern (D6)
 | 7 | Replace demo screen text with a neutral panel (D4) — **done**: all three now draw an unpowered panel, and `CharacterLCD`'s `SCREEN_TEXT` colour went with its lettering | `CharacterLCD`, `OLEDDisplay`, `TFTDisplay` | 1-2 h |
 | 8 | Route silk labels through `getSilkPinLabel` / `drawPinLabels` — **done**: the Stick's now come from `getSilkPinLabel` and the Ring's are dropped; removing the Ring's inline `new Font(...)` also settles half of item 9 | `WS2812BStick`, `WS2812BRing` | 1-2 h |
 | 9 | `zOrder` to `COMPONENT` on `CharacterLCD` and `TFTDisplay`; cache the two `draw()` fonts; strip non-ASCII; drop the unused import — **done**: all seven are `COMPONENT`, both `draw()` fonts left with items 7 and 8, `SevenSegmentDisplay`'s degree signs were the last non-ASCII, and the orphaned imports plus `CharacterLCD.SCREEN_TEXT` are gone. The three surviving `new Font(...)` calls are all in `drawIcon`, which runs per toolbox icon rather than per repaint, so they are deliberately left | 5 | 1 h |
-| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **partly done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), and `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10. Open: the Ring's pad count (§11.9), `SevenSegmentDisplay`'s pin arrays (§11.10), `CharacterLCD`'s part identity (§11.8), `LEDMatrix8x8`'s silk placement (§3.2 item 9), and the Ring's pad/LED arc sharing (§3.2 item 8) | all 7 | the bulk of the slice |
+| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **partly done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10 — and that same class's pad count, naming and arrangement (§11.9, maintainer-supplied, which also closed §3.2 item 8). Open: `SevenSegmentDisplay`'s pin arrays (§11.10), `CharacterLCD`'s part identity (§11.8), and `LEDMatrix8x8`'s silk placement (§3.2 item 9) | all 7 | the bulk of the slice |
 
 Items 1 and 2 have landed. The five shared 5050-package colours now live on `AbstractMakerBoard` as
 `RGB_LED_*`, and the duplicated copies are gone from both NeoPixel classes along with two dead
@@ -420,9 +434,46 @@ gate the displays.
    the node labels in `AbstractNetlistAnalyzer`, so netlist output gains the variant for any project
    containing a maker board. No regression sample contains one today, which is precisely why this is
    cheaper to do now than after §8's samples are written.
+
+   **The labels were later trimmed to suit the column they landed in.** Enum labels had been written
+   for a property drop-down and read badly as shopping-list entries once they became BOM values —
+   `OLEDDisplay` printed the wiring legend `I2C (4-Pin: GND, VCC, SCL, SDA)`, `CharacterLCD` printed
+   `16x2 (80x36mm), I2C Backpack (4-Pin)`, and `WS2812BRing` carried an outside diameter that is a
+   specification rather than part identity. Four components were trimmed in place — `OLEDDisplay`,
+   `CharacterLCD`, `WS2812BRing`, `SevenSegmentDisplay` — so a cell now reads `16x2, I2C Backpack`
+   or `4-Digit 0.36"`. The drop-down loses that detail too, which was the accepted trade: the pin
+   legends are already in the node names, and the dimensions are in the fields beside the label.
+
+   The seven boards were deliberately **left alone**: `UNO R4 WiFi`, `Pi Pico 2 W` and `Teensy 4.1`
+   are already the name you would order. `ESP32DevKit` keeps its pin count — `ESP32 DevKit V1
+   (30-Pin)` — because that is genuinely how those boards are distinguished in a catalogue.
+   `ArduinoNano` needed nothing: its enum carries silkscreen and package markings in fields beside
+   the label, so only the label itself was ever reaching the BOM.
+
+   Two things this does not change: enum **constant names** are untouched, so nothing serialises
+   differently, and the grouping still splits correctly on the shorter values — two Uno versions
+   still produce two rows.
 2. **A uniform property set** — the board roadmap's §8.3. This slice adds `Version`-style enums to
    three more classes; deciding now whether a "Show Pin Labels" toggle and a consistent `Headers`
    property belong on every maker component avoids retrofitting nine more classes later.
+
+   **Colour is now part of this question, and `SevenSegmentDisplay` has a worked answer.** It
+   carried the inherited "Board Color" plus a local "LED Color", which was wrong twice over: three
+   of its four packages have no board at all, and the field painted two different physical things —
+   the plastic moulding on a bare package, the PCB on a TM1637 — while the display background was
+   hardcoded and not editable. It now carries three colours that each mean exactly one thing:
+   **Board** (the PCB, ignored on the bare packages), **Body** (the display device itself: the
+   moulding on a package, the module on a TM1637) and **LED**. The recessed window is derived as
+   `bodyColor.darker()` rather than being a fourth property, which keeps a red package from having
+   a black window.
+
+   Two findings worth reusing. A subclass **can** relabel an inherited `@EditableProperty` — an
+   `@Override` carrying its own annotation wins, verified by extracting the property list rather
+   than inferred from a clean compile, and `SubminiTube`, `PCBTerminalBlock`, `IECSocket` and
+   `DIPSwitch` all already do it. And per-variant defaults should **not** be set from the variant
+   setter: `ArduinoUno.setVersion()` and the drafted `DHTSensor.setModel()` both overwrite
+   `bodyColor`, discarding a colour the user chose. Separate fields for separate physical layers
+   avoids needing a default that changes underneath someone.
 3. **The bar graph's base class** (§6.6) — follow `DIL_IC` on `AbstractLabeledComponent` with a
    transformer, or extend `AbstractMakerBoard` for consistency with its category neighbours. The
    recommendation is `DIL_IC`, because the part is a DIP package and rotation for DIP parts already
@@ -457,15 +508,40 @@ gate the displays.
    specific part — as the TFT slice settled on the MSP2807 — and taking the outline, window and
    hole positions from that one drawing, rather than assembling them from whichever vendor answers
    a search first.
-9. **How many pads does a NeoPixel Ring have?** — **and this one has a deadline.** The component
-   models four (`DIN`, `+5V`, `GND`, `DOUT`), and the NeoPixel guide confirms those labels are
-   right. But the 16-LED ring's own changelog records that Adafruit "added an extra ground and
-   power breakout" in July 2014, so the shipping part almost certainly has six. Three Adafruit
-   sources — the product pages, the rings guide and the basic-connections guide — all decline to
-   state the count. **Pad count is control-point count.** Under D6 that is free to change today,
-   because nothing shipped references these classes; once 6.7.0 is released it becomes a
-   file-format migration. So this is the one open item that gets materially more expensive by
-   waiting, and the cheapest way to close it is a look at a physical ring or its EagleCAD files.
+9. **How many pads does a NeoPixel Ring have?** — **decided, from the maintainer: four on the
+   12-LED ring, six on the 16 and the 24.** The guess recorded here, that the 2014 "extra ground and
+   power breakout" made six universal, was half right — the two larger rings gained the extra pair
+   and the 12-LED one did not, which is why no single count could be found for "the" ring.
+
+   The more consequential half of the answer was the **arrangement**, which no source stated and
+   which the component had wrong: the pads are not grouped together. Each sits toward the outer
+   edge, in the gap between two consecutive LEDs, and those gaps are uneven:
+
+   - 12 — `OUT`, 2 LEDs, `IN`, 4, `GND`, 2, `PWR`, 4 (wrapping)
+   - 16 — `IN`, 2, `OUT`, 5, `G`, 1, `G`, 4, `V+`, 1, `V+`, 3 (wrapping)
+   - 24 — `OUT`, 2, `IN`, 8, `G`, 2, `G`, 2, `PWR`, 2, `PWR`, 8 (wrapping)
+
+   `RingSize` therefore carries a pad-name array beside a parallel array of LED gaps, and the
+   constructor accumulates those gaps into absolute indices and **throws if they do not sum to the
+   LED count.** That invariant is the point: a mistyped sequence fails at class-load instead of
+   rendering as a plausible but wrong ring. Duplicate pad names are disambiguated as `G_1`/`G_2` and
+   `V+_1`/`V+_2`, which keeps them distinct nets while `getDisplayPinLabel` truncates at the first
+   `_` so the silkscreen still reads `G`.
+
+   This also closes §3.2 item 8. The pads no longer share the LED arc: they sit on their own radius,
+   `outerR` less a 1.4 mm `PAD_EDGE_INSET`, drawn 1.6 × 1.3 mm with a 0.7 mm hole. A ring pad is far
+   smaller than a 0.1" header pad, so `AbstractMakerBoard` grew three
+   `getSolderPad{Width,Length,HoleSize}` hooks. That is a deliberate exception to the usual
+   preference for tuning the shared appearance constants globally, taken because only the Ring wants
+   these values: the defaults reproduce the previous hardcoded 22 / 16 / 7 px exactly, confirmed by
+   byte-comparing every maker render before and after and finding **only `WS2812BRing` changed**.
+
+   Because the pad is an axis-aligned rectangle, what has to clear the rim is its corner diagonal
+   (1.031 mm), not its half-length — leaving 0.37 mm of board outside the furthest corner, about
+   3 px at 1:1. Both the full-size renders and a pixel scan appeared to show pads breaching the rim;
+   both were misreading the board's own anti-aliased edge, which registers at every angle rather
+   than only at the pads. Magnifying the tightest pad on each variant 12× showed unbroken board
+   between every pad and the rim.
 10. **`SevenSegmentDisplay`'s pin arrays are unverified, and one of them is suspect.** The 10-pin
     structure is corroborated — a 0.56" single digit such as the 5161AS has ten pins, two of them
     common — but no source consulted would give an *ordered* pin list, so `PIN_NAMES_1DIGIT` and
@@ -474,8 +550,8 @@ gate the displays.
     0.56" four-digit equivalent is the 5641AS, and if its pinout differs then the component pairs
     one part's pins with another part's dimensions. Four attempts failed to settle it: both xlitx
     HTML pages carry only electro-optical tables, and both linked datasheets are image-encoded PDFs
-    of the kind that also defeated the MSP2807 manual. **This carries the same D6 deadline as §11.9
-    and is worse in consequence** — a wrong dimension is a wrong picture, a wrong pin array is a
+    of the kind that also defeated the MSP2807 manual. **With §11.9 settled this is the last unsourced
+    geometry in the set, and the worse one to leave** — a wrong dimension is a wrong picture, a wrong pin array is a
     wrong netlist, and it is silent. Closing it needs a readable datasheet or a part in hand.
 
     Note that replacing the digit glyph with the standard unit-grid construction did **not** touch

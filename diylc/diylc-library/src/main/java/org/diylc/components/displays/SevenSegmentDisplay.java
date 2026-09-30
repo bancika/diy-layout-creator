@@ -71,12 +71,10 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    * until someone reads a datasheet or measures a part.
    */
   public enum DisplayType {
-    SingleDigit_10Pin("1-Digit 0.56\" (10-Pin DIP)", 12.6d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
-    FourDigit_0_36_12Pin("4-Digit 0.36\" Bare (12-Pin DIP)", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d,
-        10.16d, true),
-    FourDigit_0_56_12Pin("4-Digit 0.56\" Bare (12-Pin DIP)", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d,
-        15.24d, true),
-    TM1637_Module_4Pin("4-Digit TM1637 Module (4-Pin)", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
+    SingleDigit_10Pin("1-Digit 0.56\"", 12.6d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
+    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true),
+    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true),
+    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
 
     private final String label;
     private final double bodyWidthMm;
@@ -138,18 +136,36 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    */
   public static double DIGIT_DRAW_SCALE = 0.88d;
 
+  /**
+   * Pin arrays are in DIP order: index 0 is pin 1 at the bottom left, counting right along the
+   * bottom row and then back right-to-left along the top, which is how {@code updateControlPoints}
+   * places the control points. The two commons are numbered only to keep the node names distinct;
+   * they are the same net on the part.
+   */
   public static final String[] PIN_NAMES_1DIGIT = new String[] {
-      "e", "d", "COM1", "c", "DP", "b", "a", "COM2", "f", "g"
+      "E", "D", "COM1", "C", "DP", "B", "A", "COM2", "F", "G"
   };
 
+  /**
+   * Shared by both bare four-digit packages, which differ in size but not in pin function.
+   *
+   * <p>This was previously transcribed in reading order -- top row left to right, then bottom row
+   * left to right -- rather than in DIP order, which put every segment and digit common on the
+   * wrong pin. The single-digit array above was always correct, and the two using different
+   * conventions in the same file is what gave the error away.
+   */
   public static final String[] PIN_NAMES_4DIGIT = new String[] {
-      "D1", "a", "f", "D2", "D3", "b", "e", "d", "DP", "c", "g", "D4"
+      "E", "D", "DP", "C", "G", "D4", "B", "D3", "D2", "F", "A", "D1"
   };
 
   public static final String[] PIN_NAMES_TM1637 = new String[] {"CLK", "DIO", "VCC", "GND"};
 
+  /** The blue of a bare PCB, matching the board under the OLED module. */
+  public static Color PCB_BLUE = Color.decode("#004488");
+
   private DisplayType displayType = DisplayType.SingleDigit_10Pin;
   private Color ledColor = LED_RED;
+  private Color boardColor = PCB_BLUE;
 
   public SevenSegmentDisplay() {
     super();
@@ -182,6 +198,31 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   public void setLedColor(Color ledColor) {
     this.ledColor = ledColor;
     invalidateCache();
+  }
+
+  /**
+   * The circuit board a module is built on. Only the TM1637 has one: the bare packages are a
+   * moulding with pins in it, so this is ignored for them.
+   */
+  @EditableProperty(name = "Board Color")
+  public Color getBoardColor() {
+    return boardColor;
+  }
+
+  public void setBoardColor(Color boardColor) {
+    this.boardColor = boardColor;
+    invalidateCache();
+  }
+
+  /**
+   * The display device itself, which is the whole part on a bare package and the module mounted on
+   * the board on a TM1637. Relabelled from the inherited "Board Color", which was accurate for
+   * neither: three of the four packages have no board at all.
+   */
+  @EditableProperty(name = "Body")
+  @Override
+  public Color getBodyColor() {
+    return super.getBodyColor();
   }
 
   /**
@@ -287,8 +328,12 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
+    // the outline is the board on a module and the moulding on a bare package
+    Color outlineFill =
+        displayType == DisplayType.TM1637_Module_4Pin ? boardColor : bodyColor;
+
     drawingObserver.startTracking();
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : outlineFill);
     g2d.fill(boardShape);
     drawingObserver.stopTracking();
 
@@ -298,8 +343,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     if (!outlineMode) {
       if (displayType == DisplayType.SingleDigit_10Pin) {
-        // Dark display face
-        g2d.setColor(FACE_BLACK);
+        // the recessed window is a shade of the moulding, so it follows the body colour
+        g2d.setColor(bodyColor.darker());
         g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -315,8 +360,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
 
       } else if (isFourDigitBare()) {
-        // Dark display face
-        g2d.setColor(FACE_BLACK);
+        // the recessed window is a shade of the moulding, so it follows the body colour
+        g2d.setColor(bodyColor.darker());
         g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -360,16 +405,17 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         double bezelX = boardX + (boardW - bezelW) / 2.0;
         double bezelY = boardY + (boardH - bezelH) / 2.0;
 
-        g2d.setColor(FACE_BLACK);
+        // on this part the body is the display module itself, sitting on the board
+        g2d.setColor(bodyColor);
         g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
 
-        // 4 Digits inside 0.36" bezel
-        double dw = new Size(5.5d, SizeUnit.mm).convertToPixels();
-        double dh = new Size(9.2d, SizeUnit.mm).convertToPixels();
-        double pitch = new Size(7.62d, SizeUnit.mm).convertToPixels();
+        // digits from the package's own figures, as the other two branches already do
+        double dw = new Size(displayType.getDigitWidthMm(), SizeUnit.mm).convertToPixels();
+        double dh = new Size(displayType.getDigitHeightMm(), SizeUnit.mm).convertToPixels();
+        double pitch = new Size(displayType.getDigitPitchMm(), SizeUnit.mm).convertToPixels();
         double firstCenterX = bezelX + (bezelW - 3 * pitch) / 2.0;
         double dy = bezelY + (bezelH - dh) / 2.0;
 

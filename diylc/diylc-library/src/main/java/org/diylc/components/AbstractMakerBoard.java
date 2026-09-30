@@ -101,6 +101,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
+  // the 5050 package shared by every addressable RGB part on a maker board
+  public static Size RGB_LED_SIZE = new Size(5.0d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
@@ -553,11 +555,28 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   /**
    * Helper to draw rectangular tinned solder pads with drill holes at given control points.
    */
+  /**
+   * Footprint of a solder pad. The defaults are the sizes this method has always drawn, expressed
+   * as the inch measures they work out to exactly, so a board that wants smaller pads overrides
+   * these rather than a second pad-drawing method being written somewhere else.
+   */
+  protected Size getSolderPadWidth() {
+    return new Size(0.11d, SizeUnit.in);
+  }
+
+  protected Size getSolderPadLength() {
+    return new Size(0.08d, SizeUnit.in);
+  }
+
+  protected Size getSolderPadHoleSize() {
+    return new Size(0.035d, SizeUnit.in);
+  }
+
   protected void drawSolderPads(Graphics2D g2d, int startIndex, int count, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
-    double padW = 22.0;
-    double padH = 16.0;
-    double holeD = 7.0;
+    double padW = getSolderPadWidth().convertToPixels();
+    double padH = getSolderPadLength().convertToPixels();
+    double holeD = getSolderPadHoleSize().convertToPixels();
 
     drawingObserver.startTrackingContinuityArea(true);
     for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {

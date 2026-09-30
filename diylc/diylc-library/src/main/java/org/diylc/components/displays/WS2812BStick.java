@@ -59,7 +59,6 @@ public class WS2812BStick extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(51.1d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(10.22d, SizeUnit.mm);
-  public static Size LED_SIZE = new Size(5.0d, SizeUnit.mm);
   public static Size PAD_INSET = new Size(2.0d, SizeUnit.mm);
 
   // Each end carries four pads in the order GND, data, power, GND. Both grounds on an end are the
@@ -157,7 +156,7 @@ public class WS2812BStick extends AbstractMakerBoard {
     if (!outlineMode) {
       // Eight 5mm packages in a row, centred along the board. The pad names are printed on the back
       // of the real board, so this face carries no silkscreen.
-      double ledSize = LED_SIZE.convertToPixels();
+      double ledSize = RGB_LED_SIZE.convertToPixels();
       double fieldInset = (boardW - 8 * ledSize) / 2.0;
 
       for (int i = 0; i < 8; i++) {

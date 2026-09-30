@@ -60,8 +60,10 @@ public class CharacterLCD extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public enum LCDSize {
-    _16x2("16x2 (80x36mm)", 16, 2, 80.0, 36.0),
-    _20x4("20x4 (98x60mm)", 20, 4, 98.0, 60.0);
+    // Labels stay short because they reach the BOM's value column; the dimensions are carried by
+    // the fields beside them, not by the text.
+    _16x2("16x2", 16, 2, 80.0, 36.0),
+    _20x4("20x4", 20, 4, 98.0, 60.0);
 
     private final String label;
     private final int cols;
@@ -85,8 +87,8 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   public enum LCDInterface {
-    I2C_Backpack("I2C Backpack (4-Pin)"),
-    Parallel_16Pin("Parallel HD44780 (16-Pin)");
+    I2C_Backpack("I2C Backpack"),
+    Parallel_16Pin("Parallel HD44780");
 
     private final String label;
     LCDInterface(String label) { this.label = label; }
