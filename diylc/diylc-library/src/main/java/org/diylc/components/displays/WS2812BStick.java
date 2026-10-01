@@ -61,6 +61,9 @@ public class WS2812BStick extends AbstractMakerBoard {
   public static Size BOARD_HEIGHT = new Size(10.22d, SizeUnit.mm);
   public static Size PAD_INSET = new Size(2.0d, SizeUnit.mm);
 
+  // Drawn lit, off the same colour wheel as the ring, so the two read as the same family of part.
+  public static Color[] LED_COLORS_8 = buildLedGradient(8);
+
   // Each end carries four pads in the order GND, data, power, GND. Both grounds on an end are the
   // same net on the board, so they are numbered only to keep the node names distinct; the
   // silkscreen prints "GND" for all four.
@@ -154,14 +157,22 @@ public class WS2812BStick extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Eight 5mm packages in a row, centred along the board. The pad names are printed on the back
-      // of the real board, so this face carries no silkscreen.
+      // Eight 5mm packages spread evenly between the two pad columns rather than packed edge to
+      // edge. The field has to clear the header block drawPinHeader paints around each pin, which
+      // reaches one pin width plus a pixel either side of the control point and is drawn after the
+      // LEDs -- starting the field at the pad inset alone put that block over the first and last
+      // package. The pad names are printed on the back of the real board, so this face carries no
+      // silkscreen.
       double ledSize = RGB_LED_SIZE.convertToPixels();
-      double fieldInset = (boardW - 8 * ledSize) / 2.0;
+      double padInset = PAD_INSET.convertToPixels();
+      double headerHalf = PIN_SIZE.convertToPixels() + 1;
+      double fieldStart = boardX + padInset + headerHalf;
+      double fieldEnd = boardX + boardW - padInset - headerHalf;
+      double pitch = (fieldEnd - fieldStart - ledSize) / 7.0;
 
       for (int i = 0; i < 8; i++) {
-        MakerBoardPainter.drawAddressableLed(g2d, boardX + fieldInset + (i + 0.5) * ledSize,
-            boardY + boardH / 2.0, ledSize);
+        MakerBoardPainter.drawAddressableLed(g2d, fieldStart + ledSize / 2.0 + i * pitch,
+            boardY + boardH / 2.0, ledSize, LED_COLORS_8[i]);
       }
     }
 

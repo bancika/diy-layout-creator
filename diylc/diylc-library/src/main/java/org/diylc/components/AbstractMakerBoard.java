@@ -95,6 +95,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color RGB_LED_LENS_COLOR = Color.decode("#EAECEE");
   public static Color RGB_LED_LENS_BORDER = Color.decode("#BDC3C7");
   public static Color RGB_LED_CHIP_COLOR = Color.decode("#333333");
+  // The colour wheel addressable RGB parts are drawn lit with, shared so a ring, a stick and a
+  // strip all run the same sequence. It is treated as a loop, so the last anchor runs back into
+  // the first and a gradient spread over any LED count closes without a seam.
+  public static Color[] RGB_LED_GRADIENT = new Color[] {
+      Color.decode("#FFEE00"), Color.decode("#FF8800"), Color.decode("#FF1122"),
+      Color.decode("#AA22EE"), Color.decode("#2255FF"), Color.decode("#22DD44")};
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
@@ -570,6 +576,28 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   protected Size getSolderPadHoleSize() {
     return new Size(0.035d, SizeUnit.in);
+  }
+
+  /**
+   * Spreads {@link #RGB_LED_GRADIENT} evenly over {@code count} LEDs, interpolating between
+   * neighbouring anchors and treating them as a loop so the last LED runs back into the first.
+   * Called once per palette at class load rather than per repaint.
+   */
+  protected static Color[] buildLedGradient(int count) {
+    Color[] colors = new Color[count];
+    int anchorCount = RGB_LED_GRADIENT.length;
+    for (int i = 0; i < count; i++) {
+      double position = (double) i * anchorCount / count;
+      int anchor = (int) position;
+      double blend = position - anchor;
+      Color from = RGB_LED_GRADIENT[anchor];
+      Color to = RGB_LED_GRADIENT[(anchor + 1) % anchorCount];
+      colors[i] = new Color(
+          (int) Math.round(from.getRed() + (to.getRed() - from.getRed()) * blend),
+          (int) Math.round(from.getGreen() + (to.getGreen() - from.getGreen()) * blend),
+          (int) Math.round(from.getBlue() + (to.getBlue() - from.getBlue()) * blend));
+    }
+    return colors;
   }
 
   protected void drawSolderPads(Graphics2D g2d, int startIndex, int count, boolean outlineMode, IDrawingObserver drawingObserver) {

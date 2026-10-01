@@ -121,16 +121,10 @@ public class WS2812BRing extends AbstractMakerBoard {
   public static Size PAD_EDGE_INSET = new Size(1.4d, SizeUnit.mm);
 
   // The ring is drawn lit: unlit it is a black disc with white specks on it, which reads as no
-  // particular part. The sequence runs yellow - orange - red - purple - blue - green and wraps
-  // back into yellow, so the gradient is continuous the whole way round rather than breaking at
-  // whichever LED happens to be first.
-  public static Color[] GRADIENT_ANCHORS = new Color[] {
-      Color.decode("#FFEE00"), Color.decode("#FF8800"), Color.decode("#FF1122"),
-      Color.decode("#AA22EE"), Color.decode("#2255FF"), Color.decode("#22DD44")};
-
-  public static Color[] LED_COLORS_12 = buildGradient(12);
-  public static Color[] LED_COLORS_16 = buildGradient(16);
-  public static Color[] LED_COLORS_24 = buildGradient(24);
+  // particular part. One palette per variant, off the shared colour wheel.
+  public static Color[] LED_COLORS_12 = buildLedGradient(12);
+  public static Color[] LED_COLORS_16 = buildLedGradient(16);
+  public static Color[] LED_COLORS_24 = buildLedGradient(24);
 
   private RingSize ringSize = RingSize._16_LED;
 
@@ -188,28 +182,6 @@ public class WS2812BRing extends AbstractMakerBoard {
     return (outerR + innerR) / 2.0;
   }
 
-  /**
-   * Spreads {@link #GRADIENT_ANCHORS} evenly over {@code count} LEDs, interpolating between
-   * neighbouring anchors and treating the anchors as a loop so the last LED runs back into the
-   * first. Called once per palette at class load rather than per repaint.
-   */
-  private static Color[] buildGradient(int count) {
-    Color[] colors = new Color[count];
-    int anchorCount = GRADIENT_ANCHORS.length;
-    for (int i = 0; i < count; i++) {
-      double position = (double) i * anchorCount / count;
-      int anchor = (int) position;
-      double blend = position - anchor;
-      Color from = GRADIENT_ANCHORS[anchor];
-      Color to = GRADIENT_ANCHORS[(anchor + 1) % anchorCount];
-      colors[i] = new Color(
-          (int) Math.round(from.getRed() + (to.getRed() - from.getRed()) * blend),
-          (int) Math.round(from.getGreen() + (to.getGreen() - from.getGreen()) * blend),
-          (int) Math.round(from.getBlue() + (to.getBlue() - from.getBlue()) * blend));
-    }
-    return colors;
-  }
-
   private Color[] getLedColors() {
     switch (ringSize) {
       case _12_LED:
@@ -220,7 +192,7 @@ public class WS2812BRing extends AbstractMakerBoard {
         return LED_COLORS_24;
       default:
         // a ring size added later still renders before it is given a palette of its own
-        return buildGradient(ringSize.getLedCount());
+        return buildLedGradient(ringSize.getLedCount());
     }
   }
 

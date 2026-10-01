@@ -51,7 +51,7 @@ Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names and a correct 27 mm square body, but **the glass is drawn near-square** when the 0.96" SSD1306 active area is a roughly 2:1 letterbox. No size variants. |
 | `LEDMatrix8x8` | none | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. **Missing the 4-in-1 32x8 module.** |
 | `TFTDisplay` | none | **Weakest file.** No variant enum. Name and descriptor say 240x320 while the on-screen silk says `320x240`. See the footprint bug below. |
-| `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. |
+| `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
 
 ### 3.1 Two defects that are bugs, not style
 
@@ -491,8 +491,16 @@ gate the displays.
 6. **Where the Stick's pad labels go** — **decided: nowhere.** The front face carries no
    silkscreen, matching the board, which prints its pad names on the back; node-name tooltips and
    the netlist already carry the names. With the labels gone the LED row takes the real layout —
-   eight 5 mm packages centred on the 51.1 mm board — and the field inset is derived from that
-   rather than tuned to leave text room, so `LED_FIELD_INSET` is gone.
+   eight 5 mm packages on the 51.1 mm board — and the field is derived rather than tuned to leave
+   text room, so `LED_FIELD_INSET` is gone.
+
+   The row was respread afterwards. The packages had been packed edge to edge at exactly one
+   package width; they are now spaced evenly between the two pad columns, and the field starts
+   clear of the header block `drawPinHeader` paints around each pin. That block reaches a pin width
+   plus a pixel either side of the control point and is drawn after the LEDs, so deriving the field
+   from `PAD_INSET` alone left it covering 1.14 mm of the first and last package — measured off the
+   render, not guessed. The Stick is also drawn lit now, off the same shared colour wheel as the
+   Ring, so the two read as one family of part.
 7. **i18n** — component display names and enum labels are plain strings, absent from
    `diylc-swing/src/main/resources/lang/*.txt`, as they are for the shipped boards. No translation
    work is required here; noted for a future pass.
