@@ -50,7 +50,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Character LCD (16x2 / 20x4)", category = "Displays & Outputs",
+@ComponentDescriptor(name = "Character LCD", category = "Displays & Outputs",
     author = "Branislav Stojkovic", description = "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
     instanceNamePrefix = "LCD", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
@@ -61,22 +61,33 @@ public class CharacterLCD extends AbstractMakerBoard {
 
   public enum LCDSize {
     // Labels stay short because they reach the BOM's value column; the dimensions are carried by
-    // the fields beside them, not by the text.
-    _16x2("16x2", 16, 2, 80.0, 36.0),
-    _20x4("20x4", 20, 4, 98.0, 60.0);
+    // the fields beside them, not by the text. The bezel and the lit area are measured off the
+    // module and are sizes in their own right -- deriving them as margins off the board made the
+    // window grow with the board instead of staying the size of the part.
+    _16x2("16x2", 16, 2, 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
+    _20x4("20x4", 20, 4, 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
 
     private final String label;
     private final int cols;
     private final int rows;
     private final double widthMm;
     private final double heightMm;
+    private final double bezelWidthMm;
+    private final double bezelHeightMm;
+    private final double displayWidthMm;
+    private final double displayHeightMm;
 
-    LCDSize(String label, int cols, int rows, double widthMm, double heightMm) {
+    LCDSize(String label, int cols, int rows, double widthMm, double heightMm, double bezelWidthMm,
+        double bezelHeightMm, double displayWidthMm, double displayHeightMm) {
       this.label = label;
       this.cols = cols;
       this.rows = rows;
       this.widthMm = widthMm;
       this.heightMm = heightMm;
+      this.bezelWidthMm = bezelWidthMm;
+      this.bezelHeightMm = bezelHeightMm;
+      this.displayWidthMm = displayWidthMm;
+      this.displayHeightMm = displayHeightMm;
     }
 
     @Override public String toString() { return label; }
@@ -84,6 +95,10 @@ public class CharacterLCD extends AbstractMakerBoard {
     public int getRows() { return rows; }
     public double getWidthMm() { return widthMm; }
     public double getHeightMm() { return heightMm; }
+    public double getBezelWidthMm() { return bezelWidthMm; }
+    public double getBezelHeightMm() { return bezelHeightMm; }
+    public double getDisplayWidthMm() { return displayWidthMm; }
+    public double getDisplayHeightMm() { return displayHeightMm; }
   }
 
   public enum LCDInterface {
@@ -95,8 +110,19 @@ public class CharacterLCD extends AbstractMakerBoard {
     @Override public String toString() { return label; }
   }
 
-  // clearance from the top edge to the pin row
+  // clearance from the top edge to the parallel pin row
   public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
+  // The parallel row is not centred on the board: its leftmost pin starts this far in from the
+  // left edge.
+  public static Size PARALLEL_HEADER_INSET = new Size(10.0d, SizeUnit.mm);
+  // The I2C backpack brings its four pins out as a vertical column standing against the left edge,
+  // this far in from it and centred on the board's height.
+  public static Size I2C_HEADER_INSET = new Size(2.5d, SizeUnit.mm);
+  // Hole centre inset from each edge, measured. The diameter beside it is not: it is still the raw
+  // 20 px it replaced, which open decision 11.8 in docs/plans/maker-peripherals.md records as the
+  // last unsourced figure in this class.
+  public static Size MOUNTING_HOLE_INSET = new Size(2.5d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_SIZE = new Size(2.54d, SizeUnit.mm);
 
   public static Color PCB_GREEN = Color.decode("#1B5E20");
   public static Color SCREEN_BG = Color.decode("#1E88E5");
@@ -185,13 +211,26 @@ public class CharacterLCD extends AbstractMakerBoard {
     return new Size(lcdSize.getHeightMm(), SizeUnit.mm).convertToPixels();
   }
 
-  /** Left edge of the board, derived so that the pin row sits centred on the top edge. */
+  /**
+   * Left edge of the board. Neither header is centred on it: the parallel row starts a fixed
+   * distance in from the left, and the I2C column stands against that same edge.
+   */
   private double getBoardX(double x) {
-    double spacing = PIN_SPACING.convertToPixels();
-    return x - (getBoardWidth() - (getPinCount() - 1) * spacing) / 2.0;
+    Size inset =
+        lcdInterface == LCDInterface.I2C_Backpack ? I2C_HEADER_INSET : PARALLEL_HEADER_INSET;
+    return x - inset.convertToPixels();
   }
 
+  /**
+   * Top edge of the board. The parallel row hangs below it by a fixed clearance; the I2C column is
+   * centred on the board's height instead, so the board starts back from the first pin by half of
+   * the height the column does not occupy.
+   */
   private double getBoardY(double y) {
+    if (lcdInterface == LCDInterface.I2C_Backpack) {
+      double columnSpan = (getPinCount() - 1) * PIN_SPACING.convertToPixels();
+      return y - (getBoardLength() - columnSpan) / 2.0;
+    }
     return y - HEADER_OFFSET.convertToPixels();
   }
 
@@ -199,11 +238,13 @@ public class CharacterLCD extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
+    // the backpack's header stands on end against the left edge; the parallel row lies along the top
+    boolean vertical = lcdInterface == LCDInterface.I2C_Backpack;
 
     double[][] relativeOffsets = new double[getPinCount()][2];
     for (int i = 0; i < relativeOffsets.length; i++) {
-      relativeOffsets[i][0] = i * spacing;
-      relativeOffsets[i][1] = 0;
+      relativeOffsets[i][0] = vertical ? 0 : i * spacing;
+      relativeOffsets[i][1] = vertical ? i * spacing : 0;
     }
 
     rotatePoints(firstPoint, relativeOffsets);
@@ -251,28 +292,32 @@ public class CharacterLCD extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // 4 Mounting holes in corners
-      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + 20, 20);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + 20, boardY + boardH - 20, 20);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + 20, 20);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 20, boardY + boardH - 20, 20);
+      // One mounting hole per corner.
+      double holeInset = MOUNTING_HOLE_INSET.convertToPixels();
+      double holeSize = MOUNTING_HOLE_SIZE.convertToPixels();
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - holeInset,
+          holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + holeInset,
+          holeSize);
+      MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
+          boardY + boardH - holeInset, holeSize);
 
-      // Metal Bezel around screen
-      double bezelMarginX = (lcdSize == LCDSize._16x2) ? 45 : 40;
-      double bezelW = boardW - 2 * bezelMarginX;
-      double bezelX = boardX + bezelMarginX;
-      double bezelY = boardY + 45;
-      double bezelH = boardH - 65;
+      // The metal bezel, centred on the board. Its size is the module's own, not a margin taken
+      // off the board, so it stays put when the board changes.
+      double bezelW = new Size(lcdSize.getBezelWidthMm(), SizeUnit.mm).convertToPixels();
+      double bezelH = new Size(lcdSize.getBezelHeightMm(), SizeUnit.mm).convertToPixels();
+      double bezelX = boardX + (boardW - bezelW) / 2.0;
+      double bezelY = boardY + (boardH - bezelH) / 2.0;
 
       g2d.setColor(BEZEL_COLOR);
       g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 6, 6));
 
-      // LCD Screen area
-      double screenMargin = 12;
-      double screenW = bezelW - 2 * screenMargin;
-      double screenH = bezelH - 2 * screenMargin;
-      double screenX = bezelX + screenMargin;
-      double screenY = bezelY + screenMargin;
+      // The lit area, centred within the bezel and likewise measured rather than derived.
+      double screenW = new Size(lcdSize.getDisplayWidthMm(), SizeUnit.mm).convertToPixels();
+      double screenH = new Size(lcdSize.getDisplayHeightMm(), SizeUnit.mm).convertToPixels();
+      double screenX = bezelX + (bezelW - screenW) / 2.0;
+      double screenY = bezelY + (bezelH - screenH) / 2.0;
 
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));

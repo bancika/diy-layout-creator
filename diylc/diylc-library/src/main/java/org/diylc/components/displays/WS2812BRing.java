@@ -46,7 +46,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "NeoPixel Ring (WS2812B)", category = "Displays & Outputs",
+@ComponentDescriptor(name = "NeoPixel Ring", category = "Displays & Outputs",
     author = "Branislav Stojkovic", description = "Addressable RGB WS2812B NeoPixel Ring (12/16/24 LEDs)",
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,

@@ -71,7 +71,10 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    * until someone reads a datasheet or measures a part.
    */
   public enum DisplayType {
-    SingleDigit_10Pin("1-Digit 0.56\"", 12.6d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
+    // The parts these model: 5161AS for the single digit, 3641AS for the 0.36 inch four-digit
+    // package and 5641AS for the 0.56 inch one. The two four-digit parts differ in size but share
+    // a pinout, which is why one array serves both.
+    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
     FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true),
     FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true),
     TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
@@ -115,6 +118,40 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     public boolean isDualRow() { return dualRow; }
   }
 
+  /**
+   * Which electrode the digits share. Both kinds are sold side by side and are identical in pinout,
+   * package and dimensions -- they differ only in internal polarity, so this changes nothing that
+   * is drawn and reaches only the BOM.
+   */
+  public enum Common {
+    Cathode("Common Cathode"),
+    Anode("Common Anode");
+
+    private final String label;
+    Common(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+  }
+
+  /**
+   * What the package carries besides the digits themselves. These are sold in every combination,
+   * and on a twelve-pin part they are not independent of each other: A-G plus DP and four digit
+   * commons already account for all twelve pins, so a colon has to share the decimal point's line
+   * or replace it. The property therefore describes the face of the part, not a fifth pin.
+   */
+  public enum Punctuation {
+    None("No Punctuation"),
+    DecimalPoints("Decimal Points"),
+    Colon("Colon"),
+    Both("Colon + Decimal Points");
+
+    private final String label;
+    Punctuation(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+
+    public boolean hasDecimalPoints() { return this == DecimalPoints || this == Both; }
+    public boolean hasColon() { return this == Colon || this == Both; }
+  }
+
   public static Color BODY_BLACK = Color.decode("#1C1C1C");
   public static Color FACE_BLACK = Color.decode("#111111");
   public static Color FACE_BORDER = Color.decode("#333333");
@@ -133,6 +170,11 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    * millimetre -- so a faithful drawing has the pins sitting on the digit. This is a deliberate
    * departure from the measurements for legibility, which is why it is a separate factor rather
    * than smaller digit sizes on {@link DisplayType}: those stay as the package measures.
+   *
+   * <p>Concretely it draws the 0.56 inch packages' 14.2 mm digit at 12.5 mm, so what reaches the
+   * canvas is about half an inch. That is intended, and it is not a disagreement with the part:
+   * the package is still a 0.56 inch one and the BOM still says so. Worth knowing before changing
+   * this number to chase an exact drawn size, because it is shared and would move every package.
    */
   public static double DIGIT_DRAW_SCALE = 0.88d;
 
@@ -147,7 +189,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   };
 
   /**
-   * Shared by both bare four-digit packages, which differ in size but not in pin function.
+   * Shared by both bare four-digit packages: the 3641AS and the 5641AS differ in size but not in
+   * pin function, confirmed by the maintainer.
    *
    * <p>This was previously transcribed in reading order -- top row left to right, then bottom row
    * left to right -- rather than in DIP order, which put every segment and digit common on the
@@ -164,6 +207,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   public static Color PCB_BLUE = Color.decode("#004488");
 
   private DisplayType displayType = DisplayType.SingleDigit_10Pin;
+  private Common common = Common.Cathode;
+  private Punctuation punctuation = Punctuation.DecimalPoints;
   private Color ledColor = LED_RED;
   private Color boardColor = PCB_BLUE;
 
@@ -184,10 +229,54 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  /**
+   * Common cathode and common anode parts share a pinout, a package and a set of dimensions, so no
+   * drawing path reads this -- it exists to split the two in the BOM, which is the only place the
+   * difference costs anyone anything. Defaulted in the getter rather than the field so that a
+   * project saved before this property existed still loads.
+   */
+  @EditableProperty(name = "Common")
+  public Common getCommon() {
+    if (common == null) {
+      common = Common.Cathode;
+    }
+    return common;
+  }
+
+  public void setCommon(Common common) {
+    this.common = common;
+  }
+
+  /**
+   * Unlike {@link #getCommon()} this one is visible: it decides whether the decimal points and the
+   * colon are drawn at all. The colon is meaningless on the single-digit package and is ignored
+   * there, in the same way the board colour is ignored on the bare packages.
+   */
+  @EditableProperty(name = "Punctuation")
+  public Punctuation getPunctuation() {
+    if (punctuation == null) {
+      punctuation = Punctuation.DecimalPoints;
+    }
+    return punctuation;
+  }
+
+  public void setPunctuation(Punctuation punctuation) {
+    this.punctuation = punctuation;
+    invalidateCache();
+  }
+
   @Override
   protected String getVariantLabel() {
     DisplayType displayType = getDisplayType();
-    return displayType == null ? null : displayType.toString();
+    if (displayType == null) {
+      return null;
+    }
+    // The module drives the digits itself and brings out no common pins, so polarity is not part
+    // of what you order -- but which punctuation it carries still is.
+    if (displayType == DisplayType.TM1637_Module_4Pin) {
+      return displayType + ", " + getPunctuation();
+    }
+    return displayType + ", " + getCommon() + ", " + getPunctuation();
   }
 
   @EditableProperty(name = "LED Color")
@@ -357,7 +446,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
             * DIGIT_DRAW_SCALE;
         double dx = boardX + (boardW - dw) / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
         double dy = boardY + (boardH - dh) / 2.0;
-        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        // no colon on a single digit, so only the decimal point is in question here
+        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
+            getPunctuation().hasDecimalPoints());
 
       } else if (isFourDigitBare()) {
         // the recessed window is a shade of the moulding, so it follows the body colour
@@ -379,19 +470,23 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         double firstCenterX = boardX + boardW / 2.0 - 1.5 * pitch;
         double dy = boardY + (boardH - dh) / 2.0;
 
+        Punctuation punctuation = getPunctuation();
         for (int d = 0; d < 4; d++) {
           double centerX = firstCenterX + d * pitch;
           double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
+              punctuation.hasDecimalPoints());
         }
 
-        // Colon between the middle pair, sized off the glyph grid like the decimal point is, so it
-        // tracks the digit instead of staying a fixed few pixels across.
-        double colonX = boardX + boardW / 2.0;
-        double dotD = dw / GLYPH_WIDTH * 2.0;
-        g2d.setColor(ledColor);
-        g2d.fill(new Ellipse2D.Double(colonX - dotD / 2.0, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
-        g2d.fill(new Ellipse2D.Double(colonX - dotD / 2.0, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
+        if (punctuation.hasColon()) {
+          // Colon between the middle pair, sized off the glyph grid like the decimal point is, so
+          // it tracks the digit instead of staying a fixed few pixels across.
+          double dotD = dw / GLYPH_WIDTH * 2.0;
+          double colonX = boardX + boardW / 2.0 - dotD / 2.0;
+          g2d.setColor(ledColor);
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
+        }
 
       } else if (displayType == DisplayType.TM1637_Module_4Pin) {
         MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
@@ -419,18 +514,22 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         double firstCenterX = bezelX + (bezelW - 3 * pitch) / 2.0;
         double dy = bezelY + (bezelH - dh) / 2.0;
 
+        Punctuation punctuation = getPunctuation();
         for (int d = 0; d < 4; d++) {
           double centerX = firstCenterX + d * pitch;
           double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65;
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
+              punctuation.hasDecimalPoints());
         }
 
-        // same colon treatment as the bare packages: sized and placed off the digit, not in pixels
-        double colonX = bezelX + bezelW / 2.0;
-        double dotD = dw / GLYPH_WIDTH * 2.0;
-        g2d.setColor(ledColor);
-        g2d.fill(new Ellipse2D.Double(colonX - dotD / 2.0, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
-        g2d.fill(new Ellipse2D.Double(colonX - dotD / 2.0, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
+        if (punctuation.hasColon()) {
+          // same colon treatment as the bare packages: sized off the digit, not in pixels
+          double dotD = dw / GLYPH_WIDTH * 2.0;
+          double colonX = bezelX + bezelW / 2.0 - dotD / 2.0;
+          g2d.setColor(ledColor);
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
+        }
       }
     }
 
@@ -502,7 +601,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    * silhouette, then the lit ones, and finally every segment is outlined in the face colour so
    * that neighbours which share a vertex still read as separate segments.
    */
-  private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h, String charToDisplay, Color onColor) {
+  private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h,
+      String charToDisplay, Color onColor, boolean showDecimalPoint) {
     AffineTransform orig = g2d.getTransform();
 
     g2d.translate(x, y);
@@ -536,7 +636,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         g2d.fill(segments[i]);
       }
     }
-    if ((mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
+    // a package without a decimal point has no dot at all, lit or unlit, so this is gated too
+    if (showDecimalPoint && (mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
       g2d.fill(dpShape);
     }
 
@@ -547,7 +648,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         g2d.fill(segments[i]);
       }
     }
-    if ((mask & SEG_DP) != 0 || charToDisplay.contains(".")) {
+    if (showDecimalPoint && ((mask & SEG_DP) != 0 || charToDisplay.contains("."))) {
       g2d.fill(dpShape);
     }
 
@@ -570,7 +671,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.setColor(Color.DARK_GRAY);
     g2d.draw(new RoundRectangle2D.Double(6, 3, width - 12, height - 6, 3, 3));
 
-    // Draw single stylized '8'
-    drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED);
+    // Draw single stylized '8'. The toolbox icon stands for the component type rather than for any
+    // one configured instance, so it keeps its decimal point whatever Punctuation is set to.
+    drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED, true);
   }
 }

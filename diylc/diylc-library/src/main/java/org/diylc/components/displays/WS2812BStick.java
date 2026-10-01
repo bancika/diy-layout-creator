@@ -46,7 +46,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "NeoPixel Stick (8x WS2812B)", category = "Displays & Outputs",
+@ComponentDescriptor(name = "NeoPixel Stick", category = "Displays & Outputs",
     author = "Branislav Stojkovic", description = "8-LED Addressable RGB WS2812B NeoPixel Stick",
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,

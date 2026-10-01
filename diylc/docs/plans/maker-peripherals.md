@@ -47,7 +47,7 @@ Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY
 |---|---|---|
 | `SevenSegmentDisplay` | 1-digit 10-pin, 4-digit 12-pin, TM1637 module | **Best-*written* file in the set**, which is not the same as the best-sourced one. The segment-mask table is genuinely good, the 10-pin structure is corroborated, and the glyph itself is now the standard unit-grid construction: an upright 10 × 18 box with segments two units thick, mitred at 45 degrees so neighbours meet at a shared vertex, each outlined in the face colour so that they still read as separate segments. That replaced a set of hand-tuned polygons and retired both `SEGMENT_GAP` (the construction separates by outline rather than by gap) and `SLANT_DEGREES` (it is drawn upright, as the source is). What remains unchecked is everything *around* the glyph. The per-package dimensions now live on the `DisplayType` constants rather than in scattered branches, and the enum has been split so that the two bare four-digit packages — 0.36" and 0.56" — are separate variants sharing one pin array. The 0.56" set is what this class has always carried and remains unverified; the 0.36" set is now largely maintainer-supplied — body 30 × 14 mm, 7.5 mm digit pitch, 0.4" row spacing — leaving only its digit width inferred. See §11.10 and §11.11. |
 | `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. Its diameters, pad count and pad placement have all since been corrected from Adafruit's pages and the maintainer's measurements; the pads now sit on their own radius near the rim, each in one of the real uneven gaps between LEDs (§11.9). The LED packages are the real 5 mm 5050 part, shared with the Stick as `AbstractMakerBoard.RGB_LED_SIZE` — they had been drawn at a clamped 8-15 px, barely 1-2 mm — and the ring renders lit, in a continuous yellow-orange-red-purple-blue-green gradient with a palette per variant. |
-| `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data, correct 80 × 36 and 98 × 60 mm bodies. All screen and bezel geometry in raw pixels, including an eyeballed `bezelMarginX = (16x2) ? 45 : 40`. Allocates a `Font` inside `draw()`. |
+| `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names and a correct 27 mm square body, but **the glass is drawn near-square** when the 0.96" SSD1306 active area is a roughly 2:1 letterbox. No size variants. |
 | `LEDMatrix8x8` | none | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. **Missing the 4-in-1 32x8 module.** |
 | `TFTDisplay` | none | **Weakest file.** No variant enum. Name and descriptor say 240x320 while the on-screen silk says `320x240`. See the footprint bug below. |
@@ -102,6 +102,15 @@ ground is almost certainly wrong.
    `OLEDDisplay` was wrongly included here at first: its `boardX` formula does centre the pin row,
    and only its vertical offset was a raw pixel value. This is the visible face of D7, and it
    resolves when the geometry is re-derived from `Size` constants in item 6.
+
+   **`CharacterLCD` has since been given its real header placement, and it is not centred at all.**
+   The 16-pin parallel row starts 10 mm in from the left edge, and the I2C backpack brings its four
+   pins out as a *vertical* column standing against the left edge, 2.5 mm in and centred on the
+   board's height. For this class the item was therefore wrong twice over: the geometry was not
+   merely off-centre by accident, and centring was never the right answer. `PARALLEL_HEADER_INSET`
+   and `I2C_HEADER_INSET` are measurements of where the connectors actually are, not a correction
+   applied to a drawing that had drifted. `TFTDisplay`'s centred header still stands as described
+   above, so the item holds for it.
 
 8. **The Ring's pad arc and LED arc coincide** — **resolved, with §11.9.** Both the solder pads and
    the LEDs were placed on the mid-radius circle, so the four pads sat on top of LEDs at the bottom
@@ -174,11 +183,11 @@ Ordered by risk, not by file size. None of these is a compatibility concern (D6)
 | 3 | Re-derive the `TFTDisplay` footprint from the module drawing: outline, header edge, screen aspect, SD-slot position (§3.1) — **done**: portrait 50 × 86 mm, header centred on the short edge, screen derived from the glass, four holes placed from the vendor drawing and the glass centred between them. The front-face SD slot was removed rather than moved, because the reader is on the back | 1 | 3-4 h |
 | 4 | Fix `WS2812BStick` pad names and count from the product drawing; rebuild its geometry from `Size` constants (§3.1) — **done**, with one correction to the premise: the **count was already right**. Four pads per end is what the board has, and the doubled ground is real hardware on one net. Only the *order* was wrong, so the pads were reordered to GND, data, power, GND and renamed `GND_1`…`GND_4` for uniqueness. Board corrected to 51.1 × 10.22 mm with real 5 mm packages | 1 | 2-3 h |
 | 5 | Fix the `OLEDDisplay` glass aspect to the real active area — **done**: panel 26.7 × 19.3 mm centred between the hole rows, with the 21.744 × 10.864 mm lit area drawn inside it | 1 | 1 h |
-| 6 | Replace raw pixel geometry with `Size` constants (D7) — **done for `OLEDDisplay`, `TFTDisplay`, `LEDMatrix8x8` and `WS2812BStick`; blocked for `CharacterLCD`**, see §11.8 | `CharacterLCD`, `OLEDDisplay`, `TFTDisplay`, `LEDMatrix8x8`, `WS2812BStick` | 4-6 h |
+| 6 | Replace raw pixel geometry with `Size` constants (D7) — **done for all five.** `CharacterLCD` was the last holdout and was unblocked by maintainer figures for its bezel, lit area and header placement; its window is now the part's own size rather than a margin off the board, and no pixel literal is left in `draw()`. One caveat worth keeping separate: its mounting-hole inset and diameter are *named* constants but still the draft's guessed 2.54 mm, so D7 is satisfied while §11.8's sourcing question is not | `CharacterLCD`, `OLEDDisplay`, `TFTDisplay`, `LEDMatrix8x8`, `WS2812BStick` | 4-6 h |
 | 7 | Replace demo screen text with a neutral panel (D4) — **done**: all three now draw an unpowered panel, and `CharacterLCD`'s `SCREEN_TEXT` colour went with its lettering | `CharacterLCD`, `OLEDDisplay`, `TFTDisplay` | 1-2 h |
 | 8 | Route silk labels through `getSilkPinLabel` / `drawPinLabels` — **done**: the Stick's now come from `getSilkPinLabel` and the Ring's are dropped; removing the Ring's inline `new Font(...)` also settles half of item 9 | `WS2812BStick`, `WS2812BRing` | 1-2 h |
 | 9 | `zOrder` to `COMPONENT` on `CharacterLCD` and `TFTDisplay`; cache the two `draw()` fonts; strip non-ASCII; drop the unused import — **done**: all seven are `COMPONENT`, both `draw()` fonts left with items 7 and 8, `SevenSegmentDisplay`'s degree signs were the last non-ASCII, and the orphaned imports plus `CharacterLCD.SCREEN_TEXT` are gone. The three surviving `new Font(...)` calls are all in `drawIcon`, which runs per toolbox icon rather than per repaint, so they are deliberately left | 5 | 1 h |
-| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **partly done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10 — and that same class's pad count, naming and arrangement (§11.9, maintainer-supplied, which also closed §3.2 item 8). Open: `SevenSegmentDisplay`'s pin arrays (§11.10), `CharacterLCD`'s part identity (§11.8), and `LEDMatrix8x8`'s silk placement (§3.2 item 9) | all 7 | the bulk of the slice |
+| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **partly done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10 — and that same class's pad count, naming and arrangement (§11.9, maintainer-supplied, which also closed §3.2 item 8), `SevenSegmentDisplay`'s pin arrays and part identities (§11.10 — 5161AS, 3641AS and 5641AS, with the two four-digit parts confirmed to share a pinout), and `CharacterLCD`'s bodies, bezel, lit area, header placement and hole inset (§11.8). Closed by decision rather than by measurement: `SevenSegmentDisplay`'s digit widths, accepted as inferences because they size only the drawn glyph, which already departs from the package deliberately (§11.11). Open: `CharacterLCD`'s hole diameter (§11.8) and `LEDMatrix8x8`'s silk placement (§3.2 item 9) | all 7 | the bulk of the slice |
 
 Items 1 and 2 have landed. The five shared 5050-package colours now live on `AbstractMakerBoard` as
 `RGB_LED_*`, and the duplicated copies are gone from both NeoPixel classes along with two dead
@@ -504,8 +513,8 @@ gate the displays.
 7. **i18n** — component display names and enum labels are plain strings, absent from
    `diylc-swing/src/main/resources/lang/*.txt`, as they are for the shipped boards. No translation
    work is required here; noted for a future pass.
-8. **`CharacterLCD`'s geometry cannot be sourced consistently** — which is why item 6 is done for
-   every other file and blocked for this one. "1602" names a character format, not a mechanical
+8. **`CharacterLCD`'s geometry could not be sourced consistently** — **now resolved except the
+   mounting holes.** This is why item 6 was done for every other file and blocked for this one. "1602" names a character format, not a mechanical
    part, and vendors ship several outlines under it: the enum encodes an 80 × 36 mm module, while
    Raystar's RC1602A is 84 × 44 mm. The display window is worse, because sources quote different
    features under similar names — 64.5 × 16 mm and 66.0 × 16 mm as "viewing area" against
@@ -516,6 +525,31 @@ gate the displays.
    specific part — as the TFT slice settled on the MSP2807 — and taking the outline, window and
    hole positions from that one drawing, rather than assembling them from whichever vendor answers
    a search first.
+
+   **The outlines are now maintainer-given: 80 × 35 mm for the 16x2, 98 × 60 mm for the 20x4.**
+   That settles the first of the three figures this item needs, correcting the 16x2's height by a
+   millimetre and confirming the 20x4 exactly as stored. It does **not** unblock prep item 6. The
+   window and the mounting holes are still raw pixels with no source behind them: the bezel is
+   derived as `boardH - 65` px, which on the corrected board still fills about 76% of its height
+   when a 16 mm window on a 35 mm board should be under half. A one-millimetre change to the board
+   cannot fix a bezel whose size does not come from the board at all. What is still wanted is the
+   display window and the hole positions, ideally from one named part.
+
+   **The window figures have since landed.** The 16x2 carries a 72.2 × 24.1 mm bezel around a
+   64.5 × 14.5 mm lit area; the 20x4 a 77 × 25.5 mm bezel around 70.4 × 20.4 mm. Both are fields on
+   `LCDSize` now, drawn centred on the board and within the bezel respectively. That is the actual
+   fix rather than a retuning: the window is the part's own size instead of a margin subtracted
+   from the board, so it no longer grows when the board does — which is why the earlier 1 mm board
+   correction could not have helped it.
+
+   **The hole inset has since been measured: 2.5 mm from each edge.** Note that this was a
+   correction rather than a confirmation — the constant held the draft's 2.54 mm, inherited from
+   the raw `20` px, and 2.54 is a suspiciously convenient number to inherit because it is exactly
+   0.1", so it had the shape of a value chosen for the grid rather than for the part.
+
+   **What stays open is the hole diameter alone**, still 2.54 mm and still a guess. It is the only
+   unsourced figure left in `CharacterLCD`, and it is a cosmetic detail rather than a placement
+   error, so the class is otherwise finished.
 9. **How many pads does a NeoPixel Ring have?** — **decided, from the maintainer: four on the
    12-LED ring, six on the 16 and the 24.** The guess recorded here, that the 2014 "extra ground and
    power breakout" made six universal, was half right — the two larger rings gained the extra pair
@@ -550,17 +584,27 @@ gate the displays.
    both were misreading the board's own anti-aliased edge, which registers at every angle rather
    than only at the pads. Magnifying the tightest pad on each variant 12× showed unbroken board
    between every pad and the rim.
-10. **`SevenSegmentDisplay`'s pin arrays are unverified, and one of them is suspect.** The 10-pin
-    structure is corroborated — a 0.56" single digit such as the 5161AS has ten pins, two of them
-    common — but no source consulted would give an *ordered* pin list, so `PIN_NAMES_1DIGIT` and
-    `PIN_NAMES_4DIGIT` remain unchecked. The specific worry is the 12-pin array: it follows the
-    3641AS, which is a **0.36-inch** part, while `DIGIT_HEIGHT` declares 14.2 mm, i.e. 0.56". The
-    0.56" four-digit equivalent is the 5641AS, and if its pinout differs then the component pairs
-    one part's pins with another part's dimensions. Four attempts failed to settle it: both xlitx
-    HTML pages carry only electro-optical tables, and both linked datasheets are image-encoded PDFs
-    of the kind that also defeated the MSP2807 manual. **With §11.9 settled this is the last unsourced
-    geometry in the set, and the worse one to leave** — a wrong dimension is a wrong picture, a wrong pin array is a
-    wrong netlist, and it is silent. Closing it needs a readable datasheet or a part in hand.
+10. **`SevenSegmentDisplay`'s pin arrays** — **decided: the maintainer confirms they are correct.**
+    Three questions closed together. The arrays are right as they stand; the two bare four-digit
+    packages **share a pinout**; and each variant is now pinned to a named part — **5161AS** for the
+    single digit, **3641AS** for the 0.36" four-digit package and **5641AS** for the 0.56" one.
+
+    That also retires the suspicion recorded here before. The worry had been that the 12-pin array
+    followed a 0.36" part while the dimensions described a 0.56" one, pairing one part's pins with
+    another part's body. Since the two parts share pins, that pairing was never the error it looked
+    like — though the dimensions themselves are a separate question, still open in §11.11.
+
+    Worth being precise about what kind of confirmation this is. The order was corrected earlier
+    from the maintainer's own reading of the parts, after it was found transcribed in reading order
+    rather than DIP order, which had put every segment and digit common on the wrong pin. It has now
+    been confirmed as correct. No datasheet was ever obtained — both xlitx pages carry only
+    electro-optical tables and both linked PDFs are image-encoded — so this rests on the
+    maintainer's word rather than on a published pinout. That is good enough to close the item, and
+    it is a different claim from "verified against a datasheet".
+
+    Naming the parts matters beyond this item. It is the move that settled the TFT on the MSP2807,
+    it is what §11.8 still needs for `CharacterLCD`, and it turns the gap left in §11.11 from
+    unanswerable into merely unmeasured.
 
     Note that replacing the digit glyph with the standard unit-grid construction did **not** touch
     this. The glyph governs how a lit segment is shaped; the pin arrays govern which physical pin
@@ -576,14 +620,46 @@ gate the displays.
 11. **What the enum split left unsourced.** The split itself is sound; what follows is geometry that
     should not be mistaken for measurement.
 
+    *A second round of maintainer figures has since landed.* The 5161AS body is 12.7 × 19.0 mm, a
+    0.1 mm correction to the stored width; the 5641AS body (50.3 × 19.0 mm) and digit pitch
+    (12.7 mm) are confirmed exactly as stored; and the TM1637 module's dimensions are confirmed as a
+    set. That leaves a narrower gap than before but not an empty one: **every digit width is still
+    unmeasured** — 5.2 mm on the 0.36" part and 8.1 mm on both 0.56" ones — and the 5.2 mm is still
+    the only figure in the file invented outright rather than merely unchecked.
+
+    *The apparent height conflict is resolved, and was never about the part.* The 5161AS is a
+    0.56" part, the enum's 14.2 mm stands and so does the label. The 12.7 mm figure is the size the
+    digit is deliberately **drawn** at, held under the true one so the glyph keeps clear of the
+    pins — the same trade `DIGIT_DRAW_SCALE` exists for.
+
+    **No value changed, because the existing mechanism already does it.** At a scale of 0.88 a
+    14.2 mm digit draws at 12.50 mm, within 0.2 mm of the half inch intended. Forcing 12.7 exactly
+    would mean either raising the scale, which is global and would grow the 0.36" and TM1637 digits
+    too, or writing 12.7 into `digitHeight`, which would apply the shrink twice and draw at 11.2 mm.
+    The separation the class already draws — `DisplayType` holds what the package measures,
+    `DIGIT_DRAW_SCALE` holds the departure from it — is exactly the distinction the conflict
+    collapsed, which is why reading the drawing code dissolved it rather than deciding it.
+
     *The 0.36" variant is now mostly sourced.* Its body (30 × 14 mm), digit pitch (7.5 mm) and row
     spacing (0.4", 10.16 mm) all came from the maintainer, and its digit height is definitional,
     because 9.14 mm is what 0.36 inches means. **One figure remains invented: the digit width
-    (5.2 mm)**, derived by applying the 0.56" part's 8.1 : 14.2 ratio to a 9.14 mm digit — and those
-    0.56" figures are themselves unverified, so it rests on an unchecked foundation. It is at least
+    (5.2 mm)**, derived by applying the 0.56" part's 8.1 : 14.2 ratio to a 9.14 mm digit — and the
+    0.56" digit figures it borrowed from are themselves still unmeasured, so it rests on an
+    unchecked foundation. It is at least
     not contradicted by the rest: four digits on 7.5 mm centres span 22.5 mm, which with one digit
     width leaves about 1.15 mm clear at each end of a 30 mm body. Worth replacing with a measurement
-    rather than leaving as an inference.
+    rather than leaving as an inference — and cheaper to settle now that §11.10 has pinned this
+    variant to the 3641AS and the 0.56" one to the 5641AS, so there is a specific part to measure
+    rather than a generic four-digit display.
+
+    **Decided: left as inferences, deliberately.** The digit widths are not being measured. They
+    size the drawn glyph and nothing else, and the glyph is already a declared departure from the
+    package at `DIGIT_DRAW_SCALE` 0.88, so an error here is cosmetic and bounded — unlike a wrong
+    pin array, which is silent and wrong in the netlist, or a wrong outline, which is wrong against
+    the board around it. The three figures stand as recorded: 5.2 mm inferred for the 0.36" part
+    and 8.1 mm unverified for both 0.56" ones. They stay flagged here precisely so that a later
+    reader does not mistake them for measurements and build something on top of them, which is how
+    the 5.2 mm came to exist in the first place.
 
     For the record, the values this replaced were mine and were fitted rather than measured — a
     30.2 × 14.0 body, an 8.0 mm pitch, and a 12.7 mm row spacing chosen only so the rows would sit
@@ -595,3 +671,53 @@ gate the displays.
     edge, vertical**, which would mean laying the single-row case out vertically rather than
     horizontally — a larger change that was considered and not made. The centring predated the
     split; what made it visible was rendering each variant rather than only the default one.
+12. **Common cathode vs common anode** — **decided: a `Common` property, reaching the BOM only.**
+    Both kinds are sold side by side and are identical in pinout, package and dimensions; the
+    difference is internal polarity. So the property changes nothing that is drawn and nothing in
+    the netlist — it exists to split two genuinely different parts into two BOM rows, which is
+    exactly what §11.1's `getVariantLabel()` hook was built for. A cell now reads
+    `1-Digit 0.56", Common Cathode`, following the comma pattern `CharacterLCD` already uses for its
+    two-property variant.
+
+    Three details settled with it. The default is **cathode**, matching the AS-suffixed parts named
+    in §11.10. The **TM1637 omits it**, because the module drives the digits itself and brings out
+    no common pins, so polarity is not part of what you order and its cell stays
+    `4-Digit TM1637 Module`. And the **pin names are untouched**: `COM1`/`COM2` and `D1`-`D4` are
+    physical designations identical on both polarities, so renaming them by polarity would have
+    left the single-digit and four-digit parts labelling their pins on different principles for no
+    gain.
+
+    One thing deliberately not done: putting the part number in the value. That would be the most
+    directly orderable form — `3641AS` against `3641BS` — but it rests on `AS` meaning cathode and
+    `BS` meaning anode for this family, which has **not** been confirmed from a datasheet. Spelling
+    the polarity out carries the same information without depending on an unverified convention.
+
+    Adding the field now rather than after 6.7.0 is deliberate: the class has not shipped, so a new
+    serialized field costs nothing in file-format terms. It is still defaulted in the getter rather
+    than only at the field, per the house rule for fields that may deserialize as null.
+13. **Decimal points and the colon** — **decided: a `Punctuation` property, drawn and in the BOM.**
+    The parts are sold in every combination, and the component had been drawing one fixed
+    combination — a decimal point on every digit *and* a colon — on all four variants at once.
+
+    That combination is not merely a default, it is one a twelve-pin package cannot have. `A`-`G`
+    plus `DP` is eight segment lines and `D1`-`D4` is four commons, which accounts for all twelve
+    pins confirmed in §11.10, leaving nothing to drive a colon independently: on a real part the
+    colon shares the decimal point's line or replaces it. So the drawing depicted a part that its
+    own pinout rules out. The property describes the face of the package rather than a fifth pin,
+    which is why it does not touch `PIN_NAMES_4DIGIT`.
+
+    `Punctuation` has four values — none, decimal points, colon, both — defaulting to decimal
+    points, which is what the committed twelve-pin array describes. It is **not** switched
+    automatically when `DisplayType` changes, for the reason recorded in §11.2: per-variant
+    defaults applied from a variant setter silently discard a choice the user has already made.
+    The colon is ignored on the single-digit package, following `boardColor` on the bare packages
+    and `Common` on the TM1637.
+
+    One implementation trap worth recording. Suppressing a decimal point is **not** a matter of
+    passing `"8"` instead of `"8."`: the glyph routine draws an *unlit* dot whenever no lit one is
+    asked for, so the obvious change leaves a grey dot behind and looks correct at a glance. Both
+    the lit and the unlit path are gated on the new flag.
+
+    It reaches the BOM for the same reason `Common` does — it changes which part you order — so a
+    cell now reads `4-Digit 0.36", Common Cathode, Colon`. That is three tokens, and the value
+    column is getting long; worth revisiting if a fourth ever appears.
