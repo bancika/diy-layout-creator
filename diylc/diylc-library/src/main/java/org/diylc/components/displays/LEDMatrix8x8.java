@@ -28,13 +28,11 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
-import org.diylc.awt.StringUtils;
-import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
@@ -65,16 +63,16 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(32.0d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(50.0d, SizeUnit.mm);
-  // the matrix block is very nearly as wide as the board it sits on
-  public static Size MATRIX_SIZE = new Size(30.0d, SizeUnit.mm);
-  public static Size MATRIX_TOP_MARGIN = new Size(3.8d, SizeUnit.mm);
-  // clearance from the bottom edge to the input pin row; the output row sits a board apart from it
+  // The matrix is as wide as the board and sits flush with its top edge, so the outline bounds it
+  // on three sides rather than it being inset from them.
+  public static Size MATRIX_SIZE = new Size(32.0d, SizeUnit.mm);
+  // Clearance from a board edge to the pin row of the header nearest it. Both headers keep the
+  // same distance from their own edge, so the spacing between the rows follows from the board
+  // height rather than being a figure of its own.
   public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
-  public static Size HEADER_SPACING = new Size(44.0d, SizeUnit.mm);
   public static Size CHIP_MARGIN_X = new Size(2.54d, SizeUnit.mm);
   public static Size CHIP_LENGTH = new Size(5.7d, SizeUnit.mm);
   public static Size CHIP_GAP = new Size(1.9d, SizeUnit.mm);
-  public static Size SILK_OFFSET = new Size(2.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES = new String[] {
       // Input Header (0..4)
@@ -116,8 +114,8 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
-    // the input row sits near the bottom edge and the output row the same distance from the top
-    double topY = -HEADER_SPACING.convertToPixels();
+    // the two rows sit the same clearance in from the bottom and top edges
+    double topY = -getHeaderSpacing();
     for (int i = 0; i < 5; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
@@ -134,6 +132,15 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
     return x - (BOARD_WIDTH.convertToPixels() - 4 * spacing) / 2.0;
   }
 
+  /** Distance between the pin rows: the board, less the clearance each keeps from its own edge. */
+  private static double getHeaderSpacing() {
+    return BOARD_HEIGHT.convertToPixels() - 2 * HEADER_OFFSET.convertToPixels();
+  }
+
+  /**
+   * Top edge of the board. Control point 0 is an input pin, sitting one clearance in from the
+   * bottom edge.
+   */
   private double getBoardY(double y) {
     return y - BOARD_HEIGHT.convertToPixels() + HEADER_OFFSET.convertToPixels();
   }
@@ -179,13 +186,29 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     g2d.draw(boardShape);
 
+    // The output header sits behind the LED module on the real part, so it is drawn first and the
+    // module covers it. It is drawn rather than skipped on purpose: drawPinHeader is what registers
+    // these pins as a conductive area, so leaving the call out would look identical and quietly
+    // drop five pins from continuity. The header works in unrotated control-point coordinates, so
+    // the board rotation comes off for it and goes back on for the module.
+    g2d.setTransform(oldTx);
+    drawPinHeader(g2d, 5, 5, outlineMode, drawingObserver);
+    if (orientation != Orientation.DEFAULT) {
+      g2d.rotate(orientation.toRadians(), x, y);
+    }
+
     if (!outlineMode) {
       double matrixSize = MATRIX_SIZE.convertToPixels();
       double matrixX = boardX + (boardW - matrixSize) / 2.0;
-      double matrixY = boardY + MATRIX_TOP_MARGIN.convertToPixels();
+      double matrixY = boardY;
+
+      // The module is square and flush with three edges, but the board's corners are rounded, so
+      // the outline clips it rather than the module being given a radius it does not have.
+      Shape oldClip = g2d.getClip();
+      g2d.clip(boardShape);
 
       g2d.setColor(MATRIX_BODY);
-      g2d.fill(new RoundRectangle2D.Double(matrixX, matrixY, matrixSize, matrixSize, 6, 6));
+      g2d.fill(new Rectangle2D.Double(matrixX, matrixY, matrixSize, matrixSize));
 
       // Draw 64 circular LED dots
       double dotPitch = matrixSize / 8.0;
@@ -206,26 +229,22 @@ public class LEDMatrix8x8 extends AbstractMakerBoard {
         }
       }
 
+      g2d.setClip(oldClip);
+
       double chipMarginX = CHIP_MARGIN_X.convertToPixels();
       MakerBoardPainter.drawChip(g2d, boardX + chipMarginX,
           matrixY + matrixSize + CHIP_GAP.convertToPixels(), boardW - 2 * chipMarginX,
           CHIP_LENGTH.convertToPixels(), "MAX7219");
 
-      // each label sits just inside the board from the row it names
-      g2d.setColor(Color.WHITE);
-      g2d.setFont(SILK_FONT_SMALL);
-      double silkOffset = SILK_OFFSET.convertToPixels();
-      double silkX = x + 2 * PIN_SPACING.convertToPixels();
-      StringUtils.drawCenteredText(g2d, "IN", silkX, y - silkOffset, HorizontalAlignment.CENTER,
-          VerticalAlignment.CENTER);
-      StringUtils.drawCenteredText(g2d, "OUT", silkX,
-          y - HEADER_SPACING.convertToPixels() + silkOffset, HorizontalAlignment.CENTER,
-          VerticalAlignment.CENTER);
+      // No IN/OUT silkscreen. With the module flush to the top edge there is no strip left for the
+      // OUT label, and labelling only one of a matched pair reads worse than labelling neither;
+      // the names are left to the node tooltips and the netlist, as on the Ring and the Stick.
     }
 
     g2d.setTransform(oldTx);
 
-    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    // only the input row is left to draw; the output row went down before the module
+    drawPinHeader(g2d, 0, 5, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

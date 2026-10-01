@@ -49,7 +49,7 @@ Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY
 | `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. Its diameters, pad count and pad placement have all since been corrected from Adafruit's pages and the maintainer's measurements; the pads now sit on their own radius near the rim, each in one of the real uneven gaps between LEDs (§11.9). The LED packages are the real 5 mm 5050 part, shared with the Stick as `AbstractMakerBoard.RGB_LED_SIZE` — they had been drawn at a clamped 8-15 px, barely 1-2 mm — and the ring renders lit, in a continuous yellow-orange-red-purple-blue-green gradient with a palette per variant. |
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names and a correct 27 mm square body, but **the glass is drawn near-square** when the 0.96" SSD1306 active area is a roughly 2:1 letterbox. No size variants. |
-| `LEDMatrix8x8` | none | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. **Missing the 4-in-1 32x8 module.** |
+| `LEDMatrix8x8` | none | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the module is the real 32 × 32 mm part sitting flush with the top edge, and the two header rows sit one clearance in from their own edges, spaced by a derived 44.92 mm rather than the fitted 44. The output header is drawn before the module and covered by it, as it is on the real board, so the display face stays clean while the pins stay wireable (§3.2 item 9). **Still missing the 4-in-1 32x8 module** (§6.4). |
 | `TFTDisplay` | none | **Weakest file.** No variant enum. Name and descriptor say 240x320 while the on-screen silk says `320x240`. See the footprint bug below. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
 
@@ -119,13 +119,53 @@ ground is almost certainly wrong.
    rather than sharing it. They now sit on their own radius near the outer edge, each in a named gap
    between two consecutive LEDs; §11.9 carries the sequences.
 
-9. **`LEDMatrix8x8`'s `OUT` label sits inside the matrix block.** The output header row is 3.46 mm
-   below the top edge and the matrix starts 3.8 mm below it, so the strip between them is too
-   narrow for the label at any offset: placing it below the row puts it 1.66 mm inside the matrix,
-   and placing it above the row runs it into the board edge. This predates the `Size`-constant
-   rewrite — the previous raw offset put it 0.5 mm inside the same block — so the rewrite preserved
-   the overlap rather than causing it. Fixing it needs the real module's silkscreen layout relative
-   to its matrix, which is item 10.
+9. **`LEDMatrix8x8`'s `OUT` label sat inside the matrix block** — **fixed by moving it outboard.**
+   The output header row is 3.46 mm below the top edge and the matrix starts at 3.8 mm, so the
+   label's +2.0 mm offset put its centre at 5.46 mm, which is 1.66 mm inside the matrix. This
+   predated the `Size`-constant rewrite — the previous raw offset put it 0.5 mm inside the same
+   block — so the rewrite preserved the overlap rather than causing it.
+
+   The offset is now negative, placing the label at 1.46 mm, in the strip between the row and the
+   top edge. The two labels therefore sit on opposite sides of their rows, which the code comment
+   explains so it does not read as a slip: the `IN` row has the chip above and the board edge
+   below, so its label goes inboard, while the `OUT` row has the matrix 0.34 mm beneath it and only
+   the top edge free.
+
+   One claim recorded here before was wrong and is worth correcting rather than quietly dropping.
+   It said placing the label above the row "runs it into the board edge". It does not:
+   `SILK_FONT_SMALL` is 10 px, about 1.27 mm, so a centre at 1.46 mm spans roughly 0.8-2.1 mm and
+   stays on the board. The real constraint is tighter and different — it clears the pin field by
+   about 0.2 mm, so it reads as close to the pins rather than as falling off the board.
+
+   What this does **not** fix is the underlying overlap: the pin field spans 2.32-4.60 mm and the
+   matrix starts at 3.8 mm, so the pins themselves still bite about 0.8 mm into the matrix block.
+   Correcting that means moving the matrix, and `MATRIX_TOP_MARGIN` would become a fitted number
+   with no source behind it — the kind of value this slice has been removing everywhere else. It
+   waits for the real module's layout.
+
+   **Superseded almost immediately, by that layout arriving.** The LED module is 32 × 32 mm and
+   sits flush with the top edge, so it spans the board's full width and its top 32 mm. That
+   dissolves the label problem rather than solving it: there is no strip above the module for `OUT`
+   to occupy at all, so both labels were dropped and the names left to the node tooltips and the
+   netlist, as on the Ring and the Stick. `MATRIX_TOP_MARGIN` and `SILK_OFFSET` went with them.
+
+   **Modelling the bent pins was tried and reverted, and the attempt is worth recording.** Both
+   headers are right-angle parts whose pins run 7.5 mm from the pad centre, so the control points
+   were moved out to the pin tips, 4.96 mm beyond each edge, with the row spacing derived as the
+   board plus one overhang at each end. It was accurate and it looked wrong: the tip rows stood
+   clear of the board with nothing drawn between them and it, so the pins read as floating rather
+   than as connectors reaching out. Accuracy about where a pin *ends* was not worth a drawing that
+   misleads about what the part *is*.
+
+   The pins are modelled straight again, on the board face, each row one clearance in from its own
+   edge — which keeps the one gain from the attempt, a row spacing derived from the board
+   (44.92 mm) rather than the fitted 44 mm it replaced.
+
+   **That leaves the output header under the module, which is where it sits on the real board.** It
+   is drawn *before* the module, so the module covers it and the display face stays clean; the pins
+   remain selectable and wireable as control points. Drawing it and covering it is deliberate
+   rather than skipping the call: `drawPinHeader` is what registers those pins as a conductive
+   area, so omitting it would render identically and quietly drop five pins from continuity.
 
 10. **Every one of the Ring's six diameters was wrong.** The enum carried 37.0/27.0, 44.5/32.0 and
     66.0/52.0 for the 12, 16 and 24 LED rings. The outer diameters were near-misses but the inner
@@ -187,7 +227,7 @@ Ordered by risk, not by file size. None of these is a compatibility concern (D6)
 | 7 | Replace demo screen text with a neutral panel (D4) — **done**: all three now draw an unpowered panel, and `CharacterLCD`'s `SCREEN_TEXT` colour went with its lettering | `CharacterLCD`, `OLEDDisplay`, `TFTDisplay` | 1-2 h |
 | 8 | Route silk labels through `getSilkPinLabel` / `drawPinLabels` — **done**: the Stick's now come from `getSilkPinLabel` and the Ring's are dropped; removing the Ring's inline `new Font(...)` also settles half of item 9 | `WS2812BStick`, `WS2812BRing` | 1-2 h |
 | 9 | `zOrder` to `COMPONENT` on `CharacterLCD` and `TFTDisplay`; cache the two `draw()` fonts; strip non-ASCII; drop the unused import — **done**: all seven are `COMPONENT`, both `draw()` fonts left with items 7 and 8, `SevenSegmentDisplay`'s degree signs were the last non-ASCII, and the orphaned imports plus `CharacterLCD.SCREEN_TEXT` are gone. The three surviving `new Font(...)` calls are all in `drawIcon`, which runs per toolbox icon rather than per repaint, so they are deliberately left | 5 | 1 h |
-| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **partly done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10 — and that same class's pad count, naming and arrangement (§11.9, maintainer-supplied, which also closed §3.2 item 8), `SevenSegmentDisplay`'s pin arrays and part identities (§11.10 — 5161AS, 3641AS and 5641AS, with the two four-digit parts confirmed to share a pinout), and `CharacterLCD`'s bodies, bezel, lit area, header placement and hole inset (§11.8). Closed by decision rather than by measurement: `SevenSegmentDisplay`'s digit widths, accepted as inferences because they size only the drawn glyph, which already departs from the package deliberately (§11.11). Open: `CharacterLCD`'s hole diameter (§11.8) and `LEDMatrix8x8`'s silk placement (§3.2 item 9) | all 7 | the bulk of the slice |
+| 10 | Cross-check every surviving dimension and pin array against vendor documentation — **done.** Closed: `TFTDisplay` (outline, active area, header edge, hole positions, glass placement), `WS2812BStick` (board, 5050 package, pad count and order), `OLEDDisplay` (panel, lit area, and a 24 mm centre-to-centre hole pattern in both directions, modelled as spacing rather than an edge inset since that is how it is specified and what a builder drills), `WS2812BRing`'s diameters — **all six of which were wrong**, see §3.2 item 10 — and that same class's pad count, naming and arrangement (§11.9, maintainer-supplied, which also closed §3.2 item 8), `SevenSegmentDisplay`'s pin arrays and part identities (§11.10 — 5161AS, 3641AS and 5641AS, with the two four-digit parts confirmed to share a pinout), and `CharacterLCD`'s bodies, bezel, lit area, header placement and hole inset (§11.8). Closed by decision rather than by measurement: `SevenSegmentDisplay`'s digit widths, accepted as inferences because they size only the drawn glyph, which already departs from the package deliberately (§11.11). Also closed: `LEDMatrix8x8`'s module size, its flush placement against the top edge, and its right-angle header geometry, all maintainer-supplied (§3.2 item 9) — which closed the silk question by removing the labels rather than placing them; and `CharacterLCD`'s mounting-hole diameter (§11.8), which was the last one. **Nothing remains open.** Two figures are closed as acknowledged inferences rather than measurements — `SevenSegmentDisplay`'s two digit widths (§11.11) — and are flagged as inferences in the source so they are not built upon | all 7 | the bulk of the slice |
 
 Items 1 and 2 have landed. The five shared 5050-package colours now live on `AbstractMakerBoard` as
 `RGB_LED_*`, and the duplicated copies are gone from both NeoPixel classes along with two dead
@@ -547,9 +587,14 @@ gate the displays.
    the raw `20` px, and 2.54 is a suspiciously convenient number to inherit because it is exactly
    0.1", so it had the shape of a value chosen for the grid rather than for the part.
 
-   **What stays open is the hole diameter alone**, still 2.54 mm and still a guess. It is the only
-   unsourced figure left in `CharacterLCD`, and it is a cosmetic detail rather than a placement
-   error, so the class is otherwise finished.
+   **The diameter has since been measured too: 3 mm**, replacing the draft's 2.54 mm. That closes
+   this item outright and leaves `CharacterLCD` with no unsourced geometry anywhere in it.
+
+   The proportion is worth recording, because it looks wrong until it is checked. A 3 mm hole
+   centred 2.5 mm from an edge leaves just 1 mm of board outside it and reaches 4 mm inward, which
+   on the 16x2 overlaps the bezel's horizontal span. It does not actually collide: the holes are at
+   the corners, spanning 1-4 mm vertically, while the bezel band starts at 5.45 mm on the 16x2 and
+   10.35 mm on the 20x4. Both clear, in the one axis that matters.
 9. **How many pads does a NeoPixel Ring have?** — **decided, from the maintainer: four on the
    12-LED ring, six on the 16 and the 24.** The guess recorded here, that the 2014 "extra ground and
    power breakout" made six universal, was half right — the two larger rings gained the extra pair

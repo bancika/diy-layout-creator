@@ -118,11 +118,10 @@ public class CharacterLCD extends AbstractMakerBoard {
   // The I2C backpack brings its four pins out as a vertical column standing against the left edge,
   // this far in from it and centred on the board's height.
   public static Size I2C_HEADER_INSET = new Size(2.5d, SizeUnit.mm);
-  // Hole centre inset from each edge, measured. The diameter beside it is not: it is still the raw
-  // 20 px it replaced, which open decision 11.8 in docs/plans/maker-peripherals.md records as the
-  // last unsourced figure in this class.
+  // Hole centre inset from each edge, and the hole diameter. Both measured. A 3 mm hole centred
+  // 2.5 mm in leaves only 1 mm of board outside it, which is tight but is what the part does.
   public static Size MOUNTING_HOLE_INSET = new Size(2.5d, SizeUnit.mm);
-  public static Size MOUNTING_HOLE_SIZE = new Size(2.54d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_SIZE = new Size(3.0d, SizeUnit.mm);
 
   public static Color PCB_GREEN = Color.decode("#1B5E20");
   public static Color SCREEN_BG = Color.decode("#1E88E5");
