@@ -64,12 +64,10 @@ public class CharacterLCD extends AbstractMakerBoard {
     // the fields beside them, not by the text. The bezel and the lit area are measured off the
     // module and are sizes in their own right -- deriving them as margins off the board made the
     // window grow with the board instead of staying the size of the part.
-    _16x2("16x2", 16, 2, 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
-    _20x4("20x4", 20, 4, 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
+    _16x2("16x2", 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
+    _20x4("20x4", 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
 
     private final String label;
-    private final int cols;
-    private final int rows;
     private final double widthMm;
     private final double heightMm;
     private final double bezelWidthMm;
@@ -77,11 +75,9 @@ public class CharacterLCD extends AbstractMakerBoard {
     private final double displayWidthMm;
     private final double displayHeightMm;
 
-    LCDSize(String label, int cols, int rows, double widthMm, double heightMm, double bezelWidthMm,
+    LCDSize(String label, double widthMm, double heightMm, double bezelWidthMm,
         double bezelHeightMm, double displayWidthMm, double displayHeightMm) {
       this.label = label;
-      this.cols = cols;
-      this.rows = rows;
       this.widthMm = widthMm;
       this.heightMm = heightMm;
       this.bezelWidthMm = bezelWidthMm;
@@ -91,8 +87,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     }
 
     @Override public String toString() { return label; }
-    public int getCols() { return cols; }
-    public int getRows() { return rows; }
     public double getWidthMm() { return widthMm; }
     public double getHeightMm() { return heightMm; }
     public double getBezelWidthMm() { return bezelWidthMm; }

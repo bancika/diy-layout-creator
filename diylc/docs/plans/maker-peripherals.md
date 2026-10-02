@@ -66,7 +66,7 @@ happened to come back true, and only after a fix.
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names, and the body is now the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is now 21.744 × 10.864 mm, which is exactly 2:1, so that complaint is closed. What remains is the original gap: no size variants — the 0.91" and 1.3" boards are §6.3. |
 | `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
-| `TFTDisplay` | none | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. What is left is the gap it always had and nothing worse: no variant enum, which is §6.2's job. |
+| `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now half closed: §6.2's `Controller` enum has landed with the ILI9341 and the ST7735, leaving the ST7789 (blocked on a contradictory outline) and the round GC9A01. |
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
@@ -266,9 +266,11 @@ one net, so the pads are now named `GND_1`…`GND_4` and the silkscreen prints "
 `getSilkPinLabel`. **The control-point count stays at 8.**
 
 Both of the items these left open have since been settled from the vendor drawing and are recorded
-in §11.5 and §11.6. The TFT carries **four** mounting holes, all 3 mm in from the side edges, with
-the pair nearest the header 6.92 mm down from that edge to clear the pin row and the lower pair
-3 mm up from the bottom. They are drawn after the glass so that all four stay visible. The Stick's
+in §11.5 and §11.6. The TFT carries **four** mounting holes, every one 3 mm in from each of the two
+edges nearest it. The header-side pair was carried at a deeper 6.92 mm inset for a while so that it
+would clear the pin row; it sits well outside that row horizontally and never needed to, and the
+inset is now uniform with the field that distinguished the two pairs removed. The holes are drawn
+before the glass, which is placed to clear them, and `TFTDisplayTest` asserts that clearance. The Stick's
 front face now carries no silkscreen at all, which is what the real board does — its pad names are
 printed on the back — and with the labels gone the LED row takes its true layout, eight 5 mm
 packages centred, with the inset derived rather than tuned.
@@ -350,6 +352,38 @@ length-scales-with-count assertion, draw smoke at both densities. **~1 day inclu
 
 The biggest structural gap, and it lands on top of the §5 item 3 footprint fix, so do it in the same
 pass rather than twice.
+
+**Progress.** The `Controller` enum has landed with three of the four. Beside the existing
+`ILI9341_2_8` there is now a
+new `ST7735_1_8` (34 x 45.8 mm, eight pins `GND VCC SCK SDA RES DC CS BL`, header 1.5 mm in from the
+top edge, four 3 mm holes 3 mm in from each edge). Board size, pin array, header offset, hole pattern
+and screen now all come off the enum; `updateControlPoints` sizes the array from the variant's pin
+list, and `getVariantLabel` feeds the controller into the BOM value so the variants no longer collapse
+into one row. The descriptor was renamed from "TFT Touch Screen (ILI9341)" to "TFT Display", which the
+class can still afford because it has not shipped (D6). `TFTDisplayTest` covers it in 11 tests, and
+the default variant's render is byte-identical to the pre-refactor one.
+
+Item 5 above is **stale and dropped**: `draw()` has no SD slot or touch hardware to branch on. The
+slot was removed in §5 item 3 because the reader is on the back, and touch was only ever pins. The
+only per-variant difference left is the pin array, which item 2 covers -- which also makes the
+1.5-2 day estimate too high. The round outline is the one genuinely new piece of drawing remaining.
+
+**`ST7789_1_54` is blocked on a contradiction rather than a missing figure.** The supplied outline of
+27.78 x 39.22 mm cannot be a PCB: a 1.54" 240x240 panel is square, so its active area is
+39.116 / sqrt(2) = 27.66 mm, which would leave 0.06 mm of bezel across the entire width. Either that
+figure describes a bare glass module rather than a breakout, or the width is a transcription slip --
+37.78 mm would give 5.06 mm of bezel each side and the same proportions as the 1.8".
+
+**`GC9A01_1_28` has landed as well:** a 38 mm disc with a 22.9 mm tab projecting 7.5 mm, the header
+1.76 mm in from the tab edge, no mounting holes, and seven pins `RST CS DC SDA SCL GND VCC` -- the
+clock pin confirmed as `SCL` rather than the `SLC` typo some of these boards carry on their silk.
+
+Two things about that outline are worth keeping. The body is the disc unioned with the tab, and the
+tab has to be carried down to the disc's centre line before the union: taken only as far as the top
+of the disc, the two shapes meet at a single tangent point and leave a notch either side of it. And
+the projection is not stored, being whatever the outline is longer than it is wide, so the round
+board is described by the same two figures as every other variant. The lit area is a 32.5 mm circle
+centred on the disc rather than on the bounding box, since the tab offsets one from the other.
 
 1. `Controller` enum: `ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)")`,
    `ST7735_1_8("1.8\" ST7735 128x160")`, `ST7789_1_54("1.54\" ST7789 240x240")`,
@@ -767,13 +801,14 @@ gate the displays.
    bound that does exist is on the drawn shape, which grows without limit: 144 LEDs of 30 LED/m
    tape is already most of five metres. `MIN_LED_COUNT`, `MAX_LED_COUNT` and `DEFAULT_LED_COUNT`
    carry it, and the getter repairs a count that deserializes as zero.
-5. **The TFT's mounting holes** — **decided, from the vendor drawing.** Four holes: all of them
-   3 mm in from the side edges, the pair nearest the header 6.92 mm down from that edge so they
-   clear the pin row, the lower pair 3 mm up from the bottom edge. The glass is centred between the
-   two hole rows rather than measured from an edge, which is what reconciles a 69.1 mm glass with
-   holes only 3 mm from the bottom: its midpoint is 44.96 mm from the top, so it spans 10.41 mm to
-   79.51 mm and clears both pairs. Both are derived in `draw()` from the hole constants, so moving
-   a hole moves the glass with it.
+5. **The TFT's mounting holes** — **decided, and since corrected.** Four holes, every one 3 mm in
+   from each of the two edges nearest it. The header-side pair was carried at 6.92 mm for a while
+   on the reasoning that it had to clear the pin row; it does not, that pair sitting outside the row
+   horizontally, and the maintainer corrected it to a uniform inset. The glass is still centred
+   between the two hole rows rather than measured from an edge, which with a uniform inset puts its
+   midpoint at the middle of the board: 43 mm from the top, so a 69.1 mm glass spans 8.45 mm to
+   77.55 mm and clears both pairs by 4.2 mm. Both are derived in `draw()` from the hole constants,
+   so moving a hole moves the glass with it.
 6. **Where the Stick's pad labels go** — **decided: nowhere.** The front face carries no
    silkscreen, matching the board, which prints its pad names on the back; node-name tooltips and
    the netlist already carry the names. With the labels gone the LED row takes the real layout —
