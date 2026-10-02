@@ -80,6 +80,7 @@ public class MakerComponentsTest {
       TFTDisplay.class,
       WS2812BStick.class,
       WS2812BRing.class,
+      WS2812BStrip.class,
 
       // Electro-Mechanical
       BatteryHolder18650.class

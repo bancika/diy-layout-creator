@@ -40,8 +40,9 @@ robotics are deliberately deferred; §10 records why.
 
 ## 3. Current coverage
 
-Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY_TYPE_NAME`, all
-`enableCache = true`, all extending `AbstractMakerBoard`.
+Eight classes now, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY_TYPE_NAME`,
+all `enableCache = true`, all extending `AbstractMakerBoard`. Seven are the drafts this slice set
+out to release; `WS2812BStrip` is the first of §6's additions to land.
 
 | Class | Variants today | Assessment |
 |---|---|---|
@@ -51,6 +52,7 @@ Seven classes, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names, and the body is now the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is now 21.744 × 10.864 mm, which is exactly 2:1, so that complaint is closed. What remains is the original gap: no size variants — the 0.91" and 1.3" boards are §6.3. |
 | `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
 | `TFTDisplay` | none | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. What is left is the gap it always had and nothing worse: no variant enum, which is §6.2's job. |
+| `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
 
 ### 3.1 Two defects that are bugs, not style
@@ -271,7 +273,40 @@ red SPI TFT and the I2C backpack, which have no canonical vendor.
 
 The archetypes are covered; the gaps are inside them. Each item below is an independent commit.
 
-### 6.1 NeoPixel Strip — new class `WS2812BStrip`
+### 6.1 NeoPixel Strip — new class `WS2812BStrip` — **done**
+
+Everything derives from the density, which is the one figure tape is actually sold by: the pitch is
+1000 mm divided by the count (33.33, 16.67, 6.94 mm), the length is linear in the LED count, and
+four control points hold at every density and count because the LEDs are drawn rather than wired.
+The one figure not derived is the tape width, which is the plan's stated norm — 10 mm for the 30 and
+60, 12 mm for the 144 — and remains unmeasured.
+
+`LedCount` is the bounded integer §11.4 assumed. Note that the item's stated reason for a bound was
+wrong: it worried about "an enormous control-point array", but the array is fixed at four whatever
+the count. The bound exists because the *shape* grows — 144 LEDs of 30/m tape is nearly five metres.
+
+**The output pad's position took four attempts, three of them wrong, and the way it went is the
+point of recording it.** Each attempt reasoned from a formula and shipped; each time every numeric
+check passed while the drawing was wrong. One edit was a net no-op that restored the original
+expression while adding a comment claiming a symmetry the code did not implement. What settled it
+was measuring instead of deriving: a probe showed the pad centre sitting exactly on the tape edge,
+which exposed the cause in one line — offsets are measured from control point 0, which is itself one
+inset inboard of the near cut, so reaching one inset in from the *far* cut costs two insets, not
+one. The original expression had been right about the pad all along; the real defect was the
+lead-in, and three edits went into fixing the wrong half of the geometry.
+
+`WS2812BStripTest` encodes exactly those failures — `everyPadSitsOnTheTape` and
+`outputPadClearsTheLastLed` would have caught every one — so the mistake cannot recur quietly. The
+class was also added to `releasedMakerComponentClasses`: until then it was discoverable in the app
+but asserted on by nothing, which is why the suite stayed green while the part was broken. That list
+is hand-maintained and not exhaustive, so a new maker component is invisible to every test until
+someone remembers to add it.
+
+Silk was left off, following the Ring and the Stick. Worth revisiting: unlike those two, real tape
+*does* print `+5V`, `DI` and `GND` between its pads, so this is the one case in the slice where
+dropping silkscreen is a simplification rather than a fidelity gain.
+
+The plan this was built from, kept for the record:
 
 The most-used addressable form factor, absent entirely, and the one addition that also serves the
 existing guitar and amp audience.
@@ -570,9 +605,16 @@ gate the displays.
    transformer, or extend `AbstractMakerBoard` for consistency with its category neighbours. The
    recommendation is `DIL_IC`, because the part is a DIP package and rotation for DIP parts already
    has a transformer.
-4. **Whether `LedCount` on the strip should be a free integer or an enum** (§6.1). A free integer
-   matches how someone thinks about a tape they will cut; an enum keeps the property editor
-   predictable and bounds the control-point maths. The plan above assumes a bounded integer.
+4. **Whether `LedCount` on the strip should be a free integer or an enum** (§6.1) — **decided: a
+   bounded integer**, as the plan assumed. An enum would invent a constraint the part does not
+   have: tape is cut wherever the builder wants, so any fixed set of lengths would be arbitrary.
+
+   One of the arguments recorded for the enum does not survive contact with the implementation. It
+   said an enum "bounds the control-point maths" — but the strip carries four control points at any
+   count, because the LEDs are drawn rather than wired, so there is no maths for it to bound. The
+   bound that does exist is on the drawn shape, which grows without limit: 144 LEDs of 30 LED/m
+   tape is already most of five metres. `MIN_LED_COUNT`, `MAX_LED_COUNT` and `DEFAULT_LED_COUNT`
+   carry it, and the getter repairs a count that deserializes as zero.
 5. **The TFT's mounting holes** — **decided, from the vendor drawing.** Four holes: all of them
    3 mm in from the side edges, the pair nearest the header 6.92 mm down from that edge so they
    clear the pin row, the lower pair 3 mm up from the bottom edge. The glass is centred between the
