@@ -76,7 +76,7 @@ public class MakerComponentsTest {
       CharacterLCD.class,
       OLEDDisplay.class,
       SevenSegmentDisplay.class,
-      LEDMatrix8x8.class,
+      LEDMatrix.class,
       TFTDisplay.class,
       WS2812BStick.class,
       WS2812BRing.class,
