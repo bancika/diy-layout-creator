@@ -40,9 +40,24 @@ robotics are deliberately deferred; §10 records why.
 
 ## 3. Current coverage
 
-Eight classes now, all `category = "Displays & Outputs"`, all `bomPolicy = SHOW_ONLY_TYPE_NAME`,
-all `enableCache = true`, all extending `AbstractMakerBoard`. Seven are the drafts this slice set
-out to release; `WS2812BStrip` is the first of §6's additions to land.
+Nine classes now, all `category = "Displays & Outputs"` and all `enableCache = true`. Seven are the
+drafts this slice set out to release; `WS2812BStrip` (§6.1) and `LEDBarGraph` (§6.6) are §6's
+additions so far.
+
+Two of the generalisations that held when this section was written no longer do, and both are worth
+keeping visible rather than quietly dropping. **Not every class extends `AbstractMakerBoard`**:
+`LEDBarGraph` is a DIP-outline part rather than a board, so it follows `DIL_IC` on
+`AbstractLabeledComponent` and carries its own transformer, inheriting none of the maker helpers.
+**All nine do set `bomPolicy = SHOW_ONLY_TYPE_NAME`**, but the bar graph only does so because it was
+caught: it had inherited `DIL_IC`'s silence, and the annotation default is `SHOW_ALL_NAMES`, so
+saying nothing had quietly opted it out of the category's convention. It also had to override
+`getValueForDisplay` by hand to get its segment count into the value column, because `BomMaker`
+keys rows on the type name and value together and `getVariantLabel` is an `AbstractMakerBoard`
+hook. Both are recorded in §6.6.
+
+The category is still the right home, because that is where someone looks for a bar graph. But
+"all of them" statements about this package now need checking rather than assuming — this one
+happened to come back true, and only after a fix.
 
 | Class | Variants today | Assessment |
 |---|---|---|
@@ -52,6 +67,7 @@ out to release; `WS2812BStrip` is the first of §6's additions to land.
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names, and the body is now the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is now 21.744 × 10.864 mm, which is exactly 2:1, so that complaint is closed. What remains is the original gap: no size variants — the 0.91" and 1.3" boards are §6.3. |
 | `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
 | `TFTDisplay` | none | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. What is left is the gap it always had and nothing worse: no variant enum, which is §6.2's job. |
+| `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
 
@@ -434,7 +450,93 @@ Still in every starter kit, a distinct 8-pin footprint, and simple geometry: a b
 glass area and a single 1x8 header. PCD8544 controller, 84x48 pixels, `RST CE DC DIN CLK VCC BL GND`.
 One class, no variants. **~0.5 day.**
 
-### 6.6 LED Bar Graph — new class, base class to be decided
+### 6.6 LED Bar Graph — new class — **done**
+
+Three files: `LEDBarGraph`, a sibling `LEDBarGraphTransformer`, and `LEDBarGraphTest`. Variants are
+8, 10 and 12 segments, and the package follows from the count rather than being fixed: each segment
+carries its own anode and cathode, so the pin count is twice the segment count (16 / 20 / 24) and
+the body lengthens by one pin pitch per segment (20.32 / 25.4 / 30.48 mm) while staying 10.3 mm
+wide. Rows are 7.62 mm apart, all maintainer-supplied.
+
+**The part is a DIP outline but not a DIP, and that distinction governs the geometry.** An IC's
+leads bend out of the sides of the plastic, so `DIL_IC` draws its body *between* the pin rows. A bar
+graph's pins leave the underside within the footprint, so the package is wider than the row spacing
+-- 10.3 against 7.62, leaving about 1.34 mm of body outboard of each row -- and covers its own pins
+entirely. They are drawn first and painted over rather than skipped, because the draw loop is what
+registers them as a conductive area; omitting it would render identically and lose every pin.
+
+Three mistakes are worth recording, because all three were caught by something other than reasoning.
+
+The first version copied `DIL_IC.getBody()` wholesale and so put the body between the rows, and
+hardcoded 20 pins with a comment claiming an 8-segment part "simply leaves the end pairs unused" --
+reasoned into, never checked. Both were wrong, and the test written alongside asserted the copied
+behaviour, so it passed. A test named for the thing it does not check is worse than no test:
+`bodySitsBetweenThePinRows` encoded the bug, and its replacement `bodyCoversEveryPin` would have
+failed on the original.
+
+The second was in the transformer. `DIL_ICTransformer` cannot be reused -- it guards on
+`getClass().equals(DIL_IC.class)` and casts to `DIL_IC`, so it would have silently refused to rotate
+a bar graph, and `MakerComponentsTest` asserts rotatability, so the failure would have surfaced only
+if the component were registered there. A survey of all 32 transformers showed exact-class matching
+is the near-universal convention, so a sibling follows the grain and touches nothing shipped. Its
+`mirror` was then written wrong: reflecting points about the centre with unused variables, a dead
+branch, and no orientation change at all, which would have mirrored the pins while leaving the body
+facing as before. Reading `SIL_ICTransformer` properly fixed it.
+
+The third was a harness bug reintroduced from earlier in the slice: positioning the component with
+`setControlPoint(.., 0)`, which moves one pin and leaves the rest. The render showed a body detached
+from its pins and looked like a component defect; a probe showed a fresh component was correct and
+only the moved one broke. Worth knowing that `MakerComponentsTest` does the same at three sites and
+gets away with it because those tests only assert that drawing did not throw -- so that suite would
+not catch a genuinely detached component either.
+
+**Four corrections followed from review, and three of them removed something rather than added it.**
+
+*Segments are centred on their pins.* The field had been derived by dividing the body into equal
+bars with margins, which is independent of where the pins actually are: on a ten segment part that
+put segment zero about 5 px below its own pin pair. Each segment is now centred on the midpoint of
+the pair that drives it, which is both correct and orientation-proof for free -- the midpoint of a
+pin pair is the package centreline at that segment whichever way the part is turned, so the
+four-way switch disappeared. The old placement passed every test that existed at the time;
+`segmentsAreCentredOnTheirPins` is what makes the fix stick.
+
+*The pins are drawn on top, and round.* On the part they are underneath the plastic and invisible
+from above, which is what the first version drew. But this is a drawing someone lines up against a
+board, and a pin that cannot be seen cannot be positioned, so legibility wins over the photograph
+here. They are round because a bar graph's leads are drawn wire rather than the flat stamped
+leadframe an IC has, and they land inside the lit area rather than beside it, because the rows are
+closer together than the segments are wide.
+
+*The colour is a rule, not a property.* A bar graph is a scale and the colours carry the reading:
+one red at the top, two yellow below it, green for the rest. The bands shift with the count rather
+than being fixed fractions -- five green on an eight segment part, seven on a ten, nine on a twelve.
+The trade is that a single-colour bar, all red or all green, can no longer be drawn, and both are
+sold; a mode property would bring them back if that is wanted.
+
+*Two properties were vestigial.* `labelColor` came across from `DIL_IC`, which renders its value on
+the body; nothing here draws a label, so the colour had nothing to colour, and it is gone. `value`
+stays, because `IDIYComponent` requires every component to carry one, but its javadoc now says what
+it is for -- somewhere to record the part you bought, reaching the BOM and keyword search and
+nothing else -- rather than leaving a reader to infer its purpose from a class it was copied from.
+
+**The BOM policy was declared, and leaving it undeclared had not been neutral.** `bomPolicy`
+defaults to `SHOW_ALL_NAMES`, so by saying nothing the bar graph had quietly become the only
+component in the category that lists every instance by name -- `BAR1, BAR2, ...` -- rather than
+collapsing to one row with a quantity. It now declares `SHOW_ONLY_TYPE_NAME` like its neighbours,
+verified by reading the resolved `ComponentType` rather than the source, since the annotation
+default is precisely what made the source misleading.
+
+The value column needed the same attention and for a sharper reason. `BomMaker` keys rows on
+`typeName + "|" + value`, and the inherited `getValueForDisplay` returns `getValue()`, which here
+is the part number and is usually blank -- so an eight, a ten and a twelve segment part would have
+**merged into a single row**. That is §11.1's defect exactly, reappearing in the one class that
+could not inherit the fix: `getVariantLabel` lives on `AbstractMakerBoard` and the bar graph is on
+a different base. `getValueForDisplay` is overridden locally to put the segment count in the value
+column, appending a typed part number when there is one, which is the same decision written out by
+hand. Worth remembering for §6.5 and anything else that leaves the maker hierarchy: the BOM
+behaviour every board gets for free has to be re-established by hand.
+
+The plan this was built from, kept for the record:
 
 Ten segments in a 20-pin DIP outline. Nothing in the library covers it: `LED`, `LEDSymbol` and
 `PilotLampHolder` are the closest, and none is a segmented bar. It is the cheapest item here and the
@@ -452,8 +554,29 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
 
 ### 6.7 Cheap additions
 
-- **`WS2812BRing`**: append `_8_LED` and a `_7_LED` Jewel constant to `RingSize` with their OD/ID.
-  Two lines plus sourcing. **~1 h.**
+- **`WS2812BRing` 8-LED constant** — **dropped.** Adafruit does not list an 8-LED ring, and the
+  third-party boards sold as one do not share a pad arrangement, so there is no single part to
+  model. Its dimensions were available (30 mm outside, 15 mm inside) and would have appended
+  cleanly; what was not available was a pad layout, and `RingSize` requires one — the constructor
+  throws unless the pad gaps sum to the LED count. That check is the reason this was caught rather
+  than guessed: filling it with a plausible arrangement is precisely the fitted geometry this slice
+  has spent its time removing.
+
+- **`WS2812BRing` 7-LED Jewel** — still wanted, but **not the two-line append this item assumed**,
+  and the hour this section originally budgeted for it was wrong. Two things break:
+
+  1. *It is a disc, not an annulus.* `draw()` subtracts the inner circle from the outer
+     unconditionally. An inner diameter of zero would draw the right outline, but `getMidRadius()`
+     averages the two rims, so the LEDs would land on a circle half the outer radius -- inside the
+     body rather than on it.
+  2. *Its seven LEDs are six around one in the centre.* The draw loop spaces every LED evenly at
+     `2*pi*i/ledCount`, which would put all seven on one circle and leave the middle empty. That is
+     an arrangement, not a dimension, so no measurement fixes it.
+
+  The cheaper of the two fixes is a flag on `RingSize` -- something like "has a centre LED" -- with
+  the annulus and the LED loop each branching on it; `RingSize` already carries per-variant
+  structure in its pad gaps, so this is in keeping. A separate class is the alternative. Blocked on
+  that decision plus the Jewel's pad arrangement, in the same form the other rings carry it.
 - **NeoPixel panel 8x8** as its own class, reusing `drawAddressableLed` and the ring's pad handling.
   Worth doing only after §6.1, whose helper it depends on. **~0.5 day.**
 
@@ -601,10 +724,22 @@ gate the displays.
    setter: `ArduinoUno.setVersion()` and the drafted `DHTSensor.setModel()` both overwrite
    `bodyColor`, discarding a colour the user chose. Separate fields for separate physical layers
    avoids needing a default that changes underneath someone.
-3. **The bar graph's base class** (§6.6) — follow `DIL_IC` on `AbstractLabeledComponent` with a
-   transformer, or extend `AbstractMakerBoard` for consistency with its category neighbours. The
-   recommendation is `DIL_IC`, because the part is a DIP package and rotation for DIP parts already
-   has a transformer.
+3. **The bar graph's base class** (§6.6) — **decided: `DIL_IC` on `AbstractLabeledComponent`**, with
+   a transformer of its own. The part is a DIP outline, not a board, so `AbstractMakerBoard` was
+   the wrong fit.
+
+   Two things this cost that the recommendation did not anticipate. `AbstractLabeledComponent`
+   supplies almost nothing — it adds a font-size override to `AbstractTransparentComponent` and
+   stops there — so the bar graph implements its own control points, body, draw, bounds and node
+   names, exactly as `DIL_IC` does. And "rotation for DIP parts already has a transformer" turned
+   out not to help: `DIL_ICTransformer` guards on `getClass().equals(DIL_IC.class)`, which is the
+   convention across all 32 transformers in that package, so it refuses anything that is not
+   literally a `DIL_IC`. The bar graph needed its own, which is additive and changes nothing
+   shipped.
+
+   It is also the first `Displays & Outputs` component that is not an `AbstractMakerBoard`, so it
+   inherits none of the maker helpers — no `getVariantLabel`, no shared LED painters, no
+   `drawSolderPads`. The category is still right: it is where someone looks for a bar graph.
 4. **Whether `LedCount` on the strip should be a free integer or an enum** (§6.1) — **decided: a
    bounded integer**, as the plan assumed. An enum would invent a constraint the part does not
    have: tape is cut wherever the builder wants, so any fixed set of lengths would be arbitrary.
