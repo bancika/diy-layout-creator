@@ -266,8 +266,8 @@ one net, so the pads are now named `GND_1`…`GND_4` and the silkscreen prints "
 `getSilkPinLabel`. **The control-point count stays at 8.**
 
 Both of the items these left open have since been settled from the vendor drawing and are recorded
-in §11.5 and §11.6. The TFT carries **four** mounting holes, every one 3 mm in from each of the two
-edges nearest it. The header-side pair was carried at a deeper 6.92 mm inset for a while so that it
+in §11.5 and §11.6. The TFT carries **four** mounting holes, every one 3 mm across and 3 mm in from
+each of the two edges nearest it. The header-side pair was carried at a deeper 6.92 mm inset for a while so that it
 would clear the pin row; it sits well outside that row horizontally and never needed to, and the
 inset is now uniform with the field that distinguished the two pairs removed. The holes are drawn
 before the glass, which is placed to clear them, and `TFTDisplayTest` asserts that clearance. The Stick's
@@ -801,8 +801,8 @@ gate the displays.
    bound that does exist is on the drawn shape, which grows without limit: 144 LEDs of 30 LED/m
    tape is already most of five metres. `MIN_LED_COUNT`, `MAX_LED_COUNT` and `DEFAULT_LED_COUNT`
    carry it, and the getter repairs a count that deserializes as zero.
-5. **The TFT's mounting holes** — **decided, and since corrected.** Four holes, every one 3 mm in
-   from each of the two edges nearest it. The header-side pair was carried at 6.92 mm for a while
+5. **The TFT's mounting holes** — **decided, and since corrected.** Four holes, every one 3 mm across and
+   3 mm in from each of the two edges nearest it. The header-side pair was carried at 6.92 mm for a while
    on the reasoning that it had to clear the pin row; it does not, that pair sitting outside the row
    horizontally, and the maintainer corrected it to a uniform inset. The glass is still centred
    between the two hole rows rather than measured from an edge, which with a uniform inset puts its

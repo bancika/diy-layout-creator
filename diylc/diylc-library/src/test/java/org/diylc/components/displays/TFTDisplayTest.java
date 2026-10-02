@@ -189,13 +189,17 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every hole sits the same distance in from the two edges nearest it. The 2.8" board carried a
-   * deeper inset on the header-side pair for a while, which is the regression this guards.
+   * Every hole is 3 mm across and sits 3 mm in from each of the two edges nearest it, on both
+   * boards that carry them. The 2.8" board had a deeper inset on its header-side pair and a
+   * narrower 2.5 mm drill for a while, and this guards against either coming back.
    */
   @Test
-  public void mountingHolesAreUniformlyInsetFromEveryEdge() {
-    Assert.assertEquals(3.0d, Controller.ILI9341_2_8.getHoleInsetMm(), 0.01d);
-    Assert.assertEquals(3.0d, Controller.ST7735_1_8.getHoleInsetMm(), 0.01d);
+  public void mountingHolesShareOneInsetAndDiameter() {
+    Controller[] withHoles = {Controller.ILI9341_2_8, Controller.ST7735_1_8};
+    for (Controller controller : withHoles) {
+      Assert.assertEquals(controller + " inset", 3.0d, controller.getHoleInsetMm(), 0.01d);
+      Assert.assertEquals(controller + " diameter", 3.0d, controller.getHoleSizeMm(), 0.01d);
+    }
   }
 
   /** Without this the BOM collapses every variant of the part into a single row. */

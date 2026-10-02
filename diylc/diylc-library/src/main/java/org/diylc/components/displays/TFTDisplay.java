@@ -74,7 +74,7 @@ public class TFTDisplay extends AbstractMakerBoard {
     // disc diameter and its length runs from the tab's outer edge to the bottom of the disc, so the
     // tab's projection is the difference between them and is not carried separately.
     ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, 69.1d, 3.0d,
-        3.0d, 2.5d, 0d,
+        3.0d, 3.0d, 0d,
         new String[] {"VCC", "GND", "CS", "RESET", "DC", "MOSI (SDI)", "SCK", "LED", "MISO (SDO)",
             "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"}),
     ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, 0d, 1.5d, 3.0d, 3.0d, 0d,
