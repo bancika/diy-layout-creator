@@ -295,11 +295,13 @@ public class WS2812BRing extends AbstractMakerBoard {
       double ledSize = RGB_LED_SIZE.convertToPixels();
       Color[] ledColors = getLedColors();
 
-      // Draw all LEDs around the circular ring
+      // Draw all LEDs around the circular ring, each package turned to face out along its own
+      // radius the way it is mounted rather than left square to the board
       for (int i = 0; i < ledCount; i++) {
         double angle = 2 * Math.PI * i / ledCount - Math.PI / 2.0;
         MakerBoardPainter.drawAddressableLed(g2d, cx + ledR * Math.cos(angle),
-            cy + ledR * Math.sin(angle), ledSize, ledColors[i % ledColors.length]);
+            cy + ledR * Math.sin(angle), ledSize, ledColors[i % ledColors.length],
+            angle + Math.PI / 2.0);
       }
 
       // Pad names are left to the node tooltips and the netlist: a pad sits in the gap between two

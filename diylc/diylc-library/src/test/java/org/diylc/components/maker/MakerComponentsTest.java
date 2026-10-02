@@ -77,10 +77,12 @@ public class MakerComponentsTest {
       OLEDDisplay.class,
       SevenSegmentDisplay.class,
       LEDMatrix.class,
+      LEDBarGraph.class,
       TFTDisplay.class,
       WS2812BStick.class,
       WS2812BRing.class,
       WS2812BStrip.class,
+      WS2812BJewel.class,
 
       // Electro-Mechanical
       BatteryHolder18650.class

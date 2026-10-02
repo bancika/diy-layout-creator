@@ -260,6 +260,21 @@ public class MakerBoardPainter {
    */
   public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
       Color litColor) {
+    drawAddressableLed(g2d, cx, cy, size, litColor, 0);
+  }
+
+  /**
+   * As above, with the package turned by {@code rotation} radians about its own centre. Parts laid
+   * out on a circle are mounted facing out from the middle rather than square to the board, so each
+   * one turns with its own radius. The package is square, so the turn only tells modulo a quarter
+   * turn -- which is still enough to distinguish a radial arrangement from an axis-aligned one.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor, double rotation) {
+    if (rotation != 0) {
+      g2d.rotate(rotation, cx, cy);
+    }
+
     double half = size / 2.0;
 
     g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_COLOR);
@@ -277,5 +292,10 @@ public class MakerBoardPainter {
     double dieSize = Math.max(2.0, lensR * 0.4);
     g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : litColor.brighter());
     g2d.fill(new Rectangle2D.Double(cx - dieSize / 2.0, cy - dieSize / 2.0, dieSize, dieSize));
+
+    // turned back rather than saving the transform, so nothing is allocated per LED
+    if (rotation != 0) {
+      g2d.rotate(-rotation, cx, cy);
+    }
   }
 }

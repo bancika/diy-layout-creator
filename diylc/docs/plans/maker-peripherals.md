@@ -563,7 +563,7 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
   has spent its time removing.
 
 - **`WS2812BRing` 7-LED Jewel** — still wanted, but **not the two-line append this item assumed**,
-  and the hour this section originally budgeted for it was wrong. Two things break:
+  and the hour this section originally budgeted for it was wrong. Two things broke:
 
   1. *It is a disc, not an annulus.* `draw()` subtracts the inner circle from the outer
      unconditionally. An inner diameter of zero would draw the right outline, but `getMidRadius()`
@@ -573,10 +573,27 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
      `2*pi*i/ledCount`, which would put all seven on one circle and leave the middle empty. That is
      an arrangement, not a dimension, so no measurement fixes it.
 
-  The cheaper of the two fixes is a flag on `RingSize` -- something like "has a centre LED" -- with
-  the annulus and the LED loop each branching on it; `RingSize` already carries per-variant
-  structure in its pad gaps, so this is in keeping. A separate class is the alternative. Blocked on
-  that decision plus the Jewel's pad arrangement, in the same form the other rings carry it.
+  Both were settled by making it a separate class, `WS2812BJewel`, which is what decision D2 already
+  prescribes: a new class where the footprint family is not shared. The flag looked cheaper only
+  until the measurements arrived, at which point it would have needed company -- an explicit LED
+  circle (16 mm, with no inner rim for it to be the midpoint of), an explicit pad circle (9 mm, where
+  the rings inset theirs from the outer rim), a mounting-hole pattern no ring has, and a gap
+  assertion counting ring LEDs rather than all of them. Five variant-specific structures describe a
+  different part, not a variant.
+
+  Maintainer-supplied figures: a 23 mm disc with no hole; six LEDs on a 16 mm circle with the seventh
+  in the centre; two 3 mm mounting holes 19 mm apart horizontally; and five pads on a 9 mm circle,
+  `OUT` in the gap anticlockwise of the top LED, then clockwise `GND`, `GND`, `PWR`, `IN`. Five pads
+  share six gaps, so one gap carries none; it works out to the gap pointing due left, which is where
+  a mounting hole sits. `WS2812BJewelTest` pins that down, because every count and radius check
+  passes whichever gap is left empty -- the arrangement is the part that can silently be wrong.
+
+  One change reached back into the rings while this was built. `MakerBoardPainter`'s addressable-LED
+  helper gained a rotation parameter, so packages laid out on a circle are drawn turned to face along
+  their own radius the way they are mounted, rather than square to the board. It applies to all three
+  ring sizes as well as the Jewel; the Jewel's centre package has no radius and stays square, and the
+  linear strip and stick are unaffected. The package is square, so the turn only shows modulo a
+  quarter turn, and no geometry assertion catches it -- it is visible only in a render.
 - **NeoPixel panel 8x8** as its own class, reusing `drawAddressableLed` and the ring's pad handling.
   Worth doing only after §6.1, whose helper it depends on. **~0.5 day.**
 
