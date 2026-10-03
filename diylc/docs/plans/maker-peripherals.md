@@ -584,8 +584,16 @@ four-way switch disappeared. The old placement passed every test that existed at
 from above, which is what the first version drew. But this is a drawing someone lines up against a
 board, and a pin that cannot be seen cannot be positioned, so legibility wins over the photograph
 here. They are round because a bar graph's leads are drawn wire rather than the flat stamped
-leadframe an IC has, and they land inside the lit area rather than beside it, because the rows are
-closer together than the segments are wide.
+leadframe an IC has.
+
+*The segments are the size of the real lit windows.* They had been derived as the package less a
+margin and the pin pitch less a gap, which made them 8.3 x 2.04 mm -- most of the package, and
+visibly too fat. They are now the maintainer's measured 4.8 x 1.7 mm, carried as `SEGMENT_WIDTH` and
+`SEGMENT_LENGTH` rather than subtracted from something else, so a segment keeps its size if the
+package or the pitch is ever corrected. One claim recorded here went with the old figures: the pins
+no longer land inside the lit area, since the rows are 7.62 mm apart and the windows only 4.8 mm
+across, so each row now sits on bare plastic outboard of the segments, which is where the real part
+has them.
 
 *The colour is a rule, not a property.* A bar graph is a scale and the colours carry the reading:
 one red at the top, two yellow below it, green for the rest. The bands shift with the count rather

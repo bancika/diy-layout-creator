@@ -97,9 +97,11 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   // about 1.34 mm of body outboard of each row, so no pin is visible from above.
   public static Size ROW_SPACING = new Size(7.62d, SizeUnit.mm);
   public static Size PACKAGE_WIDTH = new Size(10.3d, SizeUnit.mm);
-  // Air between the package edge and the segment field, and between neighbouring segments.
-  public static Size SEGMENT_MARGIN = new Size(1.0d, SizeUnit.mm);
-  public static Size SEGMENT_GAP = new Size(0.5d, SizeUnit.mm);
+  // The lit window of one segment, measured on the part: across the package and along it. They are
+  // sizes of their own rather than the package less a margin, so a segment stays the size it is
+  // when the package or the pin pitch changes.
+  public static Size SEGMENT_WIDTH = new Size(4.8d, SizeUnit.mm);
+  public static Size SEGMENT_LENGTH = new Size(1.7d, SizeUnit.mm);
 
   /**
    * How many segments the bar carries, which decides everything else about the package: each
@@ -405,10 +407,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
    */
   private Rectangle2D[] getSegmentRects() {
     int count = getSegments().getCount();
-    double margin = SEGMENT_MARGIN.convertToPixels();
-    double gap = SEGMENT_GAP.convertToPixels();
-    double across = PACKAGE_WIDTH.convertToPixels() - 2 * margin;
-    double along = PIN_SPACING.convertToPixels() - gap;
+    double across = SEGMENT_WIDTH.convertToPixels();
+    double along = SEGMENT_LENGTH.convertToPixels();
     boolean vertical = orientation == Orientation.DEFAULT || orientation == Orientation._180;
 
     Rectangle2D[] rects = new Rectangle2D[count];
@@ -465,10 +465,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
 
       // The pins go on last, over the package and over the segments. On the real part they are
       // underneath and invisible from above, but this is a layout tool: a pin you cannot see is a
-      // pin you cannot line up against a board, so the drawing shows where they are. They sit
-      // inside the lit area rather than beside it, because the rows are closer together than the
-      // segments are wide. Round, because a bar graph's leads are drawn wire rather than the flat
-      // stamped leadframe an IC has.
+      // pin you cannot line up against a board, so the drawing shows where they are. The rows sit
+      // outside the lit windows, which are 4.8 mm across against the rows' 7.62 mm. Round, because
+      // a bar graph's leads are drawn wire rather than the flat stamped leadframe an IC has.
       double pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
         Ellipse2D pin = new Ellipse2D.Double(point.getX() - pinSize / 2,
