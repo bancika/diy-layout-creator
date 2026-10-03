@@ -83,6 +83,7 @@ public class MakerComponentsTest {
       WS2812BRing.class,
       WS2812BStrip.class,
       WS2812BJewel.class,
+      Nokia5110LCD.class,
 
       // Electro-Mechanical
       BatteryHolder18650.class

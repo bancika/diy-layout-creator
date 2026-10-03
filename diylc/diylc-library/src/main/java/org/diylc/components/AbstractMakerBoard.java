@@ -162,6 +162,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   // labels along a row run across the board rather than down a column of pins, so they can afford
   // a size the tightly stacked column labels cannot
   public static Font PIN_ROW_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 9);
+  // a label lying along its row has only the pin pitch to fit into, so it runs a size down from
+  // the rotated ones and sits closer to the pin, which is all the room a shallow strip has
+  public static Font PIN_ROW_FLAT_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 8);
+  public static Size PIN_ROW_FLAT_LABEL_OFFSET = new Size(2.04d, SizeUnit.mm);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -464,6 +468,44 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       StringUtils.drawCenteredText(g2d, label, pinX + (below ? -labelOffset : labelOffset), pinY,
           below ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
       g2d.setTransform(oldLabelTx);
+    }
+  }
+
+  /**
+   * Helper to draw pin names lying flat along a horizontal row of pins, reading left to right the
+   * way the board itself does, for a board whose strip beside the header is shallower than the
+   * longest name is long. {@link #drawRowPinLabels} stands its labels on end across the row, so
+   * each one has the whole depth of the board to grow into; these lie in the row's own direction
+   * and have only the tenth of an inch between two pins, so they run in a smaller font.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated first control point X coordinate (P0.getX())
+   * @param y Unrotated first control point Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param startIndex Index of the first pin of the row
+   * @param count Number of pins in the row
+   * @param below True to print the labels below the row, false to print them above it
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawFlatRowPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int startIndex, int count, boolean below, Color silkColor) {
+    if (offsets == null || offsets.length == 0) {
+      return;
+    }
+    double labelOffset = PIN_ROW_FLAT_LABEL_OFFSET.convertToPixels();
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_ROW_FLAT_FONT);
+
+    for (int i = startIndex; i < startIndex + count && i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      double pinX = x + offsets[i][0];
+      double pinY = y + offsets[i][1] + (below ? labelOffset : -labelOffset);
+      StringUtils.drawCenteredText(g2d, label, pinX, pinY, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
     }
   }
 

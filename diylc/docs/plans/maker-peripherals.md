@@ -10,7 +10,7 @@ Companion to: `maker-board-roadmap.md` (which covers `org.diylc.components.micro
 ## 1. Goal
 
 The first maker slice shipped ten controller boards in 6.5.0. Forty-one further components sit in
-the tree with their `@ComponentDescriptor` annotations commented out, across four packages:
+the tree with theiryou  `@ComponentDescriptor` annotations commented out, across four packages:
 `displays` (7), `sensors` (9), `modules` (21) and `robotics` (4). None of them is discoverable, and
 `MakerComponentsTest` lists all forty-one in `unreleasedMakerComponentClasses`.
 
@@ -40,15 +40,15 @@ robotics are deliberately deferred; §10 records why.
 
 ## 3. Current coverage
 
-Nine classes now, all `category = "Displays & Outputs"` and all `enableCache = true`. Seven are the
-drafts this slice set out to release; `WS2812BStrip` (§6.1) and `LEDBarGraph` (§6.6) are §6's
-additions so far.
+Eleven classes now, all `category = "Displays & Outputs"` and all `enableCache = true`. Seven are
+the drafts this slice set out to release; `WS2812BStrip` (§6.1), `LEDBarGraph` (§6.6),
+`WS2812BJewel` (§6.7) and `Nokia5110LCD` (§6.5) are §6's additions so far.
 
 Two of the generalisations that held when this section was written no longer do, and both are worth
 keeping visible rather than quietly dropping. **Not every class extends `AbstractMakerBoard`**:
 `LEDBarGraph` is a DIP-outline part rather than a board, so it follows `DIL_IC` on
 `AbstractLabeledComponent` and carries its own transformer, inheriting none of the maker helpers.
-**All nine do set `bomPolicy = SHOW_ONLY_TYPE_NAME`**, but the bar graph only does so because it was
+**All eleven do set `bomPolicy = SHOW_ONLY_TYPE_NAME`**, but the bar graph only does so because it was
 caught: it had inherited `DIL_IC`'s silence, and the annotation default is `SHOW_ALL_NAMES`, so
 saying nothing had quietly opted it out of the category's convention. It also had to override
 `getValueForDisplay` by hand to get its segment count into the value column, because `BomMaker`
@@ -70,6 +70,7 @@ happened to come back true, and only after a fix.
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BJewel` | none (a single part) | **New in this slice (§6.7), not a draft.** A sibling of `WS2812BRing` rather than another `RingSize` constant, per D2: it shares the part family and the pad footprint but not the footprint family. It is a solid 23 mm disc with no inner rim, six LEDs on a 16 mm circle around a seventh in the middle, five pads on a 9 mm circle *inside* the LED ring rather than inset from the rim, and two 3 mm mounting holes 19 mm apart that no ring carries — five variant-specific structures, which is a different part and not a variant. Every figure is maintainer-supplied. The pad arrangement is the part that could silently have been wrong: five pads share six gaps between the ring LEDs, so one gap carries none, and it works out to the gap pointing due left, which is where a mounting hole sits. `WS2812BJewelTest` pins that down, because every count and radius assertion passes whichever gap is left empty. Its packages — and the rings', which this changed too — are drawn turned to follow their own radius the way they are mounted; the centre package has no radius and stays square to the board. |
+| `Nokia5110LCD` | none (a single part) | **New in this slice (§6.5), not a draft.** Every figure is maintainer-supplied and the whole outline is measured: a 43.8 x 45.8 mm board, a 40 x 35 mm bezel 4.5 mm down from the top edge, a 37 x 27 mm glass 11 mm down, and 3 mm mounting holes on a 34.5 x 41 mm pattern. It is the first display board whose header is on the **bottom** edge, so the board grows upwards from control point zero rather than down from it, and every feature is measured from an edge no control point touches. The glass is placed from the top edge rather than centred in the bezel, because it is not centred in it -- 6.5 mm of frame above, 1.5 mm below. It is also the first in the package to carry silkscreen: the pin names lie flat along the row under the header rather than standing on end like the Arduino boards', and the part name sits in the top left corner beside the mounting hole, where the module prints it (§6.5). One figure is unsourced: the 3.5 mm clearance from the bottom edge to the pin row. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
 
 ### 3.1 Two defects that are bugs, not style
@@ -479,11 +480,55 @@ The plan this was built from, kept for the record:
 Tests: per-variant size, header positions at both ends in both variants, draw smoke.
 **~0.5-1 day.**
 
-### 6.5 Nokia 5110 LCD — new class `Nokia5110LCD`
+### 6.5 Nokia 5110 LCD — new class `Nokia5110LCD` — **done**
 
-Still in every starter kit, a distinct 8-pin footprint, and simple geometry: a board with a large
-glass area and a single 1x8 header. PCD8544 controller, 84x48 pixels, `RST CE DC DIN CLK VCC BL GND`.
-One class, no variants. **~0.5 day.**
+Two files, `Nokia5110LCD` and `Nokia5110LCDTest`, built entirely from maintainer figures: a
+43.8 x 45.8 mm board, a 40 x 35 mm bezel in `LIGHT_METAL_COLOR` centred across it and 4.5 mm down
+from the top edge, a 37 x 27 mm rounded glass 11 mm down, 3 mm mounting holes on a 34.5 x 41 mm pattern,
+and the eight pins `RST CE DC DIN CLK VCC BL GND` centred on the bottom edge. No variants, so no enum and no
+`getVariantLabel` override; the BOM value column is empty, as it is for the other parts sold in one
+form.
+
+**It is the first display board placed from its bottom edge, and that is the whole of what was new
+here.** Every other board in the package hangs below a header on its top edge, so `getBoardY` is a
+small clearance subtracted from the control point. Here the board is a whole board *above* the
+pins, and the bezel, the glass and the hole rows are all measured from the top edge, which no
+control point touches. `headerIsCentredOnTheBottomEdge` is the test that would catch the sign of
+that getting flipped, since a board drawn downwards from the pins still passes every size and pitch
+assertion.
+
+The glass is placed from the top edge rather than centred in the bezel, because it is not centred
+in it: 6.5 mm of frame above it against 1.5 mm below. Centring it would have been the cheaper
+expression and would have put it 2.5 mm high, which is why `glassSitsInsideTheBezel` checks the two
+offsets against each other rather than checking each against the board.
+
+**The outline was first entered the wrong way round, and the geometry said so before anyone looked
+at it.** Built as 45.8 wide by 43.8 long, the 41 mm vertical hole pattern left 1.4 mm to each edge,
+so a 3 mm hole overran the board by 0.1 mm -- a third of a pixel at 1:1, invisible in the render and
+passing every test that existed, since all of them compared features against each other rather than
+against the edges. Turned the right way round, 43.8 x 45.8, every drill sits 2.4 mm or more from the
+two edges nearest it and the bottom strip grows from 4.8 mm to 6.8 mm, which is where the header and
+its silkscreen live. `mountingHolesClearTheBoardEdges` now asserts that clearance, and it fails if
+the two figures are swapped again; the hole pattern itself is modelled as centre-to-centre spacing
+rather than an edge inset, following `OLEDDisplay`, because that is how it is specified and what a
+builder drills.
+
+**The pin names are printed, and they lie flat along the row.** This is the first part in the package to
+carry silkscreen at all -- the Ring, the Stick and the Strip all had theirs dropped -- and the
+reason it can is the 3.5 mm strip between the pin row and the bottom edge. `drawRowPinLabels` turns
+its labels on their side, which needs `PIN_ROW_LABEL_OFFSET` plus the length of the longest name:
+2.0 + 2.7 = 4.7 mm, more than the strip has. So `AbstractMakerBoard` gained a sibling,
+`drawFlatRowPinLabels`, which leaves them lying in the row's own direction. Flat, the constraint
+flips from depth to width -- each label has the 2.54 mm pin pitch to fit into, where the widest, `GND`,
+measures 2.67 mm at the rotated labels' 9 pt -- so the helper carries its own 8 pt font, at which
+the same label is 2.29 mm and clears its neighbours by 0.25 mm. Both figures are `FontMetrics`
+measurements rather than estimates, and the margin is deliberately slim: 7 pt was legible and left
+0.6 mm between labels, and the maintainer chose the larger size on sight of the render. The names
+come from `getSilkPinLabel` like every other board's, so nothing duplicates `PIN_NAMES`.
+
+The one **unsourced number in the class** is the 3.5 mm clearance from the bottom edge to the pin
+row, set by eye off the render so that the silkscreen has room to stand under the header. It places the row, and through the row the
+silkscreen, so it is worth replacing with a measurement if the board is ever in hand.
 
 ### 6.6 LED Bar Graph — new class — **done**
 
@@ -683,8 +728,9 @@ part name, then the variant list).
 5. **§7** tests alongside each of the above, not after.
 6. **§8** regression samples and the `update.xml` block, last.
 
-Ten palette entries at the end of it: the seven existing, plus the strip, the bar graph and the
-Jewel, plus the Nokia and the panel if appetite holds.
+Eleven palette entries so far: the seven existing, plus the strip, the bar graph, the Jewel and the
+Nokia, plus the panel if appetite holds. The `update.xml` 6.7.0 block still lists only the original
+seven -- the strip, the bar graph, the Jewel and the Nokia have no entry yet.
 
 ## 10. Later slices, and why they are later
 
