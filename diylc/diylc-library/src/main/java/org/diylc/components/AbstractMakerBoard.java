@@ -24,6 +24,7 @@ package org.diylc.components;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -472,6 +473,19 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
+   * Baseline for labels that have to sit on one line. {@link StringUtils}'s CENTER alignment
+   * centres each string on its own glyph box, so a name with a descender -- the TFT's IRQ is the
+   * only one in the package -- rides higher than the names beside it. Measuring one reference
+   * glyph instead gives every label the same baseline, and leaves a label without a descender
+   * exactly where CENTER alignment put it.
+   */
+  private static double getLabelBaseline(Graphics2D g2d, double centreY) {
+    Rectangle bounds = g2d.getFont()
+        .createGlyphVector(g2d.getFontRenderContext(), "X").getVisualBounds().getBounds();
+    return centreY - bounds.height / 2.0 - bounds.y;
+  }
+
+  /**
    * Helper to draw pin names lying flat along a horizontal row of pins, reading left to right the
    * way the board itself does, for a board whose strip beside the header is shallower than the
    * longest name is long. {@link #drawRowPinLabels} stands its labels on end across the row, so
@@ -504,8 +518,46 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       }
       double pinX = x + offsets[i][0];
       double pinY = y + offsets[i][1] + (below ? labelOffset : -labelOffset);
-      StringUtils.drawCenteredText(g2d, label, pinX, pinY, HorizontalAlignment.CENTER,
-          VerticalAlignment.CENTER);
+      // TOP passes the y straight through as the baseline, which is what keeps the row level
+      StringUtils.drawCenteredText(g2d, label, pinX, getLabelBaseline(g2d, pinY),
+          HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    }
+  }
+
+  /**
+   * Helper to draw pin names beside a vertical column of pins, reading left to right as they do on
+   * a row. A column has the whole pin pitch to stack its labels in rather than the width of one,
+   * so unlike {@link #drawFlatRowPinLabels} it is the board, not the pitch, that limits how long a
+   * name can be.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated first control point X coordinate (P0.getX())
+   * @param y Unrotated first control point Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param startIndex Index of the first pin of the column
+   * @param count Number of pins in the column
+   * @param right True to print the labels to the right of the column, false to print them left
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawFlatColumnPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int startIndex, int count, boolean right, Color silkColor) {
+    if (offsets == null || offsets.length == 0) {
+      return;
+    }
+    double labelOffset = PIN_ROW_FLAT_LABEL_OFFSET.convertToPixels();
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_ROW_FLAT_FONT);
+
+    for (int i = startIndex; i < startIndex + count && i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      double pinX = x + offsets[i][0] + (right ? labelOffset : -labelOffset);
+      double pinY = y + offsets[i][1];
+      StringUtils.drawCenteredText(g2d, label, pinX, getLabelBaseline(g2d, pinY),
+          right ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT, VerticalAlignment.TOP);
     }
   }
 

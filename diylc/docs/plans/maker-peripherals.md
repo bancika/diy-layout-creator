@@ -23,7 +23,7 @@ robotics are deliberately deferred; §10 records why.
 | # | Decision | Choice | Rationale |
 |---|---|---|---|
 | D1 | Which package ships second | **`displays` only.** | Displays are archetype-complete in a way sensors are not: the hobby world has roughly seven display archetypes and the drafts already cover all seven, whereas the nine drafted sensors are a sample of hundreds with no canonical members. Displays also reach the *existing* guitar and amp audience — 7-segment counters, character LCDs and addressable strips appear in builds with no microcontroller anywhere. |
-| D2 | How coverage grows inside an archetype | **A `Version`-style enum on the existing class where the footprint family is shared; a new class where it is not.** | Same rule as the board roadmap's D2. `TFTDisplay` is now the only class with no variant enum at all, which makes it the largest structural gap left in the package; `LEDMatrix` gained its `Modules` enum in §6.4. |
+| D2 | How coverage grows inside an archetype | **A `Version`-style enum on the existing class where the footprint family is shared; a new class where it is not.** | Same rule as the board roadmap's D2. `OLEDDisplay` is now the only class with no variant enum at all, which makes it the largest structural gap left in the package; `LEDMatrix` gained its `Modules` enum in §6.4 and `TFTDisplay` completed its `Controller` enum in §6.2. |
 | D3 | Where dimension and pin data live | **Hardcoded `Size` constants and `String[]` arrays in the component class,** per-variant where a variant changes them. | Matches every shipped board. No pin-definition resource is introduced. |
 | D4 | Screen content | **A neutral dark panel, with at most a small part-number silk.** No faked user interface. | Four drafts currently render English demo text ("HELLO WORLD! 16x2", "OLED DISPLAY") at fixed font sizes, which does not scale with the board, bakes a language into a drawing, and dates quickly. A dark glass panel is what the part looks like when it is not powered, which is how every other component is drawn. |
 | D5 | Shared LED rendering | **One helper in `MakerBoardPainter`,** used by every addressable-RGB part. | `WS2812BRing` and `WS2812BStick` already contain two copies of the 5050-package-plus-diffuser-plus-IC-dot drawing, one scaled and one in raw pixels. A strip and a panel would make four. |
@@ -66,7 +66,7 @@ happened to come back true, and only after a fix.
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
 | `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names, and the body is now the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is now 21.744 × 10.864 mm, which is exactly 2:1, so that complaint is closed. What remains is the original gap: no size variants — the 0.91" and 1.3" boards are §6.3. |
 | `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
-| `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now all but closed: §6.2's `Controller` enum carries the ILI9341, the ST7735 and the round GC9A01, leaving only the ST7789, blocked on a contradictory outline rather than a missing figure. Board size, pin array, header offset, hole pattern and screen all come off the enum, and the round variant's body is a disc unioned with its tab. All four mounting holes on the two boards that have them are 3 mm across and 3 mm in from each of the two edges nearest them; the header-side pair was carried at a deeper inset for a while on the belief that it had to clear the pin row, which it does not. |
+| `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / ST7789 1.54" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now closed: §6.2's `Controller` enum carries all four, the ILI9341, the ST7735, the 1.54" ST7789 and the round GC9A01. Board size, pin array, header offset, hole pattern and screen all come off the enum, and the round variant's body is a disc unioned with its tab. All four mounting holes on the 2.8" and the 1.8" are 3 mm across and 3 mm in from each of the two edges nearest them; the header-side pair was carried at a deeper inset for a while on the belief that it had to clear the pin row, which it does not. The 1.54" carries its own 2 mm drill at a 2.5 mm inset, so the figures are each board's rather than the package family's. It is also the first of these boards to print its pin names, which all four variants now do (§6.2). |
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BJewel` | none (a single part) | **New in this slice (§6.7), not a draft.** A sibling of `WS2812BRing` rather than another `RingSize` constant, per D2: it shares the part family and the pad footprint but not the footprint family. It is a solid 23 mm disc with no inner rim, six LEDs on a 16 mm circle around a seventh in the middle, five pads on a 9 mm circle *inside* the LED ring rather than inset from the rim, and two 3 mm mounting holes 19 mm apart that no ring carries — five variant-specific structures, which is a different part and not a variant. Every figure is maintainer-supplied. The pad arrangement is the part that could silently have been wrong: five pads share six gaps between the ring LEDs, so one gap carries none, and it works out to the gap pointing due left, which is where a mounting hole sits. `WS2812BJewelTest` pins that down, because every count and radius assertion passes whichever gap is left empty. Its packages — and the rings', which this changed too — are drawn turned to follow their own radius the way they are mounted; the centre package has no radius and stays square to the board. |
@@ -96,26 +96,47 @@ ground is almost certainly wrong.
 2. **No file uses the shared silk machinery.** `drawPinLabels` / `getSilkPinLabel` exist on
    `AbstractMakerBoard` and four shipped boards use them; here `WS2812BStick` and `WS2812BRing`
    hand-roll label arrays that duplicate their own `PIN_NAMES` and will drift from them.
-3. **Fonts allocated inside `draw()`** in `CharacterLCD` (`new Font("Monospaced", ...)`) and
-   `WS2812BRing` (`new Font("SansSerif", BOLD, 8)`). `draw()` runs on every repaint; the convention
-   is a cached static.
-4. **Non-ASCII characters** in `SevenSegmentDisplay` and `WS2812BStick`. Source encoding is
-   ISO-8859-1 and all ten shipped `micro` classes are clean, so this arrived with the drafts.
-5. **Unused `java.awt.Font` import** in `LEDMatrix`.
-6. **The NeoPixel Ring's pad labels collide** — **resolved by dropping them.** They were drawn at
-   `innerR + 5`, and because the four pads sit one pin spacing apart along the arc, each label had
-   roughly 15 px of arc for 24-30 px of text. No radius or font size fixes that: a larger radius
-   spreads the labels but they are anchored to pads that do not move, and a smaller font stops
-   being legible long before it stops overlapping. Moving them away from their pads would defeat
-   the point of a pad label, so the names are left to the node tooltips and the netlist, as on the
-   Stick. The array also duplicated `PIN_NAMES` and had already drifted from it, printing `5V`
-   where the node name says `+5V`.
 
-   The centre silkscreen went the same way afterwards. A two-line `NeoPixel` / `N x LED` caption was
-   drawn at the middle of the component, which on a ring is the hole rather than the board — the
-   text floated in empty space, and the variant it announced is already in the BOM value, the
-   property editor and the component name. Dropping it retired the class's last uses of
-   `StringUtils`, `HorizontalAlignment` and `VerticalAlignment`, which were removed with it.
+   **Resolved, and then taken further: a header prints its pin names wherever they fit on bare
+   board.** `Nokia5110LCD` was first, `TFTDisplay` followed in §6.2, and `CharacterLCD`'s parallel
+   row and the single `LEDMatrix`'s input row were swept in afterwards. They all go through
+   `getSilkPinLabel`, so a name is written once and the silk follows it.
+
+   Two classes needed a `SILK_NAMES` array of their own, in each case because the default -- the
+   node name with its annotation stripped -- is actively wrong rather than merely long. The 2.8"
+   TFT's five touch pins are prefixed `T_` and would all have printed as `T`; the Character LCD's
+   parallel row carries its functions in parentheses, so `V0 (Contrast)` would have been printed
+   whole across its neighbours. What those arrays hold is what the module prints, which is also
+   what fits.
+
+   **Where the names do not fit, they are left off rather than squeezed in**, which was decided
+   twice over: once by argument and once by rendering the attempt and undoing it.
+
+   - The **I2C backpack** on the Character LCD stands its four pins in a column 2.5 mm from the
+     left edge with the bezel 1.4 mm further in, so a label beside them would lie on the metal
+     frame. The backpack prints its names on its own PCB behind the module, which this drawing
+     does not show.
+   - The **LED matrix's output row**, and both rows of the compact and the 4-in-1, sit under the
+     modules -- the same fact that dropped the `IN`/`OUT` labels in item 9.
+   - The **OLED** was labelled and undone. Only 2.05 mm separates its pin row from the panel and a
+     flat label needs about 2.7 mm, so the names crossed the panel's top edge: legible, but with
+     the boundary cutting through the glyphs. Nothing short of shrinking the shared label offset
+     fixes it, and dropping that from 2.04 mm to 1.4 mm would bring every other board's labels
+     within 0.2 mm of their pin blocks -- a visible defect traded for a subtler one.
+   - The **seven-segment display** was labelled and undone too. Its bare packages are moulded
+     plastic with no printing of any kind on them, so naming their pins would be drawing something
+     the part does not have, and the TM1637 module's column had to read inward, where its widest
+     name grazed the bezel. `drawFlatColumnPinLabels`, the column counterpart of the row helper
+     written for that module, went with it.
+
+   One rendering trap is worth recording, because it is invisible in the geometry and obvious on
+   screen. `StringUtils.drawCenteredText` with `VerticalAlignment.CENTER` centres each string on
+   *its own* glyph box, so a name with a descender sits higher than the names beside it: `IRQ`,
+   the only such label in the package, rode a pixel above the other thirteen on the 2.8" TFT. The
+   flat helpers now measure one reference glyph and pass that baseline through, which levels the
+   row and leaves every label without a descender on exactly the pixel it was on -- checked across
+   all 31 labels in the package, and only `IRQ` moved.
+
 7. **Connectors are not centred on their edge.** In `CharacterLCD` and `TFTDisplay` the header
    starts at the control-point origin while the board is placed by a raw pixel offset (−60 and −70
    respectively), so the connector sits in a corner instead of centred where the product has it.
@@ -350,7 +371,7 @@ existing guitar and amp audience.
 Tests: `assertBoardSize` at two densities, control-point count fixed at 4 across LED counts, a
 length-scales-with-count assertion, draw smoke at both densities. **~1 day including sourcing.**
 
-### 6.2 `TFTDisplay` variants — `Controller` enum
+### 6.2 `TFTDisplay` variants — `Controller` enum — **done**
 
 The biggest structural gap, and it lands on top of the §5 item 3 footprint fix, so do it in the same
 pass rather than twice.
@@ -370,11 +391,41 @@ slot was removed in §5 item 3 because the reader is on the back, and touch was 
 only per-variant difference left is the pin array, which item 2 covers -- which also makes the
 1.5-2 day estimate too high. The round outline is the one genuinely new piece of drawing remaining.
 
-**`ST7789_1_54` is blocked on a contradiction rather than a missing figure.** The supplied outline of
-27.78 x 39.22 mm cannot be a PCB: a 1.54" 240x240 panel is square, so its active area is
-39.116 / sqrt(2) = 27.66 mm, which would leave 0.06 mm of bezel across the entire width. Either that
-figure describes a bare glass module rather than a breakout, or the width is a transcription slip --
-37.78 mm would give 5.06 mm of bezel each side and the same proportions as the 1.8".
+**`ST7789_1_54` has landed, and the contradiction turned out to be in what the figures described
+rather than in the figures themselves.** The outline supplied first, 27.78 x 39.22 mm, cannot be a
+PCB: a 1.54" 240x240 panel is square, so its active area is 39.116 / sqrt(2) = 27.66 mm, which
+would leave 0.06 mm of bezel across the entire width. Neither guess recorded here was right. The
+pair is self-consistent as two measurements of the *same screen* -- 27.78 x sqrt(2) is 39.29, and
+the ratio sits within 0.17% of sqrt(2) -- where the two rectangular boards already in the enum have
+outline ratios of 1.35 and 1.72. A square panel's side and its diagonal, in other words, and no
+correction to either number recovers a board from them.
+
+The maintainer's outline is **32 x 43.72 mm**, with a **33.7 mm** dark panel as wide as the board,
+the header 1.5 mm in from the top edge, four 2 mm mounting holes 2.5 mm in from each of the two
+edges nearest them, and eight pins `GND VCC SCL SDA RES DC CS BLK`. The active area is the usual
+derivation, 27.66 mm square, flagged as such beside the others.
+
+The panel was first given as 37.7 mm and corrected to 33.7, and it is worth recording that a test
+caught that rather than the eye. `screenClearsTheMountingHoles` already asserted that the panel
+clears both hole rows, and four 2 mm holes at a 2.5 mm inset leave only 36.72 mm between them, so
+37.7 mm failed it by 0.49 mm at each end -- an overlap far too small to notice in a render. At
+33.7 mm the panel clears each pair by 1.51 mm. That assertion was written because the 1.8" board's
+panel very nearly reaches its own holes; it has now paid for itself on a board added two variants
+later. A second assertion was added beside it for the constraint this variant introduced: with the
+row only 1.5 mm in from the edge and the panel placed between the hole rows rather than from an
+edge, a long panel can reach back over its own header, which `panelStartsBelowThePinRow` now
+forbids.
+
+**All four variants print their pin names**, flat along the row in the strip between the header and
+the panel, the way the Nokia does. The flat helper is the only one that fits: the strip is about
+3.5 mm deep on the two smallest boards and a label stood on end needs 4.7 mm. Three of the variants
+print their node names unchanged, and the 2.8" needs its own `SILK_NAMES_ILI9341` for two reasons
+that make the default wrong rather than merely untidy -- its node names carry the `MOSI (SDI)` and
+`MISO (SDO)` aliases, and its five touch pins are prefixed `T_`, which the default label strips at
+the underscore, so five adjacent pins would all have read `T`. The replacements were measured
+rather than eyeballed: a flat label has 20 px of pin pitch to live in, `RESET` is 22 px and `T_CLK`
+24 px, against 14 and 16 for `RST` and `TCK`. The full forms stay on the nodes, so the tooltips and
+the netlist still spell them out.
 
 **`GC9A01_1_28` has landed as well:** a 38 mm disc with a 22.9 mm tab projecting 7.5 mm, the header
 1.76 mm in from the tab edge, no mounting holes, and seven pins `RST CS DC SDA SCL GND VCC` -- the
@@ -402,7 +453,9 @@ centred on the disc rather than on the bounding box, since the tab offsets one f
    projects reach for, which overlaps the existing audience.
 
 Tests: per-variant `assertBoardSize` and pin-count, a round-outline assertion, draw smoke across all
-four. **~1.5-2 days, the largest item here.**
+four. `TFTDisplayTest` carries 19 of them. The two that were written against "the boards that have
+holes" as a group had to be reopened for the 1.54", whose drill and inset are its own: what they
+assert now is that each board's holes share one figure, not that the package family does.
 
 ### 6.3 `OLEDDisplay` variants — `Version` enum
 
@@ -865,6 +918,8 @@ gate the displays.
    midpoint at the middle of the board: 43 mm from the top, so a 69.1 mm glass spans 8.45 mm to
    77.55 mm and clears both pairs by 4.2 mm. Both are derived in `draw()` from the hole constants,
    so moving a hole moves the glass with it.
+   The 1.54" board added later does not follow those figures: its holes are 2 mm at a 2.5 mm inset,
+   so the uniformity is within a board rather than across the class, and the test says so.
 6. **Where the Stick's pad labels go** — **decided: nowhere.** The front face carries no
    silkscreen, matching the board, which prints its pad names on the back; node-name tooltips and
    the netlist already carry the names. With the labels gone the LED row takes the real layout —

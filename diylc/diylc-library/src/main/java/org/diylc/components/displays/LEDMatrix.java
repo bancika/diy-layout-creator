@@ -163,9 +163,7 @@ public class LEDMatrix extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
@@ -181,8 +179,12 @@ public class LEDMatrix extends AbstractMakerBoard {
       relativeOffsets[5 + i][0] = vertical ? far : i * spacing;
       relativeOffsets[5 + i][1] = vertical ? i * spacing : far;
     }
+    return relativeOffsets;
+  }
 
-    rotatePoints(firstPoint, relativeOffsets);
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   private double getBoardWidth() {
@@ -343,6 +345,15 @@ public class LEDMatrix extends AbstractMakerBoard {
       // No IN/OUT silkscreen. With the modules flush there is no strip left for the OUT label, and
       // labelling only one of a matched pair reads worse than labelling neither; the names are
       // left to the node tooltips and the netlist, as on the Ring and the Stick.
+      //
+      // The pin names are a different matter, because the single has bare board to print them on.
+      // They go above its input row rather than below it: below is the 2.54 mm to the board edge,
+      // which a label overruns, while above there is clear board between the row and the driver.
+      // The output row has the module over it, as do both rows of the other two variants, so
+      // those pins are named by their tooltips alone.
+      if (modules == Modules.Single_8x8) {
+        drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, 5, false, SILK_COLOR);
+      }
     }
 
     g2d.setTransform(oldTx);

@@ -128,6 +128,14 @@ public class CharacterLCD extends AbstractMakerBoard {
       "A (Backlight +)", "K (Backlight -)"
   };
 
+  // What the module prints beside the row, which is the bare designation: the supply rails and
+  // the backlight pins carry their function in the node name instead, where a label lying along a
+  // 0.1" pitch has no room for it.
+  public static final String[] SILK_NAMES_PARALLEL = new String[] {
+      "VSS", "VDD", "V0", "RS", "RW", "E",
+      "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"
+  };
+
   private LCDSize lcdSize = LCDSize._16x2;
   private LCDInterface lcdInterface = LCDInterface.I2C_Backpack;
   private Color screenColor = SCREEN_BG;
@@ -191,6 +199,15 @@ public class CharacterLCD extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
+  @Override
+  protected String getSilkPinLabel(int index) {
+    if (lcdInterface == LCDInterface.Parallel_16Pin && index >= 0
+        && index < SILK_NAMES_PARALLEL.length) {
+      return SILK_NAMES_PARALLEL[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
   private int getPinCount() {
     return lcdInterface == LCDInterface.I2C_Backpack ? PIN_NAMES_I2C.length
         : PIN_NAMES_PARALLEL.length;
@@ -227,9 +244,7 @@ public class CharacterLCD extends AbstractMakerBoard {
     return y - HEADER_OFFSET.convertToPixels();
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
     // the backpack's header stands on end against the left edge; the parallel row lies along the top
     boolean vertical = lcdInterface == LCDInterface.I2C_Backpack;
@@ -239,8 +254,12 @@ public class CharacterLCD extends AbstractMakerBoard {
       relativeOffsets[i][0] = vertical ? 0 : i * spacing;
       relativeOffsets[i][1] = vertical ? i * spacing : 0;
     }
+    return relativeOffsets;
+  }
 
-    rotatePoints(firstPoint, relativeOffsets);
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -314,6 +333,16 @@ public class CharacterLCD extends AbstractMakerBoard {
 
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));
+
+      // Only the parallel row has anywhere to print. Its names go in the strip between the row and
+      // the bezel, which is 2.9 mm deep. The backpack's four pins stand in a column 2.5 mm from
+      // the left edge with the bezel beginning 1.4 mm further in, so a label beside them would lie
+      // across the metal frame rather than on the board; the backpack prints its names on its own
+      // PCB behind the module, which this drawing does not show.
+      if (lcdInterface == LCDInterface.Parallel_16Pin) {
+        drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length, true,
+            SILK_COLOR);
+      }
     }
 
     g2d.setTransform(oldTx);

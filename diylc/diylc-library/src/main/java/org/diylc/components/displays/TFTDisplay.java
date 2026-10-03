@@ -65,11 +65,11 @@ public class TFTDisplay extends AbstractMakerBoard {
   public enum Controller {
     // Each board is dimensioned from its module outline, and the header sits centred on the short
     // top edge at the offset recorded here. Active areas are the nominal diagonal taken at the
-    // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, and
-    // the round 1.28" gives a 32.5 mm lit circle -- which makes them derivations rather than
-    // measurements, noted so they are not built upon. A glass length of zero means the module has
-    // no separate dark panel wider than its own lit area, so only the screen is drawn, and a hole
-    // size of zero means the board has no mounting holes at all.
+    // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, the
+    // square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which makes
+    // them derivations rather than measurements, noted so they are not built upon. A glass length
+    // of zero means the module has no separate dark panel wider than its own lit area, so only the
+    // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
     // The round board is described by the same two outline figures as the others: its width is the
     // disc diameter and its length runs from the tab's outer edge to the bottom of the disc, so the
     // tab's projection is the difference between them and is not carried separately.
@@ -79,6 +79,9 @@ public class TFTDisplay extends AbstractMakerBoard {
             "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"}),
     ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, 0d, 1.5d, 3.0d, 3.0d, 0d,
         new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"}),
+    ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, 33.7d, 1.5d, 2.5d, 2.0d,
+        0d,
+        new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"}),
     GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, 0d, 1.76d, 0d, 0d,
         22.9d,
         new String[] {"VCC", "GND", "SCL", "SDA", "DC", "CS", "RST"});
@@ -137,6 +140,17 @@ public class TFTDisplay extends AbstractMakerBoard {
     public boolean isRound() { return tabWidthMm > 0; }
   }
 
+  /**
+   * Only the 2.8" board needs its own silkscreen names. Its node names carry the MOSI and MISO
+   * aliases, which the default label would print in full, and its touch pins are prefixed, which
+   * the default would strip at the underscore and print as five pins all reading "T". Measured at
+   * the flat label font, every name here fits inside the 0.1" pitch and the ones it replaces do
+   * not: RESET is 22 px and T_CLK 24 px against 20 px of room. The full forms stay on the nodes,
+   * so the tooltips and the netlist still spell them out.
+   */
+  public static final String[] SILK_NAMES_ILI9341 = new String[] {"VCC", "GND", "CS", "RST", "DC",
+      "SDI", "SCK", "LED", "SDO", "TCK", "TCS", "TDI", "TDO", "IRQ"};
+
   public static Color TFT_RED = Color.decode("#C0392B");
   public static Color SCREEN_BG = Color.decode("#111111");
   public static Color GLASS_COLOR = Color.decode("#1A1A1A");
@@ -176,6 +190,15 @@ public class TFTDisplay extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
+  @Override
+  protected String getSilkPinLabel(int index) {
+    if (getController() == Controller.ILI9341_2_8 && index >= 0
+        && index < SILK_NAMES_ILI9341.length) {
+      return SILK_NAMES_ILI9341[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
   private static double px(double millimetres) {
     return new Size(millimetres, SizeUnit.mm).convertToPixels();
   }
@@ -192,19 +215,19 @@ public class TFTDisplay extends AbstractMakerBoard {
     return y - px(getController().getHeaderOffsetMm());
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
-
-    int pinCount = getController().getPinNames().length;
-    double[][] relativeOffsets = new double[pinCount][2];
-    for (int i = 0; i < pinCount; i++) {
+    double[][] relativeOffsets = new double[getController().getPinNames().length][2];
+    for (int i = 0; i < relativeOffsets.length; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
     }
+    return relativeOffsets;
+  }
 
-    rotatePoints(firstPoint, relativeOffsets);
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -323,6 +346,12 @@ public class TFTDisplay extends AbstractMakerBoard {
       g2d.setColor(Color.DARK_GRAY);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(screen);
+
+      // The names go in the strip between the pin row and the panel, lying flat along the row as
+      // the Nokia's do: the strip is 3.5 mm deep on the two smallest boards and a label stood on
+      // end needs 4.7 mm.
+      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length, true,
+          SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);

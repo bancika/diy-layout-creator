@@ -84,6 +84,7 @@ public class TFTDisplayTest {
     }
     Assert.assertEquals(14, Controller.ILI9341_2_8.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7735_1_8.getPinNames().length);
+    Assert.assertEquals(8, Controller.ST7789_1_54.getPinNames().length);
     Assert.assertEquals(7, Controller.GC9A01_1_28.getPinNames().length);
   }
 
@@ -91,6 +92,15 @@ public class TFTDisplayTest {
   public void pinNamesComeFromTheController() {
     TFTDisplay display = of(Controller.ST7735_1_8);
     String[] expected = new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"};
+    for (int i = 0; i < expected.length; i++) {
+      Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
+    }
+  }
+
+  @Test
+  public void squareBoardPinNamesComeFromTheController() {
+    TFTDisplay display = of(Controller.ST7789_1_54);
+    String[] expected = new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"};
     for (int i = 0; i < expected.length; i++) {
       Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
     }
@@ -174,6 +184,31 @@ public class TFTDisplayTest {
     }
   }
 
+  /**
+   * The panel has to start below the pin row. It is placed between the hole rows rather than from
+   * an edge, so a long panel on a board whose holes sit close to the edges can reach back over its
+   * own header: the 1.54" clears by 3.51 mm, with its row only 1.5 mm in from the edge.
+   */
+  @Test
+  public void panelStartsBelowThePinRow() {
+    for (Controller controller : Controller.values()) {
+      if (controller.isRound()) {
+        continue;
+      }
+      double boardH = controller.getBoardLengthMm();
+      double bandTop = controller.hasMountingHoles() ? controller.getHoleInsetMm()
+          : controller.getHeaderOffsetMm();
+      double bandBottom =
+          controller.hasMountingHoles() ? boardH - controller.getHoleInsetMm() : boardH;
+      double panelH = controller.hasGlass() ? controller.getGlassLengthMm()
+          : controller.getScreenLengthMm();
+      double panelTop = (bandTop + bandBottom) / 2.0 - panelH / 2.0;
+
+      Assert.assertTrue(controller + " panel covers the pin row",
+          panelTop > controller.getHeaderOffsetMm());
+    }
+  }
+
   @Test
   public void mountingHolesSitInsideTheBoard() {
     for (Controller controller : Controller.values()) {
@@ -189,16 +224,21 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every hole is 3 mm across and sits 3 mm in from each of the two edges nearest it, on both
-   * boards that carry them. The 2.8" board had a deeper inset on its header-side pair and a
-   * narrower 2.5 mm drill for a while, and this guards against either coming back.
+   * Each board's holes are one drill at one inset from each of the two edges nearest them, but the
+   * figures are the board's own rather than the package's: the two rectangular SPI boards are 3 mm
+   * at 3 mm and the 1.54" is 2 mm at 2.5 mm. The 2.8" board had a deeper inset on its header-side
+   * pair and a narrower 2.5 mm drill for a while, and this guards against either coming back.
    */
   @Test
-  public void mountingHolesShareOneInsetAndDiameter() {
-    Controller[] withHoles = {Controller.ILI9341_2_8, Controller.ST7735_1_8};
-    for (Controller controller : withHoles) {
-      Assert.assertEquals(controller + " inset", 3.0d, controller.getHoleInsetMm(), 0.01d);
-      Assert.assertEquals(controller + " diameter", 3.0d, controller.getHoleSizeMm(), 0.01d);
+  public void mountingHoleFiguresAreEachBoardsOwn() {
+    double[][] expected = {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.5d, 2.0d}};
+    Controller[] withHoles =
+        {Controller.ILI9341_2_8, Controller.ST7735_1_8, Controller.ST7789_1_54};
+    for (int i = 0; i < withHoles.length; i++) {
+      Assert.assertEquals(withHoles[i] + " inset", expected[i][0], withHoles[i].getHoleInsetMm(),
+          0.01d);
+      Assert.assertEquals(withHoles[i] + " diameter", expected[i][1], withHoles[i].getHoleSizeMm(),
+          0.01d);
     }
   }
 
@@ -212,10 +252,11 @@ public class TFTDisplayTest {
         of(Controller.ST7735_1_8).getValueForDisplay());
   }
 
-  /** Only the 2.8" module has a dark panel wider than its lit area; the others draw the screen. */
+  /** The 2.8" and 1.54" modules carry a dark panel wider than their lit area; the others do not. */
   @Test
-  public void onlyTheLargeBoardCarriesAGlassPanel() {
+  public void glassPanelFollowsTheModule() {
     Assert.assertTrue(Controller.ILI9341_2_8.hasGlass());
+    Assert.assertTrue(Controller.ST7789_1_54.hasGlass());
     Assert.assertFalse(Controller.ST7735_1_8.hasGlass());
     Assert.assertFalse(Controller.GC9A01_1_28.hasGlass());
   }
@@ -224,6 +265,7 @@ public class TFTDisplayTest {
   public void onlyTheRoundBoardHasATab() {
     Assert.assertFalse(Controller.ILI9341_2_8.isRound());
     Assert.assertFalse(Controller.ST7735_1_8.isRound());
+    Assert.assertFalse(Controller.ST7789_1_54.isRound());
     Assert.assertTrue(Controller.GC9A01_1_28.isRound());
     Assert.assertEquals(22.9d, Controller.GC9A01_1_28.getTabWidthMm(), 0.01d);
   }
