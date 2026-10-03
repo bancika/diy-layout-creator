@@ -71,8 +71,10 @@ public class TFTDisplay extends AbstractMakerBoard {
     // of zero means the module has no separate dark panel wider than its own lit area, so only the
     // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
     // The round board is described by the same two outline figures as the others: its width is the
-    // disc diameter and its length runs from the tab's outer edge to the bottom of the disc, so the
-    // tab's projection is the difference between them and is not carried separately.
+    // disc diameter and its length runs from the tab's outer edge to the far side of the disc, so
+    // the tab's projection is the difference between them and is not carried separately. It is
+    // the one variant whose header is at the bottom, so its board grows upwards from the pin row
+    // rather than down from it.
     ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, 69.1d, 3.0d,
         3.0d, 3.0d, 0d,
         new String[] {"VCC", "GND", "CS", "RESET", "DC", "MOSI (SDI)", "SCK", "LED", "MISO (SDO)",
@@ -84,7 +86,7 @@ public class TFTDisplay extends AbstractMakerBoard {
         new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"}),
     GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, 0d, 1.76d, 0d, 0d,
         22.9d,
-        new String[] {"VCC", "GND", "SCL", "SDA", "DC", "CS", "RST"});
+        new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"});
 
     private final String label;
     private final double boardWidthMm;
@@ -211,8 +213,17 @@ public class TFTDisplay extends AbstractMakerBoard {
     return x - (px(controller.getBoardWidthMm()) - span) / 2.0;
   }
 
+  /**
+   * Top edge of the board. The rectangular boards hang below their header, which sits one offset
+   * down from the top edge; the round one wears its tab at the bottom, so the board stands above
+   * the row and the offset is measured up from the bottom edge instead.
+   */
   private double getBoardY(double y) {
-    return y - px(getController().getHeaderOffsetMm());
+    Controller controller = getController();
+    if (controller.isRound()) {
+      return y - px(controller.getBoardLengthMm() - controller.getHeaderOffsetMm());
+    }
+    return y - px(controller.getHeaderOffsetMm());
   }
 
   private double[][] getRelativeOffsets() {
@@ -240,16 +251,16 @@ public class TFTDisplay extends AbstractMakerBoard {
     double boardH = px(controller.getBoardLengthMm());
 
     if (controller.isRound()) {
-      // A disc with a rectangular tab on top. The tab has to be carried down to the disc's centre
-      // line before the two are unioned: taken only as far as the top of the disc it would meet it
-      // at a single tangent point and leave a notch either side of it. Below the line where the
-      // disc is as wide as the tab, the disc governs the outline and only the projection shows.
+      // A disc with a rectangular tab hanging below it. The tab has to be carried up to the disc's
+      // centre line before the two are unioned: taken only as far as the bottom of the disc it
+      // would meet it at a single tangent point and leave a notch either side of it. Above that
+      // line the disc is wider than the tab and governs the outline, so only the projection shows.
       double discR = boardW / 2.0;
-      double discCy = boardY + px(controller.getTabProjectionMm()) + discR;
+      double discCy = boardY + discR;
       double tabW = px(controller.getTabWidthMm());
-      Area body = new Area(new Ellipse2D.Double(boardX, discCy - discR, boardW, boardW));
-      body.add(new Area(new Rectangle2D.Double(boardX + (boardW - tabW) / 2.0, boardY, tabW,
-          discCy - boardY)));
+      Area body = new Area(new Ellipse2D.Double(boardX, boardY, boardW, boardW));
+      body.add(new Area(new Rectangle2D.Double(boardX + (boardW - tabW) / 2.0, discCy, tabW,
+          boardY + boardH - discCy)));
       return body;
     }
 
@@ -318,11 +329,11 @@ public class TFTDisplay extends AbstractMakerBoard {
       Shape screen;
 
       if (controller.isRound()) {
-        // the lit circle is centred on the disc, which sits below the tab rather than on the
+        // the lit circle is centred on the disc, which sits above the tab rather than on the
         // centre line of the bounding box
         double discR = boardW / 2.0;
         double discCx = boardX + discR;
-        double discCy = boardY + px(controller.getTabProjectionMm()) + discR;
+        double discCy = boardY + discR;
         screen = new Ellipse2D.Double(discCx - screenW / 2.0, discCy - screenH / 2.0, screenW,
             screenH);
       } else {
@@ -349,9 +360,10 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       // The names go in the strip between the pin row and the panel, lying flat along the row as
       // the Nokia's do: the strip is 3.5 mm deep on the two smallest boards and a label stood on
-      // end needs 4.7 mm.
-      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length, true,
-          SILK_COLOR);
+      // end needs 4.7 mm. The round board carries its row at the bottom, so for it alone the
+      // strip, and the names in it, are above the pins rather than below them.
+      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length,
+          !controller.isRound(), SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);

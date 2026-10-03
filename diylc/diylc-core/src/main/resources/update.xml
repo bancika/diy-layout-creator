@@ -507,23 +507,23 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Character LCD - 16x2 and 20x4, with I2C backpack or 16-pin parallel interface</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>0.96" OLED Display (SSD1306) - I2C and SPI</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
 					<description>7-Segment Display - 1-digit 0.56 inch, 4-digit in 0.36 inch and 0.56 inch, and TM1637 driver module</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>8x8 LED Matrix (MAX7219)</description>
+					<description>Character LCD - 16x2 and 20x4, with I2C backpack or 16-pin parallel interface</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>TFT Touch Screen (ILI9341) - 2.8 inch 240x320 with touch and SD card slot</description>
+					<description>LED Bar Graph - 8, 10 and 12 segments</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>LED Matrix (MAX7219) - single 8x8, compact 8x8, 4-in-1 32x8</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Jewel (WS2812B) - 7 LEDs</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -532,6 +532,22 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>NeoPixel Stick (WS2812B) - 8 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Strip (WS2812B) - 30, 60 and 144 LEDs per meter, up to 144 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Nokia 5110 LCD (PCD8544)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>0.96" OLED Display (SSD1306) - I2C and SPI</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>TFT Display - 2.8 inch ILI9341, 1.8 inch ST7735, 1.54 inch ST7789, 1.28 inch round GC9A01</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

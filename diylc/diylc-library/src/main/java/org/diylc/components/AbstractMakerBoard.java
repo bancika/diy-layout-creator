@@ -525,43 +525,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw pin names beside a vertical column of pins, reading left to right as they do on
-   * a row. A column has the whole pin pitch to stack its labels in rather than the width of one,
-   * so unlike {@link #drawFlatRowPinLabels} it is the board, not the pitch, that limits how long a
-   * name can be.
-   *
-   * @param g2d Graphics2D context (already transformed for board orientation)
-   * @param x Unrotated first control point X coordinate (P0.getX())
-   * @param y Unrotated first control point Y coordinate (P0.getY())
-   * @param offsets Array of [x, y] relative offsets for all control points
-   * @param startIndex Index of the first pin of the column
-   * @param count Number of pins in the column
-   * @param right True to print the labels to the right of the column, false to print them left
-   * @param silkColor Silkscreen text color
-   */
-  protected void drawFlatColumnPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
-      int startIndex, int count, boolean right, Color silkColor) {
-    if (offsets == null || offsets.length == 0) {
-      return;
-    }
-    double labelOffset = PIN_ROW_FLAT_LABEL_OFFSET.convertToPixels();
-
-    g2d.setColor(silkColor);
-    g2d.setFont(PIN_ROW_FLAT_FONT);
-
-    for (int i = startIndex; i < startIndex + count && i < offsets.length; i++) {
-      String label = getSilkPinLabel(i);
-      if (label == null || label.isEmpty()) {
-        continue;
-      }
-      double pinX = x + offsets[i][0] + (right ? labelOffset : -labelOffset);
-      double pinY = y + offsets[i][1];
-      StringUtils.drawCenteredText(g2d, label, pinX, getLabelBaseline(g2d, pinY),
-          right ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT, VerticalAlignment.TOP);
-    }
-  }
-
-  /**
    * Helper to draw a complete PCB terminal block (green body + inner compartment lines + screw lugs)
    * that matches the visuals of the PCBTerminalBlock component.
    *

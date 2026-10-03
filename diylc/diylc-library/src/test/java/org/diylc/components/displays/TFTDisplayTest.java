@@ -281,20 +281,26 @@ public class TFTDisplayTest {
     Assert.assertFalse(Controller.GC9A01_1_28.hasMountingHoles());
   }
 
+  /**
+   * The round board reads RST first, which is to say leftmost. The array had been in the opposite
+   * order, which looked plausible while the tab was drawn at the top and was wrong against the
+   * part either way; turning the board over is what made it visible.
+   */
   @Test
   public void roundPinNamesComeFromTheController() {
     TFTDisplay display = of(Controller.GC9A01_1_28);
-    String[] expected = new String[] {"VCC", "GND", "SCL", "SDA", "DC", "CS", "RST"};
+    String[] expected = new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"};
     for (int i = 0; i < expected.length; i++) {
       Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
     }
   }
 
   /**
-   * The outline is a disc with a narrower tab on it, so the corners of its bounding box are off the
-   * board while the middle of the top edge is on it. Taking the tab only as far as the top of the
-   * disc would have left a notch either side of the tangent point, which these corners would not
-   * catch but the lower check would: low down, the disc is wider than the tab.
+   * The outline is a disc with a narrower tab hanging below it, so the corners of its bounding box
+   * are off the board while the middles of the top and bottom edges are on it. Taking the tab only
+   * as far as the bottom of the disc would have left a notch either side of the tangent point,
+   * which these corners would not catch but the centre-line check would: there the disc is wider
+   * than the tab.
    */
   @Test
   public void roundBodyIsADiscWithATab() {
@@ -303,23 +309,45 @@ public class TFTDisplayTest {
     Rectangle2D bounds = body.getBounds2D();
 
     Assert.assertEquals("disc diameter across", 38.0d, mm(bounds.getWidth()), 0.01d);
-    Assert.assertEquals("tab tip to disc bottom", 45.5d, mm(bounds.getHeight()), 0.01d);
+    Assert.assertEquals("disc top to tab tip", 45.5d, mm(bounds.getHeight()), 0.01d);
 
     double x = bounds.getX();
     double y = bounds.getY();
 
-    Assert.assertTrue("the middle of the tab is off the board",
+    Assert.assertTrue("the top of the disc is off the board",
         body.contains(x + px(19.0d), y + px(1.0d)));
+    Assert.assertTrue("the middle of the tab is off the board",
+        body.contains(x + px(19.0d), y + px(44.5d)));
     Assert.assertFalse("the top left corner is on the board",
         body.contains(x + px(1.0d), y + px(1.0d)));
-    Assert.assertFalse("the top right corner is on the board",
-        body.contains(x + px(37.0d), y + px(1.0d)));
+    Assert.assertFalse("the bottom left corner is on the board",
+        body.contains(x + px(1.0d), y + px(44.5d)));
 
     // at the disc's centre line the board is wider than the tab, which is what proves the union
-    // took the disc's outline and not the rectangle's
+    // took the disc's outline and not the rectangle's; a third of the way further down only the
+    // tab is left, and the same point is off the board
     Assert.assertTrue("the disc is no wider than its tab",
-        body.contains(x + px(2.0d), y + px(26.5d)));
-    Assert.assertTrue("the centre of the disc is off the board",
-        body.contains(x + px(19.0d), y + px(26.5d)));
+        body.contains(x + px(2.0d), y + px(19.0d)));
+    Assert.assertFalse("the board is as wide as its disc below the centre line",
+        body.contains(x + px(2.0d), y + px(30.0d)));
+  }
+
+  /**
+   * Which edge the header sits on. Three of the boards hang below their pin row; the round one
+   * wears its tab at the bottom, so it stands above its row instead -- the one case where the
+   * offset is measured up from the bottom edge.
+   */
+  @Test
+  public void headerSitsOnTheEdgeItsBoardHangsFrom() {
+    for (Controller controller : Controller.values()) {
+      TFTDisplay display = of(controller);
+      Rectangle2D bounds = display.getBodyShape().getBounds2D();
+      Point2D firstPin = display.getControlPoint(0);
+      double fromEdge = controller.isRound() ? bounds.getMaxY() - firstPin.getY()
+          : firstPin.getY() - bounds.getY();
+
+      Assert.assertEquals(controller + " header offset", controller.getHeaderOffsetMm(),
+          mm(fromEdge), 0.01d);
+    }
   }
 }

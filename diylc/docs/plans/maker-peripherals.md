@@ -432,11 +432,24 @@ the netlist still spell them out.
 clock pin confirmed as `SCL` rather than the `SLC` typo some of these boards carry on their silk.
 
 Two things about that outline are worth keeping. The body is the disc unioned with the tab, and the
-tab has to be carried down to the disc's centre line before the union: taken only as far as the top
-of the disc, the two shapes meet at a single tangent point and leave a notch either side of it. And
-the projection is not stored, being whatever the outline is longer than it is wide, so the round
-board is described by the same two figures as every other variant. The lit area is a 32.5 mm circle
-centred on the disc rather than on the bounding box, since the tab offsets one from the other.
+tab has to be carried to the disc's centre line before the union: taken only as far as the rim, the
+two shapes meet at a single tangent point and leave a notch either side of it. And the projection
+is not stored, being whatever the outline is longer than it is wide, so the round board is
+described by the same two figures as every other variant. The lit area is a 32.5 mm circle centred
+on the disc rather than on the bounding box, since the tab offsets one from the other.
+
+One thing the flip turned up. The enum's pin array ran `VCC GND SCL SDA DC CS RST`, the reverse
+of the `RST CS DC SDA SCL GND VCC` recorded two paragraphs above, so the row was mirrored against
+the part. With the tab drawn at the top either order looked plausible -- the row has no landmark
+to be wrong against -- and turning the board over is what made it visible. The array now reads
+RST first, which is to say leftmost, and `roundPinNamesComeFromTheController` pins it there.
+
+**The tab hangs below the disc, not above it.** That makes the round board the second in the
+package, after the Nokia, whose header is on the bottom edge and whose outline therefore grows
+upwards from control point zero -- so its header offset is measured up from the bottom edge where
+every other variant's is measured down from the top, and its pin names go above the row rather
+than below it. `headerSitsOnTheEdgeItsBoardHangsFrom` asserts the distinction for all four
+variants, because nothing else in the geometry would notice if the round one were flipped back.
 
 1. `Controller` enum: `ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)")`,
    `ST7735_1_8("1.8\" ST7735 128x160")`, `ST7789_1_54("1.54\" ST7789 240x240")`,
@@ -790,8 +803,12 @@ part name, then the variant list).
 6. **§8** regression samples and the `update.xml` block, last.
 
 Eleven palette entries so far: the seven existing, plus the strip, the bar graph, the Jewel and the
-Nokia, plus the panel if appetite holds. The `update.xml` 6.7.0 block still lists only the original
-seven -- the strip, the bar graph, the Jewel and the Nokia have no entry yet.
+Nokia, plus the panel if appetite holds. The `update.xml` 6.7.0 block now carries all eleven,
+alphabetically as the 6.5.0 block lists its boards. Two of the entries it already had were stale
+rather than missing, and both were stale because a class had outgrown them: the matrix was still
+described as an 8x8 and the TFT as a touch screen with an SD slot, which is one variant of four
+and a part that was removed from the drawing. A twelfth entry is needed only if the panel is
+built.
 
 ## 10. Later slices, and why they are later
 
