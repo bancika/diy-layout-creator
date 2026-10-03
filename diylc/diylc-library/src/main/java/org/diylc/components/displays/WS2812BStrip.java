@@ -55,36 +55,6 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  /**
-   * Tape is sold by LEDs per metre, and everything else follows from that: the pitch is the metre
-   * divided by the count, so it is derived rather than stored. Width does not follow, and is the
-   * one figure here that is a stated norm rather than a measurement -- the 30 and 60 tapes are
-   * usually 10 mm and the 144 usually 12 mm, because at that pitch the package leaves no room for
-   * the conductor beside it.
-   */
-  public enum Density {
-    _30("30 LED/m", 30, 10.0d),
-    _60("60 LED/m", 60, 10.0d),
-    _144("144 LED/m", 144, 12.0d);
-
-    private final String label;
-    private final int ledsPerMetre;
-    private final double widthMm;
-
-    Density(String label, int ledsPerMetre, double widthMm) {
-      this.label = label;
-      this.ledsPerMetre = ledsPerMetre;
-      this.widthMm = widthMm;
-    }
-
-    @Override public String toString() { return label; }
-    public int getLedsPerMetre() { return ledsPerMetre; }
-    public double getWidthMm() { return widthMm; }
-
-    /** Centre-to-centre LED spacing: one metre shared out between that many LEDs. */
-    public double getPitchMm() { return 1000.0d / ledsPerMetre; }
-  }
-
   public static Color TAPE_WHITE = Color.decode("#F2F2F2");
 
   // How far in from the cut end the pads sit, and the air left between a pad and the nearest LED.
@@ -310,5 +280,35 @@ public class WS2812BStrip extends AbstractMakerBoard {
       g2d.setColor(colors[i]);
       g2d.fillRect(3 + i * (width - 6) / 4, (int) (height / 2.0 - 3), 5, 6);
     }
+  }
+
+  /**
+   * Tape is sold by LEDs per metre, and everything else follows from that: the pitch is the metre
+   * divided by the count, so it is derived rather than stored. Width does not follow, and is the
+   * one figure here that is a stated norm rather than a measurement -- the 30 and 60 tapes are
+   * usually 10 mm and the 144 usually 12 mm, because at that pitch the package leaves no room for
+   * the conductor beside it.
+   */
+  public enum Density {
+    _30("30 LED/m", 30, 10.0d),
+    _60("60 LED/m", 60, 10.0d),
+    _144("144 LED/m", 144, 12.0d);
+
+    private final String label;
+    private final int ledsPerMetre;
+    private final double widthMm;
+
+    Density(String label, int ledsPerMetre, double widthMm) {
+      this.label = label;
+      this.ledsPerMetre = ledsPerMetre;
+      this.widthMm = widthMm;
+    }
+
+    @Override public String toString() { return label; }
+    public int getLedsPerMetre() { return ledsPerMetre; }
+    public double getWidthMm() { return widthMm; }
+
+    /** Centre-to-centre LED spacing: one metre shared out between that many LEDs. */
+    public double getPitchMm() { return 1000.0d / ledsPerMetre; }
   }
 }

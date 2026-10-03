@@ -59,51 +59,6 @@ public class CharacterLCD extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum LCDSize {
-    // Labels stay short because they reach the BOM's value column; the dimensions are carried by
-    // the fields beside them, not by the text. The bezel and the lit area are measured off the
-    // module and are sizes in their own right -- deriving them as margins off the board made the
-    // window grow with the board instead of staying the size of the part.
-    _16x2("16x2", 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
-    _20x4("20x4", 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
-
-    private final String label;
-    private final double widthMm;
-    private final double heightMm;
-    private final double bezelWidthMm;
-    private final double bezelHeightMm;
-    private final double displayWidthMm;
-    private final double displayHeightMm;
-
-    LCDSize(String label, double widthMm, double heightMm, double bezelWidthMm,
-        double bezelHeightMm, double displayWidthMm, double displayHeightMm) {
-      this.label = label;
-      this.widthMm = widthMm;
-      this.heightMm = heightMm;
-      this.bezelWidthMm = bezelWidthMm;
-      this.bezelHeightMm = bezelHeightMm;
-      this.displayWidthMm = displayWidthMm;
-      this.displayHeightMm = displayHeightMm;
-    }
-
-    @Override public String toString() { return label; }
-    public double getWidthMm() { return widthMm; }
-    public double getHeightMm() { return heightMm; }
-    public double getBezelWidthMm() { return bezelWidthMm; }
-    public double getBezelHeightMm() { return bezelHeightMm; }
-    public double getDisplayWidthMm() { return displayWidthMm; }
-    public double getDisplayHeightMm() { return displayHeightMm; }
-  }
-
-  public enum LCDInterface {
-    I2C_Backpack("I2C Backpack"),
-    Parallel_16Pin("Parallel HD44780");
-
-    private final String label;
-    LCDInterface(String label) { this.label = label; }
-    @Override public String toString() { return label; }
-  }
-
   // clearance from the top edge to the parallel pin row
   public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
   // The parallel row is not centred on the board: its leftmost pin starts this far in from the
@@ -366,5 +321,50 @@ public class CharacterLCD extends AbstractMakerBoard {
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 6));
     StringUtils.drawCenteredText(g2d, "LCD", width / 2, height / 2 + 1, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum LCDSize {
+    // Labels stay short because they reach the BOM's value column; the dimensions are carried by
+    // the fields beside them, not by the text. The bezel and the lit area are measured off the
+    // module and are sizes in their own right -- deriving them as margins off the board made the
+    // window grow with the board instead of staying the size of the part.
+    _16x2("16x2", 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
+    _20x4("20x4", 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
+
+    private final String label;
+    private final double widthMm;
+    private final double heightMm;
+    private final double bezelWidthMm;
+    private final double bezelHeightMm;
+    private final double displayWidthMm;
+    private final double displayHeightMm;
+
+    LCDSize(String label, double widthMm, double heightMm, double bezelWidthMm,
+        double bezelHeightMm, double displayWidthMm, double displayHeightMm) {
+      this.label = label;
+      this.widthMm = widthMm;
+      this.heightMm = heightMm;
+      this.bezelWidthMm = bezelWidthMm;
+      this.bezelHeightMm = bezelHeightMm;
+      this.displayWidthMm = displayWidthMm;
+      this.displayHeightMm = displayHeightMm;
+    }
+
+    @Override public String toString() { return label; }
+    public double getWidthMm() { return widthMm; }
+    public double getHeightMm() { return heightMm; }
+    public double getBezelWidthMm() { return bezelWidthMm; }
+    public double getBezelHeightMm() { return bezelHeightMm; }
+    public double getDisplayWidthMm() { return displayWidthMm; }
+    public double getDisplayHeightMm() { return displayHeightMm; }
+  }
+
+  public enum LCDInterface {
+    I2C_Backpack("I2C Backpack"),
+    Parallel_16Pin("Parallel HD44780");
+
+    private final String label;
+    LCDInterface(String label) { this.label = label; }
+    @Override public String toString() { return label; }
   }
 }

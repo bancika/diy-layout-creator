@@ -76,58 +76,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public static final int PINS_PER_ROW = 15;
 
-  // Ordered by label so the Version drop-down reads alphabetically. XStream serializes enum
-  // constants by name, so the order here is free to change without affecting existing .diy files.
-  public enum NanoVersion {
-    CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
-    NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
-    NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
-    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
-    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
-    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
-    NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
-    // Silkscreened "CONNECT" rather than the full name, which does not fit between the two rows of
-    // pad names; the RP2040 package right below it carries the part number
-    NANO_RP2040_CONNECT("Nano RP2040 Connect", "CONNECT", "RP2040", "NINA-W102");
-
-    private final String label;
-    private final String silkLabel;
-    private final String mcuLabel;
-    private final String moduleLabel;
-
-    NanoVersion(String label, String silkLabel, String mcuLabel, String moduleLabel) {
-      this.label = label;
-      this.silkLabel = silkLabel;
-      this.mcuLabel = mcuLabel;
-      this.moduleLabel = moduleLabel;
-    }
-
-    public String getSilkLabel() {
-      return silkLabel;
-    }
-
-    /**
-     * Marking of the separately visible MCU package, or null when the MCU is a die inside the
-     * module rather than its own part on the board.
-     */
-    public String getMcuLabel() {
-      return mcuLabel;
-    }
-
-    /**
-     * Marking of the part occupying the end of the board opposite the USB jack, where the classic
-     * Nano has its ICSP header. Null on the classic Nano, which has the header instead.
-     */
-    public String getModuleLabel() {
-      return moduleLabel;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14, top to bottom)
       "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
@@ -665,6 +613,58 @@ public class ArduinoNano extends AbstractMakerBoard {
     for (int y = 5; y < height - 5; y += 3) {
       g2d.fillRect(7, y, 2, 2);
       g2d.fillRect(width - 9, y, 2, 2);
+    }
+  }
+
+  // Ordered by label so the Version drop-down reads alphabetically. XStream serializes enum
+  // constants by name, so the order here is free to change without affecting existing .diy files.
+  public enum NanoVersion {
+    CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
+    NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
+    NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
+    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
+    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
+    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
+    NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
+    // Silkscreened "CONNECT" rather than the full name, which does not fit between the two rows of
+    // pad names; the RP2040 package right below it carries the part number
+    NANO_RP2040_CONNECT("Nano RP2040 Connect", "CONNECT", "RP2040", "NINA-W102");
+
+    private final String label;
+    private final String silkLabel;
+    private final String mcuLabel;
+    private final String moduleLabel;
+
+    NanoVersion(String label, String silkLabel, String mcuLabel, String moduleLabel) {
+      this.label = label;
+      this.silkLabel = silkLabel;
+      this.mcuLabel = mcuLabel;
+      this.moduleLabel = moduleLabel;
+    }
+
+    public String getSilkLabel() {
+      return silkLabel;
+    }
+
+    /**
+     * Marking of the separately visible MCU package, or null when the MCU is a die inside the
+     * module rather than its own part on the board.
+     */
+    public String getMcuLabel() {
+      return mcuLabel;
+    }
+
+    /**
+     * Marking of the part occupying the end of the board opposite the USB jack, where the classic
+     * Nano has its ICSP header. Null on the classic Nano, which has the header instead.
+     */
+    public String getModuleLabel() {
+      return moduleLabel;
+    }
+
+    @Override
+    public String toString() {
+      return label;
     }
   }
 }

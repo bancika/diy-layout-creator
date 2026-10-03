@@ -58,23 +58,6 @@ public class Teensy extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum TeensyVersion {
-    Teensy_3_2("Teensy 3.2"),
-    Teensy_4_0("Teensy 4.0"),
-    Teensy_4_1("Teensy 4.1");
-
-    private final String label;
-
-    TeensyVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   // gap between the Ethernet header pads and the silkscreen box printed around them
   public static Size ETH_BOX_MARGIN = new Size(1.2d, SizeUnit.mm);
 
@@ -564,5 +547,22 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "TEENSY", width / 2, height / 2 + 8,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum TeensyVersion {
+    Teensy_3_2("Teensy 3.2"),
+    Teensy_4_0("Teensy 4.0"),
+    Teensy_4_1("Teensy 4.1");
+
+    private final String label;
+
+    TeensyVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

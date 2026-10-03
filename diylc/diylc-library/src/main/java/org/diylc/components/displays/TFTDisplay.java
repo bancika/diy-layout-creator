@@ -62,86 +62,6 @@ public class TFTDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum Controller {
-    // Each board is dimensioned from its module outline, and the header sits centred on the short
-    // top edge at the offset recorded here. Active areas are the nominal diagonal taken at the
-    // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, the
-    // square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which makes
-    // them derivations rather than measurements, noted so they are not built upon. A glass length
-    // of zero means the module has no separate dark panel wider than its own lit area, so only the
-    // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
-    // The round board is described by the same two outline figures as the others: its width is the
-    // disc diameter and its length runs from the tab's outer edge to the far side of the disc, so
-    // the tab's projection is the difference between them and is not carried separately. It is
-    // the one variant whose header is at the bottom, so its board grows upwards from the pin row
-    // rather than down from it.
-    ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, 69.1d, 3.0d,
-        3.0d, 3.0d, 0d,
-        new String[] {"VCC", "GND", "CS", "RESET", "DC", "MOSI (SDI)", "SCK", "LED", "MISO (SDO)",
-            "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"}),
-    ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, 0d, 1.5d, 3.0d, 3.0d, 0d,
-        new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"}),
-    ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, 33.7d, 1.5d, 2.5d, 2.0d,
-        0d,
-        new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"}),
-    GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, 0d, 1.76d, 0d, 0d,
-        22.9d,
-        new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"});
-
-    private final String label;
-    private final double boardWidthMm;
-    private final double boardLengthMm;
-    private final double screenWidthMm;
-    private final double screenLengthMm;
-    private final double glassLengthMm;
-    private final double headerOffsetMm;
-    private final double holeInsetMm;
-    private final double holeSizeMm;
-    private final double tabWidthMm;
-    private final String[] pinNames;
-
-    Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
-        double screenLengthMm, double glassLengthMm, double headerOffsetMm, double holeInsetMm,
-        double holeSizeMm, double tabWidthMm, String[] pinNames) {
-      this.label = label;
-      this.boardWidthMm = boardWidthMm;
-      this.boardLengthMm = boardLengthMm;
-      this.screenWidthMm = screenWidthMm;
-      this.screenLengthMm = screenLengthMm;
-      this.glassLengthMm = glassLengthMm;
-      this.headerOffsetMm = headerOffsetMm;
-      this.holeInsetMm = holeInsetMm;
-      this.holeSizeMm = holeSizeMm;
-      this.tabWidthMm = tabWidthMm;
-      this.pinNames = pinNames;
-    }
-
-    @Override public String toString() { return label; }
-    public double getBoardWidthMm() { return boardWidthMm; }
-    public double getBoardLengthMm() { return boardLengthMm; }
-    public double getScreenWidthMm() { return screenWidthMm; }
-    public double getScreenLengthMm() { return screenLengthMm; }
-    public double getGlassLengthMm() { return glassLengthMm; }
-    public double getHeaderOffsetMm() { return headerOffsetMm; }
-    public double getHoleSizeMm() { return holeSizeMm; }
-    public String[] getPinNames() { return pinNames; }
-
-    /** Inset of every mounting hole from each of the two edges nearest it. */
-    public double getHoleInsetMm() { return holeInsetMm; }
-
-    public boolean hasMountingHoles() { return holeSizeMm > 0; }
-
-    public boolean hasGlass() { return glassLengthMm > 0; }
-
-    /** Width of the tab the header sits on; meaningful only for a round board. */
-    public double getTabWidthMm() { return tabWidthMm; }
-
-    /** How far the tab projects past the disc: whatever the outline is longer than it is wide. */
-    public double getTabProjectionMm() { return boardLengthMm - boardWidthMm; }
-
-    public boolean isRound() { return tabWidthMm > 0; }
-  }
-
   /**
    * Only the 2.8" board needs its own silkscreen names. Its node names carry the MOSI and MISO
    * aliases, which the default label would print in full, and its touch pins are prefixed, which
@@ -387,5 +307,85 @@ public class TFTDisplay extends AbstractMakerBoard {
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
     StringUtils.drawCenteredText(g2d, "TFT", width / 2, height / 2 + 3, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
+  }
+
+  public enum Controller {
+    // Each board is dimensioned from its module outline, and the header sits centred on the short
+    // top edge at the offset recorded here. Active areas are the nominal diagonal taken at the
+    // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, the
+    // square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which makes
+    // them derivations rather than measurements, noted so they are not built upon. A glass length
+    // of zero means the module has no separate dark panel wider than its own lit area, so only the
+    // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
+    // The round board is described by the same two outline figures as the others: its width is the
+    // disc diameter and its length runs from the tab's outer edge to the far side of the disc, so
+    // the tab's projection is the difference between them and is not carried separately. It is
+    // the one variant whose header is at the bottom, so its board grows upwards from the pin row
+    // rather than down from it.
+    ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, 69.1d, 3.0d,
+        3.0d, 3.0d, 0d,
+        new String[] {"VCC", "GND", "CS", "RESET", "DC", "MOSI (SDI)", "SCK", "LED", "MISO (SDO)",
+            "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"}),
+    ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, 0d, 1.5d, 3.0d, 3.0d, 0d,
+        new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"}),
+    ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, 33.7d, 1.5d, 2.5d, 2.0d,
+        0d,
+        new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"}),
+    GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, 0d, 1.76d, 0d, 0d,
+        22.9d,
+        new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"});
+
+    private final String label;
+    private final double boardWidthMm;
+    private final double boardLengthMm;
+    private final double screenWidthMm;
+    private final double screenLengthMm;
+    private final double glassLengthMm;
+    private final double headerOffsetMm;
+    private final double holeInsetMm;
+    private final double holeSizeMm;
+    private final double tabWidthMm;
+    private final String[] pinNames;
+
+    Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
+        double screenLengthMm, double glassLengthMm, double headerOffsetMm, double holeInsetMm,
+        double holeSizeMm, double tabWidthMm, String[] pinNames) {
+      this.label = label;
+      this.boardWidthMm = boardWidthMm;
+      this.boardLengthMm = boardLengthMm;
+      this.screenWidthMm = screenWidthMm;
+      this.screenLengthMm = screenLengthMm;
+      this.glassLengthMm = glassLengthMm;
+      this.headerOffsetMm = headerOffsetMm;
+      this.holeInsetMm = holeInsetMm;
+      this.holeSizeMm = holeSizeMm;
+      this.tabWidthMm = tabWidthMm;
+      this.pinNames = pinNames;
+    }
+
+    @Override public String toString() { return label; }
+    public double getBoardWidthMm() { return boardWidthMm; }
+    public double getBoardLengthMm() { return boardLengthMm; }
+    public double getScreenWidthMm() { return screenWidthMm; }
+    public double getScreenLengthMm() { return screenLengthMm; }
+    public double getGlassLengthMm() { return glassLengthMm; }
+    public double getHeaderOffsetMm() { return headerOffsetMm; }
+    public double getHoleSizeMm() { return holeSizeMm; }
+    public String[] getPinNames() { return pinNames; }
+
+    /** Inset of every mounting hole from each of the two edges nearest it. */
+    public double getHoleInsetMm() { return holeInsetMm; }
+
+    public boolean hasMountingHoles() { return holeSizeMm > 0; }
+
+    public boolean hasGlass() { return glassLengthMm > 0; }
+
+    /** Width of the tab the header sits on; meaningful only for a round board. */
+    public double getTabWidthMm() { return tabWidthMm; }
+
+    /** How far the tab projects past the disc: whatever the outline is longer than it is wide. */
+    public double getTabProjectionMm() { return boardLengthMm - boardWidthMm; }
+
+    public boolean isRound() { return tabWidthMm > 0; }
   }
 }

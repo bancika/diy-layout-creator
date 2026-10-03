@@ -61,43 +61,6 @@ public class LEDMatrix extends AbstractMakerBoard {
   public static Color LED_RED = Color.decode("#E53935");
   public static Color LED_OFF = Color.decode("#333333");
 
-  /**
-   * Which board the modules sit on, which is not the same question as how many there are: two of
-   * these carry one module each. The original single puts its driver and both headers on a strip
-   * below the module, so the board is taller than it is wide. The compact single fits the driver
-   * under the module instead, leaving a board that is only the module, which is what lets several
-   * be butted together; the 4-in-1 is that same idea sold as a single PCB. Both of those hide
-   * every driver and bring their headers out on the short edges, standing the pin rows on end.
-   */
-  public enum Modules {
-    Single_8x8("Single 8x8 (32x50mm)", 1, 32.0d, 50.0d, false),
-    Compact_8x8("Compact 8x8 (32x32mm)", 1, 32.0d, 32.0d, true),
-    FourInOne_32x8("4-in-1 32x8 (128x32mm)", 4, 128.0d, 32.0d, true);
-
-    private final String label;
-    private final int count;
-    private final double boardWidthMm;
-    private final double boardHeightMm;
-    private final boolean verticalHeaders;
-
-    Modules(String label, int count, double boardWidthMm, double boardHeightMm,
-        boolean verticalHeaders) {
-      this.label = label;
-      this.count = count;
-      this.boardWidthMm = boardWidthMm;
-      this.boardHeightMm = boardHeightMm;
-      this.verticalHeaders = verticalHeaders;
-    }
-
-    @Override public String toString() { return label; }
-    public int getCount() { return count; }
-    public double getBoardWidthMm() { return boardWidthMm; }
-    public double getBoardHeightMm() { return boardHeightMm; }
-
-    /** True where the headers leave by the short edges, so their rows run down rather than across. */
-    public boolean hasVerticalHeaders() { return verticalHeaders; }
-  }
-
   // The modules are flush with each other and with the board, so the outline bounds them rather
   // than their being inset from it, and the dot pitch runs unbroken across the whole strip.
   public static Size MATRIX_SIZE = new Size(32.0d, SizeUnit.mm);
@@ -385,5 +348,42 @@ public class LEDMatrix extends AbstractMakerBoard {
         g2d.fillOval(9 + c * 4, 7 + r * 4, 2, 2);
       }
     }
+  }
+
+  /**
+   * Which board the modules sit on, which is not the same question as how many there are: two of
+   * these carry one module each. The original single puts its driver and both headers on a strip
+   * below the module, so the board is taller than it is wide. The compact single fits the driver
+   * under the module instead, leaving a board that is only the module, which is what lets several
+   * be butted together; the 4-in-1 is that same idea sold as a single PCB. Both of those hide
+   * every driver and bring their headers out on the short edges, standing the pin rows on end.
+   */
+  public enum Modules {
+    Single_8x8("Single 8x8 (32x50mm)", 1, 32.0d, 50.0d, false),
+    Compact_8x8("Compact 8x8 (32x32mm)", 1, 32.0d, 32.0d, true),
+    FourInOne_32x8("4-in-1 32x8 (128x32mm)", 4, 128.0d, 32.0d, true);
+
+    private final String label;
+    private final int count;
+    private final double boardWidthMm;
+    private final double boardHeightMm;
+    private final boolean verticalHeaders;
+
+    Modules(String label, int count, double boardWidthMm, double boardHeightMm,
+        boolean verticalHeaders) {
+      this.label = label;
+      this.count = count;
+      this.boardWidthMm = boardWidthMm;
+      this.boardHeightMm = boardHeightMm;
+      this.verticalHeaders = verticalHeaders;
+    }
+
+    @Override public String toString() { return label; }
+    public int getCount() { return count; }
+    public double getBoardWidthMm() { return boardWidthMm; }
+    public double getBoardHeightMm() { return boardHeightMm; }
+
+    /** True where the headers leave by the short edges, so their rows run down rather than across. */
+    public boolean hasVerticalHeaders() { return verticalHeaders; }
   }
 }

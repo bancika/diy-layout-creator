@@ -61,24 +61,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum PicoVersion {
-    PICO("Pi Pico"),
-    PICO_W("Pi Pico W"),
-    PICO_2("Pi Pico 2"),
-    PICO_2_W("Pi Pico 2 W");
-
-    private final String label;
-
-    PicoVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static Size BOARD_WIDTH = new Size(21.0d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(51.0d, SizeUnit.mm);
 
@@ -508,5 +490,23 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "PICO", width / 2, height / 2 + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum PicoVersion {
+    PICO("Pi Pico"),
+    PICO_W("Pi Pico W"),
+    PICO_2("Pi Pico 2"),
+    PICO_2_W("Pi Pico 2 W");
+
+    private final String label;
+
+    PicoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

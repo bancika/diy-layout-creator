@@ -83,23 +83,6 @@ public class RaspberryPi extends AbstractMakerBoard {
       "PCIe", "MIPI 1", "MIPI 0", "UART"
   };
 
-  public enum RaspberryPiVersion {
-    PI_3_B("Pi 3 (Model B+)"),
-    PI_4_B("Pi 4 (Model B)"),
-    PI_5("Pi 5");
-
-    private String label;
-
-    private RaspberryPiVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   private RaspberryPiVersion version = RaspberryPiVersion.PI_5;
 
   @org.diylc.core.annotations.EditableProperty(name = "Version")
@@ -580,5 +563,22 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT_LARGE);
     StringUtils.drawCenteredText(g2d, "RPi", 14, 25, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum RaspberryPiVersion {
+    PI_3_B("Pi 3 (Model B+)"),
+    PI_4_B("Pi 4 (Model B)"),
+    PI_5("Pi 5");
+
+    private String label;
+
+    private RaspberryPiVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

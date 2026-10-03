@@ -75,23 +75,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     PIN_NAMES[44] = "TV 2";
   }
 
-  public enum ZeroVersion {
-    PI_ZERO("Pi Zero"),
-    PI_ZERO_W("Pi Zero W"),
-    PI_ZERO_2_W("Pi Zero 2 W");
-
-    private final String label;
-
-    ZeroVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   protected ZeroVersion version = ZeroVersion.PI_ZERO;
   protected boolean headers = false;
 
@@ -398,5 +381,22 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 21, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum ZeroVersion {
+    PI_ZERO("Pi Zero"),
+    PI_ZERO_W("Pi Zero W"),
+    PI_ZERO_2_W("Pi Zero 2 W");
+
+    private final String label;
+
+    ZeroVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

@@ -61,24 +61,6 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum ArduinoUnoVersion {
-    LEONARDO("Leonardo"),
-    REV3("UNO R3"),
-    R4_MINIMA("UNO R4 Minima"),
-    R4_WIFI("UNO R4 WiFi");
-
-    private String label;
-
-    private ArduinoUnoVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   private ArduinoUnoVersion version = ArduinoUnoVersion.REV3;
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
@@ -674,5 +656,23 @@ public class ArduinoUno extends AbstractMakerBoard {
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
     double textX = boardX + (boardW / 2.0) + 0.5;
     StringUtils.drawCenteredText(g2d, iconText, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum ArduinoUnoVersion {
+    LEONARDO("Leonardo"),
+    REV3("UNO R3"),
+    R4_MINIMA("UNO R4 Minima"),
+    R4_WIFI("UNO R4 WiFi");
+
+    private String label;
+
+    private ArduinoUnoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

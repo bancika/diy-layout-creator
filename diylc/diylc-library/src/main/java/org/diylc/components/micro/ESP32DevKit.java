@@ -62,25 +62,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum DevKitVersion {
-    DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
-    DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
-    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)"),
-    ESP32_C3_DevKitM_1("ESP32-C3 DevKitM-1 (30-Pin)"),
-    ESP32_C6_DevKitC_1("ESP32-C6 DevKitC-1 (32-Pin)");
-
-    private final String label;
-
-    DevKitVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static Size BOARD_WIDTH_30 = new Size(28.33d, SizeUnit.mm);
   public static Size BOARD_LENGTH_30 = new Size(51.45d, SizeUnit.mm);
   public static Size TOP_MARGIN_30 = new Size(6.7d, SizeUnit.mm);
@@ -858,5 +839,24 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ESP32", width / 2, height / 2 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum DevKitVersion {
+    DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
+    DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
+    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)"),
+    ESP32_C3_DevKitM_1("ESP32-C3 DevKitM-1 (30-Pin)"),
+    ESP32_C6_DevKitC_1("ESP32-C6 DevKitC-1 (32-Pin)");
+
+    private final String label;
+
+    DevKitVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

@@ -59,17 +59,6 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum OLEDInterface {
-    // Labels stay short because they reach the BOM's value column through getVariantLabel; the pin
-    // legend they used to carry is already in the node names.
-    I2C_4Pin("I2C"),
-    SPI_7Pin("SPI");
-
-    private final String label;
-    OLEDInterface(String label) { this.label = label; }
-    @Override public String toString() { return label; }
-  }
-
   public static Color OLED_BLUE = Color.decode("#004488");
   public static Color GLASS_COLOR = Color.decode("#0D1B2A");
   public static Color GLASS_BORDER_COLOR = Color.decode("#334E68");
@@ -257,5 +246,16 @@ public class OLEDDisplay extends AbstractMakerBoard {
     for (int i = 0; i < 4; i++) {
       g2d.fillRect(10 + i * 3, 5, 2, 2);
     }
+  }
+
+  public enum OLEDInterface {
+    // Labels stay short because they reach the BOM's value column through getVariantLabel; the pin
+    // legend they used to carry is already in the node names.
+    I2C_4Pin("I2C"),
+    SPI_7Pin("SPI");
+
+    private final String label;
+    OLEDInterface(String label) { this.label = label; }
+    @Override public String toString() { return label; }
   }
 }

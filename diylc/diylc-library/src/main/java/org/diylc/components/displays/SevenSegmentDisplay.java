@@ -60,98 +60,6 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  /**
-   * The packages this component can draw, each carrying its own dimensions in millimetres.
-   *
-   * <p>Provenance differs between them and is worth keeping straight. The digit heights are
-   * definitional, since 0.36 and 0.56 inches are what the parts are named for. The 0.56 inch body,
-   * digit width and pitch are the figures this class has always carried and have never been checked
-   * against a datasheet. The 0.36 inch equivalents are **placeholders**, scaled from the digit
-   * height, and are not measurements at all. See the plan's section 11.10; none of this is settled
-   * until someone reads a datasheet or measures a part.
-   */
-  public enum DisplayType {
-    // The parts these model: 5161AS for the single digit, 3641AS for the 0.36 inch four-digit
-    // package and 5641AS for the 0.56 inch one. The two four-digit parts differ in size but share
-    // a pinout, which is why one array serves both.
-    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
-    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true),
-    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true),
-    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
-
-    private final String label;
-    private final double bodyWidthMm;
-    private final double bodyLengthMm;
-    private final double digitWidthMm;
-    private final double digitHeightMm;
-    private final double digitPitchMm;
-    private final double rowSpacingMm;
-    private final boolean dualRow;
-
-    DisplayType(String label, double bodyWidthMm, double bodyLengthMm, double digitWidthMm,
-        double digitHeightMm, double digitPitchMm, double rowSpacingMm, boolean dualRow) {
-      this.label = label;
-      this.bodyWidthMm = bodyWidthMm;
-      this.bodyLengthMm = bodyLengthMm;
-      this.digitWidthMm = digitWidthMm;
-      this.digitHeightMm = digitHeightMm;
-      this.digitPitchMm = digitPitchMm;
-      this.rowSpacingMm = rowSpacingMm;
-      this.dualRow = dualRow;
-    }
-
-    /**
-     * Distance between the two pin rows. It cannot be one shared constant: a package only works if
-     * its rows sit within its body, and the 0.36 inch part is shorter than the 0.6 inch spacing the
-     * larger packages use.
-     */
-    public double getRowSpacingMm() { return rowSpacingMm; }
-
-    @Override public String toString() { return label; }
-    public double getBodyWidthMm() { return bodyWidthMm; }
-    public double getBodyLengthMm() { return bodyLengthMm; }
-    public double getDigitWidthMm() { return digitWidthMm; }
-    public double getDigitHeightMm() { return digitHeightMm; }
-    public double getDigitPitchMm() { return digitPitchMm; }
-
-    /** True for the DIP packages, which carry their pins in two rows rather than one. */
-    public boolean isDualRow() { return dualRow; }
-  }
-
-  /**
-   * Which electrode the digits share. Both kinds are sold side by side and are identical in pinout,
-   * package and dimensions -- they differ only in internal polarity, so this changes nothing that
-   * is drawn and reaches only the BOM.
-   */
-  public enum Common {
-    Cathode("Common Cathode"),
-    Anode("Common Anode");
-
-    private final String label;
-    Common(String label) { this.label = label; }
-    @Override public String toString() { return label; }
-  }
-
-  /**
-   * What the package carries besides the digits themselves. These are sold in every combination,
-   * and on a twelve-pin part they are not independent of each other: A-G plus DP and four digit
-   * commons already account for all twelve pins, so a colon has to share the decimal point's line
-   * or replace it. The property therefore describes the face of the part, not a fifth pin.
-   */
-  public enum Punctuation {
-    None("No Punctuation"),
-    DecimalPoints("Decimal Points"),
-    Colon("Colon"),
-    Both("Colon + Decimal Points");
-
-    private final String label;
-    Punctuation(String label) { this.label = label; }
-    @Override public String toString() { return label; }
-
-    public boolean hasDecimalPoints() { return this == DecimalPoints || this == Both; }
-    public boolean hasColon() { return this == Colon || this == Both; }
-  }
-
   public static Color BODY_BLACK = Color.decode("#1C1C1C");
   public static Color FACE_BLACK = Color.decode("#111111");
   public static Color FACE_BORDER = Color.decode("#333333");
@@ -674,5 +582,97 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     // Draw single stylized '8'. The toolbox icon stands for the component type rather than for any
     // one configured instance, so it keeps its decimal point whatever Punctuation is set to.
     drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED, true);
+  }
+
+  /**
+   * The packages this component can draw, each carrying its own dimensions in millimetres.
+   *
+   * <p>Provenance differs between them and is worth keeping straight. The digit heights are
+   * definitional, since 0.36 and 0.56 inches are what the parts are named for. The 0.56 inch body,
+   * digit width and pitch are the figures this class has always carried and have never been checked
+   * against a datasheet. The 0.36 inch equivalents are **placeholders**, scaled from the digit
+   * height, and are not measurements at all. See the plan's section 11.10; none of this is settled
+   * until someone reads a datasheet or measures a part.
+   */
+  public enum DisplayType {
+    // The parts these model: 5161AS for the single digit, 3641AS for the 0.36 inch four-digit
+    // package and 5641AS for the 0.56 inch one. The two four-digit parts differ in size but share
+    // a pinout, which is why one array serves both.
+    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
+    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true),
+    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true),
+    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
+
+    private final String label;
+    private final double bodyWidthMm;
+    private final double bodyLengthMm;
+    private final double digitWidthMm;
+    private final double digitHeightMm;
+    private final double digitPitchMm;
+    private final double rowSpacingMm;
+    private final boolean dualRow;
+
+    DisplayType(String label, double bodyWidthMm, double bodyLengthMm, double digitWidthMm,
+        double digitHeightMm, double digitPitchMm, double rowSpacingMm, boolean dualRow) {
+      this.label = label;
+      this.bodyWidthMm = bodyWidthMm;
+      this.bodyLengthMm = bodyLengthMm;
+      this.digitWidthMm = digitWidthMm;
+      this.digitHeightMm = digitHeightMm;
+      this.digitPitchMm = digitPitchMm;
+      this.rowSpacingMm = rowSpacingMm;
+      this.dualRow = dualRow;
+    }
+
+    /**
+     * Distance between the two pin rows. It cannot be one shared constant: a package only works if
+     * its rows sit within its body, and the 0.36 inch part is shorter than the 0.6 inch spacing the
+     * larger packages use.
+     */
+    public double getRowSpacingMm() { return rowSpacingMm; }
+
+    @Override public String toString() { return label; }
+    public double getBodyWidthMm() { return bodyWidthMm; }
+    public double getBodyLengthMm() { return bodyLengthMm; }
+    public double getDigitWidthMm() { return digitWidthMm; }
+    public double getDigitHeightMm() { return digitHeightMm; }
+    public double getDigitPitchMm() { return digitPitchMm; }
+
+    /** True for the DIP packages, which carry their pins in two rows rather than one. */
+    public boolean isDualRow() { return dualRow; }
+  }
+
+  /**
+   * Which electrode the digits share. Both kinds are sold side by side and are identical in pinout,
+   * package and dimensions -- they differ only in internal polarity, so this changes nothing that
+   * is drawn and reaches only the BOM.
+   */
+  public enum Common {
+    Cathode("Common Cathode"),
+    Anode("Common Anode");
+
+    private final String label;
+    Common(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+  }
+
+  /**
+   * What the package carries besides the digits themselves. These are sold in every combination,
+   * and on a twelve-pin part they are not independent of each other: A-G plus DP and four digit
+   * commons already account for all twelve pins, so a colon has to share the decimal point's line
+   * or replace it. The property therefore describes the face of the part, not a fifth pin.
+   */
+  public enum Punctuation {
+    None("No Punctuation"),
+    DecimalPoints("Decimal Points"),
+    Colon("Colon"),
+    Both("Colon + Decimal Points");
+
+    private final String label;
+    Punctuation(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+
+    public boolean hasDecimalPoints() { return this == DecimalPoints || this == Both; }
+    public boolean hasColon() { return this == Colon || this == Both; }
   }
 }

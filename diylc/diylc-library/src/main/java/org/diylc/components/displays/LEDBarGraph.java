@@ -103,31 +103,6 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   public static Size SEGMENT_WIDTH = new Size(4.8d, SizeUnit.mm);
   public static Size SEGMENT_LENGTH = new Size(1.7d, SizeUnit.mm);
 
-  /**
-   * How many segments the bar carries, which decides everything else about the package: each
-   * segment has its own anode and cathode, so the pin count is twice the segment count and the
-   * body lengthens by one pin pitch per segment.
-   */
-  public enum Segments {
-    _8("8 Segment", 8),
-    _10("10 Segment", 10),
-    _12("12 Segment", 12);
-
-    private final String label;
-    private final int count;
-
-    Segments(String label, int count) {
-      this.label = label;
-      this.count = count;
-    }
-
-    @Override public String toString() { return label; }
-    public int getCount() { return count; }
-
-    /** Anode and cathode per segment, split evenly between the two rows. */
-    public int getPinCount() { return count * 2; }
-  }
-
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
   private Segments segments = Segments._10;
@@ -520,5 +495,30 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
     }
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
         maxY - minY + 2 * margin);
+  }
+
+  /**
+   * How many segments the bar carries, which decides everything else about the package: each
+   * segment has its own anode and cathode, so the pin count is twice the segment count and the
+   * body lengthens by one pin pitch per segment.
+   */
+  public enum Segments {
+    _8("8 Segment", 8),
+    _10("10 Segment", 10),
+    _12("12 Segment", 12);
+
+    private final String label;
+    private final int count;
+
+    Segments(String label, int count) {
+      this.label = label;
+      this.count = count;
+    }
+
+    @Override public String toString() { return label; }
+    public int getCount() { return count; }
+
+    /** Anode and cathode per segment, split evenly between the two rows. */
+    public int getPinCount() { return count * 2; }
   }
 }

@@ -78,6 +78,10 @@ public class MyPart extends AbstractLeadedComponent<Resistance> {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) { ... }
+
+  public enum Version {                     // nested types last, just before the closing brace
+    ...
+  }
 }
 ```
 
@@ -90,6 +94,9 @@ Requirements the framework enforces:
   depend on neighbouring components.
 - Appearance constants are `public static` and deliberately **not final**, so they can be overridden
   at runtime. Follow that.
+- Nested types — a `Version` enum, a package or size enum, a small helper class — go at the **bottom
+  of the file**, after every method, so the outer class reads top to bottom without a block of enum
+  declarations in the middle of it.
 
 ## Editable properties
 

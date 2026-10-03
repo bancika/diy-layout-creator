@@ -55,62 +55,6 @@ public class WS2812BRing extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum RingSize {
-    // The rings are dimensioned in inches, so both diameters are exact conversions of the measured
-    // figures (1.45 / 0.92, 1.75 / 1.25, 2.58 / 2.06) rather than roundings. LEDs are placed on the
-    // midpoint between the two rims. The measured LED circles are 1.16, 1.5 and 2.3 inches, which
-    // the midpoint reproduces exactly on the 16-LED ring and misses by 0.64 mm on the 12 and
-    // 0.51 mm on the 24 -- accepted deliberately rather than carrying a third diameter per ring.
-    // Pads sit in the gaps between consecutive LEDs and are not grouped together, so each ring
-    // lists its pads in order around the circle with the number of LEDs that follow each one
-    // before the next. The final figure wraps back round to the first pad, which means the gaps
-    // must sum to the LED count; the constructor checks that rather than trusting a transcription.
-    _12_LED("12 LEDs", 12, 36.83, 23.368,
-        new String[] {"OUT", "IN", "GND", "PWR"},
-        new int[] {2, 4, 2, 4}),
-    _16_LED("16 LEDs", 16, 44.45, 31.75,
-        new String[] {"IN", "OUT", "G_1", "G_2", "V+_1", "V+_2"},
-        new int[] {2, 5, 1, 4, 1, 3}),
-    _24_LED("24 LEDs", 24, 65.532, 52.324,
-        new String[] {"OUT", "IN", "G_1", "G_2", "PWR_1", "PWR_2"},
-        new int[] {2, 8, 2, 2, 2, 8});
-
-    private final String label;
-    private final int ledCount;
-    private final double outerDiameterMm;
-    private final double innerDiameterMm;
-    private final String[] padNames;
-    private final int[] padGapIndex;
-
-    RingSize(String label, int ledCount, double outerDiameterMm, double innerDiameterMm,
-        String[] padNames, int[] ledsAfterPad) {
-      this.label = label;
-      this.ledCount = ledCount;
-      this.outerDiameterMm = outerDiameterMm;
-      this.innerDiameterMm = innerDiameterMm;
-      this.padNames = padNames;
-      this.padGapIndex = new int[padNames.length];
-      int gap = 0;
-      for (int i = 0; i < padNames.length; i++) {
-        padGapIndex[i] = gap;
-        gap += ledsAfterPad[i];
-      }
-      if (gap != ledCount) {
-        throw new IllegalArgumentException(
-            label + ": pad gaps sum to " + gap + " but the ring carries " + ledCount + " LEDs");
-      }
-    }
-
-    @Override public String toString() { return label; }
-    public int getLedCount() { return ledCount; }
-    public double getOuterDiameterMm() { return outerDiameterMm; }
-    public double getInnerDiameterMm() { return innerDiameterMm; }
-    public String[] getPadNames() { return padNames; }
-
-    /** Which gap between LEDs the pad at {@code index} sits in, counted from the first pad. */
-    public int getPadGapIndex(int index) { return padGapIndex[index]; }
-  }
-
   public static Color NEO_BLACK = Color.decode("#111111");
 
   // Pads are small and sit near the rim; these are what the ring overrides the inherited solder
@@ -350,5 +294,61 @@ public class WS2812BRing extends AbstractMakerBoard {
       g2d.setColor(rainbow[i % rainbow.length]);
       g2d.fill(new Ellipse2D.Double(lx - dotR, ly - dotR, dotR * 2, dotR * 2));
     }
+  }
+
+  public enum RingSize {
+    // The rings are dimensioned in inches, so both diameters are exact conversions of the measured
+    // figures (1.45 / 0.92, 1.75 / 1.25, 2.58 / 2.06) rather than roundings. LEDs are placed on the
+    // midpoint between the two rims. The measured LED circles are 1.16, 1.5 and 2.3 inches, which
+    // the midpoint reproduces exactly on the 16-LED ring and misses by 0.64 mm on the 12 and
+    // 0.51 mm on the 24 -- accepted deliberately rather than carrying a third diameter per ring.
+    // Pads sit in the gaps between consecutive LEDs and are not grouped together, so each ring
+    // lists its pads in order around the circle with the number of LEDs that follow each one
+    // before the next. The final figure wraps back round to the first pad, which means the gaps
+    // must sum to the LED count; the constructor checks that rather than trusting a transcription.
+    _12_LED("12 LEDs", 12, 36.83, 23.368,
+        new String[] {"OUT", "IN", "GND", "PWR"},
+        new int[] {2, 4, 2, 4}),
+    _16_LED("16 LEDs", 16, 44.45, 31.75,
+        new String[] {"IN", "OUT", "G_1", "G_2", "V+_1", "V+_2"},
+        new int[] {2, 5, 1, 4, 1, 3}),
+    _24_LED("24 LEDs", 24, 65.532, 52.324,
+        new String[] {"OUT", "IN", "G_1", "G_2", "PWR_1", "PWR_2"},
+        new int[] {2, 8, 2, 2, 2, 8});
+
+    private final String label;
+    private final int ledCount;
+    private final double outerDiameterMm;
+    private final double innerDiameterMm;
+    private final String[] padNames;
+    private final int[] padGapIndex;
+
+    RingSize(String label, int ledCount, double outerDiameterMm, double innerDiameterMm,
+        String[] padNames, int[] ledsAfterPad) {
+      this.label = label;
+      this.ledCount = ledCount;
+      this.outerDiameterMm = outerDiameterMm;
+      this.innerDiameterMm = innerDiameterMm;
+      this.padNames = padNames;
+      this.padGapIndex = new int[padNames.length];
+      int gap = 0;
+      for (int i = 0; i < padNames.length; i++) {
+        padGapIndex[i] = gap;
+        gap += ledsAfterPad[i];
+      }
+      if (gap != ledCount) {
+        throw new IllegalArgumentException(
+            label + ": pad gaps sum to " + gap + " but the ring carries " + ledCount + " LEDs");
+      }
+    }
+
+    @Override public String toString() { return label; }
+    public int getLedCount() { return ledCount; }
+    public double getOuterDiameterMm() { return outerDiameterMm; }
+    public double getInnerDiameterMm() { return innerDiameterMm; }
+    public String[] getPadNames() { return padNames; }
+
+    /** Which gap between LEDs the pad at {@code index} sits in, counted from the first pad. */
+    public int getPadGapIndex(int index) { return padGapIndex[index]; }
   }
 }
