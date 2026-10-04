@@ -26,7 +26,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.components.displays.TFTDisplay.Controller;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -348,6 +350,22 @@ public class TFTDisplayTest {
 
       Assert.assertEquals(controller + " header offset", controller.getHeaderOffsetMm(),
           mm(fromEdge), 0.01d);
+    }
+  }
+
+  /**
+   * Every panel prints its description, the round one included -- it is the only variant whose
+   * text has to fit a circle, and it does so by being given the square inscribed in the glass.
+   */
+  @Test
+  public void everyPanelPrintsItsDescription() {
+    for (Controller controller : Controller.values()) {
+      TFTDisplay printed = of(controller);
+      TFTDisplay blank = of(controller);
+      blank.setScreen(Display.NONE);
+
+      Assert.assertEquals(Display.VALUE, printed.getScreen());
+      MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
     }
   }
 }

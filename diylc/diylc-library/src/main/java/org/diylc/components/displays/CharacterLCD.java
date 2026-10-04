@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -48,6 +49,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.presenter.CalcUtils;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Character LCD", category = "Displays & Outputs",
@@ -75,6 +77,10 @@ public class CharacterLCD extends AbstractMakerBoard {
   public static Color PCB_GREEN = Color.decode("#1B5E20");
   public static Color SCREEN_BG = Color.decode("#1E88E5");
   public static Color BEZEL_COLOR = Color.decode("#212121");
+  // Both inks are real: the blue-backlit module shows light characters and the yellow-green one
+  // dark ones, so which is used follows the screen colour rather than being fixed.
+  public static Color SCREEN_INK_LIGHT = Color.decode("#F5F5F5");
+  public static Color SCREEN_INK_DARK = Color.decode("#1B2631");
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SDA", "SCL"};
   public static final String[] PIN_NAMES_PARALLEL = new String[] {
@@ -94,6 +100,7 @@ public class CharacterLCD extends AbstractMakerBoard {
   private LCDSize lcdSize = LCDSize._16x2;
   private LCDInterface lcdInterface = LCDInterface.I2C_Backpack;
   private Color screenColor = SCREEN_BG;
+  private Display screen = Display.VALUE;
 
   public CharacterLCD() {
     super();
@@ -120,6 +127,21 @@ public class CharacterLCD extends AbstractMakerBoard {
   public void setLcdInterface(LCDInterface lcdInterface) {
     this.lcdInterface = lcdInterface;
     updateControlPoints();
+    invalidateCache();
+  }
+
+  /**
+   * What the lit area prints. The two sizes differ in outline, but which of them a module is and
+   * which interface it carries are what a reader needs and neither is legible from the drawing;
+   * {@code NONE} leaves the screen blank.
+   */
+  @EditableProperty
+  public Display getScreen() {
+    return screen == null ? Display.VALUE : screen;
+  }
+
+  public void setScreen(Display screen) {
+    this.screen = screen;
     invalidateCache();
   }
 
@@ -166,6 +188,11 @@ public class CharacterLCD extends AbstractMakerBoard {
   private int getPinCount() {
     return lcdInterface == LCDInterface.I2C_Backpack ? PIN_NAMES_I2C.length
         : PIN_NAMES_PARALLEL.length;
+  }
+
+  /** The ink that contrasts with the backlight the user has chosen. */
+  private Color getScreenInk() {
+    return CalcUtils.calculateLuminance(screenColor) < 128d ? SCREEN_INK_LIGHT : SCREEN_INK_DARK;
   }
 
   private double getBoardWidth() {
@@ -288,6 +315,10 @@ public class CharacterLCD extends AbstractMakerBoard {
 
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));
+
+      MakerBoardPainter.drawScreenText(g2d,
+          new Rectangle2D.Double(screenX, screenY, screenW, screenH), getScreenInk(), getScreen(),
+          getName(), getValueForDisplay());
 
       // Only the parallel row has anywhere to print. Its names go in the strip between the row and
       // the bezel, which is 2.9 mm deep. The backpack's four pins stand in a column 2.5 mm from

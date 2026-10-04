@@ -840,9 +840,9 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
 - **NeoPixel panel 8x8** as its own class, reusing `drawAddressableLed` and the ring's pad handling.
   Worth doing only after §6.1, whose helper it depends on. **~0.5 day.**
 
-### 6.8 On-screen identification — the glass prints its own spec
+### 6.8 On-screen identification — the glass prints its own spec — **done**
 
-**Decided, not yet built.** The four displays that have a lit area — `OLEDDisplay`, `TFTDisplay`,
+**Done.** The four displays that have a lit area — `OLEDDisplay`, `TFTDisplay`,
 `CharacterLCD`, `Nokia5110LCD` — draw their variant string inside it, in the panel's own lit colour,
 on by default and switchable off per component. This amends D4 for text that *identifies the part*
 and leaves D4's ban on invented content standing.
@@ -908,9 +908,9 @@ measure, in pixels:
 | 16x2 LCD | 508 × 114 |
 | 20x4 LCD | 606 × 198 |
 
-The tightest is the 0.91" OLED, and two lines of the 11 px `SILK_FONT` need 22 px of its 44. So the
-drop-rather-than-squeeze rule holds here as it does for silkscreen, but nothing in the package
-currently triggers it. The round GC9A01 is the one case where width is not the board's width: text
+The tightest is the 0.91" OLED: two lines of the 11 px `SILK_FONT` need 28 px of its 44, measured
+rather than estimated. So the drop-rather-than-squeeze rule holds here as it does for silkscreen,
+but nothing in the package triggers it — every variant was rendered and looked at. The round GC9A01 is the one case where width is not the board's width: text
 must fit the inscribed square of the 256 px disc, not its diameter.
 
 **Ink colour is each class's to pass.** The OLED's `PIXEL_BLUE` on its near-black active area, white
@@ -939,6 +939,36 @@ before it.
 
 **Effort.** ~0.5 day for the helper, the property on four classes and the tests. ~0.5 day more for
 the character-grid refinement, which is independent and can follow.
+
+**What the build settled.** Four things were decided at the keyboard rather than here:
+
+1. *The line break is the comma, not the width.* The variant string reads "size, interface", so
+   breaking it there gives one property per line. Left to wrap on width alone every current variant
+   came out as a single line filling 95% of the glass — the 0.96" OLED's description is 153 px
+   against 162 px of usable panel — which is legible but reads as a line of text crammed into a
+   window rather than a readout.
+2. *The width check happens after wrapping, not before.* `StringUtils.wrap` cannot break a single
+   word wider than the limit and hands one back oversized, so the helper measures each wrapped line
+   and bails if any still overflows. Without it the drop rule would have had a hole in exactly the
+   case it exists for.
+3. *The Character LCD's ink is chosen by luminance,* through `CalcUtils.calculateLuminance` on the
+   screen colour. Both inks are real parts — the blue-backlit module shows light characters, the
+   yellow-green one dark — so this is faithful rather than merely defensive, and it is what stops a
+   pale backlight from being printed on in white.
+4. *`Nokia5110LCD` gained the `getVariantLabel()` this section asked for,* returning
+   `84x48 PCD8544`, which also fills the BOM value column §11 item 1 left empty on it.
+
+The character-grid refinement is **not** done; it remains the open item above.
+
+**Tests.** `ScreenTextTest` covers the helper's own contract away from any component — that a panel
+with room prints, that one too narrow or too shallow prints nothing at all, that `NONE` and an
+empty variant leave the glass dark, and that the three printing settings differ. Each of the four
+display tests then renders its panels twice, once printing and once with `Display.NONE`, and fails
+if the two renderings match; rendering is what makes it a check on the drawing rather than on the
+getter, since a screen that silently found no room would answer the getter either way. The shared
+`MakerBoardTestSupport.renderPixels` added for this is reusable by anything else that needs to
+catch a drawing change that moves no geometry. `CharacterLCDTest` is new — the class had no test at
+all — and also pins down the two inks.
 
 ### 6.9 Deliberately not in this slice
 

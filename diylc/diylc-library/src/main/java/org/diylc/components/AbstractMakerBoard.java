@@ -167,6 +167,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   // the rotated ones and sits closer to the pin, which is all the room a shallow strip has
   public static Font PIN_ROW_FLAT_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 8);
   public static Size PIN_ROW_FLAT_LABEL_OFFSET = new Size(2.04d, SizeUnit.mm);
+  // Clearance kept between text printed on a lit panel and the panel's edge. A readout is drawn
+  // inside the glass rather than on board material, so unlike a silk label it has no neighbour to
+  // collide with; the margin only stops the longest line from touching the frame.
+  public static Size SCREEN_TEXT_MARGIN = new Size(0.6d, SizeUnit.mm);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};

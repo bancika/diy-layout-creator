@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -71,6 +72,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
   private Version version = Version.SSD1306_0_96;
   private OLEDInterface oledInterface = OLEDInterface.I2C_4Pin;
+  private Display screen = Display.VALUE;
 
   public OLEDDisplay() {
     super();
@@ -97,6 +99,21 @@ public class OLEDDisplay extends AbstractMakerBoard {
   public void setOledInterface(OLEDInterface oledInterface) {
     this.oledInterface = oledInterface;
     updateControlPoints();
+    invalidateCache();
+  }
+
+  /**
+   * What the lit area prints. Six boards share this outline and this colour, so the glass carries
+   * the size, the controller and the interface to tell them apart; {@code NONE} leaves the panel
+   * dark for a drawing that wants the unpowered part.
+   */
+  @EditableProperty
+  public Display getScreen() {
+    return screen == null ? Display.VALUE : screen;
+  }
+
+  public void setScreen(Display screen) {
+    this.screen = screen;
     invalidateCache();
   }
 
@@ -251,9 +268,14 @@ public class OLEDDisplay extends AbstractMakerBoard {
       // than of the board it is mounted on, so the two 0.91" boards share them.
       double activeW = px(version.getActiveWidthMm());
       double activeH = px(version.getActiveLengthMm());
+      double activeX = glassX + px(version.getActiveLeftInPanelMm());
+      double activeY = glassY + (glassH - activeH) / 2.0;
       g2d.setColor(ACTIVE_AREA_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(glassX + px(version.getActiveLeftInPanelMm()),
-          glassY + (glassH - activeH) / 2.0, activeW, activeH, 2, 2));
+      g2d.fill(new RoundRectangle2D.Double(activeX, activeY, activeW, activeH, 2, 2));
+
+      MakerBoardPainter.drawScreenText(g2d,
+          new Rectangle2D.Double(activeX, activeY, activeW, activeH), PIXEL_BLUE, getScreen(),
+          getName(), getValueForDisplay());
     }
 
     g2d.setTransform(oldTx);

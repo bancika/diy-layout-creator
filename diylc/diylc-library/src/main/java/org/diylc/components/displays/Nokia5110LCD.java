@@ -31,6 +31,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -43,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -63,6 +65,7 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   public static Color BEZEL_BORDER_COLOR = LIGHT_METAL_COLOR.darker();
   public static Color LCD_COLOR = Color.decode("#6B7668");
   public static Color LCD_BORDER_COLOR = LCD_COLOR.darker();
+  public static Color LCD_INK_COLOR = Color.decode("#2B2B2B");
 
   public static Size BOARD_WIDTH = new Size(43.8d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(45.8d, SizeUnit.mm);
@@ -91,10 +94,36 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   public static final String[] PIN_NAMES =
       new String[] {"RST", "CE", "DC", "DIN", "CLK", "VCC", "BL", "GND"};
 
+  private Display screen = Display.VALUE;
+
   public Nokia5110LCD() {
     super();
     this.bodyColor = PCB_BLUE;
     updateControlPoints();
+  }
+
+  /**
+   * What the lit area prints. {@code NONE} leaves the glass blank, which is what the module looks
+   * like unpowered.
+   */
+  @EditableProperty
+  public Display getScreen() {
+    return screen == null ? Display.VALUE : screen;
+  }
+
+  public void setScreen(Display screen) {
+    this.screen = screen;
+    invalidateCache();
+  }
+
+  /**
+   * There is only one of these modules, so unlike the boards with a variant property this is not
+   * needed to keep the BOM's rows apart. It is still the better answer than an empty value column,
+   * and it is what the glass prints.
+   */
+  @Override
+  protected String getVariantLabel() {
+    return "84x48 PCD8544";
   }
 
   @Override
@@ -216,6 +245,10 @@ public class Nokia5110LCD extends AbstractMakerBoard {
       g2d.setColor(LCD_BORDER_COLOR);
       g2d.draw(new RoundRectangle2D.Double(displayX, displayY, displayW, displayH, displayRadius,
           displayRadius));
+
+      MakerBoardPainter.drawScreenText(g2d,
+          new Rectangle2D.Double(displayX, displayY, displayW, displayH), LCD_INK_COLOR,
+          getScreen(), getName(), getValueForDisplay());
 
       // The module prints its pin names in the strip below the header. They lie flat along the row
       // rather than standing on end across it the way the Arduino boards print theirs, because the

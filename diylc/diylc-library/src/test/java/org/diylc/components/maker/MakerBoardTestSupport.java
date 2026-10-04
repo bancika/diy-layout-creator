@@ -25,6 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractMakerBoard;
@@ -46,6 +47,10 @@ import org.junit.Assert;
 public class MakerBoardTestSupport {
 
   public static final double PIN_SPACING = new Size(0.1d, SizeUnit.in).convertToPixels();
+
+  // large enough for the longest board in the package, the 86 mm 2.8" TFT, with its origin in the
+  // middle
+  private static final int RENDER_SIZE = 1400;
 
   private static final Project PROJECT = new Project();
 
@@ -121,6 +126,34 @@ public class MakerBoardTestSupport {
     for (int i = 0; i < sharedPins; i++) {
       Assert.assertEquals("Pin " + i, reference.getControlPoint(i), variant.getControlPoint(i));
     }
+  }
+
+  /**
+   * Renders the board alone at a fixed position and returns the pixels. Two renderings of the same
+   * board that differ in one property can then be compared, which is the only way to catch a
+   * drawing change that moves no geometry -- what a board prints on its screen, for instance.
+   */
+  public static int[] renderPixels(AbstractMakerBoard board) {
+    BufferedImage image = new BufferedImage(RENDER_SIZE, RENDER_SIZE, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = image.createGraphics();
+    board.setControlPoint(new Point2D.Double(RENDER_SIZE / 2.0, RENDER_SIZE / 2.0), 0);
+    try {
+      board.draw(g2d, ComponentState.NORMAL, false, PROJECT, OBSERVER);
+    } finally {
+      g2d.dispose();
+    }
+    return image.getRGB(0, 0, RENDER_SIZE, RENDER_SIZE, null, 0, RENDER_SIZE);
+  }
+
+  /**
+   * Asserts that a board prints its description on its lit area, and that turning the property off
+   * takes it away again. Comparing two renderings is what makes this a check on the drawing rather
+   * than on the property: a screen that silently refused to print would pass the getter.
+   */
+  public static void assertScreenTextIsDrawn(AbstractMakerBoard withText,
+      AbstractMakerBoard withoutText) {
+    Assert.assertFalse("The lit area should carry the description, and does not",
+        Arrays.equals(renderPixels(withText), renderPixels(withoutText)));
   }
 
   /** Draws the board in every state and orientation; anything that throws fails the test. */

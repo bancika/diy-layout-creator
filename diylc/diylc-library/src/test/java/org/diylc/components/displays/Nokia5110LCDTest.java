@@ -25,7 +25,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -148,5 +150,21 @@ public class Nokia5110LCDTest {
     Assert.assertTrue("the labels sit on top of the pins",
         AbstractMakerBoard.PIN_ROW_FLAT_LABEL_OFFSET.convertToPixels() > AbstractMakerBoard.PIN_SIZE
             .convertToPixels());
+  }
+
+  /**
+   * The one part in the package with no variant property still has a resolution and a controller
+   * worth printing, which is why it answers {@code getValueForDisplay} at all: without it the
+   * glass would be blank and the BOM's value column empty.
+   */
+  @Test
+  public void theGlassPrintsTheResolutionAndController() {
+    Nokia5110LCD printed = new Nokia5110LCD();
+    Nokia5110LCD blank = new Nokia5110LCD();
+    blank.setScreen(Display.NONE);
+
+    Assert.assertEquals("84x48 PCD8544", printed.getValueForDisplay());
+    Assert.assertEquals(Display.VALUE, printed.getScreen());
+    MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
   }
 }

@@ -25,10 +25,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Display;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.displays.OLEDDisplay.Layout;
 import org.diylc.components.displays.OLEDDisplay.OLEDInterface;
 import org.diylc.components.displays.OLEDDisplay.Version;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -433,5 +435,24 @@ public class OLEDDisplayTest {
     }
     Assert.assertEquals("every board should get its own BOM row",
         Version.values().length * OLEDInterface.values().length, values.size());
+  }
+
+  /**
+   * The six boards are the same dark letterbox on the same blue PCB, so the lit area carries the
+   * description that tells them apart. It is rendered rather than asked for, because a screen that
+   * found no room for the text would still answer the getter.
+   */
+  @Test
+  public void everyPanelPrintsItsDescription() {
+    for (Version version : Version.values()) {
+      for (OLEDInterface oledInterface : OLEDInterface.values()) {
+        OLEDDisplay printed = of(version, oledInterface);
+        OLEDDisplay blank = of(version, oledInterface);
+        blank.setScreen(Display.NONE);
+
+        Assert.assertEquals(Display.VALUE, printed.getScreen());
+        MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
+      }
+    }
   }
 }

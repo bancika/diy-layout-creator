@@ -22,13 +22,16 @@
 package org.diylc.components;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
@@ -296,6 +299,79 @@ public class MakerBoardPainter {
     // turned back rather than saving the transform, so nothing is allocated per LED
     if (rotation != 0) {
       g2d.rotate(-rotation, cx, cy);
+    }
+  }
+
+  /**
+   * Prints a display's own description on its lit area, wrapped to the area and centred in it.
+   *
+   * <p>What it prints is what the component already answers for the BOM, so a variant is stated
+   * once and the glass cannot fall out of step with the part list. The point of it is
+   * identification: six OLED boards are the same dark letterbox on the same blue PCB, and the
+   * property editor, the BOM and the Explorer pane are all off the canvas.
+   *
+   * <p>Nothing is drawn unless the whole block fits, so a panel too small to hold its description
+   * shows a bare screen rather than a crop -- the same rule the pin-name silkscreen follows.
+   *
+   * <p>The area is the part of the panel the text may occupy rather than the panel itself, so a
+   * round display hands over the square inscribed in its glass.
+   */
+  public static void drawScreenText(Graphics2D g2d, Rectangle2D area, Color inkColor,
+      Display display, String name, String value) {
+    String text = screenText(display, name, value);
+    if (text == null) {
+      return;
+    }
+
+    g2d.setFont(AbstractMakerBoard.SILK_FONT);
+    FontMetrics metrics = g2d.getFontMetrics();
+    double margin = AbstractMakerBoard.SCREEN_TEXT_MARGIN.convertToPixels();
+    double maxWidth = area.getWidth() - 2 * margin;
+    double maxHeight = area.getHeight() - 2 * margin;
+    double lineHeight = metrics.getHeight();
+
+    List<String> lines = StringUtils.wrap(text, metrics, (int) maxWidth);
+    if (lines.isEmpty() || lines.size() * lineHeight > maxHeight) {
+      return;
+    }
+    // a single word wider than the area cannot be broken, so the width is checked after wrapping
+    // rather than trusted to it
+    for (String line : lines) {
+      if (metrics.stringWidth(line) > maxWidth) {
+        return;
+      }
+    }
+
+    g2d.setColor(inkColor);
+    double y = area.getCenterY() - (lines.size() - 1) * lineHeight / 2.0;
+    for (String line : lines) {
+      StringUtils.drawCenteredText(g2d, line, area.getCenterX(), y, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+      y += lineHeight;
+    }
+  }
+
+  /**
+   * What each {@link Display} setting puts on the glass, or {@code null} for a screen that prints
+   * nothing. The variant string reads "size, interface", and breaking it at the comma gives one
+   * property per line, which keeps the longest line well inside the glass instead of spanning it.
+   */
+  private static String screenText(Display display, String name, String value) {
+    boolean hasValue = value != null && !value.trim().isEmpty();
+    String variant = hasValue ? value.replace(", ", "\n") : null;
+
+    if (display == null) {
+      return variant;
+    }
+    switch (display) {
+      case NONE:
+        return null;
+      case NAME:
+        return name;
+      case BOTH:
+        return variant == null ? name : name + "\n" + variant;
+      default:
+        return variant;
     }
   }
 }

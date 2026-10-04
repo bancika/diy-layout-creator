@@ -34,6 +34,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
@@ -76,10 +77,12 @@ public class TFTDisplay extends AbstractMakerBoard {
   public static Color TFT_RED = Color.decode("#C0392B");
   public static Color SCREEN_BG = Color.decode("#111111");
   public static Color GLASS_COLOR = Color.decode("#1A1A1A");
+  public static Color SCREEN_INK = Color.decode("#E0E0E0");
 
   public static Size CORNER_RADIUS = new Size(1.5d, SizeUnit.mm);
 
   private Controller controller = Controller.ILI9341_2_8;
+  private Display screen = Display.VALUE;
 
   public TFTDisplay() {
     super();
@@ -95,6 +98,21 @@ public class TFTDisplay extends AbstractMakerBoard {
   public void setController(Controller controller) {
     this.controller = controller;
     updateControlPoints();
+    invalidateCache();
+  }
+
+  /**
+   * What the lit area prints. The four controllers differ in diagonal, resolution and shape but
+   * not in colour, and the 1.8" and 1.54" boards are within 2 mm of each other, so the panel
+   * carries the description; {@code NONE} leaves it dark.
+   */
+  @EditableProperty
+  public Display getScreen() {
+    return screen == null ? Display.VALUE : screen;
+  }
+
+  public void setScreen(Display screen) {
+    this.screen = screen;
     invalidateCache();
   }
 
@@ -246,7 +264,7 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       double screenW = px(controller.getScreenWidthMm());
       double screenH = px(controller.getScreenLengthMm());
-      Shape screen;
+      Shape panel;
 
       if (controller.isRound()) {
         // the lit circle is centred on the disc, which sits above the tab rather than on the
@@ -254,7 +272,7 @@ public class TFTDisplay extends AbstractMakerBoard {
         double discR = boardW / 2.0;
         double discCx = boardX + discR;
         double discCy = boardY + discR;
-        screen = new Ellipse2D.Double(discCx - screenW / 2.0, discCy - screenH / 2.0, screenW,
+        panel = new Ellipse2D.Double(discCx - screenW / 2.0, discCy - screenH / 2.0, screenW,
             screenH);
       } else {
         double bandCentre = (bandTop + bandBottom) / 2.0;
@@ -268,15 +286,26 @@ public class TFTDisplay extends AbstractMakerBoard {
         } else {
           screenY = bandCentre - screenH / 2.0;
         }
-        screen = new Rectangle2D.Double(boardX + (boardW - screenW) / 2.0, screenY, screenW,
+        panel = new Rectangle2D.Double(boardX + (boardW - screenW) / 2.0, screenY, screenW,
             screenH);
       }
 
       g2d.setColor(SCREEN_BG);
-      g2d.fill(screen);
+      g2d.fill(panel);
       g2d.setColor(Color.DARK_GRAY);
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(screen);
+      g2d.draw(panel);
+
+      // Only the square inscribed in a round panel is safely inside it, so the disc hands over
+      // that rather than the bounding box every other variant can use whole.
+      Rectangle2D textArea = panel.getBounds2D();
+      if (controller.isRound()) {
+        double side = textArea.getWidth() / Math.sqrt(2.0);
+        textArea = new Rectangle2D.Double(textArea.getCenterX() - side / 2.0,
+            textArea.getCenterY() - side / 2.0, side, side);
+      }
+      MakerBoardPainter.drawScreenText(g2d, textArea, SCREEN_INK, getScreen(), getName(),
+          getValueForDisplay());
 
       // The names go in the strip between the pin row and the panel, lying flat along the row as
       // the Nokia's do: the strip is 3.5 mm deep on the two smallest boards and a label stood on
