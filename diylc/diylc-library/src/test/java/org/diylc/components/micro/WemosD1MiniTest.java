@@ -23,6 +23,7 @@ package org.diylc.components.micro;
 
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -43,7 +44,7 @@ public class WemosD1MiniTest {
     Assert.assertEquals("D0 (GPIO16)", mcu.getControlPointNodeName(2));
     Assert.assertEquals("3V3", mcu.getControlPointNodeName(7));
 
-    // right row, top to bottom; the board prints the ground pad as "G"
+    // right row in array order, which runs bottom to top on the board; the ground pad prints "G"
     Assert.assertEquals("5V", mcu.getControlPointNodeName(8));
     Assert.assertEquals("G (GND)", mcu.getControlPointNodeName(9));
     Assert.assertEquals("D1 (GPIO5)", mcu.getControlPointNodeName(13));
@@ -67,5 +68,37 @@ public class WemosD1MiniTest {
     Assert.assertEquals("Margin above the first pin",
         new Size(0.275d, SizeUnit.in).convertToPixels(),
         mcu.getControlPoint(0).getY() - bounds.getY(), 0.1);
+  }
+
+  /**
+   * The right row runs bottom to top, so its first pin is level with the left row's last. This is
+   * the fact the silkscreen has to follow, and the reason the labels are taken from each control
+   * point rather than from a parallel array.
+   */
+  @Test
+  public void theRightRowRunsBottomToTop() {
+    WemosD1Mini mcu = new WemosD1Mini();
+    Assert.assertEquals("the rows should start and end level", mcu.getControlPoint(7).getY(),
+        mcu.getControlPoint(8).getY(), 0.01);
+    Assert.assertTrue("pin 8 should sit below pin 15",
+        mcu.getControlPoint(8).getY() > mcu.getControlPoint(15).getY());
+  }
+
+  /**
+   * The silkscreen is the node names with their annotations stripped. Two hand-maintained arrays
+   * used to carry them, the right one written in reverse to compensate for the row direction
+   * above -- a duplicate of PIN_NAMES that had to be kept in step by hand and would have drifted
+   * silently if a pin were ever renamed.
+   */
+  @Test
+  public void silkLabelsComeFromTheNodeNames() {
+    WemosD1Mini mcu = new WemosD1Mini();
+    String[] expected = new String[] {"RST", "A0", "D0", "D5", "D6", "D7", "D8", "3V3", "5V", "G",
+        "D4", "D3", "D2", "D1", "RX", "TX"};
+    Assert.assertEquals(expected.length, mcu.getControlPointCount());
+    for (int i = 0; i < expected.length; i++) {
+      Assert.assertEquals("pin " + i, expected[i],
+          AbstractMakerBoard.getDisplayPinLabel(mcu.getControlPointNodeName(i)));
+    }
   }
 }

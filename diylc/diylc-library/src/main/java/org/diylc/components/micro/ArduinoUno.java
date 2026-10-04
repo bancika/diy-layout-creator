@@ -204,10 +204,11 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public void setVersion(ArduinoUnoVersion version) {
     this.version = version;
-    if (isR4()) {
-      this.bodyColor = ARDUINO_BLUE;
-    } else {
-      this.bodyColor = ARDUINO_TEAL;
+    // The two generations are different colours, but the board only follows the version while its
+    // colour is still one of ours. A colour the user has chosen is theirs to keep across a version
+    // switch, which assigning unconditionally used to take away without saying so.
+    if (ARDUINO_TEAL.equals(bodyColor) || ARDUINO_BLUE.equals(bodyColor)) {
+      this.bodyColor = isR4() ? ARDUINO_BLUE : ARDUINO_TEAL;
     }
     updateControlPoints();
     invalidateCache();

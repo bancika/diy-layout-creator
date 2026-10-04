@@ -25,7 +25,7 @@ robotics are deliberately deferred; §10 records why.
 | D1 | Which package ships second | **`displays` only.** | Displays are archetype-complete in a way sensors are not: the hobby world has roughly seven display archetypes and the drafts already cover all seven, whereas the nine drafted sensors are a sample of hundreds with no canonical members. Displays also reach the *existing* guitar and amp audience — 7-segment counters, character LCDs and addressable strips appear in builds with no microcontroller anywhere. |
 | D2 | How coverage grows inside an archetype | **A `Version`-style enum on the existing class where the footprint family is shared; a new class where it is not.** | Same rule as the board roadmap's D2. `OLEDDisplay` is now the only class with no variant enum at all, which makes it the largest structural gap left in the package; `LEDMatrix` gained its `Modules` enum in §6.4 and `TFTDisplay` completed its `Controller` enum in §6.2. |
 | D3 | Where dimension and pin data live | **Hardcoded `Size` constants and `String[]` arrays in the component class,** per-variant where a variant changes them. | Matches every shipped board. No pin-definition resource is introduced. |
-| D4 | Screen content | **A neutral dark panel, with at most a small part-number silk.** No faked user interface. | Four drafts currently render English demo text ("HELLO WORLD! 16x2", "OLED DISPLAY") at fixed font sizes, which does not scale with the board, bakes a language into a drawing, and dates quickly. A dark glass panel is what the part looks like when it is not powered, which is how every other component is drawn. |
+| D4 | Screen content | **No faked user interface — but the glass prints the part's own spec.** Amended by §6.8. | The original ruling was a neutral dark panel with at most a part-number silk, because four drafts rendered English demo text ("HELLO WORLD! 16x2", "OLED DISPLAY") at fixed font sizes, which does not scale with the board, bakes a language into a drawing and dates quickly. None of that reasoning is withdrawn and the demo text stays out. What changed is the problem: once a class carries six variants a dark rectangle no longer says which one it is, and all three places that do say — the property editor, the BOM and the Explorer pane — are off the canvas. §6.8 puts the variant string itself on the lit area; it is generated from the properties rather than typed, carries no prose and no language, and `Display.NONE` restores this row's dark glass for anyone who wants it. |
 | D5 | Shared LED rendering | **One helper in `MakerBoardPainter`,** used by every addressable-RGB part. | `WS2812BRing` and `WS2812BStick` already contain two copies of the 5050-package-plus-diffuser-plus-IC-dot drawing, one scaled and one in raw pixels. A strip and a panel would make four. |
 | D6 | Backward compatibility | Nothing here is a compatibility risk. | These classes have never been discoverable, so no `.diy` file references them. Field names, control-point counts and defaults can still be changed freely — **this slice is the last chance to do so.** |
 | D7 | Geometry expressed in `Size` | **Every dimension derives from a `Size` constant.** | The drafts place bezels, screens and mounting holes with raw pixel offsets (`boardX = x - 60`, `bezelY = boardY + 45`), so nothing moves if a board dimension is corrected. The shipped boards do not do this. |
@@ -840,7 +840,107 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
 - **NeoPixel panel 8x8** as its own class, reusing `drawAddressableLed` and the ring's pad handling.
   Worth doing only after §6.1, whose helper it depends on. **~0.5 day.**
 
-### 6.8 Deliberately not in this slice
+### 6.8 On-screen identification — the glass prints its own spec
+
+**Decided, not yet built.** The four displays that have a lit area — `OLEDDisplay`, `TFTDisplay`,
+`CharacterLCD`, `Nokia5110LCD` — draw their variant string inside it, in the panel's own lit colour,
+on by default and switchable off per component. This amends D4 for text that *identifies the part*
+and leaves D4's ban on invented content standing.
+
+**Why it is worth reversing a decision for.** Variant coverage is what §6 spent itself on: the
+OLED now carries three sizes times two interfaces, the TFT four controllers, the Character LCD two
+sizes times two interfaces. On the canvas all six OLED combinations are the same dark letterbox on
+the same blue board, and the three places that say which one is selected are the property editor,
+the BOM and the Explorer pane — none of them visible while drawing. A layout with four displays on
+it cannot be read back at all.
+
+**The string is the one that already exists.** `getValueForDisplay()` returns exactly what this
+section wants for every class in the package, because §11 item 1 already made it the BOM's value
+column:
+
+| Class | Already returns |
+|---|---|
+| `OLEDDisplay` | `0.96" SSD1306 128x64, I2C` |
+| `TFTDisplay` | `2.8" ILI9341 240x320 (Touch + SD)` |
+| `CharacterLCD` | `16x2, I2C Backpack` |
+| `Nokia5110LCD` | *nothing — see below* |
+
+`Nokia5110LCD` is the exception and needs one small addition: it is a single part, so it never
+overrode `getVariantLabel()` and `getValueForDisplay()` returns the empty string, which would leave
+its glass blank. It should return `84x48 PCD8544` — the resolution and the controller, which is what
+this section is for and which also fills the BOM's value column that §11 item 1 left empty on it.
+A single part does not need the variant string for BOM *grouping*, but it is still the better answer
+than nothing in that column.
+
+It is used verbatim, word-wrapped to the lit area. The alternative — each class composing its own
+diagonal, resolution and interface lines from the enum fields — was rejected because it creates a
+second statement of the variant that can drift from the BOM's, which is the failure §3.2 kept
+hitting with hand-rolled label arrays. One string per class, written once.
+
+**Mechanism.** A static helper beside the others, `MakerBoardPainter.drawScreenText(g2d, area,
+inkColor, font, text)`, which wraps the string to the area's width and draws nothing at all if the
+wrapped block does not fit the area's height. Each display calls it on one line from inside its
+orientation transform, straight after it fills the lit area, so the text turns with the board the
+way the real screen's content does. Same shape as D5's LED helper: four call sites, one
+implementation.
+
+**Property.** `org.diylc.common.Display` on each of the four classes, `@EditableProperty(name =
+"Screen")`, defaulting to `Display.VALUE`, with the usual null-tolerant getter. The shared enum is
+reused rather than a boolean invented because it is the idiom every other labelled component in the
+library already follows, so the control is where a user expects to find it; `NONE` is the off switch
+this section owes D4, and `NAME` and `BOTH` come along with the enum rather than being designed in —
+`NAME` on the glass is genuinely useful when tying a drawn board to a netlist. It does **not** go on
+`AbstractMakerBoard`: the other seven components in the package have no glass to print on.
+
+**There is room, and the fit rule is a guard rather than a routine.** At 200 px/inch the lit areas
+measure, in pixels:
+
+| Panel | Lit area |
+|---|---|
+| 0.91" SSD1306 | 176 × 44 |
+| 0.96" SSD1306 | 171 × 86 |
+| 1.3" SH1106 | 232 × 116 |
+| 1.54" ST7789 | 218 × 218 |
+| 1.28" GC9A01 | 256 dia. |
+| 1.8" ST7735 | 225 × 281 |
+| 2.8" ILI9341 | 340 × 453 |
+| Nokia 5110 | 291 × 213 |
+| 16x2 LCD | 508 × 114 |
+| 20x4 LCD | 606 × 198 |
+
+The tightest is the 0.91" OLED, and two lines of the 11 px `SILK_FONT` need 22 px of its 44. So the
+drop-rather-than-squeeze rule holds here as it does for silkscreen, but nothing in the package
+currently triggers it. The round GC9A01 is the one case where width is not the board's width: text
+must fit the inscribed square of the 256 px disc, not its diameter.
+
+**Ink colour is each class's to pass.** The OLED's `PIXEL_BLUE` on its near-black active area, white
+on the TFT's screen fill, the Nokia's dark LCD ink on its grey-green glass. The Character LCD is the
+one that cannot use a constant: its screen colour is an editable property, so the ink is chosen from
+the fill's brightness rather than fixed, or a user who picks a pale backlight gets white on white.
+
+**Refinement worth taking on the Character LCD.** Lay the text on the module's real character grid —
+one glyph per cell, truncated at the column count rather than wrapped freely — so the `16x2` is
+demonstrated instead of merely asserted. It fits: `16x2 HD44780` is twelve characters and
+`I2C Backpack` twelve, against sixteen columns. This is the only display whose resolution is a count
+of characters rather than of pixels, so it is the only one where this is possible.
+
+**The other seven are untouched.** The 7-segment, the bar graph, the LED matrix and the four NeoPixel
+parts have discrete emitters rather than a screen; spec text there would have to be rendered as lit
+dots to be honest, and an 8x8 grid carries one glyph, which identifies nothing. `LEDMatrix` keeps the
+fixed lit pattern it already draws. `drawIcon` is also unchanged throughout — the `OLED` / `TFT` /
+`LCD` text in the toolbox icons is a legibility device at 32 px and was never what D4 was about.
+
+**Testing.** Per class, the §7 drawing smoke test gains the property in each of its four states,
+plus an assertion that what reaches the helper is `getValueForDisplay()` rather than a literal, so a
+later correction to an enum label cannot leave stale text on the glass. Whether it *looks* right is
+§8's business, and this is precisely the silent rendering change §8 says there is no
+baseline to catch — so the §8 sample projects should be generated with this in place rather than
+before it.
+
+**Effort.** ~0.5 day for the helper, the property on four classes and the tests. ~0.5 day more for
+the character-grid refinement, which is independent and can follow.
+
+### 6.9 Deliberately not in this slice
 
 E-paper (1.54" / 2.9" SSD1680) — growing but still niche, and the flexible-cable mounting is real
 new drawing work. Also: 14- and 16-segment alphanumeric, HT16K33 backpacks, 1.2" and 2.3" large
@@ -887,8 +987,9 @@ part name, then the variant list).
 3. **§5 item 10 and §6.2-6.4** — sourcing, folded into the variant work for the three classes that
    gain enums, since both touch the same constants.
 4. **§6.1, §6.5, §6.6, §6.7** — the new classes, each an independent commit.
-5. **§7** tests alongside each of the above, not after.
-6. **§8** regression samples and the `update.xml` block, last.
+5. **§6.8** — on-screen identification, after the variant enums it reads from are final.
+6. **§7** tests alongside each of the above, not after.
+7. **§8** regression samples and the `update.xml` block, last.
 
 Eleven palette entries so far: the seven existing, plus the strip, the bar graph, the Jewel and the
 Nokia, plus the panel if appetite holds. The `update.xml` 6.7.0 block now carries all eleven,
@@ -968,9 +1069,46 @@ gate the displays.
    Two things this does not change: enum **constant names** are untouched, so nothing serialises
    differently, and the grouping still splits correctly on the shorter values — two Uno versions
    still produce two rows.
-2. **A uniform property set** — the board roadmap's §8.3. This slice adds `Version`-style enums to
-   three more classes; deciding now whether a "Show Pin Labels" toggle and a consistent `Headers`
-   property belong on every maker component avoids retrofitting nine more classes later.
+2. **A uniform property set** — the board roadmap's §8.3 — **decided, and the answer is that
+   uniformity is the wrong goal.** The rule that settles all three parts of it: *a maker component
+   gets a property when the real part gives the buyer a choice; a drawing preference is not a
+   property.*
+
+   **`Headers` stays where it is.** The roadmap called its distribution "drift", and a survey of
+   all 21 maker classes says otherwise: it exists on the seven boards sold both ways -- Nano,
+   ESP32DevKit, NodeMCU, Wemos D1 Mini, Pico, Zero and Teensy -- and is absent on exactly the three
+   that are not, the Uno, the Mega and the full-size Pi, all of which ship with their headers
+   soldered. The Zero carrying it while the full-size Pi does not is the tell: that is the product
+   line, not an oversight. Retrofitting it onto the Uno would offer a configuration the part does
+   not have. The roadmap's candidate list is also stale -- Teensy and ESP32DevKit have had the
+   property for some time. If it is ever wanted on the display modules the same test decides it: an
+   OLED or a Character LCD's parallel row genuinely ships with the strip loose in the bag; the
+   Ring, Stick, Strip and Jewel have no header to choose.
+
+   **"Show Pin Labels" is rejected**, for a compatibility reason first. A new `boolean
+   showPinLabels` on a shipped class **deserializes as `false`**, so every existing `.diy` file
+   would quietly lose its silkscreen; preserving the current look would force the field to be
+   named `hidePinLabels`, an inversion that reads as a bug forever after. Beyond that, the
+   silkscreen is a feature of the board rather than a view setting -- §3.2 item 2 is an extended
+   argument about *where* names fit, which a switch does not improve -- and the library has
+   essentially no precedent for it: one `"Show Bracket"` boolean against `Display`
+   (NAME/VALUE/NONE/BOTH) on 31 classes, which governs a component's own name and value and which
+   maker boards deliberately do not render. If the motivation is clutter, the better fix is drawing
+   silk only above a zoom threshold: no property, no serialized field, and it helps everyone rather
+   than whoever finds the checkbox.
+
+   **Colour follows `SevenSegmentDisplay`'s rule**, which costs nothing because the package already
+   obeys it: one property per distinct physical layer, named for the layer, ignored where the layer
+   does not exist. The negative half is the part worth keeping: never let one colour field paint
+   two different physical things, and never reset a colour from a variant setter.
+
+   That last point was still being broken. `ArduinoUno.setVersion()` overwrote `bodyColor`
+   unconditionally, so switching an R3 to an R4 discarded a colour the user had chosen, and the
+   drafted `DHTSensor.setModel()` did the same. Both now repaint only while the colour is still one
+   of the class's own defaults, so an untouched board still follows its version -- the R3 and R4
+   are genuinely different colours -- while a chosen one survives.
+   `ArduinoUnoTest.aChosenColourSurvivesAVersionSwitch` covers it, and fails against the old
+   behaviour.
 
    **Colour is now part of this question, and `SevenSegmentDisplay` has a worked answer.** It
    carried the inherited "Board Color" plus a local "LED Color", which was wrong twice over: three

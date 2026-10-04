@@ -59,6 +59,8 @@ public class WemosD1Mini extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
+  private static final int PINS_PER_ROW = 8;
+
   public static Size BOARD_WIDTH = new Size(1.0d, SizeUnit.in);
   public static Size BOARD_LENGTH = new Size(1.34d, SizeUnit.in);
   public static Size ROW_SPACING = new Size(0.9d, SizeUnit.in);
@@ -92,14 +94,6 @@ public class WemosD1Mini extends AbstractMakerBoard {
       "5V", "G (GND)", "D4 (GPIO2)", "D3 (GPIO0)", "D2 (GPIO4)", "D1 (GPIO5)", "RX (GPIO3)", "TX (GPIO1)"
   };
 
-  public static final String[] SILK_PIN_NAMES_LEFT = new String[] {
-      "RST", "A0", "D0", "D5", "D6", "D7", "D8", "3V3"
-  };
-
-  public static final String[] SILK_PIN_NAMES_RIGHT = new String[] {
-      "TX", "RX", "D1", "D2", "D3", "D4", "G", "5V"
-  };
-
   protected boolean headers = false;
 
   public WemosD1Mini() {
@@ -126,23 +120,28 @@ public class WemosD1Mini extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
+  private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
     double rowSpacing = ROW_SPACING.convertToPixels();
 
-    double[][] relativeOffsets = new double[16][2];
-    for (int i = 0; i < 8; i++) {
+    double[][] relativeOffsets = new double[PIN_NAMES.length][2];
+    // Left row (pins 0..7, top to bottom)
+    for (int i = 0; i < PINS_PER_ROW; i++) {
       relativeOffsets[i][0] = 0;
       relativeOffsets[i][1] = i * spacing;
     }
-    for (int i = 0; i < 8; i++) {
-      relativeOffsets[8 + i][0] = rowSpacing;
-      relativeOffsets[8 + i][1] = (7 - i) * spacing;
+    // Right row (pins 8..15, bottom to top, which is the order the board numbers them in)
+    for (int i = 0; i < PINS_PER_ROW; i++) {
+      relativeOffsets[PINS_PER_ROW + i][0] = rowSpacing;
+      relativeOffsets[PINS_PER_ROW + i][1] = (PINS_PER_ROW - 1 - i) * spacing;
     }
 
-    rotatePoints(firstPoint, relativeOffsets);
+    return relativeOffsets;
+  }
+
+  @Override
+  protected void updateControlPoints() {
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
@@ -287,18 +286,19 @@ public class WemosD1Mini extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "D1 mini", x + rowSpacing / 2.0, labelY,
           HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Silkscreen: Pin labels
+      // Silkscreen: pin names, lying flat beside their row as the board prints them rather than
+      // standing on end like drawPinLabels' -- the 0.9" row spacing leaves room for them. Both the
+      // text and the position come from the control point, so the right row's bottom-to-top order
+      // is followed rather than mirrored by a second array kept in step by hand.
       g2d.setFont(SILK_FONT_TINY);
-      double spacing = PIN_SPACING.convertToPixels();
       double labelOffset = new Size(1.4d, SizeUnit.mm).convertToPixels();
-      for (int i = 0; i < 8; i++) {
-        double pinY = y + i * spacing;
-        // Left pin labels
-        StringUtils.drawCenteredText(g2d, SILK_PIN_NAMES_LEFT[i], x + labelOffset, pinY,
-            HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
-        // Right pin labels
-        StringUtils.drawCenteredText(g2d, SILK_PIN_NAMES_RIGHT[i], x + rowSpacing - labelOffset, pinY,
-            HorizontalAlignment.RIGHT, VerticalAlignment.CENTER);
+      double[][] offsets = getRelativeOffsets();
+      for (int i = 0; i < offsets.length; i++) {
+        boolean leftRow = i < PINS_PER_ROW;
+        StringUtils.drawCenteredText(g2d, getSilkPinLabel(i),
+            x + offsets[i][0] + (leftRow ? labelOffset : -labelOffset), y + offsets[i][1],
+            leftRow ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT,
+            VerticalAlignment.CENTER);
       }
     }
 

@@ -21,9 +21,11 @@
  */
 package org.diylc.components.micro;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.components.micro.ArduinoUno.ArduinoUnoVersion;
 import org.junit.Assert;
@@ -118,6 +120,25 @@ public class ArduinoUnoTest {
     for (ArduinoUnoVersion version : ArduinoUnoVersion.values()) {
       MakerBoardTestSupport.assertDrawsCleanly(version(version));
     }
+  }
+
+  /**
+   * The board colour follows the version only while it is still a default. The R3 and the R4 are
+   * genuinely different colours, so switching has to repaint a board the user has not touched --
+   * but a colour they chose has to survive, which assigning unconditionally did not let it do.
+   */
+  @Test
+  public void aChosenColourSurvivesAVersionSwitch() {
+    ArduinoUno uno = version(ArduinoUnoVersion.REV3);
+    Assert.assertEquals(AbstractMakerBoard.ARDUINO_TEAL, uno.getBodyColor());
+    uno.setVersion(ArduinoUnoVersion.R4_WIFI);
+    Assert.assertEquals("an untouched board should follow its version",
+        AbstractMakerBoard.ARDUINO_BLUE, uno.getBodyColor());
+
+    Color chosen = Color.decode("#8A2BE2");
+    uno.setBodyColor(chosen);
+    uno.setVersion(ArduinoUnoVersion.REV3);
+    Assert.assertEquals("a chosen colour should survive the switch", chosen, uno.getBodyColor());
   }
 
   private static ArduinoUno version(ArduinoUnoVersion version) {
