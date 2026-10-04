@@ -64,7 +64,7 @@ happened to come back true, and only after a fix.
 | `SevenSegmentDisplay` | 1-digit 10-pin, 4-digit 12-pin, TM1637 module | **Best-*written* file in the set**, which is not the same as the best-sourced one. The segment-mask table is genuinely good, the 10-pin structure is corroborated, and the glyph itself is now the standard unit-grid construction: an upright 10 × 18 box with segments two units thick, mitred at 45 degrees so neighbours meet at a shared vertex, each outlined in the face colour so that they still read as separate segments. That replaced a set of hand-tuned polygons and retired both `SEGMENT_GAP` (the construction separates by outline rather than by gap) and `SLANT_DEGREES` (it is drawn upright, as the source is). What remains unchecked is everything *around* the glyph. The per-package dimensions now live on the `DisplayType` constants rather than in scattered branches, and the enum has been split so that the two bare four-digit packages — 0.36" and 0.56" — are separate variants sharing one pin array. The 0.56" set is what this class has always carried and remains unverified; the 0.36" set is now largely maintainer-supplied — body 30 × 14 mm, 7.5 mm digit pitch, 0.4" row spacing — leaving only its digit width inferred. See §11.10 and §11.11. |
 | `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. Its diameters, pad count and pad placement have all since been corrected from Adafruit's pages and the maintainer's measurements; the pads now sit on their own radius near the rim, each in one of the real uneven gaps between LEDs (§11.9). The LED packages are the real 5 mm 5050 part, shared with the Stick as `AbstractMakerBoard.RGB_LED_SIZE` — they had been drawn at a clamped 8-15 px, barely 1-2 mm — and the ring renders lit, in a continuous yellow-orange-red-purple-blue-green gradient with a palette per variant. |
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
-| `OLEDDisplay` | I2C 4-pin / SPI 7-pin | Correct pin names, and the body is now the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is now 21.744 × 10.864 mm, which is exactly 2:1, so that complaint is closed. What remains is the original gap: no size variants — the 0.91" and 1.3" boards are §6.3. |
+| `OLEDDisplay` | 0.96" SSD1306 / 0.91" SSD1306 / 1.3" SH1106, each I2C 4-pin or SPI 7-pin | Correct pin names, and the body is the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is 21.744 × 10.864 mm, which is exactly 2:1. The gap this row used to record — no size variants — closed in §6.3, and closing it overturned that item's premise: the interface is **not** orthogonal to the size, because the 0.91" is sold as two different boards rather than one board with two headers, and it is the first display board in the package with its header on the left edge. |
 | `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
 | `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / ST7789 1.54" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now closed: §6.2's `Controller` enum carries all four, the ILI9341, the ST7735, the 1.54" ST7789 and the round GC9A01. Board size, pin array, header offset, hole pattern and screen all come off the enum, and the round variant's body is a disc unioned with its tab. All four mounting holes on the 2.8" and the 1.8" are 3 mm across and 3 mm in from each of the two edges nearest them; the header-side pair was carried at a deeper inset for a while on the belief that it had to clear the pin row, which it does not. The 1.54" carries its own 2 mm drill at a 2.5 mm inset, so the figures are each board's rather than the package family's. It is also the first of these boards to print its pin names, which all four variants now do (§6.2). |
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
@@ -470,9 +470,97 @@ four. `TFTDisplayTest` carries 19 of them. The two that were written against "th
 holes" as a group had to be reopened for the 1.54", whose drill and inset are its own: what they
 assert now is that each board's holes share one figure, not that the package family does.
 
-### 6.3 `OLEDDisplay` variants — `Version` enum
+### 6.3 `OLEDDisplay` variants — `Version` enum — **done**
 
 Do this in the same pass as the §5 item 5 glass fix.
+
+**Item 3's premise does not survive the maintainer's figures, and that is the whole shape of this
+item.** It assumed the interface is "orthogonal to the size", which holds for the 0.96" and is
+false for the 0.91": the I2C and SPI versions are not one board with two headers but **two
+different boards**, 38 x 12 mm with a four-pin column standing against the left edge against
+38 x 20 mm with a seven-pin row along the top, and no mounting holes against four. So board
+length, header edge, hole pattern and panel position are all functions of the interface as well as
+the size, and branching on the interface in the geometry methods -- which is what `CharacterLCD`
+does, and the closest precedent in the package -- is not on its own enough: there the board is the
+same for both interfaces and only the header moves.
+
+What is settled so far, all maintainer-supplied:
+
+- **0.91" SSD1306 I2C** — board 38 x 12 mm; four pins in a vertical column against the left edge,
+  1.5 mm in and centred on the height; dark panel 30 x 12 mm, the full height of the module,
+  starting 5 mm from the left edge, so it spans 5 to 35 mm and leaves 3 mm of bare PCB at the right
+  end; no mounting holes. The 5 mm strip is what the pin column lives in, and at `PIN_SIZE` the
+  pins span 1.0 to 2.0 mm, clearing the panel by 3 mm.
+- **0.91" SSD1306 SPI** — board 38 x 20 mm, a seven-pin row on the top edge, four 2 mm mounting
+  holes 2.5 mm in from each of the two edges nearest them. It carries the same physical 30 x 12 mm
+  panel as the I2C board; its position on the larger board is still wanted.
+- **Both 0.91" boards** — the lit area starts **2.1 mm inside the panel's left edge**. This is a
+  figure of the panel part rather than of either board, which is why it carries across both and
+  should not be stored per board. The lit area itself is the usual derivation, 22.384 x 5.584 mm
+  for 128 x 32 on a 0.175 mm pitch, and is flagged as such.
+- **1.3" SH1106** — board 35.4 x 33.5 mm, bezel 31.4 x 16.7 mm, sold in both interfaces. Its lit
+  area is the derivation 29.42 x 14.7 mm (128 x 64 at 0.23 mm). Hole pattern, header offset and
+  bezel position are still wanted.
+
+The 1.3" came in at 35.4 x 33.5 mm with a 31.4 x 16.7 mm bezel, four 3 mm holes 2 mm in from each
+edge, and one board for both interfaces. The hole proportion is worth recording because it looks
+wrong until it is checked, as `CharacterLCD`'s did: a 3 mm hole centred 2 mm from an edge leaves
+only 0.5 mm of board outside it, tighter than anything else in the package.
+
+**What the shape turned out to be.** `Version` carries the display part -- panel, lit area, and the
+lit area's offset inside the panel -- and hangs a `Layout` off itself for each interface, carrying
+everything that belongs to a PCB: outline, header edge and clearance, hole inset and drill, and
+where the panel sits on it. The 0.96" and the 1.3" pass **one** `Layout` through a second
+constructor, so both interfaces return the identical instance and "one board, two headers" is a
+fact the test can assert with `assertSame` rather than a convention.
+
+That shape was not the first one tried, and the correction is the useful part. `Layout` initially
+carried the pin array too, which forced the 0.96" and the 1.3" to build two `Layout` objects
+differing in nothing else -- and `theSmallBoardIsTwoDifferentBoards` failed on exactly that, since
+two instances are not one board. The array belongs to the **interface**: all three sizes bring the
+same four or seven lines out in the same order, so `OLEDInterface` carries it and `Layout` is left
+describing only the board. A test written against the intended meaning rather than the code found a
+design flaw, which is the opposite of §6.6's `bodySitsBetweenThePinRows`.
+
+Two figures are flagged rather than measured, both on the 1.3": its **header offset** is taken as
+the 0.91"'s 1.5 mm, and its **bezel is placed centred** on the board. Neither was supplied.
+
+**Which 0.91" board gets which panel offset was settled the hard way, and the episode is the
+argument for a test that was missing.** The panel starts 5 mm from the left edge on the I2C board
+and 1.25 mm on the SPI one, the lit area being the panel's own 2.1 mm further in on each, so the
+lit areas land at 7.1 mm and 3.35 mm. The two offsets were swapped between the boards at one point
+and **every one of the twenty geometry tests still passed**, because they all measure features
+against each other: both arrangements have a panel on a board of the right size with its lit area
+correctly placed inside it. What the swap actually produces is visible only in a render -- the I2C
+board's panel then begins 0.25 mm *before* its own pin column, so the four pins are drawn on the
+glass, and the 6.75 mm of bare board ends up at the far end where no connector is.
+
+`pinsStayOffThePanel` is what replaces the render. It is worth noting what kind of assertion it is:
+not another dimension, but the one relationship between the two halves of the drawing that nothing
+else here constrains. The asymmetry it leaves standing is real -- the I2C board carries 3 mm of
+bare PCB at its right end and the SPI board 6.75 mm -- and is now confirmed rather than merely
+consistent.
+
+The lit areas are the nominal pixel count at the panel's dot pitch, as the TFT's are: 128 x 64 at
+0.17 mm, 128 x 32 at 0.175 mm, 128 x 64 at 0.23 mm. `litAreaMatchesThePixelAspect` holds them to
+the 2:1 and 4:1 aspects their pixel counts imply, which is the check the 0.96" was drawn wrong
+against for as long as its panel was near-square.
+
+**The 0.96" did not move.** Its stored panel offsets and hole inset are the centred position and
+the 24 mm centre-to-centre pattern expressed in the new model, and its render is byte-identical
+before and after the refactor. Two tests keep that honest rather than leaving it to coincidence:
+`centredPanelsStoreTheCentredOffsets` fails if a panel or board size is corrected without
+recomputing the offset, and `holePatternMatchesTheSpecifiedSpacing` keeps the stored inset and the
+specified 24 mm spacing in step.
+
+`OLEDDisplayTest` carries 21 tests. The descriptor was renamed from `0.96" OLED Display (SSD1306)`
+to `OLED Display`, free under D6 and following the TFT's rename in §6.2, and the `update.xml` entry
+now lists the three sizes.
+
+One follow-up this leaves: the 1.3" has 6.9 mm between its pin row and its bezel where the 0.96"
+has 2.05 mm, so it is the one OLED with room for the pin-name silkscreen that §3.2 item 2 had to
+drop for this class. `panelClearsThePinRow` records all three strips, so the figure is there when
+someone wants it.
 
 1. `Version` enum: `SSD1306_0_96("0.96\" SSD1306 128x64")`, `SSD1306_0_91("0.91\" SSD1306 128x32")`,
    `SH1106_1_3("1.3\" SH1106 128x64")`. Default is the 0.96, so nothing about the current look

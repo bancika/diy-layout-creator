@@ -50,8 +50,9 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "0.96\" OLED Display (SSD1306)", category = "Displays & Outputs",
-    author = "Branislav Stojkovic", description = "0.96\" Monochrome 128x64 OLED Display Module (I2C / SPI)",
+@ComponentDescriptor(name = "OLED Display", category = "Displays & Outputs",
+    author = "Branislav Stojkovic",
+    description = "Monochrome OLED Display Module (SSD1306 / SH1106, I2C or SPI)",
     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -65,25 +66,10 @@ public class OLEDDisplay extends AbstractMakerBoard {
   public static Color ACTIVE_AREA_COLOR = Color.decode("#060D15");
   public static Color PIXEL_BLUE = Color.decode("#00D4FF");
 
-  public static Size BOARD_SIZE = new Size(27.0d, SizeUnit.mm);
-  // The panel is nearly as wide as the board but much shorter, which leaves bare PCB above it for
-  // the header and below it for the lower mounting holes.
-  public static Size GLASS_WIDTH = new Size(26.7d, SizeUnit.mm);
-  public static Size GLASS_LENGTH = new Size(19.3d, SizeUnit.mm);
-  // 128 x 64 pixels on a 0.17mm pitch. The lit area is much smaller than the panel around it and
-  // roughly twice as wide as it is tall, which is what makes the part read as a display.
-  public static Size ACTIVE_WIDTH = new Size(21.744d, SizeUnit.mm);
-  public static Size ACTIVE_LENGTH = new Size(10.864d, SizeUnit.mm);
-  // Centre-to-centre in both directions, which is how the hole pattern is specified and what a
-  // builder drills to; the inset from the board edge falls out of it.
-  public static Size MOUNTING_HOLE_SPACING = new Size(24.0d, SizeUnit.mm);
-  public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
-  // clearance from the top edge to the pin row
-  public static Size HEADER_OFFSET = new Size(1.8d, SizeUnit.mm);
-
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SCL", "SDA"};
   public static final String[] PIN_NAMES_SPI = new String[] {"GND", "VCC", "D0 (CLK)", "D1 (MOSI)", "RES", "DC", "CS"};
 
+  private Version version = Version.SSD1306_0_96;
   private OLEDInterface oledInterface = OLEDInterface.I2C_4Pin;
 
   public OLEDDisplay() {
@@ -92,9 +78,20 @@ public class OLEDDisplay extends AbstractMakerBoard {
     updateControlPoints();
   }
 
+  @EditableProperty(name = "Size")
+  public Version getVersion() {
+    return version == null ? Version.SSD1306_0_96 : version;
+  }
+
+  public void setVersion(Version version) {
+    this.version = version;
+    updateControlPoints();
+    invalidateCache();
+  }
+
   @EditableProperty(name = "Interface")
   public OLEDInterface getOledInterface() {
-    return oledInterface;
+    return oledInterface == null ? OLEDInterface.I2C_4Pin : oledInterface;
   }
 
   public void setOledInterface(OLEDInterface oledInterface) {
@@ -103,56 +100,90 @@ public class OLEDDisplay extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  // Both properties decide which part you buy, so the BOM carries them together.
   @Override
   protected String getVariantLabel() {
-    OLEDInterface oledInterface = getOledInterface();
-    return oledInterface == null ? null : oledInterface.toString();
+    return getVersion() + ", " + getOledInterface();
+  }
+
+  /**
+   * The board the two properties name between them. On the 0.96" and the 1.3" the interface only
+   * changes how many pins the header carries, but the 0.91" is sold as two different boards -- a
+   * 38 x 12 mm one with a four-pin column on its left edge and a 38 x 20 mm one with a seven-pin
+   * row on top -- so the outline, the header edge, the hole pattern and the panel's position all
+   * come from the pair rather than from the size alone.
+   */
+  private Layout getLayout() {
+    return getVersion().getLayout(getOledInterface());
   }
 
   @Override
   public String getControlPointNodeName(int index) {
-    if (oledInterface == OLEDInterface.I2C_4Pin) {
-      if (index >= 0 && index < PIN_NAMES_I2C.length) return PIN_NAMES_I2C[index];
-    } else {
-      if (index >= 0 && index < PIN_NAMES_SPI.length) return PIN_NAMES_SPI[index];
+    String[] pinNames = getOledInterface().getPinNames();
+    if (index >= 0 && index < pinNames.length) {
+      return pinNames[index];
     }
     return "Pin " + (index + 1);
   }
 
   private int getPinCount() {
-    return oledInterface == OLEDInterface.I2C_4Pin ? PIN_NAMES_I2C.length : PIN_NAMES_SPI.length;
+    return getOledInterface().getPinNames().length;
   }
 
-  /** Left edge of the board, derived so that the pin row sits centred on the top edge. */
+  private static double px(double millimetres) {
+    return new Size(millimetres, SizeUnit.mm).convertToPixels();
+  }
+
+  /**
+   * Left edge of the board. A row on the top edge is centred across the board; a column on the
+   * left edge stands its own clearance in from that edge instead.
+   */
   private double getBoardX(double x) {
-    double spacing = PIN_SPACING.convertToPixels();
-    return x - (BOARD_SIZE.convertToPixels() - (getPinCount() - 1) * spacing) / 2.0;
+    Layout layout = getLayout();
+    if (layout.isHeaderOnLeftEdge()) {
+      return x - px(layout.getHeaderOffsetMm());
+    }
+    double span = (getPinCount() - 1) * PIN_SPACING.convertToPixels();
+    return x - (px(layout.getBoardWidthMm()) - span) / 2.0;
   }
 
+  /**
+   * Top edge of the board. A row on the top edge hangs below it by its clearance; a column on the
+   * left edge is centred on the board's height instead, so the board starts back from the first
+   * pin by half of the height the column does not occupy.
+   */
   private double getBoardY(double y) {
-    return y - HEADER_OFFSET.convertToPixels();
+    Layout layout = getLayout();
+    if (layout.isHeaderOnLeftEdge()) {
+      double columnSpan = (getPinCount() - 1) * PIN_SPACING.convertToPixels();
+      return y - (px(layout.getBoardLengthMm()) - columnSpan) / 2.0;
+    }
+    return y - px(layout.getHeaderOffsetMm());
+  }
+
+  private double[][] getRelativeOffsets() {
+    double spacing = PIN_SPACING.convertToPixels();
+    boolean vertical = getLayout().isHeaderOnLeftEdge();
+
+    double[][] relativeOffsets = new double[getPinCount()][2];
+    for (int i = 0; i < relativeOffsets.length; i++) {
+      relativeOffsets[i][0] = vertical ? 0 : i * spacing;
+      relativeOffsets[i][1] = vertical ? i * spacing : 0;
+    }
+    return relativeOffsets;
   }
 
   @Override
   protected void updateControlPoints() {
-    Point2D firstPoint = controlPoints[0];
-    double spacing = PIN_SPACING.convertToPixels();
-
-    double[][] relativeOffsets = new double[getPinCount()][2];
-    for (int i = 0; i < relativeOffsets.length; i++) {
-      relativeOffsets[i][0] = i * spacing;
-      relativeOffsets[i][1] = 0;
-    }
-
-    rotatePoints(firstPoint, relativeOffsets);
+    rotatePoints(controlPoints[0], getRelativeOffsets());
   }
 
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double boardSizePx = BOARD_SIZE.convertToPixels();
-    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()), boardSizePx,
-        boardSizePx, 8, 8);
+    Layout layout = getLayout();
+    return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()),
+        px(layout.getBoardWidthMm()), px(layout.getBoardLengthMm()), 8, 8);
   }
 
   @Override
@@ -171,7 +202,9 @@ public class OLEDDisplay extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double boardSizePx = BOARD_SIZE.convertToPixels();
+    Layout layout = getLayout();
+    double boardW = px(layout.getBoardWidthMm());
+    double boardH = px(layout.getBoardLengthMm());
     double boardX = getBoardX(x);
     double boardY = getBoardY(y);
 
@@ -189,22 +222,23 @@ public class OLEDDisplay extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      double holeInset = (boardSizePx - MOUNTING_HOLE_SPACING.convertToPixels()) / 2.0;
-      double holeSize = MOUNTING_HOLE_SIZE.convertToPixels();
-      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - holeInset, boardY + holeInset,
-          holeSize);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardSizePx - holeInset,
-          holeSize);
-      MakerBoardPainter.drawMountingHole(g2d, boardX + boardSizePx - holeInset,
-          boardY + boardSizePx - holeInset, holeSize);
+      if (layout.hasMountingHoles()) {
+        double holeInset = px(layout.getHoleInsetMm());
+        double holeSize = px(layout.getHoleSizeMm());
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
+            boardY + boardH - holeInset, holeSize);
+      }
 
-      // The two rows of holes are inset equally, so centring the panel in the board is what centres
-      // it between them and keeps it clear of all four.
-      double glassW = GLASS_WIDTH.convertToPixels();
-      double glassH = GLASS_LENGTH.convertToPixels();
-      double glassX = boardX + (boardSizePx - glassW) / 2.0;
-      double glassY = boardY + (boardSizePx - glassH) / 2.0;
+      Version version = getVersion();
+      double glassW = px(version.getPanelWidthMm());
+      double glassH = px(version.getPanelLengthMm());
+      double glassX = boardX + px(layout.getPanelLeftMm());
+      double glassY = boardY + px(layout.getPanelTopMm());
 
       g2d.setColor(GLASS_COLOR);
       g2d.fill(new RoundRectangle2D.Double(glassX, glassY, glassW, glassH, 4, 4));
@@ -212,10 +246,13 @@ public class OLEDDisplay extends AbstractMakerBoard {
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(new RoundRectangle2D.Double(glassX, glassY, glassW, glassH, 4, 4));
 
-      double activeW = ACTIVE_WIDTH.convertToPixels();
-      double activeH = ACTIVE_LENGTH.convertToPixels();
+      // The lit area is offset within the panel horizontally -- the driver's bonding region takes
+      // one end of the glass -- and centred across it. Both are figures of the panel part rather
+      // than of the board it is mounted on, so the two 0.91" boards share them.
+      double activeW = px(version.getActiveWidthMm());
+      double activeH = px(version.getActiveLengthMm());
       g2d.setColor(ACTIVE_AREA_COLOR);
-      g2d.fill(new RoundRectangle2D.Double(glassX + (glassW - activeW) / 2.0,
+      g2d.fill(new RoundRectangle2D.Double(glassX + px(version.getActiveLeftInPanelMm()),
           glassY + (glassH - activeH) / 2.0, activeW, activeH, 2, 2));
     }
 
@@ -250,12 +287,129 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
   public enum OLEDInterface {
     // Labels stay short because they reach the BOM's value column through getVariantLabel; the pin
-    // legend they used to carry is already in the node names.
-    I2C_4Pin("I2C"),
-    SPI_7Pin("SPI");
+    // legend they used to carry is already in the node names. The pin array belongs here rather
+    // than on the board, because all three sizes bring the same lines out in the same order and
+    // only the interface decides which set that is.
+    I2C_4Pin("I2C", PIN_NAMES_I2C),
+    SPI_7Pin("SPI", PIN_NAMES_SPI);
 
     private final String label;
-    OLEDInterface(String label) { this.label = label; }
+    private final String[] pinNames;
+
+    OLEDInterface(String label, String[] pinNames) {
+      this.label = label;
+      this.pinNames = pinNames;
+    }
+
     @Override public String toString() { return label; }
+    public String[] getPinNames() { return pinNames; }
+  }
+
+  public enum Version {
+    // The panel and its lit area belong to the display part, so they are carried here and shared
+    // by both of a size's boards; everything that belongs to a PCB is on the Layout beside them.
+    // Lit areas are the nominal pixel count at the panel's dot pitch -- 128 x 64 at 0.17 mm,
+    // 128 x 32 at 0.175 mm, 128 x 64 at 0.23 mm -- which makes them derivations rather than
+    // measurements, noted so they are not built upon.
+    //
+    // The lit area's offset inside the panel is measured on the 0.91" and happens to be the
+    // centred position on the other two; oneCentredPanel in the test pins that down, so a later
+    // correction to a panel or a board cannot leave a stale offset behind.
+    SSD1306_0_96("0.96\" SSD1306 128x64", 26.7d, 19.3d, 21.744d, 10.864d, 2.478d,
+        new Layout(27.0d, 27.0d, 1.8d, false, 1.5d, 2.0d, 0.15d, 3.85d)),
+    SSD1306_0_91("0.91\" SSD1306 128x32", 30.0d, 12.0d, 22.384d, 5.584d, 2.1d,
+        new Layout(38.0d, 12.0d, 1.5d, true, 0d, 0d, 5.0d, 0d),
+        new Layout(38.0d, 20.0d, 1.5d, false, 2.5d, 2.0d, 1.25d, 4.0d)),
+    SH1106_1_3("1.3\" SH1106 128x64", 31.4d, 16.7d, 29.42d, 14.7d, 0.99d,
+        new Layout(35.4d, 33.5d, 1.5d, false, 2.0d, 3.0d, 2.0d, 8.4d));
+
+    private final String label;
+    private final double panelWidthMm;
+    private final double panelLengthMm;
+    private final double activeWidthMm;
+    private final double activeLengthMm;
+    private final double activeLeftInPanelMm;
+    private final Layout i2cLayout;
+    private final Layout spiLayout;
+
+    /** For a size sold on one board, which both headers are built onto. */
+    Version(String label, double panelWidthMm, double panelLengthMm, double activeWidthMm,
+        double activeLengthMm, double activeLeftInPanelMm, Layout layout) {
+      this(label, panelWidthMm, panelLengthMm, activeWidthMm, activeLengthMm, activeLeftInPanelMm,
+          layout, layout);
+    }
+
+    Version(String label, double panelWidthMm, double panelLengthMm, double activeWidthMm,
+        double activeLengthMm, double activeLeftInPanelMm, Layout i2cLayout, Layout spiLayout) {
+      this.label = label;
+      this.panelWidthMm = panelWidthMm;
+      this.panelLengthMm = panelLengthMm;
+      this.activeWidthMm = activeWidthMm;
+      this.activeLengthMm = activeLengthMm;
+      this.activeLeftInPanelMm = activeLeftInPanelMm;
+      this.i2cLayout = i2cLayout;
+      this.spiLayout = spiLayout;
+    }
+
+    @Override public String toString() { return label; }
+    public double getPanelWidthMm() { return panelWidthMm; }
+    public double getPanelLengthMm() { return panelLengthMm; }
+    public double getActiveWidthMm() { return activeWidthMm; }
+    public double getActiveLengthMm() { return activeLengthMm; }
+    public double getActiveLeftInPanelMm() { return activeLeftInPanelMm; }
+
+    public Layout getLayout(OLEDInterface oledInterface) {
+      return oledInterface == OLEDInterface.I2C_4Pin ? i2cLayout : spiLayout;
+    }
+  }
+
+  /**
+   * The PCB a size is sold on in one interface. The two are the same board on the 0.96" and the
+   * 1.3", which carry the same outline whichever header they are built with, and two genuinely
+   * different boards on the 0.91".
+   *
+   * <p>Hole positions are an inset from each of the two edges nearest a hole, following the TFT
+   * boards. The 0.96"'s pattern was given as a 24 mm centre-to-centre spacing instead, which on
+   * its 27 mm board is this inset; {@code holePatternMatchesTheSpecifiedSpacing} keeps the two
+   * readings in step.
+   */
+  public static class Layout {
+
+    private final double boardWidthMm;
+    private final double boardLengthMm;
+    private final double headerOffsetMm;
+    private final boolean headerOnLeftEdge;
+    private final double holeInsetMm;
+    private final double holeSizeMm;
+    private final double panelLeftMm;
+    private final double panelTopMm;
+
+    Layout(double boardWidthMm, double boardLengthMm, double headerOffsetMm,
+        boolean headerOnLeftEdge, double holeInsetMm, double holeSizeMm, double panelLeftMm,
+        double panelTopMm) {
+      this.boardWidthMm = boardWidthMm;
+      this.boardLengthMm = boardLengthMm;
+      this.headerOffsetMm = headerOffsetMm;
+      this.headerOnLeftEdge = headerOnLeftEdge;
+      this.holeInsetMm = holeInsetMm;
+      this.holeSizeMm = holeSizeMm;
+      this.panelLeftMm = panelLeftMm;
+      this.panelTopMm = panelTopMm;
+    }
+
+    public double getBoardWidthMm() { return boardWidthMm; }
+    public double getBoardLengthMm() { return boardLengthMm; }
+    public double getHoleInsetMm() { return holeInsetMm; }
+    public double getHoleSizeMm() { return holeSizeMm; }
+    public double getPanelLeftMm() { return panelLeftMm; }
+    public double getPanelTopMm() { return panelTopMm; }
+
+    /** Clearance from the edge the header sits on, whichever edge that is. */
+    public double getHeaderOffsetMm() { return headerOffsetMm; }
+
+    /** True when the pins stand in a column on the left edge rather than a row along the top. */
+    public boolean isHeaderOnLeftEdge() { return headerOnLeftEdge; }
+
+    public boolean hasMountingHoles() { return holeSizeMm > 0; }
   }
 }
