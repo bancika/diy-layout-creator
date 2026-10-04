@@ -83,11 +83,10 @@ public class WS2812BJewelTest {
     return new Rectangle2D.Double(led.getX() - half, led.getY() - half, size, size);
   }
 
-  /** Axis-aligned, as {@code drawSolderPads} draws it -- pads are not turned to face the centre. */
+  /** The shared round pad's bounding box; pads are not turned to face the centre. */
   private static Rectangle2D padRect(Point2D pad) {
-    double w = WS2812BJewel.PAD_WIDTH.convertToPixels();
-    double h = WS2812BJewel.PAD_LENGTH.convertToPixels();
-    return new Rectangle2D.Double(pad.getX() - w / 2.0, pad.getY() - h / 2.0, w, h);
+    double size = WS2812BJewel.PAD_SIZE.convertToPixels();
+    return new Rectangle2D.Double(pad.getX() - size / 2.0, pad.getY() - size / 2.0, size, size);
   }
 
   @Test

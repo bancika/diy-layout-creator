@@ -47,7 +47,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "LED Matrix (MAX7219)", category = "Displays & Outputs",
+@ComponentDescriptor(name = "LED Matrix", category = "Displays & Outputs",
     author = "Branislav Stojkovic", description = "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,

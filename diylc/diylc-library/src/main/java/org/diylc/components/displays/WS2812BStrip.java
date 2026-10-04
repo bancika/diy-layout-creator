@@ -45,7 +45,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "NeoPixel Strip (WS2812B)", category = "Displays & Outputs",
+@ComponentDescriptor(name = "NeoPixel Strip", category = "Displays & Outputs",
     author = "Branislav Stojkovic",
     description = "Addressable RGB WS2812B LED Strip (30, 60 or 144 LEDs per metre)",
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
@@ -57,23 +57,32 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
   public static Color TAPE_WHITE = Color.decode("#F2F2F2");
 
-  // How far in from the cut end the pads sit, and the air left between a pad and the nearest LED.
-  public static Size PAD_END_INSET = new Size(2.5d, SizeUnit.mm);
+  // Surface copper flush with the cut rather than plated holes set in from it: tape is cut
+  // through the middle of a pad pair, so each cut end carries half a pad on its very edge. The
+  // 3 x 1.5 mm footprint is the stick's, taken from that part rather than measured on tape, so it
+  // is the figure to correct first if the drawing looks wrong.
+  public static Size PAD_WIDTH = new Size(3.0d, SizeUnit.mm);
+  public static Size PAD_LENGTH = new Size(1.5d, SizeUnit.mm);
+
+  // The air left between a pad and the nearest package.
   public static Size PAD_CLEARANCE = new Size(0.5d, SizeUnit.mm);
 
   /**
    * A cut length of tape, not a board, so the count is a free number rather than an enum: the part
    * is whatever the builder cuts. The ceiling is not about the control-point array, which stays at
-   * four whatever the count, but about the shape -- 144 LEDs of 30/m tape is already most of five
+   * six whatever the count, but about the shape -- 144 LEDs of 30/m tape is already most of five
    * metres, and past that the drawing stops being useful before the maths does.
    */
   public static final int MIN_LED_COUNT = 1;
   public static final int MAX_LED_COUNT = 144;
   public static final int DEFAULT_LED_COUNT = 8;
 
-  // The tape carries power and data in at one end and passes data out at the other. Only the data
-  // line is brought out at the far end, as the plan has it: a strip is chained by its own pads.
-  public static final String[] PIN_NAMES = new String[] {"+5V", "DIN", "GND", "DOUT"};
+  // Both cuts carry all three lines, which is what makes tape chainable: the supply rails run the
+  // whole length as continuous copper and only the data pad changes sense from one end to the
+  // other. The rails are numbered to keep the node names distinct, as the stick's grounds are;
+  // the tape prints them +5V and GND at both ends.
+  public static final String[] PIN_NAMES =
+      new String[] {"+5V_1", "DIN", "GND_1", "+5V_2", "DOUT", "GND_2"};
 
   private Density density = Density._60;
   private int ledCount = DEFAULT_LED_COUNT;
@@ -154,28 +163,28 @@ public class WS2812BStrip extends AbstractMakerBoard {
     return ledColors;
   }
 
-  /** The span the three input pads occupy across the tape, at the library's standard pad pitch. */
+  /** The span a column of three pads occupies across the tape, at the standard pad pitch. */
   private static double getPadRunLength() {
     return 2 * PIN_SPACING.convertToPixels();
   }
 
   /**
-   * How far the LED field starts in from each cut end. The pads come first and the packages must
-   * clear them, so this is derived from the pad footprint rather than chosen: half a pad plus a
-   * half package, with a little air between. Deriving it is what stops a dense tape drawing its
-   * first LED on top of its own input pad.
+   * How far the first package's centre sits in from a cut end. The pads come first and the
+   * packages must clear them, so this is derived from the pad footprint rather than chosen: the
+   * whole pad, a little air, then a half package. Deriving it is what stops a dense tape drawing
+   * its first LED on top of its own input pad.
    */
   private double getLeadIn() {
-    return PAD_END_INSET.convertToPixels() + getSolderPadWidth().convertToPixels() / 2.0
-        + RGB_LED_SIZE.convertToPixels() / 2.0 + PAD_CLEARANCE.convertToPixels();
+    return PAD_WIDTH.convertToPixels() + PAD_CLEARANCE.convertToPixels()
+        + RGB_LED_SIZE.convertToPixels() / 2.0;
   }
 
-  /** Left end of the tape; control point 0 is the first pad, one inset in from the cut. */
+  /** Left end of the tape; the pads are flush with it, so their centres sit half a pad inboard. */
   private double getBoardX(double x) {
-    return x - PAD_END_INSET.convertToPixels();
+    return x - PAD_WIDTH.convertToPixels() / 2.0;
   }
 
-  /** Top edge. The input pads are centred across the width, so the first sits above centre. */
+  /** Top edge. Each column of pads is centred across the width, so the first sits above centre. */
   private double getBoardY(double y) {
     return y - (getTapeWidth() - getPadRunLength()) / 2.0;
   }
@@ -184,22 +193,26 @@ public class WS2812BStrip extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    double inset = PAD_END_INSET.convertToPixels();
 
-    // +5V, DIN and GND run across the input end at the standard pad pitch, centred on the width;
-    // DOUT sits alone at the far end on the centre line, because that end carries only the data
-    // pad. Spacing them by pitch rather than by a fraction of the width keeps them from touching:
-    // a pad is 0.08in tall, so fractions of a 10mm tape would leave them almost edge to edge.
+    // Each cut end carries +5V, data and GND in the same three rows, because those rows are
+    // continuous copper running the length of the tape. Spacing them by the pad pitch rather than
+    // by a fraction of the width keeps them from touching: fractions of a 10 mm tape would leave
+    // them almost edge to edge.
     //
-    // Offsets are measured from control point 0, which is itself one inset inboard of the left
-    // cut -- so reaching a point one inset inboard of the *right* cut costs two insets, not one.
-    // Getting that wrong puts the output pad centre exactly on the tape edge, half of it hanging
-    // off the end, which is easy to miss because it still clears the last LED.
+    // Both columns stand flush against their own cut, so what separates them is the tape less one
+    // whole pad. The offsets are measured from control point 0, which is itself half a pad inboard
+    // of the left cut; an earlier version inset the pads instead, and reaching a point one inset
+    // inboard of the *right* cut then cost two insets rather than one, which put the far pad's
+    // centre on the tape edge with half of it hanging off.
+    double columnSpacing = getTapeLength() - PAD_WIDTH.convertToPixels();
+
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
-    relativeOffsets[1][1] = spacing;
-    relativeOffsets[2][1] = 2 * spacing;
-    relativeOffsets[3][0] = getTapeLength() - 2 * inset;
-    relativeOffsets[3][1] = spacing;
+    for (int i = 0; i < 3; i++) {
+      relativeOffsets[i][0] = 0;
+      relativeOffsets[i][1] = i * spacing;
+      relativeOffsets[3 + i][0] = columnSpacing;
+      relativeOffsets[3 + i][1] = i * spacing;
+    }
 
     rotatePoints(firstPoint, relativeOffsets);
   }
@@ -262,7 +275,8 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawSolderPads(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    drawSurfacePads(g2d, 0, controlPoints.length, PAD_WIDTH, PAD_LENGTH, outlineMode,
+        drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

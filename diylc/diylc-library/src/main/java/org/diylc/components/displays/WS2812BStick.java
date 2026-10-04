@@ -59,7 +59,21 @@ public class WS2812BStick extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(51.1d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(10.22d, SizeUnit.mm);
-  public static Size PAD_INSET = new Size(2.0d, SizeUnit.mm);
+
+  // Surface pads rather than plated holes, and flush with the cut end rather than inset from it,
+  // so how far in their centres sit is half their width and not a figure of its own. The width is
+  // the reach inward from the edge; the length is what has to fit the 0.1 inch pad pitch.
+  public static Size PAD_WIDTH = new Size(3.0d, SizeUnit.mm);
+  public static Size PAD_LENGTH = new Size(1.5d, SizeUnit.mm);
+
+  // Air between a pad and the nearest package, as the strip keeps at its cut ends. Spreading the
+  // row to the pads' inner edge instead leaves the two exactly touching, which draws as copper
+  // against plastic with no board between them and puts one over the other on any rounding.
+  public static Size PAD_CLEARANCE = new Size(0.5d, SizeUnit.mm);
+
+  public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
+  public static Size MOUNTING_HOLE_SPACING = new Size(1.0d, SizeUnit.in);
+  public static Size MOUNTING_HOLE_TOP_OFFSET = new Size(2.0d, SizeUnit.mm);
 
   // Drawn lit, off the same colour wheel as the ring, so the two read as the same family of part.
   public static Color[] LED_COLORS_8 = buildLedGradient(8);
@@ -90,8 +104,9 @@ public class WS2812BStick extends AbstractMakerBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    // the two pad columns sit the same distance in from each end of the board
-    double columnSpacing = BOARD_WIDTH.convertToPixels() - 2 * PAD_INSET.convertToPixels();
+    // the two pad columns stand flush against their own ends, so what separates them is the
+    // board less one whole pad
+    double columnSpacing = BOARD_WIDTH.convertToPixels() - PAD_WIDTH.convertToPixels();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
     for (int i = 0; i < 4; i++) {
@@ -104,15 +119,46 @@ public class WS2812BStick extends AbstractMakerBoard {
     rotatePoints(firstPoint, relativeOffsets);
   }
 
-  /** Left edge of the board; the first pad column sits {@code PAD_INSET} in from it. */
+  /** Left edge of the board; the first pad column is flush with it, so its centres sit half a
+   * pad inboard. */
   private double getBoardX(double x) {
-    return x - PAD_INSET.convertToPixels();
+    return x - PAD_WIDTH.convertToPixels() / 2.0;
   }
 
   /** Top edge of the board, derived so that the four-pad column is centred across its width. */
   private double getBoardY(double y) {
     double padSpan = 3 * PIN_SPACING.convertToPixels();
     return y - (BOARD_HEIGHT.convertToPixels() - padSpan) / 2.0;
+  }
+
+  /**
+   * Where the package of the given LED sits. The row is spread evenly between the inner edges of
+   * the two pad columns rather than packed edge to edge, and it sits low on the board: the
+   * mounting holes take the top of it, so the packages are centred in what is left below them
+   * rather than on the board's own middle.
+   */
+  Point2D getLedCentre(int index) {
+    Point2D p0 = controlPoints[0];
+    double boardX = getBoardX(p0.getX());
+    double boardY = getBoardY(p0.getY());
+    double ledSize = RGB_LED_SIZE.convertToPixels();
+    double inset = PAD_WIDTH.convertToPixels() + PAD_CLEARANCE.convertToPixels();
+    double fieldStart = boardX + inset;
+    double fieldEnd = boardX + BOARD_WIDTH.convertToPixels() - inset;
+    double pitch = (fieldEnd - fieldStart - ledSize) / (LED_COLORS_8.length - 1);
+
+    return new Point2D.Double(fieldStart + ledSize / 2.0 + index * pitch,
+        (getHoleCentre(false).getY() + MOUNTING_HOLE_SIZE.convertToPixels() / 2.0 + boardY
+            + BOARD_HEIGHT.convertToPixels()) / 2.0);
+  }
+
+  /** One of the two mounting holes, which sit a fixed span apart astride the board's centre. */
+  Point2D getHoleCentre(boolean right) {
+    Point2D p0 = controlPoints[0];
+    double offset = MOUNTING_HOLE_SPACING.convertToPixels() / 2.0;
+    return new Point2D.Double(
+        getBoardX(p0.getX()) + BOARD_WIDTH.convertToPixels() / 2.0 + (right ? offset : -offset),
+        getBoardY(p0.getY()) + MOUNTING_HOLE_TOP_OFFSET.convertToPixels());
   }
 
   @Override
@@ -138,11 +184,6 @@ public class WS2812BStick extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    double boardW = BOARD_WIDTH.convertToPixels();
-    double boardH = BOARD_HEIGHT.convertToPixels();
-    double boardX = getBoardX(x);
-    double boardY = getBoardY(y);
-
     Shape boardShape = getBodyShape();
 
     Composite oldComposite = applyAlpha(g2d, componentState);
@@ -157,29 +198,29 @@ public class WS2812BStick extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Eight 5mm packages spread evenly between the two pad columns rather than packed edge to
-      // edge. The field has to clear the header block drawPinHeader paints around each pin, which
-      // reaches one pin width plus a pixel either side of the control point and is drawn after the
-      // LEDs -- starting the field at the pad inset alone put that block over the first and last
-      // package. The pad names are printed on the back of the real board, so this face carries no
-      // silkscreen.
-      double ledSize = RGB_LED_SIZE.convertToPixels();
-      double padInset = PAD_INSET.convertToPixels();
-      double headerHalf = PIN_SIZE.convertToPixels() + 1;
-      double fieldStart = boardX + padInset + headerHalf;
-      double fieldEnd = boardX + boardW - padInset - headerHalf;
-      double pitch = (fieldEnd - fieldStart - ledSize) / 7.0;
+      double holeSize = MOUNTING_HOLE_SIZE.convertToPixels();
+      for (boolean right : new boolean[] {false, true}) {
+        Point2D hole = getHoleCentre(right);
+        MakerBoardPainter.drawMountingHole(g2d, hole.getX(), hole.getY(), holeSize);
+      }
 
-      for (int i = 0; i < 8; i++) {
-        MakerBoardPainter.drawAddressableLed(g2d, fieldStart + ledSize / 2.0 + i * pitch,
-            boardY + boardH / 2.0, ledSize, LED_COLORS_8[i]);
+      // The packages go down before the pads do, so the row starts at the pads' inner edge rather
+      // than under them. The pad names are printed on the back of the real board, so this face
+      // carries no silkscreen.
+      double ledSize = RGB_LED_SIZE.convertToPixels();
+      for (int i = 0; i < LED_COLORS_8.length; i++) {
+        Point2D led = getLedCentre(i);
+        MakerBoardPainter.drawAddressableLed(g2d, led.getX(), led.getY(), ledSize, LED_COLORS_8[i]);
       }
     }
 
     g2d.setTransform(oldTx);
 
-    // Draw input and output header pins
-    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    // The real stick ships bare and is wired by soldering to its pads, so it carries pads rather
+    // than a fitted header. They are surface copper at the cut ends rather than the plated holes
+    // the ring and the jewel carry.
+    drawSurfacePads(g2d, 0, controlPoints.length, PAD_WIDTH, PAD_LENGTH, outlineMode,
+        drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

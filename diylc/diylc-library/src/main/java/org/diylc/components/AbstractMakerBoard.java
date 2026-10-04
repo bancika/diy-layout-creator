@@ -627,18 +627,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    * as the inch measures they work out to exactly, so a board that wants smaller pads overrides
    * these rather than a second pad-drawing method being written somewhere else.
    */
-  protected Size getSolderPadWidth() {
-    return new Size(0.11d, SizeUnit.in);
-  }
-
-  protected Size getSolderPadLength() {
-    return new Size(0.08d, SizeUnit.in);
-  }
-
-  protected Size getSolderPadHoleSize() {
-    return new Size(0.035d, SizeUnit.in);
-  }
-
   /**
    * Spreads {@link #RGB_LED_GRADIENT} evenly over {@code count} LEDs, interpolating between
    * neighbouring anchors and treating them as a loop so the last LED runs back into the first.
@@ -659,31 +647,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
           (int) Math.round(from.getBlue() + (to.getBlue() - from.getBlue()) * blend));
     }
     return colors;
-  }
-
-  protected void drawSolderPads(Graphics2D g2d, int startIndex, int count, boolean outlineMode, IDrawingObserver drawingObserver) {
-    if (outlineMode) return;
-    double padW = getSolderPadWidth().convertToPixels();
-    double padH = getSolderPadLength().convertToPixels();
-    double holeD = getSolderPadHoleSize().convertToPixels();
-
-    drawingObserver.startTrackingContinuityArea(true);
-    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
-      Point2D p = controlPoints[i];
-      RoundRectangle2D pad = new RoundRectangle2D.Double(p.getX() - padW / 2.0, p.getY() - padH / 2.0, padW, padH, 2, 2);
-      g2d.setColor(LIGHT_METAL_COLOR);
-      g2d.fill(pad);
-      g2d.setColor(LIGHT_METAL_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(pad);
-
-      // Central through-hole / drill hole
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
-      g2d.setColor(Color.DARK_GRAY);
-      g2d.draw(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
-    }
-    drawingObserver.stopTrackingContinuityArea();
   }
 
   /**
@@ -725,6 +688,47 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.fill(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
       g2d.setColor(PAD_COLOR.darker());
       g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Helper to draw rectangular surface solder pads: bare copper on the face of the board with no
+   * drill through it, which is what a part meant to be soldered to directly carries rather than
+   * the plated holes {@link #drawPcbSolderPads} draws.
+   *
+   * <p>Unlike a round pad a rectangular one has an orientation, so each is turned with the board.
+   *
+   * @param padWidth Pad size across the board, which for an edge pad is its reach inward
+   * @param padLength Pad size along the row of pads
+   */
+  protected void drawSurfacePads(Graphics2D g2d, int startIndex, int count, Size padWidth,
+      Size padLength, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) {
+      return;
+    }
+    double w = padWidth.convertToPixels();
+    double h = padLength.convertToPixels();
+    double theta = orientation.toRadians();
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (theta != 0) {
+        g2d.rotate(theta, p.getX(), p.getY());
+      }
+
+      Rectangle2D pad = new Rectangle2D.Double(p.getX() - w / 2.0, p.getY() - h / 2.0, w, h);
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(pad);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(pad);
+
+      // turned back rather than saving the transform, as the LED painter does
+      if (theta != 0) {
+        g2d.rotate(-theta, p.getX(), p.getY());
+      }
     }
     drawingObserver.stopTrackingContinuityArea();
   }

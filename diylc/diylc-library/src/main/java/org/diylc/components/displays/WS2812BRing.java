@@ -59,9 +59,6 @@ public class WS2812BRing extends AbstractMakerBoard {
 
   // Pads are small and sit near the rim; these are what the ring overrides the inherited solder
   // pad footprint with, the default being sized for a breakout board rather than a ring.
-  public static Size PAD_WIDTH = new Size(1.6d, SizeUnit.mm);
-  public static Size PAD_LENGTH = new Size(1.3d, SizeUnit.mm);
-  public static Size PAD_HOLE = new Size(0.7d, SizeUnit.mm);
   public static Size PAD_EDGE_INSET = new Size(1.4d, SizeUnit.mm);
 
   // The ring is drawn lit: unlit it is a black disc with white specks on it, which reads as no
@@ -102,21 +99,6 @@ public class WS2812BRing extends AbstractMakerBoard {
       return padNames[index];
     }
     return Integer.toString(index + 1);
-  }
-
-  @Override
-  protected Size getSolderPadWidth() {
-    return PAD_WIDTH;
-  }
-
-  @Override
-  protected Size getSolderPadLength() {
-    return PAD_LENGTH;
-  }
-
-  @Override
-  protected Size getSolderPadHoleSize() {
-    return PAD_HOLE;
   }
 
   /** The circle the LED centres sit on: the midpoint between the inner and outer rims. */
@@ -254,7 +236,7 @@ public class WS2812BRing extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawSolderPads(g2d, 0, ringSize.getPadNames().length, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 0, ringSize.getPadNames().length, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

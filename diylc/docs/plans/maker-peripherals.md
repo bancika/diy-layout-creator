@@ -70,8 +70,9 @@ happened to come back true, and only after a fix.
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BJewel` | none (a single part) | **New in this slice (§6.7), not a draft.** A sibling of `WS2812BRing` rather than another `RingSize` constant, per D2: it shares the part family and the pad footprint but not the footprint family. It is a solid 23 mm disc with no inner rim, six LEDs on a 16 mm circle around a seventh in the middle, five pads on a 9 mm circle *inside* the LED ring rather than inset from the rim, and two 3 mm mounting holes 19 mm apart that no ring carries — five variant-specific structures, which is a different part and not a variant. Every figure is maintainer-supplied. The pad arrangement is the part that could silently have been wrong: five pads share six gaps between the ring LEDs, so one gap carries none, and it works out to the gap pointing due left, which is where a mounting hole sits. `WS2812BJewelTest` pins that down, because every count and radius assertion passes whichever gap is left empty. Its packages — and the rings', which this changed too — are drawn turned to follow their own radius the way they are mounted; the centre package has no radius and stays square to the board. |
+| `WS2812BPanel` | none (a single part) | **New in this slice (§6.7), not a draft.** The only part in the package whose every figure comes from the manufacturer's own CAD rather than from a listing or a measurement: Adafruit publishes the EagleCAD board file for the 8x8 NeoMatrix, which gives the 71.12 mm square, the 8.89 mm pitch, the twelve 2.8 mm holes and the two three-pin ports to the micron. The ports are each other turned half a turn about the centre, which is what lets panels be chained, and both sit in the gap between the first and second rows of pixels because the grid reaches within half a pitch of every edge and there is no bare strip for them. The chain is a progressive raster rather than the serpentine most cheap panels use, which matters here only because the LEDs are drawn lit off the shared gradient and the sweep follows the chain. Silk is left off as on the other addressable parts, and for the same reason the Stick's is: the board file puts the port names on layer 22, the back of the board. Carries no variant property: see §6.7 for why the `Grid` enum it was built with came out again. |
 | `Nokia5110LCD` | none (a single part) | **New in this slice (§6.5), not a draft.** Every figure is maintainer-supplied and the whole outline is measured: a 43.8 x 45.8 mm board, a 40 x 35 mm bezel 4.5 mm down from the top edge, a 37 x 27 mm glass 11 mm down, and 3 mm mounting holes on a 34.5 x 41 mm pattern. It is the first display board whose header is on the **bottom** edge, so the board grows upwards from control point zero rather than down from it, and every feature is measured from an edge no control point touches. The glass is placed from the top edge rather than centred in the bezel, because it is not centred in it -- 6.5 mm of frame above, 1.5 mm below. It is also the first in the package to carry silkscreen: the pin names lie flat along the row under the header rather than standing on end like the Arduino boards', and the part name sits in the top left corner beside the mounting hole, where the module prints it (§6.5). One figure is unsourced: the 3.5 mm clearance from the bottom edge to the pin row. |
-| `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). |
+| `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). Its footprint was then corrected a second time against maintainer-supplied figures, and the three corrections go together: two 2 mm mounting holes 1 inch apart astride the centre and 2 mm down from the top edge; surface pads of 3 x 1.5 mm flush with each cut end rather than plated holes set in from it; and the LED row moved off the board's own middle to sit centred in what the holes leave below them. On a board 10.22 mm tall those three compete for the same height, which is why `WS2812BStickTest` -- the class had no test until then -- asserts the clearances rather than the dimensions. |
 
 ### 3.1 Two defects that are bugs, not style
 
@@ -232,6 +233,39 @@ such a component requires shifting **every** control point: `setControlPoint(p, 
 point and does not re-run `updateControlPoints()`, so the body follows point 0 while the remaining
 pins stay behind.
 
+### 3.3 One pad, drawn one way
+
+`AbstractMakerBoard` carried two through-hole pad painters that differed in appearance rather than
+in purpose. `drawPcbSolderPads` drew a round gold pad and was used by every microcontroller board;
+`drawSolderPads` drew a silver rounded rectangle, took three per-part size hooks
+(`getSolderPadWidth`, `getSolderPadLength`, `getSolderPadHoleSize`), and was used by every
+addressable part and the two drafted modules. The result was that the NeoPixel family's pads looked
+like nothing else in the library, and the Stick did not draw pads at all — it drew a fitted pin
+header, on a part that ships bare and is wired by soldering to it.
+
+**Resolved: there is now one pad painter.** `drawSolderPads` and its three size hooks are gone, the
+six callers moved to `drawPcbSolderPads`, and the per-class `PAD_WIDTH` / `PAD_LENGTH` / `PAD_HOLE`
+constants on the Ring, the Jewel and the Panel went with them — the shared `PAD_SIZE` and
+`HOLE_SIZE` now decide, which is the rule already settled for board appearance: tune the shared
+constants globally rather than adding per-board hooks. The Stick's header became pads at the same
+time, which also simplified its LED field, since the field now has to clear a pad radius rather
+than the wider block the header painter drew around each pin.
+
+`WS2812BStripTest.outputPadClearsTheLastLed` failed on the change and was right to: the strip's
+lead-in is derived from the pad footprint, so a narrower pad shortens the tape, and the test had
+the old 0.11" pad written into it as a literal. The test now reads `PAD_SIZE`, so it tracks the
+component instead of restating it, and the clearance it checks comes out at exactly the
+`PAD_CLEARANCE` the lead-in is built from.
+
+**A second pad shape followed, because not every pad is a plated hole.** The stick's are surface
+copper flush with its cut ends, so `drawSurfacePads` was added beside `drawPcbSolderPads`: a plain
+rectangle in the same gold, no drill, and -- unlike a round pad -- turned with the board, since a
+3 x 1.5 mm pad left axis-aligned on a rotated stick is visibly wrong. Two painters are the right
+number here where three were not: they differ in what the part physically has, not in how it is
+coloured. The strip followed the stick onto `drawSurfacePads` for the same reason, with the same
+3 x 1.5 mm footprint -- taken from the stick rather than measured on tape, and flagged in the
+class as the figure to correct first.
+
 ## 4. Shared mechanics
 
 The board roadmap's §4 applies unchanged and is not repeated: component discovery is a classpath
@@ -346,6 +380,27 @@ someone remembers to add it.
 Silk was left off, following the Ring and the Stick. Worth revisiting: unlike those two, real tape
 *does* print `+5V`, `DI` and `GND` between its pads, so this is the one case in the slice where
 dropping silkscreen is a simplification rather than a fidelity gain.
+
+**Both cuts now carry all three lines.** The original had `+5V`, `DIN` and `GND` at one end and a
+lone `DOUT` at the other, on the reasoning that a strip is chained by its own pads -- which is true
+and is exactly why the far end needs its supply pads too. The rails are continuous copper down the
+length of the tape, so each sits in the same row at both ends; what changes from one end to the
+other is only the sense of the data pad. Six control points, named `+5V_1` / `DIN` / `GND_1` and
+`+5V_2` / `DOUT` / `GND_2` so the netlist keeps them apart, and `bothCutsCarryAllThreeLines`
+asserts the rows are level across the tape, which is what a butted pair depends on.
+
+The pads also became surface copper flush with each cut rather than plated holes set in from it,
+following the stick (§3.3): tape is cut through the middle of a pad pair, so what a cut leaves is
+half a pad on the very edge. `PAD_END_INSET` went with the change, since how far a pad centre sits
+inboard is now half its width rather than a figure of its own.
+
+One thing butting two lengths together shows that nothing else does: **the LEDs do not keep their
+pitch across the joint.** The lead-in is derived from the pad footprint, so it is 6 mm whatever the
+density, where a real cut falls halfway between two packages and would make it half a pitch --
+8.33 mm at 60/m. Deriving it is deliberate and recorded above, because at 144/m half a pitch is
+3.47 mm and a 3 mm pad would sit under the first package. The honest reading is that the 3 mm pad
+is a 60/m figure being used at every density; a per-density pad would fix both at once, and wants
+a measurement rather than a derivation.
 
 The plan this was built from, kept for the record:
 
@@ -837,8 +892,58 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
   ring sizes as well as the Jewel; the Jewel's centre package has no radius and stays square, and the
   linear strip and stick are unaffected. The package is square, so the turn only shows modulo a
   quarter turn, and no geometry assertion catches it -- it is visible only in a render.
-- **NeoPixel panel 8x8** as its own class, reusing `drawAddressableLed` and the ring's pad handling.
-  Worth doing only after §6.1, whose helper it depends on. **~0.5 day.**
+- **NeoPixel panel 8x8** as its own class — **done**, as `WS2812BPanel`, and it cost closer to the
+  estimate than the Jewel did because the geometry did not have to be argued over: Adafruit
+  publishes the EagleCAD board file for the 8x8 NeoMatrix, so every figure was read off the part
+  rather than sourced from a listing or derived.
+
+  That is worth recording as a method, not just a result. The product page gives only
+  `71.17 x 71.17 x 3.28 mm` and says there are "two 3-pin connection ports"; no vendor publishes the
+  pitch, the hole pattern, the port positions or the chain order, and all four are things this
+  drawing needs. The board file gives them exactly:
+
+  | Figure | From the board file |
+  |---|---|
+  | Board | 71.12 x 71.12 mm (the listing's 71.17 is a rounding of 2.8") |
+  | Pitch | 8.89 mm (0.35") |
+  | Pixel grid | centred, a half pitch of margin outside the outer pixels |
+  | Ports | 3 through-holes at 0.1" pitch, 1.905 mm in from a side edge, 8.89 mm down from an end |
+  | Port order | DIN, +5V, GND outward-in; the output port is the input turned half a turn about the centre |
+  | Holes | twelve, 2.8 mm, six in from the side edges and six in the gaps between pixel columns |
+  | Chain | progressive raster, not serpentine — LED1-8 left to right along the top row, LED9 back at the left |
+
+  Three relationships hold on this board and are recorded in the `Grid` enum's Javadoc as
+  measurements rather than derived in code, because none of them is guaranteed on someone else's
+  panel: the board is exactly the matrix order times the pitch, the grid is centred, and the port
+  row lands in the gap between the first and second rows of pixels.
+  `theBoardIsAWholeNumberOfPitchesAcross` asserts the first, so a second panel that does not share
+  it fails rather than being quietly drawn wrong.
+
+  The chain order is the one figure that changes the drawing without changing any dimension. The
+  LEDs are drawn lit off the shared gradient, so the colour runs along the data chain; wired as the
+  serpentine most cheap panels use, the sweep would fold back on itself every row. `WS2812BPanelTest`
+  pins the raster down, along with the rotational symmetry of the two ports and the 2.8 mm holes
+  sitting in 3.89 mm gaps — the three things that pass every dimension check and still render wrong.
+
+  Silk was left off, following the Ring, Stick, Strip and Jewel, and this time with proof rather
+  than an assumption: the port names `DIN`, `5V`, `GND`, `DOUT` are on layer 22, the **back** of the
+  board, exactly as the Stick's are. What the front does carry is `Adafruit NeoPixel 8X8`,
+  `64 RGB LEDs`, `24 bit Color`, `Only ONE Pin` and `bLiNkY bLiNkY bLiNkY bLiNkY bLiNkY`, in 1.8-2.3
+  mm letters laid in the gaps between pixel rows. That is real silkscreen in the place the
+  manufacturer prints it, so the rule would allow it; it is left off pending a decision, because
+  printing a vendor's marketing text across a part is a different question from printing its pin
+  names.
+
+  **The `Grid` enum was built and then removed.** It had one member and no prospect of a second:
+  Adafruit makes no rigid 4x4 or 16x16 NeoMatrix — the 1487 is the only rigid panel in the line,
+  and the flexible 16x16 is a different part with a different mounting — while the generic WS2812B
+  panels sold as 4x4 and 16x16 have no published board file and listings that disagree with each
+  other on the outline (that family's 8x8 is variously 65 and 80 mm). A variant property with one
+  value is a control the user cannot use, so the figures are plain constants on the class and the
+  panel is a single part like the Jewel and the Nokia. D2 is unchanged by this: it says a new
+  variant goes in an enum rather than a sibling class, not that a single part needs an enum to
+  hold its own dimensions. Should a second panel ever be sourced, re-introducing the enum is the
+  same work either way.
 
 ### 6.8 On-screen identification — the glass prints its own spec — **done**
 
@@ -1021,13 +1126,14 @@ part name, then the variant list).
 6. **§7** tests alongside each of the above, not after.
 7. **§8** regression samples and the `update.xml` block, last.
 
-Eleven palette entries so far: the seven existing, plus the strip, the bar graph, the Jewel and the
-Nokia, plus the panel if appetite holds. The `update.xml` 6.7.0 block now carries all eleven,
+Twelve palette entries: the seven existing, plus the strip, the bar graph, the Jewel, the Nokia and
+now the panel. The `update.xml` 6.7.0 block carries all twelve,
 alphabetically as the 6.5.0 block lists its boards. Two of the entries it already had were stale
 rather than missing, and both were stale because a class had outgrown them: the matrix was still
 described as an 8x8 and the TFT as a touch screen with an SD slot, which is one variant of four
-and a part that was removed from the drawing. A twelfth entry is needed only if the panel is
-built.
+and a part that was removed from the drawing. The §6.8 screen readout gets no entry of its own:
+it is how four components that are new in this very block look, not an improvement over
+anything a user has seen.
 
 ## 10. Later slices, and why they are later
 
