@@ -23,6 +23,7 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -30,8 +31,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
@@ -103,11 +107,34 @@ public class WS2812BPanel extends AbstractMakerBoard {
   public static final String[] PAD_NAMES =
       new String[] {"DIN", "+5V_1", "GND_1", "DOUT", "+5V_2", "GND_2"};
 
+  /**
+   * The board file gives its lettering by cap height, which is how Eagle specifies text, while a
+   * Java font is specified by em size -- about a third larger again for this family. Converting
+   * between the two is what makes the drawn strings reach about as far across the board as the
+   * real artwork does; set at the cap height they come out well short of it.
+   */
+  private static final double CAP_HEIGHT_RATIO = 0.72d;
+
   // Drawn lit, as every addressable part in this package is. The colour is handed out along the
   // data chain rather than across the board, so the sweep shows the order the pixels are addressed
   // in: this panel is wired as a progressive raster, left to right along each row and then back to
   // the left of the next, not as the serpentine most cheap panels use.
   public static Color[] LED_COLORS = buildLedGradient(MATRIX_ORDER * MATRIX_ORDER);
+
+  /**
+   * What the face of the board prints, from layer 21 of the board file. Every line lies in a gap
+   * between two rows of pixels, which is the only bare board this part has: the grid reaches
+   * within half a pitch of all four edges.
+   *
+   * <p>The port names are not here. The board prints those on layer 22, its back, as the stick
+   * does.
+   */
+  static final Silk[] SILKSCREEN = new Silk[] {
+      new Silk(-19.685d, -17.653d, "Adafruit NeoPixel 8X8", silkFont(2.286d)),
+      new Silk(-29.972d, 0.0635d, "64 RGB LEDs", silkFont(1.778d)),
+      new Silk(-6.858d, -0.1397d, "24 bit Color", silkFont(1.4224d)),
+      new Silk(12.446d, -0.1905d, "Only ONE Pin", silkFont(1.778d)),
+      new Silk(-25.4d, 17.8435d, "bLiNkY bLiNkY bLiNkY bLiNkY bLiNkY", silkFont(1.778d))};
 
   public WS2812BPanel() {
     super();
@@ -134,6 +161,11 @@ public class WS2812BPanel extends AbstractMakerBoard {
 
   private static double px(double millimetres) {
     return new Size(millimetres, SizeUnit.mm).convertToPixels();
+  }
+
+  private static Font silkFont(double capHeightMm) {
+    return new Font(SILK_FONT_FAMILY, Font.PLAIN,
+        (int) Math.round(px(capHeightMm) / CAP_HEIGHT_RATIO));
   }
 
   /** Left edge of the board; the input port's first pad sits one inset in from it. */
@@ -221,6 +253,15 @@ public class WS2812BPanel extends AbstractMakerBoard {
             holeSize);
       }
 
+      // Printed before the packages go down, so a glyph that strays under one is covered by it,
+      // which is what the board itself does with silk under a part.
+      g2d.setColor(SILK_COLOR);
+      for (Silk silk : SILKSCREEN) {
+        g2d.setFont(silk.getFont());
+        StringUtils.drawCenteredText(g2d, silk.getText(), centreX + px(silk.getXMm()),
+            centreY + px(silk.getYMm()), HorizontalAlignment.LEFT, VerticalAlignment.CENTER);
+      }
+
       double pitch = PIXEL_PITCH.convertToPixels();
       double margin = (board - (MATRIX_ORDER - 1) * pitch) / 2.0;
       double ledSize = RGB_LED_SIZE.convertToPixels();
@@ -272,5 +313,30 @@ public class WS2812BPanel extends AbstractMakerBoard {
       g2d.setColor(rainbow[i % rainbow.length]);
       g2d.fill(new Ellipse2D.Double(dotX, dotY, dotSize, dotSize));
     }
+  }
+
+  /**
+   * One line of silkscreen. The position is the text's left edge and vertical centre in
+   * millimetres from the middle of the board, with y running down the drawing rather than up as
+   * Eagle records it.
+   */
+  static class Silk {
+
+    private final double xMm;
+    private final double yMm;
+    private final String text;
+    private final Font font;
+
+    Silk(double xMm, double yMm, String text, Font font) {
+      this.xMm = xMm;
+      this.yMm = yMm;
+      this.text = text;
+      this.font = font;
+    }
+
+    public double getXMm() { return xMm; }
+    public double getYMm() { return yMm; }
+    public String getText() { return text; }
+    public Font getFont() { return font; }
   }
 }

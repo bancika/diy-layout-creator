@@ -61,18 +61,18 @@ public class WS2812BStripTest {
     return WS2812BStrip.PAD_WIDTH.convertToPixels() / 2.0d;
   }
 
-  /** Where a pad's copper lies, which is what has to stay on the tape and off the packages. */
+  /**
+   * The copper a cut leaves on the tape: half the pill, reaching inboard from the cut the control
+   * point sits on. This is what has to stay on the tape and off the packages; the other half went
+   * with the next length.
+   */
   private static Rectangle2D padRect(WS2812BStrip strip, int index) {
     Point2D pad = strip.getControlPoint(index);
     double w = WS2812BStrip.PAD_WIDTH.convertToPixels();
-    double h = WS2812BStrip.PAD_LENGTH.convertToPixels();
-    return new Rectangle2D.Double(pad.getX() - w / 2.0, pad.getY() - h / 2.0, w, h);
-  }
-
-  /** How far in from a cut the first package's centre sits, as the component derives it. */
-  private static double leadIn() {
-    return WS2812BStrip.PAD_WIDTH.convertToPixels()
-        + WS2812BStrip.PAD_CLEARANCE.convertToPixels() + ledHalfWidth();
+    double depth = strip.getPadDepth();
+    boolean input = index < 3;
+    return new Rectangle2D.Double(input ? pad.getX() : pad.getX() - depth, pad.getY() - w / 2.0,
+        depth, w);
   }
 
   private static double ledHalfWidth() {
@@ -107,6 +107,49 @@ public class WS2812BStripTest {
     double sixteen = strip.getBodyShape().getBounds2D().getWidth();
     double pitch = new Size(Density._60.getPitchMm(), SizeUnit.mm).convertToPixels();
     Assert.assertEquals("eight more LEDs adds eight pitches", 8 * pitch, sixteen - eight, 0.5d);
+  }
+
+  /**
+   * Tape is a repeating cell one pitch long, so a length of it is exactly as many pitches as it
+   * has LEDs -- the two half-cells a pair of cuts leave making one whole one between them. The
+   * lead-in used to be a pad-derived constant, which drew the end LEDs 6 mm from the cuts on
+   * 30/m tape where every other gap was 33 mm.
+   */
+  @Test
+  public void aLengthOfTapeIsOnePitchPerLed() {
+    for (Density density : Density.values()) {
+      for (int count : new int[] {1, 8, 40}) {
+        WS2812BStrip strip = new WS2812BStrip();
+        strip.setDensity(density);
+        strip.setLedCount(count);
+        double pitch = new Size(density.getPitchMm(), SizeUnit.mm).convertToPixels();
+
+        Assert.assertEquals(density + " x " + count, count * pitch,
+            strip.getBodyShape().getBounds2D().getWidth(), 0.01d);
+        Assert.assertEquals(density + " lead-in", pitch / 2.0, strip.getLeadIn(), 0.01d);
+      }
+    }
+  }
+
+  /**
+   * The pad is a pill as long as the nominal allows and otherwise as long as the density leaves
+   * room for, never shorter than its own width. At 144/m that bottoms out: the pill is no longer
+   * than it is wide, which makes it a circle, which is what that tape carries.
+   */
+  @Test
+  public void theDensestTapeCarriesCircularPads() {
+    WS2812BStrip strip = new WS2812BStrip();
+    double width = WS2812BStrip.PAD_WIDTH.convertToPixels();
+
+    strip.setDensity(Density._30);
+    Assert.assertEquals("30/m should get the nominal pill",
+        WS2812BStrip.PAD_LENGTH.convertToPixels(), strip.getPadLength(), 0.01d);
+
+    strip.setDensity(Density._144);
+    Assert.assertTrue("144/m pad should be about as long as it is wide",
+        Math.abs(strip.getPadLength() - width) < width * 0.1d);
+    Assert.assertTrue("a pad may never be shorter than it is wide",
+        strip.getPadLength() >= width - 0.01d);
   }
 
   /** Six pads whatever the count: the LEDs are drawn, not wired. */
@@ -162,9 +205,9 @@ public class WS2812BStripTest {
 
         for (int i = 0; i < 3; i++) {
           Assert.assertEquals(density + " x " + count + " input pad " + i, tape.getX(),
-              padRect(strip, i).getX(), 0.01d);
+              strip.getControlPoint(i).getX(), 0.01d);
           Assert.assertEquals(density + " x " + count + " output pad " + i, tape.getMaxX(),
-              padRect(strip, 3 + i).getMaxX(), 0.01d);
+              strip.getControlPoint(3 + i).getX(), 0.01d);
         }
       }
     }
@@ -217,7 +260,7 @@ public class WS2812BStripTest {
         strip.setLedCount(count);
         Rectangle2D tape = strip.getBodyShape().getBounds2D();
         double pitch = new Size(density.getPitchMm(), SizeUnit.mm).convertToPixels();
-        double lastLed = tape.getX() + leadIn() + (count - 1) * pitch;
+        double lastLed = tape.getX() + strip.getLeadIn() + (count - 1) * pitch;
         for (int i = 0; i < 3; i++) {
           Assert.assertTrue(density + " x " + count + ": output pad " + i + " overlaps the last LED",
               padRect(strip, 3 + i).getX() >= lastLed + ledHalfWidth() - 0.5d);
@@ -234,7 +277,7 @@ public class WS2812BStripTest {
       strip.setDensity(density);
       strip.setLedCount(8);
       Rectangle2D tape = strip.getBodyShape().getBounds2D();
-      double firstLed = tape.getX() + leadIn();
+      double firstLed = tape.getX() + strip.getLeadIn();
       for (int i = 0; i < 3; i++) {
         Assert.assertTrue(density + ": input pad " + i + " overlaps the first LED",
             padRect(strip, i).getMaxX() <= firstLed - ledHalfWidth() + 0.5d);

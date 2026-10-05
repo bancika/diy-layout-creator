@@ -734,6 +734,57 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
+   * Helper to draw the pads a cut leaves behind on a part that is sold by the length and divided
+   * by the builder. The uncut pad is a pill lying along the part with the cut running through its
+   * middle, so each cut end keeps half of one: flat against the edge, rounded inward.
+   *
+   * <p>The shape is built as the pill and then cut, rather than drawn as a half directly, because
+   * that is what happens to the part and it stays right at both extremes -- a pill no longer than
+   * it is wide is a circle, and half of it is a semicircle, with no special case for either.
+   *
+   * <p>Both sizes are in pixels rather than {@link Size}, because a part that caps its pad
+   * against the room a variant leaves has already done the arithmetic by the time it calls.
+   *
+   * @param padWidth Pad size across the part
+   * @param padLength Pad size along the part, before the cut -- half of this is drawn
+   * @param reachesRight Whether the surviving half reaches to the right of the cut
+   */
+  protected void drawBisectedPads(Graphics2D g2d, int startIndex, int count, double padWidth,
+      double padLength, boolean reachesRight, boolean outlineMode,
+      IDrawingObserver drawingObserver) {
+    if (outlineMode) {
+      return;
+    }
+    double w = padWidth;
+    double depth = padLength / 2.0;
+    double theta = orientation.toRadians();
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (theta != 0) {
+        g2d.rotate(theta, p.getX(), p.getY());
+      }
+
+      Area pad = new Area(new RoundRectangle2D.Double(p.getX() - depth, p.getY() - w / 2.0,
+          depth * 2, w, w, w));
+      pad.intersect(new Area(new Rectangle2D.Double(
+          reachesRight ? p.getX() : p.getX() - depth, p.getY() - w / 2.0, depth, w)));
+
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(pad);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(pad);
+
+      if (theta != 0) {
+        g2d.rotate(-theta, p.getX(), p.getY());
+      }
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
    * Pad, drill-hole and edge-notch diameters used by {@link #drawCastellatedPads} and
    * {@link #subtractCastellationNotches}. A board whose castellations differ from the package
    * defaults overrides these rather than reimplementing the pad geometry.

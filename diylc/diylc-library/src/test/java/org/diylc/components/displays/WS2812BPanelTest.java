@@ -21,13 +21,17 @@
  */
 package org.diylc.components.displays;
 
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.displays.WS2812BPanel.Silk;
 import org.diylc.components.maker.MakerBoardTestSupport;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -232,5 +236,45 @@ public class WS2812BPanelTest {
   @Test
   public void bomValueNamesTheMatrix() {
     Assert.assertEquals("8x8, 64 LEDs", new WS2812BPanel().getValueForDisplay());
+  }
+
+  /**
+   * The board prints five lines across its face, every one of them in a gap between two rows of
+   * pixels -- the only bare board this part has, since the grid reaches within half a pitch of
+   * all four edges. The positions come from the board file, but how much room a line takes is the
+   * font's business, so a size change could put lettering under a package or off the edge without
+   * anything else noticing.
+   */
+  @Test
+  public void silkscreenClearsThePixelsAndTheBoardEdge() {
+    WS2812BPanel panel = new WS2812BPanel();
+    Rectangle2D board = panel.getBodyShape().getBounds2D();
+    double packageHalf = AbstractMakerBoard.RGB_LED_SIZE.convertToPixels() / 2.0;
+    Graphics2D g2d = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+    FontRenderContext context = g2d.getFontRenderContext();
+
+    try {
+      for (Silk silk : WS2812BPanel.SILKSCREEN) {
+        // the inked rectangle rather than the line box, since leading and descender space the
+        // string does not use cannot collide with anything
+        Rectangle2D glyphs =
+            silk.getFont().createGlyphVector(context, silk.getText()).getVisualBounds();
+        Rectangle2D line = new Rectangle2D.Double(board.getCenterX() + px(silk.getXMm()),
+            board.getCenterY() + px(silk.getYMm()) - glyphs.getHeight() / 2.0, glyphs.getWidth(),
+            glyphs.getHeight());
+
+        Assert.assertTrue(silk.getText() + " runs off the board",
+            board.contains(line.getX(), line.getY(), line.getWidth(), line.getHeight()));
+
+        for (int i = 0; i < ORDER * ORDER; i++) {
+          Point2D led = ledCentre(panel, i);
+          Assert.assertFalse(silk.getText() + " runs under a package",
+              line.intersects(led.getX() - packageHalf, led.getY() - packageHalf,
+                  packageHalf * 2, packageHalf * 2));
+        }
+      }
+    } finally {
+      g2d.dispose();
+    }
   }
 }

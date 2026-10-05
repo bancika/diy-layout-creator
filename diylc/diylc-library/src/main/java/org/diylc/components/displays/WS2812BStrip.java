@@ -22,6 +22,7 @@
 package org.diylc.components.displays;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -29,8 +30,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
@@ -43,6 +47,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.presenter.CalcUtils;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "NeoPixel Strip", category = "Displays & Outputs",
@@ -57,15 +62,24 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
   public static Color TAPE_WHITE = Color.decode("#F2F2F2");
 
-  // Surface copper flush with the cut rather than plated holes set in from it: tape is cut
-  // through the middle of a pad pair, so each cut end carries half a pad on its very edge. The
-  // 3 x 1.5 mm footprint is the stick's, taken from that part rather than measured on tape, so it
-  // is the figure to correct first if the drawing looks wrong.
-  public static Size PAD_WIDTH = new Size(3.0d, SizeUnit.mm);
-  public static Size PAD_LENGTH = new Size(1.5d, SizeUnit.mm);
+  // White tape is the one light-coloured board in this family, so its lettering is dark where
+  // every other board's is white. Which of the two is used follows the board colour, because that
+  // is an editable property and a user who darkens the tape should get the light ink back.
+  public static Color SILK_DARK_COLOR = Color.decode("#333333");
 
-  // The air left between a pad and the nearest package.
-  public static Size PAD_CLEARANCE = new Size(0.5d, SizeUnit.mm);
+  // The uncut pad is a pill lying along the tape with the cut running through its middle, so a
+  // cut end keeps half of one. Across the tape it is the same at every density; along the tape it
+  // is this nominal where there is room and otherwise as much as the density leaves, which at
+  // 144/m brings it down to about its own width -- a pill no longer than it is wide being a
+  // circle, which is what that tape carries. That agreement is the only check there is on the
+  // width, neither figure having been measured off tape.
+  public static Size PAD_WIDTH = new Size(1.5d, SizeUnit.mm);
+  public static Size PAD_LENGTH = new Size(3.0d, SizeUnit.mm);
+
+  // The air left between a pad and the nearest package, and between a pad and the name printed
+  // beside it.
+  public static Size PAD_CLEARANCE = new Size(0.2d, SizeUnit.mm);
+  public static Size LABEL_GAP = new Size(0.5d, SizeUnit.mm);
 
   /**
    * A cut length of tape, not a board, so the count is a free number rather than an enum: the part
@@ -83,6 +97,11 @@ public class WS2812BStrip extends AbstractMakerBoard {
   // the tape prints them +5V and GND at both ends.
   public static final String[] PIN_NAMES =
       new String[] {"+5V_1", "DIN", "GND_1", "+5V_2", "DOUT", "GND_2"};
+
+  // What the tape prints beside each pad, which is the bare designation: the rails are not
+  // numbered on the part, and the data pad is printed two letters whichever end it is.
+  public static final String[] SILK_NAMES =
+      new String[] {"+5V", "DI", "GND", "+5V", "DO", "GND"};
 
   private Density density = Density._60;
   private int ledCount = DEFAULT_LED_COUNT;
@@ -139,6 +158,19 @@ public class WS2812BStrip extends AbstractMakerBoard {
     return Integer.toString(index + 1);
   }
 
+  @Override
+  protected String getSilkPinLabel(int index) {
+    if (index >= 0 && index < SILK_NAMES.length) {
+      return SILK_NAMES[index];
+    }
+    return super.getSilkPinLabel(index);
+  }
+
+  /** The lettering that contrasts with the tape colour the user has chosen. */
+  private Color getSilkInk() {
+    return CalcUtils.calculateLuminance(bodyColor) < 128d ? SILK_COLOR : SILK_DARK_COLOR;
+  }
+
   private double getPitch() {
     return new Size(getDensity().getPitchMm(), SizeUnit.mm).convertToPixels();
   }
@@ -169,19 +201,35 @@ public class WS2812BStrip extends AbstractMakerBoard {
   }
 
   /**
-   * How far the first package's centre sits in from a cut end. The pads come first and the
-   * packages must clear them, so this is derived from the pad footprint rather than chosen: the
-   * whole pad, a little air, then a half package. Deriving it is what stops a dense tape drawing
-   * its first LED on top of its own input pad.
+   * How far the first package's centre sits in from a cut end. Tape is a repeating cell one pitch
+   * long with its package in the middle, and a cut falls on a cell boundary, so this is half a
+   * pitch and nothing else -- which also makes a length of tape exactly as many pitches long as
+   * it has LEDs, and makes two lengths butted together keep the pitch across the joint.
    */
-  private double getLeadIn() {
-    return PAD_WIDTH.convertToPixels() + PAD_CLEARANCE.convertToPixels()
-        + RGB_LED_SIZE.convertToPixels() / 2.0;
+  double getLeadIn() {
+    return getPitch() / 2.0;
   }
 
-  /** Left end of the tape; the pads are flush with it, so their centres sit half a pad inboard. */
+  /**
+   * How far a cut pad reaches inboard: half of the pill it was cut from. The pill is the nominal
+   * length where the density leaves room for it, and otherwise as much as fits between the cut
+   * and the first package -- never less than its own width, below which it would stop being a
+   * pad and start being a sliver.
+   */
+  double getPadDepth() {
+    return getPadLength() / 2.0;
+  }
+
+  double getPadLength() {
+    double room = 2 * (getLeadIn() - RGB_LED_SIZE.convertToPixels() / 2.0
+        - PAD_CLEARANCE.convertToPixels());
+    return Math.max(PAD_WIDTH.convertToPixels(),
+        Math.min(PAD_LENGTH.convertToPixels(), room));
+  }
+
+  /** Left end of the tape, which is where control point zero sits: the cut runs through the pad. */
   private double getBoardX(double x) {
-    return x - PAD_WIDTH.convertToPixels() / 2.0;
+    return x;
   }
 
   /** Top edge. Each column of pads is centred across the width, so the first sits above centre. */
@@ -199,12 +247,10 @@ public class WS2812BStrip extends AbstractMakerBoard {
     // by a fraction of the width keeps them from touching: fractions of a 10 mm tape would leave
     // them almost edge to edge.
     //
-    // Both columns stand flush against their own cut, so what separates them is the tape less one
-    // whole pad. The offsets are measured from control point 0, which is itself half a pad inboard
-    // of the left cut; an earlier version inset the pads instead, and reaching a point one inset
-    // inboard of the *right* cut then cost two insets rather than one, which put the far pad's
-    // centre on the tape edge with half of it hanging off.
-    double columnSpacing = getTapeLength() - PAD_WIDTH.convertToPixels();
+    // The cut runs through the middle of a pad, so a control point sits on the cut itself and the
+    // two columns are a whole tape length apart. That is also what makes two lengths chain: butt
+    // them together and the pads they are soldered through coincide.
+    double columnSpacing = getTapeLength();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
     for (int i = 0; i < 3; i++) {
@@ -222,6 +268,37 @@ public class WS2812BStrip extends AbstractMakerBoard {
     Point2D p0 = controlPoints[0];
     return new RoundRectangle2D.Double(getBoardX(p0.getX()), getBoardY(p0.getY()), getTapeLength(),
         getTapeWidth(), 4, 4);
+  }
+
+  /**
+   * The tape prints each line's name beside its pad, in the bare strip between the pad and the
+   * first package. How much strip that is follows from the density: 12.7 mm at 30/m, 4.3 mm at
+   * 60/m and 0.2 mm at 144/m, where the packages all but touch. So the names go on where they
+   * fit and are left off where they do not, rather than being shrunk to suit the worst case.
+   */
+  private void drawCutEndLabels(Graphics2D g2d, double boardX, double boardY) {
+    double room = getLeadIn() - RGB_LED_SIZE.convertToPixels() / 2.0 - getPadDepth();
+    double gap = LABEL_GAP.convertToPixels();
+    double spacing = PIN_SPACING.convertToPixels();
+    double firstRow = boardY + (getTapeWidth() - getPadRunLength()) / 2.0;
+
+    g2d.setFont(PIN_ROW_FLAT_FONT);
+    g2d.setColor(getSilkInk());
+    FontMetrics metrics = g2d.getFontMetrics();
+
+    for (int i = 0; i < PIN_NAMES.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty() || metrics.stringWidth(label) + gap > room) {
+        continue;
+      }
+
+      boolean input = i < 3;
+      double x = input ? boardX + getPadDepth() + gap
+          : boardX + getTapeLength() - getPadDepth() - gap;
+      StringUtils.drawCenteredText(g2d, label, x, firstRow + (i % 3) * spacing,
+          input ? HorizontalAlignment.LEFT : HorizontalAlignment.RIGHT,
+          VerticalAlignment.CENTER);
+    }
   }
 
   @Override
@@ -258,10 +335,8 @@ public class WS2812BStrip extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // The LED field starts after the input pads and ends before the output pad, so the first and
-      // last packages cannot sit on top of them -- at 144/m the pitch is only 6.94 mm, so a 5 mm
-      // package placed half a pitch from the cut would overlap the pad it is meant to clear.
-      // Between those ends the LEDs keep the real pitch, which is what the density means.
+      drawCutEndLabels(g2d, boardX, boardY);
+
       double pitch = getPitch();
       double ledSize = RGB_LED_SIZE.convertToPixels();
       double firstCenter = boardX + getLeadIn();
@@ -275,8 +350,9 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    drawSurfacePads(g2d, 0, controlPoints.length, PAD_WIDTH, PAD_LENGTH, outlineMode,
-        drawingObserver);
+    double padWidth = PAD_WIDTH.convertToPixels();
+    drawBisectedPads(g2d, 0, 3, padWidth, getPadLength(), true, outlineMode, drawingObserver);
+    drawBisectedPads(g2d, 3, 3, padWidth, getPadLength(), false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }
