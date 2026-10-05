@@ -73,6 +73,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
   private Version version = Version.SSD1306_0_96;
   private OLEDInterface oledInterface = OLEDInterface.I2C_4Pin;
   private Display screen = Display.VALUE;
+  private Color pixelColor = PIXEL_BLUE;
 
   public OLEDDisplay() {
     super();
@@ -103,9 +104,9 @@ public class OLEDDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * What the lit area prints. Six boards share this outline and this colour, so the glass carries
-   * the size, the controller and the interface to tell them apart; {@code NONE} leaves the panel
-   * dark for a drawing that wants the unpowered part.
+   * What the lit area prints. Six boards share this outline, so the glass carries the size, the
+   * controller and the interface to tell them apart; {@code NONE} leaves the panel dark for a
+   * drawing that wants the unpowered part.
    */
   @EditableProperty
   public Display getScreen() {
@@ -114,6 +115,21 @@ public class OLEDDisplay extends AbstractMakerBoard {
 
   public void setScreen(Display screen) {
     this.screen = screen;
+    invalidateCache();
+  }
+
+  /**
+   * What colour the lit pixels are. Every size is sold in white and in blue, and the 0.96" also in
+   * yellow and in a yellow-over-blue split panel; none of that changes the board, the pinout or
+   * the glass, so it is a colour rather than a variant.
+   */
+  @EditableProperty(name = "Pixel Color")
+  public Color getPixelColor() {
+    return pixelColor == null ? PIXEL_BLUE : pixelColor;
+  }
+
+  public void setPixelColor(Color pixelColor) {
+    this.pixelColor = pixelColor;
     invalidateCache();
   }
 
@@ -274,7 +290,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
       g2d.fill(new RoundRectangle2D.Double(activeX, activeY, activeW, activeH, 2, 2));
 
       MakerBoardPainter.drawScreenText(g2d,
-          new Rectangle2D.Double(activeX, activeY, activeW, activeH), PIXEL_BLUE, getScreen(),
+          new Rectangle2D.Double(activeX, activeY, activeW, activeH), getPixelColor(), getScreen(),
           getName(), getValueForDisplay());
     }
 

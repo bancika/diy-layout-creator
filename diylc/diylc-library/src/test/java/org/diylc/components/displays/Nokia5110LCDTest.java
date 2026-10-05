@@ -21,6 +21,7 @@
  */
 package org.diylc.components.displays;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -52,6 +53,12 @@ public class Nokia5110LCDTest {
 
   private static double mm(double px) {
     return px / PX_PER_MM;
+  }
+
+  private static Nokia5110LCD of(Color screenColor) {
+    Nokia5110LCD lcd = new Nokia5110LCD();
+    lcd.setScreenColor(screenColor);
+    return lcd;
   }
 
   @Test
@@ -166,6 +173,32 @@ public class Nokia5110LCDTest {
     Assert.assertEquals("84x48 PCD8544", printed.getValueForDisplay());
     Assert.assertEquals(Display.VALUE, printed.getScreen());
     MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
+  }
+
+  /**
+   * The module is sold with a blue, a white and a green backlight, and the dark ink the glass
+   * normally carries disappears into the darker of those. Two backlights at opposite ends of the
+   * range must each still show their text, or one of them is printing it in the backlight's own
+   * colour -- the same assertion the Character LCD makes of its own.
+   */
+  @Test
+  public void theInkFollowsTheBacklight() {
+    Nokia5110LCD dark = of(Color.decode("#1B3C73"));
+    Nokia5110LCD pale = of(Color.decode("#6B7668"));
+
+    Nokia5110LCD darkBlank = of(Color.decode("#1B3C73"));
+    darkBlank.setScreen(Display.NONE);
+    Nokia5110LCD paleBlank = of(Color.decode("#6B7668"));
+    paleBlank.setScreen(Display.NONE);
+
+    MakerBoardTestSupport.assertScreenTextIsDrawn(dark, darkBlank);
+    MakerBoardTestSupport.assertScreenTextIsDrawn(pale, paleBlank);
+  }
+
+  /** A project saved before the backlight colour existed deserialises with none set. */
+  @Test
+  public void aMissingBacklightColourFallsBackToTheGlass() {
+    Assert.assertEquals(Nokia5110LCD.LCD_COLOR, of(null).getScreenColor());
   }
 
   @Test

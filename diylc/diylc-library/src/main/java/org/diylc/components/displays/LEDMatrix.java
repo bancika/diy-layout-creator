@@ -132,8 +132,9 @@ public class LEDMatrix extends AbstractMakerBoard {
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
 
     // Each row sits the same clearance in from its own edge, so the gap between them is whatever
-    // the board leaves. On the single that is the height and the rows lie across it; on the 4-in-1
-    // it is the length and the rows stand on end at the short edges.
+    // the board leaves. On the original single that is the height and the rows lie across it; on
+    // the boards that bring their headers out on the short edges it is the length and the rows
+    // stand on end.
     boolean vertical = getModules().hasVerticalHeaders();
     double far = vertical ? getHeaderSpacing() : -getHeaderSpacing();
     for (int i = 0; i < 5; i++) {
@@ -173,8 +174,8 @@ public class LEDMatrix extends AbstractMakerBoard {
   }
 
   /**
-   * Left edge of the board. The single centres its horizontal row across the width; the 4-in-1
-   * stands its row against the left edge, one clearance in.
+   * Left edge of the board. The original single centres its horizontal row across the width; a
+   * board with vertical headers stands its row against the left edge, one clearance in.
    */
   private double getBoardX(double x) {
     if (getModules().hasVerticalHeaders()) {
@@ -185,7 +186,8 @@ public class LEDMatrix extends AbstractMakerBoard {
 
   /**
    * Top edge of the board. Control point 0 is an input pin: on the single it sits one clearance up
-   * from the bottom edge, on the 4-in-1 it is the top pin of a column centred on the height.
+   * from the bottom edge, with vertical headers it is the top pin of a column centred on the
+   * height.
    */
   private double getBoardY(double y) {
     if (getModules().hasVerticalHeaders()) {
@@ -247,7 +249,7 @@ public class LEDMatrix extends AbstractMakerBoard {
 
     // Any header the modules cover is drawn first, so that they cover it. On the single that is
     // the output row alone, which sits behind the module while the input row is out on bare board
-    // below it; on the 4-in-1 the modules fill the whole board, so both rows go down here.
+    // below it; on the others the modules fill the whole board, so both rows go down here.
     //
     // These are drawn and painted over rather than skipped: drawPinHeader is what registers the
     // pins as a conductive area, so leaving a call out would look identical and quietly drop five
@@ -280,7 +282,7 @@ public class LEDMatrix extends AbstractMakerBoard {
 
       // Because the modules butt against each other the pitch runs unbroken across the strip, so
       // the dots are one grid rather than a tiled one. The pattern is centred across the full
-      // width for the same reason: a 4-in-1 shows one image, not the same image four times.
+      // width for the same reason: a cascade shows one image, not the same image once per module.
       double dotPitch = matrixSize / 8.0;
       double dotR = dotPitch * 0.7;
       int cols = 8 * modules.getCount();
@@ -297,7 +299,8 @@ public class LEDMatrix extends AbstractMakerBoard {
       g2d.setClip(oldClip);
 
       // Only the tall single exposes its driver. The compact one fits it under the module and the
-      // 4-in-1 hides all four the same way, which is exactly what makes those two tileable.
+      // cascaded boards hide every one of theirs the same way, which is what makes them
+      // tileable.
       if (modules == Modules.Single_8x8) {
         double chipMarginX = CHIP_MARGIN_X.convertToPixels();
         MakerBoardPainter.drawChip(g2d, boardX + chipMarginX,
@@ -321,8 +324,8 @@ public class LEDMatrix extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // The input row is left to draw only where the modules do not cover it; on the 4-in-1 it went
-    // down with the output row before them.
+    // The input row is left to draw only where the modules do not cover it; where they cover both
+    // it went down with the output row before them.
     if (!coversBothHeaders) {
       drawPinHeader(g2d, 0, 5, outlineMode, drawingObserver);
     }
@@ -355,13 +358,19 @@ public class LEDMatrix extends AbstractMakerBoard {
    * these carry one module each. The original single puts its driver and both headers on a strip
    * below the module, so the board is taller than it is wide. The compact single fits the driver
    * under the module instead, leaving a board that is only the module, which is what lets several
-   * be butted together; the 4-in-1 is that same idea sold as a single PCB. Both of those hide
-   * every driver and bring their headers out on the short edges, standing the pin rows on end.
+   * be butted together; the 4-in-1 and the 8-in-1 are that same idea sold as a single PCB. All
+   * three hide every driver and bring their headers out on the short edges, standing the pin rows
+   * on end.
+   *
+   * <p>The cascaded boards carry no dimensions of their own: a strip of flush 32 mm modules is
+   * 32 mm tall and as wide as it has modules, so the 4-in-1's 128 mm and the 8-in-1's 256 mm are
+   * the module count times {@code MATRIX_SIZE} rather than figures read off a board.
    */
   public enum Modules {
     Single_8x8("Single 8x8 (32x50mm)", 1, 32.0d, 50.0d, false),
     Compact_8x8("Compact 8x8 (32x32mm)", 1, 32.0d, 32.0d, true),
-    FourInOne_32x8("4-in-1 32x8 (128x32mm)", 4, 128.0d, 32.0d, true);
+    FourInOne_32x8("4-in-1 32x8 (128x32mm)", 4, 128.0d, 32.0d, true),
+    EightInOne_64x8("8-in-1 64x8 (256x32mm)", 8, 256.0d, 32.0d, true);
 
     private final String label;
     private final int count;

@@ -21,6 +21,7 @@
  */
 package org.diylc.components.displays;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -454,5 +455,36 @@ public class OLEDDisplayTest {
         MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
       }
     }
+  }
+
+  /**
+   * These panels are sold in white and in yellow as well as the blue the class defaults to, and
+   * the pixels are the only thing that colour touches -- there is no backlight behind them and no
+   * ink in front. The text still has to come through whichever one is picked.
+   */
+  @Test
+  public void theLitAreaFollowsThePixelColour() {
+    OLEDDisplay white = new OLEDDisplay();
+    white.setPixelColor(Color.decode("#F5F5F5"));
+    OLEDDisplay whiteBlank = new OLEDDisplay();
+    whiteBlank.setPixelColor(Color.decode("#F5F5F5"));
+    whiteBlank.setScreen(Display.NONE);
+
+    OLEDDisplay yellow = new OLEDDisplay();
+    yellow.setPixelColor(Color.decode("#FFD54F"));
+    OLEDDisplay yellowBlank = new OLEDDisplay();
+    yellowBlank.setPixelColor(Color.decode("#FFD54F"));
+    yellowBlank.setScreen(Display.NONE);
+
+    MakerBoardTestSupport.assertScreenTextIsDrawn(white, whiteBlank);
+    MakerBoardTestSupport.assertScreenTextIsDrawn(yellow, yellowBlank);
+  }
+
+  /** A project saved before the pixel colour existed deserialises with none set. */
+  @Test
+  public void aMissingPixelColourFallsBackToBlue() {
+    OLEDDisplay display = new OLEDDisplay();
+    display.setPixelColor(null);
+    Assert.assertEquals(OLEDDisplay.PIXEL_BLUE, display.getPixelColor());
   }
 }

@@ -48,6 +48,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.presenter.CalcUtils;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Nokia 5110 LCD", category = "Displays & Outputs",
@@ -64,8 +65,8 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   public static Color BEZEL_COLOR = LIGHT_METAL_COLOR;
   public static Color BEZEL_BORDER_COLOR = LIGHT_METAL_COLOR.darker();
   public static Color LCD_COLOR = Color.decode("#6B7668");
-  public static Color LCD_BORDER_COLOR = LCD_COLOR.darker();
-  public static Color LCD_INK_COLOR = Color.decode("#2B2B2B");
+  public static Color LCD_INK_LIGHT = Color.decode("#F5F5F5");
+  public static Color LCD_INK_DARK = Color.decode("#2B2B2B");
 
   public static Size BOARD_WIDTH = new Size(43.8d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(45.8d, SizeUnit.mm);
@@ -95,6 +96,7 @@ public class Nokia5110LCD extends AbstractMakerBoard {
       new String[] {"RST", "CE", "DC", "DIN", "CLK", "VCC", "BL", "GND"};
 
   private Display screen = Display.VALUE;
+  private Color screenColor = LCD_COLOR;
 
   public Nokia5110LCD() {
     super();
@@ -114,6 +116,26 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   public void setScreen(Display screen) {
     this.screen = screen;
     invalidateCache();
+  }
+
+  /**
+   * What the backlight makes of the grey-green glass. The same module is sold with a blue, a white
+   * and a green backlight, and nothing else about it changes, so it is a colour rather than a
+   * variant -- the same treatment the Character LCD gives its own backlight.
+   */
+  @EditableProperty(name = "Backlight Color")
+  public Color getScreenColor() {
+    return screenColor == null ? LCD_COLOR : screenColor;
+  }
+
+  public void setScreenColor(Color screenColor) {
+    this.screenColor = screenColor;
+    invalidateCache();
+  }
+
+  /** The ink that contrasts with the backlight the user has chosen. */
+  private Color getScreenInk() {
+    return CalcUtils.calculateLuminance(getScreenColor()) < 128d ? LCD_INK_LIGHT : LCD_INK_DARK;
   }
 
   /**
@@ -239,15 +261,15 @@ public class Nokia5110LCD extends AbstractMakerBoard {
       double displayY = boardY + DISPLAY_TOP_OFFSET.convertToPixels();
       double displayRadius = CORNER_RADIUS.convertToPixels();
 
-      g2d.setColor(LCD_COLOR);
+      g2d.setColor(getScreenColor());
       g2d.fill(new RoundRectangle2D.Double(displayX, displayY, displayW, displayH, displayRadius,
           displayRadius));
-      g2d.setColor(LCD_BORDER_COLOR);
+      g2d.setColor(getScreenColor().darker());
       g2d.draw(new RoundRectangle2D.Double(displayX, displayY, displayW, displayH, displayRadius,
           displayRadius));
 
       MakerBoardPainter.drawScreenText(g2d,
-          new Rectangle2D.Double(displayX, displayY, displayW, displayH), LCD_INK_COLOR,
+          new Rectangle2D.Double(displayX, displayY, displayW, displayH), getScreenInk(),
           getScreen(), getName(), getValueForDisplay());
 
       // The module prints its pin names in the strip below the header. They lie flat along the row

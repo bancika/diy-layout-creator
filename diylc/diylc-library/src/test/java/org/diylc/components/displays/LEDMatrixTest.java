@@ -69,13 +69,18 @@ public class LEDMatrixTest {
     }
   }
 
-  /** The modules are flush with each other and with the board, so the outline has to bound them. */
+  /**
+   * The modules are flush with each other and with the board, so every board is exactly as wide as
+   * its modules. Asserted as an equality rather than as a fit, because that is where the cascaded
+   * boards' widths come from -- a transcribed 128 or 256 that did not match the module count would
+   * otherwise pass.
+   */
   @Test
-  public void theModulesFitAcrossTheBoard() {
+  public void theBoardIsExactlyAsWideAsItsModules() {
     for (Modules modules : Modules.values()) {
       double matrixSize = mm(LEDMatrix.MATRIX_SIZE.convertToPixels());
-      Assert.assertTrue(modules + " is narrower than its modules",
-          modules.getBoardWidthMm() >= modules.getCount() * matrixSize);
+      Assert.assertEquals(modules + " width", modules.getCount() * matrixSize,
+          modules.getBoardWidthMm(), 0.01d);
     }
   }
 
@@ -98,7 +103,7 @@ public class LEDMatrixTest {
 
   /**
    * Both headers are five-pin rows on 0.1" pitch wherever they leave the board. The tall single
-   * runs them across the width; the two tileable variants stand them on end at the short edges.
+   * runs them across the width; the tileable variants stand them on end at the short edges.
    */
   @Test
   public void eachHeaderIsAFivePinRow() {

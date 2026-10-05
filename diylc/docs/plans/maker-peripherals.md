@@ -64,14 +64,14 @@ happened to come back true, and only after a fix.
 | `SevenSegmentDisplay` | 1-digit 10-pin, 4-digit 12-pin, TM1637 module | **Best-*written* file in the set**, which is not the same as the best-sourced one. The segment-mask table is genuinely good, the 10-pin structure is corroborated, and the glyph itself is now the standard unit-grid construction: an upright 10 × 18 box with segments two units thick, mitred at 45 degrees so neighbours meet at a shared vertex, each outlined in the face colour so that they still read as separate segments. That replaced a set of hand-tuned polygons and retired both `SEGMENT_GAP` (the construction separates by outline rather than by gap) and `SLANT_DEGREES` (it is drawn upright, as the source is). What remains unchecked is everything *around* the glyph. The per-package dimensions now live on the `DisplayType` constants rather than in scattered branches, and the enum has been split so that the two bare four-digit packages — 0.36" and 0.56" — are separate variants sharing one pin array. The 0.56" set is what this class has always carried and remains unverified; the 0.36" set is now largely maintainer-supplied — body 30 × 14 mm, 7.5 mm digit pitch, 0.4" row spacing — leaving only its digit width inferred. See §11.10 and §11.11. |
 | `WS2812BRing` | 12 / 16 / 24 LED | **Good.** Genuine polar maths, mm-based OD/ID per size, LED count driving the rendering, `drawSolderPads` rather than a header — correct for a ring. Its diameters, pad count and pad placement have all since been corrected from Adafruit's pages and the maintainer's measurements; the pads now sit on their own radius near the rim, each in one of the real uneven gaps between LEDs (§11.9). The LED packages are the real 5 mm 5050 part, shared with the Stick as `AbstractMakerBoard.RGB_LED_SIZE` — they had been drawn at a clamped 8-15 px, barely 1-2 mm — and the ring renders lit, in a continuous yellow-orange-red-purple-blue-green gradient with a palette per variant. |
 | `CharacterLCD` | 16x2 / 20x4, I2C backpack / 16-pin parallel | Correct HD44780 and PCF8574 pin data. The bodies are now maintainer-given at 80 × 35 and 98 × 60 mm — the 16x2 height had been 36, so "correct bodies" was never true of it. The screen geometry was raw pixels — an eyeballed `bezelMarginX = (16x2) ? 45 : 40` and a window derived as a margin off the board — and is now measured: a 72.2 × 24.1 mm bezel around a 64.5 × 14.5 mm lit area on the 16x2, 77 × 25.5 around 70.4 × 20.4 on the 20x4, carried on `LCDSize` and centred rather than subtracted. Headers are placed from measurements too (§3.2 item 7). No pixel literal survives in `draw()`; only the mounting holes remain unsourced (§11.8). The `Font` it once allocated inside `draw()` went with the demo text in item 7; the one that remains is in `drawIcon`, which runs per toolbox icon rather than per repaint. |
-| `OLEDDisplay` | 0.96" SSD1306 / 0.91" SSD1306 / 1.3" SH1106, each I2C 4-pin or SPI 7-pin | Correct pin names, and the body is the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is 21.744 × 10.864 mm, which is exactly 2:1. The gap this row used to record — no size variants — closed in §6.3, and closing it overturned that item's premise: the interface is **not** orthogonal to the size, because the 0.91" is sold as two different boards rather than one board with two headers, and it is the first display board in the package with its header on the left edge. |
-| `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. |
-| `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / ST7789 1.54" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now closed: §6.2's `Controller` enum carries all four, the ILI9341, the ST7735, the 1.54" ST7789 and the round GC9A01. Board size, pin array, header offset, hole pattern and screen all come off the enum, and the round variant's body is a disc unioned with its tab. All four mounting holes on the 2.8" and the 1.8" are 3 mm across and 3 mm in from each of the two edges nearest them; the header-side pair was carried at a deeper inset for a while on the belief that it had to clear the pin row, which it does not. The 1.54" carries its own 2 mm drill at a 2.5 mm inset, so the figures are each board's rather than the package family's. It is also the first of these boards to print its pin names, which all four variants now do (§6.2). |
+| `OLEDDisplay` | 0.96" SSD1306 / 0.91" SSD1306 / 1.3" SH1106, each I2C 4-pin or SPI 7-pin | Correct pin names, and the body is the measured 26.7 × 19.3 mm panel rather than a 27 mm square. The glass had been drawn near-square against what is really a 2:1 letterbox; the lit area is 21.744 × 10.864 mm, which is exactly 2:1. The pixels are a colour rather than a constant since §12, because every size is sold in white and yellow as well as blue and none of that touches the board, the pinout or the glass. The gap this row used to record — no size variants — closed in §6.3, and closing it overturned that item's premise: the interface is **not** orthogonal to the size, because the 0.91" is sold as two different boards rather than one board with two headers, and it is the first display board in the package with its header on the left edge. |
+| `LEDMatrix` | Single 8x8 / Compact 8x8 / 4-in-1 32x8 / 8-in-1 64x8 | Plausible single MAX7219 module with correct cascade headers, but a hardcoded `-44 mm` output-header offset and pixel-placed matrix and chip. Both are gone: the modules are the real 32 × 32 mm part drawn flush with the board, and the header rows sit one clearance in from their own edges with the spacing derived from the board rather than fitted. Whichever headers the modules cover are drawn before them and painted over, as on the real part, so the display face stays clean while the pins stay wireable (§3.2 item 9). §6.4 added the other two: the compact 8x8, which fits its driver under the module so the board is only the module (32 × 32 mm) and several can be butted together, and the 4-in-1 (128 × 32 mm, four flush modules), both standing their headers vertical on the short edges with every driver hidden. Carrying boards other than an 8x8 is what retired the `8x8` in the old class name. §12 then appended the 8-in-1 as one enum constant, which cost nothing because the cascade was already parameterised by module count; what it did change is the test, which now asserts that a board is *exactly* as wide as its modules rather than at least as wide, since that equality is where the 128 and the 256 come from. |
+| `TFTDisplay` | ILI9341 2.8" / ST7735 1.8" / ST7789 1.54" / GC9A01 1.28" round | Was the weakest file, on two counts that are now both gone: a footprint bug, and a descriptor reading 240x320 against on-screen silk reading `320x240`. The footprint was rebuilt from the module drawing (§5 item 3) and no `320x240` string survives anywhere in the class. The gap it always had -- no variant enum -- is now closed: §6.2's `Controller` enum carries all four, the ILI9341, the ST7735, the 1.54" ST7789 and the round GC9A01. Board size, pin array, header offset, hole pattern and screen all come off the enum, and the round variant's body is a disc unioned with its tab. All four mounting holes on the 2.8" and the 1.8" are 3 mm across and 3 mm in from each of the two edges nearest them; the header-side pair was carried at a deeper inset for a while on the belief that it had to clear the pin row, which it does not. The 2.4" added in §12 is the one board where that belief is true, and its far pair really is deeper at 6.92 mm, so the two cases are now asserted separately rather than by one shared figure. The 1.54" carries its own 2 mm drill at a 2.5 mm inset, so the figures are each board's rather than the package family's. It is also the first of these boards to print its pin names, which all four variants now do (§6.2). §12 added a fifth, the 2.4" ILI9341, which is the first board in the package with **two** headers and the first whose lit area is a measurement rather than a derivation; it shares the 2.8"'s pin array by identity rather than by copy. |
 | `LEDBarGraph` | 8 / 10 / 12 segment | **New in this slice (§6.6), not a draft**, and the only class here that is not an `AbstractMakerBoard` — it is a DIP-outline part, so it follows `DIL_IC` on `AbstractLabeledComponent` with a sibling transformer. The package follows from the segment count rather than being fixed: anode and cathode per segment gives 16 / 20 / 24 pins, and the body lengthens one pin pitch per segment (20.32 / 25.4 / 30.48 mm) at a constant 10.3 mm width, with rows 7.62 mm apart. Unlike a DIP IC the body spans the rows instead of sitting between them, because the pins leave the underside rather than the sides, so the plastic covers them entirely — they are drawn first and painted over, never skipped, or they would drop out of the conductive areas. Each segment is centred on the pin pair that drives it, taken from the two control points rather than by dividing the body, which is also what makes it orientation-proof. Colour is a rule rather than a property — one red at the top, two yellow, green for the rest — so the green band grows with the count; the cost is that a single-colour bar can no longer be drawn. Pins are round and drawn over the package: hidden on the real part, but a pin that cannot be seen cannot be positioned against a board. Covered by `LEDBarGraphTest`, whose `bodyCoversEveryPin` replaces an earlier assertion that encoded the copied DIP arrangement and therefore passed while the component was wrong, and whose `segmentsAreCentredOnTheirPins` catches a placement that was inside the body and still off its pins. |
 | `WS2812BStrip` | 30 / 60 / 144 LED/m, 1-144 LEDs | **New in this slice (§6.1), not a draft** — so unlike its neighbours this row describes a part rather than a rehabilitation. Everything follows from the density, which is how tape is sold: pitch is 1000 mm over the count (33.33 / 16.67 / 6.94 mm), length is linear in the LED count, and four control points hold at every density and count because the LEDs are drawn rather than wired. Two figures are not measured: the tape width (10 mm for the 30 and 60, 12 mm for the 144) is the plan's stated norm, and the lead-in that keeps the end pads clear of the first and last package is derived from the pad and package footprints rather than taken from a real tape. Covered by `WS2812BStripTest`, whose pad-clearance assertions exist because that geometry was got wrong three times before it was measured. |
 | `WS2812BJewel` | none (a single part) | **New in this slice (§6.7), not a draft.** A sibling of `WS2812BRing` rather than another `RingSize` constant, per D2: it shares the part family and the pad footprint but not the footprint family. It is a solid 23 mm disc with no inner rim, six LEDs on a 16 mm circle around a seventh in the middle, five pads on a 9 mm circle *inside* the LED ring rather than inset from the rim, and two 3 mm mounting holes 19 mm apart that no ring carries — five variant-specific structures, which is a different part and not a variant. Every figure is maintainer-supplied. The pad arrangement is the part that could silently have been wrong: five pads share six gaps between the ring LEDs, so one gap carries none, and it works out to the gap pointing due left, which is where a mounting hole sits. `WS2812BJewelTest` pins that down, because every count and radius assertion passes whichever gap is left empty. Its packages — and the rings', which this changed too — are drawn turned to follow their own radius the way they are mounted; the centre package has no radius and stays square to the board. |
 | `WS2812BPanel` | none (a single part) | **New in this slice (§6.7), not a draft.** The only part in the package whose every figure comes from the manufacturer's own CAD rather than from a listing or a measurement: Adafruit publishes the EagleCAD board file for the 8x8 NeoMatrix, which gives the 71.12 mm square, the 8.89 mm pitch, the twelve 2.8 mm holes and the two three-pin ports to the micron. The ports are each other turned half a turn about the centre, which is what lets panels be chained, and both sit in the gap between the first and second rows of pixels because the grid reaches within half a pitch of every edge and there is no bare strip for them. The chain is a progressive raster rather than the serpentine most cheap panels use, which matters here only because the LEDs are drawn lit off the shared gradient and the sweep follows the chain. Port names are off the front for the reason the Stick's are -- the board file puts them on layer 22, its back -- while the board artwork the face really does carry is drawn: five lines in the gaps between pixel rows, sized from the cap heights the file records. Carries no variant property: see §6.7 for why the `Grid` enum it was built with came out again. |
-| `Nokia5110LCD` | none (a single part) | **New in this slice (§6.5), not a draft.** Every figure is maintainer-supplied and the whole outline is measured: a 43.8 x 45.8 mm board, a 40 x 35 mm bezel 4.5 mm down from the top edge, a 37 x 27 mm glass 11 mm down, and 3 mm mounting holes on a 34.5 x 41 mm pattern. It is the first display board whose header is on the **bottom** edge, so the board grows upwards from control point zero rather than down from it, and every feature is measured from an edge no control point touches. The glass is placed from the top edge rather than centred in the bezel, because it is not centred in it -- 6.5 mm of frame above, 1.5 mm below. It is also the first in the package to carry silkscreen: the pin names lie flat along the row under the header rather than standing on end like the Arduino boards', and the part name sits in the top left corner beside the mounting hole, where the module prints it (§6.5). One figure is unsourced: the 3.5 mm clearance from the bottom edge to the pin row. |
+| `Nokia5110LCD` | none (a single part) | **New in this slice (§6.5), not a draft.** Every figure is maintainer-supplied and the whole outline is measured: a 43.8 x 45.8 mm board, a 40 x 35 mm bezel 4.5 mm down from the top edge, a 37 x 27 mm glass 11 mm down, and 3 mm mounting holes on a 34.5 x 41 mm pattern. It is the first display board whose header is on the **bottom** edge, so the board grows upwards from control point zero rather than down from it, and every feature is measured from an edge no control point touches. The glass is placed from the top edge rather than centred in the bezel, because it is not centred in it -- 6.5 mm of frame above, 1.5 mm below. It is also the first in the package to carry silkscreen: the pin names lie flat along the row under the header rather than standing on end like the Arduino boards', and the part name sits in the top left corner beside the mounting hole, where the module prints it (§6.5). One figure is unsourced: the 3.5 mm clearance from the bottom edge to the pin row. Its backlight became a colour in §12, on the Character LCD's pattern — blue, white and green modules are the same part — which also meant deriving the ink from the chosen colour's luminance rather than printing it in a fixed dark grey that vanishes into a blue backlight. |
 | `WS2812BStick` | none | Hardcoded to 8 LEDs, with every LED dimension in raw pixels (28 × 28 package, 68 px insets), so the LEDs do not scale with the board. See the node-name bug below. All since corrected: a `Size`-based 51.1 × 10.22 mm board, real 5 mm 5050 packages off the shared `RGB_LED_SIZE`, pads reordered and renamed for uniqueness, and the LED row respread between the pad columns and drawn lit from the shared colour wheel (§11.6). Its footprint was then corrected a second time against maintainer-supplied figures, and the three corrections go together: two 2 mm mounting holes 1 inch apart astride the centre and 2 mm down from the top edge; surface pads of 3 x 1.5 mm flush with each cut end rather than plated holes set in from it; and the LED row moved off the board's own middle to sit centred in what the holes leave below them. On a board 10.22 mm tall those three compete for the same height, which is why `WS2812BStickTest` -- the class had no test until then -- asserts the clearances rather than the dimensions. |
 
 ### 3.1 Two defects that are bugs, not style
@@ -529,6 +529,10 @@ upwards from control point zero -- so its header offset is measured up from the 
 every other variant's is measured down from the top, and its pin names go above the row rather
 than below it. `headerSitsOnTheEdgeItsBoardHangsFrom` asserts the distinction for all four
 variants, because nothing else in the geometry would notice if the round one were flipped back.
+
+*Superseded by §12.2.2, which made the round board's arrangement the family's: every TFT variant
+now stands above its row, there is no distinction left to assert, and the test became
+`everyBoardStandsAboveItsHeader`.*
 
 1. `Controller` enum: `ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)")`,
    `ST7735_1_8("1.8\" ST7735 128x160")`, `ST7789_1_54("1.54\" ST7789 240x240")`,
@@ -1149,6 +1153,9 @@ E-paper (1.54" / 2.9" SSD1680) — growing but still niche, and the flexible-cab
 new drawing work. Also: 14- and 16-segment alphanumeric, HT16K33 backpacks, 1.2" and 2.3" large
 digits, 3.5" ILI9488, VFD, DotStar and APA102, and the RGB-backlight 1602.
 
+§12 revisits this list against the market rather than against the slice, and overturns one item of
+it: e-paper is no longer niche.
+
 ## 7. Testing
 
 Per-class tests under `diylc-library/src/test/java/org/diylc/components/displays/`, named
@@ -1196,8 +1203,11 @@ Thirteen palette entries: the seven existing, plus the strip, the bar graph, the
 the panel and the breakout. The `update.xml` 6.7.0 block carries all thirteen,
 alphabetically as the 6.5.0 block lists its boards. Two of the entries it already had were stale
 rather than missing, and both were stale because a class had outgrown them: the matrix was still
-described as an 8x8 and the TFT as a touch screen with an SD slot, which is one variant of four
-and a part that was removed from the drawing. The §6.8 screen readout gets no entry of its own:
+described as an 8x8 and the TFT as a touch screen with an SD slot, which is one variant of five
+and, at the time, a part that had been removed from the drawing. The second half of that has since
+been undone rather than the entry rewritten: §12.2.1 brought the socket back as the four-pin row it
+really is, on both ILI9341 boards. The socket itself is still not drawn, and the entry still has no
+business naming one variant's features. The §6.8 screen readout gets no entry of its own:
 it is how four components that are new in this very block look, not an improvement over
 anything a user has seen.
 
@@ -1600,3 +1610,218 @@ gate the displays.
     It reaches the BOM for the same reason `Common` does — it changes which part you order — so a
     cell now reads `4-Digit 0.36", Common Cathode, Colon`. That is three tokens, and the value
     column is getting long; worth revisiting if a fourth ever appears.
+
+## 12. Coverage against the market, and what is left
+
+§3 assesses each class against the part it models. This section asks the other question — whether
+thirteen classes cover what people actually build — and records the answer so that the next slice
+argues with a list rather than starting one. It was written after the thirteen shipped, which is why
+it can be blunt about where the effort went.
+
+### 12.1 Where the package stands
+
+**Every archetype is represented, and that was the point.** D1 claimed roughly seven display
+archetypes and claimed the drafts covered all seven; that held. Character LCD, graphic monochrome
+OLED, colour SPI TFT, the Nokia LCD, 7-segment, dot matrix, bar graph and addressable RGB are all
+here, and nothing a beginner kit ships is missing an archetype to draw it with.
+
+**Depth is where it is uneven, and it is uneven in a specific direction: the package is deepest
+where the drawing was most fun and shallowest where the parts sell most.**
+
+- *Addressable RGB is over-served.* Six classes and ten parts — breakout, stick, jewel, ring,
+  strip, panel — is finer granularity than any other archetype gets, and it is the one archetype
+  where substituting a neighbour would cost a user little. This is not an argument for removing
+  anything; it is an argument against adding more of it before the other two below are fixed.
+- *Colour TFT has four variants and misses the two best-sellers.* The 2.4" ILI9341 and the 0.96"
+  80x160 ST7735 are, between them, probably more modules sold than all four shipped variants.
+- *7-segment has one digit count.* One bare digit, two four-digit packages and the TM1637 module.
+  A clock wants six digits, a thermometer two, a counter eight; none of those can be drawn.
+
+### 12.2 Cheap wins taken
+
+Four. The first three were chosen because each needed no figure that was not already in hand — the
+standing objection to appending variants has always been provenance, not code — and the fourth
+because the maintainer supplied the figures it was blocked on.
+
+1. **`LEDMatrix` 8-in-1 (64x8, 256 x 32 mm).** One `Modules` constant. `getCount()` already drove
+   the module strip, the dot grid and the header spacing, so nothing branched. The dimensions are
+   not a measurement and do not need to be: flush 32 mm modules make a strip 32 mm tall and
+   `count * 32` wide, which is what the enum's new Javadoc says and what the test now asserts as an
+   equality. Several comments that said "the 4-in-1" where the code meant "whichever variant has
+   vertical headers" were generalised at the same time, since a second cascaded board is exactly
+   what makes that wording wrong.
+2. **`OLEDDisplay` pixel colour.** `PIXEL_BLUE` was a constant on a part sold in white, yellow and
+   a yellow-over-blue split as readily as in blue. It is now an `@EditableProperty`, defaulting to
+   the blue the class already drew. No geometry, no variant: the panel, the pinout and the glass are
+   identical across the colours, which is precisely the test D2 applies.
+3. **`Nokia5110LCD` backlight colour.** The same change, on the Character LCD's pattern rather than
+   the OLED's, because a 5110 has a backlight behind grey-green glass rather than emitting pixels.
+   Blue, white and green modules are the same part. This one carried a real consequence: the fixed
+   `LCD_INK_COLOR` disappeared into a blue backlight, so the ink is now chosen by the backlight's
+   luminance exactly as `CharacterLCD.getScreenInk()` does it, and `LCD_INK_COLOR` split into
+   `LCD_INK_LIGHT` / `LCD_INK_DARK`.
+
+4. **The 2.4" ILI9341**, on maintainer-supplied figures throughout: a 42.72 x 77.18 mm PCB, a
+   60.26 mm bezel, 3 mm holes 3 mm in from the top and side edges and 6.92 mm up from the bottom,
+   a 36.72 x 48.96 mm lit area starting 9.26 mm down from the top, the 14-pin row 2 mm up from the
+   bottom edge and a 4-pin SD row 2 mm down from the top. It turned out not to be the one-constant
+   append it was ranked as, because four of those figures behave unlike anything already in the
+   enum — see §12.2.1.
+
+None of the four earns an `update.xml` entry of its own: all four components are new in the 6.7.0
+block, so there is no earlier release for an `IMPROVEMENT` to improve on. The matrix's and the
+TFT's variant lists in that block were amended in place to name the 8-in-1 and the 2.4", which is
+the same treatment the other variant lists get.
+
+§12.2.1 records what the fourth cost, because "one more constant" was wrong by a wide margin and
+the reason is reusable.
+
+### 12.2.1 What the 2.4" actually needed
+
+**Two headers.** It is the first board in the package with a second pin row, so `Controller` gained
+`secondaryPinNames` and its own offset, `getRelativeOffsets` emits two rows, `drawPinHeader` is
+called once per row the way `LEDMatrix` already does it, and the node-name lookup spans both. Pin
+count went from 14 to 18 and `everyNodeNameIsUnique` now covers every variant, which is the
+assertion §3.1's `WS2812BStick` bug would have needed.
+
+**A header on the bottom edge of a rectangular board.** `getBoardY` asked `isRound()`, which had
+been standing in for "the row is on the bottom edge" because until now only the round board's tab
+was down there. The two came apart, so the question is now `isHeaderAtBottom()` and a round board
+answers it by construction. The same conflation was in `headerSitsOnTheEdgeItsBoardHangsFrom` and
+in which side of the row the silk prints on.
+
+**A lit area that is measured rather than centred.** Every other board centres the lit area in its
+glass. On the 2.4" that would put it 4.85 mm too low, because the panel carries the driver's
+bonding region along the bottom — 0.8 mm of frame above the lit area and 10.5 mm below it. The
+variant therefore carries `screenTopMm`, measured from the board's top edge, and
+`theLitAreaIsMeasuredOnlyWhereCentringWouldBeWrong` asserts both that it is the only variant to do
+so and that the two rules genuinely disagree, so the field cannot quietly stop earning its place.
+
+**Two hole insets on one board.** The far pair shares an edge with the 14-pin row, and at the 3 mm
+the other pair uses the drill would straddle the pins — so it is 6.92 mm, and `Controller` carries
+`bottomHoleInsetMm` alongside the shared figure. This is the opposite of the correction §3 records
+on the 2.8", whose header-side pair was carried deep for a while on the belief that it *had* to
+clear the row and did not; here it genuinely does, which is why the test asserts the clearance
+between the drill's near rim and the row rather than the 6.92 itself. It is not a cosmetic figure:
+the glass is centred between the hole rows, so moving one row moved the glass with it.
+
+**One figure was supplied and then not used as approved, and one was never supplied at all.** The
+bezel's vertical position was not among the measurements. Centring its frame on the lit area was
+proposed and approved, and it is wrong: it puts the bezel top at 3.61 mm, which is inside the top
+pair of 3 mm mounting holes, and `screenClearsTheMountingHoles` — an assertion that predates this
+work — fails on it. The bezel therefore keeps the family's existing rule, centred between the hole
+rows, which with the deeper far pair puts it at 6.50 to 66.76 mm: it clears both pairs, contains the
+measured lit area, and needs no new figure at all. What it leaves is 2.76 mm of frame above the lit
+area and 8.54 mm below, the asymmetry being the driver's bonding region along the bottom of the
+panel. Separately, the SD row's **horizontal** placement was not given; it is centred across the
+board like the long row, which `theSdRowStandsOffTheOppositeEdge` records as a derivation rather
+than a measurement.
+
+The general lesson, which is the board roadmap's D2 argument arriving from the other side: *a
+variant is cheap when it changes numbers and expensive when it changes structure*, and a part can
+look like the former while being the latter. Four of the 2.4"'s eight figures changed structure,
+and a fifth board's arrival then changed it again — §12.2.2.
+
+### 12.2.2 One orientation for the family
+
+The 2.8"'s SD row made an inconsistency visible that had been there since the `Controller` enum
+was written: the round 1.28" and the 2.4" stood above their pin row while the 2.8", the 1.8" and
+the 1.54" hung below theirs. That is not a drawing preference, because all five are values of one
+property on one class — **switching the variant turned the board end for end**, so every wire a user
+had drawn to the header was left at the wrong end of the part. The maintainer's reading of the
+hardware agrees with the fix: on these modules the main header is at the bottom and the optional SD
+row at the top.
+
+All five now stand above their row, and the standardisation paid for itself in deletions rather
+than costing anything. `headerAtBottom` and `isHeaderAtBottom()` are gone; `getBoardY` has one rule
+instead of two; the second row is always above the first, so the sign the 2.8" exposed cannot come
+back; and the silk is always above the pins. `bottomHoleInsetMm` became `headerSideHoleInsetMm`,
+which is what it always meant and can now be said plainly, since the header's edge and the bottom
+edge are the same edge on every board.
+
+It was free only because none of these variants has shipped: a released component cannot be flipped,
+because control point zero would move under every file that uses it. This is D6's "last chance to do
+so" being spent on something worth spending it on.
+
+One assertion changed shape rather than merely moving. `holesClearTheRowOnTheirOwnEdge` compared a
+drill's inset against a row's offset along one axis, and that was only ever right for the 2.4": with
+the 2.8"'s long row now on the same edge as its holes, the one-axis rule demanded a deeper inset for
+a board that does not need one. What actually matters is whether a hole is drilled where a pad is,
+in both axes at once — the 2.4"'s 14-pin row spans 33 mm of a 42.72 mm board and its end pads do
+reach the hole columns, while the 2.8"'s same row on a 50 mm board passes inside them, as a four-pin
+SD row does on both. `mountingHolesDoNotOverlapAnyPin` asserts that over every variant and every
+pin, and it is what now justifies the 6.92 mm rather than a figure anyone has to take on trust.
+
+**The 2.8" wanted the same row, and it was a missing header rather than an enhancement.** Its
+label has always read "(Touch + SD)" while its 14 pins are display and touch only, so the socket's
+four lines had nowhere to go. It now carries `PIN_NAMES_SD` on the same terms as the 2.4": same
+names, and its own 3 mm offset rather than the 2.4"'s 2 mm, since each board puts its second row as
+far in as its first, and on the top edge opposite the main row once §12.2.2 settled which edge that
+is. The 1.8", 1.54" and 1.28" have no SD socket and bring everything out on one row, so the question
+does not arise for them.
+
+Supporting two boards rather than one is what found the bug in the first implementation: the row's
+distance from control point zero had been written with the 2.4"'s sign baked in, which put the
+2.8"'s SD row off the board entirely, because that board was then headed at the top.
+`theSdRowStandsOffTheOppositeEdge` now runs over every variant that has a second row. The sign it
+was checking has since stopped existing, which is the better fix and the subject of §12.2.2.
+
+The two boards differ in one thing worth recording, because it looks like an inconsistency and is
+not: the 2.4"'s header-side holes are 6.92 mm in while the 2.8"'s stay at the shared 3 mm, even
+though both of those edges now carry the 14-pin row. The 2.4" is a 42.72 mm board and a 33 mm row
+leaves its end pads reaching the hole columns; the 2.8" is 50 mm and the same row passes inside
+them. The test asserts that overlap rather than the insets, so the difference is derived from the
+rows rather than standing as two unexplained figures.
+
+### 12.3 Cheap wins that are not cheap
+
+Recorded because both look like appends and are not, and a future reader should not have to
+rediscover that.
+
+- **More 7-segment digit counts.** Digit count is not a field on `DisplayType`; it is inferred from
+  the variant through `isFourDigitBare()` and the two `PIN_NAMES_*` arrays. A 2-, 6- or 8-digit
+  variant therefore wants a `digitCount` on the enum and its own pin array before it wants a
+  constant. Worth doing — §12.4 ranks it third and fourth — but it is a refactor, not a line.
+- **The RGB-backlight 1602.** `getScreenColor()` already draws it, which is what made it look free,
+  but the part is an 18-pin module: the three backlight anodes are real pins and a drawing that
+  omits them is wrong where it matters most, in the netlist. It is an `LCDInterface` constant with
+  its own pin array, not a colour default.
+- **A tint on the TFT.** Rejected outright rather than deferred. The other three displays are
+  monochrome and their one colour is a property of the part; a 240x320 colour panel has no tint to
+  set, and offering one would invite a drawing that says something false about the hardware.
+
+### 12.4 The gap list, ranked
+
+Ranked by how often the part appears in builds, not by how cheap it is to draw.
+
+1. ~~**2.4" ILI9341**~~ — **done**, §12.2 and §12.2.1.
+2. **0.96" 80x160 ST7735**, and the 1.14" and 2.0" ST7789 that the Pico ecosystem buys.
+3. **MAX7219 8-digit 7-segment module** — the clock and counter staple, and this package already
+   models a MAX7219 cascade for the matrix. Needs §12.3's `digitCount` work first.
+4. **6-digit TM1637 and 2-digit 0.56"** — the rest of the clock and thermometer range.
+5. **E-paper, 1.54" / 2.13" / 2.9" SSD1680.** §6.9 called this niche; that call is stale. ESP32
+   badge builds and the Waveshare and Good Display modules made it ordinary. The FPC-cable
+   mounting is still genuine new drawing work, which is the only reason it is not higher.
+6. **WS2812B 16x16 and flexible 8x32 matrices** — the one addressable form the package lacks.
+7. **The bare WS2812B 5050 LED**, as against a breakout. People solder these directly, and there
+   is no part here for one.
+8. **16x4 character LCD**, and the RGB-backlight 1602 from §12.3.
+9. **Nixie tubes — IN-12, IN-14, B7971.** Listed here rather than in a sensors slice because the
+   audience overlap is the strongest of anything on this list: DIYLC already has a `Tubes` category
+   and the people in it are the people building Nixie clocks.
+10. **2.42" SSD1309 OLED**, 14- and 16-segment alphanumeric, HT16K33 backpacks. Real, second tier.
+
+### 12.5 The "& Outputs" half of the name
+
+The category is called `Displays & Outputs` and currently every member of it emits light. That is
+worth saying plainly because the gap it hides is bigger than any entry in §12.4: **there is no
+analog panel meter, no VU meter, no speaker or driver, and no magic-eye tube anywhere in the
+library.** `misc/Buzzer` and `electromechanical/PilotLampHolder` are the whole of the non-display
+output range.
+
+This matters more than another OLED size for the reason D1 gave for shipping displays at all —
+these parts reach the audience DIYLC already has. A VU meter and a loudspeaker appear in amp and
+effect builds that contain no microcontroller at all, `Dial Scale` is already next door in `misc`,
+and a moving-coil meter is a simpler drawing than anything in §12.4. Whether they belong in this
+category or in `Electro-Mechanical` is an open question and not an interesting one; that they are
+absent is the finding.

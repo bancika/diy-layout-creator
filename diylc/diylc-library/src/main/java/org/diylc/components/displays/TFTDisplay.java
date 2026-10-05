@@ -74,6 +74,17 @@ public class TFTDisplay extends AbstractMakerBoard {
   public static final String[] SILK_NAMES_ILI9341 = new String[] {"VCC", "GND", "CS", "RST", "DC",
       "SDI", "SCK", "LED", "SDO", "TCK", "TCS", "TDI", "TDO", "IRQ"};
 
+  /**
+   * The 2.4" and the 2.8" are the same product with a different panel in it, so one array serves
+   * both -- the treatment the two bare four-digit 7-segment packages already get.
+   */
+  public static final String[] PIN_NAMES_ILI9341 = new String[] {"VCC", "GND", "CS", "RESET", "DC",
+      "MOSI (SDI)", "SCK", "LED", "MISO (SDO)", "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"};
+
+  /** The micro-SD socket, brought out on its own row on the opposite edge from everything else. */
+  public static final String[] PIN_NAMES_SD =
+      new String[] {"SD_CS", "SD_MOSI", "SD_MISO", "SD_SCK"};
+
   public static Color TFT_RED = Color.decode("#C0392B");
   public static Color SCREEN_BG = Color.decode("#111111");
   public static Color GLASS_COLOR = Color.decode("#1A1A1A");
@@ -123,16 +134,22 @@ public class TFTDisplay extends AbstractMakerBoard {
 
   @Override
   public String getControlPointNodeName(int index) {
-    String[] pinNames = getController().getPinNames();
+    Controller controller = getController();
+    String[] pinNames = controller.getPinNames();
     if (index >= 0 && index < pinNames.length) {
       return pinNames[index];
+    }
+    String[] secondary = controller.getSecondaryPinNames();
+    if (secondary != null && index >= pinNames.length
+        && index < pinNames.length + secondary.length) {
+      return secondary[index - pinNames.length];
     }
     return "Pin " + (index + 1);
   }
 
   @Override
   protected String getSilkPinLabel(int index) {
-    if (getController() == Controller.ILI9341_2_8 && index >= 0
+    if (getController().getPinNames() == PIN_NAMES_ILI9341 && index >= 0
         && index < SILK_NAMES_ILI9341.length) {
       return SILK_NAMES_ILI9341[index];
     }
@@ -143,7 +160,7 @@ public class TFTDisplay extends AbstractMakerBoard {
     return new Size(millimetres, SizeUnit.mm).convertToPixels();
   }
 
-  /** Left edge of the board, derived so that the pin row sits centred on the top edge. */
+  /** Left edge of the board, derived so that the primary pin row sits centred across it. */
   private double getBoardX(double x) {
     Controller controller = getController();
     double spacing = PIN_SPACING.convertToPixels();
@@ -152,24 +169,40 @@ public class TFTDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Top edge of the board. The rectangular boards hang below their header, which sits one offset
-   * down from the top edge; the round one wears its tab at the bottom, so the board stands above
-   * the row and the offset is measured up from the bottom edge instead.
+   * Top edge of the board. Every variant carries its main header on the bottom edge, so the board
+   * always stands above control point zero and the offset is always measured up from the bottom.
    */
   private double getBoardY(double y) {
     Controller controller = getController();
-    if (controller.isRound()) {
-      return y - px(controller.getBoardLengthMm() - controller.getHeaderOffsetMm());
-    }
-    return y - px(controller.getHeaderOffsetMm());
+    return y - px(controller.getBoardLengthMm() - controller.getHeaderOffsetMm());
   }
 
   private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
-    double[][] relativeOffsets = new double[getController().getPinNames().length][2];
-    for (int i = 0; i < relativeOffsets.length; i++) {
+    Controller controller = getController();
+    int primaryCount = controller.getPinNames().length;
+    String[] secondary = controller.getSecondaryPinNames();
+    int secondaryCount = secondary == null ? 0 : secondary.length;
+
+    double[][] relativeOffsets = new double[primaryCount + secondaryCount][2];
+    for (int i = 0; i < primaryCount; i++) {
       relativeOffsets[i][0] = i * spacing;
       relativeOffsets[i][1] = 0;
+    }
+
+    // The second row faces the first across the board -- always above it, since the main header is
+    // always on the bottom edge -- so its distance from control point zero is what the two offsets
+    // leave of the length. Both rows are centred on the width, which puts the shorter one in by
+    // half the difference between the spans; that horizontal placement is the one figure of this
+    // header that is not measured.
+    if (secondaryCount > 0) {
+      double indent = (primaryCount - secondaryCount) * spacing / 2.0;
+      double across = -px(controller.getBoardLengthMm() - controller.getHeaderOffsetMm()
+          - controller.getSecondaryHeaderOffsetMm());
+      for (int i = 0; i < secondaryCount; i++) {
+        relativeOffsets[primaryCount + i][0] = indent + i * spacing;
+        relativeOffsets[primaryCount + i][1] = across;
+      }
     }
     return relativeOffsets;
   }
@@ -250,16 +283,17 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       if (controller.hasMountingHoles()) {
         double holeInset = px(controller.getHoleInsetMm());
+        double headerSideInset = px(controller.getHeaderSideHoleInsetMm());
         double holeSize = px(controller.getHoleSizeMm());
         MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
         MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + holeInset,
             holeSize);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - holeInset,
-            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset,
+            boardY + boardH - headerSideInset, holeSize);
         MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
-            boardY + boardH - holeInset, holeSize);
+            boardY + boardH - headerSideInset, holeSize);
         bandTop = boardY + holeInset;
-        bandBottom = boardY + boardH - holeInset;
+        bandBottom = boardY + boardH - headerSideInset;
       }
 
       double screenW = px(controller.getScreenWidthMm());
@@ -282,9 +316,14 @@ public class TFTDisplay extends AbstractMakerBoard {
           double glassY = bandCentre - glassH / 2.0;
           g2d.setColor(GLASS_COLOR);
           g2d.fill(new Rectangle2D.Double(boardX, glassY, boardW, glassH));
-          screenY = glassY + (glassH - screenH) / 2.0;
+          // The lit area is centred in the glass unless the variant measured it, which the 2.4"
+          // does: its panel carries the driver's bonding region along the bottom, so the lit area
+          // sits high in the frame and centring it would drop it 5 mm.
+          screenY = controller.hasMeasuredScreenTop() ? boardY + px(controller.getScreenTopMm())
+              : glassY + (glassH - screenH) / 2.0;
         } else {
-          screenY = bandCentre - screenH / 2.0;
+          screenY = controller.hasMeasuredScreenTop() ? boardY + px(controller.getScreenTopMm())
+              : bandCentre - screenH / 2.0;
         }
         panel = new Rectangle2D.Double(boardX + (boardW - screenW) / 2.0, screenY, screenW,
             screenH);
@@ -309,15 +348,23 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       // The names go in the strip between the pin row and the panel, lying flat along the row as
       // the Nokia's do: the strip is 3.5 mm deep on the two smallest boards and a label stood on
-      // end needs 4.7 mm. The round board carries its row at the bottom, so for it alone the
-      // strip, and the names in it, are above the pins rather than below them.
-      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length,
-          !controller.isRound(), SILK_COLOR);
+      // end needs 4.7 mm. The row is on the bottom edge on every variant, so the strip, and the
+      // names in it, are always above the pins.
+      //
+      // Only the primary row is named. The SD row has the glass a couple of millimetres from it and
+      // nothing but board edge on its other side, so there is no strip to print in; those four pins
+      // are left to their tooltips, as the matrix's covered rows are.
+      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controller.getPinNames().length,
+          false, SILK_COLOR);
     }
 
     g2d.setTransform(oldTx);
 
-    drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    drawPinHeader(g2d, 0, controller.getPinNames().length, outlineMode, drawingObserver);
+    if (controller.hasSecondaryHeader()) {
+      drawPinHeader(g2d, controller.getPinNames().length,
+          controller.getSecondaryPinNames().length, outlineMode, drawingObserver);
+    }
 
     g2d.setComposite(oldComposite);
   }
@@ -339,8 +386,10 @@ public class TFTDisplay extends AbstractMakerBoard {
   }
 
   public enum Controller {
-    // Each board is dimensioned from its module outline, and the header sits centred on the short
-    // top edge at the offset recorded here. Active areas are the nominal diagonal taken at the
+    // Each board is dimensioned from its module outline, and its main header sits centred on the
+    // short bottom edge at the offset recorded here -- every board in this family is drawn that
+    // way round, so the board grows upwards from its pin row and switching variants never turns a
+    // drawing end for end. Active areas are the nominal diagonal taken at the
     // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, the
     // square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which makes
     // them derivations rather than measurements, noted so they are not built upon. A glass length
@@ -348,13 +397,23 @@ public class TFTDisplay extends AbstractMakerBoard {
     // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
     // The round board is described by the same two outline figures as the others: its width is the
     // disc diameter and its length runs from the tab's outer edge to the far side of the disc, so
-    // the tab's projection is the difference between them and is not carried separately. It is
-    // the one variant whose header is at the bottom, so its board grows upwards from the pin row
-    // rather than down from it.
+    // the tab's projection is the difference between them and is not carried separately.
+    //
+    // The 2.8"'s micro-SD socket comes out on a four-pin row of its own, the way the 2.4"'s does,
+    // on the top edge opposite the main header. It keeps the board's own 3 mm offset rather than
+    // the 2.4"'s 2 mm, each board putting its second row as far in as its first.
     ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, 69.1d, 3.0d,
-        3.0d, 3.0d, 0d,
-        new String[] {"VCC", "GND", "CS", "RESET", "DC", "MOSI (SDI)", "SCK", "LED", "MISO (SDO)",
-            "T_CLK", "T_CS", "T_DIN", "T_DO", "T_IRQ"}),
+        3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 0d, PIN_NAMES_SD, 3.0d, 3.0d),
+    // The one board here measured rather than derived throughout, and the only one with a second
+    // header. Four of its figures do not behave like the others': the 14-pin row is on the bottom
+    // edge, the lit area is measured 9.26 mm down from the top rather than centred in the glass,
+    // the SD row stands 2 mm in from the opposite edge, and the two holes nearest the pin row are
+    // 6.92 mm in rather than sharing the 3 mm of the other pair -- at 3 mm they would sit on the
+    // row. The glass keeps the family's rule, centred between the hole rows, which the deeper pair
+    // puts at 6.50 to 66.76 mm: 2.76 mm of frame above the lit area and 8.54 mm below it, the
+    // asymmetry being the driver's bonding region along the bottom of the panel.
+    ILI9341_2_4("2.4\" ILI9341 240x320 (Touch + SD)", 42.72d, 77.18d, 36.72d, 48.96d, 60.26d, 2.0d,
+        3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 9.26d, PIN_NAMES_SD, 2.0d, 6.92d),
     ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, 0d, 1.5d, 3.0d, 3.0d, 0d,
         new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"}),
     ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, 33.7d, 1.5d, 2.5d, 2.0d,
@@ -375,10 +434,24 @@ public class TFTDisplay extends AbstractMakerBoard {
     private final double holeSizeMm;
     private final double tabWidthMm;
     private final String[] pinNames;
+    private final double screenTopMm;
+    private final String[] secondaryPinNames;
+    private final double secondaryHeaderOffsetMm;
+    private final double headerSideHoleInsetMm;
 
+    /** For a board whose lit area is centred and whose pins all leave on one row. */
     Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
         double screenLengthMm, double glassLengthMm, double headerOffsetMm, double holeInsetMm,
         double holeSizeMm, double tabWidthMm, String[] pinNames) {
+      this(label, boardWidthMm, boardLengthMm, screenWidthMm, screenLengthMm, glassLengthMm,
+          headerOffsetMm, holeInsetMm, holeSizeMm, tabWidthMm, pinNames, 0d, null, 0d, holeInsetMm);
+    }
+
+    Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
+        double screenLengthMm, double glassLengthMm, double headerOffsetMm, double holeInsetMm,
+        double holeSizeMm, double tabWidthMm, String[] pinNames, double screenTopMm,
+        String[] secondaryPinNames, double secondaryHeaderOffsetMm,
+        double headerSideHoleInsetMm) {
       this.label = label;
       this.boardWidthMm = boardWidthMm;
       this.boardLengthMm = boardLengthMm;
@@ -390,6 +463,10 @@ public class TFTDisplay extends AbstractMakerBoard {
       this.holeSizeMm = holeSizeMm;
       this.tabWidthMm = tabWidthMm;
       this.pinNames = pinNames;
+      this.screenTopMm = screenTopMm;
+      this.secondaryPinNames = secondaryPinNames;
+      this.secondaryHeaderOffsetMm = secondaryHeaderOffsetMm;
+      this.headerSideHoleInsetMm = headerSideHoleInsetMm;
     }
 
     @Override public String toString() { return label; }
@@ -402,8 +479,18 @@ public class TFTDisplay extends AbstractMakerBoard {
     public double getHoleSizeMm() { return holeSizeMm; }
     public String[] getPinNames() { return pinNames; }
 
-    /** Inset of every mounting hole from each of the two edges nearest it. */
+    /**
+     * Inset of a mounting hole from each of the two edges nearest it. It is every hole's figure
+     * except where {@link #getHeaderSideHoleInsetMm()} overrides the pin row's pair.
+     */
     public double getHoleInsetMm() { return holeInsetMm; }
+
+    /**
+     * Inset of the two holes on the header's edge. It is deeper than the shared figure only on the
+     * 2.4", whose 14-pin row is wide enough for its pads to reach a hole drilled at the other
+     * pairs' 3 mm; every other board's row passes between them and keeps one inset throughout.
+     */
+    public double getHeaderSideHoleInsetMm() { return headerSideHoleInsetMm; }
 
     public boolean hasMountingHoles() { return holeSizeMm > 0; }
 
@@ -416,5 +503,19 @@ public class TFTDisplay extends AbstractMakerBoard {
     public double getTabProjectionMm() { return boardLengthMm - boardWidthMm; }
 
     public boolean isRound() { return tabWidthMm > 0; }
+
+    /** Top of the lit area, measured from the board's top edge; zero where it is not measured. */
+    public double getScreenTopMm() { return screenTopMm; }
+
+    public boolean hasMeasuredScreenTop() { return screenTopMm > 0; }
+
+    /** The second pin row, or {@code null} on a board that brings everything out on one. */
+    public String[] getSecondaryPinNames() { return secondaryPinNames; }
+
+    public boolean hasSecondaryHeader() { return secondaryPinNames != null; }
+
+    /** Clearance from the second row to the top edge, the one the main header does not use. */
+    public double getSecondaryHeaderOffsetMm() { return secondaryHeaderOffsetMm; }
+
   }
 }
