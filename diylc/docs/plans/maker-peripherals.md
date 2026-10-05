@@ -979,6 +979,40 @@ for the lit colour. Category `Displays & Outputs` even though the neighbours in 
   hold its own dimensions. Should a second panel ever be sourced, re-introducing the enum is the
   same work either way.
 
+- **NeoPixel Breakout** as its own class — **done**, as `WS2812BBreakout`, on the maintainer's
+  figures: a **0.5 inch wide by 0.4 inch high** board, one 5050 package in the middle, two 2 mm
+  mounting holes **0.3 inch apart** on the centre line, and three connections at each end —
+  `GND`, `VIN`, `IN` on one and `GND`, `VIN`, `OUT` on the other. The real board brings those out
+  through a three-way connector at each end, and they are drawn as plain pads instead, which is the
+  same call §3.2 recorded for fine-pitch connectors generally: at this size a connector body would
+  cover most of the board and hide the LED, and what a layout needs from it is where the three
+  wires land.
+
+  So the board lies on its side — a three-pad column up each short edge, the holes spaced across
+  the height between them. **The figures were corrected once during the work and the first set did
+  not fit**, which is worth recording because the failure was not a rounding: the board was first
+  given as 0.5 inch long and 0.4 inch tall with the holes 0.4 inch apart, and 0.4 inch of spacing
+  does not fit a 0.4 inch height — the two centres land exactly on the edges. Read the other way,
+  with the spacing along the 0.5 inch axis, the holes then wanted the same place as the pad columns.
+  The 0.3 inch spacing removes the conflict entirely and puts the part back the way round the brief
+  described it. The lesson is only that a hole pattern and an outline have to be checked against
+  each other before either is drawn, since a spacing equal to the dimension it runs along reads
+  perfectly well in prose.
+
+  What is left is tight in two places and comfortable elsewhere. Each hole keeps **0.27 mm of board
+  outside its rim** and **0.31 mm between its rim and the package** — about 2 px each at 1:1, and
+  the tightest clearances anywhere in the package, against the ring's 0.5745 mm from pad to rim and
+  the full millimetre the stick's holes keep from its top edge.
+  `aQuarterMillimetreOfBoardSurvivesOutsideEachHole` asserts the first as the figure rather than as
+  mere containment, and `thePackageClearsTheHolesAndThePads` guards the second: any revision to the
+  height or the spacing consumes both. The pad columns are the comfortable ones, 2.35 mm clear of
+  the package and 4.88 mm from the nearest hole. The face carries no silkscreen — the room there is
+  between a pad and the package rather than beside a pad, so a pin name has nowhere to sit, as on
+  the stick.
+
+  Like the Jewel, the Nokia and the panel it is a single part with no variant enum, so its figures
+  are plain constants on the class.
+
 ### 6.8 On-screen identification — the glass prints its own spec — **done**
 
 **Done.** The four displays that have a lit area — `OLEDDisplay`, `TFTDisplay`,
@@ -1158,8 +1192,8 @@ part name, then the variant list).
 6. **§7** tests alongside each of the above, not after.
 7. **§8** the `update.xml` block, last.
 
-Twelve palette entries: the seven existing, plus the strip, the bar graph, the Jewel, the Nokia and
-now the panel. The `update.xml` 6.7.0 block carries all twelve,
+Thirteen palette entries: the seven existing, plus the strip, the bar graph, the Jewel, the Nokia,
+the panel and the breakout. The `update.xml` 6.7.0 block carries all thirteen,
 alphabetically as the 6.5.0 block lists its boards. Two of the entries it already had were stale
 rather than missing, and both were stale because a class had outgrown them: the matrix was still
 described as an 8x8 and the TFT as a touch screen with an SD slot, which is one variant of four
@@ -1410,19 +1444,25 @@ gate the displays.
    `_` so the silkscreen still reads `G`.
 
    This also closes §3.2 item 8. The pads no longer share the LED arc: they sit on their own radius,
-   `outerR` less a 1.4 mm `PAD_EDGE_INSET`, drawn 1.6 × 1.3 mm with a 0.7 mm hole. A ring pad is far
-   smaller than a 0.1" header pad, so `AbstractMakerBoard` grew three
-   `getSolderPad{Width,Length,HoleSize}` hooks. That is a deliberate exception to the usual
-   preference for tuning the shared appearance constants globally, taken because only the Ring wants
-   these values: the defaults reproduce the previous hardcoded 22 / 16 / 7 px exactly, confirmed by
-   byte-comparing every maker render before and after and finding **only `WS2812BRing` changed**.
+   `outerR` less a 1.4 mm `PAD_EDGE_INSET`. They are **round**, drawn by the shared
+   `drawPcbSolderPads` off `AbstractMakerBoard`'s own `PAD_SIZE` and `HOLE_SIZE` — 1.651 mm
+   (0.065", exactly 13 px) across with a 0.7 mm drill — so no per-board pad footprint exists and
+   the standing preference for tuning the shared appearance constants globally is left intact.
 
-   Because the pad is an axis-aligned rectangle, what has to clear the rim is its corner diagonal
-   (1.031 mm), not its half-length — leaving 0.37 mm of board outside the furthest corner, about
-   3 px at 1:1. Both the full-size renders and a pixel scan appeared to show pads breaching the rim;
-   both were misreading the board's own anti-aliased edge, which registers at every angle rather
-   than only at the pads. Magnifying the tightest pad on each variant 12× showed unbroken board
-   between every pad and the rim.
+   What has to clear the rim is therefore the pad radius, and since both it and the inset are
+   constants the clearance is the same on every ring: **0.5745 mm of board outside each pad**, about
+   4.5 px at 1:1. It does not vary with ring size, which is worth knowing before either figure is
+   revised — one change moves all three variants at once.
+
+   *This paragraph was corrected after the fact.* It previously described rectangular 1.6 × 1.3 mm
+   pads reached through three `getSolderPad{Width,Length,HoleSize}` hooks on `AbstractMakerBoard`,
+   with a 0.37 mm corner-diagonal clearance arrived at by magnifying renders. None of that is in the
+   tree: the hooks do not exist and the pads are round. §3.3 records why — `drawSolderPads` and its
+   three size hooks were removed and their six callers moved onto `drawPcbSolderPads` — so it is
+   this paragraph that was left behind rather than the decision that is in doubt. The same removal
+   left two orphaned Javadoc blocks above `buildLedGradient`, since deleted. The figures above are read out of the
+   code rather than recomputed by hand; no render was re-checked for this correction, so the visual
+   question the old text claimed to settle is open again, if only trivially at 4.5 px of margin.
 10. **`SevenSegmentDisplay`'s pin arrays** — **decided: the maintainer confirms they are correct.**
     Three questions closed together. The arrays are right as they stand; the two bare four-digit
     packages **share a pinout**; and each variant is now pinned to a named part — **5161AS** for the

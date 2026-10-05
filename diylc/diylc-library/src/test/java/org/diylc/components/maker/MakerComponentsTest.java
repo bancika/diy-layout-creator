@@ -84,6 +84,7 @@ public class MakerComponentsTest {
       WS2812BStrip.class,
       WS2812BJewel.class,
       WS2812BPanel.class,
+      WS2812BBreakout.class,
       Nokia5110LCD.class,
 
       // Electro-Mechanical

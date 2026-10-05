@@ -620,14 +620,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw rectangular tinned solder pads with drill holes at given control points.
-   */
-  /**
-   * Footprint of a solder pad. The defaults are the sizes this method has always drawn, expressed
-   * as the inch measures they work out to exactly, so a board that wants smaller pads overrides
-   * these rather than a second pad-drawing method being written somewhere else.
-   */
-  /**
    * Spreads {@link #RGB_LED_GRADIENT} evenly over {@code count} LEDs, interpolating between
    * neighbouring anchors and treating them as a loop so the last LED runs back into the first.
    * Called once per palette at class load rather than per repaint.

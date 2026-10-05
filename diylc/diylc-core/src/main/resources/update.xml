@@ -523,6 +523,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Breakout (WS2812B) - single LED</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>NeoPixel Jewel (WS2812B) - 7 LEDs</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

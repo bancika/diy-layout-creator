@@ -167,4 +167,9 @@ public class Nokia5110LCDTest {
     Assert.assertEquals(Display.VALUE, printed.getScreen());
     MakerBoardTestSupport.assertScreenTextIsDrawn(printed, blank);
   }
+
+  @Test
+  public void drawsCleanlyInEveryState() {
+    MakerBoardTestSupport.assertDrawsCleanly(new Nokia5110LCD());
+  }
 }
