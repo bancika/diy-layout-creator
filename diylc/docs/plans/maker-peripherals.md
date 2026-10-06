@@ -1752,6 +1752,83 @@ reach the hole columns, while the 2.8"'s same row on a 50 mm board passes inside
 SD row does on both. `mountingHolesDoNotOverlapAnyPin` asserts that over every variant and every
 pin, and it is what now justifies the 6.92 mm rather than a figure anyone has to take on trust.
 
+### 12.2.3 The 0.96" ST7735, and what it proved about §12.2.2
+
+The first board added after the standardisation broke it. The 0.96" 80x160 ST7735 carries its
+eight-pin row on the **top** edge — the maintainer gave the figure and a photograph of the part —
+so it hangs below its row where the other five stand above theirs.
+
+**That is not a drawing preference, which is what §12.2.2 assumed it was.** Control point zero is
+always the leftmost pin, so with the pin order fixed, a header at the top and a header at the bottom
+are mirror images of each other rather than the same board turned round. Which edge the row leaves
+by is therefore a fact about the part, in the same class as its outline, and it has to be sourced
+per board rather than settled once for the family.
+
+§12.2.2's *reason* still stands — switching variants should not flip a drawing — but it loses to
+drawing the part correctly, which is the stronger obligation. `isHeaderAtTop()` is back, carried per
+variant; `getBoardY`, the second row's sign and the silk's side all branch on it again. What does
+**not** come back is the thing that made the old flag wrong: it no longer stands in for `isRound()`,
+and the deeper header-side hole inset now follows the header's edge rather than assuming the bottom.
+
+**Two boards were flipped by rule, and the rule had them backwards.** The 1.8" ST7735 and the
+1.54" ST7789 went bottom-headed in §12.2.2 on the premise that the family shared one orientation,
+with neither orientation sourced. Checked against the parts, **both are headed at the top**, so
+§12.2.2 had moved them away from the truth rather than towards it — the standardisation's one
+lasting effect on those two was to make them wrong, and it went unnoticed for exactly as long as no
+one looked.
+
+The family divides three and three: the 0.96", the 1.8" and the 1.54" are headed at the top, the
+two ILI9341s and the round board at the bottom. That there is no majority to fall back on is useful
+rather than awkward, because it removes the temptation to have a default: **the short constructor
+now takes the orientation too, so every constant states its own edge and none inherits one.** A
+future variant has to answer the question rather than be answered for.
+
+`headerSitsOnItsOwnEdge` ends with a roll call of all six rather than a rule, which is the only
+form an assertion about sourced facts can honestly take.
+
+Checking the orientation also corrected the 1.8"'s pin names, which had read `SCK` and `BL` where
+the board prints `SCL` and `BLK`. That left its array identical to the 1.54"'s and to the 0.96"'s,
+so all three now share `PIN_NAMES_SPI_8PIN`, asserted by identity: two different controllers behind
+one header, because what a module of this size brings out is the four-wire SPI interface plus reset,
+data/command and the backlight, and that does not vary with the driver. Two near-duplicate pin-name
+tests collapsed into one.
+
+### 12.2.4 Two structural additions the 0.96" needed
+
+**A panel that does not span the board.** Every other variant's glass runs the full width, so the
+drawing filled it edge to edge and centred the lit area on the board. This one's bezel is 23.7 mm on
+a 30 mm board, pushed 2 mm from the right edge and leaving 4.3 mm on the left — the bare L is where
+the driver circuitry sits. The offset is **across the board only**; down it the bezel is centred in
+the PCB, which on a board whose four holes share one inset is the family's existing rule and needs
+no figure at all.
+
+That was not obvious from the figures as first supplied, which placed the bezel 5.15 mm from the top
+edge against 5.6 mm for centring. A 0.45 mm discrepancy was carried as a measurement and given a
+`topMm` on the new `Glass`, and the maintainer then corrected it: the bezel is centred. The field
+came out again, having had exactly one user and never a real one. Worth recording as a near miss of
+the kind §12.2.1's bezel paragraph caught and this one did not — a supplied figure that sits within
+half a millimetre of what the existing rule already produces is more likely a reading than a
+departure, and is worth querying before it earns a mechanism.
+
+Two per-variant figures remain, which is still enough to want an object on a constructor that
+already took fifteen arguments: the glass figures live in a nested `Glass` carrying length, width
+and right inset — the same treatment `OLEDDisplay.Version` gives its `Layout`. A board with no
+separate dark panel passes `null` instead of a zero length, which says the same thing more plainly.
+
+**A lit area that belongs to the panel rather than to the board.** The screen is now centred in the
+glass horizontally rather than on the board. For the five variants whose glass spans the board those
+are the same point, so nothing moved; for the 0.96" they differ by 1.15 mm. The vertical rule is
+unchanged — centred in the glass unless the variant measured it, which only the 2.4" does.
+
+The 0.96"'s own lit area is measured (21.7 x 10.8 mm) rather than derived from the diagonal, and it
+is landscape where every other board's is portrait. It sits centred in the bezel with a 1 mm frame on
+all four sides, which `theOffsetPanelIsPlacedFromTheRightEdge` asserts along with the horizontal
+offset being a figure that centring would have got wrong.
+
+One name was settled by the maintainer rather than copied through: the pin list supplied read `DS`
+in seventh place, which is `CS` on the ST7735 and on the 1.8" board already in the enum. Node names
+reach the netlist, so it was asked rather than assumed.
+
 **The 2.8" wanted the same row, and it was a missing header rather than an enhancement.** Its
 label has always read "(Touch + SD)" while its 14 pins are display and touch only, so the socket's
 four lines had nowhere to go. It now carries `PIN_NAMES_SD` on the same terms as the 2.4": same
@@ -1795,7 +1872,8 @@ rediscover that.
 Ranked by how often the part appears in builds, not by how cheap it is to draw.
 
 1. ~~**2.4" ILI9341**~~ — **done**, §12.2 and §12.2.1.
-2. **0.96" 80x160 ST7735**, and the 1.14" and 2.0" ST7789 that the Pico ecosystem buys.
+2. ~~**0.96" 80x160 ST7735**~~ — **done**, §12.2.3 and §12.2.4. Still open in this family: the
+   1.3" 240x240 ST7789, and the 1.14" and 2.0" ST7789 that the Pico ecosystem buys.
 3. **MAX7219 8-digit 7-segment module** — the clock and counter staple, and this package already
    models a MAX7219 cascade for the matrix. Needs §12.3's `digitCount` work first.
 4. **6-digit TM1637 and 2-digit 0.56"** — the rest of the clock and thermometer range.

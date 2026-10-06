@@ -91,6 +91,7 @@ public class TFTDisplayTest {
     }
     Assert.assertEquals(14, Controller.ILI9341_2_8.getPinNames().length);
     Assert.assertEquals(14, Controller.ILI9341_2_4.getPinNames().length);
+    Assert.assertEquals(8, Controller.ST7735_0_96.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7735_1_8.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7789_1_54.getPinNames().length);
     Assert.assertEquals(7, Controller.GC9A01_1_28.getPinNames().length);
@@ -127,21 +128,26 @@ public class TFTDisplayTest {
     }
   }
 
+  /**
+   * Three boards, two controllers, one header: what a module of this size brings out is the
+   * four-wire SPI interface plus reset, data/command and the backlight, and that does not vary with
+   * the driver behind it. Shared by identity rather than by three copies, so that a correction to
+   * one reaches all of them.
+   */
   @Test
-  public void pinNamesComeFromTheController() {
-    TFTDisplay display = of(Controller.ST7735_1_8);
-    String[] expected = new String[] {"GND", "VCC", "SCK", "SDA", "RES", "DC", "CS", "BL"};
-    for (int i = 0; i < expected.length; i++) {
-      Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
-    }
-  }
-
-  @Test
-  public void squareBoardPinNamesComeFromTheController() {
-    TFTDisplay display = of(Controller.ST7789_1_54);
+  public void theSmallBoardsShareOnePinArray() {
+    Controller[] small =
+        {Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7789_1_54};
     String[] expected = new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"};
-    for (int i = 0; i < expected.length; i++) {
-      Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
+
+    for (Controller controller : small) {
+      Assert.assertSame(controller.toString(), TFTDisplay.PIN_NAMES_SPI_8PIN,
+          controller.getPinNames());
+      TFTDisplay display = of(controller);
+      for (int i = 0; i < expected.length; i++) {
+        Assert.assertEquals(controller + " pin " + i, expected[i],
+            display.getControlPointNodeName(i));
+      }
     }
   }
 
@@ -173,8 +179,8 @@ public class TFTDisplayTest {
    * The SD row faces the 14-pin row across the board and is centred on the width the way the longer
    * row is. Both are worth pinning: the across-the-board figure is what the two offsets leave of
    * the length rather than a measurement, and the horizontal placement is the one figure of this
-   * header that was not supplied at all. Both boards that carry one put it on the top edge, above
-   * the main row.
+   * header that was not supplied at all. Both boards that carry one are headed at the bottom, so
+   * their second row is on the top edge.
    */
   @Test
   public void theSdRowStandsOffTheOppositeEdge() {
@@ -187,12 +193,18 @@ public class TFTDisplayTest {
       int primaryCount = controller.getPinNames().length;
 
       Point2D firstSd = display.getControlPoint(primaryCount);
-      Assert.assertEquals(controller + " SD row offset from the top edge",
-          controller.getSecondaryHeaderOffsetMm(), mm(firstSd.getY() - board.getY()), 0.01d);
+      double fromItsEdge = controller.isHeaderAtTop() ? board.getMaxY() - firstSd.getY()
+          : firstSd.getY() - board.getY();
+      Assert.assertEquals(controller + " SD row offset from its own edge",
+          controller.getSecondaryHeaderOffsetMm(), mm(fromItsEdge), 0.01d);
+
+      double between = controller.isHeaderAtTop()
+          ? firstSd.getY() - display.getControlPoint(0).getY()
+          : display.getControlPoint(0).getY() - firstSd.getY();
       Assert.assertEquals(controller + " rows are not on opposite edges",
           controller.getBoardLengthMm() - controller.getHeaderOffsetMm()
               - controller.getSecondaryHeaderOffsetMm(),
-          mm(display.getControlPoint(0).getY() - firstSd.getY()), 0.01d);
+          mm(between), 0.01d);
 
       Point2D lastSd = display.getControlPoint(display.getControlPointCount() - 1);
       Assert.assertEquals(controller + " SD row is not centred across the board",
@@ -248,14 +260,12 @@ public class TFTDisplayTest {
       }
       double holeRadius = px(controller.getHoleSizeMm()) / 2.0;
       double boardH = px(controller.getBoardLengthMm());
-      double bandTop = px(controller.getHoleInsetMm());
-      double bandBottom = boardH - px(controller.getHeaderSideHoleInsetMm());
+      double bandTop = px(topInsetOf(controller));
+      double bandBottom = boardH - px(bottomInsetOf(controller));
 
-      double bandCentre = (bandTop + bandBottom) / 2.0;
-      double panelH = controller.hasGlass() ? px(controller.getGlassLengthMm())
-          : px(controller.getScreenLengthMm());
-      double panelTop = bandCentre - panelH / 2.0;
-      double panelBottom = bandCentre + panelH / 2.0;
+      double panelH = panelLengthOf(controller);
+      double panelTop = panelTopOf(controller);
+      double panelBottom = panelTop + panelH;
 
       Assert.assertTrue(controller + " panel overlaps the holes on its top edge",
           panelTop >= bandTop + holeRadius);
@@ -284,12 +294,14 @@ public class TFTDisplayTest {
       double inset = px(controller.getHoleInsetMm());
       double headerSide = px(controller.getHeaderSideHoleInsetMm());
       double size = px(controller.getHoleSizeMm());
+      double topInset = controller.isHeaderAtTop() ? headerSide : inset;
+      double bottomInset = controller.isHeaderAtTop() ? inset : headerSide;
 
       Rectangle2D[] holes = new Rectangle2D[] {
-          hole(board.getX() + inset, board.getY() + inset, size),
-          hole(board.getMaxX() - inset, board.getY() + inset, size),
-          hole(board.getX() + inset, board.getMaxY() - headerSide, size),
-          hole(board.getMaxX() - inset, board.getMaxY() - headerSide, size)};
+          hole(board.getX() + inset, board.getY() + topInset, size),
+          hole(board.getMaxX() - inset, board.getY() + topInset, size),
+          hole(board.getX() + inset, board.getMaxY() - bottomInset, size),
+          hole(board.getMaxX() - inset, board.getMaxY() - bottomInset, size)};
 
       for (int i = 0; i < display.getControlPointCount(); i++) {
         Point2D p = display.getControlPoint(i);
@@ -307,6 +319,32 @@ public class TFTDisplayTest {
     return new Rectangle2D.Double(cx - size / 2.0, cy - size / 2.0, size, size);
   }
 
+  private static double topInsetOf(Controller controller) {
+    return controller.isHeaderAtTop() ? controller.getHeaderSideHoleInsetMm()
+        : controller.getHoleInsetMm();
+  }
+
+  private static double bottomInsetOf(Controller controller) {
+    return controller.isHeaderAtTop() ? controller.getHoleInsetMm()
+        : controller.getHeaderSideHoleInsetMm();
+  }
+
+  /** The dark panel where there is one, and the lit area alone where there is not. */
+  private static double panelLengthOf(Controller controller) {
+    return px(controller.hasGlass() ? controller.getGlass().getLengthMm()
+        : controller.getScreenLengthMm());
+  }
+
+  /** Mirrors the drawing rule: every panel is centred between the hole rows. */
+  private static double panelTopOf(Controller controller) {
+    double bandTop = controller.hasMountingHoles() ? px(topInsetOf(controller))
+        : px(controller.getHeaderOffsetMm());
+    double bandBottom = controller.hasMountingHoles()
+        ? px(controller.getBoardLengthMm() - bottomInsetOf(controller))
+        : px(controller.getBoardLengthMm());
+    return (bandTop + bandBottom) / 2.0 - panelLengthOf(controller) / 2.0;
+  }
+
   /**
    * The panel has to leave the pin row uncovered. It is placed between the hole rows rather than
    * from an edge, so a long panel on a board whose holes sit close to the edges can reach back over
@@ -321,17 +359,16 @@ public class TFTDisplayTest {
         continue;
       }
       double boardH = controller.getBoardLengthMm();
-      double bandTop = controller.hasMountingHoles() ? controller.getHoleInsetMm()
-          : controller.getHeaderOffsetMm();
-      double bandBottom = controller.hasMountingHoles()
-          ? boardH - controller.getHeaderSideHoleInsetMm() : boardH;
-      double panelH = controller.hasGlass() ? controller.getGlassLengthMm()
-          : controller.getScreenLengthMm();
-      double panelTop = (bandTop + bandBottom) / 2.0 - panelH / 2.0;
-      double panelBottom = panelTop + panelH;
+      double panelTop = mm(panelTopOf(controller));
+      double panelBottom = panelTop + mm(panelLengthOf(controller));
 
-      Assert.assertTrue(controller + " panel covers the main row",
-          panelBottom < boardH - controller.getHeaderOffsetMm());
+      double mainRow = controller.isHeaderAtTop() ? controller.getHeaderOffsetMm()
+          : boardH - controller.getHeaderOffsetMm();
+      if (controller.isHeaderAtTop()) {
+        Assert.assertTrue(controller + " panel covers the main row", panelTop > mainRow);
+      } else {
+        Assert.assertTrue(controller + " panel covers the main row", panelBottom < mainRow);
+      }
       if (controller.hasSecondaryHeader()) {
         Assert.assertTrue(controller + " panel covers the SD row",
             panelTop > controller.getSecondaryHeaderOffsetMm());
@@ -355,11 +392,8 @@ public class TFTDisplayTest {
         continue;
       }
 
-      double boardH = controller.getBoardLengthMm();
-      double glassH = controller.getGlassLengthMm();
-      double glassTop =
-          (controller.getHoleInsetMm() + boardH - controller.getHeaderSideHoleInsetMm()) / 2.0
-              - glassH / 2.0;
+      double glassH = controller.getGlass().getLengthMm();
+      double glassTop = mm(panelTopOf(controller));
       double screenTop = controller.getScreenTopMm();
 
       Assert.assertTrue(controller + " lit area starts above its glass", screenTop >= glassTop);
@@ -368,6 +402,39 @@ public class TFTDisplayTest {
       Assert.assertTrue(controller + " is measured where centring would have done",
           Math.abs(screenTop - (glassTop + (glassH - controller.getScreenLengthMm()) / 2.0)) > 1d);
     }
+  }
+
+  /**
+   * The 0.96" is the only board whose panel does not span its width: a 23.7 mm bezel on a 30 mm
+   * board, pushed to the right so that the driver's circuitry has the bare L it leaves. That offset
+   * is across the board only -- down it the bezel is centred like every other variant's -- and it
+   * is a measurement rather than a derivation, since centring it across the board too would move it
+   * 1.15 mm. The lit area is centred inside it with a 1 mm frame on all four sides, which the
+   * drawing gets for free once the glass is placed, and which would silently break if the lit area
+   * went back to being centred on the board.
+   */
+  @Test
+  public void theOffsetPanelIsPlacedFromTheRightEdge() {
+    for (Controller controller : Controller.values()) {
+      Assert.assertEquals(controller + " panel spans the board",
+          controller != Controller.ST7735_0_96,
+          !controller.hasGlass() || controller.getGlass().spansTheBoard());
+    }
+
+    Controller controller = Controller.ST7735_0_96;
+    TFTDisplay.Glass glass = controller.getGlass();
+
+    double leftMargin = controller.getBoardWidthMm() - glass.getRightInsetMm() - glass.getWidthMm();
+    Assert.assertEquals("left margin", 4.3d, leftMargin, 0.01d);
+    Assert.assertTrue("the bezel is where centring would have put it",
+        Math.abs(leftMargin - (controller.getBoardWidthMm() - glass.getWidthMm()) / 2.0) > 0.1d);
+
+    Assert.assertEquals("frame left and right", 1.0d,
+        (glass.getWidthMm() - controller.getScreenWidthMm()) / 2.0, 0.01d);
+    Assert.assertEquals("frame top and bottom", 1.0d,
+        (glass.getLengthMm() - controller.getScreenLengthMm()) / 2.0, 0.01d);
+    Assert.assertFalse("its lit area is measured, not derived from a centred glass",
+        controller.hasMeasuredScreenTop());
   }
 
   @Test
@@ -394,9 +461,10 @@ public class TFTDisplayTest {
    */
   @Test
   public void mountingHoleFiguresAreEachBoardsOwn() {
-    double[][] expected = {{3.0d, 3.0d}, {3.0d, 3.0d}, {3.0d, 3.0d}, {2.5d, 2.0d}};
+    double[][] expected =
+        {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.0d, 2.0d}, {3.0d, 3.0d}, {2.5d, 2.0d}};
     Controller[] withHoles = {Controller.ILI9341_2_8, Controller.ILI9341_2_4,
-        Controller.ST7735_1_8, Controller.ST7789_1_54};
+        Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7789_1_54};
     for (int i = 0; i < withHoles.length; i++) {
       Assert.assertEquals(withHoles[i] + " inset", expected[i][0], withHoles[i].getHoleInsetMm(),
           0.01d);
@@ -503,21 +571,33 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every board in the family carries its main header on the bottom edge and stands above it, so
-   * switching the variant property never turns a drawing end for end. The boards disagreed on this
-   * for a while -- the round one and the 2.4" at the bottom, the other three at the top -- and a
-   * user who changed variants found every wire landing on the wrong end of the part.
+   * Which edge the main row leaves by, which is a fact about each board rather than a drawing
+   * convention: with the pin order fixed left to right, a header at the top and a header at the
+   * bottom are mirror images and not the same part. The two ILI9341s and the round board stand
+   * above their row; the
+   * 0.96", the 1.8" and the 1.54" hang below theirs. Asserted for every variant because nothing
+   * else in the geometry would notice one being flipped.
    */
   @Test
-  public void everyBoardStandsAboveItsHeader() {
+  public void headerSitsOnItsOwnEdge() {
     for (Controller controller : Controller.values()) {
       TFTDisplay display = of(controller);
       Rectangle2D bounds = display.getBodyShape().getBounds2D();
       Point2D firstPin = display.getControlPoint(0);
+      double fromEdge = controller.isHeaderAtTop() ? firstPin.getY() - bounds.getY()
+          : bounds.getMaxY() - firstPin.getY();
 
       Assert.assertEquals(controller + " header offset", controller.getHeaderOffsetMm(),
-          mm(bounds.getMaxY() - firstPin.getY()), 0.01d);
+          mm(fromEdge), 0.01d);
     }
+    // A roll call rather than a rule: every one of these was sourced from the part, and a future
+    // variant must be too rather than inheriting whichever way the majority happens to go.
+    Assert.assertTrue("0.96\"", Controller.ST7735_0_96.isHeaderAtTop());
+    Assert.assertTrue("1.8\"", Controller.ST7735_1_8.isHeaderAtTop());
+    Assert.assertTrue("1.54\"", Controller.ST7789_1_54.isHeaderAtTop());
+    Assert.assertFalse("2.8\"", Controller.ILI9341_2_8.isHeaderAtTop());
+    Assert.assertFalse("2.4\"", Controller.ILI9341_2_4.isHeaderAtTop());
+    Assert.assertFalse("1.28\" round", Controller.GC9A01_1_28.isHeaderAtTop());
   }
 
   /**
