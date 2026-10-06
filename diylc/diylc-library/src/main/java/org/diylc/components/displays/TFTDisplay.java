@@ -405,12 +405,14 @@ public class TFTDisplay extends AbstractMakerBoard {
     g2d.setColor(TFT_RED.darker());
     g2d.draw(new RoundRectangle2D.Double(8, 1, width - 16, height - 2, 3, 3));
 
+    // The glass reaches both edges of the board and is centred down it, as it is on the boards
+    // themselves -- every variant whose panel spans the board draws it from edge to edge.
     g2d.setColor(SCREEN_BG);
-    g2d.fillRect(10, 8, width - 20, height - 12);
+    g2d.fillRect(8, 6, width - 16, height - 12);
 
     g2d.setColor(Color.WHITE);
     g2d.setFont(new Font("SansSerif", Font.BOLD, 5));
-    StringUtils.drawCenteredText(g2d, "TFT", width / 2, height / 2 + 3, HorizontalAlignment.CENTER,
+    StringUtils.drawCenteredText(g2d, "TFT", width / 2, height / 2, HorizontalAlignment.CENTER,
         VerticalAlignment.CENTER);
   }
 
