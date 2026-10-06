@@ -179,9 +179,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     if (displayType == null) {
       return null;
     }
-    // The module drives the digits itself and brings out no common pins, so polarity is not part
+    // A module drives the digits itself and brings out no common pins, so polarity is not part
     // of what you order -- but which punctuation it carries still is.
-    if (displayType == DisplayType.TM1637_Module_4Pin) {
+    if (displayType.isModule()) {
       return displayType + ", " + getPunctuation();
     }
     return displayType + ", " + getCommon() + ", " + getPunctuation();
@@ -222,20 +222,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     return super.getBodyColor();
   }
 
-  /**
-   * True for the two bare four-digit packages. They differ in size but not in pin function, so they
-   * share a pin array and differ only in what they measure.
-   */
-  private boolean isFourDigitBare() {
-    return displayType == DisplayType.FourDigit_0_36_12Pin
-        || displayType == DisplayType.FourDigit_0_56_12Pin;
-  }
-
   private String[] getPinNames() {
-    if (displayType == DisplayType.SingleDigit_10Pin) {
-      return PIN_NAMES_1DIGIT;
-    }
-    return isFourDigitBare() ? PIN_NAMES_4DIGIT : PIN_NAMES_TM1637;
+    return displayType.getPinNames();
   }
 
   @Override
@@ -245,6 +233,36 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
       return names[index];
     }
     return "Pin " + (index + 1);
+  }
+
+  private static double px(double millimetres) {
+    return new Size(millimetres, SizeUnit.mm).convertToPixels();
+  }
+
+  /**
+   * Whether a colon has anywhere to go. It sits in the gap between the two middle digits, which
+   * only exists on an even count; a single digit has no gap and an odd count has a digit where the
+   * colon would be.
+   */
+  private boolean hasMiddlePair() {
+    int digitCount = displayType.getDigitCount();
+    return digitCount >= 2 && digitCount % 2 == 0;
+  }
+
+  /**
+   * Draws the package's digits on their own pitch, centred on {@code rowCentreX}. Both the bare
+   * packages and the modules come through here, differing only in the figures they pass: the count
+   * is the variant's, which is what lets a two-, six- or eight-digit part be a constant rather than
+   * a branch.
+   */
+  private void drawDigitRow(Graphics2D g2d, double rowCentreX, double dy, double dw, double dh,
+      double pitch, double nudge, boolean decimalPoints) {
+    int digitCount = displayType.getDigitCount();
+    double firstCentreX = rowCentreX - (digitCount - 1) * pitch / 2.0;
+    for (int d = 0; d < digitCount; d++) {
+      double dx = firstCentreX + d * pitch - dw / 2.0 - nudge;
+      drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor, decimalPoints);
+    }
   }
 
   @Override
@@ -326,8 +344,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     Composite oldComposite = applyAlpha(g2d, componentState);
 
     // the outline is the board on a module and the moulding on a bare package
-    Color outlineFill =
-        displayType == DisplayType.TM1637_Module_4Pin ? boardColor : bodyColor;
+    Color outlineFill = displayType.isModule() ? boardColor : bodyColor;
 
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : outlineFill);
@@ -339,7 +356,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      if (displayType == DisplayType.SingleDigit_10Pin) {
+      if (!displayType.isModule()) {
         // the recessed window is a shade of the moulding, so it follows the body colour
         g2d.setColor(bodyColor.darker());
         g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
@@ -347,64 +364,48 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
 
-        // one digit, drawn slightly under size so it keeps clear of the pins
-        double dw = new Size(displayType.getDigitWidthMm(), SizeUnit.mm).convertToPixels()
-            * DIGIT_DRAW_SCALE;
-        double dh = new Size(displayType.getDigitHeightMm(), SizeUnit.mm).convertToPixels()
-            * DIGIT_DRAW_SCALE;
-        double dx = boardX + (boardW - dw) / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
-        double dy = boardY + (boardH - dh) / 2.0;
-        // no colon on a single digit, so only the decimal point is in question here
-        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
-            getPunctuation().hasDecimalPoints());
-
-      } else if (isFourDigitBare()) {
-        // the recessed window is a shade of the moulding, so it follows the body colour
-        g2d.setColor(bodyColor.darker());
-        g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
-        g2d.setColor(FACE_BORDER);
-        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-        g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
-
-        // Four digits on the package's real centre-to-centre pitch, each drawn slightly under size
-        // so they keep clear of the pins. The pitch is unscaled, so the digits stay on their true
+        // Digits on the package's real centre-to-centre pitch, each drawn slightly under size so
+        // they keep clear of the pins. The pitch is unscaled, so the digits stay on their true
         // centres and only the gaps between them widen, and the row is centred on the body rather
         // than measured from its left edge, so it stays put across packages of different widths.
-        double dw = new Size(displayType.getDigitWidthMm(), SizeUnit.mm).convertToPixels()
-            * DIGIT_DRAW_SCALE;
-        double dh = new Size(displayType.getDigitHeightMm(), SizeUnit.mm).convertToPixels()
-            * DIGIT_DRAW_SCALE;
-        double pitch = new Size(displayType.getDigitPitchMm(), SizeUnit.mm).convertToPixels();
-        double firstCenterX = boardX + boardW / 2.0 - 1.5 * pitch;
+        // A single-digit package is the same construction with a count of one, which leaves its
+        // pitch unused -- that is why the one-digit and four-digit cases are one branch.
+        double dw = px(displayType.getDigitWidthMm()) * DIGIT_DRAW_SCALE;
+        double dh = px(displayType.getDigitHeightMm()) * DIGIT_DRAW_SCALE;
+        double pitch = px(displayType.getDigitPitchMm());
         double dy = boardY + (boardH - dh) / 2.0;
+        double rowCentreX = boardX + boardW / 2.0;
 
         Punctuation punctuation = getPunctuation();
-        for (int d = 0; d < 4; d++) {
-          double centerX = firstCenterX + d * pitch;
-          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
-              punctuation.hasDecimalPoints());
-        }
+        drawDigitRow(g2d, rowCentreX, dy, dw, dh, pitch, 0.5 * SEGMENT_THICKNESS.convertToPixels(),
+            punctuation.hasDecimalPoints());
 
-        if (punctuation.hasColon()) {
+        if (punctuation.hasColon() && hasMiddlePair()) {
           // Colon between the middle pair, sized off the glyph grid like the decimal point is, so
-          // it tracks the digit instead of staying a fixed few pixels across.
+          // it tracks the digit instead of staying a fixed few pixels across. The row is centred,
+          // so the gap between the two middle digits is the body's centre line.
           double dotD = dw / GLYPH_WIDTH * 2.0;
-          double colonX = boardX + boardW / 2.0 - dotD / 2.0;
+          double colonX = rowCentreX - dotD / 2.0;
           g2d.setColor(ledColor);
           g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
           g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
         }
 
-      } else if (displayType == DisplayType.TM1637_Module_4Pin) {
-        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + boardH - 14, 12);
+      } else {
+        Module module = displayType.getModule();
+        double holeInset = px(module.getHoleInsetMm());
+        double holeSize = px(module.getHoleSizeMm());
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
+            boardY + boardH - holeInset, holeSize);
 
-        // Display Bezel (Center)
-        double bezelW = new Size(30.0d, SizeUnit.mm).convertToPixels();
-        double bezelH = new Size(14.0d, SizeUnit.mm).convertToPixels();
+        // the display module itself, centred on the board it is mounted on
+        double bezelW = px(module.getBezelWidthMm());
+        double bezelH = px(module.getBezelLengthMm());
         double bezelX = boardX + (boardW - bezelW) / 2.0;
         double bezelY = boardY + (boardH - bezelH) / 2.0;
 
@@ -415,22 +416,17 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
 
-        // digits from the package's own figures, as the other two branches already do
-        double dw = new Size(displayType.getDigitWidthMm(), SizeUnit.mm).convertToPixels();
-        double dh = new Size(displayType.getDigitHeightMm(), SizeUnit.mm).convertToPixels();
-        double pitch = new Size(displayType.getDigitPitchMm(), SizeUnit.mm).convertToPixels();
-        double firstCenterX = bezelX + (bezelW - 3 * pitch) / 2.0;
+        // digits from the package's own figures, as the bare branch does, but at full size: the
+        // module's digits sit on a bezel rather than between pin rows, so nothing crowds them
+        double dw = px(displayType.getDigitWidthMm());
+        double dh = px(displayType.getDigitHeightMm());
+        double pitch = px(displayType.getDigitPitchMm());
         double dy = bezelY + (bezelH - dh) / 2.0;
 
         Punctuation punctuation = getPunctuation();
-        for (int d = 0; d < 4; d++) {
-          double centerX = firstCenterX + d * pitch;
-          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65;
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor,
-              punctuation.hasDecimalPoints());
-        }
-
-        if (punctuation.hasColon()) {
+        drawDigitRow(g2d, bezelX + bezelW / 2.0, dy, dw, dh, pitch,
+            0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65, punctuation.hasDecimalPoints());
+        if (punctuation.hasColon() && hasMiddlePair()) {
           // same colon treatment as the bare packages: sized off the digit, not in pixels
           double dotD = dw / GLYPH_WIDTH * 2.0;
           double colonX = bezelX + bezelW / 2.0 - dotD / 2.0;
@@ -598,10 +594,14 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     // The parts these model: 5161AS for the single digit, 3641AS for the 0.36 inch four-digit
     // package and 5641AS for the 0.56 inch one. The two four-digit parts differ in size but share
     // a pinout, which is why one array serves both.
-    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true),
-    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true),
-    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true),
-    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false);
+    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true, 1,
+        PIN_NAMES_1DIGIT, null),
+    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true, 4,
+        PIN_NAMES_4DIGIT, null),
+    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 4,
+        PIN_NAMES_4DIGIT, null),
+    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false, 4,
+        PIN_NAMES_TM1637, new Module(30.0d, 14.0d, 1.778d, 1.524d));
 
     private final String label;
     private final double bodyWidthMm;
@@ -611,9 +611,13 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     private final double digitPitchMm;
     private final double rowSpacingMm;
     private final boolean dualRow;
+    private final int digitCount;
+    private final String[] pinNames;
+    private final Module module;
 
     DisplayType(String label, double bodyWidthMm, double bodyLengthMm, double digitWidthMm,
-        double digitHeightMm, double digitPitchMm, double rowSpacingMm, boolean dualRow) {
+        double digitHeightMm, double digitPitchMm, double rowSpacingMm, boolean dualRow,
+        int digitCount, String[] pinNames, Module module) {
       this.label = label;
       this.bodyWidthMm = bodyWidthMm;
       this.bodyLengthMm = bodyLengthMm;
@@ -622,6 +626,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
       this.digitPitchMm = digitPitchMm;
       this.rowSpacingMm = rowSpacingMm;
       this.dualRow = dualRow;
+      this.digitCount = digitCount;
+      this.pinNames = pinNames;
+      this.module = module;
     }
 
     /**
@@ -640,6 +647,27 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     /** True for the DIP packages, which carry their pins in two rows rather than one. */
     public boolean isDualRow() { return dualRow; }
+
+    /**
+     * How many digits the part shows. Carried rather than inferred from the variant's identity,
+     * which is what the drawing used to do: a two-, six- or eight-digit part is then a constant
+     * beside these rather than another branch through {@code draw}.
+     */
+    public int getDigitCount() { return digitCount; }
+
+    /**
+     * The part's pins in DIP order. The two bare four-digit packages share one array because they
+     * differ in size but not in pin function, which the test asserts by identity.
+     */
+    public String[] getPinNames() { return pinNames; }
+
+    /**
+     * The board a driven module is built on, or {@code null} for a bare package. A module carries
+     * its own driver, so it brings out no common pins and its polarity is not something you order.
+     */
+    public Module getModule() { return module; }
+
+    public boolean isModule() { return module != null; }
   }
 
   /**
@@ -674,5 +702,43 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     public boolean hasDecimalPoints() { return this == DecimalPoints || this == Both; }
     public boolean hasColon() { return this == Colon || this == Both; }
+  }
+
+  /**
+   * The circuit board a driven module is built on: the display itself is a bezel mounted on it,
+   * with mounting holes at the corners. A bare package has none of this -- it is a moulding with
+   * pins in it -- which is why {@link DisplayType#getModule()} is null for those.
+   *
+   * <p>The hole figures are the pixel offsets this class drew before they were figures at all,
+   * converted at the canvas scale rather than measured off a part: 14 and 12 pixels are exactly
+   * 1.778 and 1.524 mm, which is to say 0.07 and 0.06 inches. The exact conversions are used rather
+   * than two-decimal roundings so that the drawing is unchanged to the pixel -- the roundings moved
+   * the holes by a fiftieth of a pixel, which antialiasing turned into a visible difference. They
+   * are unsourced in the way the digit widths are.
+   *
+   * @author Branislav Stojkovic
+   */
+  public static class Module {
+
+    private final double bezelWidthMm;
+    private final double bezelLengthMm;
+    private final double holeInsetMm;
+    private final double holeSizeMm;
+
+    public Module(double bezelWidthMm, double bezelLengthMm, double holeInsetMm,
+        double holeSizeMm) {
+      this.bezelWidthMm = bezelWidthMm;
+      this.bezelLengthMm = bezelLengthMm;
+      this.holeInsetMm = holeInsetMm;
+      this.holeSizeMm = holeSizeMm;
+    }
+
+    public double getBezelWidthMm() { return bezelWidthMm; }
+    public double getBezelLengthMm() { return bezelLengthMm; }
+
+    /** Centre of a corner hole, from each of the two edges nearest it. */
+    public double getHoleInsetMm() { return holeInsetMm; }
+
+    public double getHoleSizeMm() { return holeSizeMm; }
   }
 }

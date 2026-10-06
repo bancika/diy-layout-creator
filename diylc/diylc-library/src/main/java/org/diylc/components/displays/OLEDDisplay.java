@@ -68,7 +68,26 @@ public class OLEDDisplay extends AbstractMakerBoard {
   public static Color PIXEL_BLUE = Color.decode("#00D4FF");
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SCL", "SDA"};
-  public static final String[] PIN_NAMES_SPI = new String[] {"GND", "VCC", "D0 (CLK)", "D1 (MOSI)", "RES", "DC", "CS"};
+
+  /**
+   * The same two pads carry the clock and the data line in both interfaces -- the module's BS
+   * jumpers decide which protocol the controller speaks on them, not which pins it uses -- so they
+   * keep the names the I2C row gives them rather than the SPI aliases. Module silk disagrees with
+   * itself here more than anywhere else on these boards: the SSD1306 datasheet calls the pair D0
+   * and D1, SPI-labelled boards print SCK or CLK and MOSI, and I2C-labelled ones print SCL and SDA.
+   * All three name the same two pins.
+   */
+  public static final String[] PIN_NAMES_SPI =
+      new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS"};
+
+  /**
+   * The same row without the chip select, which some makers tie low on the board instead of
+   * bringing out. It is a different board rather than a different silkscreen -- the display is then
+   * permanently selected and cannot share its bus with anything else -- which is why it is a
+   * variant and the clock and data naming is not.
+   */
+  public static final String[] PIN_NAMES_SPI_NO_CS =
+      new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC"};
 
   private Version version = Version.SSD1306_0_96;
   private OLEDInterface oledInterface = OLEDInterface.I2C_4Pin;
@@ -324,12 +343,14 @@ public class OLEDDisplay extends AbstractMakerBoard {
   }
 
   public enum OLEDInterface {
-    // Labels stay short because they reach the BOM's value column through getVariantLabel; the pin
-    // legend they used to carry is already in the node names. The pin array belongs here rather
-    // than on the board, because all three sizes bring the same lines out in the same order and
-    // only the interface decides which set that is.
+    // Labels stay short because they reach the BOM's value column through getVariantLabel and are
+    // printed on the lit area, which the 0.91" has little of: "SPI, 7-pin" and "SPI, 6-pin" were
+    // tried and the glass stopped printing anything at all. The pin array belongs here rather than
+    // on the board, because all three sizes bring the same lines out in the same order and only the
+    // interface decides which set that is.
     I2C_4Pin("I2C", PIN_NAMES_I2C),
-    SPI_7Pin("SPI", PIN_NAMES_SPI);
+    SPI_7Pin("SPI", PIN_NAMES_SPI),
+    SPI_6Pin("SPI-6", PIN_NAMES_SPI_NO_CS);
 
     private final String label;
     private final String[] pinNames;
@@ -396,6 +417,12 @@ public class OLEDDisplay extends AbstractMakerBoard {
     public double getActiveLengthMm() { return activeLengthMm; }
     public double getActiveLeftInPanelMm() { return activeLeftInPanelMm; }
 
+    /**
+     * The two SPI headers share a board. That is a derivation rather than a measurement: a 6-pin
+     * module is a PCB of its own with one fewer pad, and only its outline would say whether it
+     * matches the 7-pin board it is modelled on. The header is centred on the width either way, so
+     * the shorter row sits correctly on the board it borrows.
+     */
     public Layout getLayout(OLEDInterface oledInterface) {
       return oledInterface == OLEDInterface.I2C_4Pin ? i2cLayout : spiLayout;
     }

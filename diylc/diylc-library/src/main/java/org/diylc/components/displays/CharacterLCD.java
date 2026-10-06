@@ -84,7 +84,7 @@ public class CharacterLCD extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SDA", "SCL"};
   public static final String[] PIN_NAMES_PARALLEL = new String[] {
-      "VSS (GND)", "VDD (+5V)", "V0 (Contrast)", "RS", "RW", "E",
+      "VSS (GND)", "VCC (+5V)", "VEE (Contrast)", "RS", "RW", "E",
       "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",
       "A (Backlight +)", "K (Backlight -)"
   };
@@ -93,7 +93,7 @@ public class CharacterLCD extends AbstractMakerBoard {
   // the backlight pins carry their function in the node name instead, where a label lying along a
   // 0.1" pitch has no room for it.
   public static final String[] SILK_NAMES_PARALLEL = new String[] {
-      "VSS", "VDD", "V0", "RS", "RW", "E",
+      "VSS", "VCC", "VEE", "RS", "RW", "E",
       "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"
   };
 

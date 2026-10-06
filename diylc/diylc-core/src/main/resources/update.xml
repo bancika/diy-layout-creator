@@ -551,7 +551,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>OLED Display - 0.96 inch SSD1306, 0.91 inch SSD1306, 1.3 inch SH1106, in I2C and SPI</description>
+					<description>OLED Display - 0.96 inch SSD1306, 0.91 inch SSD1306, 1.3 inch SH1106, in I2C, 7-pin SPI and 6-pin SPI</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>

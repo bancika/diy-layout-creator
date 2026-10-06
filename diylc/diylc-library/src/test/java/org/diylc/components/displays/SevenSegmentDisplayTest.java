@@ -113,6 +113,48 @@ public class SevenSegmentDisplayTest {
           large.getControlPointNodeName(i));
     }
     Assert.assertNotEquals(small.getBodyShape().getBounds2D(), large.getBodyShape().getBounds2D());
+    Assert.assertSame("shared by identity, not by two matching copies",
+        DisplayType.FourDigit_0_36_12Pin.getPinNames(),
+        DisplayType.FourDigit_0_56_12Pin.getPinNames());
+  }
+
+  /**
+   * The digit count is the variant's own figure rather than something the drawing works out from
+   * which constant it is looking at. That is what lets a two-, six- or eight-digit part be a
+   * constant beside these, so it is worth asserting that every variant answers and that the
+   * answer is the one the label advertises.
+   */
+  @Test
+  public void digitCountComesFromThePackage() {
+    Assert.assertEquals(1, DisplayType.SingleDigit_10Pin.getDigitCount());
+    Assert.assertEquals(4, DisplayType.FourDigit_0_36_12Pin.getDigitCount());
+    Assert.assertEquals(4, DisplayType.FourDigit_0_56_12Pin.getDigitCount());
+    Assert.assertEquals(4, DisplayType.TM1637_Module_4Pin.getDigitCount());
+
+    for (DisplayType displayType : DisplayType.values()) {
+      Assert.assertTrue(displayType + " shows no digits", displayType.getDigitCount() >= 1);
+      Assert.assertEquals(displayType + " pin count", displayType.getPinNames().length,
+          of(displayType).getControlPointCount());
+    }
+  }
+
+  /**
+   * A driven module brings out no common pins, so its polarity is not something you order -- which
+   * is why the BOM line omits it. Asked of the variant rather than of its identity, and paired with
+   * the pin arrangement so that the two cannot quietly become one question: they agree on all four
+   * variants today, but a single-in-line bare package or a module in a DIP outline would separate
+   * them.
+   */
+  @Test
+  public void onlyModulesCarryABoard() {
+    for (DisplayType displayType : DisplayType.values()) {
+      Assert.assertEquals(displayType + " module", displayType == DisplayType.TM1637_Module_4Pin,
+          displayType.isModule());
+      Assert.assertEquals(displayType + " board figures", displayType.isModule(),
+          displayType.getModule() != null);
+      Assert.assertNotEquals(displayType + " row arrangement", displayType.isModule(),
+          displayType.isDualRow());
+    }
   }
 
   @Test

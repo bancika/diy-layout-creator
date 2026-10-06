@@ -120,21 +120,47 @@ public class OLEDDisplayTest {
   @Test
   public void controlPointsAreTheSpiPinsInOrder() {
     OLEDDisplay display = of(Version.SSD1306_0_96, OLEDInterface.SPI_7Pin);
-    String[] expected = new String[] {"GND", "VCC", "D0 (CLK)", "D1 (MOSI)", "RES", "DC", "CS"};
+    String[] expected = new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS"};
     Assert.assertEquals(expected.length, display.getControlPointCount());
     for (int i = 0; i < expected.length; i++) {
       Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
     }
   }
 
-  /** Every size is sold in both interfaces, so no size may carry a shorter pin array. */
+  /** Every size is sold in every interface, so no size may carry a shorter pin array. */
   @Test
-  public void bothInterfacesExistAtEverySize() {
+  public void everyInterfaceExistsAtEverySize() {
     for (Version version : Version.values()) {
       Assert.assertEquals(version + " I2C", 4,
           of(version, OLEDInterface.I2C_4Pin).getControlPointCount());
       Assert.assertEquals(version + " SPI", 7,
           of(version, OLEDInterface.SPI_7Pin).getControlPointCount());
+      Assert.assertEquals(version + " SPI-6", 6,
+          of(version, OLEDInterface.SPI_6Pin).getControlPointCount());
+    }
+  }
+
+  /**
+   * The 6-pin board is the 7-pin one with the chip select tied low on the PCB instead of brought
+   * out, so its row is the other's without that single pin and in the same order -- anything else
+   * would be a different part rather than the same part sold two ways. It borrows the 7-pin board's
+   * outline, which is a derivation and not a measurement, so that is asserted here rather than left
+   * to be discovered.
+   */
+  @Test
+  public void theSixPinBoardDropsOnlyTheChipSelect() {
+    String[] seven = OLEDInterface.SPI_7Pin.getPinNames();
+    String[] six = OLEDInterface.SPI_6Pin.getPinNames();
+
+    Assert.assertEquals("one pin fewer", seven.length - 1, six.length);
+    Assert.assertEquals("CS is the pin that goes", "CS", seven[seven.length - 1]);
+    for (int i = 0; i < six.length; i++) {
+      Assert.assertEquals("pin " + i, seven[i], six[i]);
+    }
+
+    for (Version version : Version.values()) {
+      Assert.assertSame(version + " shares the SPI board",
+          version.getLayout(OLEDInterface.SPI_7Pin), version.getLayout(OLEDInterface.SPI_6Pin));
     }
   }
 
@@ -147,6 +173,8 @@ public class OLEDDisplayTest {
     Assert.assertEquals(7, display.getControlPointCount());
     display.setVersion(Version.SSD1306_0_91);
     Assert.assertEquals(7, display.getControlPointCount());
+    display.setOledInterface(OLEDInterface.SPI_6Pin);
+    Assert.assertEquals(6, display.getControlPointCount());
     display.setOledInterface(OLEDInterface.I2C_4Pin);
     Assert.assertEquals(4, display.getControlPointCount());
   }
