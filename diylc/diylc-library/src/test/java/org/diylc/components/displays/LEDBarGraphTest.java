@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
+import org.diylc.components.displays.LEDBarGraph.BarColor;
 import org.diylc.components.displays.LEDBarGraph.Segments;
 import org.diylc.components.transform.LEDBarGraphTransformer;
 import org.junit.Assert;
@@ -347,6 +348,72 @@ public class LEDBarGraphTest {
     vertical.setOrientation(Orientation.DEFAULT);
     transformer.mirror(vertical, centre, IComponentTransformer.VERTICAL);
     Assert.assertEquals(Orientation._180, vertical.getOrientation());
+  }
+
+  @Test
+  public void singleColorsRenderUniformSegments() throws Exception {
+    java.lang.reflect.Method segmentColor =
+        LEDBarGraph.class.getDeclaredMethod("getSegmentColor", int.class);
+    segmentColor.setAccessible(true);
+
+    BarColor[] singleColors = new BarColor[] {
+        BarColor.RED, BarColor.GREEN, BarColor.YELLOW, BarColor.BLUE, BarColor.ORANGE,
+        BarColor.WHITE
+    };
+
+    for (BarColor color : singleColors) {
+      LEDBarGraph graph = bar(Segments._10);
+      graph.setBarColor(color);
+      for (int i = 0; i < 10; i++) {
+        Assert.assertEquals("segment " + i + " for " + color,
+            color.getSegmentColor(i, 10), segmentColor.invoke(graph, i));
+      }
+    }
+  }
+
+  @Test
+  public void blueGreenYellowRedDistribution() throws Exception {
+    java.lang.reflect.Method segmentColor =
+        LEDBarGraph.class.getDeclaredMethod("getSegmentColor", int.class);
+    segmentColor.setAccessible(true);
+
+    LEDBarGraph graph10 = bar(Segments._10);
+    graph10.setBarColor(BarColor.BLUE_GREEN_YELLOW_RED);
+    Assert.assertEquals(LEDBarGraph.SEGMENT_RED, segmentColor.invoke(graph10, 0));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_RED, segmentColor.invoke(graph10, 1));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_YELLOW, segmentColor.invoke(graph10, 2));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_YELLOW, segmentColor.invoke(graph10, 3));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_YELLOW, segmentColor.invoke(graph10, 4));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_GREEN, segmentColor.invoke(graph10, 5));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_GREEN, segmentColor.invoke(graph10, 8));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_BLUE, segmentColor.invoke(graph10, 9));
+
+    LEDBarGraph graph4 = bar(Segments._4);
+    graph4.setBarColor(BarColor.BLUE_GREEN_YELLOW_RED);
+    Assert.assertEquals(LEDBarGraph.SEGMENT_RED, segmentColor.invoke(graph4, 0));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_YELLOW, segmentColor.invoke(graph4, 1));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_GREEN, segmentColor.invoke(graph4, 2));
+    Assert.assertEquals(LEDBarGraph.SEGMENT_BLUE, segmentColor.invoke(graph4, 3));
+  }
+
+  @Test
+  public void colorVariantDistinguishesBomRow() {
+    LEDBarGraph defaultGraph = bar(Segments._10);
+    LEDBarGraph redGraph = bar(Segments._10);
+    redGraph.setBarColor(BarColor.RED);
+    LEDBarGraph bgyrGraph = bar(Segments._10);
+    bgyrGraph.setBarColor(BarColor.BLUE_GREEN_YELLOW_RED);
+
+    Assert.assertEquals("10 Segment", defaultGraph.getValueForDisplay());
+    Assert.assertEquals("10 Segment, Red", redGraph.getValueForDisplay());
+    Assert.assertEquals("10 Segment, Blue-Green-Yellow-Red", bgyrGraph.getValueForDisplay());
+  }
+
+  @Test
+  public void barColorDefaultsWhenNull() {
+    LEDBarGraph graph = new LEDBarGraph();
+    graph.setBarColor(null);
+    Assert.assertEquals(BarColor.GREEN_YELLOW_RED, graph.getBarColor());
   }
 
   private static LEDBarGraph bar(Segments segments) {

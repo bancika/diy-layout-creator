@@ -87,6 +87,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   public static Color SEGMENT_GREEN = Color.decode("#43A047");
   public static Color SEGMENT_YELLOW = Color.decode("#FDD835");
   public static Color SEGMENT_RED = Color.decode("#E53935");
+  public static Color SEGMENT_BLUE = Color.decode("#1E88E5");
+  public static Color SEGMENT_ORANGE = Color.decode("#FB8C00");
+  public static Color SEGMENT_WHITE = Color.decode("#EEEEEE");
   public static int EDGE_RADIUS = 4;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
@@ -106,6 +109,7 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
   private Segments segments = Segments._10;
+  private BarColor barColor = BarColor.GREEN_YELLOW_RED;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -158,23 +162,24 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
     body = null;
   }
 
+  @EditableProperty(name = "Color")
+  public BarColor getBarColor() {
+    if (barColor == null) {
+      barColor = BarColor.GREEN_YELLOW_RED;
+    }
+    return barColor;
+  }
+
+  public void setBarColor(BarColor barColor) {
+    this.barColor = barColor;
+  }
+
   /**
-   * The colour of one segment, counted from the top of the scale. Red marks the top of the range,
-   * the two below it are yellow and everything under that is green, so the proportions shift with
-   * the segment count rather than the bands being fixed fractions: nine green on a twelve segment
-   * part, five on an eight.
-   *
-   * <p>This is a rule rather than a property. The trade is that a single-colour bar -- all red or
-   * all green, both of which are sold -- can no longer be drawn.
+   * The colour of one segment, counted from the top of the scale. Delegates to the selected
+   * {@link BarColor}.
    */
   private Color getSegmentColor(int index) {
-    if (index == 0) {
-      return SEGMENT_RED;
-    }
-    if (index <= 2) {
-      return SEGMENT_YELLOW;
-    }
-    return SEGMENT_GREEN;
+    return getBarColor().getSegmentColor(index, getSegments().getCount());
   }
 
   @EditableProperty(name = "Body")
@@ -202,8 +207,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * Puts the segment count in the BOM's value column, so an eight, a ten and a twelve segment part
-   * are three rows rather than one. Without this they would collapse: the inherited implementation
+   * Puts the segment count and color in the BOM's value column, so different variants are
+   * separate rows rather than one. Without this they would collapse: the inherited implementation
    * returns {@link #getValue()}, which is the part number and is usually blank, and {@code
    * BomMaker} groups on the type name and the value together.
    *
@@ -215,6 +220,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   @Override
   public String getValueForDisplay() {
     String variant = getSegments().toString();
+    if (getBarColor() != BarColor.GREEN_YELLOW_RED) {
+      variant += ", " + getBarColor();
+    }
     String partNumber = getValue();
     return partNumber == null || partNumber.trim().isEmpty() ? variant
         : variant + ", " + partNumber.trim();
@@ -523,5 +531,84 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
 
     /** Anode and cathode per segment, split evenly between the two rows. */
     public int getPinCount() { return count * 2; }
+  }
+
+  public enum BarColor {
+    GREEN_YELLOW_RED("Green-Yellow-Red"),
+    BLUE_GREEN_YELLOW_RED("Blue-Green-Yellow-Red"),
+    RED("Red"),
+    GREEN("Green"),
+    YELLOW("Yellow"),
+    BLUE("Blue"),
+    ORANGE("Orange"),
+    WHITE("White");
+
+    private final String label;
+
+    BarColor(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
+
+    public Color getSegmentColor(int index, int totalSegments) {
+      switch (this) {
+        case RED:
+          return SEGMENT_RED;
+        case GREEN:
+          return SEGMENT_GREEN;
+        case YELLOW:
+          return SEGMENT_YELLOW;
+        case BLUE:
+          return SEGMENT_BLUE;
+        case ORANGE:
+          return SEGMENT_ORANGE;
+        case WHITE:
+          return SEGMENT_WHITE;
+        case BLUE_GREEN_YELLOW_RED:
+          int redCount;
+          int yellowCount;
+          int blueCount;
+          if (totalSegments >= 12) {
+            redCount = 2;
+            yellowCount = 3;
+            blueCount = 2;
+          } else if (totalSegments >= 10) {
+            redCount = 2;
+            yellowCount = 3;
+            blueCount = 1;
+          } else if (totalSegments >= 8) {
+            redCount = 1;
+            yellowCount = 2;
+            blueCount = 1;
+          } else {
+            redCount = 1;
+            yellowCount = 1;
+            blueCount = 1;
+          }
+          if (index < redCount) {
+            return SEGMENT_RED;
+          }
+          if (index < redCount + yellowCount) {
+            return SEGMENT_YELLOW;
+          }
+          if (index >= totalSegments - blueCount) {
+            return SEGMENT_BLUE;
+          }
+          return SEGMENT_GREEN;
+        case GREEN_YELLOW_RED:
+        default:
+          if (index == 0) {
+            return SEGMENT_RED;
+          }
+          if (index <= 2) {
+            return SEGMENT_YELLOW;
+          }
+          return SEGMENT_GREEN;
+      }
+    }
   }
 }
