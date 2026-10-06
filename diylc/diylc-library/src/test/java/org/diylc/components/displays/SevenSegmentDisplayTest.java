@@ -35,8 +35,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Basic checks for the seven-segment displays. Three of the four variants are DIP packages that
- * straddle their pins with a row either side, and the fourth is a module carrying a single header
+ * Basic checks for the seven-segment displays. All but one of the variants are DIP packages that
+ * straddle their pins with a row either side, and the last is a module carrying a single header
  * down one edge, so the pin layout is what differs most between them.
  */
 public class SevenSegmentDisplayTest {
@@ -75,6 +75,7 @@ public class SevenSegmentDisplayTest {
   @Test
   public void pinCountFollowsThePackage() {
     Assert.assertEquals(10, of(DisplayType.SingleDigit_10Pin).getControlPointCount());
+    Assert.assertEquals(10, of(DisplayType.TwoDigit_0_56_10Pin).getControlPointCount());
     Assert.assertEquals(12, of(DisplayType.FourDigit_0_36_12Pin).getControlPointCount());
     Assert.assertEquals(12, of(DisplayType.FourDigit_0_56_12Pin).getControlPointCount());
     Assert.assertEquals(4, of(DisplayType.TM1637_Module_4Pin).getControlPointCount());
@@ -87,6 +88,8 @@ public class SevenSegmentDisplayTest {
   public void pinNamesAreInDipOrder() {
     Assert.assertArrayEquals(new String[] {"E", "D", "COM1", "C", "DP", "B", "A", "COM2", "F", "G"},
         SevenSegmentDisplay.PIN_NAMES_1DIGIT);
+    Assert.assertArrayEquals(new String[] {"E", "D", "DP", "C", "G", "B", "D2", "D1", "F", "A"},
+        SevenSegmentDisplay.PIN_NAMES_2DIGIT);
     Assert.assertArrayEquals(
         new String[] {"E", "D", "DP", "C", "G", "D4", "B", "D3", "D2", "F", "A", "D1"},
         SevenSegmentDisplay.PIN_NAMES_4DIGIT);
@@ -127,6 +130,7 @@ public class SevenSegmentDisplayTest {
   @Test
   public void digitCountComesFromThePackage() {
     Assert.assertEquals(1, DisplayType.SingleDigit_10Pin.getDigitCount());
+    Assert.assertEquals(2, DisplayType.TwoDigit_0_56_10Pin.getDigitCount());
     Assert.assertEquals(4, DisplayType.FourDigit_0_36_12Pin.getDigitCount());
     Assert.assertEquals(4, DisplayType.FourDigit_0_56_12Pin.getDigitCount());
     Assert.assertEquals(4, DisplayType.TM1637_Module_4Pin.getDigitCount());
@@ -141,8 +145,8 @@ public class SevenSegmentDisplayTest {
   /**
    * A driven module brings out no common pins, so its polarity is not something you order -- which
    * is why the BOM line omits it. Asked of the variant rather than of its identity, and paired with
-   * the pin arrangement so that the two cannot quietly become one question: they agree on all four
-   * variants today, but a single-in-line bare package or a module in a DIP outline would separate
+   * the pin arrangement so that the two cannot quietly become one question: they agree on every
+   * variant today, but a single-in-line bare package or a module in a DIP outline would separate
    * them.
    */
   @Test

@@ -5089,6 +5089,24 @@
           <createdOn>2026-10-11T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
+          <name>2-Digit 0.56" Common Cathode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TwoDigit_0_56_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>2-Digit 0.56" Common Anode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TwoDigit_0_56_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
           <name>4-Digit 0.36" Common Cathode</name>
           <values>
             <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>FourDigit_0_36_12Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>

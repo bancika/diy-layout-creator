@@ -52,7 +52,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "7-Segment Display", category = "Displays & Outputs",
-    author = "Branislav Stojkovic", description = "7-Segment LED Display (1-Digit, 4-Digit, or TM1637 I2C Driver Module)",
+    author = "Branislav Stojkovic", description = "7-Segment LED Display (1-Digit, 2-Digit, 4-Digit, or TM1637 I2C Driver Module)",
     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
@@ -94,6 +94,15 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    */
   public static final String[] PIN_NAMES_1DIGIT = new String[] {
       "E", "D", "COM1", "C", "DP", "B", "A", "COM2", "F", "G"
+  };
+
+  /**
+   * The 5621AS, which is the two-digit member of the same 0.56 inch family as the 5641AS. Ten pins
+   * rather than twelve: there are two digit commons to bring out instead of four, and no pin is
+   * freed up by that because the segments already account for the rest.
+   */
+  public static final String[] PIN_NAMES_2DIGIT = new String[] {
+      "E", "D", "DP", "C", "G", "B", "D2", "D1", "F", "A"
   };
 
   /**
@@ -591,11 +600,13 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
    * until someone reads a datasheet or measures a part.
    */
   public enum DisplayType {
-    // The parts these model: 5161AS for the single digit, 3641AS for the 0.36 inch four-digit
-    // package and 5641AS for the 0.56 inch one. The two four-digit parts differ in size but share
-    // a pinout, which is why one array serves both.
+    // The parts these model: 5161AS for the single digit, 5621AS for the two-digit package, 3641AS
+    // for the 0.36 inch four-digit package and 5641AS for the 0.56 inch one. The two four-digit
+    // parts differ in size but share a pinout, which is why one array serves both.
     SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true, 1,
         PIN_NAMES_1DIGIT, null),
+    TwoDigit_0_56_10Pin("2-Digit 0.56\"", 25.0d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 2,
+        PIN_NAMES_2DIGIT, null),
     FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true, 4,
         PIN_NAMES_4DIGIT, null),
     FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 4,

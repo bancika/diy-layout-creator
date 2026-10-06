@@ -507,7 +507,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>7-Segment Display - 1-digit 0.56 inch, 4-digit in 0.36 inch and 0.56 inch, and TM1637 driver module</description>
+					<description>7-Segment Display - 1-digit 0.56 inch, 2-digit 0.56 inch, 4-digit in 0.36 inch and 0.56 inch, and TM1637 driver module</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
