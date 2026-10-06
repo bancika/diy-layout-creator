@@ -5193,6 +5193,30 @@
       <string>org.diylc.components.displays.LEDBarGraph</string>
       <list>
         <org.diylc.core.Template>
+          <name>4 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_4</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>5 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_5</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>6 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_6</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
           <name>8 Segment</name>
           <values>
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_8</diylc.displays.LEDBarGraph_-Segments></entry>
