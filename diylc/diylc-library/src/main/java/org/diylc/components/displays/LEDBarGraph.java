@@ -503,6 +503,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
    * body lengthens by one pin pitch per segment.
    */
   public enum Segments {
+    _4("4 Segment", 4),
+    _5("5 Segment", 5),
+    _6("6 Segment", 6),
     _8("8 Segment", 8),
     _10("10 Segment", 10),
     _12("12 Segment", 12);
