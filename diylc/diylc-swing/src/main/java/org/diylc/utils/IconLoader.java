@@ -89,7 +89,7 @@ public enum IconLoader {
       "trace_mask.png"), TraceProximity("trace_proximity.png"), Undo("undo.png"), Ungroup(
       "ungroup.png"), Unlock("lock_open.png"), Upload("upload.png"), User("user1.png"), Warning(
       "warning.png"), Web("web.png"), WindowColors("window_colors.png"), WindowGear(
-      "window_gear.png"), Wrench("wrench.png"), ZoomSmall("zoom_small.png");
+      "window_gear.png"), Wrench("wrench.png"), ZoomSmall("zoom_small.png"), FolderPreferences("folder_preferences.png");
 
   protected String name;
 

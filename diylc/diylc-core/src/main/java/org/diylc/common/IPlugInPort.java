@@ -83,6 +83,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String HARDWARE_ACCELERATION = "hardwareAcceleration";
   public static final String EXTRA_SPACE_KEY = "extraSpace";
   public static final String FAVORITES_KEY = "favorites";
+  public static final String DISABLED_CATEGORIES_KEY = "disabledComponentCategories";
   public static final String RENUMBER_ON_PASTE_KEY = "renumberOnPaste";
   public static final String RULER_IN_SUBDIVISION_KEY = "rulerInSubdivision";
   public static final String CACHING_ENABLED_KEY = "cachingEnabled";
@@ -212,6 +213,20 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
    * @return
    */
   Map<String, List<ComponentType>> getComponentTypes();
+
+  /**
+   * Returns the {@link ComponentType}s that should be offered to the user, i.e. the result of
+   * {@link #getComponentTypes()} without the categories the user disabled. Intended for component
+   * browsers; anything that needs to resolve an arbitrary component class must use
+   * {@link #getComponentTypes()} instead.
+   */
+  Map<String, List<ComponentType>> getVisibleComponentTypes();
+
+  boolean isCategoryEnabled(String category);
+
+  void setCategoryEnabled(String category, boolean enabled);
+
+  void resetCategoryVisibility();
 
   /**
    * Draws project on the provided {@link Graphics2D}. If the provided filter is not null, it will

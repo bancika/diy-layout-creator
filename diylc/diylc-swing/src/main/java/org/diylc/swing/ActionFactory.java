@@ -30,12 +30,14 @@ import org.diylc.core.ExpansionMode;
 import org.diylc.core.Theme;
 import org.diylc.swing.actions.CheckProximityAction;
 import org.diylc.swing.actions.ComponentBrowserAction;
+import org.diylc.swing.actions.ComponentCategoryAction;
 import org.diylc.swing.actions.ConfigAction;
 import org.diylc.swing.actions.ExportGerberAction;
 import org.diylc.swing.actions.ExportPNGAction;
 import org.diylc.swing.actions.FindAction;
 import org.diylc.swing.actions.FlexibleLeadsAction;
 import org.diylc.swing.actions.RenumberAction;
+import org.diylc.swing.actions.ResetCategoriesAction;
 import org.diylc.swing.actions.ThemeAction;
 import org.diylc.swing.actions.ToggleAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
@@ -262,6 +264,15 @@ public class ActionFactory {
 
   public ComponentBrowserAction createComponentBrowserAction(String browserType) {
     return new ComponentBrowserAction(browserType);
+  }
+
+  public ComponentCategoryAction createComponentCategoryAction(IPlugInPort plugInPort,
+      String category) {
+    return new ComponentCategoryAction(plugInPort, category);
+  }
+
+  public ResetCategoriesAction createResetCategoriesAction(IPlugInPort plugInPort) {
+    return new ResetCategoriesAction(plugInPort);
   }
 
   public RenumberAction createRenumberAction(IPlugInPort plugInPort, boolean xAxisFirst) {
