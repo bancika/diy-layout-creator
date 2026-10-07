@@ -416,19 +416,18 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Three boards state their own lit area rather than take the centred one, and the reason is
-   * worth asserting rather than only commenting: their panels carry the driver's bonding region
-   * along the bottom, so the lit area sits high in the glass and the family's centring rule would
-   * drop it 4.85 mm on the 2.4", 2.75 mm on the 2.8" and 2 mm on the 1.8". The assertion is that
-   * the two disagree -- if a later correction ever makes them agree, the field has stopped earning
-   * its place.
+   * Every board with a bezel states its own lit area rather than take the centred one, bar the
+   * 0.96", and the reason is worth asserting rather than only commenting: their panels carry the
+   * driver's bonding region along the bottom, so the lit area sits high in the glass and the
+   * family's centring rule would drop it, by 4.85 mm on the 2.4" down to 1.5 mm on the 1.54". The
+   * assertion is that the two disagree -- if a later correction ever makes them agree, the field
+   * has stopped earning its place.
    */
   @Test
   public void theLitAreaIsMeasuredOnlyWhereCentringWouldBeWrong() {
     for (Controller controller : Controller.values()) {
       Assert.assertEquals(controller + " measured lit area",
-          controller == Controller.ILI9341_2_4 || controller == Controller.ILI9341_2_8
-              || controller == Controller.ST7735_1_8 || controller == Controller.ST7735_1_8_SD,
+          controller.hasGlass() && controller != Controller.ST7735_0_96,
           controller.hasMeasuredScreenTop());
       if (!controller.hasMeasuredScreenTop()) {
         continue;
@@ -449,13 +448,14 @@ public class TFTDisplayTest {
       // are the assertions that say the stored figure has to be rederived. What was arrived at
       // differs by board: the ILI9341s were measured as a frame below the top of the bezel, the
       // 1.8" as a lift off the position the centring rule gives.
-      if (controller == Controller.ST7735_1_8 || controller == Controller.ST7735_1_8_SD) {
-        Assert.assertEquals(controller + " lift off the centred lit area", 2.0d,
-            glassTop + (glassH - controller.getScreenLengthMm()) / 2.0 - screenTop, 0.01d);
-      } else {
+      if (controller == Controller.ILI9341_2_4 || controller == Controller.ILI9341_2_8) {
         double frameAbove = controller == Controller.ILI9341_2_4 ? 2.76d : 3.05d;
         Assert.assertEquals(controller + " frame above the lit area", frameAbove,
             screenTop - glassTop, 0.01d);
+      } else {
+        double lift = controller == Controller.ST7789_1_54 ? 1.5d : 2.0d;
+        Assert.assertEquals(controller + " lift off the centred lit area", lift,
+            glassTop + (glassH - controller.getScreenLengthMm()) / 2.0 - screenTop, 0.01d);
       }
     }
   }
@@ -514,14 +514,15 @@ public class TFTDisplayTest {
   /**
    * Each board's holes are one drill at one inset from each of the two edges nearest them, but the
    * figures are the board's own rather than the package's: the two ILI9341s are 3 mm at 3 mm, the
-   * 0.96" is 2 mm at 2 mm, and the 1.8" and the 1.54" are 2 mm at 2.5 mm. The 2.8" had a narrower
-   * 2.5 mm drill for a while and this guards against it coming back. Both ILI9341 boards hold their
-   * header-side pair deeper than their other one, by their own figure and for their own reason,
-   * which is asserted beside this rather than within it so the two cannot be read as one rule.
+   * 1.8" with the socket is 2 mm at 3 mm, and the other three are 2 mm at 2.5 mm. The 2.8" had a
+   * narrower 2.5 mm drill for a while and this guards against it coming back. Both ILI9341 boards
+   * hold their header-side pair deeper than their other one, by their own figure and for their own
+   * reason, which is asserted beside this rather than within it so the two cannot be read as one
+   * rule.
    */
   @Test
   public void mountingHoleFiguresAreEachBoardsOwn() {
-    double[][] expected = {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.0d, 2.0d}, {2.5d, 2.0d}, {3.0d, 2.0d},
+    double[][] expected = {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.5d, 2.0d}, {2.5d, 2.0d}, {3.0d, 2.0d},
         {2.5d, 2.0d}};
     Controller[] withHoles = {Controller.ILI9341_2_8, Controller.ILI9341_2_4,
         Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7735_1_8_SD,

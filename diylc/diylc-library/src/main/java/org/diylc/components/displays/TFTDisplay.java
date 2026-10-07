@@ -363,9 +363,9 @@ public class TFTDisplay extends AbstractMakerBoard {
           // The lit area belongs to the panel rather than to the board, so it is centred in the
           // glass -- which is the same thing as centring it on the board for every variant whose
           // glass spans the board, and is not for the 0.96", whose panel is pushed to one side.
-          // It is centred vertically too unless the variant states its own figure, which the two
-          // ILI9341s and the 1.8" do: their panels carry the driver's bonding region along the
-          // bottom, so the lit area sits high in the frame and centring it would drop it.
+          // It is centred vertically too unless the variant states its own figure, which every
+          // board here does but the 0.96": their panels carry the driver's bonding region along
+          // the bottom, so the lit area sits high in the frame and centring it would drop it.
           screenX = glassX + (glassW - screenW) / 2.0;
           screenY = controller.hasMeasuredScreenTop() ? boardY + px(controller.getScreenTopMm())
               : glassY + (glassH - screenH) / 2.0;
@@ -467,13 +467,16 @@ public class TFTDisplay extends AbstractMakerBoard {
     // family's rule and sits centred, which on a board whose holes share one inset is the same as
     // centred in the PCB.
     ST7735_0_96("0.96\" ST7735 80x160", 30.0d, 24.0d, 21.7d, 10.8d,
-        new Glass(12.8d, 23.7d, 2.0d), 1.44d, 2.0d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 0d, null, 0d,
-        2.0d, true),
+        new Glass(12.8d, 23.7d, 2.0d), 1.44d, 2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 0d, null, 0d,
+        2.5d, true),
     GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, null, 1.76d, 0d, 0d,
         22.9d,
         new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"}, false),
+    // The lit area sits 1.5 mm above the middle of the bezel, which the centring rule puts at
+    // 5.01 mm from the top edge, so the 6.53 mm here; move the hole rows and it has to be
+    // rederived.
     ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, new Glass(33.7d), 1.5d,
-        2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, true),
+        2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 6.53d, null, 0d, 2.5d, true),
     // Measured throughout, and the second board whose bezel is narrower than the PCB -- 33 mm of
     // a 35 mm board -- but centred across it rather than pushed to one side as the 0.96"'s is.
     // Down the board the centring rule puts the bezel 5.09 mm from the top edge, which is the
