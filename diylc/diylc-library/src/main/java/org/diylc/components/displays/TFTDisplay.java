@@ -86,6 +86,16 @@ public class TFTDisplay extends AbstractMakerBoard {
       new String[] {"SD_CS", "SD_MOSI", "SD_MISO", "SD_SCK"};
 
   /**
+   * The SD row drops the prefix its node names carry: the default label strips at the underscore
+   * and would print four pins all reading "SD", and the full forms are 24 to 29 px against the
+   * 20 px the 0.1" pitch allows. MOSI and MISO are 19 px and just fit, so this row prints them
+   * where the main row has to fall back on the board's own SDI and SDO. Nothing but the row's
+   * position says these four belong to the card socket, which is also all the board itself says
+   * once the prefix is off.
+   */
+  public static final String[] SILK_NAMES_SD = new String[] {"CS", "MOSI", "MISO", "SCK"};
+
+  /**
    * The eight-pin row the 1.8" and the 1.54" share, and the same lines the 0.96" brings out. Two
    * different controllers behind one header: what a board of this size exposes is the four-wire SPI
    * interface plus reset, data/command and the backlight, and that does not vary with the driver.
@@ -157,9 +167,15 @@ public class TFTDisplay extends AbstractMakerBoard {
 
   @Override
   protected String getSilkPinLabel(int index) {
-    if (getController().getPinNames() == PIN_NAMES_ILI9341 && index >= 0
+    Controller controller = getController();
+    if (controller.getPinNames() == PIN_NAMES_ILI9341 && index >= 0
         && index < SILK_NAMES_ILI9341.length) {
       return SILK_NAMES_ILI9341[index];
+    }
+    int secondaryIndex = index - controller.getPinNames().length;
+    if (controller.getSecondaryPinNames() == PIN_NAMES_SD && secondaryIndex >= 0
+        && secondaryIndex < SILK_NAMES_SD.length) {
+      return SILK_NAMES_SD[secondaryIndex];
     }
     return super.getSilkPinLabel(index);
   }
@@ -177,9 +193,9 @@ public class TFTDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Top edge of the board. Most variants carry their main header on the bottom edge and stand above
-   * control point zero, so the offset is measured up from the bottom; the 0.96" has its row on the
-   * top edge and hangs below it instead.
+   * Top edge of the board. A board headed at the bottom stands above control point zero, so its
+   * offset is measured up from the bottom edge; the three headed at the top hang below their row
+   * instead.
    */
   private double getBoardY(double y) {
     Controller controller = getController();
@@ -298,17 +314,18 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       if (controller.hasMountingHoles()) {
         double holeInset = px(controller.getHoleInsetMm());
+        double sideInset = px(controller.getHoleSideInsetMm());
         double headerSideInset = px(controller.getHeaderSideHoleInsetMm());
         double holeSize = px(controller.getHoleSizeMm());
         // The deeper inset, where a board has one, belongs to the pair sharing the header's edge.
         double topInset = controller.isHeaderAtTop() ? headerSideInset : holeInset;
         double bottomInset = controller.isHeaderAtTop() ? holeInset : headerSideInset;
-        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + topInset, holeSize);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + topInset,
+        MakerBoardPainter.drawMountingHole(g2d, boardX + sideInset, boardY + topInset, holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - sideInset, boardY + topInset,
             holeSize);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - bottomInset,
+        MakerBoardPainter.drawMountingHole(g2d, boardX + sideInset, boardY + boardH - bottomInset,
             holeSize);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - sideInset,
             boardY + boardH - bottomInset, holeSize);
         bandTop = boardY + topInset;
         bandBottom = boardY + boardH - bottomInset;
@@ -334,8 +351,11 @@ public class TFTDisplay extends AbstractMakerBoard {
           Glass glass = controller.getGlass();
           double glassH = px(glass.getLengthMm());
           double glassW = glass.spansTheBoard() ? boardW : px(glass.getWidthMm());
-          double glassX = glass.spansTheBoard() ? boardX
-              : boardX + boardW - px(glass.getRightInsetMm()) - glassW;
+          // A panel as wide as its board and one centred across it come out at the same place, so
+          // only the 0.96", which is pushed into one side, needs the other branch.
+          double glassX = glass.isPlacedFromTheRightEdge()
+              ? boardX + boardW - px(glass.getRightInsetMm()) - glassW
+              : boardX + (boardW - glassW) / 2.0;
           double glassY = bandCentre - glassH / 2.0;
           g2d.setColor(GLASS_COLOR);
           g2d.fill(new Rectangle2D.Double(glassX, glassY, glassW, glassH));
@@ -343,9 +363,9 @@ public class TFTDisplay extends AbstractMakerBoard {
           // The lit area belongs to the panel rather than to the board, so it is centred in the
           // glass -- which is the same thing as centring it on the board for every variant whose
           // glass spans the board, and is not for the 0.96", whose panel is pushed to one side.
-          // It is centred vertically too unless the variant measured it, which the 2.4" does: its
-          // panel carries the driver's bonding region along the bottom, so the lit area sits high
-          // in the frame and centring it would drop it 5 mm.
+          // It is centred vertically too unless the variant states its own figure, which the two
+          // ILI9341s and the 1.8" do: their panels carry the driver's bonding region along the
+          // bottom, so the lit area sits high in the frame and centring it would drop it.
           screenX = glassX + (glassW - screenW) / 2.0;
           screenY = controller.hasMeasuredScreenTop() ? boardY + px(controller.getScreenTopMm())
               : glassY + (glassH - screenH) / 2.0;
@@ -376,15 +396,16 @@ public class TFTDisplay extends AbstractMakerBoard {
 
       // The names go in the strip between the pin row and the panel, lying flat along the row as
       // the Nokia's do: the strip is 3.5 mm deep on the two smallest boards and a label stood on
-      // end needs 4.7 mm. The row is on the bottom edge on every variant, so the strip, and the
-      // names in it, are above the pins on a board headed at the bottom and below them on the
-      // 0.96", which is headed at the top.
-      //
-      // Only the primary row is named. The SD row has the glass a couple of millimetres from it and
-      // nothing but board edge on its other side, so there is no strip to print in; those four pins
-      // are left to their tooltips, as the matrix's covered rows are.
-      drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controller.getPinNames().length,
+      // end needs 4.7 mm. Each row prints into the board rather than off its own edge, so the
+      // names are above the pins on a row along the bottom edge and below them on one along the
+      // top -- the 0.96"'s main row and, where there is one, the SD row facing the main header.
+      double[][] offsets = getRelativeOffsets();
+      drawFlatRowPinLabels(g2d, x, y, offsets, 0, controller.getPinNames().length,
           controller.isHeaderAtTop(), SILK_COLOR);
+      if (controller.hasSecondaryHeader()) {
+        drawFlatRowPinLabels(g2d, x, y, offsets, controller.getPinNames().length,
+            controller.getSecondaryPinNames().length, !controller.isHeaderAtTop(), SILK_COLOR);
+      }
     }
 
     g2d.setTransform(oldTx);
@@ -417,55 +438,84 @@ public class TFTDisplay extends AbstractMakerBoard {
   }
 
   public enum Controller {
+    // The constants run from the smallest diagonal to the largest, which is the order the part's
+    // controller list offers them in; a new variant goes in at its place in that run rather than
+    // at the end.
+    //
     // Each board is dimensioned from its module outline, and its main header sits centred on the
     // short bottom edge at the offset recorded here -- every board in this family is drawn that
     // way round, so the board grows upwards from its pin row and switching variants never turns a
-    // drawing end for end. Active areas are the nominal diagonal taken at the
-    // panel's aspect ratio -- 2.8" at 4:3 gives 43.2 x 57.6, 1.8" at 4:5 gives 28.56 x 35.7, the
-    // square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which makes
-    // them derivations rather than measurements, noted so they are not built upon. A glass length
-    // of zero means the module has no separate dark panel wider than its own lit area, so only the
-    // screen is drawn, and a hole size of zero means the board has no mounting holes at all.
+    // drawing end for end. Active areas are the nominal diagonal taken at the panel's aspect ratio
+    // -- the square 1.54" gives 27.66 either way and the round 1.28" a 32.5 mm lit circle -- which
+    // makes those derivations rather than measurements, noted so they are not built upon. The two
+    // ILI9341 boards and the 1.8" are measured throughout, and the 2.8"'s 43.2 x 57.6 lit area
+    // happens to be what 4:3 would have given anyway. A glass length of zero
+    // means the module has no separate dark panel wider than its own lit area, so only the screen
+    // is drawn, and a hole size of zero means the board has no mounting holes at all.
     // The round board is described by the same two outline figures as the others: its width is the
     // disc diameter and its length runs from the tab's outer edge to the far side of the disc, so
     // the tab's projection is the difference between them and is not carried separately.
     //
-    // The 2.8"'s micro-SD socket comes out on a four-pin row of its own, the way the 2.4"'s does,
-    // on the top edge opposite the main header. It keeps the board's own 3 mm offset rather than
-    // the 2.4"'s 2 mm, each board putting its second row as far in as its first.
-    ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, new Glass(69.1d),
-        3.0d, 3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 0d, PIN_NAMES_SD, 3.0d, 3.0d, false),
-    // Four of the six are headed at the top; the two ILI9341s and the round board are not. There is
-    // no default to fall back on, so every constant states its own edge -- see the plan's 12.2.3.
-    // The one board here measured rather than derived throughout, and the only one with a second
-    // header. Four of its figures do not behave like the others': the 14-pin row is on the bottom
-    // edge, the lit area is measured 9.26 mm down from the top rather than centred in the glass,
-    // the SD row stands 2 mm in from the opposite edge, and the two holes nearest the pin row are
-    // 6.92 mm in rather than sharing the 3 mm of the other pair -- at 3 mm they would sit on the
-    // row. The glass keeps the family's rule, centred between the hole rows, which the deeper pair
-    // puts at 6.50 to 66.76 mm: 2.76 mm of frame above the lit area and 8.54 mm below it, the
-    // asymmetry being the driver's bonding region along the bottom of the panel.
-    ILI9341_2_4("2.4\" ILI9341 240x320 (Touch + SD)", 42.72d, 77.18d, 36.72d, 48.96d,
-        new Glass(60.26d), 2.0d, 3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 9.26d, PIN_NAMES_SD, 2.0d,
-        6.92d, false),
-    // The one board in the family whose header is on the top edge, and the only one whose panel
-    // does not span the board: a 23.7 x 12.8 mm bezel pushed into the right-hand side, 2 mm from
-    // that edge and 4.3 mm from the other, with the driver's circuitry filling the bare L the
-    // offset leaves. Its lit area is landscape where every other board's is portrait, it is
-    // measured rather than derived, and it is centred in the bezel with a 1 mm frame all round.
-    // The bezel is offset only across the board; down it, it keeps the family's rule and sits
-    // centred, which on a board whose holes share one inset is the same as centred in the PCB.
+    // Three of the six are headed at the top and three at the bottom. There is no default to fall
+    // back on, so every constant states its own edge -- see the plan's 12.2.3.
+    //
+    // The only board in the family whose panel does not span it: a 23.7 x 12.8 mm bezel pushed
+    // into the right-hand side, 2 mm from that edge and 4.3 mm from the other, with the driver's
+    // circuitry filling the bare L the offset leaves. Its lit area is landscape where every other
+    // board's is portrait, it is measured rather than derived, and it is centred in the bezel with
+    // a 1 mm frame all round. The bezel is offset only across the board; down it, it keeps the
+    // family's rule and sits centred, which on a board whose holes share one inset is the same as
+    // centred in the PCB.
     ST7735_0_96("0.96\" ST7735 80x160", 30.0d, 24.0d, 21.7d, 10.8d,
         new Glass(12.8d, 23.7d, 2.0d), 1.44d, 2.0d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 0d, null, 0d,
         2.0d, true),
-    ST7735_1_8("1.8\" ST7735 128x160", 34.0d, 45.8d, 28.56d, 35.7d, null, 1.5d, 3.0d, 3.0d, 0d,
-        PIN_NAMES_SPI_8PIN, true),
-    ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, new Glass(33.7d), 1.5d,
-        2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, true),
     GC9A01_1_28("1.28\" GC9A01 240x240 Round", 38.0d, 45.5d, 32.5d, 32.5d, null, 1.76d, 0d, 0d,
         22.9d,
-        new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"}, false);
-
+        new String[] {"RST", "CS", "DC", "SDA", "SCL", "GND", "VCC"}, false),
+    ST7789_1_54("1.54\" ST7789 240x240", 32.0d, 43.72d, 27.66d, 27.66d, new Glass(33.7d), 1.5d,
+        2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, true),
+    // Measured throughout, and the second board whose bezel is narrower than the PCB -- 33 mm of
+    // a 35 mm board -- but centred across it rather than pushed to one side as the 0.96"'s is.
+    // Down the board the centring rule puts the bezel 5.09 mm from the top edge, which is the
+    // 5.1 mm the board measures to within the width of the line it is drawn with. The lit area
+    // sits 2 mm above the middle of the bezel, as the ILI9341s' do, which is the 8.5 mm here;
+    // move the bezel and it has to be rederived.
+    ST7735_1_8("1.8\" ST7735 128x160", 35.0d, 56.0d, 28.0d, 35.0d, new Glass(45.83d, 33.0d), 1.41d,
+        2.5d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 8.5d, null, 0d, 2.5d, true),
+    // The same panel on a longer board that brings its micro-SD socket out the way the ILI9341s
+    // do, which turns the module round: the 8-pin row leaves by the bottom edge and the SD row by
+    // the top. It is the one board whose holes are not the same distance in from every edge --
+    // 2.75 mm from the sides and 3 mm from the ends, which is what holds them 28.5 mm apart across
+    // a 34 mm board and 52 mm apart down a 58 mm one -- and the first to need the side figure
+    // stated apart from the shared one. Its bezel is the plain 1.8"'s, so the lit area keeps the
+    // same 2 mm above the middle of it, which on this board's hole rows is 9.5 mm from the top
+    // edge. Both rows stand 2.5 mm off their own edge, which puts the 8-pin row alongside the
+    // holes on its edge rather than clear of them; they pass either side of it.
+    ST7735_1_8_SD("1.8\" ST7735 128x160 (SD)", 34.0d, 58.0d, 28.0d, 35.0d,
+        new Glass(45.83d, 33.0d), 2.5d, 3.0d, 2.0d, 0d, PIN_NAMES_SPI_8PIN, 9.5d, PIN_NAMES_SD,
+        2.5d, 3.0d, 2.75d, false),
+    // Measured rather than derived throughout, as the 2.8" is, and laid out the same way round:
+    // the 14-pin row on the bottom edge, the SD row in from the opposite one, a lit area measured
+    // from the top rather than centred in the glass, and a deeper pair of holes beside the pin
+    // row. Each board's figures are its own: 2 mm to the SD row, 9.26 mm to the lit area and
+    // 6.92 mm to that pair -- at 3 mm the holes would sit on the row, its 14 pins spanning 33 mm
+    // of a 42.72 mm board. The glass keeps the family's rule, centred between the hole rows, which
+    // the deeper pair puts at 6.50 to 66.76 mm: 2.76 mm of frame above the lit area and 8.54 mm
+    // below it, the asymmetry being the driver's bonding region along the bottom of the panel.
+    ILI9341_2_4("2.4\" ILI9341 240x320 (Touch + SD)", 42.72d, 77.18d, 36.72d, 48.96d,
+        new Glass(60.26d), 2.0d, 3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 9.26d, PIN_NAMES_SD, 2.0d,
+        6.92d, false),
+    // The 2.8"'s micro-SD socket comes out on a four-pin row of its own, the way the 2.4"'s does,
+    // on the top edge opposite the main header, 2.5 mm in from it. Its own 14-pin row is 2 mm
+    // from the bottom edge, and the pair of holes sharing that edge is 6.50 mm in, well clear of
+    // the row rather than level with it as a 3 mm pair would be. Carrying that pair up the board
+    // carries the panel with it, the glass being centred between the hole rows: 1.75 mm for the
+    // 3.50 mm the holes moved. The 50 x 69.2 mm bezel spans the board and the centring rule puts
+    // it 6.65 mm from the top edge; the 43.2 x 57.6 mm lit area is measured 3.05 mm below the
+    // bezel's own top edge, which is the 9.70 mm recorded here, and leaves 8.55 mm of frame below
+    // it for the driver's bonding region. Move the hole rows and that 9.70 has to be rederived.
+    ILI9341_2_8("2.8\" ILI9341 240x320 (Touch + SD)", 50.0d, 86.0d, 43.2d, 57.6d, new Glass(69.2d),
+        2.0d, 3.0d, 3.0d, 0d, PIN_NAMES_ILI9341, 9.70d, PIN_NAMES_SD, 2.5d, 6.50d, false);
     private final String label;
     private final double boardWidthMm;
     private final double boardLengthMm;
@@ -481,6 +531,7 @@ public class TFTDisplay extends AbstractMakerBoard {
     private final String[] secondaryPinNames;
     private final double secondaryHeaderOffsetMm;
     private final double headerSideHoleInsetMm;
+    private final double holeSideInsetMm;
     private final boolean headerAtTop;
 
     /** For a board whose lit area is centred and whose pins all leave on one row. */
@@ -491,11 +542,22 @@ public class TFTDisplay extends AbstractMakerBoard {
           holeInsetMm, holeSizeMm, tabWidthMm, pinNames, 0d, null, 0d, holeInsetMm, headerAtTop);
     }
 
+    /** For a board whose holes are the same distance in from every edge they are near. */
     Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
         double screenLengthMm, Glass glass, double headerOffsetMm, double holeInsetMm,
         double holeSizeMm, double tabWidthMm, String[] pinNames, double screenTopMm,
         String[] secondaryPinNames, double secondaryHeaderOffsetMm, double headerSideHoleInsetMm,
         boolean headerAtTop) {
+      this(label, boardWidthMm, boardLengthMm, screenWidthMm, screenLengthMm, glass, headerOffsetMm,
+          holeInsetMm, holeSizeMm, tabWidthMm, pinNames, screenTopMm, secondaryPinNames,
+          secondaryHeaderOffsetMm, headerSideHoleInsetMm, holeInsetMm, headerAtTop);
+    }
+
+    Controller(String label, double boardWidthMm, double boardLengthMm, double screenWidthMm,
+        double screenLengthMm, Glass glass, double headerOffsetMm, double holeInsetMm,
+        double holeSizeMm, double tabWidthMm, String[] pinNames, double screenTopMm,
+        String[] secondaryPinNames, double secondaryHeaderOffsetMm, double headerSideHoleInsetMm,
+        double holeSideInsetMm, boolean headerAtTop) {
       this.label = label;
       this.boardWidthMm = boardWidthMm;
       this.boardLengthMm = boardLengthMm;
@@ -511,6 +573,7 @@ public class TFTDisplay extends AbstractMakerBoard {
       this.secondaryPinNames = secondaryPinNames;
       this.secondaryHeaderOffsetMm = secondaryHeaderOffsetMm;
       this.headerSideHoleInsetMm = headerSideHoleInsetMm;
+      this.holeSideInsetMm = holeSideInsetMm;
       this.headerAtTop = headerAtTop;
     }
 
@@ -527,14 +590,23 @@ public class TFTDisplay extends AbstractMakerBoard {
 
     /**
      * Inset of a mounting hole from each of the two edges nearest it. It is every hole's figure
-     * except where {@link #getHeaderSideHoleInsetMm()} overrides the pin row's pair.
+     * except where {@link #getHeaderSideHoleInsetMm()} overrides the pin row's pair down the
+     * board or {@link #getHoleSideInsetMm()} overrides every hole's across it.
      */
     public double getHoleInsetMm() { return holeInsetMm; }
 
     /**
-     * Inset of the two holes on the header's edge. It is deeper than the shared figure only on the
-     * 2.4", whose 14-pin row is wide enough for its pads to reach a hole drilled at the other
-     * pairs' 3 mm; every other board's row passes between them and keeps one inset throughout.
+     * Inset of every hole from the side of the board it is near. It differs from the shared
+     * figure only on the 1.8" with the SD socket, whose holes are drilled closer to the sides
+     * than to the ends.
+     */
+    public double getHoleSideInsetMm() { return holeSideInsetMm; }
+
+    /**
+     * Inset of the two holes on the header's edge. It is deeper than the shared figure on both
+     * ILI9341 boards: the 2.4"'s 14-pin row is wide enough for its pads to reach a hole drilled at
+     * the other pairs' 3 mm, and the 2.8" stands its pair clear of a row it would otherwise sit
+     * level with. Every other board's row passes between them and keeps one inset throughout.
      */
     public double getHeaderSideHoleInsetMm() { return headerSideHoleInsetMm; }
 
@@ -543,9 +615,9 @@ public class TFTDisplay extends AbstractMakerBoard {
     public boolean hasGlass() { return glass != null; }
 
     /**
-     * True where the main row leaves by the top edge, so the board hangs below it. Four of the six
-     * do; see the plan's section 12.2.3 for why the family is not uniform and why no constant may
-     * leave this to a default.
+     * True where the main row leaves by the top edge, so the board hangs below it. Three of the
+     * six do; see the plan's section 12.2.3 for why the family is not uniform and why no constant
+     * may leave this to a default.
      */
     public boolean isHeaderAtTop() { return headerAtTop; }
 
@@ -575,10 +647,11 @@ public class TFTDisplay extends AbstractMakerBoard {
   /**
    * The dark panel bonded to the front of the board, which is not the same thing as the lit area:
    * it is the glass the lit area sits in, and the frame it leaves around it is what a reader sees
-   * as the display's border. Every panel is centred between its board's mounting holes, so what
-   * varies is how far across the board it reaches. Carried as an object rather than as more figures
-   * on {@link Controller} because only one board so far needs more than its height, and a
-   * constructor that already takes fifteen arguments should not take seventeen.
+   * as the display's border. Every panel is centred between its board's mounting holes, and
+   * across the board unless it measures an inset from the right edge, so what varies is how far
+   * across the board it reaches and from which side that is taken. Carried as an object rather
+   * than as more figures on {@link Controller} because only two boards so far need more than its
+   * height, and a constructor that already takes fifteen arguments should not take seventeen.
    *
    * @author Branislav Stojkovic
    */
@@ -593,6 +666,12 @@ public class TFTDisplay extends AbstractMakerBoard {
       this(lengthMm, 0d, 0d);
     }
 
+    /** A panel narrower than its board, centred across it. */
+    public Glass(double lengthMm, double widthMm) {
+      this(lengthMm, widthMm, 0d);
+    }
+
+    /** A panel narrower than its board and pushed towards the right edge. */
     public Glass(double lengthMm, double widthMm, double rightInsetMm) {
       this.lengthMm = lengthMm;
       this.widthMm = widthMm;
@@ -608,5 +687,8 @@ public class TFTDisplay extends AbstractMakerBoard {
     public double getRightInsetMm() { return rightInsetMm; }
 
     public boolean spansTheBoard() { return widthMm <= 0; }
+
+    /** True for a narrower panel placed from the right edge rather than centred on the board. */
+    public boolean isPlacedFromTheRightEdge() { return rightInsetMm > 0; }
   }
 }

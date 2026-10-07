@@ -5050,6 +5050,14 @@
           <createdOn>2026-10-11T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
+          <name>1.8" ST7735 128x160 (SD)</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_1_8_SD</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
           <name>1.54" ST7789 240x240</name>
           <values>
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7789_1_54</diylc.displays.TFTDisplay_-Controller></entry>

@@ -21,9 +21,11 @@
  */
 package org.diylc.components.displays;
 
+import java.awt.FontMetrics;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,6 +95,7 @@ public class TFTDisplayTest {
     Assert.assertEquals(14, Controller.ILI9341_2_4.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7735_0_96.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7735_1_8.getPinNames().length);
+    Assert.assertEquals(8, Controller.ST7735_1_8_SD.getPinNames().length);
     Assert.assertEquals(8, Controller.ST7789_1_54.getPinNames().length);
     Assert.assertEquals(7, Controller.GC9A01_1_28.getPinNames().length);
 
@@ -100,6 +103,8 @@ public class TFTDisplayTest {
         of(Controller.ILI9341_2_4).getControlPointCount());
     Assert.assertEquals("the 2.8\" carries the same second row", 18,
         of(Controller.ILI9341_2_8).getControlPointCount());
+    Assert.assertEquals("the 1.8\" with the socket carries one too", 12,
+        of(Controller.ST7735_1_8_SD).getControlPointCount());
   }
 
   /**
@@ -112,6 +117,39 @@ public class TFTDisplayTest {
     Assert.assertSame(Controller.ILI9341_2_8.getPinNames(), Controller.ILI9341_2_4.getPinNames());
     Assert.assertEquals(TFTDisplay.SILK_NAMES_ILI9341.length,
         Controller.ILI9341_2_4.getPinNames().length);
+  }
+
+  /**
+   * Both rows are printed, and neither may print a name the default would have mangled. The touch
+   * pins and the SD pins share a prefix apiece, and the default label keeps what stands before the
+   * underscore: left to it, five pins would read "T" and four would read "SD". The widths are the
+   * other half of it -- a flat label has the 0.1" pitch and no more -- and are asserted against
+   * the font the row is drawn in rather than taken from the comment that records them.
+   */
+  @Test
+  public void everyPrintedPinNameIsDistinctAndFitsThePitch() {
+    FontMetrics metrics = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics()
+        .getFontMetrics(AbstractMakerBoard.PIN_ROW_FLAT_FONT);
+    double pitch = AbstractMakerBoard.PIN_SPACING.convertToPixels();
+
+    for (Controller controller : Controller.values()) {
+      TFTDisplay display = of(controller);
+      Set<String> rowNames = new HashSet<String>();
+      int primaryCount = controller.getPinNames().length;
+
+      for (int i = 0; i < display.getControlPointCount(); i++) {
+        if (i == primaryCount) {
+          rowNames.clear();
+        }
+        String label = display.getSilkPinLabel(i);
+        Assert.assertTrue(controller + " pin " + i + " prints nothing",
+            label != null && !label.isEmpty());
+        Assert.assertTrue(controller + " prints " + label + " twice on one row",
+            rowNames.add(label));
+        Assert.assertTrue(controller + " " + label + " is wider than the pitch",
+            metrics.stringWidth(label) <= pitch);
+      }
+    }
   }
 
   /** Eighteen pins on one part, so a repeated name would reach the netlist as one node. */
@@ -136,8 +174,8 @@ public class TFTDisplayTest {
    */
   @Test
   public void theSmallBoardsShareOnePinArray() {
-    Controller[] small =
-        {Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7789_1_54};
+    Controller[] small = {Controller.ST7735_0_96, Controller.ST7735_1_8,
+        Controller.ST7735_1_8_SD, Controller.ST7789_1_54};
     String[] expected = new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC", "CS", "BLK"};
 
     for (Controller controller : small) {
@@ -213,7 +251,7 @@ public class TFTDisplayTest {
       // It shares its edge with a pair of mounting holes, and unlike the long row it is short
       // enough to pass between them. That is why the top pair keeps the shared inset where the
       // 2.4"'s header-side pair could not.
-      double holeRim = controller.getHoleInsetMm() + controller.getHoleSizeMm() / 2.0;
+      double holeRim = controller.getHoleSideInsetMm() + controller.getHoleSizeMm() / 2.0;
       Assert.assertTrue(controller + " SD row runs into the holes on its edge",
           mm(firstSd.getX() - board.getX()) > holeRim);
       Assert.assertTrue(controller + " SD row runs into the holes on its edge",
@@ -292,16 +330,17 @@ public class TFTDisplayTest {
       TFTDisplay display = of(controller);
       Rectangle2D board = display.getBodyShape().getBounds2D();
       double inset = px(controller.getHoleInsetMm());
+      double sideInset = px(controller.getHoleSideInsetMm());
       double headerSide = px(controller.getHeaderSideHoleInsetMm());
       double size = px(controller.getHoleSizeMm());
       double topInset = controller.isHeaderAtTop() ? headerSide : inset;
       double bottomInset = controller.isHeaderAtTop() ? inset : headerSide;
 
       Rectangle2D[] holes = new Rectangle2D[] {
-          hole(board.getX() + inset, board.getY() + topInset, size),
-          hole(board.getMaxX() - inset, board.getY() + topInset, size),
-          hole(board.getX() + inset, board.getMaxY() - bottomInset, size),
-          hole(board.getMaxX() - inset, board.getMaxY() - bottomInset, size)};
+          hole(board.getX() + sideInset, board.getY() + topInset, size),
+          hole(board.getMaxX() - sideInset, board.getY() + topInset, size),
+          hole(board.getX() + sideInset, board.getMaxY() - bottomInset, size),
+          hole(board.getMaxX() - sideInset, board.getMaxY() - bottomInset, size)};
 
       for (int i = 0; i < display.getControlPointCount(); i++) {
         Point2D p = display.getControlPoint(i);
@@ -377,17 +416,20 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The 2.4" is the only board whose lit area is a measurement rather than a derivation, and the
-   * reason is worth asserting rather than only commenting: its panel carries the driver's bonding
-   * region along the bottom, so the lit area sits high in the glass and the family's centring rule
-   * would drop it 4.85 mm. The assertion is that the two disagree -- if a later correction ever
-   * makes them agree, the field has stopped earning its place.
+   * Three boards state their own lit area rather than take the centred one, and the reason is
+   * worth asserting rather than only commenting: their panels carry the driver's bonding region
+   * along the bottom, so the lit area sits high in the glass and the family's centring rule would
+   * drop it 4.85 mm on the 2.4", 2.75 mm on the 2.8" and 2 mm on the 1.8". The assertion is that
+   * the two disagree -- if a later correction ever makes them agree, the field has stopped earning
+   * its place.
    */
   @Test
   public void theLitAreaIsMeasuredOnlyWhereCentringWouldBeWrong() {
     for (Controller controller : Controller.values()) {
       Assert.assertEquals(controller + " measured lit area",
-          controller == Controller.ILI9341_2_4, controller.hasMeasuredScreenTop());
+          controller == Controller.ILI9341_2_4 || controller == Controller.ILI9341_2_8
+              || controller == Controller.ST7735_1_8 || controller == Controller.ST7735_1_8_SD,
+          controller.hasMeasuredScreenTop());
       if (!controller.hasMeasuredScreenTop()) {
         continue;
       }
@@ -401,24 +443,42 @@ public class TFTDisplayTest {
           screenTop + controller.getScreenLengthMm() <= glassTop + glassH);
       Assert.assertTrue(controller + " is measured where centring would have done",
           Math.abs(screenTop - (glassTop + (glassH - controller.getScreenLengthMm()) / 2.0)) > 1d);
+
+      // Each figure is stored from the board's top edge but was arrived at against the bezel, so
+      // it only holds while the glass stays where the hole rows put it. Move a hole row and these
+      // are the assertions that say the stored figure has to be rederived. What was arrived at
+      // differs by board: the ILI9341s were measured as a frame below the top of the bezel, the
+      // 1.8" as a lift off the position the centring rule gives.
+      if (controller == Controller.ST7735_1_8 || controller == Controller.ST7735_1_8_SD) {
+        Assert.assertEquals(controller + " lift off the centred lit area", 2.0d,
+            glassTop + (glassH - controller.getScreenLengthMm()) / 2.0 - screenTop, 0.01d);
+      } else {
+        double frameAbove = controller == Controller.ILI9341_2_4 ? 2.76d : 3.05d;
+        Assert.assertEquals(controller + " frame above the lit area", frameAbove,
+            screenTop - glassTop, 0.01d);
+      }
     }
   }
 
   /**
-   * The 0.96" is the only board whose panel does not span its width: a 23.7 mm bezel on a 30 mm
-   * board, pushed to the right so that the driver's circuitry has the bare L it leaves. That offset
-   * is across the board only -- down it the bezel is centred like every other variant's -- and it
-   * is a measurement rather than a derivation, since centring it across the board too would move it
-   * 1.15 mm. The lit area is centred inside it with a 1 mm frame on all four sides, which the
-   * drawing gets for free once the glass is placed, and which would silently break if the lit area
-   * went back to being centred on the board.
+   * Two boards carry a bezel narrower than their PCB, and only the 0.96" has it off centre: a
+   * 23.7 mm bezel on a 30 mm board, pushed to the right so that the driver's circuitry has the
+   * bare L it leaves. That offset is across the board only -- down it the bezel is centred like
+   * every other variant's -- and it is a measurement rather than a derivation, since centring it
+   * across the board too would move it 1.15 mm. The lit area is centred inside it with a 1 mm
+   * frame on all four sides, which the drawing gets for free once the glass is placed, and which
+   * would silently break if the lit area went back to being centred on the board.
    */
   @Test
   public void theOffsetPanelIsPlacedFromTheRightEdge() {
     for (Controller controller : Controller.values()) {
-      Assert.assertEquals(controller + " panel spans the board",
-          controller != Controller.ST7735_0_96,
+      boolean narrower = controller == Controller.ST7735_0_96
+          || controller == Controller.ST7735_1_8 || controller == Controller.ST7735_1_8_SD;
+      Assert.assertEquals(controller + " panel spans the board", !narrower,
           !controller.hasGlass() || controller.getGlass().spansTheBoard());
+      Assert.assertEquals(controller + " panel is placed from the right edge",
+          controller == Controller.ST7735_0_96,
+          controller.hasGlass() && controller.getGlass().isPlacedFromTheRightEdge());
     }
 
     Controller controller = Controller.ST7735_0_96;
@@ -453,18 +513,19 @@ public class TFTDisplayTest {
 
   /**
    * Each board's holes are one drill at one inset from each of the two edges nearest them, but the
-   * figures are the board's own rather than the package's: the two rectangular SPI boards are 3 mm
-   * at 3 mm and the 1.54" is 2 mm at 2.5 mm. The 2.8" board had a deeper inset on its header-side
-   * pair and a narrower 2.5 mm drill for a while, and this guards against either coming back --
-   * the 2.4" really does have a deeper pair, which is asserted beside this rather than within it
-   * so that the two cases cannot be confused for each other again.
+   * figures are the board's own rather than the package's: the two ILI9341s are 3 mm at 3 mm, the
+   * 0.96" is 2 mm at 2 mm, and the 1.8" and the 1.54" are 2 mm at 2.5 mm. The 2.8" had a narrower
+   * 2.5 mm drill for a while and this guards against it coming back. Both ILI9341 boards hold their
+   * header-side pair deeper than their other one, by their own figure and for their own reason,
+   * which is asserted beside this rather than within it so the two cannot be read as one rule.
    */
   @Test
   public void mountingHoleFiguresAreEachBoardsOwn() {
-    double[][] expected =
-        {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.0d, 2.0d}, {3.0d, 3.0d}, {2.5d, 2.0d}};
+    double[][] expected = {{3.0d, 3.0d}, {3.0d, 3.0d}, {2.0d, 2.0d}, {2.5d, 2.0d}, {3.0d, 2.0d},
+        {2.5d, 2.0d}};
     Controller[] withHoles = {Controller.ILI9341_2_8, Controller.ILI9341_2_4,
-        Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7789_1_54};
+        Controller.ST7735_0_96, Controller.ST7735_1_8, Controller.ST7735_1_8_SD,
+        Controller.ST7789_1_54};
     for (int i = 0; i < withHoles.length; i++) {
       Assert.assertEquals(withHoles[i] + " inset", expected[i][0], withHoles[i].getHoleInsetMm(),
           0.01d);
@@ -473,11 +534,28 @@ public class TFTDisplayTest {
     }
 
     for (Controller controller : Controller.values()) {
-      double expectedHeaderSide =
-          controller == Controller.ILI9341_2_4 ? 6.92d : controller.getHoleInsetMm();
+      double expectedHeaderSide = controller.getHoleInsetMm();
+      if (controller == Controller.ILI9341_2_4) {
+        expectedHeaderSide = 6.92d;
+      } else if (controller == Controller.ILI9341_2_8) {
+        expectedHeaderSide = 6.50d;
+      }
       Assert.assertEquals(controller + " header-side inset", expectedHeaderSide,
           controller.getHeaderSideHoleInsetMm(), 0.01d);
+
+      double expectedSide = controller == Controller.ST7735_1_8_SD ? 2.75d
+          : controller.getHoleInsetMm();
+      Assert.assertEquals(controller + " side inset", expectedSide,
+          controller.getHoleSideInsetMm(), 0.01d);
     }
+
+    // The one board whose holes are not square to the outline was given as two hole-to-hole
+    // spans rather than as insets, so those are what the three figures have to come back to.
+    Controller sd = Controller.ST7735_1_8_SD;
+    Assert.assertEquals("1.8\" SD holes across", 28.5d,
+        sd.getBoardWidthMm() - 2 * sd.getHoleSideInsetMm(), 0.01d);
+    Assert.assertEquals("1.8\" SD holes down", 52.0d,
+        sd.getBoardLengthMm() - sd.getHoleInsetMm() - sd.getHeaderSideHoleInsetMm(), 0.01d);
   }
 
   /** Without this the BOM collapses every variant of the part into a single row. */
@@ -490,13 +568,21 @@ public class TFTDisplayTest {
         of(Controller.ST7735_1_8).getValueForDisplay());
   }
 
-  /** The 2.8" and 1.54" modules carry a dark panel wider than their lit area; the others do not. */
+  /**
+   * Every module but the round one carries a dark panel wider than its lit area. The 1.8" is the
+   * board whose bezel was measured down the board as well as across it, 5.1 mm from the top edge,
+   * and the family's centring rule is what places it: the two have to keep agreeing, so the
+   * measured figure is asserted here rather than left to the rule to reproduce unwatched.
+   */
   @Test
   public void glassPanelFollowsTheModule() {
     Assert.assertTrue(Controller.ILI9341_2_8.hasGlass());
     Assert.assertTrue(Controller.ST7789_1_54.hasGlass());
-    Assert.assertFalse(Controller.ST7735_1_8.hasGlass());
+    Assert.assertTrue(Controller.ST7735_1_8.hasGlass());
     Assert.assertFalse(Controller.GC9A01_1_28.hasGlass());
+
+    Assert.assertEquals("1.8\" bezel from the top edge", 5.1d,
+        mm(panelTopOf(Controller.ST7735_1_8)), 0.02d);
   }
 
   @Test
@@ -598,6 +684,7 @@ public class TFTDisplayTest {
     Assert.assertFalse("2.8\"", Controller.ILI9341_2_8.isHeaderAtTop());
     Assert.assertFalse("2.4\"", Controller.ILI9341_2_4.isHeaderAtTop());
     Assert.assertFalse("1.28\" round", Controller.GC9A01_1_28.isHeaderAtTop());
+    Assert.assertFalse("1.8\" with the socket", Controller.ST7735_1_8_SD.isHeaderAtTop());
   }
 
   /**
