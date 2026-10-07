@@ -30,8 +30,11 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
@@ -60,6 +63,10 @@ public class WS2812BRing extends AbstractMakerBoard {
   // Pads are small and sit near the rim; these are what the ring overrides the inherited solder
   // pad footprint with, the default being sized for a breakout board rather than a ring.
   public static Size PAD_EDGE_INSET = new Size(1.4d, SizeUnit.mm);
+
+  // Clearance between a pad name and the pad itself, measured from the pad's edge so that the gap
+  // stays the same if the pad footprint changes.
+  public static Size PAD_LABEL_GAP = new Size(0.4d, SizeUnit.mm);
 
   // The ring is drawn lit: unlit it is a black disc with white specks on it, which reads as no
   // particular part. One palette per variant, off the shared colour wheel.
@@ -230,8 +237,32 @@ public class WS2812BRing extends AbstractMakerBoard {
             angle + Math.PI / 2.0);
       }
 
-      // Pad names are left to the node tooltips and the netlist: a pad sits in the gap between two
-      // LEDs, which is nowhere near enough room for its name.
+      // Pad names run along their own radius, reading out from the middle of the ring towards the
+      // pad they belong to, turned with it the same way the LEDs are. A pad sits in the gap
+      // between two consecutive LEDs, and that gap is the only room a name has: standing it square
+      // to the board would put it across the LEDs on either side.
+      g2d.setColor(SILK_COLOR);
+      g2d.setFont(PIN_FONT);
+      double labelR =
+          getPadRadius() - PAD_SIZE.convertToPixels() / 2.0 - PAD_LABEL_GAP.convertToPixels();
+      String[] padNames = ringSize.getPadNames();
+      for (int i = 0; i < padNames.length; i++) {
+        String label = getSilkPinLabel(i);
+        if (label == null || label.isEmpty()) {
+          continue;
+        }
+        double angle = getPadAngle(i);
+        double textX = cx + labelR * Math.cos(angle);
+        double textY = cy + labelR * Math.sin(angle);
+
+        // the turn maps the text advance direction onto the outward radius, so RIGHT alignment
+        // ends the name at the pad and grows it back towards the centre
+        AffineTransform oldLabelTx = g2d.getTransform();
+        g2d.rotate(angle, textX, textY);
+        StringUtils.drawCenteredText(g2d, label, textX, textY, HorizontalAlignment.RIGHT,
+            VerticalAlignment.CENTER);
+        g2d.setTransform(oldLabelTx);
+      }
     }
 
     g2d.setTransform(oldTx);
