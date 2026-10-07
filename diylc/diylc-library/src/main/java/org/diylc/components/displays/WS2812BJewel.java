@@ -31,7 +31,7 @@ import java.awt.geom.Point2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BJewel extends AbstractMakerBoard {
+public class WS2812BJewel extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -81,14 +81,15 @@ public class WS2812BJewel extends AbstractMakerBoard {
   // so the sixth gap carries no pad -- it is the one due left, where the left mounting hole sits.
   private static final int[] PAD_GAP_INDEX = new int[] {0, 1, 2, 3, 4};
 
-  // Drawn lit, as the rings are: unlit it is a black disc with white specks on it, which reads
-  // as no particular part.
-  public static Color[] LED_COLORS = buildLedGradient(RING_LED_COUNT + 1);
-
   public WS2812BJewel() {
     super();
     this.bodyColor = NEO_BLACK;
     updateControlPoints();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getLedType().toString();
   }
 
   @Override
@@ -198,17 +199,19 @@ public class WS2812BJewel extends AbstractMakerBoard {
 
       double ledR = LED_CIRCLE_DIAMETER.convertToPixels() / 2.0;
       double ledSize = RGB_LED_SIZE.convertToPixels();
+      Color[] ledColors = getLedColors(RING_LED_COUNT + 1);
+      LedType ledType = getLedType();
 
       for (int i = 0; i < RING_LED_COUNT; i++) {
         double angle = 2 * Math.PI * i / RING_LED_COUNT - Math.PI / 2.0;
         MakerBoardPainter.drawAddressableLed(g2d, cx + ledR * Math.cos(angle),
-            cy + ledR * Math.sin(angle), ledSize, LED_COLORS[i % LED_COLORS.length],
-            angle + Math.PI / 2.0);
+            cy + ledR * Math.sin(angle), ledSize, ledColors[i % ledColors.length],
+            angle + Math.PI / 2.0, ledType);
       }
 
       // the centre package has no radius to face along, so it stays square to the board
       MakerBoardPainter.drawAddressableLed(g2d, cx, cy, ledSize,
-          LED_COLORS[RING_LED_COUNT % LED_COLORS.length]);
+          ledColors[RING_LED_COUNT % ledColors.length], 0, ledType);
 
       // Pad names are left to the node tooltips and the netlist: a pad sits in the gap between two
       // LEDs, which is nowhere near enough room for its name.

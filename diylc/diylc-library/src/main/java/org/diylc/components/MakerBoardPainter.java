@@ -274,6 +274,17 @@ public class MakerBoardPainter {
    */
   public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
       Color litColor, double rotation) {
+    drawAddressableLed(g2d, cx, cy, size, litColor, rotation, AbstractMakerBoard.LedType.RGB);
+  }
+
+  /**
+   * As above, for a part fitted with a package other than the plain RGB one. An RGBW package is
+   * told from an RGB one on sight only by the white die sitting beside the colour dies, so that
+   * is what is drawn; WWA has the same three-die layout as RGB and is told apart instead by what
+   * it emits, which is the caller's palette rather than anything here.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor, double rotation, AbstractMakerBoard.LedType ledType) {
     if (rotation != 0) {
       g2d.rotate(rotation, cx, cy);
     }
@@ -293,8 +304,16 @@ public class MakerBoardPainter {
     g2d.draw(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
 
     double dieSize = Math.max(2.0, lensR * 0.4);
+    // the colour dies sit centred on their own, and shoulder aside to make room for a white one
+    double dieOffset = ledType != null && ledType.hasWhiteDie() ? dieSize * 0.7 : 0;
     g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : litColor.brighter());
-    g2d.fill(new Rectangle2D.Double(cx - dieSize / 2.0, cy - dieSize / 2.0, dieSize, dieSize));
+    g2d.fill(new Rectangle2D.Double(cx - dieOffset - dieSize / 2.0, cy - dieSize / 2.0, dieSize,
+        dieSize));
+    if (dieOffset > 0) {
+      g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : Color.WHITE);
+      g2d.fill(new Rectangle2D.Double(cx + dieOffset - dieSize / 2.0, cy - dieSize / 2.0, dieSize,
+          dieSize));
+    }
 
     // turned back rather than saving the transform, so nothing is allocated per LED
     if (rotation != 0) {

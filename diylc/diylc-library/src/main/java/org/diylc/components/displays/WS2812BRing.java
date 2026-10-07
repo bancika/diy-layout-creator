@@ -35,7 +35,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -54,7 +54,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BRing extends AbstractMakerBoard {
+public class WS2812BRing extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -67,12 +67,6 @@ public class WS2812BRing extends AbstractMakerBoard {
   // Clearance between a pad name and the pad itself, measured from the pad's edge so that the gap
   // stays the same if the pad footprint changes.
   public static Size PAD_LABEL_GAP = new Size(0.4d, SizeUnit.mm);
-
-  // The ring is drawn lit: unlit it is a black disc with white specks on it, which reads as no
-  // particular part. One palette per variant, off the shared colour wheel.
-  public static Color[] LED_COLORS_12 = buildLedGradient(12);
-  public static Color[] LED_COLORS_16 = buildLedGradient(16);
-  public static Color[] LED_COLORS_24 = buildLedGradient(24);
 
   private RingSize ringSize = RingSize._16_LED;
 
@@ -93,10 +87,11 @@ public class WS2812BRing extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  // Every ring is sold in each of the packages, so neither half identifies what to buy on its own.
   @Override
   protected String getVariantLabel() {
     RingSize ringSize = getRingSize();
-    return ringSize == null ? null : ringSize.toString();
+    return ringSize == null ? null : ringSize + ", " + getLedType();
   }
 
   @Override
@@ -113,20 +108,6 @@ public class WS2812BRing extends AbstractMakerBoard {
     double outerR = new Size(ringSize.getOuterDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
     double innerR = new Size(ringSize.getInnerDiameterMm() / 2.0, SizeUnit.mm).convertToPixels();
     return (outerR + innerR) / 2.0;
-  }
-
-  private Color[] getLedColors() {
-    switch (ringSize) {
-      case _12_LED:
-        return LED_COLORS_12;
-      case _16_LED:
-        return LED_COLORS_16;
-      case _24_LED:
-        return LED_COLORS_24;
-      default:
-        // a ring size added later still renders before it is given a palette of its own
-        return buildLedGradient(ringSize.getLedCount());
-    }
   }
 
   /**
@@ -226,7 +207,8 @@ public class WS2812BRing extends AbstractMakerBoard {
       int ledCount = ringSize.getLedCount();
       double ledR = getMidRadius();
       double ledSize = RGB_LED_SIZE.convertToPixels();
-      Color[] ledColors = getLedColors();
+      Color[] ledColors = getLedColors(ledCount);
+      LedType ledType = getLedType();
 
       // Draw all LEDs around the circular ring, each package turned to face out along its own
       // radius the way it is mounted rather than left square to the board
@@ -234,7 +216,7 @@ public class WS2812BRing extends AbstractMakerBoard {
         double angle = 2 * Math.PI * i / ledCount - Math.PI / 2.0;
         MakerBoardPainter.drawAddressableLed(g2d, cx + ledR * Math.cos(angle),
             cy + ledR * Math.sin(angle), ledSize, ledColors[i % ledColors.length],
-            angle + Math.PI / 2.0);
+            angle + Math.PI / 2.0, ledType);
       }
 
       // Pad names run along their own radius, reading out from the middle of the ring towards the

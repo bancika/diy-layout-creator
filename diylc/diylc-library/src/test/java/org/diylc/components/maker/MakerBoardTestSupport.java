@@ -26,9 +26,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import org.diylc.common.Orientation;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractMakerBoard.LedType;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -154,6 +157,54 @@ public class MakerBoardTestSupport {
       AbstractMakerBoard withoutText) {
     Assert.assertFalse("The lit area should carry the description, and does not",
         Arrays.equals(renderPixels(withText), renderPixels(withoutText)));
+  }
+
+  /**
+   * Asserts that a board built out of addressable LEDs honours the package it is fitted with.
+   *
+   * <p>Four things have to hold for every one of them, so they are asserted here rather than six
+   * times over: a board saved before the property existed reads as RGB, the packages are
+   * pin-compatible so fitting one in place of another moves no pad, RGBW is drawn with the white
+   * die that is the only thing telling it from RGB on sight, and WWA is drawn off the warm white
+   * palette rather than the colour wheel it cannot emit. The last two compare renderings, which is
+   * what makes them checks on the drawing: a draw() that ignored the property would pass a getter.
+   *
+   * @param factory Builds a fresh board, since each assertion needs one of its own
+   */
+  public static void assertAddressableLedTypes(Supplier<AbstractAddressableLedBoard> factory) {
+    Assert.assertEquals("A board with no stored package should read as RGB", LedType.RGB,
+        factory.get().getLedType());
+    AbstractAddressableLedBoard stale = factory.get();
+    stale.setLedType(null);
+    Assert.assertEquals("A board saved before the property existed should read as RGB",
+        LedType.RGB, stale.getLedType());
+
+    AbstractAddressableLedBoard reference = factory.get();
+    for (LedType ledType : LedType.values()) {
+      AbstractAddressableLedBoard board = factory.get();
+      board.setLedType(ledType);
+      assertSharedFootprint(reference, board, reference.getControlPointCount());
+      Assert.assertTrue(ledType + " should be named in the BOM's value column",
+          board.getValueForDisplay().contains(ledType.toString()));
+    }
+
+    int[] rgb = renderWithLedType(factory, LedType.RGB);
+    Assert.assertFalse("RGBW should show the white die RGB does not carry",
+        Arrays.equals(rgb, renderWithLedType(factory, LedType.RGBW_WARM)));
+    Assert.assertFalse("WWA should not be drawn lit in colour",
+        Arrays.equals(rgb, renderWithLedType(factory, LedType.WWA)));
+
+    // the three RGBW tints name different parts to buy but the same thing to draw
+    int[] warm = renderWithLedType(factory, LedType.RGBW_WARM);
+    Assert.assertArrayEquals(warm, renderWithLedType(factory, LedType.RGBW_NATURAL));
+    Assert.assertArrayEquals(warm, renderWithLedType(factory, LedType.RGBW_COOL));
+  }
+
+  private static int[] renderWithLedType(Supplier<AbstractAddressableLedBoard> factory,
+      LedType ledType) {
+    AbstractAddressableLedBoard board = factory.get();
+    board.setLedType(ledType);
+    return renderPixels(board);
   }
 
   /** Draws the board in every state and orientation; anything that throws fails the test. */

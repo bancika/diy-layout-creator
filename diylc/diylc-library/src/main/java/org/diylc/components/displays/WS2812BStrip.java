@@ -35,7 +35,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -56,7 +56,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BStrip extends AbstractMakerBoard {
+public class WS2812BStrip extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -106,9 +106,6 @@ public class WS2812BStrip extends AbstractMakerBoard {
   private Density density = Density._60;
   private int ledCount = DEFAULT_LED_COUNT;
 
-  // Rebuilt only when the count changes, because draw() runs on every repaint.
-  private transient Color[] ledColors;
-
   public WS2812BStrip() {
     super();
     this.bodyColor = TAPE_WHITE;
@@ -139,15 +136,14 @@ public class WS2812BStrip extends AbstractMakerBoard {
 
   public void setLedCount(int ledCount) {
     this.ledCount = Math.max(MIN_LED_COUNT, Math.min(MAX_LED_COUNT, ledCount));
-    this.ledColors = null;
     updateControlPoints();
     invalidateCache();
   }
 
-  // Both decide what you buy and how much of it, so the BOM carries them together.
+  // All three decide what you buy and how much of it, so the BOM carries them together.
   @Override
   protected String getVariantLabel() {
-    return getDensity() + ", " + getLedCount() + " LEDs";
+    return getDensity() + ", " + getLedCount() + " LEDs, " + getLedType();
   }
 
   @Override
@@ -185,14 +181,6 @@ public class WS2812BStrip extends AbstractMakerBoard {
    */
   private double getTapeLength() {
     return (getLedCount() - 1) * getPitch() + 2 * getLeadIn();
-  }
-
-  private Color[] getLedColors() {
-    int count = getLedCount();
-    if (ledColors == null || ledColors.length != count) {
-      ledColors = buildLedGradient(count);
-    }
-    return ledColors;
   }
 
   /** The span a column of three pads occupies across the tape, at the standard pad pitch. */
@@ -340,11 +328,12 @@ public class WS2812BStrip extends AbstractMakerBoard {
       double pitch = getPitch();
       double ledSize = RGB_LED_SIZE.convertToPixels();
       double firstCenter = boardX + getLeadIn();
-      Color[] colors = getLedColors();
       int count = getLedCount();
+      Color[] colors = getLedColors(count);
+      LedType ledType = getLedType();
       for (int i = 0; i < count; i++) {
         MakerBoardPainter.drawAddressableLed(g2d, firstCenter + i * pitch, boardY + tapeH / 2.0,
-            ledSize, colors[i]);
+            ledSize, colors[i], 0, ledType);
       }
     }
 

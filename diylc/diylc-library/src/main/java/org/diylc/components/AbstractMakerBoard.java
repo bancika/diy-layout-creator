@@ -102,6 +102,10 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color[] RGB_LED_GRADIENT = new Color[] {
       Color.decode("#FFEE00"), Color.decode("#FF8800"), Color.decode("#FF1122"),
       Color.decode("#AA22EE"), Color.decode("#2255FF"), Color.decode("#22DD44")};
+  // A WWA package carries no colour die, so a part fitted with one cannot show the wheel above.
+  // Its three anchors are the three dies themselves: warm white, white and amber.
+  public static Color[] WWA_LED_GRADIENT = new Color[] {
+      Color.decode("#FFE0BD"), Color.decode("#FFFFFF"), Color.decode("#FFAA00")};
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
@@ -625,14 +629,22 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
    * Called once per palette at class load rather than per repaint.
    */
   protected static Color[] buildLedGradient(int count) {
+    return buildLedGradient(count, RGB_LED_GRADIENT);
+  }
+
+  /**
+   * As above, over a palette of the caller's choosing, for a part whose LEDs cannot emit the
+   * colour wheel.
+   */
+  protected static Color[] buildLedGradient(int count, Color[] anchors) {
     Color[] colors = new Color[count];
-    int anchorCount = RGB_LED_GRADIENT.length;
+    int anchorCount = anchors.length;
     for (int i = 0; i < count; i++) {
       double position = (double) i * anchorCount / count;
       int anchor = (int) position;
       double blend = position - anchor;
-      Color from = RGB_LED_GRADIENT[anchor];
-      Color to = RGB_LED_GRADIENT[(anchor + 1) % anchorCount];
+      Color from = anchors[anchor];
+      Color to = anchors[(anchor + 1) % anchorCount];
       colors[i] = new Color(
           (int) Math.round(from.getRed() + (to.getRed() - from.getRed()) * blend),
           (int) Math.round(from.getGreen() + (to.getGreen() - from.getGreen()) * blend),
@@ -923,5 +935,35 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
     int margin = 50;
     return new Rectangle2D.Double(minX - margin, minY - margin, (maxX - minX) + 2 * margin, (maxY - minY) + 2 * margin);
+  }
+
+  /**
+   * Which addressable package a part is fitted with. The three are pin-compatible and share the
+   * 5050 footprint, so this changes nothing but what the LEDs can emit and what the BOM has to
+   * ask for -- which is the whole reason it is a property rather than a separate component.
+   *
+   * <p>RGBW adds a fourth, white die to the RGB three, and is sold by the tint of that die; WWA
+   * replaces the colour dies altogether with warm white, white and amber.
+   */
+  public enum LedType {
+    RGB("RGB"),
+    RGBW_WARM("RGBW Warm White"),
+    RGBW_NATURAL("RGBW Natural White"),
+    RGBW_COOL("RGBW Cool White"),
+    WWA("WWA");
+
+    private final String label;
+
+    LedType(String label) {
+      this.label = label;
+    }
+
+    @Override public String toString() { return label; }
+
+    /** True for the packages that carry a white die beside the colour ones. */
+    public boolean hasWhiteDie() { return this != RGB && this != WWA; }
+
+    /** The wheel a part fitted with this package is drawn lit with. */
+    public Color[] getGradient() { return this == WWA ? WWA_LED_GRADIENT : RGB_LED_GRADIENT; }
   }
 }

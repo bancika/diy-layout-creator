@@ -36,7 +36,7 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -65,7 +65,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BPanel extends AbstractMakerBoard {
+public class WS2812BPanel extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -115,12 +115,6 @@ public class WS2812BPanel extends AbstractMakerBoard {
    */
   private static final double CAP_HEIGHT_RATIO = 0.72d;
 
-  // Drawn lit, as every addressable part in this package is. The colour is handed out along the
-  // data chain rather than across the board, so the sweep shows the order the pixels are addressed
-  // in: this panel is wired as a progressive raster, left to right along each row and then back to
-  // the left of the next, not as the serpentine most cheap panels use.
-  public static Color[] LED_COLORS = buildLedGradient(MATRIX_ORDER * MATRIX_ORDER);
-
   /**
    * What the face of the board prints, from layer 21 of the board file. Every line lies in a gap
    * between two rows of pixels, which is the only bare board this part has: the grid reaches
@@ -143,12 +137,12 @@ public class WS2812BPanel extends AbstractMakerBoard {
   }
 
   /**
-   * There is only one of these panels, so unlike a board with a variant property this is not
-   * needed to keep the BOM's rows apart. It is still the better answer than an empty value column.
+   * The panel comes in one size, so unlike a board with a geometry property the grid is not what
+   * keeps the BOM's rows apart -- the package is.
    */
   @Override
   protected String getVariantLabel() {
-    return "8x8, 64 LEDs";
+    return "8x8, 64 LEDs, " + getLedType();
   }
 
   @Override
@@ -266,9 +260,16 @@ public class WS2812BPanel extends AbstractMakerBoard {
       double margin = (board - (MATRIX_ORDER - 1) * pitch) / 2.0;
       double ledSize = RGB_LED_SIZE.convertToPixels();
 
-      for (int i = 0; i < LED_COLORS.length; i++) {
+      // The colour is handed out along the data chain rather than across the board, so the sweep
+      // shows the order the pixels are addressed in: this panel is wired as a progressive raster,
+      // left to right along each row and then back to the left of the next, not as the serpentine
+      // most cheap panels use.
+      int ledCount = MATRIX_ORDER * MATRIX_ORDER;
+      Color[] ledColors = getLedColors(ledCount);
+      LedType ledType = getLedType();
+      for (int i = 0; i < ledCount; i++) {
         MakerBoardPainter.drawAddressableLed(g2d, boardX + margin + (i % MATRIX_ORDER) * pitch,
-            boardY + margin + (i / MATRIX_ORDER) * pitch, ledSize, LED_COLORS[i]);
+            boardY + margin + (i / MATRIX_ORDER) * pitch, ledSize, ledColors[i], 0, ledType);
       }
 
       // The port names are printed on the back of the real board, so this face carries none.

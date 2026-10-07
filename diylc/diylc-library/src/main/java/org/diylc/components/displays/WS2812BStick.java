@@ -33,7 +33,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -51,7 +51,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BStick extends AbstractMakerBoard {
+public class WS2812BStick extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -75,8 +75,7 @@ public class WS2812BStick extends AbstractMakerBoard {
   public static Size MOUNTING_HOLE_SPACING = new Size(1.0d, SizeUnit.in);
   public static Size MOUNTING_HOLE_TOP_OFFSET = new Size(2.0d, SizeUnit.mm);
 
-  // Drawn lit, off the same colour wheel as the ring, so the two read as the same family of part.
-  public static Color[] LED_COLORS_8 = buildLedGradient(8);
+  public static final int LED_COUNT = 8;
 
   // Each end carries four pads in the order GND, data, power, GND. Both grounds on an end are the
   // same net on the board, so they are numbered only to keep the node names distinct; the
@@ -90,6 +89,11 @@ public class WS2812BStick extends AbstractMakerBoard {
     super();
     this.bodyColor = NEO_BLACK;
     updateControlPoints();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getLedType().toString();
   }
 
   @Override
@@ -145,7 +149,7 @@ public class WS2812BStick extends AbstractMakerBoard {
     double inset = PAD_WIDTH.convertToPixels() + PAD_CLEARANCE.convertToPixels();
     double fieldStart = boardX + inset;
     double fieldEnd = boardX + BOARD_WIDTH.convertToPixels() - inset;
-    double pitch = (fieldEnd - fieldStart - ledSize) / (LED_COLORS_8.length - 1);
+    double pitch = (fieldEnd - fieldStart - ledSize) / (LED_COUNT - 1);
 
     return new Point2D.Double(fieldStart + ledSize / 2.0 + index * pitch,
         (getHoleCentre(false).getY() + MOUNTING_HOLE_SIZE.convertToPixels() / 2.0 + boardY
@@ -208,9 +212,12 @@ public class WS2812BStick extends AbstractMakerBoard {
       // than under them. The pad names are printed on the back of the real board, so this face
       // carries no silkscreen.
       double ledSize = RGB_LED_SIZE.convertToPixels();
-      for (int i = 0; i < LED_COLORS_8.length; i++) {
+      Color[] ledColors = getLedColors(LED_COUNT);
+      LedType ledType = getLedType();
+      for (int i = 0; i < LED_COUNT; i++) {
         Point2D led = getLedCentre(i);
-        MakerBoardPainter.drawAddressableLed(g2d, led.getX(), led.getY(), ledSize, LED_COLORS_8[i]);
+        MakerBoardPainter.drawAddressableLed(g2d, led.getX(), led.getY(), ledSize, ledColors[i], 0,
+            ledType);
       }
     }
 

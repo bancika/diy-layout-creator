@@ -26,6 +26,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -237,19 +238,15 @@ public class WS2812BJewelTest {
             holeR * 2, holeR * 2));
   }
 
-  /** Seven LEDs get seven colours, so the centre one is lit rather than left dark. */
+  /** The package it is fitted with is the only thing to tell a buyer about this one. */
   @Test
-  public void thePaletteCoversAllSevenLeds() {
-    Assert.assertEquals(WS2812BJewel.RING_LED_COUNT + 1, WS2812BJewel.LED_COLORS.length);
-    for (int i = 0; i < WS2812BJewel.LED_COLORS.length; i++) {
-      Assert.assertNotNull("colour " + i, WS2812BJewel.LED_COLORS[i]);
-    }
+  public void bomValueNamesThePackage() {
+    Assert.assertEquals("RGB", new WS2812BJewel().getValueForDisplay());
   }
 
-  /** A single-variant board has no variant to put in the BOM's value column. */
   @Test
-  public void bomValueIsEmpty() {
-    Assert.assertEquals("", new WS2812BJewel().getValueForDisplay());
+  public void honoursTheLedPackage() {
+    MakerBoardTestSupport.assertAddressableLedTypes(WS2812BJewel::new);
   }
 
   @Test

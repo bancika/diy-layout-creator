@@ -215,4 +215,9 @@ public class WS2812BBreakoutTest {
   public void drawsCleanlyInEveryState() {
     MakerBoardTestSupport.assertDrawsCleanly(new WS2812BBreakout());
   }
+
+  @Test
+  public void honoursTheLedPackage() {
+    MakerBoardTestSupport.assertAddressableLedTypes(WS2812BBreakout::new);
+  }
 }

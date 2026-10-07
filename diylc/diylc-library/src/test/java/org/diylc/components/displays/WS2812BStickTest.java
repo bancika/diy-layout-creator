@@ -194,4 +194,9 @@ public class WS2812BStickTest {
   public void drawsCleanlyInEveryState() {
     MakerBoardTestSupport.assertDrawsCleanly(new WS2812BStick());
   }
+
+  @Test
+  public void honoursTheLedPackage() {
+    MakerBoardTestSupport.assertAddressableLedTypes(WS2812BStick::new);
+  }
 }

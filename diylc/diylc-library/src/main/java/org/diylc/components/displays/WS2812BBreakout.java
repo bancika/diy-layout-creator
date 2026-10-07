@@ -32,7 +32,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
-import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.AbstractAddressableLedBoard;
 import org.diylc.components.MakerBoardPainter;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -51,7 +51,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "LED", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     enableCache = true)
-public class WS2812BBreakout extends AbstractMakerBoard {
+public class WS2812BBreakout extends AbstractAddressableLedBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -74,10 +74,6 @@ public class WS2812BBreakout extends AbstractMakerBoard {
   public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SPACING = new Size(0.3d, SizeUnit.in);
 
-  // Drawn lit off the same colour wheel as the rest of the family, so a breakout on a layout reads
-  // as the same part as one pixel of a stick.
-  public static Color LED_COLOR = buildLedGradient(1)[0];
-
   // Each edge carries ground, power and one data line. The two grounds are the same net on the
   // board, as are the two supplies, and are numbered only to keep the node names distinct.
   private static final String[] PIN_NAMES = {
@@ -89,6 +85,11 @@ public class WS2812BBreakout extends AbstractMakerBoard {
     super();
     this.bodyColor = NEO_BLACK;
     updateControlPoints();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getLedType().toString();
   }
 
   @Override
@@ -196,9 +197,11 @@ public class WS2812BBreakout extends AbstractMakerBoard {
       // The pad columns clear the package by 2.35 mm, but that room is between a pad and the
       // package rather than beside a pad, so there is nowhere a pin name would go: this face
       // carries no silkscreen, as the stick's does not.
+      // Drawn lit off the same wheel as the rest of the family, so a breakout on a layout reads
+      // as the same part as one pixel of a stick.
       Point2D led = getLedCentre();
       MakerBoardPainter.drawAddressableLed(g2d, led.getX(), led.getY(),
-          RGB_LED_SIZE.convertToPixels(), LED_COLOR);
+          RGB_LED_SIZE.convertToPixels(), getLedColors(1)[0], 0, getLedType());
     }
 
     g2d.setTransform(oldTx);

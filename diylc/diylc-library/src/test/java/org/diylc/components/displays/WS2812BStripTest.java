@@ -29,6 +29,7 @@ import java.util.Set;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.displays.WS2812BStrip.Density;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.junit.Assert;
@@ -287,5 +288,10 @@ public class WS2812BStripTest {
 
   private static double mmToPx(double value) {
     return new Size(value, SizeUnit.mm).convertToPixels();
+  }
+
+  @Test
+  public void honoursTheLedPackage() {
+    MakerBoardTestSupport.assertAddressableLedTypes(WS2812BStrip::new);
   }
 }

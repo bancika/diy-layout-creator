@@ -235,7 +235,7 @@ public class WS2812BPanelTest {
 
   @Test
   public void bomValueNamesTheMatrix() {
-    Assert.assertEquals("8x8, 64 LEDs", new WS2812BPanel().getValueForDisplay());
+    Assert.assertEquals("8x8, 64 LEDs, RGB", new WS2812BPanel().getValueForDisplay());
   }
 
   /**
@@ -276,5 +276,10 @@ public class WS2812BPanelTest {
     } finally {
       g2d.dispose();
     }
+  }
+
+  @Test
+  public void honoursTheLedPackage() {
+    MakerBoardTestSupport.assertAddressableLedTypes(WS2812BPanel::new);
   }
 }
