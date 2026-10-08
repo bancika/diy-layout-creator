@@ -34,10 +34,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the Nokia 5110 module. The part has no variants, so what is worth pinning
- * down is the one thing its layout does differently from the other display boards: the pin row is
- * on the bottom edge, which means the board grows upwards from control point zero and every
- * feature is measured down from an edge the control points do not touch.
+ * Geometry tests for the Nokia 5110 module. Its pin row is on the bottom edge, so the board grows
+ * upwards from control point zero and every feature is measured down from an edge the control
+ * points do not touch.
  */
 public class Nokia5110LCDTest {
 
@@ -89,10 +88,7 @@ public class Nokia5110LCDTest {
     }
   }
 
-  /**
-   * The row is centred across the board and stands clear of the bottom edge rather than of the top
-   * one, which is the easiest thing to get backwards when the board is placed from its header.
-   */
+  /** Clear of the bottom edge rather than the top, which is the easy thing to get backwards. */
   @Test
   public void headerIsCentredOnTheBottomEdge() {
     Nokia5110LCD display = new Nokia5110LCD();
@@ -108,8 +104,8 @@ public class Nokia5110LCDTest {
   }
 
   /**
-   * The glass is placed from the top edge of the board rather than centred in the frame, so
-   * nothing keeps the two in step on its own: both offsets have to be checked against each other.
+   * The glass is placed from the board's top edge rather than centred in the frame, so nothing
+   * keeps the two in step on its own.
    */
   @Test
   public void glassSitsInsideTheBezel() {
@@ -127,10 +123,8 @@ public class Nokia5110LCDTest {
   }
 
   /**
-   * The hole pattern is 34.5 x 41 mm on a 43.8 x 45.8 mm board, so every drill sits 2.4 mm or more
-   * from the two edges nearest it and a 3 mm hole clears both. This is what catches the outline
-   * being entered the wrong way round: with the two figures swapped the vertical pair is 1.4 mm
-   * from the edge and the hole breaches it.
+   * Catches the outline being entered the wrong way round: with the two figures swapped the
+   * vertical pair sits 1.4 mm from the edge and a 3 mm hole breaches it.
    */
   @Test
   public void mountingHolesClearTheBoardEdges() {
@@ -145,9 +139,8 @@ public class Nokia5110LCDTest {
   }
 
   /**
-   * The silkscreen stands in the strip between the pin row and the bottom edge, which is the one
-   * place on this board where a label can run out of room: the strip is only as deep as the
-   * header's clearance from the edge.
+   * The strip between the pin row and the bottom edge is the one place on this board where a label
+   * can run out of room, being only as deep as the header's clearance from the edge.
    */
   @Test
   public void silkLabelsStayInTheStripBelowThePins() {
@@ -159,11 +152,7 @@ public class Nokia5110LCDTest {
             .convertToPixels());
   }
 
-  /**
-   * The one part in the package with no variant property still has a resolution and a controller
-   * worth printing, which is why it answers {@code getValueForDisplay} at all: without it the
-   * glass would be blank and the BOM's value column empty.
-   */
+  /** No variant property, but a resolution and a controller worth printing. */
   @Test
   public void theGlassPrintsTheResolutionAndController() {
     Nokia5110LCD printed = new Nokia5110LCD();
@@ -176,10 +165,8 @@ public class Nokia5110LCDTest {
   }
 
   /**
-   * The module is sold with a blue, a white and a green backlight, and the dark ink the glass
-   * normally carries disappears into the darker of those. Two backlights at opposite ends of the
-   * range must each still show their text, or one of them is printing it in the backlight's own
-   * colour -- the same assertion the Character LCD makes of its own.
+   * The dark ink the glass normally carries disappears into the darker backlights, so two at
+   * opposite ends of the range must each still show their text.
    */
   @Test
   public void theInkFollowsTheBacklight() {

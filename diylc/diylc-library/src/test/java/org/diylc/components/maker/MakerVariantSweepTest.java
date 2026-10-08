@@ -47,15 +47,10 @@ import org.diylc.presenter.ComponentProcessor;
 /**
  * Sweeps every registered maker component across the cross product of its enum properties.
  * <p>
- * The per-class tests pin down the figures each variant was built from, and
- * {@link MakerComponentsTest} covers discovery, icons and rotation. Both of those exercise the
- * default variant only: a component is built with its no-argument constructor and never asked for
- * another version. The variants are where the geometry actually differs, and a release makes
- * control-point counts and positions permanent, so this walks all of them.
- * <p>
- * The properties are swept as a cross product rather than one at a time because a variant is
- * usually a pair - a panel size and an interface, a controller and a glass - and only the
- * combination decides the pin count.
+ * {@link MakerComponentsTest} and the per-class tests exercise the default variant only. The
+ * variants are where the geometry differs, and a release makes control-point counts and positions
+ * permanent, so this walks all of them. The cross product rather than one property at a time,
+ * because a variant is usually a pair and only the combination decides the pin count.
  *
  * @author Branislav Stojkovic
  */
@@ -65,9 +60,8 @@ public class MakerVariantSweepTest {
       {"org.diylc.components.displays", "org.diylc.components.micro"};
 
   /**
-   * Orientation is swept inside the drawing check instead of joining the cross product: it moves
-   * the control points but cannot change how many there are or what they are called, so folding it
-   * in would only report the same defect once per rotation.
+   * Orientation is swept inside the drawing check rather than joining the cross product: it moves
+   * the control points but cannot change how many there are or what they are called.
    */
   private static final String ORIENTATION = "Orientation";
 
@@ -104,10 +98,7 @@ public class MakerVariantSweepTest {
     }
   }
 
-  /**
-   * Problems are collected rather than asserted one at a time, so a run reports every bad variant
-   * at once instead of stopping at the first.
-   */
+  /** Problems are collected so that a run reports every bad variant rather than just the first. */
   @Test
   public void everyVariantHasSoundControlPointsAndDraws() throws Exception {
     List<String> problems = new ArrayList<String>();
@@ -218,9 +209,8 @@ public class MakerVariantSweepTest {
 
       BufferedImage image = new BufferedImage(600, 600, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2d = image.createGraphics();
-      // Translating the canvas rather than moving control point 0 keeps the component's own
-      // geometry intact: a drag sets every control point, so moving only the first leaves the rest
-      // stale and the component draws from a mix of old and new positions.
+      // Translating the canvas rather than moving control point 0 keeps the component's geometry
+      // intact: a drag sets every control point, so moving only the first leaves the rest stale.
       g2d.translate(300, 300);
       try {
         component.draw(g2d, ComponentState.NORMAL, false, PROJECT, OBSERVER);
@@ -249,7 +239,7 @@ public class MakerVariantSweepTest {
         }
       }
     }
-    // Discovery order is not stable, and a failure message naming variants reads better sorted.
+    // discovery order is not stable, and a failure message naming variants reads better sorted
     Collections.sort(classes, new Comparator<Class<? extends IDIYComponent<?>>>() {
 
       @Override

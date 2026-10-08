@@ -42,17 +42,15 @@ import org.junit.Assert;
 /**
  * Shared checks for the maker board tests.
  *
- * <p>What every board has in common -- naming all of its pins, keeping them apart, drawing in each
- * state, rotating -- is asserted once for all of them in {@code MakerComponentsTest}, but only for
- * the version each board starts with. The per-board tests cover what is specific to a board:
- * its pinout, its geometry and the way those change from one version to the next.
+ * <p>What every board has in common -- naming its pins, keeping them apart, drawing, rotating --
+ * is asserted for all of them in {@code MakerComponentsTest}, but only for the version each board
+ * starts with. The per-board tests cover a board's own pinout and geometry.
  */
 public class MakerBoardTestSupport {
 
   public static final double PIN_SPACING = new Size(0.1d, SizeUnit.in).convertToPixels();
 
-  // large enough for the longest board in the package, the 86 mm 2.8" TFT, with its origin in the
-  // middle
+  // large enough for the longest board in the package, with its origin in the middle
   private static final int RENDER_SIZE = 1400;
 
   private static final Project PROJECT = new Project();
@@ -132,9 +130,8 @@ public class MakerBoardTestSupport {
   }
 
   /**
-   * Renders the board alone at a fixed position and returns the pixels. Two renderings of the same
-   * board that differ in one property can then be compared, which is the only way to catch a
-   * drawing change that moves no geometry -- what a board prints on its screen, for instance.
+   * Renders the board alone at a fixed position. Two renderings differing in one property can then
+   * be compared, which is the only way to catch a drawing change that moves no geometry.
    */
   public static int[] renderPixels(AbstractMakerBoard board) {
     BufferedImage image = new BufferedImage(RENDER_SIZE, RENDER_SIZE, BufferedImage.TYPE_INT_ARGB);
@@ -149,9 +146,8 @@ public class MakerBoardTestSupport {
   }
 
   /**
-   * Asserts that a board prints its description on its lit area, and that turning the property off
-   * takes it away again. Comparing two renderings is what makes this a check on the drawing rather
-   * than on the property: a screen that silently refused to print would pass the getter.
+   * Asserts that a board prints its description on its lit area and that turning the property off
+   * takes it away again. A screen that silently refused to print would pass the getter.
    */
   public static void assertScreenTextIsDrawn(AbstractMakerBoard withText,
       AbstractMakerBoard withoutText) {
@@ -160,14 +156,11 @@ public class MakerBoardTestSupport {
   }
 
   /**
-   * Asserts that a board built out of addressable LEDs honours the package it is fitted with.
-   *
-   * <p>Four things have to hold for every one of them, so they are asserted here rather than six
-   * times over: a board saved before the property existed reads as RGB, the packages are
-   * pin-compatible so fitting one in place of another moves no pad, RGBW is drawn with the white
-   * die that is the only thing telling it from RGB on sight, and WWA is drawn off the warm white
-   * palette rather than the colour wheel it cannot emit. The last two compare renderings, which is
-   * what makes them checks on the drawing: a draw() that ignored the property would pass a getter.
+   * Asserts that a board built out of addressable LEDs honours the package it is fitted with: a
+   * board saved before the property existed reads as RGB, the packages are pin-compatible so
+   * fitting one in place of another moves no pad, RGBW is drawn with the white die that is the
+   * only thing telling it from RGB on sight, and WWA is drawn off the warm white palette rather
+   * than the colour wheel it cannot emit.
    *
    * @param factory Builds a fresh board, since each assertion needs one of its own
    */

@@ -71,9 +71,9 @@ public class WemosD1MiniTest {
   }
 
   /**
-   * The right row runs bottom to top, so its first pin is level with the left row's last. This is
-   * the fact the silkscreen has to follow, and the reason the labels are taken from each control
-   * point rather than from a parallel array.
+   * The right row runs bottom to top, so its first pin is level with the left row's last. The
+   * silkscreen has to follow that, which is why the labels are taken from each control point
+   * rather than from a parallel array.
    */
   @Test
   public void theRightRowRunsBottomToTop() {
@@ -84,12 +84,7 @@ public class WemosD1MiniTest {
         mcu.getControlPoint(8).getY() > mcu.getControlPoint(15).getY());
   }
 
-  /**
-   * The silkscreen is the node names with their annotations stripped. Two hand-maintained arrays
-   * used to carry them, the right one written in reverse to compensate for the row direction
-   * above -- a duplicate of PIN_NAMES that had to be kept in step by hand and would have drifted
-   * silently if a pin were ever renamed.
-   */
+  /** The silkscreen is the node names with their annotations stripped. */
   @Test
   public void silkLabelsComeFromTheNodeNames() {
     WemosD1Mini mcu = new WemosD1Mini();

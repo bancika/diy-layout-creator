@@ -62,44 +62,37 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
 
   public static Color TAPE_WHITE = Color.decode("#F2F2F2");
 
-  // White tape is the one light-coloured board in this family, so its lettering is dark where
-  // every other board's is white. Which of the two is used follows the board colour, because that
-  // is an editable property and a user who darkens the tape should get the light ink back.
+  // White tape is the one light-coloured board in this family, so the ink follows the board
+  // colour rather than being fixed.
   public static Color SILK_DARK_COLOR = Color.decode("#333333");
 
-  // The uncut pad is a pill lying along the tape with the cut running through its middle, so a
-  // cut end keeps half of one. Across the tape it is the same at every density; along the tape it
-  // is this nominal where there is room and otherwise as much as the density leaves, which at
-  // 144/m brings it down to about its own width -- a pill no longer than it is wide being a
-  // circle, which is what that tape carries. That agreement is the only check there is on the
-  // width, neither figure having been measured off tape.
+  // The uncut pad is a pill lying along the tape with the cut through its middle, so a cut end
+  // keeps half of one. Along the tape it is this nominal where there is room and otherwise as
+  // much as the density leaves, which at 144/m brings it down to its own width.
   public static Size PAD_WIDTH = new Size(1.5d, SizeUnit.mm);
   public static Size PAD_LENGTH = new Size(3.0d, SizeUnit.mm);
 
-  // The air left between a pad and the nearest package, and between a pad and the name printed
-  // beside it.
+  // Air left between a pad and the nearest package, and between a pad and its printed name.
   public static Size PAD_CLEARANCE = new Size(0.2d, SizeUnit.mm);
   public static Size LABEL_GAP = new Size(0.5d, SizeUnit.mm);
 
   /**
-   * A cut length of tape, not a board, so the count is a free number rather than an enum: the part
-   * is whatever the builder cuts. The ceiling is not about the control-point array, which stays at
-   * six whatever the count, but about the shape -- 144 LEDs of 30/m tape is already most of five
-   * metres, and past that the drawing stops being useful before the maths does.
+   * A cut length of tape rather than a board, so the count is a free number. The ceiling is about
+   * the shape rather than the control-point array, which stays at six: 144 LEDs of 30/m tape is
+   * already most of five metres.
    */
   public static final int MIN_LED_COUNT = 1;
   public static final int MAX_LED_COUNT = 144;
   public static final int DEFAULT_LED_COUNT = 8;
 
-  // Both cuts carry all three lines, which is what makes tape chainable: the supply rails run the
-  // whole length as continuous copper and only the data pad changes sense from one end to the
-  // other. The rails are numbered to keep the node names distinct, as the stick's grounds are;
-  // the tape prints them +5V and GND at both ends.
+  // Both cuts carry all three lines, which is what makes tape chainable: the rails run the whole
+  // length as continuous copper and only the data pad changes sense. The rails are numbered to
+  // keep the node names distinct; the tape prints them +5V and GND at both ends.
   public static final String[] PIN_NAMES =
       new String[] {"+5V_1", "DIN", "GND_1", "+5V_2", "DOUT", "GND_2"};
 
-  // What the tape prints beside each pad, which is the bare designation: the rails are not
-  // numbered on the part, and the data pad is printed two letters whichever end it is.
+  // The bare designations the tape prints: the rails are not numbered on the part, and the data
+  // pad is printed two letters whichever end it is.
   public static final String[] SILK_NAMES =
       new String[] {"+5V", "DI", "GND", "+5V", "DO", "GND"};
 
@@ -140,7 +133,6 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
     invalidateCache();
   }
 
-  // All three decide what you buy and how much of it, so the BOM carries them together.
   @Override
   protected String getVariantLabel() {
     return getDensity() + ", " + getLedCount() + " LEDs, " + getLedType();
@@ -175,34 +167,28 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
     return new Size(getDensity().getWidthMm(), SizeUnit.mm).convertToPixels();
   }
 
-  /**
-   * One pitch of tape per LED, plus a lead-in at each cut end for the pads. The length is linear in
-   * the count rather than proportional to it, because those two ends do not scale.
-   */
+  /** Linear in the count rather than proportional to it, since the two cut ends do not scale. */
   private double getTapeLength() {
     return (getLedCount() - 1) * getPitch() + 2 * getLeadIn();
   }
 
-  /** The span a column of three pads occupies across the tape, at the standard pad pitch. */
+  /** The span a column of three pads occupies across the tape. */
   private static double getPadRunLength() {
     return 2 * PIN_SPACING.convertToPixels();
   }
 
   /**
-   * How far the first package's centre sits in from a cut end. Tape is a repeating cell one pitch
-   * long with its package in the middle, and a cut falls on a cell boundary, so this is half a
-   * pitch and nothing else -- which also makes a length of tape exactly as many pitches long as
-   * it has LEDs, and makes two lengths butted together keep the pitch across the joint.
+   * Tape is a repeating cell one pitch long with its package in the middle and a cut falling on a
+   * cell boundary, so this is half a pitch. That is what makes a length exactly as many pitches
+   * long as it has LEDs, and keeps the pitch across the joint when two are butted together.
    */
   double getLeadIn() {
     return getPitch() / 2.0;
   }
 
   /**
-   * How far a cut pad reaches inboard: half of the pill it was cut from. The pill is the nominal
-   * length where the density leaves room for it, and otherwise as much as fits between the cut
-   * and the first package -- never less than its own width, below which it would stop being a
-   * pad and start being a sliver.
+   * Half of the pill it was cut from: the nominal length where the density leaves room, otherwise
+   * as much as fits between the cut and the first package, never less than its own width.
    */
   double getPadDepth() {
     return getPadLength() / 2.0;
@@ -215,12 +201,12 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
         Math.min(PAD_LENGTH.convertToPixels(), room));
   }
 
-  /** Left end of the tape, which is where control point zero sits: the cut runs through the pad. */
+  /** Control point zero sits here, on the cut, which runs through the pad. */
   private double getBoardX(double x) {
     return x;
   }
 
-  /** Top edge. Each column of pads is centred across the width, so the first sits above centre. */
+  /** Each column of pads is centred across the width, so the first sits above centre. */
   private double getBoardY(double y) {
     return y - (getTapeWidth() - getPadRunLength()) / 2.0;
   }
@@ -230,14 +216,11 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    // Each cut end carries +5V, data and GND in the same three rows, because those rows are
-    // continuous copper running the length of the tape. Spacing them by the pad pitch rather than
-    // by a fraction of the width keeps them from touching: fractions of a 10 mm tape would leave
-    // them almost edge to edge.
+    // Spacing the three rows by the pad pitch rather than by a fraction of the width keeps them
+    // apart: fractions of a 10 mm tape would leave them almost edge to edge.
     //
     // The cut runs through the middle of a pad, so a control point sits on the cut itself and the
-    // two columns are a whole tape length apart. That is also what makes two lengths chain: butt
-    // them together and the pads they are soldered through coincide.
+    // two columns are a whole tape length apart. That is also what makes two lengths chain.
     double columnSpacing = getTapeLength();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
@@ -259,10 +242,9 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
   }
 
   /**
-   * The tape prints each line's name beside its pad, in the bare strip between the pad and the
-   * first package. How much strip that is follows from the density: 12.7 mm at 30/m, 4.3 mm at
-   * 60/m and 0.2 mm at 144/m, where the packages all but touch. So the names go on where they
-   * fit and are left off where they do not, rather than being shrunk to suit the worst case.
+   * Names go in the bare strip between the pad and the first package, which the density decides:
+   * 12.7 mm at 30/m, 4.3 mm at 60/m and 0.2 mm at 144/m. They are left off where they do not fit
+   * rather than shrunk to suit the worst case.
    */
   private void drawCutEndLabels(Graphics2D g2d, double boardX, double boardY) {
     double room = getLeadIn() - RGB_LED_SIZE.convertToPixels() / 2.0 - getPadDepth();
@@ -362,11 +344,9 @@ public class WS2812BStrip extends AbstractAddressableLedBoard {
   }
 
   /**
-   * Tape is sold by LEDs per metre, and everything else follows from that: the pitch is the metre
-   * divided by the count, so it is derived rather than stored. Width does not follow, and is the
-   * one figure here that is a stated norm rather than a measurement -- the 30 and 60 tapes are
-   * usually 10 mm and the 144 usually 12 mm, because at that pitch the package leaves no room for
-   * the conductor beside it.
+   * Tape is sold by LEDs per metre, so the pitch is derived rather than stored. Width does not
+   * follow and is a stated norm rather than a measurement: 10 mm at 30 and 60, 12 mm at 144,
+   * where the package leaves no room for the conductor beside it.
    */
   public enum Density {
     _30("30 LED/m", 30, 10.0d),

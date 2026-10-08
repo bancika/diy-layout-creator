@@ -44,12 +44,9 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// A sibling of WS2812BRing rather than another RingSize constant. It shares the part family and the
-// pad footprint but not the footprint family, which is what decides this: the Jewel is a solid disc
-// with no inner rim, six of its seven LEDs sit on a circle with the seventh in the middle, its pads
-// sit inside that circle instead of out by the rim, and it carries two mounting holes no ring has.
-// Expressing that through RingSize would have taken a centre-LED flag plus three per-variant
-// dimensions the rings derive from their rims, so it goes its own way.
+// A sibling of WS2812BRing rather than another RingSize constant: the Jewel is a solid disc
+// with no inner rim, six LEDs on a circle with a seventh in the middle, pads inside that circle
+// rather than out by the rim, and two mounting holes no ring has.
 @ComponentDescriptor(name = "NeoPixel Jewel", category = "Displays & Outputs",
     author = "Branislav Stojkovic",
     description = "Addressable RGB WS2812B NeoPixel Jewel (7 LEDs)",
@@ -63,10 +60,9 @@ public class WS2812BJewel extends AbstractAddressableLedBoard {
   public static Color NEO_BLACK = Color.decode("#111111");
 
   public static Size OUTER_DIAMETER = new Size(23.0d, SizeUnit.mm);
-  // Measured, not derived: with no inner rim there is no midpoint to put the LEDs on, which is how
-  // the rings place theirs.
+  // Measured: with no inner rim there is no midpoint to place the LEDs on, as the rings do.
   public static Size LED_CIRCLE_DIAMETER = new Size(16.0d, SizeUnit.mm);
-  // The pads sit inside the LED circle, where the rings put theirs just in from the outer rim.
+  // Inside the LED circle, where the rings put theirs just in from the outer rim.
   public static Size PAD_CIRCLE_DIAMETER = new Size(9.0d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SPACING = new Size(19.0d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SIZE = new Size(3.0d, SizeUnit.mm);
@@ -76,9 +72,9 @@ public class WS2812BJewel extends AbstractAddressableLedBoard {
 
   private static final String[] PAD_NAMES = new String[] {"OUT", "G_1", "G_2", "PWR", "IN"};
 
-  // Which gap between two consecutive ring LEDs each pad sits in, counted from the first pad.
-  // OUT is in the gap anticlockwise of the top LED and the rest follow it clockwise one LED apart,
-  // so the sixth gap carries no pad -- it is the one due left, where the left mounting hole sits.
+  // Which gap between two consecutive ring LEDs each pad sits in. OUT is anticlockwise of the
+  // top LED and the rest follow clockwise, so the sixth gap carries no pad: it is the one due
+  // left, where the left mounting hole sits.
   private static final int[] PAD_GAP_INDEX = new int[] {0, 1, 2, 3, 4};
 
   public WS2812BJewel() {
@@ -105,19 +101,17 @@ public class WS2812BJewel extends AbstractAddressableLedBoard {
   }
 
   /**
-   * This has to be the one place the pad radius is decided: {@link #updateControlPoints()} offsets
-   * every pad from the first one by it, and {@link #getCenter()} works backwards from the first pad
-   * to find the middle of the disc, so the two disagreeing would leave the body drawn away from its
-   * own control points.
+   * The one place the pad radius is decided: {@link #updateControlPoints()} offsets every pad from
+   * the first by it and {@link #getCenter()} works backwards from the first pad, so the two
+   * disagreeing would draw the body away from its own control points.
    */
   private double getPadRadius() {
     return PAD_CIRCLE_DIAMETER.convertToPixels() / 2.0;
   }
 
   /**
-   * Pads are not grouped: each sits in a gap between two consecutive ring LEDs, the gaps being the
-   * ones {@link #PAD_GAP_INDEX} records. Where the sequence starts is arbitrary, since the
-   * component rotates.
+   * Each pad sits in a gap between two consecutive ring LEDs, the gaps {@link #PAD_GAP_INDEX}
+   * records. Where the sequence starts is arbitrary, since the component rotates.
    */
   private double getPadAngle(int index) {
     double gap = PAD_GAP_INDEX[index] + RING_LED_COUNT - 0.5;
@@ -213,8 +207,7 @@ public class WS2812BJewel extends AbstractAddressableLedBoard {
       MakerBoardPainter.drawAddressableLed(g2d, cx, cy, ledSize,
           ledColors[RING_LED_COUNT % ledColors.length], 0, ledType);
 
-      // Pad names are left to the node tooltips and the netlist: a pad sits in the gap between two
-      // LEDs, which is nowhere near enough room for its name.
+      // A pad sits in the gap between two LEDs, nowhere near enough room for its name.
     }
 
     g2d.setTransform(oldTx);
@@ -256,7 +249,7 @@ public class WS2812BJewel extends AbstractAddressableLedBoard {
       g2d.fill(new Ellipse2D.Double(lx - dotR, ly - dotR, dotR * 2, dotR * 2));
     }
 
-    // The filled centre is what separates this icon from the ring's at toolbox size.
+    // the filled centre is what separates this icon from the ring's
     g2d.setColor(Color.WHITE);
     g2d.fill(new Ellipse2D.Double(cx - dotR, cy - dotR, dotR * 2, dotR * 2));
   }

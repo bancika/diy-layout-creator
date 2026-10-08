@@ -36,10 +36,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Basic checks for the NeoPixel ring. The pad arrangement itself is guarded by {@link RingSize}'s
- * constructor, which throws unless each ring's LED gaps sum to its LED count, so what is left to
- * assert here is that the three sizes carry the pads and diameters they were measured with and
- * that the body is drawn concentric with them.
+ * Basic checks for the NeoPixel ring. {@link RingSize}'s constructor guards the pad arrangement,
+ * throwing unless each ring's LED gaps sum to its LED count, so what is left is that the three
+ * sizes carry the pads and diameters they were measured with and that the body is concentric.
  */
 public class WS2812BRingTest {
 
@@ -94,10 +93,9 @@ public class WS2812BRingTest {
   }
 
   /**
-   * Every pad sits one inset in from the rim, on a circle of its own rather than on the one the
-   * LEDs occupy. This also says the body is drawn concentric with the pads: the outline is placed
-   * by working backwards from the first pad, so a disagreement there would leave the ring drawn
-   * away from its own control points and show up as an off-centre radius here.
+   * Pads sit on a circle of their own rather than the LEDs'. This also says the body is concentric
+   * with them: the outline is placed by working backwards from the first pad, so a disagreement
+   * would show up as an off-centre radius here.
    */
   @Test
   public void everyPadSitsOnItsOwnCircleInsideTheRim() {
@@ -160,9 +158,8 @@ public class WS2812BRingTest {
   }
 
   /**
-   * RGBW shows the white die the RGB package does not carry, and WWA cannot emit the colour wheel
-   * the other two are drawn lit with. Comparing renderings is what makes this a check on the
-   * drawing: a draw() that ignored the property would pass the getter.
+   * Comparing renderings is what makes this a check on the drawing: a draw() that ignored the
+   * property would pass the getter.
    */
   @Test
   public void eachPackageIsDrawnDifferently() {

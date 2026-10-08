@@ -192,13 +192,9 @@ public class MakerComponentsTest {
       IDIYComponent<?> component = clazz.getDeclaredConstructor().newInstance();
       component.setControlPoint(new Point2D.Double(200, 200), 0);
 
-      // Normal mode
       component.draw(g2d, ComponentState.NORMAL, false, project, observer);
-      // Selected mode
       component.draw(g2d, ComponentState.SELECTED, false, project, observer);
-      // Outline mode
       component.draw(g2d, ComponentState.NORMAL, true, project, observer);
-      // Icon drawing
       component.drawIcon(g2d, 32, 32);
     }
     g2d.dispose();
@@ -228,7 +224,6 @@ public class MakerComponentsTest {
 
       Assert.assertTrue("Component " + clazz.getSimpleName() + " should be rotatable", transformer.canRotate(component));
 
-      // Rotate 4 times clockwise (360 degrees back to original)
       for (int r = 0; r < 4; r++) {
         transformer.rotate(component, center, 1);
       }

@@ -61,16 +61,13 @@ public class CharacterLCD extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  // clearance from the top edge to the parallel pin row
   public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
-  // The parallel row is not centred on the board: its leftmost pin starts this far in from the
-  // left edge.
+  // The parallel row is not centred: its leftmost pin starts this far in from the left edge.
   public static Size PARALLEL_HEADER_INSET = new Size(10.0d, SizeUnit.mm);
-  // The I2C backpack brings its four pins out as a vertical column standing against the left edge,
-  // this far in from it and centred on the board's height.
+  // The I2C backpack's four pins stand in a column against the left edge, centred on the height.
   public static Size I2C_HEADER_INSET = new Size(2.5d, SizeUnit.mm);
-  // Hole centre inset from each edge, and the hole diameter. Both measured. A 3 mm hole centred
-  // 2.5 mm in leaves only 1 mm of board outside it, which is tight but is what the part does.
+  // A 3 mm hole centred 2.5 mm in leaves only 1 mm of board outside it, which is what the part
+  // does.
   public static Size MOUNTING_HOLE_INSET = new Size(2.5d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SIZE = new Size(3.0d, SizeUnit.mm);
 
@@ -78,7 +75,7 @@ public class CharacterLCD extends AbstractMakerBoard {
   public static Color SCREEN_BG = Color.decode("#1E88E5");
   public static Color BEZEL_COLOR = Color.decode("#212121");
   // Both inks are real: the blue-backlit module shows light characters and the yellow-green one
-  // dark ones, so which is used follows the screen colour rather than being fixed.
+  // dark, so the ink follows the screen colour.
   public static Color SCREEN_INK_LIGHT = Color.decode("#F5F5F5");
   public static Color SCREEN_INK_DARK = Color.decode("#1B2631");
 
@@ -89,9 +86,8 @@ public class CharacterLCD extends AbstractMakerBoard {
       "A (Backlight +)", "K (Backlight -)"
   };
 
-  // What the module prints beside the row, which is the bare designation: the supply rails and
-  // the backlight pins carry their function in the node name instead, where a label lying along a
-  // 0.1" pitch has no room for it.
+  // The bare designations the module prints. The supply and backlight pins carry their function
+  // in the node name instead, there being no room for it along a 0.1" pitch.
   public static final String[] SILK_NAMES_PARALLEL = new String[] {
       "VSS", "VCC", "VEE", "RS", "RW", "E",
       "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"
@@ -130,11 +126,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     invalidateCache();
   }
 
-  /**
-   * What the lit area prints. The two sizes differ in outline, but which of them a module is and
-   * which interface it carries are what a reader needs and neither is legible from the drawing;
-   * {@code NONE} leaves the screen blank.
-   */
   @EditableProperty
   public Display getScreen() {
     return screen == null ? Display.VALUE : screen;
@@ -145,7 +136,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     invalidateCache();
   }
 
-  // Both properties decide which part you buy, so the BOM carries them together.
   @Override
   protected String getVariantLabel() {
     LCDSize lcdSize = getLcdSize();
@@ -204,8 +194,8 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   /**
-   * Left edge of the board. Neither header is centred on it: the parallel row starts a fixed
-   * distance in from the left, and the I2C column stands against that same edge.
+   * Neither header is centred: the parallel row starts a fixed distance in from the left, and the
+   * I2C column stands against that same edge.
    */
   private double getBoardX(double x) {
     Size inset =
@@ -214,9 +204,8 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   /**
-   * Top edge of the board. The parallel row hangs below it by a fixed clearance; the I2C column is
-   * centred on the board's height instead, so the board starts back from the first pin by half of
-   * the height the column does not occupy.
+   * The parallel row hangs below the top edge by a fixed clearance; the I2C column is centred on
+   * the board's height instead.
    */
   private double getBoardY(double y) {
     if (lcdInterface == LCDInterface.I2C_Backpack) {
@@ -228,7 +217,6 @@ public class CharacterLCD extends AbstractMakerBoard {
 
   private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
-    // the backpack's header stands on end against the left edge; the parallel row lies along the top
     boolean vertical = lcdInterface == LCDInterface.I2C_Backpack;
 
     double[][] relativeOffsets = new double[getPinCount()][2];
@@ -286,7 +274,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // One mounting hole per corner.
       double holeInset = MOUNTING_HOLE_INSET.convertToPixels();
       double holeSize = MOUNTING_HOLE_SIZE.convertToPixels();
       MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
@@ -297,8 +284,8 @@ public class CharacterLCD extends AbstractMakerBoard {
       MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
           boardY + boardH - holeInset, holeSize);
 
-      // The metal bezel, centred on the board. Its size is the module's own, not a margin taken
-      // off the board, so it stays put when the board changes.
+      // The bezel's size is the module's own, not a margin taken off the board, so it stays put
+      // when the board changes.
       double bezelW = new Size(lcdSize.getBezelWidthMm(), SizeUnit.mm).convertToPixels();
       double bezelH = new Size(lcdSize.getBezelHeightMm(), SizeUnit.mm).convertToPixels();
       double bezelX = boardX + (boardW - bezelW) / 2.0;
@@ -307,7 +294,6 @@ public class CharacterLCD extends AbstractMakerBoard {
       g2d.setColor(BEZEL_COLOR);
       g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 6, 6));
 
-      // The lit area, centred within the bezel and likewise measured rather than derived.
       double screenW = new Size(lcdSize.getDisplayWidthMm(), SizeUnit.mm).convertToPixels();
       double screenH = new Size(lcdSize.getDisplayHeightMm(), SizeUnit.mm).convertToPixels();
       double screenX = bezelX + (bezelW - screenW) / 2.0;
@@ -320,11 +306,9 @@ public class CharacterLCD extends AbstractMakerBoard {
           new Rectangle2D.Double(screenX, screenY, screenW, screenH), getScreenInk(), getScreen(),
           getName(), getValueForDisplay());
 
-      // Only the parallel row has anywhere to print. Its names go in the strip between the row and
-      // the bezel, which is 2.9 mm deep. The backpack's four pins stand in a column 2.5 mm from
-      // the left edge with the bezel beginning 1.4 mm further in, so a label beside them would lie
-      // across the metal frame rather than on the board; the backpack prints its names on its own
-      // PCB behind the module, which this drawing does not show.
+      // Only the parallel row has anywhere to print. The backpack's column sits 2.5 mm from the
+      // left edge with the bezel 1.4 mm further in, so a label beside it would lie across the metal
+      // frame; the backpack prints its names on its own PCB behind the module, not drawn here.
       if (lcdInterface == LCDInterface.Parallel_16Pin) {
         drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, controlPoints.length, true,
             SILK_COLOR);
@@ -345,7 +329,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     g2d.setColor(PCB_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
 
-    // Screen
     g2d.setColor(SCREEN_BG);
     g2d.fillRect(6, 10, width - 12, height - 20);
 
@@ -355,10 +338,9 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   public enum LCDSize {
-    // Labels stay short because they reach the BOM's value column; the dimensions are carried by
-    // the fields beside them, not by the text. The bezel and the lit area are measured off the
-    // module and are sizes in their own right -- deriving them as margins off the board made the
-    // window grow with the board instead of staying the size of the part.
+    // Labels reach the BOM's value column, so they stay short; the dimensions are carried by the
+    // fields beside them. The bezel and lit area are measured off the module rather than derived as
+    // margins off the board, which made the window grow with the board.
     _16x2("16x2", 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
     _20x4("20x4", 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
 

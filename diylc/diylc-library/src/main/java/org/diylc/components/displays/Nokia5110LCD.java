@@ -70,26 +70,21 @@ public class Nokia5110LCD extends AbstractMakerBoard {
 
   public static Size BOARD_WIDTH = new Size(43.8d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(45.8d, SizeUnit.mm);
-  // The metal frame holding the glass: centred across the board and measured down from the top
-  // edge, which is where the asymmetry of the module comes from -- the pin row takes up the strip
-  // left at the bottom.
+  // The metal frame holding the glass, centred across the board and measured down from the top
+  // edge; the pin row takes the strip left at the bottom.
   public static Size BEZEL_WIDTH = new Size(40.0d, SizeUnit.mm);
   public static Size BEZEL_LENGTH = new Size(35.0d, SizeUnit.mm);
   public static Size BEZEL_TOP_OFFSET = new Size(4.5d, SizeUnit.mm);
-  // The glass sits lower in the frame than it is centred, so it is placed from the top edge of the
-  // board rather than centred in the bezel.
+  // The glass sits lower in the frame than centred, so it is placed from the board's top edge.
   public static Size DISPLAY_WIDTH = new Size(37.0d, SizeUnit.mm);
   public static Size DISPLAY_LENGTH = new Size(27.0d, SizeUnit.mm);
   public static Size DISPLAY_TOP_OFFSET = new Size(11.0d, SizeUnit.mm);
-  // Centre-to-centre in each direction, which is how the pattern is specified and what a builder
-  // drills.
+  // Centre-to-centre, which is how the pattern is specified and what a builder drills.
   public static Size MOUNTING_HOLE_SPACING_X = new Size(34.5d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SPACING_Y = new Size(41.0d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SIZE = new Size(3.0d, SizeUnit.mm);
-  // clearance from the bottom edge to the pin row
   public static Size HEADER_OFFSET = new Size(3.5d, SizeUnit.mm);
   public static Size CORNER_RADIUS = new Size(1.5d, SizeUnit.mm);
-  // gap between the top left mounting hole and the part name printed beside it
   public static Size SILK_TEXT_GAP = new Size(1.0d, SizeUnit.mm);
 
   public static final String[] PIN_NAMES =
@@ -104,10 +99,6 @@ public class Nokia5110LCD extends AbstractMakerBoard {
     updateControlPoints();
   }
 
-  /**
-   * What the lit area prints. {@code NONE} leaves the glass blank, which is what the module looks
-   * like unpowered.
-   */
   @EditableProperty
   public Display getScreen() {
     return screen == null ? Display.VALUE : screen;
@@ -119,9 +110,8 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   }
 
   /**
-   * What the backlight makes of the grey-green glass. The same module is sold with a blue, a white
-   * and a green backlight, and nothing else about it changes, so it is a colour rather than a
-   * variant -- the same treatment the Character LCD gives its own backlight.
+   * The same module is sold with a blue, a white and a green backlight and nothing else about it
+   * changes, so it is a colour rather than a variant.
    */
   @EditableProperty(name = "Backlight Color")
   public Color getScreenColor() {
@@ -138,11 +128,7 @@ public class Nokia5110LCD extends AbstractMakerBoard {
     return CalcUtils.calculateLuminance(getScreenColor()) < 128d ? LCD_INK_LIGHT : LCD_INK_DARK;
   }
 
-  /**
-   * There is only one of these modules, so unlike the boards with a variant property this is not
-   * needed to keep the BOM's rows apart. It is still the better answer than an empty value column,
-   * and it is what the glass prints.
-   */
+  /** There is only one of these modules, so this is for the BOM's value column and the glass. */
   @Override
   protected String getVariantLabel() {
     return "84x48 PCD8544";
@@ -162,7 +148,7 @@ public class Nokia5110LCD extends AbstractMakerBoard {
     return x - (BOARD_WIDTH.convertToPixels() - span) / 2.0;
   }
 
-  /** Top edge of the board, which is a whole board above the pin row rather than below it. */
+  /** A whole board above the pin row rather than below it. */
   private double getBoardY(double y) {
     return y - BOARD_LENGTH.convertToPixels() + HEADER_OFFSET.convertToPixels();
   }
@@ -236,8 +222,7 @@ public class Nokia5110LCD extends AbstractMakerBoard {
       MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInsetX,
           boardY + boardH - holeInsetY, holeSize);
 
-      // The part name goes in the strip above the frame, starting clear of the top left hole and
-      // level with it.
+      // clear of the top left hole and level with it
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_LARGE);
       StringUtils.drawCenteredText(g2d, "Nokia 5110",
@@ -272,10 +257,8 @@ public class Nokia5110LCD extends AbstractMakerBoard {
           new Rectangle2D.Double(displayX, displayY, displayW, displayH), getScreenInk(),
           getScreen(), getName(), getValueForDisplay());
 
-      // The module prints its pin names in the strip below the header. They lie flat along the row
-      // rather than standing on end across it the way the Arduino boards print theirs, because the
-      // strip is 3.5 mm deep and a label stood on end needs 4.7 mm: one label offset plus the
-      // length of the longest name.
+      // Names lie flat along the row: the strip is 3.5 mm deep and a label stood on end needs
+      // 4.7 mm.
       drawFlatRowPinLabels(g2d, x, y, getRelativeOffsets(), 0, PIN_NAMES.length, true,
           SILK_COLOR);
     }

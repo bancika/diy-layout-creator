@@ -40,11 +40,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the three OLED modules. What is specific to this part is that the interface
- * is not orthogonal to the size: the 0.91" is sold as two different boards, so every check that
- * reads a board figure has to read it for a size and an interface together. The other thing worth
- * pinning down is the panel, which is offset within its board rather than centred on two of the
- * five boards, and wide enough to share the mounting holes' horizontal span on all of them.
+ * Geometry tests for the three OLED modules. The interface is not orthogonal to the size: the
+ * 0.91" is sold as two different boards, so every check that reads a board figure reads it for a
+ * size and an interface together.
  */
 public class OLEDDisplayTest {
 
@@ -84,11 +82,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The headline fact about this part, and the one the plan had wrong: on the 0.91" the two
-   * interfaces are not one board with a longer header but two boards, differing in outline, in
-   * which edge the header sits on and in whether there are mounting holes at all. The other two
-   * sizes do carry one board across both interfaces, which is what makes the distinction easy to
-   * lose.
+   * On the 0.91" the two interfaces are not one board with a longer header but two boards,
+   * differing in outline, in which edge the header sits on and in whether there are mounting holes
+   * at all. The other two sizes do carry one board across both interfaces.
    */
   @Test
   public void theSmallBoardIsTwoDifferentBoards() {
@@ -156,11 +152,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The 6-pin board is the 7-pin one with the chip select tied low on the PCB instead of brought
-   * out, so its row is the other's without that single pin and in the same order -- anything else
-   * would be a different part rather than the same part sold two ways. It borrows the 7-pin board's
-   * outline, which is a derivation and not a measurement, so that is asserted here rather than left
-   * to be discovered.
+   * The 6-pin board is the 7-pin one with the chip select tied low, so its row is the other's
+   * without that pin and in the same order. It borrows the 7-pin board's outline, which is a
+   * derivation rather than a measurement.
    */
   @Test
   public void theSixPinBoardDropsOnlyTheChipSelect() {
@@ -180,12 +174,10 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The eight-pin board carries the same seven lines as the seven-pin one plus a second supply,
-   * so what has to hold is that the set has grown by exactly VDD and nothing has been dropped --
-   * the order cannot be compared, because this row follows the controller's pin numbering and runs
-   * the other way. VDD and VIN are separate rails, so neither may be renamed to the other or to
-   * the VCC the shorter rows print, which a set comparison would let through if both were spelled
-   * the same.
+   * The eight-pin row cannot be compared in order, following the controller's pin numbering rather
+   * than the silk the others print, so what has to hold is that the set has grown by exactly VDD.
+   * VDD and VIN are separate rails, so neither may be renamed to the other or to VCC, which a set
+   * comparison alone would let through.
    */
   @Test
   public void theEightPinBoardAddsOnlyTheLogicSupply() {
@@ -243,9 +235,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * A row on the top edge is centred across the board at whatever pin count it carries. Nothing
-   * else in the geometry would notice if the board were placed from the first pin instead: a
-   * four-pin row would sit in a corner and a seven-pin one would look very nearly centred anyway.
+   * Nothing else in the geometry would notice if a board were placed from its first pin instead of
+   * being centred: a four-pin row would sit in a corner and a seven-pin one would look very nearly
+   * centred anyway.
    */
   @Test
   public void headerRowIsCentredOnTheTopEdge() {
@@ -269,9 +261,8 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The 0.91" I2C column stands its clearance in from the left edge and is centred on the board's
-   * height, following the Character LCD's backpack. A board drawn downwards and leftwards from its
-   * first pin instead would keep every pitch and size assertion above.
+   * The column stands its clearance in from the left edge and is centred on the height. A board
+   * drawn down and left from its first pin instead would keep every pitch and size assertion above.
    */
   @Test
   public void headerColumnStandsAgainstTheLeftEdge() {
@@ -287,11 +278,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * A lit area's aspect is very nearly the pixel aspect: a 2:1 letterbox on the two 128 x 64
-   * panels and 4:1 on the 128 x 32. This is the figure the 0.96" was drawn wrong against for as
-   * long as its panel was near-square. The two derived panels sit exactly on it because that is
-   * how they were arrived at; the measured 0.96" comes out a little under, and the tolerance here
-   * is wide enough to allow that and nothing like a transposition.
+   * A lit area's aspect is very nearly the pixel aspect: 2:1 on the two 128 x 64 panels and 4:1 on
+   * the 128 x 32. The two derived panels sit exactly on it; the measured 0.96" comes out a little
+   * under, which the tolerance allows while still catching a transposition.
    */
   @Test
   public void litAreaMatchesThePixelAspect() {
@@ -342,11 +331,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Where the lit area lands on the board, which is what the maintainer measured: the panel starts
-   * 5 mm in on the 0.91" I2C board and 1.25 mm in on its SPI sibling, and the lit area is the
-   * panel's own 2.1 mm further in on each. Getting either half wrong moves the lit area while
-   * leaving every size and clearance assertion here intact, and swapping the two between the
-   * boards leaves both of them plausible -- which is what {@link #pinsStayOffThePanel} is for.
+   * Where the lit area lands on the board. Getting either half wrong moves it while leaving every
+   * size and clearance assertion intact, and swapping the two between the boards leaves both
+   * plausible -- which is what {@link #pinsStayOffThePanel} is for.
    */
   @Test
   public void litAreaSitsWhereItWasMeasured() {
@@ -357,10 +344,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * No pin may land on the glass. Every other check here measures features against each other, so
-   * the two 0.91" panel offsets could be swapped between the boards and still pass all of them --
-   * and swapped, the I2C board's panel begins 0.25 mm before its own pin column and the four pins
-   * are drawn on the display. Only a render showed it, which is what this replaces.
+   * No pin may land on the glass. Every other check measures features against each other, so the
+   * two 0.91" panel offsets could be swapped between the boards and pass all of them -- and
+   * swapped, the I2C board's four pins are drawn on the display.
    */
   @Test
   public void pinsStayOffThePanel() {
@@ -395,10 +381,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The 0.91" SPI board's panel offset of 1.25 mm is exactly centred on its 32.5 mm width -- two
-   * independent readings agreeing, which is what makes this worth asserting. The vertical pair do
-   * not agree: the panel hangs below the header rather than sitting centred on the height, so
-   * there is nothing to cross-check down the board.
+   * The 0.91" SPI board's measured 1.25 mm panel offset is exactly centred on its measured 32.5 mm
+   * width, two independent readings agreeing. The vertical pair do not: the panel hangs below the
+   * header rather than sitting centred, so there is nothing to cross-check down the board.
    */
   @Test
   public void theSmallSpiBoardCentresItsPanelAcrossTheBoard() {
@@ -410,12 +395,10 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Every lit area is measured down from its board's top edge rather than centred on the panel:
-   * the driver's bonding region takes the bottom of the glass on all of these, so the lit area
-   * sits high in the frame and centring it would drop it -- by 1.86 mm on the 0.96", 0.86 mm on
-   * the 0.91" I2C board, 0.61 mm on its SPI sibling and 2.05 mm on the 1.3". The centred position
-   * is asserted beside each measurement because a stale one would still land inside the panel and
-   * clear every pin and hole.
+   * Every lit area is measured down from its board's top edge rather than centred on the panel,
+   * the driver's bonding region taking the bottom of the glass. The centred position is asserted
+   * beside each measurement because a stale one would still land inside the panel and clear every
+   * pin and hole.
    */
   @Test
   public void measuredLitAreasSitHighInTheirPanels() {
@@ -435,10 +418,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The panel is wide enough on every one of these boards to share the holes' horizontal span, so
-   * the vertical axis is the only one that can keep them apart -- a symmetric check would fail on
-   * a board that is drawn correctly. The 0.91" SPI board is the tight one, clearing its
-   * header-side holes by 0.5 mm.
+   * The panel shares the holes' horizontal span on every board, so only the vertical axis can keep
+   * them apart and a symmetric check would fail on a board that is drawn correctly. The 0.91" SPI
+   * board is the tight one, clearing its header-side holes by 0.5 mm.
    */
   @Test
   public void panelClearsTheMountingHolesVertically() {
@@ -462,10 +444,8 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The strip between a top-edge row and the panel below it, which is what the pin names have to
-   * fit into. The 0.96"'s 2.27 mm is the shallowest of them and is why these boards place their
-   * own labels a fixed gap off the pad: the shared helper's 2.04 mm offset is pitched for the
-   * 3.5 mm the Nokia and the TFT have and would print the names onto the glass.
+   * The strip the pin names have to fit into. The 0.96"'s 2.27 mm is the shallowest, and the
+   * reason these boards place their own labels rather than using the shared helper.
    */
   @Test
   public void panelClearsThePinRow() {
@@ -494,10 +474,9 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Two of the three panels happen to sit centred on their board, and their stored offsets are
-   * that centred position rather than a measurement of their own. Checking it keeps the two in
-   * step: a later correction to a panel or a board would otherwise leave a stale offset behind,
-   * which is exactly how a panel comes to be drawn a millimetre off centre.
+   * Two panels sit centred on their board, and their stored offsets are that centred position
+   * rather than a measurement. Checking it keeps the two in step, so that a later correction to a
+   * panel or a board cannot leave a stale offset behind.
    */
   @Test
   public void centredPanelsStoreTheCentredOffsets() {
@@ -516,16 +495,12 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Every board prints its pin names, and none of them prints one on the glass. The strip they go
-   * in is 2.27 mm on the 0.96" against the 3.5 mm the sibling displays print into, so this is the
-   * check that the tighter placement actually clears the panel -- no geometry assertion here would
-   * notice a label drawn over the display, and on the 0.96" the shared helper's offset would put
-   * one there.
+   * Every board prints its pin names and none prints one on the glass. No geometry assertion here
+   * would notice a label drawn over the display, and the shared helper's offset would put one
+   * there on the 0.96".
    *
-   * <p>The silkscreen colour is repointed at a colour nothing else on these boards draws in, which
-   * is what makes the count unambiguous: mounting holes are filled in the canvas's white and would
-   * otherwise be indistinguishable from lettering. Appearance constants are deliberately not
-   * final so that they can be overridden at runtime, which is what this leans on.
+   * <p>The silkscreen colour is repointed at a colour nothing else on these boards draws in, since
+   * mounting holes are filled in the canvas's white and would otherwise count as lettering.
    */
   @Test
   public void pinNamesAreDrawnAndStayOffThePanel() {
@@ -568,11 +543,8 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Antialiasing thins the lettering where it meets whatever is behind it, so a label clipping the
-   * glass by a fraction of a millimetre arrives dimmed rather than at full strength. Matching the
-   * hue rather than the value catches those too: nothing else drawn on these boards -- the blue
-   * PCB, the cyan pads, the dark glass, the lit text, the gold and white of a mounting hole --
-   * leaves red and blue both well ahead of green.
+   * Matching hue rather than value catches lettering that antialiasing has dimmed where it clips
+   * the glass. Nothing else drawn on these boards leaves red and blue both well ahead of green.
    */
   private static boolean isSilk(int argb) {
     int red = (argb >> 16) & 0xFF;
@@ -600,9 +572,8 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The six boards are the same dark letterbox on the same blue PCB, so the lit area carries the
-   * description that tells them apart. It is rendered rather than asked for, because a screen that
-   * found no room for the text would still answer the getter.
+   * Rendered rather than asked for: a screen that found no room for the text would still answer
+   * the getter.
    */
   @Test
   public void everyPanelPrintsItsDescription() {
@@ -619,9 +590,8 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * These panels are sold in white and in yellow as well as the blue the class defaults to, and
-   * the pixels are the only thing that colour touches -- there is no backlight behind them and no
-   * ink in front. The text still has to come through whichever one is picked.
+   * The pixels are the only thing the colour touches -- there is no backlight behind them and no
+   * ink in front -- and the text has to come through whichever one is picked.
    */
   @Test
   public void theLitAreaFollowsThePixelColour() {

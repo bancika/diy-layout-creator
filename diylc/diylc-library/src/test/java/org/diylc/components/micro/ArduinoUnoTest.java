@@ -123,9 +123,9 @@ public class ArduinoUnoTest {
   }
 
   /**
-   * The board colour follows the version only while it is still a default. The R3 and the R4 are
-   * genuinely different colours, so switching has to repaint a board the user has not touched --
-   * but a colour they chose has to survive, which assigning unconditionally did not let it do.
+   * The board colour follows the version only while it is still a default: the R3 and the R4 are
+   * genuinely different colours, so switching repaints a board the user has not touched, but a
+   * colour they chose survives.
    */
   @Test
   public void aChosenColourSurvivesAVersionSwitch() {

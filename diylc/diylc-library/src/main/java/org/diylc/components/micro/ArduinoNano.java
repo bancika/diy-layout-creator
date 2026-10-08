@@ -344,9 +344,8 @@ public class ArduinoNano extends AbstractMakerBoard {
       return relativeOffsets;
     }
 
-    // ICSP header (2x3 pins, 30..35) flush with top edge:
-    // Outer row is 0.05" (10px) from top edge (-20px / -0.10" relative to Pin 0)
-    // Inner row is 0.15" (30px) from top edge (0px / 0.00" relative to Pin 0, aligned with Pin 0 & Pin 15)
+    // ICSP block flush with the top edge: the outer row 0.05" from it and the inner row
+    // 0.15", which puts the inner row level with pins 0 and 15.
     double icspOuterY = -spacing; // -20px (-0.10")
     double icspInnerY = 0;        // 0px (0.00")
 
@@ -354,17 +353,11 @@ public class ArduinoNano extends AbstractMakerBoard {
     double col1X = rowSpacing / 2.0;           // 60px (0.30")
     double col2X = rowSpacing / 2.0 + spacing; // 80px (0.40")
 
-    // Pin 1 (MISO at col2X, outer row)
     relativeOffsets[30] = new double[] {col2X, icspOuterY};
-    // Pin 2 (5V_ICSP at col2X, inner row)
     relativeOffsets[31] = new double[] {col2X, icspInnerY};
-    // Pin 3 (SCK at col1X, outer row)
     relativeOffsets[32] = new double[] {col1X, icspOuterY};
-    // Pin 4 (MOSI at col1X, inner row)
     relativeOffsets[33] = new double[] {col1X, icspInnerY};
-    // Pin 5 (RST_ICSP at col0X, outer row)
     relativeOffsets[34] = new double[] {col0X, icspOuterY};
-    // Pin 6 (GND_ICSP at col0X, inner row)
     relativeOffsets[35] = new double[] {col0X, icspInnerY};
 
     return relativeOffsets;
@@ -433,7 +426,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // Draw PCB body
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
@@ -482,7 +474,6 @@ public class ArduinoNano extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
 
-        // Pin 1 dot
         g2d.setColor(PIN_MARKER_COLOR);
         g2d.fill(new Ellipse2D.Double(-chipSize / 2.0 + 3, -chipSize / 2.0 + 3, 3, 3));
 
@@ -536,7 +527,6 @@ public class ArduinoNano extends AbstractMakerBoard {
         }
       }
 
-      // Reset Button
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + (boardW - btnW) / 2.0;
@@ -568,7 +558,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw pins or solder pads
     if (headers) {
       drawPinHeader(g2d, 0, getHeaderPinCount(), outlineMode, drawingObserver);
     } else if (getVersion() == NanoVersion.CLASSIC) {
@@ -590,15 +579,12 @@ public class ArduinoNano extends AbstractMakerBoard {
     g2d.setColor(ARDUINO_TEAL.darker());
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // ICSP header at top
     g2d.setColor(HEADER_BODY_COLOR);
     g2d.fill(new Rectangle2D.Double(width / 2.0 - 4, boardY, 8, 4));
 
-    // Mini USB at bottom
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect((int) (width / 2.0 - 4), (int) (boardY + boardH - 4), 8, 4);
 
-    // 45-degree rotated diamond IC chip in center
     AffineTransform oldTx = g2d.getTransform();
     g2d.translate(width / 2.0, boardY + boardH / 2.0 + 1);
     g2d.rotate(Math.PI / 4.0);
@@ -608,7 +594,6 @@ public class ArduinoNano extends AbstractMakerBoard {
     g2d.draw(new RoundRectangle2D.Double(-4, -4, 8, 8, 1, 1));
     g2d.setTransform(oldTx);
 
-    // Pin strips on sides
     g2d.setColor(PIN_COLOR);
     for (int y = 5; y < height - 5; y += 3) {
       g2d.fillRect(7, y, 2, 2);

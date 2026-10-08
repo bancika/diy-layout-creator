@@ -39,10 +39,9 @@ import org.junit.Test;
 
 /**
  * Geometry tests for the NeoPixel panel. Dimensions can be checked against the board file they
- * came from, so what is worth pinning down here is the arrangement, which cannot: the two ports
- * are each other turned about the centre of the board, and both the ports and the mounting holes
- * sit in the gaps of the pixel grid rather than on bare margin. Every one of those passes whatever
- * the dimensions are, and fails silently in the drawing if it is wrong.
+ * came from; the arrangement cannot, so that is what is pinned here -- the two ports are each
+ * other turned about the centre, and ports and holes sit in the gaps of the pixel grid rather
+ * than on bare margin. Each of those passes whatever the dimensions are.
  */
 public class WS2812BPanelTest {
 
@@ -88,10 +87,9 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * On the 8x8 the board is exactly eight pitches across, which puts a half-pitch of margin
-   * outside the outer pixels and lands the port row in the first row gap. That is a property of
-   * this particular board rather than of panels in general, so it is asserted rather than relied
-   * on: a later panel that does not share it should fail here and be given its own figures.
+   * The board is exactly eight pitches across, which puts a half-pitch of margin outside the outer
+   * pixels and lands the port row in the first row gap. A property of this board rather than of
+   * panels in general, so a later panel that does not share it should fail here.
    */
   @Test
   public void theBoardIsAWholeNumberOfPitchesAcross() {
@@ -113,10 +111,8 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * The chain runs left to right along each row and then back to the left of the next, which is
-   * how Adafruit wires this panel and not how the serpentine panels are wired. The colours are
-   * handed out along the chain, so getting it wrong would show as a gradient that folds back on
-   * itself every row.
+   * A progressive raster rather than the serpentine most panels use. The colours are handed out
+   * along the chain, so getting it wrong shows as a gradient that folds back every row.
    */
   @Test
   public void theChainIsAProgressiveRaster() {
@@ -147,9 +143,8 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * The two ports are each other turned half a turn about the middle of the board, which is what
-   * lets panels be butted together and chained. Nothing in the drawing shows this is wrong; the
-   * output simply ends up somewhere a wire cannot reach.
+   * Half a turn about the middle of the board, which is what lets panels be chained. Nothing in the
+   * drawing shows this is wrong; the output simply ends up where a wire cannot reach.
    */
   @Test
   public void thePortsAreEachOtherTurnedAboutTheCentre() {
@@ -184,9 +179,8 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * Both ports stand in the gap between the first and second rows of pixels rather than on a bare
-   * strip, because this board has no bare strip -- the pixel grid reaches within half a pitch of
-   * every edge. A port drawn a row out would land under the packages.
+   * This board has no bare strip -- the grid reaches within half a pitch of every edge -- so a port
+   * drawn a row out would land under the packages.
    */
   @Test
   public void portsLieInTheGapBetweenTwoPixelRows() {
@@ -199,9 +193,8 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * The holes are drilled in the gaps of the pixel grid, which on the 8x8 leaves 3.89 mm of bare
-   * board for a 2.8 mm hole. There is no room to be wrong by much, and a hole over a package is
-   * only visible in a render.
+   * The holes are drilled in the gaps of the grid, leaving 3.89 mm of bare board for a 2.8 mm hole.
+   * A hole over a package is only visible in a render.
    */
   @Test
   public void mountingHolesClearThePixelsAndStayOnTheBoard() {
@@ -239,11 +232,9 @@ public class WS2812BPanelTest {
   }
 
   /**
-   * The board prints five lines across its face, every one of them in a gap between two rows of
-   * pixels -- the only bare board this part has, since the grid reaches within half a pitch of
-   * all four edges. The positions come from the board file, but how much room a line takes is the
-   * font's business, so a size change could put lettering under a package or off the edge without
-   * anything else noticing.
+   * Every printed line lies in a gap between two rows of pixels, the only bare board this part has.
+   * The positions come from the board file, but how much room a line takes is the font's business,
+   * so a size change could put lettering under a package without anything else noticing.
    */
   @Test
   public void silkscreenClearsThePixelsAndTheBoardEdge() {

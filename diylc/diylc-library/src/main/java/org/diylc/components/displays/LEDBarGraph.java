@@ -50,20 +50,15 @@ import org.diylc.utils.Constants;
 /**
  * A segmented LED bar in a dual-in-line package, as used for VU and level meters.
  *
- * <p>This is the first component in the {@code Displays & Outputs} category that is not an
- * {@code AbstractMakerBoard}: it is a DIP-outline part rather than a board, so it follows
- * {@code DIL_IC} on {@link AbstractLabeledComponent} and carries its own transformer. The category
- * is deliberate even though the shape belongs with the semiconductors, because that is where
- * someone looks for a bar graph.
+ * <p>Not an {@code AbstractMakerBoard} like the rest of this category: it is a DIP-outline part,
+ * so it follows {@code DIL_IC} on {@link AbstractLabeledComponent} and carries its own
+ * transformer.
  *
- * <p>It differs from a DIP IC in one way that governs the whole geometry: an IC's leads bend out of
- * the sides of the plastic, so its body sits <em>between</em> the pin rows, while a bar graph's
- * pins leave the underside within the footprint. The package here is wider than the row spacing, so
- * the plastic spans the rows rather than sitting between them.
- *
- * <p>The pins are nonetheless drawn on top of it. On the part they are hidden from above, but this
- * is a drawing someone lines up against a board, and a pin that cannot be seen cannot be positioned
- * against anything -- so legibility wins over the photograph here.
+ * <p>It differs from a DIP IC in the way that governs the whole geometry: an IC's leads bend out
+ * of the sides of the plastic, so its body sits <em>between</em> the pin rows, while a bar
+ * graph's pins leave the underside within the footprint and the package spans the rows. The pins
+ * are nonetheless drawn on top, because a pin that cannot be seen cannot be lined up against a
+ * board.
  *
  * @author Branislav Stojkovic
  */
@@ -81,9 +76,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   public static Color BORDER_COLOR = Color.decode("#1A1A1A");
   public static Color PIN_COLOR = METAL_COLOR;
   public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
-  // A bar graph is a scale, not a lamp: the colours carry the reading. Green runs most of the way
-  // up, the last two before the top are yellow and only the topmost is red, which is the usual
-  // arrangement on a level or VU meter.
+  // A bar graph is a scale, not a lamp: green most of the way up, yellow for the last two and
+  // red for the topmost, as on a level or VU meter.
   public static Color SEGMENT_GREEN = Color.decode("#43A047");
   public static Color SEGMENT_YELLOW = Color.decode("#FDD835");
   public static Color SEGMENT_RED = Color.decode("#E53935");
@@ -93,15 +87,12 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   public static int EDGE_RADIUS = 4;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
-  // One segment per pin pair along the package, at the usual 0.1in pin pitch.
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
-  // Distance between the two pin rows, and the width of the plastic that covers them. The package
-  // being wider than the rows is the whole difference from a DIP IC: 10.3 against 7.62 leaves
-  // about 1.34 mm of body outboard of each row, so no pin is visible from above.
+  // The package being wider than the row spacing is the whole difference from a DIP IC: 10.3
+  // against 7.62 leaves about 1.34 mm of body outboard of each row, so no pin shows from above.
   public static Size ROW_SPACING = new Size(7.62d, SizeUnit.mm);
   public static Size PACKAGE_WIDTH = new Size(10.3d, SizeUnit.mm);
-  // The lit window of one segment, measured on the part: across the package and along it. They are
-  // sizes of their own rather than the package less a margin, so a segment stays the size it is
+  // Sizes of their own rather than the package less a margin, so a segment stays the size it is
   // when the package or the pin pitch changes.
   public static Size SEGMENT_WIDTH = new Size(4.8d, SizeUnit.mm);
   public static Size SEGMENT_LENGTH = new Size(1.7d, SizeUnit.mm);
@@ -122,10 +113,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * Required by {@code IDIYComponent} rather than chosen: every component carries a value. Nothing
-   * draws it here -- unlike {@code DIL_IC}, which renders it on the body as the chip's part number
-   * -- so it reaches only the BOM and keyword search. Somewhere to record the part you bought, in
-   * other words, which is the one thing a bar graph's value could usefully be.
+   * Nothing draws this -- unlike {@code DIL_IC}, which renders it as the chip's part number -- so
+   * it reaches only the BOM and keyword search.
    */
   @EditableProperty
   public String getValue() {
@@ -155,7 +144,7 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
     return segments;
   }
 
-  /** Changing this changes the pin count, so the control points have to be rebuilt with it. */
+  /** Changing this changes the pin count, so the control points are rebuilt with it. */
   public void setSegments(Segments segments) {
     this.segments = segments;
     updateControlPoints();
@@ -207,15 +196,11 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * Puts the segment count and color in the BOM's value column, so different variants are
-   * separate rows rather than one. Without this they would collapse: the inherited implementation
-   * returns {@link #getValue()}, which is the part number and is usually blank, and {@code
-   * BomMaker} groups on the type name and the value together.
-   *
-   * <p>This is what {@code AbstractMakerBoard.getVariantLabel} does for the boards in this
-   * category. There is no such hook to hang it on here -- the bar graph is on a different base
-   * class -- so the same decision is written out locally. A part number the user has typed is kept
-   * and appended, because that is the more specific statement of what to buy.
+   * Puts the segment count and colour in the BOM's value column, which otherwise groups every
+   * variant into one row: {@code BomMaker} groups on type name and value, and the inherited value
+   * is the part number and usually blank. {@code AbstractMakerBoard.getVariantLabel} does this for
+   * the boards in this category; the bar graph is on a different base class, so it is written out
+   * here. A part number the user has typed is kept and appended.
    */
   @Override
   public String getValueForDisplay() {
@@ -249,9 +234,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * Mutates the existing point rather than replacing it, as {@code DIL_IC} does: callers may hold
-   * the instance. Note that this moves one pin and leaves the rest, which is what the caller is
-   * asking for -- a component is repositioned by moving every point, not by moving its anchor.
+   * Mutates the existing point rather than replacing it, as {@code DIL_IC} does, since callers may
+   * hold the instance.
    */
   @Override
   public void setControlPoint(Point2D point, int index) {
@@ -379,14 +363,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * Each segment is centred on the pin pair that drives it, which is what the part does: a segment
-   * sits between its own anode and cathode. Taking the centre from the two control points rather
-   * than dividing the body also makes this orientation-proof -- the midpoint of a pin pair is the
-   * package centreline at that segment whichever way the part is turned -- so there is no switch
-   * here and no way for the field to drift out of step with the pins.
-   *
-   * <p>Dividing the body into equal bars, as this did at first, put segment zero about 5 px below
-   * its own pins on a ten segment part: close enough to look right and still wrong.
+   * Each segment is centred on the pin pair that drives it, as on the part. Taking the centre from
+   * the two control points rather than dividing the body also makes it orientation-proof: the
+   * midpoint of a pin pair is the package centreline at that segment whichever way it is turned.
    */
   private Rectangle2D[] getSegmentRects() {
     int count = getSegments().getCount();
@@ -435,9 +414,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
     g2d.draw(mainArea);
 
     if (!outlineMode) {
-      // Drawn lit, for the same reason the Ring and the Strip are: an unlit bar graph is a black
-      // block with nothing to say what it is. The colours run up the scale rather than being one
-      // hue, which is also what tells you which end is the top.
+      // Drawn lit, as the Ring and the Strip are: an unlit bar graph is a black block with nothing
+      // to say what it is.
       Rectangle2D[] segments = getSegmentRects();
       for (int i = 0; i < segments.length; i++) {
         g2d.setColor(getSegmentColor(i));
@@ -446,11 +424,9 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
         g2d.draw(segments[i]);
       }
 
-      // The pins go on last, over the package and over the segments. On the real part they are
-      // underneath and invisible from above, but this is a layout tool: a pin you cannot see is a
-      // pin you cannot line up against a board, so the drawing shows where they are. The rows sit
-      // outside the lit windows, which are 4.8 mm across against the rows' 7.62 mm. Round, because
-      // a bar graph's leads are drawn wire rather than the flat stamped leadframe an IC has.
+      // Over the package and the segments: on the real part they are underneath and invisible from
+      // above, but a pin you cannot see is a pin you cannot line up. Round, because a bar graph's
+      // leads are drawn wire rather than an IC's stamped leadframe.
       double pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
       for (Point2D point : controlPoints) {
         Ellipse2D pin = new Ellipse2D.Double(point.getX() - pinSize / 2,
@@ -472,7 +448,7 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
     g2d.setColor(BORDER_COLOR);
     g2d.drawRoundRect(width / 4, 2, width / 2, height - 4, 2, 2);
 
-    // the same scale the part draws, compressed to five bands so the icon reads at toolbox size
+    // compressed to five bands so the icon reads at toolbox size
     for (int i = 0; i < 5; i++) {
       g2d.setColor(i == 0 ? SEGMENT_RED : i == 1 ? SEGMENT_YELLOW : SEGMENT_GREEN);
       g2d.fillRect(width / 4 + 2, 4 + i * (height - 8) / 5, width / 2 - 3, (height - 8) / 5 - 1);
@@ -506,9 +482,8 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
   }
 
   /**
-   * How many segments the bar carries, which decides everything else about the package: each
-   * segment has its own anode and cathode, so the pin count is twice the segment count and the
-   * body lengthens by one pin pitch per segment.
+   * Decides the rest of the package: each segment has its own anode and cathode, so the pin count
+   * is twice the segment count and the body lengthens by one pin pitch per segment.
    */
   public enum Segments {
     _4("4 Segment", 4),

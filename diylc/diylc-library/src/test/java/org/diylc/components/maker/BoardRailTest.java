@@ -40,10 +40,10 @@ import org.diylc.components.micro.Teensy;
  * Pins a board joins inside itself, as the netlist decides them through
  * {@link Node#railName(String)}.
  * <p>
- * The negative cases carry the weight here. An underscore does three unrelated jobs across these
- * pinouts - it disambiguates a repeated rail, it namespaces a connector's signals, and it qualifies
- * a separate net - so a rule keyed on the text before the underscore would short an Ethernet or USB
- * header together. Each of these was produced by a sweep of every board and variant.
+ * The negative cases carry the weight. An underscore does three unrelated jobs across these
+ * pinouts - it disambiguates a repeated rail, it namespaces a connector's signals, and it
+ * qualifies a separate net - so a rule keyed on the text before the underscore would short an
+ * Ethernet or USB header together.
  *
  * @author Branislav Stojkovic
  */

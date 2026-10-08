@@ -51,9 +51,6 @@ public class MakerBoardPainter {
 
   private MakerBoardPainter() {}
 
-  /**
-   * Helper to draw a mounting hole.
-   */
   public static void drawMountingHole(Graphics2D g2d, double cx, double cy, double diameter) {
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fill(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
@@ -62,9 +59,6 @@ public class MakerBoardPainter {
     g2d.draw(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
   }
 
-  /**
-   * Helper to draw an IC chip on the board.
-   */
   public static void drawChip(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(AbstractMakerBoard.IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 4, 4));
@@ -83,9 +77,7 @@ public class MakerBoardPainter {
     }
   }
 
-  /**
-   * Helper to draw an FPC / ribbon cable connector (e.g. MIPI CSI/DSI, PCIe FPC).
-   */
+  /** An FPC / ribbon cable connector, such as a MIPI CSI/DSI or PCIe socket. */
   public static void drawFpcConnector(Graphics2D g2d, double x, double y, double w, double h, boolean vertical, String label) {
     g2d.setColor(AbstractMakerBoard.IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 2, 2));
@@ -114,37 +106,23 @@ public class MakerBoardPainter {
     }
   }
 
-  /**
-   * Helper to draw a standard Micro-USB connector.
-   */
   public static void drawMicroUsb(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-C connector.
-   */
   public static void drawUsbC(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-A connector.
-   */
   public static void drawUsbA(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-B connector.
-   */
   public static void drawUsbB(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a metal connector / shield (e.g. RF shield cans, SD card slots, HDMI).
-   */
+  /** A metal shield or connector body: an RF can, an SD card slot, an HDMI socket. */
   public static void drawMetalConnector(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(AbstractMakerBoard.USB_METAL_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 3, 3));
@@ -159,20 +137,18 @@ public class MakerBoardPainter {
   }
 
   /**
-   * Helper to draw a standard ESP-style PCB meander antenna with a dark (#1E1E1E) substrate rectangle underneath.
+   * An ESP-style PCB meander antenna over a dark substrate rectangle.
    *
    * @param g2d Graphics2D context
    * @param x top-left X coordinate of the antenna substrate rectangle
    * @param y top-left Y coordinate of the antenna substrate rectangle
-   * @param width width of the antenna substrate rectangle (e.g. 15.0mm, matching main chip width)
-   * @param height height of the antenna substrate rectangle (e.g. 7.0mm)
+   * @param width width of the antenna substrate rectangle
+   * @param height height of the antenna substrate rectangle
    */
   public static void drawPcbAntenna(Graphics2D g2d, double x, double y, double width, double height) {
-    // Dark rectangle underneath (#1E1E1E)
     g2d.setColor(AbstractMakerBoard.ANTENNA_BG_COLOR);
     g2d.fill(new Rectangle2D.Double(x, y, width, height));
 
-    // Serpentine antenna trace (gold/copper)
     g2d.setColor(AbstractMakerBoard.ANTENNA_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     Path2D.Double antPath = new Path2D.Double();
@@ -215,15 +191,13 @@ public class MakerBoardPainter {
     g2d.draw(antPath);
   }
 
-  /**
-   * Helper to draw a standard ESP-style PCB meander antenna using default 15.0mm x 7.0mm dimensions.
-   */
+  /** As above, at the default 15.0 x 7.0 mm. */
   public static void drawPcbAntenna(Graphics2D g2d, double x, double y) {
     drawPcbAntenna(g2d, x, y, AbstractMakerBoard.ANTENNA_WIDTH.convertToPixels(), AbstractMakerBoard.ANTENNA_LENGTH.convertToPixels());
   }
 
   /**
-   * Helper to draw a standard SMD tactile push button (housing + circular actuator).
+   * An SMD tactile push button: housing plus circular actuator.
    *
    * @param g2d Graphics2D context
    * @param x Top-left X coordinate of the button body
@@ -244,9 +218,8 @@ public class MakerBoardPainter {
   }
 
   /**
-   * Helper to draw an addressable RGB LED in a 5050 package -- the white body, the milky phosphor
-   * lens over it and the driver die visible through the lens. Shared by every WS2812B part, so
-   * strips, rings and sticks all render the same LED.
+   * An addressable RGB LED in a 5050 package: the white body, the milky phosphor lens over it and
+   * the driver die visible through the lens. Shared by every WS2812B part.
    *
    * @param g2d Graphics2D context
    * @param cx centre X coordinate of the package
@@ -267,10 +240,9 @@ public class MakerBoardPainter {
   }
 
   /**
-   * As above, with the package turned by {@code rotation} radians about its own centre. Parts laid
-   * out on a circle are mounted facing out from the middle rather than square to the board, so each
-   * one turns with its own radius. The package is square, so the turn only tells modulo a quarter
-   * turn -- which is still enough to distinguish a radial arrangement from an axis-aligned one.
+   * As above, turned by {@code rotation} radians about its own centre, for parts laid out on a
+   * circle and mounted facing outwards. The package is square, so the turn only tells modulo a
+   * quarter turn -- still enough to distinguish a radial arrangement from an axis-aligned one.
    */
   public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
       Color litColor, double rotation) {
@@ -278,10 +250,9 @@ public class MakerBoardPainter {
   }
 
   /**
-   * As above, for a part fitted with a package other than the plain RGB one. An RGBW package is
-   * told from an RGB one on sight only by the white die sitting beside the colour dies, so that
-   * is what is drawn; WWA has the same three-die layout as RGB and is told apart instead by what
-   * it emits, which is the caller's palette rather than anything here.
+   * As above, for a package other than the plain RGB one. An RGBW is told from an RGB on sight
+   * only by the white die beside the colour dies, so that is what is drawn; WWA has the same
+   * three-die layout and is told apart by what it emits, which is the caller's palette.
    */
   public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
       Color litColor, double rotation, AbstractMakerBoard.LedType ledType) {
@@ -322,15 +293,12 @@ public class MakerBoardPainter {
   }
 
   /**
-   * Prints a display's own description on its lit area, wrapped to the area and centred in it.
+   * Prints a display's own description on its lit area, wrapped and centred.
    *
-   * <p>What it prints is what the component already answers for the BOM, so a variant is stated
-   * once and the glass cannot fall out of step with the part list. The point of it is
-   * identification: six OLED boards are the same dark letterbox on the same blue PCB, and the
-   * property editor, the BOM and the Explorer pane are all off the canvas.
-   *
-   * <p>Nothing is drawn unless the whole block fits, so a panel too small to hold its description
-   * shows a bare screen rather than a crop -- the same rule the pin-name silkscreen follows.
+   * <p>What it prints is what the component already answers for the BOM, so the glass cannot fall
+   * out of step with the part list. Nothing is drawn unless the whole block fits, so a panel too
+   * small for its description shows a bare screen rather than a crop -- the same rule the pin-name
+   * silkscreen follows.
    *
    * <p>The area is the part of the panel the text may occupy rather than the panel itself, so a
    * round display hands over the square inscribed in its glass.

@@ -42,9 +42,8 @@ import org.junit.Test;
 
 /**
  * Geometry tests for the controller variants. The pin count differs between them, so the checks
- * that matter are the ones that would catch an array and an outline disagreeing: that the header
- * still fits across the board it belongs to, and that the screen and the mounting holes do not
- * land on top of each other once a different outline is in play.
+ * that matter are the ones that catch an array and an outline disagreeing: that the header still
+ * fits across its board, and that the screen and the mounting holes stay off each other.
  */
 public class TFTDisplayTest {
 
@@ -108,9 +107,8 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The 2.4" is the same board as the 2.8" with a smaller panel in it, so it shares the pin array
-   * rather than repeating it. Asserted by identity: a copy would pass every name check and still
-   * drift the day one of the two is corrected.
+   * The 2.4" is the 2.8" board with a smaller panel, so it shares the pin array. Asserted by
+   * identity: a copy would pass every name check and drift the day one of the two is corrected.
    */
   @Test
   public void bothILI9341BoardsShareOnePinArray() {
@@ -120,11 +118,9 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Both rows are printed, and neither may print a name the default would have mangled. The touch
-   * pins and the SD pins share a prefix apiece, and the default label keeps what stands before the
-   * underscore: left to it, five pins would read "T" and four would read "SD". The widths are the
-   * other half of it -- a flat label has the 0.1" pitch and no more -- and are asserted against
-   * the font the row is drawn in rather than taken from the comment that records them.
+   * Neither row may print a name the default label would mangle: it keeps what stands before the
+   * underscore, which would leave five pins reading "T" and four reading "SD". Widths are asserted
+   * against the font the row is drawn in, a flat label having the 0.1" pitch and no more.
    */
   @Test
   public void everyPrintedPinNameIsDistinctAndFitsThePitch() {
@@ -167,10 +163,8 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Three boards, two controllers, one header: what a module of this size brings out is the
-   * four-wire SPI interface plus reset, data/command and the backlight, and that does not vary with
-   * the driver behind it. Shared by identity rather than by three copies, so that a correction to
-   * one reaches all of them.
+   * What a module of this size brings out does not vary with the driver behind it. Shared by
+   * identity rather than by three copies, so a correction to one reaches all of them.
    */
   @Test
   public void theSmallBoardsShareOnePinArray() {
@@ -214,11 +208,9 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The SD row faces the 14-pin row across the board and is centred on the width the way the longer
-   * row is. Both are worth pinning: the across-the-board figure is what the two offsets leave of
-   * the length rather than a measurement, and the horizontal placement is the one figure of this
-   * header that was not supplied at all. Both boards that carry one are headed at the bottom, so
-   * their second row is on the top edge.
+   * The SD row faces the 14-pin row and is centred on the width like it. Both are worth pinning:
+   * the across-the-board figure is what the two offsets leave of the length rather than a
+   * measurement, and the horizontal placement was not supplied at all.
    */
   @Test
   public void theSdRowStandsOffTheOppositeEdge() {
@@ -248,9 +240,8 @@ public class TFTDisplayTest {
       Assert.assertEquals(controller + " SD row is not centred across the board",
           firstSd.getX() - board.getX(), board.getMaxX() - lastSd.getX(), 0.01d);
 
-      // It shares its edge with a pair of mounting holes, and unlike the long row it is short
-      // enough to pass between them. That is why the top pair keeps the shared inset where the
-      // 2.4"'s header-side pair could not.
+      // Short enough to pass between the mounting holes it shares an edge with, which is why the
+      // top pair keeps the shared inset where the 2.4"'s header-side pair could not.
       double holeRim = controller.getHoleSideInsetMm() + controller.getHoleSizeMm() / 2.0;
       Assert.assertTrue(controller + " SD row runs into the holes on its edge",
           mm(firstSd.getX() - board.getX()) > holeRim);
@@ -284,11 +275,9 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The screen is centred between the hole rows, so a board whose holes move has to be rechecked:
-   * on the 1.8" the two pairs are only 3 mm in and the panel very nearly reaches them. The two
-   * rows no longer necessarily share an inset, so the band is taken from both figures rather than
-   * from the board's middle -- which is also what makes this the assertion that rejects centring
-   * the 2.4"'s glass on its lit area.
+   * The screen is centred between the hole rows, so moving a board's holes has to be rechecked: on
+   * the 1.8" the two pairs are only 3 mm in and the panel very nearly reaches them. The rows need
+   * not share an inset, so the band is taken from both figures rather than from the board's middle.
    */
   @Test
   public void screenClearsTheMountingHoles() {
@@ -313,12 +302,10 @@ public class TFTDisplayTest {
   }
 
   /**
-   * No mounting hole may be drilled where a pin is. This is the assertion the 2.4"'s deeper
-   * header-side pair exists for, and it has to be two-dimensional to say anything useful: that
-   * board's 14-pin row spans 33 mm of a 42.72 mm board, so its end pads reach the hole columns and
-   * the pair had to move; the 2.8" is wider and its row passes inside them, as a four-pin SD row
-   * does on both boards. A one-axis clearance would have forced a deeper inset on boards that do
-   * not need one.
+   * No mounting hole may be drilled where a pin is. This has to be two-dimensional to say anything
+   * useful: the 2.4"'s 14-pin row spans 33 mm of a 42.72 mm board, so its end pads reach the hole
+   * columns and that pair had to move, while the wider 2.8"'s row passes inside them. A one-axis
+   * clearance would have forced a deeper inset on boards that do not need one.
    */
   @Test
   public void mountingHolesDoNotOverlapAnyPin() {
@@ -385,11 +372,10 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The panel has to leave the pin row uncovered. It is placed between the hole rows rather than
-   * from an edge, so a long panel on a board whose holes sit close to the edges can reach back over
-   * its own header: the 1.54" clears by 3.51 mm, with its row only 1.5 mm in from the edge. The
-   * 2.4" has to be measured from the other end, since its row is on the bottom edge, and it is the
-   * only board that must clear a row at each end.
+   * The panel has to leave the pin row uncovered. Being placed between the hole rows rather than
+   * from an edge, a long panel on a board whose holes sit close to the edges can reach back over
+   * its own header: the 1.54" clears by 3.51 mm with its row only 1.5 mm in. The 2.4" is the only
+   * board that must clear a row at each end.
    */
   @Test
   public void panelLeavesThePinRowUncovered() {
@@ -416,12 +402,10 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every board with a bezel states its own lit area rather than take the centred one, bar the
-   * 0.96", and the reason is worth asserting rather than only commenting: their panels carry the
-   * driver's bonding region along the bottom, so the lit area sits high in the glass and the
-   * family's centring rule would drop it, by 4.85 mm on the 2.4" down to 1.5 mm on the 1.54". The
-   * assertion is that the two disagree -- if a later correction ever makes them agree, the field
-   * has stopped earning its place.
+   * Every board with a bezel but the 0.96" states its own lit area: their panels carry the driver's
+   * bonding region along the bottom, so the centring rule would drop it, by 4.85 mm on the 2.4"
+   * down to 1.5 mm on the 1.54". The assertion is that the two disagree -- if a correction ever
+   * makes them agree, the field has stopped earning its place.
    */
   @Test
   public void theLitAreaIsMeasuredOnlyWhereCentringWouldBeWrong() {
@@ -443,11 +427,9 @@ public class TFTDisplayTest {
       Assert.assertTrue(controller + " is measured where centring would have done",
           Math.abs(screenTop - (glassTop + (glassH - controller.getScreenLengthMm()) / 2.0)) > 1d);
 
-      // Each figure is stored from the board's top edge but was arrived at against the bezel, so
-      // it only holds while the glass stays where the hole rows put it. Move a hole row and these
-      // are the assertions that say the stored figure has to be rederived. What was arrived at
-      // differs by board: the ILI9341s were measured as a frame below the top of the bezel, the
-      // 1.8" as a lift off the position the centring rule gives.
+      // Each figure is stored from the board's top edge but was arrived at against the bezel, so it
+      // holds only while the glass stays where the hole rows put it. Move a hole row and these are
+      // the assertions that say the stored figure has to be rederived.
       if (controller == Controller.ILI9341_2_4 || controller == Controller.ILI9341_2_8) {
         double frameAbove = controller == Controller.ILI9341_2_4 ? 2.76d : 3.05d;
         Assert.assertEquals(controller + " frame above the lit area", frameAbove,
@@ -461,13 +443,11 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Two boards carry a bezel narrower than their PCB, and only the 0.96" has it off centre: a
-   * 23.7 mm bezel on a 30 mm board, pushed to the right so that the driver's circuitry has the
-   * bare L it leaves. That offset is across the board only -- down it the bezel is centred like
-   * every other variant's -- and it is a measurement rather than a derivation, since centring it
-   * across the board too would move it 1.15 mm. The lit area is centred inside it with a 1 mm
-   * frame on all four sides, which the drawing gets for free once the glass is placed, and which
-   * would silently break if the lit area went back to being centred on the board.
+   * Two boards carry a bezel narrower than their PCB and only the 0.96" has it off centre, pushed
+   * right so the driver's circuitry has the bare L it leaves. The offset is across the board only,
+   * and is a measurement: centring it across too would move it 1.15 mm. The lit area is centred
+   * inside it with a 1 mm frame, which would silently break if it went back to being centred on
+   * the board.
    */
   @Test
   public void theOffsetPanelIsPlacedFromTheRightEdge() {
@@ -513,12 +493,9 @@ public class TFTDisplayTest {
 
   /**
    * Each board's holes are one drill at one inset from each of the two edges nearest them, but the
-   * figures are the board's own rather than the package's: the two ILI9341s are 3 mm at 3 mm, the
-   * 1.8" with the socket is 2 mm at 3 mm, and the other three are 2 mm at 2.5 mm. The 2.8" had a
-   * narrower 2.5 mm drill for a while and this guards against it coming back. Both ILI9341 boards
-   * hold their header-side pair deeper than their other one, by their own figure and for their own
-   * reason, which is asserted beside this rather than within it so the two cannot be read as one
-   * rule.
+   * figures are the board's own rather than the package's. The 2.8" had a narrower 2.5 mm drill
+   * for a while and this guards against it coming back. The ILI9341s' deeper header-side pair is
+   * asserted separately so the two cannot be read as one rule.
    */
   @Test
   public void mountingHoleFiguresAreEachBoardsOwn() {
@@ -550,8 +527,8 @@ public class TFTDisplayTest {
           controller.getHoleSideInsetMm(), 0.01d);
     }
 
-    // The one board whose holes are not square to the outline was given as two hole-to-hole
-    // spans rather than as insets, so those are what the three figures have to come back to.
+    // The one board whose holes are not square to the outline was given as two hole-to-hole spans
+    // rather than as insets, so those are what the three figures have to come back to.
     Controller sd = Controller.ST7735_1_8_SD;
     Assert.assertEquals("1.8\" SD holes across", 28.5d,
         sd.getBoardWidthMm() - 2 * sd.getHoleSideInsetMm(), 0.01d);
@@ -570,10 +547,8 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every module but the round one carries a dark panel wider than its lit area. The 1.8" is the
-   * board whose bezel was measured down the board as well as across it, 5.1 mm from the top edge,
-   * and the family's centring rule is what places it: the two have to keep agreeing, so the
-   * measured figure is asserted here rather than left to the rule to reproduce unwatched.
+   * The 1.8" is the board whose bezel was measured down the board as well as across it, and the
+   * family's centring rule is what places it, so the two have to keep agreeing.
    */
   @Test
   public void glassPanelFollowsTheModule() {
@@ -606,11 +581,7 @@ public class TFTDisplayTest {
     Assert.assertFalse(Controller.GC9A01_1_28.hasMountingHoles());
   }
 
-  /**
-   * The round board reads RST first, which is to say leftmost. The array had been in the opposite
-   * order, which looked plausible while the tab was drawn at the top and was wrong against the
-   * part either way; turning the board over is what made it visible.
-   */
+  /** The round board reads RST first, which is to say leftmost. */
   @Test
   public void roundPinNamesComeFromTheController() {
     TFTDisplay display = of(Controller.GC9A01_1_28);
@@ -621,11 +592,10 @@ public class TFTDisplayTest {
   }
 
   /**
-   * The outline is a disc with a narrower tab hanging below it, so the corners of its bounding box
-   * are off the board while the middles of the top and bottom edges are on it. Taking the tab only
-   * as far as the bottom of the disc would have left a notch either side of the tangent point,
-   * which these corners would not catch but the centre-line check would: there the disc is wider
-   * than the tab.
+   * A disc with a narrower tab below it, so the corners of the bounding box are off the board
+   * while the middles of the top and bottom edges are on it. Taking the tab only as far as the
+   * bottom of the disc would leave a notch either side of the tangent point, which these corners
+   * would not catch but the centre-line check would.
    */
   @Test
   public void roundBodyIsADiscWithATab() {
@@ -648,9 +618,8 @@ public class TFTDisplayTest {
     Assert.assertFalse("the bottom left corner is on the board",
         body.contains(x + px(1.0d), y + px(44.5d)));
 
-    // at the disc's centre line the board is wider than the tab, which is what proves the union
-    // took the disc's outline and not the rectangle's; a third of the way further down only the
-    // tab is left, and the same point is off the board
+    // at the centre line the board is wider than the tab, which proves the union took the disc's
+    // outline; a third further down only the tab is left and the same point is off the board
     Assert.assertTrue("the disc is no wider than its tab",
         body.contains(x + px(2.0d), y + px(19.0d)));
     Assert.assertFalse("the board is as wide as its disc below the centre line",
@@ -658,12 +627,10 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Which edge the main row leaves by, which is a fact about each board rather than a drawing
-   * convention: with the pin order fixed left to right, a header at the top and a header at the
-   * bottom are mirror images and not the same part. The two ILI9341s and the round board stand
-   * above their row; the
-   * 0.96", the 1.8" and the 1.54" hang below theirs. Asserted for every variant because nothing
-   * else in the geometry would notice one being flipped.
+   * Which edge the main row leaves by is a fact about each board rather than a drawing convention:
+   * with the pin order fixed left to right, a header at the top and one at the bottom are mirror
+   * images and not the same part. Asserted for every variant because nothing else in the geometry
+   * would notice one being flipped.
    */
   @Test
   public void headerSitsOnItsOwnEdge() {
@@ -677,8 +644,8 @@ public class TFTDisplayTest {
       Assert.assertEquals(controller + " header offset", controller.getHeaderOffsetMm(),
           mm(fromEdge), 0.01d);
     }
-    // A roll call rather than a rule: every one of these was sourced from the part, and a future
-    // variant must be too rather than inheriting whichever way the majority happens to go.
+    // A roll call rather than a rule: a future variant must be sourced from the part too rather
+    // than inheriting whichever way the majority happens to go.
     Assert.assertTrue("0.96\"", Controller.ST7735_0_96.isHeaderAtTop());
     Assert.assertTrue("1.8\"", Controller.ST7735_1_8.isHeaderAtTop());
     Assert.assertTrue("1.54\"", Controller.ST7789_1_54.isHeaderAtTop());
@@ -689,8 +656,8 @@ public class TFTDisplayTest {
   }
 
   /**
-   * Every panel prints its description, the round one included -- it is the only variant whose
-   * text has to fit a circle, and it does so by being given the square inscribed in the glass.
+   * The round one is the only variant whose text has to fit a circle, which it does by being given
+   * the square inscribed in the glass.
    */
   @Test
   public void everyPanelPrintsItsDescription() {

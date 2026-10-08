@@ -35,9 +35,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Basic checks for the seven-segment displays. All but one of the variants are DIP packages that
- * straddle their pins with a row either side, and the last is a module carrying a single header
- * down one edge, so the pin layout is what differs most between them.
+ * Basic checks for the seven-segment displays. All but one are DIP packages straddling their pins
+ * with a row either side; the last is a module carrying a single header down one edge.
  */
 public class SevenSegmentDisplayTest {
 
@@ -122,10 +121,9 @@ public class SevenSegmentDisplayTest {
   }
 
   /**
-   * The digit count is the variant's own figure rather than something the drawing works out from
-   * which constant it is looking at. That is what lets a two-, six- or eight-digit part be a
-   * constant beside these, so it is worth asserting that every variant answers and that the
-   * answer is the one the label advertises.
+   * The digit count is the variant's own figure rather than something the drawing infers from
+   * which constant it is looking at, which is what lets a two-, six- or eight-digit part be a
+   * constant beside these.
    */
   @Test
   public void digitCountComesFromThePackage() {
@@ -143,11 +141,9 @@ public class SevenSegmentDisplayTest {
   }
 
   /**
-   * A driven module brings out no common pins, so its polarity is not something you order -- which
-   * is why the BOM line omits it. Asked of the variant rather than of its identity, and paired with
-   * the pin arrangement so that the two cannot quietly become one question: they agree on every
-   * variant today, but a single-in-line bare package or a module in a DIP outline would separate
-   * them.
+   * A driven module brings out no common pins, so its polarity is not something you order and the
+   * BOM line omits it. Paired with the pin arrangement so the two cannot become one question: they
+   * agree on every variant today, but a single-in-line bare package would separate them.
    */
   @Test
   public void onlyModulesCarryABoard() {
@@ -214,10 +210,7 @@ public class SevenSegmentDisplayTest {
     }
   }
 
-  /**
-   * The module drives the digits itself and brings out no common pins, so polarity is not part of
-   * what you order and is left out of its BOM value; the bare packages carry it.
-   */
+  /** The module's polarity is not part of what you order, so its BOM value leaves it out. */
   @Test
   public void bomValueNamesThePackageAndWhatVariesWithIt() {
     SevenSegmentDisplay module = of(DisplayType.TM1637_Module_4Pin);

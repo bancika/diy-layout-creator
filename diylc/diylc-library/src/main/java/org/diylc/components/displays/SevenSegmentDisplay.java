@@ -67,53 +67,36 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   public static Color LED_OFF = Color.decode("#2E2E2E");
   public static Color LED_OFF_BORDER = Color.decode("#222222");
 
-  // Per-package dimensions live on DisplayType; these apply to every package.
   public static Size SEGMENT_THICKNESS = new Size(1.4d, SizeUnit.mm);
   // How far a module's header column sits in from the right edge. The DIP packages straddle their
   // pins with a row either side; a module carries its header down one edge instead.
   public static Size HEADER_EDGE_OFFSET = new Size(2.5d, SizeUnit.mm);
   /**
-   * The digit is drawn at this fraction of the dimensions above. On the real part the digit window
-   * runs almost to the pin rows -- at full size the two clear each other by around a hundredth of a
-   * millimetre -- so a faithful drawing has the pins sitting on the digit. This is a deliberate
-   * departure from the measurements for legibility, which is why it is a separate factor rather
-   * than smaller digit sizes on {@link DisplayType}: those stay as the package measures.
-   *
-   * <p>Concretely it draws the 0.56 inch packages' 14.2 mm digit at 12.5 mm, so what reaches the
-   * canvas is about half an inch. That is intended, and it is not a disagreement with the part:
-   * the package is still a 0.56 inch one and the BOM still says so. Worth knowing before changing
-   * this number to chase an exact drawn size, because it is shared and would move every package.
+   * The digit is drawn at this fraction of the package's measured size. On the real part the
+   * digit window runs almost to the pin rows, so a faithful drawing has the pins sitting on the
+   * digit; this is a deliberate departure for legibility, which is why it is a separate factor
+   * rather than smaller digit sizes on {@link DisplayType}. It is shared, so changing it to chase
+   * an exact drawn size moves every package.
    */
   public static double DIGIT_DRAW_SCALE = 0.88d;
 
   /**
    * Pin arrays are in DIP order: index 0 is pin 1 at the bottom left, counting right along the
    * bottom row and then back right-to-left along the top, which is how {@code updateControlPoints}
-   * places the control points. The two commons are numbered only to keep the node names distinct;
-   * they are the same net on the part.
+   * places the control points. The two commons are the same net on the part and are numbered only
+   * to keep the node names distinct.
    */
   public static final String[] PIN_NAMES_1DIGIT = new String[] {
       "E", "D", "COM1", "C", "DP", "B", "A", "COM2", "F", "G"
   };
 
-  /**
-   * The 5621AS, which is the two-digit member of the same 0.56 inch family as the 5641AS. Ten pins
-   * rather than twelve: there are two digit commons to bring out instead of four, and no pin is
-   * freed up by that because the segments already account for the rest.
-   */
+  /** The two-digit member of the same family as the 5641AS, with two digit commons instead of
+   * four. */
   public static final String[] PIN_NAMES_2DIGIT = new String[] {
       "E", "D", "DP", "C", "G", "B", "D2", "D1", "F", "A"
   };
 
-  /**
-   * Shared by both bare four-digit packages: the 3641AS and the 5641AS differ in size but not in
-   * pin function, confirmed by the maintainer.
-   *
-   * <p>This was previously transcribed in reading order -- top row left to right, then bottom row
-   * left to right -- rather than in DIP order, which put every segment and digit common on the
-   * wrong pin. The single-digit array above was always correct, and the two using different
-   * conventions in the same file is what gave the error away.
-   */
+  /** Shared by both bare four-digit packages, which differ in size but not in pin function. */
   public static final String[] PIN_NAMES_4DIGIT = new String[] {
       "E", "D", "DP", "C", "G", "D4", "B", "D3", "D2", "F", "A", "D1"
   };
@@ -147,10 +130,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Common cathode and common anode parts share a pinout, a package and a set of dimensions, so no
-   * drawing path reads this -- it exists to split the two in the BOM, which is the only place the
-   * difference costs anyone anything. Defaulted in the getter rather than the field so that a
-   * project saved before this property existed still loads.
+   * No drawing path reads this: the two kinds share a pinout, a package and a set of dimensions,
+   * so it exists to split them in the BOM. Defaulted in the getter so that a project saved before
+   * the property existed still loads.
    */
   @EditableProperty(name = "Common")
   public Common getCommon() {
@@ -165,9 +147,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Unlike {@link #getCommon()} this one is visible: it decides whether the decimal points and the
-   * colon are drawn at all. The colon is meaningless on the single-digit package and is ignored
-   * there, in the same way the board colour is ignored on the bare packages.
+   * Decides whether the decimal points and the colon are drawn. The colon is meaningless on the
+   * single-digit package and is ignored there.
    */
   @EditableProperty(name = "Punctuation")
   public Punctuation getPunctuation() {
@@ -188,8 +169,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     if (displayType == null) {
       return null;
     }
-    // A module drives the digits itself and brings out no common pins, so polarity is not part
-    // of what you order -- but which punctuation it carries still is.
+    // A module drives the digits itself and brings out no common pins, so polarity is not part of
+    // what you order -- but which punctuation it carries still is.
     if (displayType.isModule()) {
       return displayType + ", " + getPunctuation();
     }
@@ -206,10 +187,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     invalidateCache();
   }
 
-  /**
-   * The circuit board a module is built on. Only the TM1637 has one: the bare packages are a
-   * moulding with pins in it, so this is ignored for them.
-   */
+  /** Only the TM1637 has one; the bare packages are a moulding with pins in it. */
   @EditableProperty(name = "Board Color")
   public Color getBoardColor() {
     return boardColor;
@@ -221,9 +199,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * The display device itself, which is the whole part on a bare package and the module mounted on
-   * the board on a TM1637. Relabelled from the inherited "Board Color", which was accurate for
-   * neither: three of the four packages have no board at all.
+   * The display device itself: the whole part on a bare package, and the module mounted on the
+   * board on a TM1637. Relabelled from the inherited "Board Color", which fits neither.
    */
   @EditableProperty(name = "Body")
   @Override
@@ -249,9 +226,7 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Whether a colon has anywhere to go. It sits in the gap between the two middle digits, which
-   * only exists on an even count; a single digit has no gap and an odd count has a digit where the
-   * colon would be.
+   * The colon sits in the gap between the two middle digits, which exists only on an even count.
    */
   private boolean hasMiddlePair() {
     int digitCount = displayType.getDigitCount();
@@ -259,10 +234,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Draws the package's digits on their own pitch, centred on {@code rowCentreX}. Both the bare
-   * packages and the modules come through here, differing only in the figures they pass: the count
-   * is the variant's, which is what lets a two-, six- or eight-digit part be a constant rather than
-   * a branch.
+   * Draws the package's digits on their own pitch, centred on {@code rowCentreX}. Bare packages
+   * and modules differ only in the figures they pass, which is what lets a two-, six- or
+   * eight-digit part be a constant rather than a branch.
    */
   private void drawDigitRow(Graphics2D g2d, double rowCentreX, double dy, double dw, double dh,
       double pitch, double nudge, boolean decimalPoints) {
@@ -283,7 +257,6 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     double[][] relativeOffsets = new double[pinCount][2];
 
     if (displayType.isDualRow()) {
-      // DIP numbering: pin 1 at the bottom left, along the bottom row, then back along the top
       int perRow = pinCount / 2;
       double rowSpacing =
           new Size(displayType.getRowSpacingMm(), SizeUnit.mm).convertToPixels();
@@ -294,7 +267,6 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         relativeOffsets[perRow + i][1] = -rowSpacing;
       }
     } else {
-      // a module carries its header as a single column down one edge, not a row across the face
       for (int i = 0; i < pinCount; i++) {
         relativeOffsets[i][0] = 0;
         relativeOffsets[i][1] = i * spacing;
@@ -352,7 +324,6 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // the outline is the board on a module and the moulding on a bare package
     Color outlineFill = displayType.isModule() ? boardColor : bodyColor;
 
     drawingObserver.startTracking();
@@ -373,12 +344,10 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
 
-        // Digits on the package's real centre-to-centre pitch, each drawn slightly under size so
-        // they keep clear of the pins. The pitch is unscaled, so the digits stay on their true
-        // centres and only the gaps between them widen, and the row is centred on the body rather
-        // than measured from its left edge, so it stays put across packages of different widths.
-        // A single-digit package is the same construction with a count of one, which leaves its
-        // pitch unused -- that is why the one-digit and four-digit cases are one branch.
+        // The pitch is unscaled while the digits are drawn slightly under size, so they keep their
+        // true centres and only the gaps widen. The row is centred on the body rather than measured
+        // from its left edge, so it stays put across packages of different widths. A single-digit
+        // package is the same construction with a count of one.
         double dw = px(displayType.getDigitWidthMm()) * DIGIT_DRAW_SCALE;
         double dh = px(displayType.getDigitHeightMm()) * DIGIT_DRAW_SCALE;
         double pitch = px(displayType.getDigitPitchMm());
@@ -390,9 +359,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
             punctuation.hasDecimalPoints());
 
         if (punctuation.hasColon() && hasMiddlePair()) {
-          // Colon between the middle pair, sized off the glyph grid like the decimal point is, so
-          // it tracks the digit instead of staying a fixed few pixels across. The row is centred,
-          // so the gap between the two middle digits is the body's centre line.
+          // Colon sized off the glyph grid like the decimal point, so it tracks the digit rather
+          // than staying a fixed few pixels across. The row is centred, so the gap between the two
+          // middle digits is the body's centre line.
           double dotD = dw / GLYPH_WIDTH * 2.0;
           double colonX = rowCentreX - dotD / 2.0;
           g2d.setColor(ledColor);
@@ -412,21 +381,18 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
             boardY + boardH - holeInset, holeSize);
 
-        // the display module itself, centred on the board it is mounted on
         double bezelW = px(module.getBezelWidthMm());
         double bezelH = px(module.getBezelLengthMm());
         double bezelX = boardX + (boardW - bezelW) / 2.0;
         double bezelY = boardY + (boardH - bezelH) / 2.0;
 
-        // on this part the body is the display module itself, sitting on the board
         g2d.setColor(bodyColor);
         g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
 
-        // digits from the package's own figures, as the bare branch does, but at full size: the
-        // module's digits sit on a bezel rather than between pin rows, so nothing crowds them
+        // at full size here: the module's digits sit on a bezel rather than between pin rows
         double dw = px(displayType.getDigitWidthMm());
         double dh = px(displayType.getDigitHeightMm());
         double pitch = px(displayType.getDigitPitchMm());
@@ -436,7 +402,6 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
         drawDigitRow(g2d, bezelX + bezelW / 2.0, dy, dw, dh, pitch,
             0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65, punctuation.hasDecimalPoints());
         if (punctuation.hasColon() && hasMiddlePair()) {
-          // same colon treatment as the bare packages: sized off the digit, not in pixels
           double dotD = dw / GLYPH_WIDTH * 2.0;
           double colonX = bezelX + bezelW / 2.0 - dotD / 2.0;
           g2d.setColor(ledColor);
@@ -488,9 +453,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
   /**
    * The seven segments as a unit-grid glyph: a 10 x 18 box with segments two units thick, mitred
-   * at 45 degrees. Neighbours meet at a shared vertex rather than being held apart by a gap, and
-   * the visible separation between them comes from outlining each segment in the background
-   * colour. Index order is A through G, matching the SEG_* bits.
+   * at 45 degrees. Neighbours meet at a shared vertex rather than being held apart by a gap, so
+   * the separation between them comes from outlining each segment in the background colour. Index
+   * order is A through G, matching the SEG_* bits.
    */
   private static final double[][][] SEGMENT_POINTS = new double[][][] {
       {{1, 1}, {2, 0}, {8, 0}, {9, 1}, {8, 2}, {2, 2}},        // A, top
@@ -509,10 +474,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   private static final double GLYPH_HEIGHT = 18.0d;
 
   /**
-   * Draws one upright digit into the box at {@code x, y, w, h}, with the segment shapes taken from
-   * {@link #SEGMENT_POINTS} scaled to that box. Unlit segments are drawn first as a dim
-   * silhouette, then the lit ones, and finally every segment is outlined in the face colour so
-   * that neighbours which share a vertex still read as separate segments.
+   * Draws one upright digit into the box at {@code x, y, w, h} from {@link #SEGMENT_POINTS}.
+   * Unlit segments are drawn first as a dim silhouette, then the lit ones, then every segment is
+   * outlined in the face colour so that neighbours sharing a vertex still read as separate.
    */
   private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h,
       String charToDisplay, Color onColor, boolean showDecimalPoint) {
@@ -542,19 +506,16 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     int mask = getSegmentMask(charToDisplay.isEmpty() ? '8' : charToDisplay.charAt(0));
 
-    // 1. Draw unlit segment silhouettes (dim background)
     g2d.setColor(LED_OFF);
     for (int i = 0; i < 7; i++) {
       if ((mask & (1 << i)) == 0) {
         g2d.fill(segments[i]);
       }
     }
-    // a package without a decimal point has no dot at all, lit or unlit, so this is gated too
     if (showDecimalPoint && (mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
       g2d.fill(dpShape);
     }
 
-    // 2. Draw lit active segments
     g2d.setColor(onColor);
     for (int i = 0; i < 7; i++) {
       if ((mask & (1 << i)) != 0) {
@@ -565,9 +526,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
       g2d.fill(dpShape);
     }
 
-    // The source drawing outlines every segment in its own background colour, which is what stops
-    // neighbours that share a vertex from fusing into one shape. The background here is the
-    // display face, so the outline takes that colour rather than the white the drawing uses.
+    // Outlining every segment in the background colour is what stops neighbours that share a
+    // vertex from fusing into one shape.
     g2d.setColor(FACE_BLACK);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float) (0.25 * (sx + sy) / 2.0)));
     for (Shape segment : segments) {
@@ -584,25 +544,22 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.setColor(Color.DARK_GRAY);
     g2d.draw(new RoundRectangle2D.Double(6, 3, width - 12, height - 6, 3, 3));
 
-    // Draw single stylized '8'. The toolbox icon stands for the component type rather than for any
-    // one configured instance, so it keeps its decimal point whatever Punctuation is set to.
+    // the icon stands for the component type, so it keeps its decimal point whatever
+    // Punctuation is set to
     drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED, true);
   }
 
   /**
    * The packages this component can draw, each carrying its own dimensions in millimetres.
    *
-   * <p>Provenance differs between them and is worth keeping straight. The digit heights are
-   * definitional, since 0.36 and 0.56 inches are what the parts are named for. The 0.56 inch body,
-   * digit width and pitch are the figures this class has always carried and have never been checked
-   * against a datasheet. The 0.36 inch equivalents are **placeholders**, scaled from the digit
-   * height, and are not measurements at all. See the plan's section 11.10; none of this is settled
-   * until someone reads a datasheet or measures a part.
+   * <p>Digit heights are definitional -- 0.36 and 0.56 inches are what the parts are named for.
+   * The 0.56 inch body, digit width and pitch have never been checked against a datasheet, and
+   * the 0.36 inch equivalents are placeholders scaled from the digit height rather than
+   * measurements.
    */
   public enum DisplayType {
-    // The parts these model: 5161AS for the single digit, 5621AS for the two-digit package, 3641AS
-    // for the 0.36 inch four-digit package and 5641AS for the 0.56 inch one. The two four-digit
-    // parts differ in size but share a pinout, which is why one array serves both.
+    // 5161AS, 5621AS, 3641AS and 5641AS. The two four-digit parts differ in size but share a
+    // pinout, which is why one array serves both.
     SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true, 1,
         PIN_NAMES_1DIGIT, null),
     TwoDigit_0_56_10Pin("2-Digit 0.56\"", 25.0d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 2,
@@ -643,9 +600,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     }
 
     /**
-     * Distance between the two pin rows. It cannot be one shared constant: a package only works if
-     * its rows sit within its body, and the 0.36 inch part is shorter than the 0.6 inch spacing the
-     * larger packages use.
+     * Distance between the two pin rows. It cannot be shared: a package only works if its rows sit
+     * within its body, and the 0.36 inch part is shorter than the 0.6 inch the larger ones use.
      */
     public double getRowSpacingMm() { return rowSpacingMm; }
 
@@ -659,17 +615,11 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     /** True for the DIP packages, which carry their pins in two rows rather than one. */
     public boolean isDualRow() { return dualRow; }
 
-    /**
-     * How many digits the part shows. Carried rather than inferred from the variant's identity,
-     * which is what the drawing used to do: a two-, six- or eight-digit part is then a constant
-     * beside these rather than another branch through {@code draw}.
-     */
+    /** Carried rather than inferred, so a two-, six- or eight-digit part is a constant rather than
+     * another branch through {@code draw}. */
     public int getDigitCount() { return digitCount; }
 
-    /**
-     * The part's pins in DIP order. The two bare four-digit packages share one array because they
-     * differ in size but not in pin function, which the test asserts by identity.
-     */
+    /** The part's pins in DIP order. */
     public String[] getPinNames() { return pinNames; }
 
     /**
@@ -682,9 +632,8 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Which electrode the digits share. Both kinds are sold side by side and are identical in pinout,
-   * package and dimensions -- they differ only in internal polarity, so this changes nothing that
-   * is drawn and reaches only the BOM.
+   * Which electrode the digits share. The two are identical in pinout, package and dimensions, so
+   * this changes nothing that is drawn and reaches only the BOM.
    */
   public enum Common {
     Cathode("Common Cathode"),
@@ -696,10 +645,9 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * What the package carries besides the digits themselves. These are sold in every combination,
-   * and on a twelve-pin part they are not independent of each other: A-G plus DP and four digit
-   * commons already account for all twelve pins, so a colon has to share the decimal point's line
-   * or replace it. The property therefore describes the face of the part, not a fifth pin.
+   * What the package carries besides the digits. On a twelve-pin part these are not independent:
+   * A-G plus DP and four digit commons already account for every pin, so a colon has to share the
+   * decimal point's line or replace it. The property describes the face of the part, not a pin.
    */
   public enum Punctuation {
     None("No Punctuation"),
@@ -716,16 +664,13 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * The circuit board a driven module is built on: the display itself is a bezel mounted on it,
-   * with mounting holes at the corners. A bare package has none of this -- it is a moulding with
-   * pins in it -- which is why {@link DisplayType#getModule()} is null for those.
+   * The circuit board a driven module is built on, with the display mounted on it as a bezel and
+   * mounting holes at the corners. A bare package has none of this.
    *
    * <p>The hole figures are the pixel offsets this class drew before they were figures at all,
-   * converted at the canvas scale rather than measured off a part: 14 and 12 pixels are exactly
-   * 1.778 and 1.524 mm, which is to say 0.07 and 0.06 inches. The exact conversions are used rather
-   * than two-decimal roundings so that the drawing is unchanged to the pixel -- the roundings moved
-   * the holes by a fiftieth of a pixel, which antialiasing turned into a visible difference. They
-   * are unsourced in the way the digit widths are.
+   * converted at the canvas scale rather than measured. The exact conversions are kept rather
+   * than two-decimal roundings because the roundings moved the holes by a fiftieth of a pixel,
+   * which antialiasing turned into a visible difference.
    *
    * @author Branislav Stojkovic
    */

@@ -277,7 +277,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       MakerBoardPainter.drawMountingHole(g2d, holeCenterX - holeDistX, bottomHoleY, holeDiameter);
       MakerBoardPainter.drawMountingHole(g2d, holeCenterX + holeDistX, bottomHoleY, holeDiameter);
 
-      // Micro USB Connector
       double usbW = USB_MICRO_WIDTH.convertToPixels();
       double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
@@ -392,10 +391,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     return NOTCH_SIZE;
   }
 
-  /**
-   * Helper to draw Raspberry Pi Pico's castellated solder pads along the left and right edges
-   * and the SWD round pads.
-   */
   protected void drawCastellatedPads(Graphics2D g2d, double boardX, double boardY, double boardW, double boardH,
       double pin1OffsetX, double pin1OffsetY, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
@@ -472,14 +467,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 3, 3));
 
-    // Castellated edge pads on left and right in icon
     g2d.setColor(PAD_COLOR);
     for (int y = 5; y <= height - 6; y += 3) {
       g2d.fillRect(6, y, 3, 2);
       g2d.fillRect(width - 9, y, 3, 2);
     }
 
-    // USB Connector
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(11, 2, 10, 3);
 

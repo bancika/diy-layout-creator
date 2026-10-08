@@ -60,15 +60,13 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
   public static Size BOARD_WIDTH = new Size(51.1d, SizeUnit.mm);
   public static Size BOARD_HEIGHT = new Size(10.22d, SizeUnit.mm);
 
-  // Surface pads rather than plated holes, and flush with the cut end rather than inset from it,
-  // so how far in their centres sit is half their width and not a figure of its own. The width is
-  // the reach inward from the edge; the length is what has to fit the 0.1 inch pad pitch.
+  // Surface pads flush with the cut end, so how far in their centres sit is half their width.
+  // The width is the reach inward from the edge; the length has to fit the 0.1 inch pad pitch.
   public static Size PAD_WIDTH = new Size(3.0d, SizeUnit.mm);
   public static Size PAD_LENGTH = new Size(1.5d, SizeUnit.mm);
 
-  // Air between a pad and the nearest package, as the strip keeps at its cut ends. Spreading the
-  // row to the pads' inner edge instead leaves the two exactly touching, which draws as copper
-  // against plastic with no board between them and puts one over the other on any rounding.
+  // Air between a pad and the nearest package. Spreading the row to the pads' inner edge instead
+  // leaves the two touching, which draws as copper against plastic with no board between.
   public static Size PAD_CLEARANCE = new Size(0.5d, SizeUnit.mm);
 
   public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
@@ -77,8 +75,7 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
 
   public static final int LED_COUNT = 8;
 
-  // Each end carries four pads in the order GND, data, power, GND. Both grounds on an end are the
-  // same net on the board, so they are numbered only to keep the node names distinct; the
+  // Both grounds on an end are the same net, numbered only to keep the node names distinct; the
   // silkscreen prints "GND" for all four.
   private static final String[] PIN_NAMES = {
       "GND_1", "DIN", "+5V_1", "GND_2",
@@ -108,8 +105,8 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    // the two pad columns stand flush against their own ends, so what separates them is the
-    // board less one whole pad
+    // the columns are flush against their own ends, so what separates them is the board less one
+    // whole pad
     double columnSpacing = BOARD_WIDTH.convertToPixels() - PAD_WIDTH.convertToPixels();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
@@ -123,23 +120,21 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
     rotatePoints(firstPoint, relativeOffsets);
   }
 
-  /** Left edge of the board; the first pad column is flush with it, so its centres sit half a
-   * pad inboard. */
+  /** The first pad column is flush with this edge, so its centres sit half a pad inboard. */
   private double getBoardX(double x) {
     return x - PAD_WIDTH.convertToPixels() / 2.0;
   }
 
-  /** Top edge of the board, derived so that the four-pad column is centred across its width. */
+  /** Derived so that the four-pad column is centred across the width. */
   private double getBoardY(double y) {
     double padSpan = 3 * PIN_SPACING.convertToPixels();
     return y - (BOARD_HEIGHT.convertToPixels() - padSpan) / 2.0;
   }
 
   /**
-   * Where the package of the given LED sits. The row is spread evenly between the inner edges of
-   * the two pad columns rather than packed edge to edge, and it sits low on the board: the
-   * mounting holes take the top of it, so the packages are centred in what is left below them
-   * rather than on the board's own middle.
+   * The row is spread evenly between the inner edges of the two pad columns rather than packed
+   * edge to edge, and sits low on the board: the mounting holes take the top, so the packages are
+   * centred in what is left below them.
    */
   Point2D getLedCentre(int index) {
     Point2D p0 = controlPoints[0];
@@ -156,7 +151,7 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
             + BOARD_HEIGHT.convertToPixels()) / 2.0);
   }
 
-  /** One of the two mounting holes, which sit a fixed span apart astride the board's centre. */
+  /** The two holes sit a fixed span apart astride the board's centre. */
   Point2D getHoleCentre(boolean right) {
     Point2D p0 = controlPoints[0];
     double offset = MOUNTING_HOLE_SPACING.convertToPixels() / 2.0;
@@ -208,9 +203,8 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
         MakerBoardPainter.drawMountingHole(g2d, hole.getX(), hole.getY(), holeSize);
       }
 
-      // The packages go down before the pads do, so the row starts at the pads' inner edge rather
-      // than under them. The pad names are printed on the back of the real board, so this face
-      // carries no silkscreen.
+      // The packages go down before the pads, so the row starts at the pads' inner edge rather than
+      // under them. The pad names are printed on the back of the real board.
       double ledSize = RGB_LED_SIZE.convertToPixels();
       Color[] ledColors = getLedColors(LED_COUNT);
       LedType ledType = getLedType();
@@ -223,9 +217,8 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
 
     g2d.setTransform(oldTx);
 
-    // The real stick ships bare and is wired by soldering to its pads, so it carries pads rather
-    // than a fitted header. They are surface copper at the cut ends rather than the plated holes
-    // the ring and the jewel carry.
+    // The stick ships bare and is wired by soldering, so it carries surface pads at the cut ends
+    // rather than the plated holes the ring and the jewel have.
     drawSurfacePads(g2d, 0, controlPoints.length, PAD_WIDTH, PAD_LENGTH, outlineMode,
         drawingObserver);
 
@@ -260,11 +253,9 @@ public class WS2812BStick extends AbstractAddressableLedBoard {
       double dotX = rectX + margin + i * step;
       double dotY = height / 2.0 - dotSize / 2.0;
 
-      // 5050 package mini white backing
       g2d.setColor(Color.WHITE);
       g2d.fill(new Rectangle2D.Double(dotX - 0.5, dotY - 0.5, dotSize + 1, dotSize + 1));
 
-      // RGB LED dot
       g2d.setColor(rainbow[i]);
       g2d.fill(new Ellipse2D.Double(dotX, dotY, dotSize, dotSize));
     }

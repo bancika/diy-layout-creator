@@ -49,16 +49,13 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// Every figure here is read off Adafruit's published EagleCAD board file for the part rather than
-// from a product listing, which gives only the outline. The pitch, the hole pattern, the port
-// positions and the order the pixels are chained in are all things the drawing needs and no
-// vendor states.
+// Figures are read off Adafruit's published EagleCAD board file rather than a product listing,
+// which gives only the outline.
 //
-// Three relationships hold on this board, and they are recorded as the measurements they are
-// rather than derived in code, because a panel from another maker need not share any of them: the
-// board is exactly eight pitches across, the pixel grid is centred so that half a pitch of margin
-// is left outside the outer pixels, and the port row lands in the gap between the first and second
-// rows of pixels.
+// Three relationships hold on this board and are recorded as the measurements they are rather
+// than derived, because a panel from another maker need not share them: the board is exactly
+// eight pitches across, the pixel grid is centred leaving half a pitch outside the outer
+// pixels, and the port row lands in the gap between the first and second rows of pixels.
 @ComponentDescriptor(name = "NeoPixel Panel", category = "Displays & Outputs",
     author = "Branislav Stojkovic",
     description = "Addressable RGB WS2812B NeoPixel Matrix Panel (8x8, 64 LEDs)",
@@ -88,9 +85,8 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
   public static final int MATRIX_ORDER = 8;
 
   /**
-   * Hole centres in millimetres from the middle of the board. Six stand in from the side edges and
-   * six in the gaps between pixel columns; the pattern is symmetric about both axes, so which way
-   * the vertical axis points does not change the drawing.
+   * Hole centres from the middle of the board. The pattern is symmetric about both axes, so which
+   * way the vertical axis points does not change the drawing.
    */
   private static final double[][] MOUNTING_HOLES = new double[][] {
       {-33.02d, 17.78d}, {-33.02d, 0d}, {-33.02d, -17.78d},
@@ -100,28 +96,23 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
       {-8.89d, -26.67d}, {8.89d, -26.67d}};
 
   /**
-   * Input first, then output. Both ports carry the same two supply rails, so the rails are
-   * numbered to keep the node names distinct the way the Stick's four grounds are; the board
-   * prints them simply +5V and GND, and on its back rather than this face.
+   * Input first, then output. Both ports carry the same two rails, numbered to keep the node names
+   * distinct; the board prints them +5V and GND, on its back rather than this face.
    */
   public static final String[] PAD_NAMES =
       new String[] {"DIN", "+5V_1", "GND_1", "DOUT", "+5V_2", "GND_2"};
 
   /**
-   * The board file gives its lettering by cap height, which is how Eagle specifies text, while a
-   * Java font is specified by em size -- about a third larger again for this family. Converting
-   * between the two is what makes the drawn strings reach about as far across the board as the
-   * real artwork does; set at the cap height they come out well short of it.
+   * Eagle specifies text by cap height and a Java font by em size, about a third larger again for
+   * this family. Converting is what makes the drawn strings reach as far across the board as the
+   * real artwork; set at the cap height they come out well short.
    */
   private static final double CAP_HEIGHT_RATIO = 0.72d;
 
   /**
-   * What the face of the board prints, from layer 21 of the board file. Every line lies in a gap
-   * between two rows of pixels, which is the only bare board this part has: the grid reaches
-   * within half a pitch of all four edges.
-   *
-   * <p>The port names are not here. The board prints those on layer 22, its back, as the stick
-   * does.
+   * What the face prints, from layer 21 of the board file. Every line lies in a gap between two
+   * rows of pixels, which is the only bare board this part has. The port names are on layer 22,
+   * its back.
    */
   static final Silk[] SILKSCREEN = new Silk[] {
       new Silk(-19.685d, -17.653d, "Adafruit NeoPixel 8X8", silkFont(2.286d)),
@@ -136,10 +127,7 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
     updateControlPoints();
   }
 
-  /**
-   * The panel comes in one size, so unlike a board with a geometry property the grid is not what
-   * keeps the BOM's rows apart -- the package is.
-   */
+  /** The panel comes in one size, so the package rather than the grid keeps the BOM rows apart. */
   @Override
   protected String getVariantLabel() {
     return "8x8, 64 LEDs, " + getLedType();
@@ -247,8 +235,7 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
             holeSize);
       }
 
-      // Printed before the packages go down, so a glyph that strays under one is covered by it,
-      // which is what the board itself does with silk under a part.
+      // printed before the packages, so a glyph straying under one is covered as it is on the board
       g2d.setColor(SILK_COLOR);
       for (Silk silk : SILKSCREEN) {
         g2d.setFont(silk.getFont());
@@ -260,10 +247,8 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
       double margin = (board - (MATRIX_ORDER - 1) * pitch) / 2.0;
       double ledSize = RGB_LED_SIZE.convertToPixels();
 
-      // The colour is handed out along the data chain rather than across the board, so the sweep
-      // shows the order the pixels are addressed in: this panel is wired as a progressive raster,
-      // left to right along each row and then back to the left of the next, not as the serpentine
-      // most cheap panels use.
+      // The sweep follows the data chain, so it shows the addressing order: a progressive raster,
+      // left to right along each row and back, not the serpentine most cheap panels use.
       int ledCount = MATRIX_ORDER * MATRIX_ORDER;
       Color[] ledColors = getLedColors(ledCount);
       LedType ledType = getLedType();
@@ -293,8 +278,7 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
     g2d.setColor(Color.DARK_GRAY);
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardSize, boardSize, 2, 2));
 
-    // A four by four grid rather than the part's eight by eight: at toolbox size eight rows of
-    // dots fill in to a solid block and the panel stops reading as a panel.
+    // four by four rather than eight by eight: at toolbox size eight rows fill in to a block
     Color[] rainbow = new Color[] {
         Color.decode("#FF3333"),
         Color.decode("#FFD700"),
@@ -317,9 +301,8 @@ public class WS2812BPanel extends AbstractAddressableLedBoard {
   }
 
   /**
-   * One line of silkscreen. The position is the text's left edge and vertical centre in
-   * millimetres from the middle of the board, with y running down the drawing rather than up as
-   * Eagle records it.
+   * One line of silkscreen, positioned by its left edge and vertical centre from the middle of the
+   * board, with y running down the drawing rather than up as Eagle records it.
    */
   static class Silk {
 

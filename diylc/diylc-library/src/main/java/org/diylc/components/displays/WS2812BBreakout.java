@@ -57,25 +57,22 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
 
   public static Color NEO_BLACK = Color.decode("#111111");
 
-  // The board lies on its side: a three-pad column up each of the two short edges, and the two
-  // mounting holes on the centre line between them, one towards the top edge and one the bottom.
+  // A three-pad column up each short edge, with the two mounting holes on the centre line
+  // between them.
   public static Size BOARD_WIDTH = new Size(0.5d, SizeUnit.in);
   public static Size BOARD_HEIGHT = new Size(0.4d, SizeUnit.in);
 
-  // The real board is wired through a three-way connector at each end. Those are drawn as plain
-  // pads instead: at this size a connector body would cover most of the board and hide the LED,
-  // and what a layout needs from it is where the three wires land.
-  //
-  // As on the stick the pads are flush with their own edge rather than inset from it, so how far
-  // in their centres sit is half their reach and not a figure of its own.
+  // The real board's three-way connectors are drawn as plain pads: at this size a connector body
+  // would hide the LED, and what a layout needs is where the three wires land. The pads are flush
+  // with their own edge, so how far in their centres sit is half their reach.
   public static Size PAD_WIDTH = new Size(1.5d, SizeUnit.mm);
   public static Size PAD_LENGTH = new Size(1.5d, SizeUnit.mm);
 
   public static Size MOUNTING_HOLE_SIZE = new Size(2.0d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SPACING = new Size(0.3d, SizeUnit.in);
 
-  // Each edge carries ground, power and one data line. The two grounds are the same net on the
-  // board, as are the two supplies, and are numbered only to keep the node names distinct.
+  // The two grounds are the same net on the board, as are the two supplies, and are numbered only
+  // to keep the node names distinct.
   private static final String[] PIN_NAMES = {
       "GND_1", "VIN_1", "IN",
       "GND_2", "VIN_2", "OUT"
@@ -104,8 +101,8 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
   protected void updateControlPoints() {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
-    // the two pad columns stand flush against their own edges, so what separates them is the
-    // board less one whole pad
+    // the columns are flush against their own edges, so what separates them is the board less one
+    // whole pad
     double columnSpacing = BOARD_WIDTH.convertToPixels() - PAD_WIDTH.convertToPixels();
 
     double[][] relativeOffsets = new double[PIN_NAMES.length][2];
@@ -119,21 +116,17 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
     rotatePoints(firstPoint, relativeOffsets);
   }
 
-  /**
-   * Left edge of the board; the first pad column is flush with it, so its centres sit half a pad
-   * inboard.
-   */
+  /** The first pad column is flush with this edge, so its centres sit half a pad inboard. */
   private double getBoardX(double x) {
     return x - PAD_WIDTH.convertToPixels() / 2.0;
   }
 
-  /** Top edge of the board, derived so that the three-pad column is centred across its height. */
+  /** Derived so that the three-pad column is centred across the height. */
   private double getBoardY(double y) {
     double padSpan = 2 * PIN_SPACING.convertToPixels();
     return y - (BOARD_HEIGHT.convertToPixels() - padSpan) / 2.0;
   }
 
-  /** The one package, in the middle of the board with the holes and pads placed around it. */
   Point2D getLedCentre() {
     Point2D p0 = controlPoints[0];
     return new Point2D.Double(getBoardX(p0.getX()) + BOARD_WIDTH.convertToPixels() / 2.0,
@@ -141,9 +134,8 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
   }
 
   /**
-   * One of the two mounting holes. They sit on the centre line between the pad columns, a fixed
-   * span apart astride the LED, and they are what the board is tightest against: 0.27 mm of board
-   * outside each rim and 0.31 mm between the rim and the package.
+   * The holes sit on the centre line astride the LED and are what the board is tightest against:
+   * 0.27 mm of board outside each rim and 0.31 mm between the rim and the package.
    */
   Point2D getHoleCentre(boolean bottom) {
     Point2D centre = getLedCentre();
@@ -194,11 +186,9 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
         MakerBoardPainter.drawMountingHole(g2d, hole.getX(), hole.getY(), holeSize);
       }
 
-      // The pad columns clear the package by 2.35 mm, but that room is between a pad and the
-      // package rather than beside a pad, so there is nowhere a pin name would go: this face
-      // carries no silkscreen, as the stick's does not.
-      // Drawn lit off the same wheel as the rest of the family, so a breakout on a layout reads
-      // as the same part as one pixel of a stick.
+      // The 2.35 mm between a pad and the package is not room beside a pad, so there is nowhere a
+      // name would go and this face carries no silkscreen. Drawn lit off the family's wheel, so a
+      // breakout reads as the same part as one pixel of a stick.
       Point2D led = getLedCentre();
       MakerBoardPainter.drawAddressableLed(g2d, led.getX(), led.getY(),
           RGB_LED_SIZE.convertToPixels(), getLedColors(1)[0], 0, getLedType());
@@ -214,8 +204,7 @@ public class WS2812BBreakout extends AbstractAddressableLedBoard {
 
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
-    // landscape in the same 5:4 as the board, so the icon reads as the part and not as a sibling
-    // of the portrait modules further down the category
+    // landscape in the board's own 5:4, so the icon does not read as one of the portrait modules
     double rectW = width - 4;
     double rectH = rectW * 0.8;
     double rectX = 2;

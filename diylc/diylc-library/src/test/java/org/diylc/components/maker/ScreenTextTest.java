@@ -32,10 +32,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * What {@code MakerBoardPainter.drawScreenText} promises, independently of the four displays that
- * call it. The rule worth pinning down is that it prints nothing at all rather than a crop: a
- * panel too small for its own description is left dark, the same way a pin name with nowhere to go
- * is left off the silkscreen.
+ * What {@code MakerBoardPainter.drawScreenText} promises, independently of its callers: it prints
+ * nothing at all rather than a crop, so a panel too small for its description is left dark.
  */
 public class ScreenTextTest {
 

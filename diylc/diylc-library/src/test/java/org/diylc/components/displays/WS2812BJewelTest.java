@@ -34,11 +34,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the Jewel. The arrangement is the part worth pinning down rather than the
- * dimensions: five pads share six gaps between the ring LEDs, so one gap is empty, and getting the
- * wrong one empty would still place five pads on the right circle and pass any count or radius
- * check. The pad-against-LED collision tests are here for the same reason they are on the strip --
- * the numbers can all be right while the drawing has a pad under a package.
+ * Geometry tests for the Jewel. The arrangement matters more than the dimensions: five pads share
+ * six gaps between the ring LEDs, so one gap is empty, and getting the wrong one empty would
+ * still place five pads on the right circle and pass any count or radius check.
  */
 public class WS2812BJewelTest {
 
@@ -119,9 +117,8 @@ public class WS2812BJewelTest {
   }
 
   /**
-   * Every pad the same distance from the centre of the body is what ties {@code getPadRadius} to
-   * {@code getCenter}: if those two disagreed the disc would be drawn off its own control points,
-   * which is the failure the ring's comment warns about.
+   * Ties {@code getPadRadius} to {@code getCenter}: if the two disagreed the disc would be drawn
+   * off its own control points.
    */
   @Test
   public void everyPadSitsOnTheNineMillimetreCircle() {
@@ -134,8 +131,8 @@ public class WS2812BJewelTest {
   }
 
   /**
-   * The arrangement test. Pads belong in the gaps between consecutive ring LEDs, and with five pads
-   * in six gaps the one left empty must be the one due left, where the left mounting hole is.
+   * Pads belong in the gaps between consecutive ring LEDs, and with five pads in six gaps the one
+   * left empty must be the one due left, where the left mounting hole is.
    */
   @Test
   public void padsFillEveryGapButTheOneDueLeft() {
@@ -167,7 +164,6 @@ public class WS2812BJewelTest {
     }
   }
 
-  /** Confirms the empty gap really does point at a mounting hole and not somewhere arbitrary. */
   @Test
   public void theEmptyGapPointsAtAMountingHole() {
     WS2812BJewel jewel = new WS2812BJewel();
@@ -218,10 +214,9 @@ public class WS2812BJewelTest {
   }
 
   /**
-   * The holes are 19 mm apart on a 23 mm disc, so each one clears the rim by only 0.5 mm. Note that
-   * they also come within a fraction of a millimetre of the neighbouring LED packages; that is what
-   * the measurements give and it is not an error, but it is why this asserts containment rather
-   * than any comfortable clearance.
+   * The holes are 19 mm apart on a 23 mm disc, clearing the rim by 0.5 mm and coming within a
+   * fraction of a millimetre of the neighbouring packages, which is why this asserts containment
+   * rather than any comfortable clearance.
    */
   @Test
   public void mountingHolesSitInsideTheDisc() {

@@ -34,10 +34,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the NeoPixel stick. Everything on this board competes for 10.22 mm of height:
- * the mounting holes take the top of it, the packages take what is left, and the pads run the
- * whole of it at each end. None of the three can be moved without crowding another, and nothing
- * but a render shows it, so the clearances are asserted here.
+ * Geometry tests for the NeoPixel stick. Everything competes for 10.22 mm of height: the holes
+ * take the top, the packages what is left, and the pads run the whole of it at each end. None can
+ * move without crowding another, and nothing but a render shows it.
  */
 public class WS2812BStickTest {
 
@@ -74,10 +73,7 @@ public class WS2812BStickTest {
         WS2812BStick.BOARD_HEIGHT);
   }
 
-  /**
-   * Four pads at each end, and no two sharing a name: both grounds on an end are the same net on
-   * the board, which is what made this easy to get wrong.
-   */
+  /** Both grounds on an end are the same net on the board, so the node names must still differ. */
   @Test
   public void eachEndCarriesFourDistinctlyNamedPads() {
     WS2812BStick stick = new WS2812BStick();
@@ -93,9 +89,9 @@ public class WS2812BStickTest {
   }
 
   /**
-   * The pads are surface copper flush with the cut ends rather than plated holes set in from
-   * them, so each column's outer edge lands exactly on the board edge: half a pad out and it
-   * overhangs, half a pad in and there is a bare strip the real board does not have.
+   * Surface copper flush with the cut ends rather than plated holes set in from them, so each
+   * column's outer edge lands exactly on the board edge: half a pad out and it overhangs, half a
+   * pad in and there is a bare strip the real board does not have.
    */
   @Test
   public void padsAreFlushWithTheCutEnds() {
@@ -142,10 +138,7 @@ public class WS2812BStickTest {
         0.01d);
   }
 
-  /**
-   * The holes and the packages are the pair that cannot both have the middle of the board. The
-   * packages were moved down to make room, and this is what says they went far enough.
-   */
+  /** The holes and the packages cannot both have the middle, so the packages were moved down. */
   @Test
   public void packagesClearTheMountingHoles() {
     WS2812BStick stick = new WS2812BStick();

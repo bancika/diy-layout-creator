@@ -33,9 +33,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * What the character LCD prints on its screen. The module's two sizes and two interfaces are the
- * whole of what a buyer chooses between, and neither is legible from a green board with a blue
- * window, so the lit area carries them.
+ * What the character LCD prints on its screen. The size and the interface are the whole of what a
+ * buyer chooses between and neither is legible from the drawing, so the lit area carries them.
  */
 public class CharacterLCDTest {
 
@@ -70,10 +69,9 @@ public class CharacterLCDTest {
   }
 
   /**
-   * Both inks exist on real modules -- the blue-backlit one shows light characters and the
-   * yellow-green one dark -- so the text has to survive a screen colour the user picks. Two
-   * backlights at opposite ends of the range must not render the same, or one of them is printing
-   * its text in the backlight's own colour.
+   * Both inks exist on real modules, so the text has to survive a screen colour the user picks. Two
+   * backlights at opposite ends of the range must not render the same, or one is printing its text
+   * in the backlight's own colour.
    */
   @Test
   public void theInkFollowsTheBacklight() {

@@ -34,12 +34,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the single-LED breakout. Three things compete for a board half an inch by four
- * tenths: a three-pad column up each short edge, the two mounting holes on the centre line between
- * them, and the package in the middle. The holes are what everything else is tight against -- 0.3
- * inch apart across a 0.4 inch height leaves 0.27 mm of board outside each rim and 0.31 mm between
- * a rim and the package -- so what is asserted here is that none of the three has taken another's
- * room.
+ * Geometry tests for the single-LED breakout. Three things compete for a board half an inch by
+ * four tenths: a three-pad column up each short edge, the two mounting holes between them, and
+ * the package in the middle. The holes leave 0.27 mm of board outside each rim and 0.31 mm
+ * between a rim and the package, so what is asserted is that none has taken another's room.
  */
 public class WS2812BBreakoutTest {
 
@@ -97,10 +95,7 @@ public class WS2812BBreakoutTest {
     Assert.assertEquals("OUT", breakout.getControlPointNodeName(5));
   }
 
-  /**
-   * The two grounds are one net on the real board, as are the two supplies, so their names differ
-   * only by a disambiguator that comes off again wherever a pad is named to the user.
-   */
+  /** The two grounds are one net on the board, as are the two supplies. */
   @Test
   public void theNumberedPadsReadAsOneName() {
     WS2812BBreakout breakout = new WS2812BBreakout();
@@ -143,9 +138,8 @@ public class WS2812BBreakoutTest {
   }
 
   /**
-   * The margin the 0.3 inch span leaves outside each rim. Asserted as the figure it works out to
-   * rather than as mere containment, because a quarter of a millimetre is the whole of it: any
-   * revision to the board height or the hole spacing eats it entirely.
+   * Asserted as the figure it works out to rather than as mere containment, a quarter of a
+   * millimetre being the whole of it.
    */
   @Test
   public void aQuarterMillimetreOfBoardSurvivesOutsideEachHole() {
@@ -159,9 +153,8 @@ public class WS2812BBreakoutTest {
   }
 
   /**
-   * The package has the middle, and the holes and pads are placed to leave it there. The holes are
-   * the pair worth watching: 0.31 mm of board separates a rim from the package, so this fails on
-   * any revision that brings the two together rather than letting them overlap unnoticed.
+   * 0.31 mm of board separates a rim from the package, so this fails on any revision that brings
+   * the two together rather than letting them overlap unnoticed.
    */
   @Test
   public void thePackageClearsTheHolesAndThePads() {
@@ -178,7 +171,6 @@ public class WS2812BBreakoutTest {
     }
   }
 
-  /** The pads keep well clear of the holes at these figures; this is what says they still do. */
   @Test
   public void theHolesClearThePads() {
     WS2812BBreakout breakout = new WS2812BBreakout();

@@ -35,16 +35,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry and transform tests for the bar graph. It is deliberately not in
- * {@code MakerComponentsTest}: that suite covers maker boards, and this is a DIP-outline part on a
- * different base class. Its assertions are also weaker than they look -- it positions components
- * with {@code setControlPoint(.., 0)}, which moves one pin and leaves the rest, and then only
- * checks that drawing did not throw. Nothing there would notice a component whose body and pins
- * had come apart.
- *
- * <p>An earlier version of this file asserted that the body sat <em>between</em> the pin rows,
- * which was the DIP IC arrangement the class had been copied from rather than the part's own. The
- * test passed and the component was wrong. {@link #bodyCoversEveryPin()} is the corrected form.
+ * Geometry and transform tests for the bar graph. Deliberately not in
+ * {@code MakerComponentsTest}: that suite covers maker boards, and this is a DIP-outline part on
+ * a different base class.
  */
 public class LEDBarGraphTest {
 
@@ -102,8 +95,8 @@ public class LEDBarGraphTest {
 
   /**
    * The defining difference from a DIP IC: its leads leave the sides of the plastic, so its body
-   * sits between the rows. A bar graph's pins leave the underside, so the package is wider than
-   * the row spacing and every pin falls beneath it.
+   * sits between the rows. A bar graph's pins leave the underside, so the package is wider than the
+   * row spacing and every pin falls beneath it.
    */
   @Test
   public void bodyCoversEveryPin() {
@@ -143,10 +136,9 @@ public class LEDBarGraphTest {
   }
 
   /**
-   * Every segment must lie inside the package at every orientation and every count. The field is
-   * derived from the body, so an orientation the derivation does not handle shows up here rather
-   * than in a drawing nobody checks. {@code getSegmentRects} is private, so this reaches it
-   * reflectively rather than widening the class's surface for a test.
+   * The segment field is derived from the body, so an orientation the derivation does not handle
+   * shows up here rather than in a drawing nobody checks. {@code getSegmentRects} is private, so
+   * this reaches it reflectively rather than widening the class's surface for a test.
    */
   @Test
   public void segmentsStayInsideTheBody() throws Exception {
@@ -174,10 +166,8 @@ public class LEDBarGraphTest {
   }
 
   /**
-   * Each segment belongs on the pin pair that drives it. This is not implied by
-   * {@link #segmentsStayInsideTheBody()}: an earlier version divided the body into equal bars,
-   * which left every segment inside the package and still about 5 px off its own pins on a ten
-   * segment part. Only a check against the control points catches that.
+   * Not implied by {@link #segmentsStayInsideTheBody()}: dividing the body into equal bars leaves
+   * every segment inside the package and still about 5 px off its own pins on a ten segment part.
    */
   @Test
   public void segmentsAreCentredOnTheirPins() throws Exception {
@@ -225,9 +215,8 @@ public class LEDBarGraphTest {
   }
 
   /**
-   * The scale is one red at the top, two yellow below it and green for the rest, so the green band
-   * grows with the segment count rather than the bands being fixed fractions. Asserted per variant
-   * because that proportion is the whole point of the arrangement.
+   * One red at the top, two yellow below it and green for the rest, so the green band grows with
+   * the segment count rather than the bands being fixed fractions.
    */
   @Test
   public void segmentColoursRunUpTheScale() throws Exception {
@@ -276,8 +265,7 @@ public class LEDBarGraphTest {
 
   /**
    * {@code BomMaker} keys rows on the type name and the value together, so a blank value would
-   * merge every variant into one line. The segment count has to reach the value column for an
-   * eight, a ten and a twelve segment part to be three rows.
+   * merge every variant into one line.
    */
   @Test
   public void everyVariantGetsItsOwnBomRow() {

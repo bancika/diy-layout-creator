@@ -37,10 +37,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Geometry tests for the strip, written after three separate attempts at the output pad's position
- * each passed every numeric check that existed while the drawing was still wrong. The assertions
- * here are the ones that would have failed: that no pad hangs off the tape, and that no pad sits
- * under an LED package.
+ * Geometry tests for the strip. The assertions that matter are the ones the numeric checks miss:
+ * that no pad hangs off the tape, and that no pad sits under an LED package.
  */
 public class WS2812BStripTest {
 
@@ -63,9 +61,8 @@ public class WS2812BStripTest {
   }
 
   /**
-   * The copper a cut leaves on the tape: half the pill, reaching inboard from the cut the control
-   * point sits on. This is what has to stay on the tape and off the packages; the other half went
-   * with the next length.
+   * The copper a cut leaves: half the pill, reaching inboard from the cut the control point sits
+   * on. This is what has to stay on the tape and off the packages.
    */
   private static Rectangle2D padRect(WS2812BStrip strip, int index) {
     Point2D pad = strip.getControlPoint(index);
@@ -111,10 +108,8 @@ public class WS2812BStripTest {
   }
 
   /**
-   * Tape is a repeating cell one pitch long, so a length of it is exactly as many pitches as it
-   * has LEDs -- the two half-cells a pair of cuts leave making one whole one between them. The
-   * lead-in used to be a pad-derived constant, which drew the end LEDs 6 mm from the cuts on
-   * 30/m tape where every other gap was 33 mm.
+   * Tape is a repeating cell one pitch long, so a length of it is exactly as many pitches as it has
+   * LEDs, the two half-cells a pair of cuts leave making one whole one between them.
    */
   @Test
   public void aLengthOfTapeIsOnePitchPerLed() {
@@ -133,9 +128,8 @@ public class WS2812BStripTest {
   }
 
   /**
-   * The pad is a pill as long as the nominal allows and otherwise as long as the density leaves
-   * room for, never shorter than its own width. At 144/m that bottoms out: the pill is no longer
-   * than it is wide, which makes it a circle, which is what that tape carries.
+   * The pill is the nominal length where the density leaves room and otherwise as much as fits,
+   * never shorter than its own width. At 144/m it bottoms out at a circle.
    */
   @Test
   public void theDensestTapeCarriesCircularPads() {
@@ -168,9 +162,8 @@ public class WS2812BStripTest {
   }
 
   /**
-   * Both cuts carry all three lines, which is the whole point of tape: a length of it is chained
-   * to the next by soldering its output end to the next one's input. An end short of its supply
-   * pads cannot be chained at all, and nothing in the drawing says so.
+   * Both cuts carry all three lines, which is what lets a length be chained to the next. An end
+   * short of its supply pads cannot be chained, and nothing in the drawing says so.
    */
   @Test
   public void bothCutsCarryAllThreeLines() {
@@ -191,10 +184,7 @@ public class WS2812BStripTest {
     }
   }
 
-  /**
-   * Tape is cut through the middle of a pad pair, so what is left at a cut is half a pad on the
-   * very edge rather than a pad set in from it.
-   */
+  /** A cut leaves half a pad on the very edge rather than a pad set in from it. */
   @Test
   public void padsAreFlushWithTheCuts() {
     for (Density density : Density.values()) {
@@ -225,7 +215,6 @@ public class WS2812BStripTest {
     Assert.assertEquals(WS2812BStrip.MIN_LED_COUNT, strip.getLedCount());
   }
 
-  /** Every pad must lie within the tape. The output pad sat exactly on the far edge once. */
   @Test
   public void everyPadSitsOnTheTape() {
     for (Density density : Density.values()) {
@@ -249,8 +238,8 @@ public class WS2812BStripTest {
   }
 
   /**
-   * The output pad must clear the last LED package. This is the one that kept regressing: at 144/m
-   * the pitch is 6.94 mm against a 5 mm package, so there is very little room to be wrong in.
+   * The output pad must clear the last LED package. At 144/m the pitch is 6.94 mm against a 5 mm
+   * package, so there is very little room to be wrong in.
    */
   @Test
   public void outputPadClearsTheLastLed() {
@@ -270,7 +259,7 @@ public class WS2812BStripTest {
     }
   }
 
-  /** And the input pads must clear the first one, which is the same failure mirrored. */
+  /** The same, mirrored, at the input end. */
   @Test
   public void inputPadsClearTheFirstLed() {
     for (Density density : Density.values()) {

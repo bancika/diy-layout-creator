@@ -247,7 +247,6 @@ public class RaspberryPi extends AbstractMakerBoard {
       MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(61.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(52.5d, SizeUnit.mm).convertToPixels(), holeDiameter);
 
-      // USB & Ethernet Ports on the right edge
       double topDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 45.75d : 47.0d;
       double midDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 27.0d : 29.0d;
       double botDistFromBottom = (version == RaspberryPiVersion.PI_4_B) ? 9.0d : 10.25d;
@@ -259,25 +258,21 @@ public class RaspberryPi extends AbstractMakerBoard {
       double ethernetCenterY = (version == RaspberryPiVersion.PI_4_B) ? topCenterY : bottomCenterY;
       double topUsbCenterY = (version == RaspberryPiVersion.PI_4_B) ? bottomCenterY : topCenterY;
 
-      // Top USB slot (USB 3.0)
       MakerBoardPainter.drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(topUsbCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 3.0");
 
-      // USB 2.0 (middle)
       MakerBoardPainter.drawUsbA(g2d, boardX + boardW - new Size(14.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(middleCenterY - 7.0d, SizeUnit.mm).convertToPixels(),
           USB_A_DUAL_LENGTH.convertToPixels(),
           new Size(14.0d, SizeUnit.mm).convertToPixels(), "USB 2.0");
 
-      // Ethernet
       MakerBoardPainter.drawMetalConnector(g2d, boardX + boardW - new Size(18.0d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(ethernetCenterY - 8.0d, SizeUnit.mm).convertToPixels(),
           new Size(21.0d, SizeUnit.mm).convertToPixels(),
           new Size(16.0d, SizeUnit.mm).convertToPixels(), "ETHERNET");
 
-      // Broadcom SoC
       double socW;
       double socH;
       double socX;
@@ -481,7 +476,6 @@ public class RaspberryPi extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(32.5d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(7.5d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Raspberry Pi Silkscreen text below 40-pin header
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_TITLE);
       String versionLabel = version.toString();
@@ -500,7 +494,6 @@ public class RaspberryPi extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw 40 GPIO header pins and 4 PoE header pins
     drawPinHeader(g2d, 0, 44, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
@@ -513,7 +506,6 @@ public class RaspberryPi extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(2, 4, width - 4, height - 8, 4, 4));
 
-    // USB & Ethernet (Top USB 3.0, Middle USB 2.0, Bottom Ethernet)
     g2d.setColor(USB_METAL_COLOR);
     if (version == RaspberryPiVersion.PI_4_B) {
       g2d.fillRect(width - 9, 5, 7, 6);
@@ -525,7 +517,6 @@ public class RaspberryPi extends AbstractMakerBoard {
       g2d.fillRect(width - 9, 20, 7, 6);
     }
 
-    // SoC
     g2d.setColor(IC_BODY_COLOR);
     if (version == RaspberryPiVersion.PI_5) {
       g2d.fillRect(13, 14, 7, 7);
@@ -535,11 +526,9 @@ public class RaspberryPi extends AbstractMakerBoard {
       g2d.fillRect(10, 11, 5, 5);
     }
 
-    // GPIO Header
     g2d.setColor(HEADER_BODY_COLOR);
     g2d.fillRect(4, 5, 18, 3);
 
-    // PCIe & MIPI connectors & PoE
     g2d.setColor(IC_BODY_COLOR);
     if (version == RaspberryPiVersion.PI_5) {
       g2d.setColor(IC_BODY_COLOR);

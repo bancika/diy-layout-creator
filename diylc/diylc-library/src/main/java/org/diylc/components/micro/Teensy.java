@@ -403,11 +403,9 @@ public class Teensy extends AbstractMakerBoard {
 
     drawingObserver.startTracking();
 
-    // Fill board body (green PCB)
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
 
-    // Board outline
     g2d.setColor(getFinalBorderColor(componentState, outlineMode));
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     g2d.draw(boardShape);
@@ -441,7 +439,6 @@ public class Teensy extends AbstractMakerBoard {
       MakerBoardPainter.drawChip(g2d, chipX, chipY, chipW, chipH,
           getVersion() == TeensyVersion.Teensy_3_2 ? "MK20DX256" : "iMXRT1062");
 
-      // Pushbutton (Program button)
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = centerX - btnW / 2.0;
@@ -450,9 +447,9 @@ public class Teensy extends AbstractMakerBoard {
           : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
       MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
-      // Teensy 4.1 extras: Ethernet PHY + SD card slot
+      // the 4.1's Ethernet PHY and SD card slot
       if (getVersion() == TeensyVersion.Teensy_4_1) {
-        // MicroSD card slot at bottom edge (12mm long, flush with bottom edge so it does not stick out)
+        // flush with the bottom edge so it does not stick out
         double sdW = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdX = centerX - sdW / 2.0;
@@ -482,7 +479,6 @@ public class Teensy extends AbstractMakerBoard {
         g2d.draw(new Rectangle2D.Double(usbBoxX, usbBoxY, usbBoxW, usbBoxW));
       }
 
-      // Silkscreen "TEENSY" label
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT);
       String silkText = getVersion().toString();
@@ -504,7 +500,6 @@ public class Teensy extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Render pin headers or gold solder pads with drill holes
     if (headers) {
       drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
@@ -514,9 +509,6 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setComposite(oldComposite);
   }
 
-  /**
-   * Helper to draw GPIO solder pads (copper/gold pads with drill holes, square for Pin 1).
-   */
   protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
     drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
   }
@@ -528,18 +520,15 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setColor(TEENSY_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(5, 2, width - 10, height - 4, 3, 3));
 
-    // GPIO Solder Pads in icon
     g2d.setColor(PAD_COLOR);
     for (int y = 5; y <= height - 6; y += 3) {
       g2d.fillRect(6, y, 2, 2);
       g2d.fillRect(width - 8, y, 2, 2);
     }
 
-    // MCU chip
     g2d.setColor(IC_BODY_COLOR);
     g2d.fillRect(10, 8, 12, 8);
 
-    // USB connector at top
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(12, 2, 8, 3);
 

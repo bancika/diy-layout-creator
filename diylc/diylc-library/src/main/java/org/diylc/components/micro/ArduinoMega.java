@@ -294,7 +294,6 @@ public class ArduinoMega extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // Draw PCB body
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
@@ -305,7 +304,7 @@ public class ArduinoMega extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Mounting holes (6 mounting holes from technical design)
+      // six, from the technical design
       double holeDiameter = new Size(0.12d, SizeUnit.in).convertToPixels();
       MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter); // (550, 100 mils)
       MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);  // (600, 2000 mils)
@@ -343,11 +342,9 @@ public class ArduinoMega extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "RST", btnX + btnW / 2.0,
           btnY + btnH + new Size(1.0d, SizeUnit.mm).convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Arduino Infinity Logo
       MakerBoardLogos.drawArduinoLogo(g2d, boardX + new Size(1.2d, SizeUnit.in).convertToPixels(),
           boardY + new Size(0.4d, SizeUnit.in).convertToPixels());
 
-      // Silkscreen text & branding
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT_LARGE);
       StringUtils.drawCenteredText(g2d, "ARDUINO", boardX + new Size(1.44d, SizeUnit.in).convertToPixels(),
@@ -403,7 +400,6 @@ public class ArduinoMega extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw header pins with continuity tracking
     drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
@@ -416,38 +412,32 @@ public class ArduinoMega extends AbstractMakerBoard {
     double boardW = width - boardX - 2;
     double boardH = height - 6;
 
-    // USB Type-B Jack (metallic silver, top left protruding)
     double usbW = 7;
     double usbH = 8;
     double usbX = 1;
     double usbY = boardY + 2;
 
-    // DC Power Jack (dark body, bottom left protruding)
     double dcW = 7;
     double dcH = 6;
     double dcX = 1;
     double dcY = boardY + boardH - dcH - 3;
 
-    // Board PCB
     g2d.setColor(ARDUINO_TEAL);
     g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
     g2d.setColor(ARDUINO_TEAL.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // Draw USB Jack
     g2d.setColor(USB_METAL_COLOR);
     g2d.fill(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
     g2d.setColor(METAL_SHIELD_BORDER);
     g2d.draw(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
 
-    // Draw DC Jack
     g2d.setColor(IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
     g2d.setColor(Color.BLACK);
     g2d.draw(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
 
-    // Arduino Infinity logo
     double scale = 14.0 / 95.56;
     double logoW = 95.56 * scale;
     double logoH = 45.33 * scale;
@@ -455,7 +445,6 @@ public class ArduinoMega extends AbstractMakerBoard {
     double logoY = boardY + 3.5;
     MakerBoardLogos.drawArduinoLogo(g2d, logoX, logoY, scale);
 
-    // MEGA text below logo
     g2d.setColor(SILK_COLOR);
     int fontSize = Math.max(6, (int) Math.round(boardH * 0.26));
     g2d.setFont(ICON_FONT.deriveFont((float) fontSize));
