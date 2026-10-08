@@ -24,6 +24,7 @@ package org.diylc.components.displays;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -67,6 +68,12 @@ public class OLEDDisplay extends AbstractMakerBoard {
   public static Color ACTIVE_AREA_COLOR = Color.decode("#060D15");
   public static Color PIXEL_BLUE = Color.decode("#00D4FF");
 
+  // Clearance a name keeps from the edge of its pad. The shared drawFlatRowPinLabels sits its
+  // labels 2.04 mm off the pin centre, which the 3.5 mm strip the Nokia and the TFT print into can
+  // afford; the 0.96" has 2.27 mm between header and glass and the 0.91" SPI board 2.5 mm, where
+  // that offset drops the text onto the display.
+  public static Size LABEL_GAP = new Size(0.5d, SizeUnit.mm);
+
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SCL", "SDA"};
 
   /**
@@ -88,6 +95,17 @@ public class OLEDDisplay extends AbstractMakerBoard {
    */
   public static final String[] PIN_NAMES_SPI_NO_CS =
       new String[] {"GND", "VCC", "SCL", "SDA", "RES", "DC"};
+
+  /**
+   * The eight-pin board, which is the only one of these to bring the controller's logic rail out
+   * beside the module's input: VIN takes 4.8 - 5.2 V and VDD the 2.8 - 3.3 V the core runs on.
+   * They are separate rails and must not be tied together, so the extra pad is a different board
+   * rather than a different silkscreen -- as is the order, which follows the controller's own pin
+   * numbering and so starts at the data line and leaves the supplies to the far end, the reverse
+   * of where the other boards print them.
+   */
+  public static final String[] PIN_NAMES_SPI_SPLIT_SUPPLY =
+      new String[] {"SDA", "SCL", "DC", "RES", "CS", "VDD", "VIN", "GND"};
 
   private Version version = Version.SSD1306_0_96;
   private OLEDInterface oledInterface = OLEDInterface.I2C_4Pin;
@@ -161,9 +179,9 @@ public class OLEDDisplay extends AbstractMakerBoard {
   /**
    * The board the two properties name between them. On the 0.96" and the 1.3" the interface only
    * changes how many pins the header carries, but the 0.91" is sold as two different boards -- a
-   * 38 x 12 mm one with a four-pin column on its left edge and a 38 x 20 mm one with a seven-pin
-   * row on top -- so the outline, the header edge, the hole pattern and the panel's position all
-   * come from the pair rather than from the size alone.
+   * 35.8 x 12 mm one with a four-pin column on its left edge and a 32.5 x 20.5 mm one with a
+   * seven-pin row on top -- so the outline, the header edge, the hole pattern and the panel's
+   * position all come from the pair rather than from the size alone.
    */
   private Layout getLayout() {
     return getVersion().getLayout(getOledInterface());
@@ -238,6 +256,66 @@ public class OLEDDisplay extends AbstractMakerBoard {
         px(layout.getBoardWidthMm()), px(layout.getBoardLengthMm()), 8, 8);
   }
 
+  /**
+   * The names the module prints in the strip between its header and its glass. They lie flat and
+   * read the way the board does, as the Nokia's and the TFT's do, rather than standing on end
+   * across the row the way the Arduino boards print theirs -- no strip here is deep enough for
+   * that. The 0.91" I2C board is the one whose header is a column, so its names lie to the right
+   * of the pins instead of below them, and a name that would reach the glass is left off.
+   */
+  private void drawPinNames(Graphics2D g2d, double boardX, double boardY) {
+    Layout layout = getLayout();
+    double[][] offsets = getRelativeOffsets();
+    Point2D p0 = controlPoints[0];
+    double gap = LABEL_GAP.convertToPixels();
+
+    // What a label has to clear is the header body drawPinHeader fills, a square reaching one
+    // pixel further than PIN_SIZE either side of the pin rather than the pin itself; measured off
+    // the pin alone the names would be printed onto the pads.
+    double padHalf = Math.round(PIN_SIZE.convertToPixels()) + 1;
+
+    g2d.setFont(PIN_ROW_FLAT_FONT);
+    g2d.setColor(SILK_COLOR);
+    FontMetrics metrics = g2d.getFontMetrics();
+
+    // One reference glyph rather than each label's own box, so a row of them sits on one line.
+    // Every name on these boards is upper case and none carries a descender, so a box centred on
+    // the cap height lands each of them in the same place.
+    double capHeight = g2d.getFont().createGlyphVector(g2d.getFontRenderContext(), "X")
+        .getVisualBounds().getHeight();
+
+    boolean column = layout.isHeaderOnLeftEdge();
+    double glassEdge = column ? boardX + px(layout.getPanelLeftMm())
+        : boardY + px(layout.getPanelTopMm());
+
+    for (int i = 0; i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      double pinX = p0.getX() + offsets[i][0];
+      double pinY = p0.getY() + offsets[i][1];
+      double room = glassEdge - (column ? pinX : pinY) - padHalf;
+      double extent = column ? metrics.stringWidth(label) : capHeight;
+      if (extent > room) {
+        continue;
+      }
+
+      // A gap off the pad, or the middle of the strip where the strip cannot afford the whole gap:
+      // the 0.96" leaves 1.13 mm between its pads and its glass to print 0.73 mm of lettering in,
+      // and splitting what is left over is the only placement that clears both.
+      double offset = padHalf + Math.min(gap, (room - extent) / 2.0);
+
+      if (column) {
+        StringUtils.drawCenteredText(g2d, label, pinX + offset, pinY, HorizontalAlignment.LEFT,
+            VerticalAlignment.CENTER);
+      } else {
+        StringUtils.drawCenteredText(g2d, label, pinX, pinY + offset + capHeight / 2.0,
+            HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+      }
+    }
+  }
+
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
@@ -299,18 +377,21 @@ public class OLEDDisplay extends AbstractMakerBoard {
       g2d.draw(new RoundRectangle2D.Double(glassX, glassY, glassW, glassH, 4, 4));
 
       // The lit area is offset within the panel horizontally -- the driver's bonding region takes
-      // one end of the glass -- and centred across it. Both are figures of the panel part rather
-      // than of the board it is mounted on, so the two 0.91" boards share them.
+      // one end of the glass -- and sits high in it vertically, the bonding region running along
+      // the bottom on every one of these panels. Following the TFT boards, its top is read from
+      // the board's top edge, which is the edge it is measured from on a module in hand.
       double activeW = px(version.getActiveWidthMm());
       double activeH = px(version.getActiveLengthMm());
       double activeX = glassX + px(version.getActiveLeftInPanelMm());
-      double activeY = glassY + (glassH - activeH) / 2.0;
+      double activeY = boardY + px(layout.getActiveTopMm());
       g2d.setColor(ACTIVE_AREA_COLOR);
       g2d.fill(new RoundRectangle2D.Double(activeX, activeY, activeW, activeH, 2, 2));
 
       MakerBoardPainter.drawScreenText(g2d,
           new Rectangle2D.Double(activeX, activeY, activeW, activeH), getPixelColor(), getScreen(),
           getName(), getValueForDisplay());
+
+      drawPinNames(g2d, boardX, boardY);
     }
 
     g2d.setTransform(oldTx);
@@ -343,14 +424,18 @@ public class OLEDDisplay extends AbstractMakerBoard {
   }
 
   public enum OLEDInterface {
-    // Labels stay short because they reach the BOM's value column through getVariantLabel and are
-    // printed on the lit area, which the 0.91" has little of: "SPI, 7-pin" and "SPI, 6-pin" were
-    // tried and the glass stopped printing anything at all. The pin array belongs here rather than
-    // on the board, because all three sizes bring the same lines out in the same order and only the
-    // interface decides which set that is.
+    // Every SPI label states its pin count, which is the only thing that separates the three of
+    // them; a bare "SPI" beside "SPI-6" would read as an omission on a BOM row and the reader
+    // would have to know which board it meant. Labels stay short because they reach the BOM's
+    // value column through getVariantLabel and are printed on the lit area, which the 0.91" has
+    // little of: "SPI, 7-pin" and "SPI, 6-pin" were tried and the glass stopped printing anything
+    // at all. The pin array belongs here rather than
+    // on the board, because a row is the same at all three sizes and only the interface decides
+    // which row that is.
     I2C_4Pin("I2C", PIN_NAMES_I2C),
-    SPI_7Pin("SPI", PIN_NAMES_SPI),
-    SPI_6Pin("SPI-6", PIN_NAMES_SPI_NO_CS);
+    SPI_6Pin("SPI-6", PIN_NAMES_SPI_NO_CS),
+    SPI_7Pin("SPI-7", PIN_NAMES_SPI),
+    SPI_8Pin("SPI-8", PIN_NAMES_SPI_SPLIT_SUPPLY);
 
     private final String label;
     private final String[] pinNames;
@@ -365,22 +450,25 @@ public class OLEDDisplay extends AbstractMakerBoard {
   }
 
   public enum Version {
-    // The panel and its lit area belong to the display part, so they are carried here and shared
-    // by both of a size's boards; everything that belongs to a PCB is on the Layout beside them.
-    // Lit areas are the nominal pixel count at the panel's dot pitch -- 128 x 64 at 0.17 mm,
-    // 128 x 32 at 0.175 mm, 128 x 64 at 0.23 mm -- which makes them derivations rather than
+    // The panel and its lit area belong to the display part, so their sizes are carried here and
+    // shared by both of a size's boards; everything that belongs to a PCB is on the Layout beside
+    // them, and so is where the lit area sits down the board, which the two 0.91" boards disagree
+    // on.
+    // The 0.96"'s and the 1.3"'s panels are measured off a module, and so is the 0.96"'s lit
+    // area; the other lit areas are the nominal pixel count at the panel's dot pitch -- 128 x 32
+    // at 0.175 mm and 128 x 64 at 0.23 mm -- which makes those derivations rather than
     // measurements, noted so they are not built upon.
     //
     // The lit area's offset inside the panel is measured on the 0.91" and happens to be the
-    // centred position on the other two; oneCentredPanel in the test pins that down, so a later
-    // correction to a panel or a board cannot leave a stale offset behind.
-    SSD1306_0_96("0.96\" SSD1306 128x64", 26.7d, 19.3d, 21.744d, 10.864d, 2.478d,
-        new Layout(27.0d, 27.0d, 1.8d, false, 1.5d, 2.0d, 0.15d, 3.85d)),
+    // centred position on the other two; centredPanelsStoreTheCentredOffsets in the test pins
+    // that down, so a later correction to a panel or a board cannot leave a stale offset behind.
     SSD1306_0_91("0.91\" SSD1306 128x32", 30.0d, 12.0d, 22.384d, 5.584d, 2.1d,
-        new Layout(38.0d, 12.0d, 1.5d, true, 0d, 0d, 5.0d, 0d),
-        new Layout(38.0d, 20.0d, 1.5d, false, 2.5d, 2.0d, 1.25d, 4.0d)),
-    SH1106_1_3("1.3\" SH1106 128x64", 31.4d, 16.7d, 29.42d, 14.7d, 0.99d,
-        new Layout(35.4d, 33.5d, 1.5d, false, 2.0d, 3.0d, 2.0d, 8.4d));
+        new Layout(35.8d, 12.0d, 1.5d, true, 0d, 0d, 5.0d, 0d, 2.35d),
+        new Layout(32.5d, 20.5d, 1.5d, false, 2.5d, 2.0d, 1.25d, 4.0d, 6.6d)),
+    SSD1306_0_96("0.96\" SSD1306 128x64", 26.7d, 19.26d, 21.74d, 11.0d, 2.48d,
+        new Layout(27.0d, 27.0d, 1.6d, false, 2.0d, 2.0d, 0.15d, 3.87d, 6.14d)),
+    SH1106_1_3("1.3\" SH1106 128x64", 35.4d, 23.0d, 29.42d, 14.7d, 2.99d,
+        new Layout(35.4d, 33.5d, 1.5d, false, 2.5d, 3.0d, 0d, 5.25d, 7.35d));
 
     private final String label;
     private final double panelWidthMm;
@@ -418,10 +506,11 @@ public class OLEDDisplay extends AbstractMakerBoard {
     public double getActiveLeftInPanelMm() { return activeLeftInPanelMm; }
 
     /**
-     * The two SPI headers share a board. That is a derivation rather than a measurement: a 6-pin
-     * module is a PCB of its own with one fewer pad, and only its outline would say whether it
-     * matches the 7-pin board it is modelled on. The header is centred on the width either way, so
-     * the shorter row sits correctly on the board it borrows.
+     * The three SPI headers share a board. That is a derivation rather than a measurement: the
+     * 6-pin and 8-pin modules are PCBs of their own, one pad short and one pad long, and only
+     * their outlines would say whether either matches the 7-pin board they are modelled on. The
+     * header is centred on the width in every case, so a shorter or longer row still sits
+     * correctly on the board it borrows.
      */
     public Layout getLayout(OLEDInterface oledInterface) {
       return oledInterface == OLEDInterface.I2C_4Pin ? i2cLayout : spiLayout;
@@ -434,9 +523,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
    * different boards on the 0.91".
    *
    * <p>Hole positions are an inset from each of the two edges nearest a hole, following the TFT
-   * boards. The 0.96"'s pattern was given as a 24 mm centre-to-centre spacing instead, which on
-   * its 27 mm board is this inset; {@code holePatternMatchesTheSpecifiedSpacing} keeps the two
-   * readings in step.
+   * boards.
    */
   public static class Layout {
 
@@ -448,10 +535,11 @@ public class OLEDDisplay extends AbstractMakerBoard {
     private final double holeSizeMm;
     private final double panelLeftMm;
     private final double panelTopMm;
+    private final double activeTopMm;
 
     Layout(double boardWidthMm, double boardLengthMm, double headerOffsetMm,
         boolean headerOnLeftEdge, double holeInsetMm, double holeSizeMm, double panelLeftMm,
-        double panelTopMm) {
+        double panelTopMm, double activeTopMm) {
       this.boardWidthMm = boardWidthMm;
       this.boardLengthMm = boardLengthMm;
       this.headerOffsetMm = headerOffsetMm;
@@ -460,6 +548,7 @@ public class OLEDDisplay extends AbstractMakerBoard {
       this.holeSizeMm = holeSizeMm;
       this.panelLeftMm = panelLeftMm;
       this.panelTopMm = panelTopMm;
+      this.activeTopMm = activeTopMm;
     }
 
     public double getBoardWidthMm() { return boardWidthMm; }
@@ -468,6 +557,12 @@ public class OLEDDisplay extends AbstractMakerBoard {
     public double getHoleSizeMm() { return holeSizeMm; }
     public double getPanelLeftMm() { return panelLeftMm; }
     public double getPanelTopMm() { return panelTopMm; }
+
+    /**
+     * Top of the lit area measured from the board's top edge, following the TFT boards, which is
+     * the edge it is measured from on a module in hand.
+     */
+    public double getActiveTopMm() { return activeTopMm; }
 
     /** Clearance from the edge the header sits on, whichever edge that is. */
     public double getHeaderOffsetMm() { return headerOffsetMm; }

@@ -4959,6 +4959,15 @@
           <createdOn>2026-10-11T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
+          <name>0.96" SSD1306 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_96</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
           <name>0.91" SSD1306 I2C</name>
           <values>
             <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
@@ -4986,6 +4995,15 @@
           <createdOn>2026-10-11T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
+          <name>0.91" SSD1306 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
           <name>1.3" SH1106 I2C</name>
           <values>
             <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
@@ -5008,6 +5026,15 @@
           <values>
             <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.3" SH1106 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
           <createdOn>2026-10-11T00:00:00.0000000</createdOn>

@@ -24,6 +24,9 @@ package org.diylc.components.displays;
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.Display;
@@ -92,10 +95,10 @@ public class OLEDDisplayTest {
     Layout i2c = Version.SSD1306_0_91.getLayout(OLEDInterface.I2C_4Pin);
     Layout spi = Version.SSD1306_0_91.getLayout(OLEDInterface.SPI_7Pin);
 
+    Assert.assertEquals("I2C width", 35.8d, i2c.getBoardWidthMm(), 0.01d);
     Assert.assertEquals("I2C length", 12.0d, i2c.getBoardLengthMm(), 0.01d);
-    Assert.assertEquals("SPI length", 20.0d, spi.getBoardLengthMm(), 0.01d);
-    Assert.assertEquals("the two share a long edge", i2c.getBoardWidthMm(),
-        spi.getBoardWidthMm(), 0.01d);
+    Assert.assertEquals("SPI width", 32.5d, spi.getBoardWidthMm(), 0.01d);
+    Assert.assertEquals("SPI length", 20.5d, spi.getBoardLengthMm(), 0.01d);
     Assert.assertTrue("the I2C column should stand on the left edge", i2c.isHeaderOnLeftEdge());
     Assert.assertFalse("the SPI row should lie along the top edge", spi.isHeaderOnLeftEdge());
     Assert.assertFalse("the I2C board has no mounting holes", i2c.hasMountingHoles());
@@ -127,6 +130,16 @@ public class OLEDDisplayTest {
     }
   }
 
+  @Test
+  public void controlPointsAreTheEightPinRowInOrder() {
+    OLEDDisplay display = of(Version.SSD1306_0_96, OLEDInterface.SPI_8Pin);
+    String[] expected = new String[] {"SDA", "SCL", "DC", "RES", "CS", "VDD", "VIN", "GND"};
+    Assert.assertEquals(expected.length, display.getControlPointCount());
+    for (int i = 0; i < expected.length; i++) {
+      Assert.assertEquals("pin " + i, expected[i], display.getControlPointNodeName(i));
+    }
+  }
+
   /** Every size is sold in every interface, so no size may carry a shorter pin array. */
   @Test
   public void everyInterfaceExistsAtEverySize() {
@@ -137,6 +150,8 @@ public class OLEDDisplayTest {
           of(version, OLEDInterface.SPI_7Pin).getControlPointCount());
       Assert.assertEquals(version + " SPI-6", 6,
           of(version, OLEDInterface.SPI_6Pin).getControlPointCount());
+      Assert.assertEquals(version + " SPI-8", 8,
+          of(version, OLEDInterface.SPI_8Pin).getControlPointCount());
     }
   }
 
@@ -164,6 +179,32 @@ public class OLEDDisplayTest {
     }
   }
 
+  /**
+   * The eight-pin board carries the same seven lines as the seven-pin one plus a second supply,
+   * so what has to hold is that the set has grown by exactly VDD and nothing has been dropped --
+   * the order cannot be compared, because this row follows the controller's pin numbering and runs
+   * the other way. VDD and VIN are separate rails, so neither may be renamed to the other or to
+   * the VCC the shorter rows print, which a set comparison would let through if both were spelled
+   * the same.
+   */
+  @Test
+  public void theEightPinBoardAddsOnlyTheLogicSupply() {
+    Set<String> seven = new HashSet<String>(Arrays.asList(OLEDInterface.SPI_7Pin.getPinNames()));
+    Set<String> eight = new HashSet<String>(Arrays.asList(OLEDInterface.SPI_8Pin.getPinNames()));
+
+    Assert.assertEquals("no pin names repeat in the row", 8,
+        OLEDInterface.SPI_8Pin.getPinNames().length);
+    Assert.assertEquals("no pin names repeat in the row", 8, eight.size());
+    Assert.assertTrue("VIN replaces the shorter rows' VCC", eight.contains("VIN"));
+    Assert.assertTrue("the logic rail is the pin that is added", eight.contains("VDD"));
+    Assert.assertFalse("VCC belongs to the rows with one supply", eight.contains("VCC"));
+
+    seven.remove("VCC");
+    eight.remove("VIN");
+    eight.remove("VDD");
+    Assert.assertEquals("the signal lines are the seven-pin row's", seven, eight);
+  }
+
   /** Switching either property must resize the array, not leave the longer one's points behind. */
   @Test
   public void switchingInterfaceResizesTheControlPoints() {
@@ -175,6 +216,8 @@ public class OLEDDisplayTest {
     Assert.assertEquals(7, display.getControlPointCount());
     display.setOledInterface(OLEDInterface.SPI_6Pin);
     Assert.assertEquals(6, display.getControlPointCount());
+    display.setOledInterface(OLEDInterface.SPI_8Pin);
+    Assert.assertEquals(8, display.getControlPointCount());
     display.setOledInterface(OLEDInterface.I2C_4Pin);
     Assert.assertEquals(4, display.getControlPointCount());
   }
@@ -244,13 +287,15 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * Each lit area is its pixel count at the panel's dot pitch, so its aspect is the pixel aspect:
-   * a 2:1 letterbox on the two 128 x 64 panels and 4:1 on the 128 x 32. This is the figure the
-   * 0.96" was drawn wrong against for as long as its panel was near-square.
+   * A lit area's aspect is very nearly the pixel aspect: a 2:1 letterbox on the two 128 x 64
+   * panels and 4:1 on the 128 x 32. This is the figure the 0.96" was drawn wrong against for as
+   * long as its panel was near-square. The two derived panels sit exactly on it because that is
+   * how they were arrived at; the measured 0.96" comes out a little under, and the tolerance here
+   * is wide enough to allow that and nothing like a transposition.
    */
   @Test
   public void litAreaMatchesThePixelAspect() {
-    Assert.assertEquals(2.0d, aspect(Version.SSD1306_0_96), 0.01d);
+    Assert.assertEquals(2.0d, aspect(Version.SSD1306_0_96), 0.05d);
     Assert.assertEquals(4.0d, aspect(Version.SSD1306_0_91), 0.01d);
     Assert.assertEquals(2.0d, aspect(Version.SH1106_1_3), 0.01d);
   }
@@ -269,6 +314,16 @@ public class OLEDDisplayTest {
           version.getActiveLengthMm() <= version.getPanelLengthMm());
       Assert.assertTrue(version + " lit area starts off the panel",
           version.getActiveLeftInPanelMm() >= 0);
+
+      for (OLEDInterface oledInterface : OLEDInterface.values()) {
+        Layout layout = version.getLayout(oledInterface);
+        String board = version + " " + oledInterface;
+        Assert.assertTrue(board + " lit area starts above its panel",
+            layout.getActiveTopMm() >= layout.getPanelTopMm());
+        Assert.assertTrue(board + " lit area runs off the bottom of its panel",
+            layout.getActiveTopMm() + version.getActiveLengthMm() <= layout.getPanelTopMm()
+                + version.getPanelLengthMm());
+      }
     }
   }
 
@@ -340,24 +395,50 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The 0.91" SPI board centres its lit area on the board's height, which is how it was measured,
-   * rather than hanging the panel below the header the way the taller boards do.
+   * The 0.91" SPI board's panel offset of 1.25 mm is exactly centred on its 32.5 mm width -- two
+   * independent readings agreeing, which is what makes this worth asserting. The vertical pair do
+   * not agree: the panel hangs below the header rather than sitting centred on the height, so
+   * there is nothing to cross-check down the board.
    */
   @Test
-  public void theSmallSpiBoardCentresItsLitArea() {
+  public void theSmallSpiBoardCentresItsPanelAcrossTheBoard() {
     Version version = Version.SSD1306_0_91;
     Layout layout = version.getLayout(OLEDInterface.SPI_7Pin);
-    double litTop = layout.getPanelTopMm()
-        + (version.getPanelLengthMm() - version.getActiveLengthMm()) / 2.0;
-    Assert.assertEquals(layout.getBoardLengthMm() / 2.0,
-        litTop + version.getActiveLengthMm() / 2.0, 0.01d);
+    Assert.assertEquals("the panel is off centre across the board",
+        (layout.getBoardWidthMm() - version.getPanelWidthMm()) / 2.0, layout.getPanelLeftMm(),
+        0.01d);
+  }
+
+  /**
+   * Every lit area is measured down from its board's top edge rather than centred on the panel:
+   * the driver's bonding region takes the bottom of the glass on all of these, so the lit area
+   * sits high in the frame and centring it would drop it -- by 1.86 mm on the 0.96", 0.86 mm on
+   * the 0.91" I2C board, 0.61 mm on its SPI sibling and 2.05 mm on the 1.3". The centred position
+   * is asserted beside each measurement because a stale one would still land inside the panel and
+   * clear every pin and hole.
+   */
+  @Test
+  public void measuredLitAreasSitHighInTheirPanels() {
+    assertLitAreaTop(Version.SSD1306_0_96, OLEDInterface.I2C_4Pin, 6.14d, 8.0d);
+    assertLitAreaTop(Version.SSD1306_0_91, OLEDInterface.I2C_4Pin, 2.35d, 3.208d);
+    assertLitAreaTop(Version.SSD1306_0_91, OLEDInterface.SPI_7Pin, 6.6d, 7.208d);
+    assertLitAreaTop(Version.SH1106_1_3, OLEDInterface.I2C_4Pin, 7.35d, 9.4d);
+  }
+
+  private static void assertLitAreaTop(Version version, OLEDInterface oledInterface,
+      double measuredMm, double centredMm) {
+    Layout layout = version.getLayout(oledInterface);
+    Assert.assertEquals(version + " measured from the top edge", measuredMm,
+        layout.getActiveTopMm(), 0.01d);
+    Assert.assertEquals(version + " centring would drop it", centredMm, layout.getPanelTopMm()
+        + (version.getPanelLengthMm() - version.getActiveLengthMm()) / 2.0, 0.01d);
   }
 
   /**
    * The panel is wide enough on every one of these boards to share the holes' horizontal span, so
    * the vertical axis is the only one that can keep them apart -- a symmetric check would fail on
-   * a board that is drawn correctly. The 0.91" SPI board is the tight one, clearing each hole row
-   * by 0.5 mm.
+   * a board that is drawn correctly. The 0.91" SPI board is the tight one, clearing its
+   * header-side holes by 0.5 mm.
    */
   @Test
   public void panelClearsTheMountingHolesVertically() {
@@ -381,16 +462,16 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The strip between a top-edge row and the panel below it. On the 0.96" it is 2.05 mm, which is
-   * the whole reason that board carries no silkscreen: a flat label needs about 2.7 mm and would
-   * cross the panel's top edge. The 1.3" has 6.9 mm and could print its names, which is noted in
-   * the plan rather than done here.
+   * The strip between a top-edge row and the panel below it, which is what the pin names have to
+   * fit into. The 0.96"'s 2.27 mm is the shallowest of them and is why these boards place their
+   * own labels a fixed gap off the pad: the shared helper's 2.04 mm offset is pitched for the
+   * 3.5 mm the Nokia and the TFT have and would print the names onto the glass.
    */
   @Test
   public void panelClearsThePinRow() {
-    Assert.assertEquals("0.96\"", 2.05d, stripDepthMm(Version.SSD1306_0_96), 0.01d);
+    Assert.assertEquals("0.96\"", 2.27d, stripDepthMm(Version.SSD1306_0_96), 0.01d);
     Assert.assertEquals("0.91\" SPI", 2.5d, stripDepthMm(Version.SSD1306_0_91), 0.01d);
-    Assert.assertEquals("1.3\"", 6.9d, stripDepthMm(Version.SH1106_1_3), 0.01d);
+    Assert.assertEquals("1.3\"", 3.75d, stripDepthMm(Version.SH1106_1_3), 0.01d);
   }
 
   private static double stripDepthMm(Version version) {
@@ -435,17 +516,69 @@ public class OLEDDisplayTest {
   }
 
   /**
-   * The 0.96"'s hole pattern was specified as a 24 mm centre-to-centre spacing in both directions
-   * and is stored as the equivalent inset, following the TFT boards. If its outline is ever
-   * corrected the inset has to be recomputed, and this is what says so.
+   * Every board prints its pin names, and none of them prints one on the glass. The strip they go
+   * in is 2.27 mm on the 0.96" against the 3.5 mm the sibling displays print into, so this is the
+   * check that the tighter placement actually clears the panel -- no geometry assertion here would
+   * notice a label drawn over the display, and on the 0.96" the shared helper's offset would put
+   * one there.
+   *
+   * <p>The silkscreen colour is repointed at a colour nothing else on these boards draws in, which
+   * is what makes the count unambiguous: mounting holes are filled in the canvas's white and would
+   * otherwise be indistinguishable from lettering. Appearance constants are deliberately not
+   * final so that they can be overridden at runtime, which is what this leans on.
    */
   @Test
-  public void holePatternMatchesTheSpecifiedSpacing() {
-    Layout layout = Version.SSD1306_0_96.getLayout(OLEDInterface.I2C_4Pin);
-    Assert.assertEquals("across", 24.0d,
-        layout.getBoardWidthMm() - 2 * layout.getHoleInsetMm(), 0.01d);
-    Assert.assertEquals("down", 24.0d,
-        layout.getBoardLengthMm() - 2 * layout.getHoleInsetMm(), 0.01d);
+  public void pinNamesAreDrawnAndStayOffThePanel() {
+    Color silk = AbstractMakerBoard.SILK_COLOR;
+    AbstractMakerBoard.SILK_COLOR = Color.MAGENTA;
+    try {
+      for (Version version : Version.values()) {
+        for (OLEDInterface oledInterface : OLEDInterface.values()) {
+          Layout layout = version.getLayout(oledInterface);
+          OLEDDisplay display = of(version, oledInterface);
+          int[] pixels = MakerBoardTestSupport.renderPixels(display);
+          int side = (int) Math.round(Math.sqrt(pixels.length));
+
+          Rectangle2D outline = display.getBodyShape().getBounds2D();
+          Rectangle2D glass = new Rectangle2D.Double(
+              outline.getX() + mmToPx(layout.getPanelLeftMm()),
+              outline.getY() + mmToPx(layout.getPanelTopMm()),
+              mmToPx(version.getPanelWidthMm()), mmToPx(version.getPanelLengthMm()));
+
+          int printed = 0;
+          int onGlass = 0;
+          for (int i = 0; i < pixels.length; i++) {
+            if (!isSilk(pixels[i])) {
+              continue;
+            }
+            printed++;
+            if (glass.contains(i % side, i / side)) {
+              onGlass++;
+            }
+          }
+
+          String board = version + " " + oledInterface;
+          Assert.assertTrue(board + " prints no pin names at all", printed > 0);
+          Assert.assertEquals(board + " prints a pin name on the panel", 0, onGlass);
+        }
+      }
+    } finally {
+      AbstractMakerBoard.SILK_COLOR = silk;
+    }
+  }
+
+  /**
+   * Antialiasing thins the lettering where it meets whatever is behind it, so a label clipping the
+   * glass by a fraction of a millimetre arrives dimmed rather than at full strength. Matching the
+   * hue rather than the value catches those too: nothing else drawn on these boards -- the blue
+   * PCB, the cyan pads, the dark glass, the lit text, the gold and white of a mounting hole --
+   * leaves red and blue both well ahead of green.
+   */
+  private static boolean isSilk(int argb) {
+    int red = (argb >> 16) & 0xFF;
+    int green = (argb >> 8) & 0xFF;
+    int blue = argb & 0xFF;
+    return red > 60 && blue > 60 && red > green * 1.5 && blue > green * 1.5;
   }
 
   /** Without this the BOM collapses six different modules into one or two rows. */
@@ -453,10 +586,10 @@ public class OLEDDisplayTest {
   public void bomValueCarriesSizeAndInterface() {
     Assert.assertEquals("0.96\" SSD1306 128x64, I2C",
         of(Version.SSD1306_0_96, OLEDInterface.I2C_4Pin).getValueForDisplay());
-    Assert.assertEquals("1.3\" SH1106 128x64, SPI",
+    Assert.assertEquals("1.3\" SH1106 128x64, SPI-7",
         of(Version.SH1106_1_3, OLEDInterface.SPI_7Pin).getValueForDisplay());
 
-    java.util.Set<String> values = new java.util.HashSet<String>();
+    Set<String> values = new HashSet<String>();
     for (Version version : Version.values()) {
       for (OLEDInterface oledInterface : OLEDInterface.values()) {
         values.add(of(version, oledInterface).getValueForDisplay());
