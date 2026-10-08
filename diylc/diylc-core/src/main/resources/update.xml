@@ -565,6 +565,14 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Bill of Materials now lists the selected variant of microcontroller boards and displays, so different versions of the same board are no longer merged into a single row</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>4-pin Jumbo Tube Socket - the two filament pins are now labeled F1 and F2 instead of both being labeled F, so they no longer read as the same node</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Netlists now treat the repeated supply pins of a microcontroller or display board as one node, so grounding a single GND pin no longer leaves the others floating</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

@@ -47,8 +47,8 @@ public class ArduinoNanoTest {
     Assert.assertEquals("MISO", classic.getControlPointNodeName(30));
 
     // the silkscreen prints what is on the board: both grounds and both resets are printed alike
-    Assert.assertEquals("GND1", classic.getControlPointNodeName(3));
-    Assert.assertEquals("GND2", classic.getControlPointNodeName(16));
+    Assert.assertEquals("GND_1", classic.getControlPointNodeName(3));
+    Assert.assertEquals("GND_2", classic.getControlPointNodeName(16));
     Assert.assertEquals("GND", classic.getSilkPinLabel(3));
     Assert.assertEquals("GND", classic.getSilkPinLabel(16));
     Assert.assertEquals("RST", classic.getSilkPinLabel(2));

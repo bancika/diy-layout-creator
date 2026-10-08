@@ -89,11 +89,11 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..19)
-      "GP0", "GP1", "GND1", "GP2", "GP3", "GP4", "GP5", "GND2", "GP6", "GP7",
-      "GP8", "GP9", "GND3", "GP10", "GP11", "GP12", "GP13", "GND4", "GP14", "GP15",
+      "GP0", "GP1", "GND_1", "GP2", "GP3", "GP4", "GP5", "GND_2", "GP6", "GP7",
+      "GP8", "GP9", "GND_3", "GP10", "GP11", "GP12", "GP13", "GND_4", "GP14", "GP15",
       // Right row (pins 20..39)
-      "VBUS", "VSYS", "GND5", "3V3_EN", "3V3 (OUT)", "ADC_VREF", "GP28", "GND6", "GP27", "GP26",
-      "RUN", "GP22", "GND7", "GP21", "GP20", "GP19", "GP18", "GND8", "GP17", "GP16",
+      "VBUS", "VSYS", "GND_5", "3V3_EN", "3V3 (OUT)", "ADC_VREF", "GP28", "GND_6", "GP27", "GP26",
+      "RUN", "GP22", "GND_7", "GP21", "GP20", "GP19", "GP18", "GND_8", "GP17", "GP16",
       // SWD debug pins (pins 40..42)
       "SWCLK", "GND_SWD", "SWDIO"
   };

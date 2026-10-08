@@ -55,8 +55,8 @@ public class ArduinoUnoTest {
 
     // the silkscreen prints what is on the board rather than the node name: both grounds of the
     // power header say "GND" and the reserved first pin says nothing at all
-    Assert.assertEquals("GND1", r3.getControlPointNodeName(5));
-    Assert.assertEquals("GND2", r3.getControlPointNodeName(6));
+    Assert.assertEquals("GND_1", r3.getControlPointNodeName(5));
+    Assert.assertEquals("GND_2", r3.getControlPointNodeName(6));
     Assert.assertEquals("GND", r3.getSilkPinLabel(5));
     Assert.assertEquals("GND", r3.getSilkPinLabel(6));
     Assert.assertEquals("", r3.getSilkPinLabel(0));

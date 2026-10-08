@@ -75,13 +75,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // Pin names in sequence (44 pins total)
   public static final String[] PIN_NAMES = new String[] {
       // Power Header (0..7)
-      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, ATmega328P)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
       // Top-Left ICSP Header (38..43, ATmega16U2)
@@ -112,13 +112,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // ICSP header, and I2C is shared with D2 / D3 rather than living solely on A4 / A5.
   public static final String[] PIN_NAMES_LEONARDO = new String[] {
       // Power Header (0..7)
-      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2 (SDA)", "D3 (~, SCL)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, ATmega32U4)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
@@ -141,13 +141,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // carries a 10-pin SWD debug connector in the top right corner, modelled as a single node.
   public static final String[] PIN_NAMES_R4_MINIMA = new String[] {
       // Power Header (0..7)
-      "BOOT", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "BOOT", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, RA4M1)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
       // SWD Connector (38)

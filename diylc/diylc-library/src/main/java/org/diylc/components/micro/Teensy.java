@@ -89,15 +89,15 @@ public class Teensy extends AbstractMakerBoard {
   // VUSB (33, near VIN): VUSB
   public static final String[] PIN_NAMES_40 = new String[] {
       // Left row (0..13)
-      "GND", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
+      "GND_1", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
       "5 (IN2)", "6 (OUT1D)", "7 (RX2/OUT1A)", "8 (TX2/IN1)", "9 (OUT1C)", "10 (CS/MQSR)",
       "11 (MOSI/CTX1)", "12 (MISO/MQSL)",
       // Right row (14..27)
-      "VIN (3.6-5.5V)", "GND", "3.3V (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
+      "VIN (3.6-5.5V)", "GND_2", "3.3V_1 (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
       "20 (A6/TX5)", "19 (A5/SCL0)", "18 (A4/SDA0)", "17 (A3/TX4/SDA1)", "16 (A2/RX4/SCL1)",
       "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/CRX1/LED)",
       // End row (28..32, left to right along bottom edge)
-      "VBAT", "3.3V (End)", "GND (End)", "Program", "On/Off",
+      "VBAT", "3.3V_2 (End)", "GND_3 (End)", "Program", "On/Off",
       // VUSB (33)
       "VUSB"
   };
@@ -125,19 +125,19 @@ public class Teensy extends AbstractMakerBoard {
   // VUSB (64, near VIN): VUSB
   public static final String[] PIN_NAMES_41 = new String[] {
       // Left row (0..23)
-      "GND", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
+      "GND_1", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
       "5 (IN2)", "6 (OUT1D)", "7 (RX2/OUT1A)", "8 (TX2/IN1)", "9 (OUT1C)", "10 (CS/MQSR)",
-      "11 (MOSI/CTX1)", "12 (MISO/MQSL)", "3.3V", "24 (A10/TX6/SCL2)", "25 (A11/RX6/SDA2)",
+      "11 (MOSI/CTX1)", "12 (MISO/MQSL)", "3.3V_1", "24 (A10/TX6/SCL2)", "25 (A11/RX6/SDA2)",
       "26 (A12/MOSI1)", "27 (A13/SCK1)", "28 (RX7)", "29 (TX7)", "30 (CRX3)", "31 (CTX3)",
       "32 (OUT1B)",
       // Right row (24..47)
-      "VIN (3.6-5.5V)", "GND", "3.3V (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
+      "VIN (3.6-5.5V)", "GND_2", "3.3V_2 (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
       "20 (A6/TX5)", "19 (A5/SCL)", "18 (A4/SDA)", "17 (A3/TX4/SDA1)", "16 (A2/RX4/SCL1)",
-      "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/LED)", "GND", "41 (A17)",
+      "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/LED)", "GND_3", "41 (A17)",
       "40 (A16)", "39 (A15/MISO1)", "38 (A14/CS1)", "37 (CS)", "36 (CS)", "35 (TX8)",
       "34 (RX8)", "33 (MCLK2)",
       // Middle cluster (48..52, left to right near push button)
-      "VBAT", "3.3V (Mid)", "GND (Mid)", "Program", "On/Off",
+      "VBAT", "3.3V_3 (Mid)", "GND_4 (Mid)", "Program", "On/Off",
       // Ethernet header (53..58, 3x2)
       "ETH_TX-", "ETH_LED", "ETH_RX+", "ETH_TX+", "ETH_GND", "ETH_RX-",
       // USB Host header (59..63, 1x5)
@@ -160,14 +160,14 @@ public class Teensy extends AbstractMakerBoard {
   // severable VUSB pad next to Vin. Labels follow the PJRC Teensy 3.2 pinout card.
   public static final String[] PIN_NAMES_32 = new String[] {
       // Left row (0..13)
-      "GND", "0 (RX1)", "1 (TX1)", "2", "3 (PWM)", "4 (PWM)", "5 (PWM)", "6 (PWM)", "7 (RX3)",
+      "GND_1", "0 (RX1)", "1 (TX1)", "2", "3 (PWM)", "4 (PWM)", "5 (PWM)", "6 (PWM)", "7 (RX3)",
       "8 (TX3)", "9 (RX2/PWM)", "10 (TX2/CS/PWM)", "11 (MOSI)", "12 (MISO)",
       // Right row (14..27)
-      "Vin (3.6-6.0V)", "AGND", "3.3V (100mA)", "23 (A9/PWM)", "22 (A8/PWM)", "21 (A7/PWM)",
+      "Vin (3.6-6.0V)", "AGND", "3.3V_1 (100mA)", "23 (A9/PWM)", "22 (A8/PWM)", "21 (A7/PWM)",
       "20 (A6/PWM)", "19 (A5/SCL0)", "18 (A4/SDA0)", "17 (A3)", "16 (A2)", "15 (A1/CS)",
       "14 (A0)", "13 (SCK/LED)",
       // End row (28..32, left to right along bottom edge)
-      "VBAT", "3.3V (End)", "GND (End)", "Program", "A14/DAC",
+      "VBAT", "3.3V_2 (End)", "GND_2 (End)", "Program", "A14/DAC",
       // VUSB (33)
       "VUSB"
   };

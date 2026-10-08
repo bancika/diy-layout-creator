@@ -127,8 +127,11 @@ What these tests are for, beyond the obvious count-and-dimension checks:
   clears the mounting holes; no hole is drilled where a pad is; a lit area that is measured really
   does disagree with the rule it replaced. A test that restates the constant passes while the
   component is wrong.
-- **No duplicate node names,** on every variant. Duplicates reach the netlist as one node and are
-  invisible on the canvas.
+- **No duplicate node names,** on every variant. The cost is legibility, not connectivity: nodes are
+  identified by component and control point index and the netlist graph is keyed on position, so two
+  pads named `GND` stay two nodes that merely print the same, and a reader cannot tell which one a
+  connection reached. They are invisible on the canvas too, since `getDisplayPinLabel` cuts the
+  suffix off and both silk as `GND`. `Teensy` is the one board that still repeats a bare name.
 - **A drawing smoke test** over every variant, state and orientation.
 - When a refactor is meant to change nothing, **render before and after and compare pixels.** The
   `digitCount` work was verified that way, and it caught a sub-pixel hole shift the unit tests

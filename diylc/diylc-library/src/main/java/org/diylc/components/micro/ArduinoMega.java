@@ -64,7 +64,7 @@ public class ArduinoMega extends AbstractMakerBoard {
   // Pin names in sequence (98 pins total)
   public static final String[] PIN_NAMES = new String[] {
       // Power Header (0..7)
-      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Low A0..A7 (8..15)
       "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7",
       // Analog High A8..A15 (16..23)
@@ -72,7 +72,7 @@ public class ArduinoMega extends AbstractMakerBoard {
       // Digital Low D0..D7 (24..31)
       "D0 (RX0)", "D1 (TX0)", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)",
       // Digital High D8..D13, GND, AREF, SDA, SCL (32..41)
-      "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~)", "D12 (~)", "D13 (~)", "GND3", "AREF", "SDA", "SCL",
+      "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~)", "D12 (~)", "D13 (~)", "GND_3", "AREF", "SDA", "SCL",
       // Communication Header D14..D21 (42..49)
       "D14 (TX3)", "D15 (RX3)", "D16 (TX2)", "D17 (RX2)", "D18 (TX1)", "D19 (RX1)", "D20 (SDA)", "D21 (SCL)",
       // Double Digital 2x18 Header (50..85: D22..D53, GNDx2, 5Vx2)

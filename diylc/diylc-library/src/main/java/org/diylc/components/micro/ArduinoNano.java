@@ -78,9 +78,9 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
       // ICSP (30..35)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
@@ -93,26 +93,26 @@ public class ArduinoNano extends AbstractMakerBoard {
   // Nano Every (ABX00028): PWM on D3, D5, D6, D9, D10 only, and D13 is SCK.
   public static final String[] PIN_NAMES_EVERY = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
   };
 
   // Nano 33 IoT (ABX00027): the SAMD21 adds PWM on D2 relative to the Every.
   public static final String[] PIN_NAMES_33_IOT = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
   };
 
   // Nano 33 BLE and BLE Sense (ABX00030): the nRF52840 routes PWM to every digital pin, D13
   // included.
   public static final String[] PIN_NAMES_33_BLE = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (~, SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (~, SCK)"
   };
 
   // Nano RP2040 Connect (ABX00053): every RP2040 GPIO has a PWM slice. Note REC (BOOTSEL) where
@@ -121,17 +121,17 @@ public class ArduinoNano extends AbstractMakerBoard {
       // Left row (0..14, top to bottom)
       "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
+      "VIN", "GND_2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
   };
 
   // Nano R4 (ABX00142): the Renesas RA4M1 board. Same PWM set as the classic, but D4 / D5 double as
   // the CAN pins, A1-A3 reach the on-chip OPAMP, A0 is the DAC, and BOOT replaces the second RESET.
   public static final String[] PIN_NAMES_R4 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4 (CAN TX)", "D5 (~, CAN RX)", "D6 (~)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4 (CAN TX)", "D5 (~, CAN RX)", "D6 (~)",
       "D7", "D8", "D9 (~)", "D10 (~, CS)", "D11 (~, MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "BOOT", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3 (OPAMP OUT)",
+      "VIN", "GND_2", "BOOT", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3 (OPAMP OUT)",
       "A2 (OPAMP -)", "A1 (OPAMP +)", "A0 (DAC)", "AREF", "3.3V", "D13 (SCK)",
       // Qwiic socket (30), a single point at the centre of the connector so a wire can land on it
       "QWIIC"
@@ -142,11 +142,11 @@ public class ArduinoNano extends AbstractMakerBoard {
   // number, which is what the ESP-IDF documentation refers to.
   public static final String[] PIN_NAMES_ESP32 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (~, TX/GPIO43)", "D0 (~, RX/GPIO44)", "RST1", "GND1", "D2 (~, GPIO5)", "D3 (~, GPIO6)",
+      "D1 (~, TX/GPIO43)", "D0 (~, RX/GPIO44)", "RST1", "GND_1", "D2 (~, GPIO5)", "D3 (~, GPIO6)",
       "D4 (~, GPIO7)", "D5 (~, GPIO8)", "D6 (~, GPIO9)", "D7 (~, GPIO10)", "D8 (~, GPIO17)",
       "D9 (~, GPIO18)", "D10 (~, GPIO21)", "D11 (~, MOSI/GPIO38)", "D12 (~, MISO/GPIO47)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "B1", "VUSB", "A7 (~, GPIO14)", "A6 (~, GPIO13)", "A5 (~, SCL/GPIO12)",
+      "VIN", "GND_2", "B1", "VUSB", "A7 (~, GPIO14)", "A6 (~, GPIO13)", "A5 (~, SCL/GPIO12)",
       "A4 (~, SDA/GPIO11)", "A3 (~, GPIO4)", "A2 (~, GPIO3)", "A1 (~, GPIO2)", "A0 (~, GPIO1)",
       "B0", "3.3V", "D13 (~, SCK/GPIO48)"
   };
