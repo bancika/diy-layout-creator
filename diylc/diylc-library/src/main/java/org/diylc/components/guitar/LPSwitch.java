@@ -37,6 +37,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.electromechanical.SwitchPositionPropertyValueSource;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -45,6 +46,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -71,6 +73,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private MiddleTerminalConfiguration middleTerminalConfiguration;
+  private Integer selectedPosition;
 
   public LPSwitch() {
     super();
@@ -435,5 +438,17 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   public enum MiddleTerminalConfiguration {
     Connected, Disconnected
+  }
+
+  @DynamicEditableProperty(source = SwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

@@ -36,6 +36,11 @@ public class SwitchUtilsTest {
             return selectedPosition;
         }
 
+        @Override
+        public void setSelectedPosition(Integer selectedPosition) {
+            // the position is fixed when the mock is constructed
+        }
+
         public Boolean getShowMarkers() {
             return renderConnected;
         }
