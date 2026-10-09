@@ -35,6 +35,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.TransistorSchematicFactory;
 
 import org.diylc.awt.TwoCircleTangent;
 import org.diylc.common.*;
@@ -52,7 +53,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Transistor (TO-3)", author = "Branislav Stojkovic", category = "Semiconductors",
+@ComponentDescriptor(schematicFactory = TransistorSchematicFactory.class,
+    name = "Transistor (TO-3)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with large metal body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class TransistorTO3 extends AbstractLabeledComponent<String> {

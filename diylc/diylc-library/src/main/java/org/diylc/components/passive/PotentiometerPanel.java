@@ -34,6 +34,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.PotentiometerSchematicFactory;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -55,7 +56,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = PotentiometerSchematicFactory.class,
+    name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT,
     transformer = PotentiometerTransformer.class, enableCache = true)

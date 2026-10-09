@@ -212,3 +212,57 @@ The test covers the routing template in both start directions, the degenerate
 shapes, the invariant that every produced segment is axis aligned, point-count
 changes, and the transformer contract that rotating the component yields exactly
 the rotated route.
+
+## 9. The schematic generator now uses it
+
+`Right Angle Line` replaced the generated-schematic wire, and two classes came
+out with it.
+
+`SchematicWire` stored a full point list plus the ids of the two symbols and pins
+it joined, because it had no other way to find its endpoints again. `ManhattanRouter`
+picked a route for it by scoring candidate paths against an obstacle list. When the
+user moved a symbol, `SchematicBuilder.rerouteWires` walked every wire, looked its
+symbols up by id and asked the router for a fresh path.
+
+None of that is needed now. `Right Angle Line` has sticky endpoints, so the
+framework moves them with the symbol they sit on, and the component re-derives its
+own route from the bend point on every repaint. `SchematicBuilder` picks that one
+bend point when it creates the wire, placing it on the first pin's column or the
+second pin's row according to which way the pin faces, and never touches the wire
+again.
+
+Three consequences worth knowing:
+
+- **Wires stay locked, and that is what forces the regeneration.** The whole
+  `WIRING` layer is locked in the schematic wrapper project so a wire cannot be
+  selected, dragged or deleted. `Presenter.includeStuckComponents` skips locked
+  components, so a locked wire is invisible to the sticky-point expansion that
+  drags attached endpoints along with a moved symbol. Locking and automatic
+  reconnection are therefore coupled: the wires have to be regenerated explicitly.
+  `SchematicTabPlugin` re-runs `SchematicSynchronizer` on `PROJECT_MODIFIED`,
+  which keeps the placed symbols and rebuilds every wire from their current pin
+  positions. That covers moving a whole symbol and, importantly, dragging a single
+  pin of one.
+- **Locked components are painted at half alpha.** On a schematic where every wire
+  is locked that washes out the entire drawing.
+  `SchematicConfigurationManager` wraps the application's configuration for the
+  schematic canvas alone and reports `lockedAlpha` as false, leaving the user's own
+  setting untouched on the layout canvas. This replaces the opaque-composite
+  workaround the old wire class carried inside its `draw`.
+- **Obstacle avoidance is gone.** The router used to steer a new route away from
+  overlapping or crossing the wires already placed. Nothing replaces that, so a
+  dense schematic can produce wires that run over each other.
+
+### Wires are ordered under the symbols
+
+The schematic used to be sorted by z-order, which puts `WIRING` above `COMPONENT`.
+`SchematicBuilder.SCHEMATIC_ORDER` replaces that sort in both the builder and the
+synchronizer, ranking wires first and falling back to z-order for everything else.
+It is the right paint order for a schematic, symbols drawing over the wires behind
+them, and it keeps clicks reaching the symbols even if the wiring layer is ever
+unlocked, since the canvas hands a click to the last matching component in the
+list.
+
+Three tests in `SchematicViewIntegrationTest` pin the behaviour down: that wires
+are ordered before symbols, that the generated wires' endpoints sit on symbol pins,
+and that stretching a symbol by one pin and re-syncing puts them back on pins.

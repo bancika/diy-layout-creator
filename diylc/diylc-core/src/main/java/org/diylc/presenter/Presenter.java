@@ -2948,8 +2948,13 @@ public class Presenter implements IPlugInPort {
   @Override
   public List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException {
     List<ContinuityArea> continuityAreas = drawingManager.getContinuityAreas();
-    
+
     return NetlistBuilder.extractNetlists(includeSwitches, currentProject, continuityAreas);
+  }
+
+  @Override
+  public List<ContinuityArea> getContinuityAreas() {
+    return drawingManager.getContinuityAreas();
   }
 
   @Override
