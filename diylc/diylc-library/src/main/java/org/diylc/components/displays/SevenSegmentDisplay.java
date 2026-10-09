@@ -51,24 +51,14 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-// @ComponentDescriptor(name = "7-Segment Display", category = "Displays & Outputs",
-//     author = "Branislav Stojkovic", description = "7-Segment LED Display (1-Digit, 4-Digit, or TM1637 I2C Driver Module)",
-//     instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
-//     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
-//     enableCache = true)
+@ComponentDescriptor(name = "7-Segment Display", category = "Displays & Outputs",
+    author = "Branislav Stojkovic", description = "7-Segment LED Display (1-Digit, 2-Digit, 4-Digit, or TM1637 I2C Driver Module)",
+    instanceNamePrefix = "DISP", zOrder = IDIYComponent.COMPONENT,
+    bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
+    enableCache = true)
 public class SevenSegmentDisplay extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
-
-  public enum DisplayType {
-    SingleDigit_10Pin("1-Digit 0.56\" (10-Pin DIP)"),
-    FourDigit_12Pin("4-Digit Bare (12-Pin DIP)"),
-    TM1637_Module_4Pin("4-Digit TM1637 Module (4-Pin)");
-
-    private final String label;
-    DisplayType(String label) { this.label = label; }
-    @Override public String toString() { return label; }
-  }
 
   public static Color BODY_BLACK = Color.decode("#1C1C1C");
   public static Color FACE_BLACK = Color.decode("#111111");
@@ -77,26 +67,50 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   public static Color LED_OFF = Color.decode("#2E2E2E");
   public static Color LED_OFF_BORDER = Color.decode("#222222");
 
-  // Exact physical proportions from datasheet
-  public static Size DIGIT_HEIGHT = new Size(14.2d, SizeUnit.mm); // 0.56"
-  public static Size DIGIT_WIDTH = new Size(8.1d, SizeUnit.mm);
-  public static Size DIGIT_PITCH = new Size(12.7d, SizeUnit.mm);
   public static Size SEGMENT_THICKNESS = new Size(1.4d, SizeUnit.mm);
-  public static Size SEGMENT_GAP = new Size(0.35d, SizeUnit.mm);
-  public static double SLANT_DEGREES = 8.0d;
+  // How far a module's header column sits in from the right edge. The DIP packages straddle their
+  // pins with a row either side; a module carries its header down one edge instead.
+  public static Size HEADER_EDGE_OFFSET = new Size(2.5d, SizeUnit.mm);
+  /**
+   * The digit is drawn at this fraction of the package's measured size. On the real part the
+   * digit window runs almost to the pin rows, so a faithful drawing has the pins sitting on the
+   * digit; this is a deliberate departure for legibility, which is why it is a separate factor
+   * rather than smaller digit sizes on {@link DisplayType}. It is shared, so changing it to chase
+   * an exact drawn size moves every package.
+   */
+  public static double DIGIT_DRAW_SCALE = 0.88d;
 
+  /**
+   * Pin arrays are in DIP order: index 0 is pin 1 at the bottom left, counting right along the
+   * bottom row and then back right-to-left along the top, which is how {@code updateControlPoints}
+   * places the control points. The two commons are the same net on the part and are numbered only
+   * to keep the node names distinct.
+   */
   public static final String[] PIN_NAMES_1DIGIT = new String[] {
-      "e", "d", "COM1", "c", "DP", "b", "a", "COM2", "f", "g"
+      "E", "D", "COM1", "C", "DP", "B", "A", "COM2", "F", "G"
   };
 
+  /** The two-digit member of the same family as the 5641AS, with two digit commons instead of
+   * four. */
+  public static final String[] PIN_NAMES_2DIGIT = new String[] {
+      "E", "D", "DP", "C", "G", "B", "D2", "D1", "F", "A"
+  };
+
+  /** Shared by both bare four-digit packages, which differ in size but not in pin function. */
   public static final String[] PIN_NAMES_4DIGIT = new String[] {
-      "D1", "a", "f", "D2", "D3", "b", "e", "d", "DP", "c", "g", "D4"
+      "E", "D", "DP", "C", "G", "D4", "B", "D3", "D2", "F", "A", "D1"
   };
 
   public static final String[] PIN_NAMES_TM1637 = new String[] {"CLK", "DIO", "VCC", "GND"};
 
+  /** The blue of a bare PCB, matching the board under the OLED module. */
+  public static Color PCB_BLUE = Color.decode("#004488");
+
   private DisplayType displayType = DisplayType.SingleDigit_10Pin;
+  private Common common = Common.Cathode;
+  private Punctuation punctuation = Punctuation.DecimalPoints;
   private Color ledColor = LED_RED;
+  private Color boardColor = PCB_BLUE;
 
   public SevenSegmentDisplay() {
     super();
@@ -115,6 +129,54 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  /**
+   * No drawing path reads this: the two kinds share a pinout, a package and a set of dimensions,
+   * so it exists to split them in the BOM. Defaulted in the getter so that a project saved before
+   * the property existed still loads.
+   */
+  @EditableProperty(name = "Common")
+  public Common getCommon() {
+    if (common == null) {
+      common = Common.Cathode;
+    }
+    return common;
+  }
+
+  public void setCommon(Common common) {
+    this.common = common;
+  }
+
+  /**
+   * Decides whether the decimal points and the colon are drawn. The colon is meaningless on the
+   * single-digit package and is ignored there.
+   */
+  @EditableProperty(name = "Punctuation")
+  public Punctuation getPunctuation() {
+    if (punctuation == null) {
+      punctuation = Punctuation.DecimalPoints;
+    }
+    return punctuation;
+  }
+
+  public void setPunctuation(Punctuation punctuation) {
+    this.punctuation = punctuation;
+    invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    DisplayType displayType = getDisplayType();
+    if (displayType == null) {
+      return null;
+    }
+    // A module drives the digits itself and brings out no common pins, so polarity is not part of
+    // what you order -- but which punctuation it carries still is.
+    if (displayType.isModule()) {
+      return displayType + ", " + getPunctuation();
+    }
+    return displayType + ", " + getCommon() + ", " + getPunctuation();
+  }
+
   @EditableProperty(name = "LED Color")
   public Color getLedColor() {
     return ledColor;
@@ -125,20 +187,65 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  /** Only the TM1637 has one; the bare packages are a moulding with pins in it. */
+  @EditableProperty(name = "Board Color")
+  public Color getBoardColor() {
+    return boardColor;
+  }
+
+  public void setBoardColor(Color boardColor) {
+    this.boardColor = boardColor;
+    invalidateCache();
+  }
+
+  /**
+   * The display device itself: the whole part on a bare package, and the module mounted on the
+   * board on a TM1637. Relabelled from the inherited "Board Color", which fits neither.
+   */
+  @EditableProperty(name = "Body")
+  @Override
+  public Color getBodyColor() {
+    return super.getBodyColor();
+  }
+
+  private String[] getPinNames() {
+    return displayType.getPinNames();
+  }
+
   @Override
   public String getControlPointNodeName(int index) {
-    switch (displayType) {
-      case SingleDigit_10Pin:
-        if (index >= 0 && index < PIN_NAMES_1DIGIT.length) return PIN_NAMES_1DIGIT[index];
-        break;
-      case FourDigit_12Pin:
-        if (index >= 0 && index < PIN_NAMES_4DIGIT.length) return PIN_NAMES_4DIGIT[index];
-        break;
-      case TM1637_Module_4Pin:
-        if (index >= 0 && index < PIN_NAMES_TM1637.length) return PIN_NAMES_TM1637[index];
-        break;
+    String[] names = getPinNames();
+    if (index >= 0 && index < names.length) {
+      return names[index];
     }
     return "Pin " + (index + 1);
+  }
+
+  private static double px(double millimetres) {
+    return new Size(millimetres, SizeUnit.mm).convertToPixels();
+  }
+
+  /**
+   * The colon sits in the gap between the two middle digits, which exists only on an even count.
+   */
+  private boolean hasMiddlePair() {
+    int digitCount = displayType.getDigitCount();
+    return digitCount >= 2 && digitCount % 2 == 0;
+  }
+
+  /**
+   * Draws the package's digits on their own pitch, centred on {@code rowCentreX}. Bare packages
+   * and modules differ only in the figures they pass, which is what lets a two-, six- or
+   * eight-digit part be a constant rather than a branch.
+   */
+  private void drawDigitRow(Graphics2D g2d, double rowCentreX, double dy, double dw, double dh,
+      double pitch, double nudge, boolean decimalPoints) {
+    int digitCount = displayType.getDigitCount();
+    double firstCentreX = rowCentreX - (digitCount - 1) * pitch / 2.0;
+    for (int d = 0; d < digitCount; d++) {
+      double dx = firstCentreX + d * pitch - dw / 2.0 - nudge;
+      drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor, decimalPoints);
+    }
   }
 
   @Override
@@ -146,68 +253,47 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     Point2D firstPoint = controlPoints[0];
     double spacing = PIN_SPACING.convertToPixels();
 
-    if (displayType == DisplayType.SingleDigit_10Pin) {
-      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels(); // 120px
-      double[][] relativeOffsets = new double[10][2];
-      for (int i = 0; i < 5; i++) {
+    int pinCount = getPinNames().length;
+    double[][] relativeOffsets = new double[pinCount][2];
+
+    if (displayType.isDualRow()) {
+      int perRow = pinCount / 2;
+      double rowSpacing =
+          new Size(displayType.getRowSpacingMm(), SizeUnit.mm).convertToPixels();
+      for (int i = 0; i < perRow; i++) {
         relativeOffsets[i][0] = i * spacing;
         relativeOffsets[i][1] = 0;
+        relativeOffsets[perRow + i][0] = (perRow - 1 - i) * spacing;
+        relativeOffsets[perRow + i][1] = -rowSpacing;
       }
-      for (int i = 0; i < 5; i++) {
-        relativeOffsets[5 + i][0] = (4 - i) * spacing;
-        relativeOffsets[5 + i][1] = -rowSpacing;
-      }
-      rotatePoints(firstPoint, relativeOffsets);
-    } else if (displayType == DisplayType.FourDigit_12Pin) {
-      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
-      double[][] relativeOffsets = new double[12][2];
-      for (int i = 0; i < 6; i++) {
-        relativeOffsets[i][0] = i * spacing;
-        relativeOffsets[i][1] = 0;
-      }
-      for (int i = 0; i < 6; i++) {
-        relativeOffsets[6 + i][0] = (5 - i) * spacing;
-        relativeOffsets[6 + i][1] = -rowSpacing;
-      }
-      rotatePoints(firstPoint, relativeOffsets);
     } else {
-      // TM1637 Module 4-pin
-      double[][] relativeOffsets = new double[4][2];
-      for (int i = 0; i < 4; i++) {
-        relativeOffsets[i][0] = i * spacing;
-        relativeOffsets[i][1] = 0;
+      for (int i = 0; i < pinCount; i++) {
+        relativeOffsets[i][0] = 0;
+        relativeOffsets[i][1] = i * spacing;
       }
-      rotatePoints(firstPoint, relativeOffsets);
     }
+
+    rotatePoints(firstPoint, relativeOffsets);
   }
 
   @Override
   public Shape getBodyShape() {
     Point2D p0 = controlPoints[0];
-    double x = p0.getX();
-    double y = p0.getY();
-    double boardW;
-    double boardH;
+    double spacing = PIN_SPACING.convertToPixels();
+    double boardW = new Size(displayType.getBodyWidthMm(), SizeUnit.mm).convertToPixels();
+    double boardH = new Size(displayType.getBodyLengthMm(), SizeUnit.mm).convertToPixels();
+    int pinCount = getPinNames().length;
     double boardX;
     double boardY;
 
-    if (displayType == DisplayType.SingleDigit_10Pin) {
-      boardW = new Size(12.6d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
-      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
-      boardX = x - (boardW - 4 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - rowSpacing - (boardH - rowSpacing) / 2.0;
-    } else if (displayType == DisplayType.FourDigit_12Pin) {
-      boardW = new Size(50.3d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(19.0d, SizeUnit.mm).convertToPixels();
-      double rowSpacing = new Size(0.6d, SizeUnit.in).convertToPixels();
-      boardX = x - (boardW - 5 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - rowSpacing - (boardH - rowSpacing) / 2.0;
+    if (displayType.isDualRow()) {
+      double rowSpacing =
+          new Size(displayType.getRowSpacingMm(), SizeUnit.mm).convertToPixels();
+      boardX = p0.getX() - (boardW - (pinCount / 2 - 1) * spacing) / 2.0;
+      boardY = p0.getY() - rowSpacing - (boardH - rowSpacing) / 2.0;
     } else {
-      boardW = new Size(42.0d, SizeUnit.mm).convertToPixels();
-      boardH = new Size(24.0d, SizeUnit.mm).convertToPixels();
-      boardX = x - (boardW - 3 * PIN_SPACING.convertToPixels()) / 2.0;
-      boardY = y - (boardH - PIN_SPACING.convertToPixels()) / 2.0;
+      boardX = p0.getX() - boardW + HEADER_EDGE_OFFSET.convertToPixels();
+      boardY = p0.getY() - (boardH - (pinCount - 1) * spacing) / 2.0;
     }
 
     return new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 6, 6);
@@ -238,8 +324,10 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
+    Color outlineFill = displayType.isModule() ? boardColor : bodyColor;
+
     drawingObserver.startTracking();
-    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
+    g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : outlineFill);
     g2d.fill(boardShape);
     drawingObserver.stopTracking();
 
@@ -248,89 +336,78 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      if (displayType == DisplayType.SingleDigit_10Pin) {
-        // Dark display face
-        g2d.setColor(FACE_BLACK);
+      if (!displayType.isModule()) {
+        // the recessed window is a shade of the moulding, so it follows the body colour
+        g2d.setColor(bodyColor.darker());
         g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
 
-        // Single 0.56" 7-segment digit with exact datasheet dimensions
-        double dw = DIGIT_WIDTH.convertToPixels();
-        double dh = DIGIT_HEIGHT.convertToPixels();
-        double dx = boardX + (boardW - dw) / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
+        // The pitch is unscaled while the digits are drawn slightly under size, so they keep their
+        // true centres and only the gaps widen. The row is centred on the body rather than measured
+        // from its left edge, so it stays put across packages of different widths. A single-digit
+        // package is the same construction with a count of one.
+        double dw = px(displayType.getDigitWidthMm()) * DIGIT_DRAW_SCALE;
+        double dh = px(displayType.getDigitHeightMm()) * DIGIT_DRAW_SCALE;
+        double pitch = px(displayType.getDigitPitchMm());
         double dy = boardY + (boardH - dh) / 2.0;
-        drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        double rowCentreX = boardX + boardW / 2.0;
 
-      } else if (displayType == DisplayType.FourDigit_12Pin) {
-        // Dark display face
-        g2d.setColor(FACE_BLACK);
-        g2d.fill(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
-        g2d.setColor(FACE_BORDER);
-        g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-        g2d.draw(new RoundRectangle2D.Double(boardX + 3, boardY + 3, boardW - 6, boardH - 6, 3, 3));
+        Punctuation punctuation = getPunctuation();
+        drawDigitRow(g2d, rowCentreX, dy, dw, dh, pitch, 0.5 * SEGMENT_THICKNESS.convertToPixels(),
+            punctuation.hasDecimalPoints());
 
-        // 4 digits across with 12.70mm center-to-center pitch
-        double dw = DIGIT_WIDTH.convertToPixels();
-        double dh = DIGIT_HEIGHT.convertToPixels();
-        double pitch = DIGIT_PITCH.convertToPixels();
-        double firstCenterX = boardX + new Size(6.1d, SizeUnit.mm).convertToPixels();
-        double dy = boardY + (boardH - dh) / 2.0;
-
-        for (int d = 0; d < 4; d++) {
-          double centerX = firstCenterX + d * pitch;
-          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels();
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        if (punctuation.hasColon() && hasMiddlePair()) {
+          // Colon sized off the glyph grid like the decimal point, so it tracks the digit rather
+          // than staying a fixed few pixels across. The row is centred, so the gap between the two
+          // middle digits is the body's centre line.
+          double dotD = dw / GLYPH_WIDTH * 2.0;
+          double colonX = rowCentreX - dotD / 2.0;
+          g2d.setColor(ledColor);
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
         }
 
-        // Center colon dots between digits 1 & 2
-        double colonX = boardX + boardW / 2.0;
-        double colonY1 = dy + dh * 0.35;
-        double colonY2 = dy + dh * 0.65;
-        g2d.setColor(ledColor);
-        g2d.fill(new Ellipse2D.Double(colonX - 2.0, colonY1 - 2.0, 4.0, 4.0));
-        g2d.fill(new Ellipse2D.Double(colonX - 2.0, colonY2 - 2.0, 4.0, 4.0));
-
       } else {
-        // TM1637 4-Digit Display Module
-        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + 14, boardY + boardH - 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + 14, 12);
-        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - 14, boardY + boardH - 14, 12);
+        Module module = displayType.getModule();
+        double holeInset = px(module.getHoleInsetMm());
+        double holeSize = px(module.getHoleSizeMm());
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + holeInset, holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + holeInset, boardY + boardH - holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset, boardY + holeInset,
+            holeSize);
+        MakerBoardPainter.drawMountingHole(g2d, boardX + boardW - holeInset,
+            boardY + boardH - holeInset, holeSize);
 
-        // Display Bezel (Center)
-        double bezelW = new Size(30.0d, SizeUnit.mm).convertToPixels();
-        double bezelH = new Size(14.0d, SizeUnit.mm).convertToPixels();
-        double bezelX = boardX + (boardW - bezelW) / 2.0 - 6.0;
+        double bezelW = px(module.getBezelWidthMm());
+        double bezelH = px(module.getBezelLengthMm());
+        double bezelX = boardX + (boardW - bezelW) / 2.0;
         double bezelY = boardY + (boardH - bezelH) / 2.0;
 
-        g2d.setColor(FACE_BLACK);
+        g2d.setColor(bodyColor);
         g2d.fill(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
         g2d.setColor(FACE_BORDER);
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(bezelX, bezelY, bezelW, bezelH, 4, 4));
 
-        // 4 Digits inside 0.36" bezel
-        double dw = new Size(5.5d, SizeUnit.mm).convertToPixels();
-        double dh = new Size(9.2d, SizeUnit.mm).convertToPixels();
-        double pitch = new Size(7.62d, SizeUnit.mm).convertToPixels();
-        double firstCenterX = bezelX + (bezelW - 3 * pitch) / 2.0;
+        // at full size here: the module's digits sit on a bezel rather than between pin rows
+        double dw = px(displayType.getDigitWidthMm());
+        double dh = px(displayType.getDigitHeightMm());
+        double pitch = px(displayType.getDigitPitchMm());
         double dy = bezelY + (bezelH - dh) / 2.0;
 
-        for (int d = 0; d < 4; d++) {
-          double centerX = firstCenterX + d * pitch;
-          double dx = centerX - dw / 2.0 - 0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65;
-          drawSevenSegmentDigit(g2d, dx, dy, dw, dh, "8.", ledColor);
+        Punctuation punctuation = getPunctuation();
+        drawDigitRow(g2d, bezelX + bezelW / 2.0, dy, dw, dh, pitch,
+            0.5 * SEGMENT_THICKNESS.convertToPixels() * 0.65, punctuation.hasDecimalPoints());
+        if (punctuation.hasColon() && hasMiddlePair()) {
+          double dotD = dw / GLYPH_WIDTH * 2.0;
+          double colonX = bezelX + bezelW / 2.0 - dotD / 2.0;
+          g2d.setColor(ledColor);
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.35 - dotD / 2.0, dotD, dotD));
+          g2d.fill(new Ellipse2D.Double(colonX, dy + dh * 0.65 - dotD / 2.0, dotD, dotD));
         }
-
-        // Center colon dots
-        double colonX = bezelX + bezelW / 2.0;
-        double colonY1 = bezelY + bezelH / 2.0 - 8.0;
-        double colonY2 = bezelY + bezelH / 2.0 + 6.0;
-        g2d.setColor(ledColor);
-        g2d.fill(new Ellipse2D.Double(colonX - 1.5, colonY1 - 1.5, 3.0, 3.0));
-        g2d.fill(new Ellipse2D.Double(colonX - 1.5, colonY2 - 1.5, 3.0, 3.0));
       }
     }
 
@@ -375,124 +452,86 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
   }
 
   /**
-   * Draws an authentic 7-segment digit matching exact engineering drawing specifications:
-   * - 8.0° italic forward slant
-   * - Realistic polygon segment geometry (trapezoids/hexagons with clean junction bevels)
-   * - 1.40mm segment thickness, 0.35mm inter-segment gaps without overlap
-   * - Unlit segments rendered in dim silhouette and active segments lit in onColor
-   * - 1.40mm Decimal point circle at bottom-right
+   * The seven segments as a unit-grid glyph: a 10 x 18 box with segments two units thick, mitred
+   * at 45 degrees. Neighbours meet at a shared vertex rather than being held apart by a gap, so
+   * the separation between them comes from outlining each segment in the background colour. Index
+   * order is A through G, matching the SEG_* bits.
    */
-  private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h, String charToDisplay, Color onColor) {
+  private static final double[][][] SEGMENT_POINTS = new double[][][] {
+      {{1, 1}, {2, 0}, {8, 0}, {9, 1}, {8, 2}, {2, 2}},        // A, top
+      {{9, 1}, {10, 2}, {10, 8}, {9, 9}, {8, 8}, {8, 2}},      // B, upper right
+      {{9, 9}, {10, 10}, {10, 16}, {9, 17}, {8, 16}, {8, 10}}, // C, lower right
+      {{9, 17}, {8, 18}, {2, 18}, {1, 17}, {2, 16}, {8, 16}},  // D, bottom
+      {{1, 17}, {0, 16}, {0, 10}, {1, 9}, {2, 10}, {2, 16}},   // E, lower left
+      {{1, 9}, {0, 8}, {0, 2}, {1, 1}, {2, 2}, {2, 8}},        // F, upper left
+      {{1, 9}, {2, 8}, {8, 8}, {9, 9}, {8, 10}, {2, 10}}       // G, middle
+  };
+
+  /** Width of the glyph grid above, in its own units. */
+  private static final double GLYPH_WIDTH = 10.0d;
+
+  /** Height of the glyph grid above, in its own units. */
+  private static final double GLYPH_HEIGHT = 18.0d;
+
+  /**
+   * Draws one upright digit into the box at {@code x, y, w, h} from {@link #SEGMENT_POINTS}.
+   * Unlit segments are drawn first as a dim silhouette, then the lit ones, then every segment is
+   * outlined in the face colour so that neighbours sharing a vertex still read as separate.
+   */
+  private void drawSevenSegmentDigit(Graphics2D g2d, double x, double y, double w, double h,
+      String charToDisplay, Color onColor, boolean showDecimalPoint) {
     AffineTransform orig = g2d.getTransform();
 
-    // Exact 8.0° forward italic slant from engineering drawing
-    g2d.translate(x + w / 2.0, y + h / 2.0);
-    g2d.shear(-Math.tan(Math.toRadians(SLANT_DEGREES)), 0);
-    g2d.translate(-w / 2.0, -h / 2.0);
+    g2d.translate(x, y);
 
-    double t = Math.max(3.0, SEGMENT_THICKNESS.convertToPixels() * (h / DIGIT_HEIGHT.convertToPixels()));
-    double g = Math.max(1.0, SEGMENT_GAP.convertToPixels() * (h / DIGIT_HEIGHT.convertToPixels()));
-    double segW = w - t * 0.8;
+    double sx = w / GLYPH_WIDTH;
+    double sy = h / GLYPH_HEIGHT;
 
-    double x0 = 0;
-    double x1 = segW;
-    double y0 = 0;
-    double ym = h / 2.0;
-    double y1 = h;
+    Shape[] segments = new Shape[SEGMENT_POINTS.length];
+    for (int i = 0; i < SEGMENT_POINTS.length; i++) {
+      double[][] points = SEGMENT_POINTS[i];
+      Path2D.Double path = new Path2D.Double();
+      path.moveTo(points[0][0] * sx, points[0][1] * sy);
+      for (int p = 1; p < points.length; p++) {
+        path.lineTo(points[p][0] * sx, points[p][1] * sy);
+      }
+      path.closePath();
+      segments[i] = path;
+    }
 
-    // Segment A (Top horizontal)
-    Path2D pathA = new Path2D.Double();
-    pathA.moveTo(x0 + t * 0.6 + g, y0);
-    pathA.lineTo(x1 - t * 0.6 - g, y0);
-    pathA.lineTo(x1 - g, y0 + t * 0.45);
-    pathA.lineTo(x1 - t - g, y0 + t);
-    pathA.lineTo(x0 + t + g, y0 + t);
-    pathA.lineTo(x0 + g, y0 + t * 0.45);
-    pathA.closePath();
+    // the decimal point is not part of the glyph grid, so it is placed in the same units: one
+    // segment thickness across, sitting on the baseline just clear of the digit
+    double dpD = 2.0 * sx;
+    Shape dpShape = new Ellipse2D.Double(GLYPH_WIDTH * sx + 0.5 * sx, 18.0 * sy - dpD, dpD, dpD);
 
-    // Segment B (Top-Right vertical)
-    Path2D pathB = new Path2D.Double();
-    pathB.moveTo(x1, y0 + t * 0.5 + g);
-    pathB.lineTo(x1 - t * 0.35, y0 + g);
-    pathB.lineTo(x1 - t, y0 + t + 1.4 * g);
-    pathB.lineTo(x1 - t, ym - t * 0.5 - 0.8 * g);
-    pathB.lineTo(x1, ym - 0.8 * g);
-    pathB.closePath();
-
-    // Segment C (Bottom-Right vertical)
-    Path2D pathC = new Path2D.Double();
-    pathC.moveTo(x1, ym + 0.8 * g);
-    pathC.lineTo(x1 - t, ym + t * 0.5 + 0.8 * g);
-    pathC.lineTo(x1 - t, y1 - t - 1.4 * g);
-    pathC.lineTo(x1 - t * 0.35, y1 - g);
-    pathC.lineTo(x1, y1 - t * 0.5 - g);
-    pathC.closePath();
-
-    // Segment D (Bottom horizontal)
-    Path2D pathD = new Path2D.Double();
-    pathD.moveTo(x0 + t + g, y1 - t);
-    pathD.lineTo(x1 - t - g, y1 - t);
-    pathD.lineTo(x1 - g, y1 - t * 0.45);
-    pathD.lineTo(x1 - t * 0.6 - g, y1);
-    pathD.lineTo(x0 + t * 0.6 + g, y1);
-    pathD.lineTo(x0 + g, y1 - t * 0.45);
-    pathD.closePath();
-
-    // Segment E (Bottom-Left vertical)
-    Path2D pathE = new Path2D.Double();
-    pathE.moveTo(x0, ym + 0.8 * g);
-    pathE.lineTo(x0 + t, ym + t * 0.5 + 0.8 * g);
-    pathE.lineTo(x0 + t, y1 - t - 1.4 * g);
-    pathE.lineTo(x0 + t * 0.35, y1 - g);
-    pathE.lineTo(x0, y1 - t * 0.5 - g);
-    pathE.closePath();
-
-    // Segment F (Top-Left vertical)
-    Path2D pathF = new Path2D.Double();
-    pathF.moveTo(x0, y0 + t * 0.5 + g);
-    pathF.lineTo(x0 + t * 0.35, y0 + g);
-    pathF.lineTo(x0 + t, y0 + t + 1.4 * g);
-    pathF.lineTo(x0 + t, ym - t * 0.5 - 0.8 * g);
-    pathF.lineTo(x0, ym - 0.8 * g);
-    pathF.closePath();
-
-    // Segment G (Middle horizontal hexagon)
-    Path2D pathG = new Path2D.Double();
-    pathG.moveTo(x0 + 1.4 * g, ym);
-    pathG.lineTo(x0 + t * 0.6 + 1.4 * g, ym - t * 0.48);
-    pathG.lineTo(x1 - t * 0.6 - 1.4 * g, ym - t * 0.48);
-    pathG.lineTo(x1 - 1.4 * g, ym);
-    pathG.lineTo(x1 - t * 0.6 - 1.4 * g, ym + t * 0.48);
-    pathG.lineTo(x0 + t * 0.6 + 1.4 * g, ym + t * 0.48);
-    pathG.closePath();
-
-    // Decimal Point (DP)
-    double dpD = t * 0.95;
-    Shape dpShape = new Ellipse2D.Double(x1 + t * 0.25, y1 - dpD, dpD, dpD);
-
-    Shape[] segments = new Shape[] { pathA, pathB, pathC, pathD, pathE, pathF, pathG };
     int mask = getSegmentMask(charToDisplay.isEmpty() ? '8' : charToDisplay.charAt(0));
 
-    // 1. Draw unlit segment silhouettes (dim background)
     g2d.setColor(LED_OFF);
     for (int i = 0; i < 7; i++) {
       if ((mask & (1 << i)) == 0) {
         g2d.fill(segments[i]);
       }
     }
-    if ((mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
+    if (showDecimalPoint && (mask & SEG_DP) == 0 && !charToDisplay.contains(".")) {
       g2d.fill(dpShape);
     }
 
-    // 2. Draw lit active segments
     g2d.setColor(onColor);
     for (int i = 0; i < 7; i++) {
       if ((mask & (1 << i)) != 0) {
         g2d.fill(segments[i]);
       }
     }
-    if ((mask & SEG_DP) != 0 || charToDisplay.contains(".")) {
+    if (showDecimalPoint && ((mask & SEG_DP) != 0 || charToDisplay.contains("."))) {
       g2d.fill(dpShape);
+    }
+
+    // Outlining every segment in the background colour is what stops neighbours that share a
+    // vertex from fusing into one shape.
+    g2d.setColor(FACE_BLACK);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((float) (0.25 * (sx + sy) / 2.0)));
+    for (Shape segment : segments) {
+      g2d.draw(segment);
     }
 
     g2d.setTransform(orig);
@@ -505,7 +544,157 @@ public class SevenSegmentDisplay extends AbstractMakerBoard {
     g2d.setColor(Color.DARK_GRAY);
     g2d.draw(new RoundRectangle2D.Double(6, 3, width - 12, height - 6, 3, 3));
 
-    // Draw single stylized '8'
-    drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED);
+    // the icon stands for the component type, so it keeps its decimal point whatever
+    // Punctuation is set to
+    drawSevenSegmentDigit(g2d, 9, 5, width - 18, height - 10, "8.", LED_RED, true);
+  }
+
+  /**
+   * The packages this component can draw, each carrying its own dimensions in millimetres.
+   *
+   * <p>Digit heights are definitional -- 0.36 and 0.56 inches are what the parts are named for.
+   * The 0.56 inch body, digit width and pitch have never been checked against a datasheet, and
+   * the 0.36 inch equivalents are placeholders scaled from the digit height rather than
+   * measurements.
+   */
+  public enum DisplayType {
+    // 5161AS, 5621AS, 3641AS and 5641AS. The two four-digit parts differ in size but share a
+    // pinout, which is why one array serves both.
+    SingleDigit_10Pin("1-Digit 0.56\"", 12.7d, 19.0d, 8.1d, 14.2d, 0d, 15.24d, true, 1,
+        PIN_NAMES_1DIGIT, null),
+    TwoDigit_0_56_10Pin("2-Digit 0.56\"", 25.0d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 2,
+        PIN_NAMES_2DIGIT, null),
+    FourDigit_0_36_12Pin("4-Digit 0.36\"", 30.0d, 14.0d, 5.2d, 9.14d, 7.5d, 10.16d, true, 4,
+        PIN_NAMES_4DIGIT, null),
+    FourDigit_0_56_12Pin("4-Digit 0.56\"", 50.3d, 19.0d, 8.1d, 14.2d, 12.7d, 15.24d, true, 4,
+        PIN_NAMES_4DIGIT, null),
+    TM1637_Module_4Pin("4-Digit TM1637 Module", 42.0d, 24.0d, 5.5d, 9.2d, 7.62d, 0d, false, 4,
+        PIN_NAMES_TM1637, new Module(30.0d, 14.0d, 1.778d, 1.524d));
+
+    private final String label;
+    private final double bodyWidthMm;
+    private final double bodyLengthMm;
+    private final double digitWidthMm;
+    private final double digitHeightMm;
+    private final double digitPitchMm;
+    private final double rowSpacingMm;
+    private final boolean dualRow;
+    private final int digitCount;
+    private final String[] pinNames;
+    private final Module module;
+
+    DisplayType(String label, double bodyWidthMm, double bodyLengthMm, double digitWidthMm,
+        double digitHeightMm, double digitPitchMm, double rowSpacingMm, boolean dualRow,
+        int digitCount, String[] pinNames, Module module) {
+      this.label = label;
+      this.bodyWidthMm = bodyWidthMm;
+      this.bodyLengthMm = bodyLengthMm;
+      this.digitWidthMm = digitWidthMm;
+      this.digitHeightMm = digitHeightMm;
+      this.digitPitchMm = digitPitchMm;
+      this.rowSpacingMm = rowSpacingMm;
+      this.dualRow = dualRow;
+      this.digitCount = digitCount;
+      this.pinNames = pinNames;
+      this.module = module;
+    }
+
+    /**
+     * Distance between the two pin rows. It cannot be shared: a package only works if its rows sit
+     * within its body, and the 0.36 inch part is shorter than the 0.6 inch the larger ones use.
+     */
+    public double getRowSpacingMm() { return rowSpacingMm; }
+
+    @Override public String toString() { return label; }
+    public double getBodyWidthMm() { return bodyWidthMm; }
+    public double getBodyLengthMm() { return bodyLengthMm; }
+    public double getDigitWidthMm() { return digitWidthMm; }
+    public double getDigitHeightMm() { return digitHeightMm; }
+    public double getDigitPitchMm() { return digitPitchMm; }
+
+    /** True for the DIP packages, which carry their pins in two rows rather than one. */
+    public boolean isDualRow() { return dualRow; }
+
+    /** Carried rather than inferred, so a two-, six- or eight-digit part is a constant rather than
+     * another branch through {@code draw}. */
+    public int getDigitCount() { return digitCount; }
+
+    /** The part's pins in DIP order. */
+    public String[] getPinNames() { return pinNames; }
+
+    /**
+     * The board a driven module is built on, or {@code null} for a bare package. A module carries
+     * its own driver, so it brings out no common pins and its polarity is not something you order.
+     */
+    public Module getModule() { return module; }
+
+    public boolean isModule() { return module != null; }
+  }
+
+  /**
+   * Which electrode the digits share. The two are identical in pinout, package and dimensions, so
+   * this changes nothing that is drawn and reaches only the BOM.
+   */
+  public enum Common {
+    Cathode("Common Cathode"),
+    Anode("Common Anode");
+
+    private final String label;
+    Common(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+  }
+
+  /**
+   * What the package carries besides the digits. On a twelve-pin part these are not independent:
+   * A-G plus DP and four digit commons already account for every pin, so a colon has to share the
+   * decimal point's line or replace it. The property describes the face of the part, not a pin.
+   */
+  public enum Punctuation {
+    None("No Punctuation"),
+    DecimalPoints("Decimal Points"),
+    Colon("Colon"),
+    Both("Colon + Decimal Points");
+
+    private final String label;
+    Punctuation(String label) { this.label = label; }
+    @Override public String toString() { return label; }
+
+    public boolean hasDecimalPoints() { return this == DecimalPoints || this == Both; }
+    public boolean hasColon() { return this == Colon || this == Both; }
+  }
+
+  /**
+   * The circuit board a driven module is built on, with the display mounted on it as a bezel and
+   * mounting holes at the corners. A bare package has none of this.
+   *
+   * <p>The hole figures are the pixel offsets this class drew before they were figures at all,
+   * converted at the canvas scale rather than measured. The exact conversions are kept rather
+   * than two-decimal roundings because the roundings moved the holes by a fiftieth of a pixel,
+   * which antialiasing turned into a visible difference.
+   *
+   * @author Branislav Stojkovic
+   */
+  public static class Module {
+
+    private final double bezelWidthMm;
+    private final double bezelLengthMm;
+    private final double holeInsetMm;
+    private final double holeSizeMm;
+
+    public Module(double bezelWidthMm, double bezelLengthMm, double holeInsetMm,
+        double holeSizeMm) {
+      this.bezelWidthMm = bezelWidthMm;
+      this.bezelLengthMm = bezelLengthMm;
+      this.holeInsetMm = holeInsetMm;
+      this.holeSizeMm = holeSizeMm;
+    }
+
+    public double getBezelWidthMm() { return bezelWidthMm; }
+    public double getBezelLengthMm() { return bezelLengthMm; }
+
+    /** Centre of a corner hole, from each of the two edges nearest it. */
+    public double getHoleInsetMm() { return holeInsetMm; }
+
+    public double getHoleSizeMm() { return holeSizeMm; }
   }
 }

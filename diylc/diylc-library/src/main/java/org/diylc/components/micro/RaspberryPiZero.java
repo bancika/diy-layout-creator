@@ -75,23 +75,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     PIN_NAMES[44] = "TV 2";
   }
 
-  public enum ZeroVersion {
-    PI_ZERO("Pi Zero"),
-    PI_ZERO_W("Pi Zero W"),
-    PI_ZERO_2_W("Pi Zero 2 W");
-
-    private final String label;
-
-    ZeroVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   protected ZeroVersion version = ZeroVersion.PI_ZERO;
   protected boolean headers = false;
 
@@ -113,6 +96,11 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     this.version = version;
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
   }
 
   @EditableProperty(name = "Headers")
@@ -288,7 +276,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       double socY = boardY + new Size(11.5d, SizeUnit.mm).convertToPixels();
       MakerBoardPainter.drawChip(g2d, socX, socY, socW, socH, "");
 
-      // Raspberry Pi logo on SoC chip
       double logoSize = new Size(7.0d, SizeUnit.mm).convertToPixels();
       double logoW = logoSize * (72.51 / 92.604);
       double logoX = socX + (socW - logoW) / 2.0;
@@ -324,7 +311,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
       StringUtils.drawCenteredText(g2d, "GPIO", boardX + new Size(42.5d, SizeUnit.mm).convertToPixels(),
           y + PIN_SPACING.convertToPixels(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Silkscreen for RUN and TV pads
       double spacing = PIN_SPACING.convertToPixels();
       double runBoxX = x + 18 * spacing - spacing / 2.0;
       double runBoxY = y + 1 * spacing - spacing / 2.0;
@@ -357,9 +343,6 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setComposite(oldComposite);
   }
 
-  /**
-   * Helper to draw GPIO solder pads (copper pads with drill holes, square for Pin 1).
-   */
   protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
     drawPcbSolderPads(g2d, 0, 40, true, outlineMode, drawingObserver);
     drawPcbSolderPads(g2d, 41, 2, true, outlineMode, drawingObserver);
@@ -374,17 +357,14 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(2, 6, width - 4, height - 12, 3, 3));
 
-    // GPIO Solder Pads in icon
     g2d.setColor(PAD_COLOR);
     for (int x = 6; x <= width - 8; x += 3) {
       g2d.fillRect(x, 7, 2, 2);
     }
 
-    // SoC
     g2d.setColor(IC_BODY_COLOR);
     g2d.fillRect(10, 12, 6, 6);
 
-    // Connectors on bottom
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(6, height - 7, 4, 3);
     g2d.fillRect(18, height - 7, 3, 3);
@@ -393,5 +373,22 @@ public class RaspberryPiZero extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ZERO", width / 2 + 4, 21, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum ZeroVersion {
+    PI_ZERO("Pi Zero"),
+    PI_ZERO_W("Pi Zero W"),
+    PI_ZERO_2_W("Pi Zero 2 W");
+
+    private final String label;
+
+    ZeroVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

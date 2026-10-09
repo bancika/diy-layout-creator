@@ -188,7 +188,7 @@ public class TP4056Charger extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw tinned solder pads
-    drawSolderPads(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

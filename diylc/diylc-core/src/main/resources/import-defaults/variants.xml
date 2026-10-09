@@ -6,7 +6,7 @@
           <name>Covered PAF-Style</name>
           <values>
             <entry>
-              <string>Bobin 1</string>
+              <string>Bobbin 1</string>
               <awt-color hex="eae3c6"/>
             </entry>
             <entry>
@@ -18,16 +18,12 @@
               <boolean>true</boolean>
             </entry>
             <entry>
-              <string>Bobin 2</string>
+              <string>Bobbin 2</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
               <string>Color</string>
               <awt-color hex="c0c0c0"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Model</string>
@@ -60,7 +56,7 @@
           <name>Uncovered PAF-Style</name>
           <values>
             <entry>
-              <string>Bobin 1</string>
+              <string>Bobbin 1</string>
               <awt-color hex="eae3c6"/>
             </entry>
             <entry>
@@ -72,16 +68,12 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Bobin 2</string>
+              <string>Bobbin 2</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
               <string>Color</string>
               <awt-color hex="c0c0c0"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Pole Color</string>
@@ -114,7 +106,7 @@
           <name>EMG-style</name>
           <values>
             <entry>
-              <string>Bobin 1</string>
+              <string>Bobbin 1</string>
               <awt-color hex="eae3c6"/>
             </entry>
             <entry>
@@ -126,16 +118,12 @@
               <boolean>true</boolean>
             </entry>
             <entry>
-              <string>Bobin 2</string>
+              <string>Bobbin 2</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
               <string>Color</string>
               <awt-color hex="333333"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Pole Color</string>
@@ -168,7 +156,7 @@
           <name>Filtertron-style</name>
           <values>
             <entry>
-              <string>Bobin 1</string>
+              <string>Bobbin 1</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -184,16 +172,12 @@
               <boolean>true</boolean>
             </entry>
             <entry>
-              <string>Bobin 2</string>
+              <string>Bobbin 2</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
               <string>Color</string>
               <awt-color hex="c0c0c0"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Model</string>
@@ -239,7 +223,7 @@
               <awt-color hex="8a5e20"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -247,11 +231,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -261,10 +245,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -302,7 +282,7 @@
               <awt-color hex="8a5e20"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -310,11 +290,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -324,10 +304,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -365,7 +341,7 @@
               <awt-color hex="e0c68b"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -373,11 +349,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -387,10 +363,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -428,7 +400,7 @@
               <awt-color hex="e0c68b"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -436,11 +408,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -450,10 +422,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -491,7 +459,7 @@
               <awt-color hex="82cffd"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -499,11 +467,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -513,10 +481,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -554,7 +518,7 @@
               <awt-color hex="82cffd"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -562,11 +526,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -576,10 +540,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -617,7 +577,7 @@
               <awt-color hex="d2d7db"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -625,11 +585,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -639,10 +599,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -680,7 +636,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -688,11 +644,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -702,10 +658,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -743,7 +695,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -751,11 +703,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -765,10 +717,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -806,7 +754,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -814,11 +762,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -828,10 +776,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -869,7 +813,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -877,11 +821,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -891,10 +835,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -932,7 +872,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -940,11 +880,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -954,10 +894,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -995,7 +931,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1003,11 +939,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1017,10 +953,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1058,7 +990,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1066,11 +998,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1080,10 +1012,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1121,7 +1049,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1129,11 +1057,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1143,10 +1071,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1184,7 +1108,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1192,11 +1116,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1206,10 +1130,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1247,7 +1167,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1255,11 +1175,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1269,10 +1189,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1310,7 +1226,7 @@
               <awt-color hex="f6f5f5"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1318,11 +1234,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1332,10 +1248,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1373,7 +1285,7 @@
               <awt-color hex="d2d7db"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1381,11 +1293,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1395,10 +1307,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1436,7 +1344,7 @@
               <awt-color hex="d2d7db"/>
             </entry>
             <entry>
-              <string>Power rating</string>
+              <string>Power Rating</string>
               <null/>
             </entry>
             <entry>
@@ -1444,11 +1352,11 @@
               <boolean>false</boolean>
             </entry>
             <entry>
-              <string>Lead color</string>
+              <string>Lead Color</string>
               <awt-color hex="cccccc"/>
             </entry>
             <entry>
-              <string>Label color</string>
+              <string>Label Color</string>
               <awt-color hex="000000"/>
             </entry>
             <entry>
@@ -1458,10 +1366,6 @@
             <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Color code</string>
@@ -1535,10 +1439,6 @@
             <null/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Color code</string>
             <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
           </entry>
@@ -1610,10 +1510,6 @@
             <null/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Color code</string>
             <org.diylc.common.ResistorColorCode>_5_BAND</org.diylc.common.ResistorColorCode>
           </entry>
@@ -1654,10 +1550,6 @@
               <awt-color hex="ffffff"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Pole Color</string>
               <awt-color hex="759daf"/>
             </entry>
@@ -1694,10 +1586,6 @@
             <entry>
               <string>Color</string>
               <awt-color hex="ffffff"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Pole Color</string>
@@ -1738,10 +1626,6 @@
               <awt-color hex="ffffff"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Pole Color</string>
               <awt-color hex="759daf"/>
             </entry>
@@ -1778,10 +1662,6 @@
             <entry>
               <string>Color</string>
               <awt-color hex="ffffff"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Pole Color</string>
@@ -1822,10 +1702,6 @@
               <awt-color hex="ffffff"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Pole Color</string>
               <awt-color hex="759daf"/>
             </entry>
@@ -1862,10 +1738,6 @@
             <entry>
               <string>Color</string>
               <awt-color hex="ffffff"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Pole Color</string>
@@ -1907,14 +1779,6 @@
               <diylc.electromechanical.JackType>MONO</diylc.electromechanical.JackType>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
-              <string>Value</string>
-              <string></string>
-            </entry>
-            <entry>
               <string>Orientation</string>
               <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
             </entry>
@@ -1934,14 +1798,6 @@
             <entry>
               <string>Type</string>
               <diylc.electromechanical.JackType>STEREO</diylc.electromechanical.JackType>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
-              <string>Value</string>
-              <string></string>
             </entry>
             <entry>
               <string>Orientation</string>
@@ -1978,10 +1834,6 @@
             <entry>
               <string>Pin Spacing</string>
               <org.diylc.core.measures.Size value="0.1" unit="in"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Value</string>
@@ -2043,10 +1895,6 @@
             <entry>
               <string>Pin Spacing</string>
               <org.diylc.core.measures.Size value="0.1" unit="in"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Value</string>
@@ -2119,10 +1967,6 @@
               <null/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Value</string>
               <string></string>
             </entry>
@@ -2176,10 +2020,6 @@
               <null/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
-            </entry>
-            <entry>
               <string>Value</string>
               <string></string>
             </entry>
@@ -2231,10 +2071,6 @@
             <entry>
               <string>Voltage</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
             </entry>
             <entry>
               <string>Value</string>
@@ -2294,10 +2130,6 @@
               <string></string>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
-            </entry>
-            <entry>
               <string>Label</string>
               <awt-color hex="ffffff"/>
             </entry>
@@ -2344,20 +2176,8 @@
           <name>PCB Noval</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Base</string>
@@ -2383,20 +2203,8 @@
           <name>PCB Octal</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Base</string>
@@ -2421,20 +2229,8 @@
           <name>Chassis Noval</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2472,20 +2268,8 @@
           <name>Chassis Octal</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2522,20 +2306,8 @@
           <name>Chassis Noval 9A (12A?7)</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2573,20 +2345,8 @@
           <name>Chassis Noval 9CV (EL84)</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2624,20 +2384,8 @@
           <name>Chassis Octal 5T</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2674,20 +2422,8 @@
           <name>Chassis Octal 7AC (6?6)</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2724,20 +2460,8 @@
           <name>Chassis 7-pin 7BK</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2773,20 +2497,8 @@
           <name>Chassis Octal 8ET (EL34)</name>
           <values>
             <entry>
-              <string>Type</string>
-              <string></string>
-            </entry>
-            <entry>
-              <string>Angle</string>
-              <int>0</int>
-            </entry>
-            <entry>
               <string>Color</string>
               <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Mount</string>
@@ -2832,16 +2544,8 @@
               <diylc.electromechanical.OpenJack1__4_-OpenJackType>MONO</diylc.electromechanical.OpenJack1__4_-OpenJackType>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Labels</string>
               <boolean>true</boolean>
-            </entry>
-            <entry>
-              <string>Orientation</string>
-              <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
             </entry>
           </values>
           <points>
@@ -2860,16 +2564,8 @@
               <diylc.electromechanical.OpenJack1__4_-OpenJackType>STEREO</diylc.electromechanical.OpenJack1__4_-OpenJackType>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Labels</string>
               <boolean>true</boolean>
-            </entry>
-            <entry>
-              <string>Orientation</string>
-              <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
             </entry>
           </values>
           <points>
@@ -2888,16 +2584,8 @@
               <diylc.electromechanical.OpenJack1__4_-OpenJackType>SWITCHED</diylc.electromechanical.OpenJack1__4_-OpenJackType>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Labels</string>
               <boolean>true</boolean>
-            </entry>
-            <entry>
-              <string>Orientation</string>
-              <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
             </entry>
           </values>
           <points>
@@ -2920,14 +2608,6 @@
               <string>Type</string>
               <diylc.guitar.LeverSwitch_-LeverSwitchType>DP3T</diylc.guitar.LeverSwitch_-LeverSwitchType>
             </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
-              <string>Orientation</string>
-              <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
-            </entry>
           </values>
           <points>
             <point x="0.0" y="0.0"/>
@@ -2948,14 +2628,6 @@
             <entry>
               <string>Type</string>
               <diylc.guitar.LeverSwitch_-LeverSwitchType>_4P5T</diylc.guitar.LeverSwitch_-LeverSwitchType>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
-              <string>Orientation</string>
-              <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
             </entry>
           </values>
           <points>
@@ -3012,7 +2684,7 @@
               <awt-color hex="cbd5db"/>
             </entry>
             <entry>
-              <string>Lug size</string>
+              <string>Lug Size</string>
               <org.diylc.core.measures.Size value="0.15" unit="in"/>
             </entry>
             <entry>
@@ -3020,16 +2692,8 @@
               <diylc.passive.PotentiometerPanel_-Type>ThroughHole</diylc.passive.PotentiometerPanel_-Type>
             </entry>
             <entry>
-              <string>Show shaft</string>
-              <boolean>false</boolean>
-            </entry>
-            <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Body</string>
@@ -3076,7 +2740,7 @@
               <awt-color hex="cbd5db"/>
             </entry>
             <entry>
-              <string>Lug size</string>
+              <string>Lug Size</string>
               <org.diylc.core.measures.Size value="0.15" unit="in"/>
             </entry>
             <entry>
@@ -3084,16 +2748,8 @@
               <diylc.passive.PotentiometerPanel_-Type>ThroughHole</diylc.passive.PotentiometerPanel_-Type>
             </entry>
             <entry>
-              <string>Show shaft</string>
-              <boolean>false</boolean>
-            </entry>
-            <entry>
               <string>Value</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Body</string>
@@ -3147,10 +2803,6 @@
               </org.diylc.core.measures.Capacitance-array>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Label</string>
               <awt-color hex="ffffff"/>
             </entry>
@@ -3196,10 +2848,6 @@
             <entry>
               <string>Voltage</string>
               <null/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Value</string>
@@ -3268,10 +2916,6 @@
               </org.diylc.core.measures.Capacitance-array>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Label</string>
               <awt-color hex="ffffff"/>
             </entry>
@@ -3327,10 +2971,6 @@
                 <null/>
                 <null/>
               </org.diylc.core.measures.Capacitance-array>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Label</string>
@@ -3426,10 +3066,6 @@
               <awt-color hex="516d7a"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
-            </entry>
-            <entry>
               <string>Value</string>
               <string></string>
             </entry>
@@ -3507,10 +3143,6 @@
             <entry>
               <string>Core Border</string>
               <awt-color hex="516d7a"/>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
             </entry>
             <entry>
               <string>Value</string>
@@ -3592,10 +3224,6 @@
               <awt-color hex="516d7a"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>100</byte>
-            </entry>
-            <entry>
               <string>Value</string>
               <string></string>
             </entry>
@@ -3640,15 +3268,11 @@
               <awt-color hex="eeeeee"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Border</string>
               <awt-color hex="a6a6a6"/>
             </entry>
             <entry>
-              <string>Border thickness</string>
+              <string>Border Thickness</string>
               <org.diylc.core.measures.Size value="0.2" unit="mm"/>
             </entry>
           </values>
@@ -3671,15 +3295,11 @@
               <awt-color hex="eeeeee"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Border</string>
               <awt-color hex="a6a6a6"/>
             </entry>
             <entry>
-              <string>Border thickness</string>
+              <string>Border Thickness</string>
               <org.diylc.core.measures.Size value="0.2" unit="mm"/>
             </entry>
           </values>
@@ -3702,15 +3322,11 @@
               <awt-color hex="eeeeee"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Border</string>
               <awt-color hex="a6a6a6"/>
             </entry>
             <entry>
-              <string>Border thickness</string>
+              <string>Border Thickness</string>
               <org.diylc.core.measures.Size value="0.2" unit="mm"/>
             </entry>
           </values>
@@ -3733,15 +3349,11 @@
               <awt-color hex="eeeeee"/>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Border</string>
               <awt-color hex="a6a6a6"/>
             </entry>
             <entry>
-              <string>Border thickness</string>
+              <string>Border Thickness</string>
               <org.diylc.core.measures.Size value="0.2" unit="mm"/>
             </entry>
           </values>
@@ -3763,10 +3375,6 @@
             <entry>
               <string>Type</string>
               <diylc.electromechanical.ToggleSwitchType>DPDT</diylc.electromechanical.ToggleSwitchType>
-            </entry>
-            <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
             </entry>
             <entry>
               <string>Spacing</string>
@@ -3804,10 +3412,6 @@
               <diylc.electromechanical.ToggleSwitchType>SPDT</diylc.electromechanical.ToggleSwitchType>
             </entry>
             <entry>
-              <string>Alpha</string>
-              <byte>127</byte>
-            </entry>
-            <entry>
               <string>Spacing</string>
               <org.diylc.core.measures.Size value="0.2" unit="in"/>
             </entry>
@@ -3838,10 +3442,6 @@
           <entry>
             <string>Type</string>
             <diylc.electromechanical.ToggleSwitchType>_3PDT</diylc.electromechanical.ToggleSwitchType>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Spacing</string>
@@ -3996,10 +3596,6 @@
             <awt-color hex="acaca7"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Timing</string>
             <null/>
           </entry>
@@ -4051,10 +3647,6 @@
           <entry>
             <string>Label</string>
             <awt-color hex="acaca7"/>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Timing</string>
@@ -4111,10 +3703,6 @@
             <awt-color hex="acaca7"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Timing</string>
             <null/>
           </entry>
@@ -4168,10 +3756,6 @@
           <entry>
             <string>Label</string>
             <awt-color hex="acaca7"/>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Timing</string>
@@ -4241,10 +3825,6 @@
             <awt-color hex="ffffff"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Timing</string>
             <null/>
           </entry>
@@ -4301,10 +3881,6 @@
           <entry>
             <string>Label</string>
             <awt-color hex="ffffff"/>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Timing</string>
@@ -4365,10 +3941,6 @@
           <entry>
             <string>Label</string>
             <awt-color hex="ffffff"/>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Timing</string>
@@ -4441,10 +4013,6 @@
             <awt-color hex="ffffff"/>
           </entry>
           <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
-          <entry>
             <string>Timing</string>
             <null/>
           </entry>
@@ -4505,10 +4073,6 @@
               <value>0</value>
             </org.diylc.core.Angle>
           </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
         </values>
         <points>
           <point x="0.0" y="0.0"/>
@@ -4534,10 +4098,6 @@
             <org.diylc.core.Angle>
               <value>0</value>
             </org.diylc.core.Angle>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
         </values>
         <points>
@@ -4566,10 +4126,6 @@
             <org.diylc.core.Angle>
               <value>0</value>
             </org.diylc.core.Angle>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
         </values>
         <points>
@@ -4614,10 +4170,6 @@
               <value>0</value>
             </org.diylc.core.Angle>
           </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
         </values>
         <points>
           <point x="0.0" y="0.0"/>
@@ -4643,10 +4195,6 @@
             <org.diylc.core.Angle>
               <value>0</value>
             </org.diylc.core.Angle>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
         </values>
         <points>
@@ -4675,10 +4223,6 @@
               <value>0</value>
             </org.diylc.core.Angle>
           </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
-          </entry>
         </values>
         <points>
           <point x="0.0" y="0.0"/>
@@ -4702,11 +4246,11 @@
         <name>6x6 (e.g. Omron B3F-1000)</name>
         <values>
           <entry>
-            <string>Spacing X</string>
+            <string>Pin Spacing</string>
             <org.diylc.core.measures.Size value="6.5" unit="mm"/>
           </entry>
           <entry>
-            <string>Spacing Y</string>
+            <string>Row Spacing</string>
             <org.diylc.core.measures.Size value="4.5" unit="mm"/>
           </entry>
           <entry>
@@ -4718,7 +4262,7 @@
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Case</string>
+            <string>Case Size</string>
             <org.diylc.core.measures.Size value="6.0" unit="mm"/>
           </entry>
           <entry>
@@ -4732,10 +4276,6 @@
           <entry>
             <string>Value</string>
             <string></string>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -4767,11 +4307,11 @@
         <name>12x12 (e.g. Omron B3F-4000)</name>
         <values>
           <entry>
-            <string>Spacing X</string>
+            <string>Pin Spacing</string>
             <org.diylc.core.measures.Size value="12.6" unit="mm"/>
           </entry>
           <entry>
-            <string>Spacing Y</string>
+            <string>Row Spacing</string>
             <org.diylc.core.measures.Size value="5.0" unit="mm"/>
           </entry>
           <entry>
@@ -4783,7 +4323,7 @@
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Case</string>
+            <string>Case Size</string>
             <org.diylc.core.measures.Size value="12.0" unit="mm"/>
           </entry>
           <entry>
@@ -4797,10 +4337,6 @@
           <entry>
             <string>Value</string>
             <string></string>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Body</string>
@@ -4832,11 +4368,11 @@
         <name>5x5 Low Profile SMD (e.g. Alps SKQG)</name>
         <values>
           <entry>
-            <string>Spacing X</string>
+            <string>Pin Spacing</string>
             <org.diylc.core.measures.Size value="5.2" unit="mm"/>
           </entry>
           <entry>
-            <string>Spacing Y</string>
+            <string>Row Spacing</string>
             <org.diylc.core.measures.Size value="3.7" unit="mm"/>
           </entry>
           <entry>
@@ -4848,7 +4384,7 @@
             <org.diylc.common.Orientation>DEFAULT</org.diylc.common.Orientation>
           </entry>
           <entry>
-            <string>Case</string>
+            <string>Case Size</string>
             <org.diylc.core.measures.Size value="5.0" unit="mm"/>
           </entry>
           <entry>
@@ -4862,10 +4398,6 @@
           <entry>
             <string>Value</string>
             <string></string>
-          </entry>
-          <entry>
-            <string>Alpha</string>
-            <byte>127</byte>
           </entry>
           <entry>
             <string>Border</string>
@@ -5352,6 +4884,454 @@
           </values>
           <defaultFlag>false</defaultFlag>
           <createdOn>2026-09-12T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.CharacterLCD</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>16x2 I2C Backpack</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.CharacterLCD_-LCDSize>_16x2</diylc.displays.CharacterLCD_-LCDSize></entry>
+            <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>I2C_Backpack</diylc.displays.CharacterLCD_-LCDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>16x2 Parallel HD44780</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.CharacterLCD_-LCDSize>_16x2</diylc.displays.CharacterLCD_-LCDSize></entry>
+            <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>Parallel_16Pin</diylc.displays.CharacterLCD_-LCDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>20x4 I2C Backpack</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.CharacterLCD_-LCDSize>_20x4</diylc.displays.CharacterLCD_-LCDSize></entry>
+            <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>I2C_Backpack</diylc.displays.CharacterLCD_-LCDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>20x4 Parallel HD44780</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.CharacterLCD_-LCDSize>_20x4</diylc.displays.CharacterLCD_-LCDSize></entry>
+            <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>Parallel_16Pin</diylc.displays.CharacterLCD_-LCDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.OLEDDisplay</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>0.96" SSD1306 I2C</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_96</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.96" SSD1306 SPI (7-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_96</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.96" SSD1306 SPI (6-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_96</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.96" SSD1306 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_96</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.91" SSD1306 I2C</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.91" SSD1306 SPI (7-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.91" SSD1306 SPI (6-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.91" SSD1306 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SSD1306_0_91</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.3" SH1106 I2C</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.3" SH1106 SPI (7-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.3" SH1106 SPI (6-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.3" SH1106 SPI (8-Pin)</name>
+          <values>
+            <entry><string>Size</string><diylc.displays.OLEDDisplay_-Version>SH1106_1_3</diylc.displays.OLEDDisplay_-Version></entry>
+            <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.TFTDisplay</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>2.8" ILI9341 (Touch + SD)</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ILI9341_2_8</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>2.4" ILI9341 (Touch + SD)</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ILI9341_2_4</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>0.96" ST7735 80x160</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_0_96</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.8" ST7735 128x160</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_1_8</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.8" ST7735 128x160 (SD)</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_1_8_SD</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.54" ST7789 240x240</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7789_1_54</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1.28" GC9A01 Round</name>
+          <values>
+            <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>GC9A01_1_28</diylc.displays.TFTDisplay_-Controller></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.SevenSegmentDisplay</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>1-Digit 0.56" Common Cathode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>SingleDigit_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>1-Digit 0.56" Common Anode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>SingleDigit_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>2-Digit 0.56" Common Cathode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TwoDigit_0_56_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>2-Digit 0.56" Common Anode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TwoDigit_0_56_10Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-Digit 0.36" Common Cathode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>FourDigit_0_36_12Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-Digit 0.36" Common Anode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>FourDigit_0_36_12Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-Digit 0.56" Common Cathode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>FourDigit_0_56_12Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-Digit 0.56" Common Anode</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>FourDigit_0_56_12Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+            <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-Digit TM1637 Module</name>
+          <values>
+            <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TM1637_Module_4Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.LEDMatrix</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>Single 8x8 (MAX7219)</name>
+          <values>
+            <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>Single_8x8</diylc.displays.LEDMatrix_-Modules></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>Compact 8x8 (MAX7219)</name>
+          <values>
+            <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>Compact_8x8</diylc.displays.LEDMatrix_-Modules></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>4-in-1 32x8 (MAX7219)</name>
+          <values>
+            <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>FourInOne_32x8</diylc.displays.LEDMatrix_-Modules></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>8-in-1 64x8 (MAX7219)</name>
+          <values>
+            <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>EightInOne_64x8</diylc.displays.LEDMatrix_-Modules></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.LEDBarGraph</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>4 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_4</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>5 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_5</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>6 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_6</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>8 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_8</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>10 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_10</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>12 Segment</name>
+          <values>
+            <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_12</diylc.displays.LEDBarGraph_-Segments></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.WS2812BRing</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>12 LEDs</name>
+          <values>
+            <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_12_LED</diylc.displays.WS2812BRing_-RingSize></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>16 LEDs</name>
+          <values>
+            <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_16_LED</diylc.displays.WS2812BRing_-RingSize></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>24 LEDs</name>
+          <values>
+            <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_24_LED</diylc.displays.WS2812BRing_-RingSize></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+      </list>
+    </entry>
+    <entry>
+      <string>org.diylc.components.displays.WS2812BStrip</string>
+      <list>
+        <org.diylc.core.Template>
+          <name>30 LED/m</name>
+          <values>
+            <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_30</diylc.displays.WS2812BStrip_-Density></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>60 LED/m</name>
+          <values>
+            <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_60</diylc.displays.WS2812BStrip_-Density></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+        </org.diylc.core.Template>
+        <org.diylc.core.Template>
+          <name>144 LED/m</name>
+          <values>
+            <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_144</diylc.displays.WS2812BStrip_-Density></entry>
+          </values>
+          <defaultFlag>false</defaultFlag>
+          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
