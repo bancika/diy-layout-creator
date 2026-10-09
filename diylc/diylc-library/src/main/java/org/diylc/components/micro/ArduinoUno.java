@@ -61,24 +61,6 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum ArduinoUnoVersion {
-    LEONARDO("Leonardo"),
-    REV3("UNO R3"),
-    R4_MINIMA("UNO R4 Minima"),
-    R4_WIFI("UNO R4 WiFi");
-
-    private String label;
-
-    private ArduinoUnoVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   private ArduinoUnoVersion version = ArduinoUnoVersion.REV3;
 
   public static Size BOARD_WIDTH = new Size(68.6d, SizeUnit.mm);
@@ -93,13 +75,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // Pin names in sequence (44 pins total)
   public static final String[] PIN_NAMES = new String[] {
       // Power Header (0..7)
-      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, ATmega328P)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
       // Top-Left ICSP Header (38..43, ATmega16U2)
@@ -130,13 +112,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // ICSP header, and I2C is shared with D2 / D3 rather than living solely on A4 / A5.
   public static final String[] PIN_NAMES_LEONARDO = new String[] {
       // Power Header (0..7)
-      "NC", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "NC", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2 (SDA)", "D3 (~, SCL)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, ATmega32U4)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
@@ -159,13 +141,13 @@ public class ArduinoUno extends AbstractMakerBoard {
   // carries a 10-pin SWD debug connector in the top right corner, modelled as a single node.
   public static final String[] PIN_NAMES_R4_MINIMA = new String[] {
       // Power Header (0..7)
-      "BOOT", "IOREF", "RESET", "3.3V", "5V", "GND1", "GND2", "VIN",
+      "BOOT", "IOREF", "RESET", "3.3V", "5V", "GND_1", "GND_2", "VIN",
       // Analog Header (8..13)
       "A0", "A1", "A2", "A3", "A4", "A5",
       // Digital Low (14..21)
       "D0 (RX)", "D1 (TX)", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7",
       // Digital High (22..31)
-      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND3", "AREF", "SDA", "SCL",
+      "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12", "D13", "GND_3", "AREF", "SDA", "SCL",
       // Main ICSP Header (32..37, RA4M1)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP",
       // SWD Connector (38)
@@ -222,13 +204,18 @@ public class ArduinoUno extends AbstractMakerBoard {
 
   public void setVersion(ArduinoUnoVersion version) {
     this.version = version;
-    if (isR4()) {
-      this.bodyColor = ARDUINO_BLUE;
-    } else {
-      this.bodyColor = ARDUINO_TEAL;
+    // The two generations are different colours, but the board follows the version only while its
+    // colour is still one of ours; a colour the user chose survives a version switch.
+    if (ARDUINO_TEAL.equals(bodyColor) || ARDUINO_BLUE.equals(bodyColor)) {
+      this.bodyColor = isR4() ? ARDUINO_BLUE : ARDUINO_TEAL;
     }
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
   }
 
   /**
@@ -442,7 +429,6 @@ public class ArduinoUno extends AbstractMakerBoard {
       g2d.rotate(orientation.toRadians(), x, y);
     }
 
-    // Board bounding origin
     double boardX = x - new Size(1.1d, SizeUnit.in).convertToPixels();
     double boardY = y - new Size(2.0d, SizeUnit.in).convertToPixels();
 
@@ -450,7 +436,6 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // Draw PCB body
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
@@ -461,7 +446,6 @@ public class ArduinoUno extends AbstractMakerBoard {
     g2d.draw(boardShape);
 
     if (!outlineMode) {
-      // Mounting holes
       double holeDiameter = new Size(0.12d, SizeUnit.in).convertToPixels();
       MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.6d, SizeUnit.in).convertToPixels(), boardY + new Size(0.1d, SizeUnit.in).convertToPixels(), holeDiameter);
       MakerBoardPainter.drawMountingHole(g2d, boardX + new Size(0.55d, SizeUnit.in).convertToPixels(), boardY + new Size(2.0d, SizeUnit.in).convertToPixels(), holeDiameter);
@@ -544,7 +528,6 @@ public class ArduinoUno extends AbstractMakerBoard {
             new Size(0.22d, SizeUnit.in).convertToPixels(), "ATmega328P");
       }
 
-      // Reset Button near USB
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + new Size(0.235d, SizeUnit.in).convertToPixels() - btnW / 2.0;
@@ -560,11 +543,9 @@ public class ArduinoUno extends AbstractMakerBoard {
       double brandShiftY = getVersion() == ArduinoUnoVersion.R4_MINIMA
           ? new Size(24d, SizeUnit.mm).convertToPixels() : 0;
 
-      // Arduino Infinity Logo
       MakerBoardLogos.drawArduinoLogo(g2d, boardX + new Size(1.26d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels(),
           boardY + new Size(0.4411d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels() + brandShiftY);
 
-      // Silkscreen text & branding
       g2d.setColor(SILK_COLOR);
       
       double arduinoX = boardX + new Size(1.5d, SizeUnit.in).convertToPixels() - new Size(3.0d, SizeUnit.mm).convertToPixels();
@@ -577,7 +558,6 @@ public class ArduinoUno extends AbstractMakerBoard {
       g2d.setFont(SILK_FONT_LARGE);
       StringUtils.drawCenteredText(g2d, subText, arduinoX, subTextY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 
-      // Header silkscreen labels
       g2d.setFont(SILK_FONT_SMALL);
       // the header captions sit beyond the rotated pin names, which take up the space right next to
       // the headers themselves
@@ -606,8 +586,7 @@ public class ArduinoUno extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw header pins with continuity tracking; the Minima's SWD point sits inside the connector
-    // body drawn above and gets no header pin of its own
+    // the Minima's SWD point sits inside the connector body drawn above and gets no header pin
     int headerPinCount = getVersion() == ArduinoUnoVersion.R4_MINIMA
         ? controlPoints.length - 1 : controlPoints.length;
     drawPinHeader(g2d, 0, headerPinCount, outlineMode, drawingObserver);
@@ -622,38 +601,32 @@ public class ArduinoUno extends AbstractMakerBoard {
     double boardW = width - boardX - 2;
     double boardH = height - 6;
 
-    // USB Type-B Jack (metallic silver, top left protruding)
     double usbW = 7;
     double usbH = 8;
     double usbX = 1;
     double usbY = boardY + 2;
 
-    // DC Power Jack (dark body, bottom left protruding)
     double dcW = 7;
     double dcH = 6;
     double dcX = 1;
     double dcY = boardY + boardH - dcH - 3;
 
-    // Board PCB
     g2d.setColor(this.bodyColor);
     g2d.fill(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
     g2d.setColor(this.bodyColor.darker());
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // Draw USB Jack
     g2d.setColor(USB_METAL_COLOR);
     g2d.fill(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
     g2d.setColor(METAL_SHIELD_BORDER);
     g2d.draw(new RoundRectangle2D.Double(usbX, usbY, usbW, usbH, 2, 2));
 
-    // Draw DC Jack
     g2d.setColor(IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
     g2d.setColor(Color.BLACK);
     g2d.draw(new RoundRectangle2D.Double(dcX, dcY, dcW, dcH, 2, 2));
 
-    // Arduino Infinity logo
     double scale = 15.0 / 95.56;
     double logoW = 95.56 * scale;
     double logoH = 45.33 * scale;
@@ -661,7 +634,6 @@ public class ArduinoUno extends AbstractMakerBoard {
     double logoY = boardY + 3.5;
     MakerBoardLogos.drawArduinoLogo(g2d, logoX, logoY, scale);
 
-    // UNO text below logo
     g2d.setColor(SILK_COLOR);
     String iconText = getVersion().toString().toUpperCase(Locale.ROOT).replace("UNO R4 ", "R4 ");
     int fontSize = Math.max(5, (int) Math.round(boardH * 0.20));
@@ -669,5 +641,23 @@ public class ArduinoUno extends AbstractMakerBoard {
     double textY = logoY + logoH + (boardY + boardH - (logoY + logoH)) / 2.0;
     double textX = boardX + (boardW / 2.0) + 0.5;
     StringUtils.drawCenteredText(g2d, iconText, textX, textY, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum ArduinoUnoVersion {
+    LEONARDO("Leonardo"),
+    REV3("UNO R3"),
+    R4_MINIMA("UNO R4 Minima"),
+    R4_WIFI("UNO R4 WiFi");
+
+    private String label;
+
+    private ArduinoUnoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

@@ -74,6 +74,11 @@ The formatter is `eclipse-java-google-style.xml` (Google Java Style):
   runtime; keep that convention when adding new ones.
 - `private static final Logger LOG = Logger.getLogger(TheClass.class);` — log4j 1.2, declared first
   among the static members. Only declare one on a class that actually needs it; see *Logging* below.
+- **Nested types go at the bottom of the file**, after every field, constructor and method of the
+  enclosing class, immediately before its closing brace. A version enum or a small helper class
+  declared halfway down the file pushes the code a reader came for out of sight; keeping them last
+  means the outer class reads top to bottom without interruption. Several nested types keep their
+  relative order.
 
 ### Comments
 

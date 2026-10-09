@@ -62,25 +62,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum DevKitVersion {
-    DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
-    DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
-    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)"),
-    ESP32_C3_DevKitM_1("ESP32-C3 DevKitM-1 (30-Pin)"),
-    ESP32_C6_DevKitC_1("ESP32-C6 DevKitC-1 (32-Pin)");
-
-    private final String label;
-
-    DevKitVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static Size BOARD_WIDTH_30 = new Size(28.33d, SizeUnit.mm);
   public static Size BOARD_LENGTH_30 = new Size(51.45d, SizeUnit.mm);
   public static Size TOP_MARGIN_30 = new Size(6.7d, SizeUnit.mm);
@@ -354,6 +335,11 @@ public class ESP32DevKit extends AbstractMakerBoard {
     invalidateCache();
   }
 
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
+  }
+
   @EditableProperty(name = "Headers")
   public boolean getHeaders() {
     return headers;
@@ -373,9 +359,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  /**
-   * Calculates unrotated relative offsets of all control points for the current version.
-   */
   private double[][] getRelativeOffsets() {
     double spacing = PIN_SPACING.convertToPixels();
 
@@ -522,7 +505,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
     Shape boardShape = getBodyShape();
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // Determine the center X for the current version
     double centerX;
     if (getVersion() == DevKitVersion.ESP32_S3_DevKitC_44Pin || isRiscV()) {
       centerX = x + ROW_SPACING_S3.convertToPixels() / 2.0;
@@ -554,7 +536,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setColor(bodyColor);
         g2d.fill(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
 
-        // Antenna tab in #1e1e1e
         g2d.setColor(ANTENNA_BG_COLOR);
         g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
       } else if (isRiscV()) {
@@ -572,7 +553,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setColor(bodyColor);
         g2d.fill(new Rectangle2D.Double(mainX, mainY, boardW, boardH));
 
-        // Antenna tab in #1e1e1e
         g2d.setColor(ANTENNA_BG_COLOR);
         g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
       } else {
@@ -590,7 +570,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
         g2d.setColor(bodyColor);
         g2d.fill(new RoundRectangle2D.Double(mainX, mainY, mainW, mainH, 8, 8));
 
-        // Antenna tab in #1e1e1e
         g2d.setColor(ANTENNA_BG_COLOR);
         g2d.fill(new Rectangle2D.Double(antennaX, antennaY, antennaW, antennaH));
       }
@@ -657,7 +636,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double btnRightX = rightHoleX - 14 - 0.5 * shift1mm - btnW;
         drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "EN", "BOOT");
 
-        // Silkscreen
         g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, "ESP32 DevKit V1", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -704,7 +682,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
         MakerBoardPainter.drawMicroUsb(g2d, usbLeftX, usbY, usbW, usbH, "UART");
         MakerBoardPainter.drawMicroUsb(g2d, usbRightX, usbY, usbW, usbH, "USB");
 
-        // Silkscreen
         g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, "ESP32-S3 DevKitC-1", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
@@ -759,7 +736,6 @@ public class ESP32DevKit extends AbstractMakerBoard {
           MakerBoardPainter.drawUsbC(g2d, mainX + boardW - usbEdgeDist - usbW / 2.0, usbY, usbW, usbH, "USB");
         }
 
-        // Silkscreen
         g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, isC3 ? "ESP32-C3 DevKitM-1" : "ESP32-C6 DevKitC-1", centerX,
@@ -804,13 +780,11 @@ public class ESP32DevKit extends AbstractMakerBoard {
         double btnRightX = mainX + mainW - 38 - btnW;
         drawButtons(g2d, btnLeftX, btnRightX, btnY, btnW, btnH, "EN", "BOOT");
 
-        // Silkscreen
         g2d.setColor(SILK_COLOR);
         g2d.setFont(SILK_FONT);
         StringUtils.drawCenteredText(g2d, "ESP32 DevKitC V4", centerX, shieldY + shieldH + 45, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
       }
 
-      // Draw pin labels next to control points
       drawPinLabels(g2d, x, y, getRelativeOffsets(), SILK_COLOR);
     }
 
@@ -853,5 +827,24 @@ public class ESP32DevKit extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "ESP32", width / 2, height / 2 + 8, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum DevKitVersion {
+    DevKit_V1_30Pin("ESP32 DevKit V1 (30-Pin)"),
+    DevKitC_V4_38Pin("ESP32 DevKitC V4 (38-Pin)"),
+    ESP32_S3_DevKitC_44Pin("ESP32-S3 DevKitC-1 (44-Pin)"),
+    ESP32_C3_DevKitM_1("ESP32-C3 DevKitM-1 (30-Pin)"),
+    ESP32_C6_DevKitC_1("ESP32-C6 DevKitC-1 (32-Pin)");
+
+    private final String label;
+
+    DevKitVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

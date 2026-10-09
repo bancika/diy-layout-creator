@@ -88,7 +88,10 @@ public class DHTSensor extends AbstractMakerBoard {
 
   public void setModel(DHTModel model) {
     this.model = model;
-    this.bodyColor = (model == DHTModel.DHT11) ? DHT11_BLUE : DHT22_WHITE;
+    // Follows the model only while the colour is still a default of ours; see ArduinoUno.
+    if (DHT11_BLUE.equals(bodyColor) || DHT22_WHITE.equals(bodyColor)) {
+      this.bodyColor = model == DHTModel.DHT11 ? DHT11_BLUE : DHT22_WHITE;
+    }
     invalidateCache();
   }
 

@@ -79,13 +79,13 @@ public class ToolBox implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    // TODO Auto-generated method stub
-    return null;
+    return EnumSet.of(EventType.COMPONENT_CATEGORIES_CHANGED);
   }
 
   @Override
   public void processMessage(EventType eventType, Object... params) {
-    // TODO Auto-generated method stub
-
+    if (eventType == EventType.COMPONENT_CATEGORIES_CHANGED) {
+      getComponentTabbedPane().refreshCategoryTabs();
+    }
   }
 }

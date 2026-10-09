@@ -411,6 +411,23 @@ public class NetlistBuilder {
             if (((IContinuity) c).arePointsConnected(i, j))
               connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j), z));
       }
+      // Pins of one component that name the same rail are the same node: a board's eight ground
+      // pins land on one plane, and grounding one of them must not leave the rest floating.
+      // Switches are excluded because their connectivity depends on the position, which a name
+      // cannot express -- a switch states it through ISwitch.arePointsConnected instead.
+      if (!(c instanceof ISwitch)) {
+        for (int i = 0; i < c.getControlPointCount() - 1; i++) {
+          String rail = Node.railName(c.getControlPointNodeName(i));
+          if (rail == null) {
+            continue;
+          }
+          for (int j = i + 1; j < c.getControlPointCount(); j++) {
+            if (rail.equals(Node.railName(c.getControlPointNodeName(j)))) {
+              connections.add(new Connection(c.getControlPoint(i), c.getControlPoint(j), z));
+            }
+          }
+        }
+      }
       // handle switches
       if (ISwitch.class.isAssignableFrom(type.getInstanceClass())
           && switchPositions.containsKey(c)) {

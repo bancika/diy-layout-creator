@@ -61,24 +61,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum PicoVersion {
-    PICO("Pi Pico"),
-    PICO_W("Pi Pico W"),
-    PICO_2("Pi Pico 2"),
-    PICO_2_W("Pi Pico 2 W");
-
-    private final String label;
-
-    PicoVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static Size BOARD_WIDTH = new Size(21.0d, SizeUnit.mm);
   public static Size BOARD_LENGTH = new Size(51.0d, SizeUnit.mm);
 
@@ -107,11 +89,11 @@ public class RaspberryPiPico extends AbstractMakerBoard {
 
   public static final String[] PIN_NAMES = new String[] {
       // Left row (pins 0..19)
-      "GP0", "GP1", "GND1", "GP2", "GP3", "GP4", "GP5", "GND2", "GP6", "GP7",
-      "GP8", "GP9", "GND3", "GP10", "GP11", "GP12", "GP13", "GND4", "GP14", "GP15",
+      "GP0", "GP1", "GND_1", "GP2", "GP3", "GP4", "GP5", "GND_2", "GP6", "GP7",
+      "GP8", "GP9", "GND_3", "GP10", "GP11", "GP12", "GP13", "GND_4", "GP14", "GP15",
       // Right row (pins 20..39)
-      "VBUS", "VSYS", "GND5", "3V3_EN", "3V3 (OUT)", "ADC_VREF", "GP28", "GND6", "GP27", "GP26",
-      "RUN", "GP22", "GND7", "GP21", "GP20", "GP19", "GP18", "GND8", "GP17", "GP16",
+      "VBUS", "VSYS", "GND_5", "3V3_EN", "3V3 (OUT)", "ADC_VREF", "GP28", "GND_6", "GP27", "GP26",
+      "RUN", "GP22", "GND_7", "GP21", "GP20", "GP19", "GP18", "GND_8", "GP17", "GP16",
       // SWD debug pins (pins 40..42)
       "SWCLK", "GND_SWD", "SWDIO"
   };
@@ -137,6 +119,11 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     this.version = version;
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
   }
 
   /**
@@ -290,7 +277,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
       MakerBoardPainter.drawMountingHole(g2d, holeCenterX - holeDistX, bottomHoleY, holeDiameter);
       MakerBoardPainter.drawMountingHole(g2d, holeCenterX + holeDistX, bottomHoleY, holeDiameter);
 
-      // Micro USB Connector
       double usbW = USB_MICRO_WIDTH.convertToPixels();
       double usbH = USB_MICRO_LENGTH.convertToPixels();
       double usbOverhang = new Size(1.3d, SizeUnit.mm).convertToPixels();
@@ -405,10 +391,6 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     return NOTCH_SIZE;
   }
 
-  /**
-   * Helper to draw Raspberry Pi Pico's castellated solder pads along the left and right edges
-   * and the SWD round pads.
-   */
   protected void drawCastellatedPads(Graphics2D g2d, double boardX, double boardY, double boardW, double boardH,
       double pin1OffsetX, double pin1OffsetY, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
@@ -485,14 +467,12 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setColor(RPI_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(6, 2, width - 12, height - 4, 3, 3));
 
-    // Castellated edge pads on left and right in icon
     g2d.setColor(PAD_COLOR);
     for (int y = 5; y <= height - 6; y += 3) {
       g2d.fillRect(6, y, 3, 2);
       g2d.fillRect(width - 9, y, 3, 2);
     }
 
-    // USB Connector
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(11, 2, 10, 3);
 
@@ -503,5 +483,23 @@ public class RaspberryPiPico extends AbstractMakerBoard {
     g2d.setColor(SILK_COLOR);
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "PICO", width / 2, height / 2 + 10, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum PicoVersion {
+    PICO("Pi Pico"),
+    PICO_W("Pi Pico W"),
+    PICO_2("Pi Pico 2"),
+    PICO_2_W("Pi Pico 2 W");
+
+    private final String label;
+
+    PicoVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

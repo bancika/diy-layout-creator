@@ -413,11 +413,27 @@ Small, independent, and worth folding into whichever Tier 1 item is done first.
    `bomPolicy = SHOW_ONLY_TYPE_NAME`, so a Uno R3 and a Uno R4 WiFi both print as "Arduino Uno".
    A maker's BOM is a shopping list and the variant is the part they buy. Worth deciding on a
    uniform approach before the roadmap roughly triples the number of variants.
-3. **Editable-property set drifts across the family.** `Headers` exists on `ArduinoNano` and
-   `RaspberryPiZero` but not on `ArduinoUno`, `Teensy` or `ESP32DevKit`; there is no "show pin
-   labels" toggle anywhere; `WemosD1Mini` hardcodes `SILK_PIN_NAMES_LEFT` / `SILK_PIN_NAMES_RIGHT`
-   instead of using the shared `drawPinLabels`. Settling a uniform Version / Headers / Show Labels
-   / Board Color set now stops ten more boards inheriting the inconsistency.
+3. **Editable-property set drifts across the family** -- **mostly withdrawn; see the peripherals
+   plan's §11.2 for the decision.** Two of the three facts here have not held up. `Headers` is now
+   on seven boards including `Teensy` and `ESP32DevKit`, and the three that lack it -- `ArduinoUno`,
+   `ArduinoMega` and the full-size `RaspberryPi` -- are exactly the boards that ship with their
+   headers soldered, so the distribution is the product line rather than drift; adding it to the Uno
+   would offer a choice the part does not have. The "show pin labels" toggle is rejected outright,
+   chiefly because a new boolean deserializes as `false` and would strip the silkscreen from every
+   existing file. The last clause was the real one and is now **fixed**, though not the way it
+   was written. `WemosD1Mini` did hardcode `SILK_PIN_NAMES_LEFT` / `SILK_PIN_NAMES_RIGHT`, and they
+   were `PIN_NAMES` with the annotations stripped -- the right one also **reversed**, because that
+   row's control points run bottom to top. The labels were correct on screen, so what this cost was
+   not a visible defect but a duplicate that had to be kept in step by hand and would have drifted
+   silently the first time a pin was renamed.
+
+   Moving it to the shared `drawPinLabels` would have been the wrong fix: that helper stands its
+   labels on end, and the D1 mini prints its names flat between its rows, which its 0.9" row
+   spacing has room for. So the drawing stays local and only the *source* changed -- text from
+   `getSilkPinLabel(i)` and position from `getRelativeOffsets()`, both indexed by control point, so
+   the row direction is followed rather than mirrored and the reversed array disappears rather than
+   being corrected. The render is byte-identical with and without headers.
+   `silkLabelsComeFromTheNodeNames` and `theRightRowRunsBottomToTop` cover it.
 4. **Pin-name conventions differ.** `ESP32DevKit` uses `GND_1`, `ArduinoNano` uses `GND1`. And
    `AbstractMakerBoard.getDisplayPinLabel` truncates at the first `_` and `(`, so `ArduinoNano`'s
    `D3 (~)` silently loses its PWM marker on the silkscreen. Pick one convention before adding
@@ -442,10 +458,11 @@ Each item is an independent commit; none depends on another except where sequenc
 1. **BOM treatment of `Version`** (§8.2). Options: leave as-is; switch these boards to a BOM
    policy that includes the variant; or expose the variant through a value-like property. Affects
    every board in the package, so worth deciding once.
-2. **Uniform property set** (§8.3). Which of `Headers` and a new "Show Pin Labels" toggle should
-   exist on all boards, and whether retrofitting `Headers` onto `ArduinoUno` / `Teensy` /
-   `ESP32DevKit` is wanted. New boolean fields deserialize as `false` in old files, so the default
-   must be chosen to preserve the current look.
+2. ~~**Uniform property set** (§8.3)~~ -- **decided in the peripherals plan's §11.2.** Neither
+   `Headers` nor a "Show Pin Labels" toggle is universalised: a maker component gets a property
+   when the real part gives the buyer a choice, and a drawing preference is not a property. The
+   serialization warning recorded here is what kills the toggle rather than merely constraining
+   its default.
 3. **ESP32-C6 in the same pass as C3?** §5.2 Item 7 is written for both since they share a body.
    If time-boxing, ship C3 first and add C6 as a one-branch follow-up.
 4. **Nano pin-label verbosity** (§5.2 Item 6). Recommendation as written: annotate bus pins on all

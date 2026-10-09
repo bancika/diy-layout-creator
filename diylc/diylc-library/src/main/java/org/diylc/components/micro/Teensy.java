@@ -58,23 +58,6 @@ public class Teensy extends AbstractMakerBoard {
 
   private static final long serialVersionUID = 1L;
 
-  public enum TeensyVersion {
-    Teensy_3_2("Teensy 3.2"),
-    Teensy_4_0("Teensy 4.0"),
-    Teensy_4_1("Teensy 4.1");
-
-    private final String label;
-
-    TeensyVersion(String label) {
-      this.label = label;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   // gap between the Ethernet header pads and the silkscreen box printed around them
   public static Size ETH_BOX_MARGIN = new Size(1.2d, SizeUnit.mm);
 
@@ -106,15 +89,15 @@ public class Teensy extends AbstractMakerBoard {
   // VUSB (33, near VIN): VUSB
   public static final String[] PIN_NAMES_40 = new String[] {
       // Left row (0..13)
-      "GND", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
+      "GND_1", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
       "5 (IN2)", "6 (OUT1D)", "7 (RX2/OUT1A)", "8 (TX2/IN1)", "9 (OUT1C)", "10 (CS/MQSR)",
       "11 (MOSI/CTX1)", "12 (MISO/MQSL)",
       // Right row (14..27)
-      "VIN (3.6-5.5V)", "GND", "3.3V (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
+      "VIN (3.6-5.5V)", "GND_2", "3.3V_1 (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
       "20 (A6/TX5)", "19 (A5/SCL0)", "18 (A4/SDA0)", "17 (A3/TX4/SDA1)", "16 (A2/RX4/SCL1)",
       "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/CRX1/LED)",
       // End row (28..32, left to right along bottom edge)
-      "VBAT", "3.3V (End)", "GND (End)", "Program", "On/Off",
+      "VBAT", "3.3V_2 (End)", "GND_3 (End)", "Program", "On/Off",
       // VUSB (33)
       "VUSB"
   };
@@ -142,19 +125,19 @@ public class Teensy extends AbstractMakerBoard {
   // VUSB (64, near VIN): VUSB
   public static final String[] PIN_NAMES_41 = new String[] {
       // Left row (0..23)
-      "GND", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
+      "GND_1", "0 (RX1/CS1/CRX2)", "1 (TX1/MISO1/CTX2)", "2 (OUT2)", "3 (LRCLK2)", "4 (BCLK2)",
       "5 (IN2)", "6 (OUT1D)", "7 (RX2/OUT1A)", "8 (TX2/IN1)", "9 (OUT1C)", "10 (CS/MQSR)",
-      "11 (MOSI/CTX1)", "12 (MISO/MQSL)", "3.3V", "24 (A10/TX6/SCL2)", "25 (A11/RX6/SDA2)",
+      "11 (MOSI/CTX1)", "12 (MISO/MQSL)", "3.3V_1", "24 (A10/TX6/SCL2)", "25 (A11/RX6/SDA2)",
       "26 (A12/MOSI1)", "27 (A13/SCK1)", "28 (RX7)", "29 (TX7)", "30 (CRX3)", "31 (CTX3)",
       "32 (OUT1B)",
       // Right row (24..47)
-      "VIN (3.6-5.5V)", "GND", "3.3V (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
+      "VIN (3.6-5.5V)", "GND_2", "3.3V_2 (250mA)", "23 (A9/CRX1)", "22 (A8/CTX1)", "21 (A7/RX5)",
       "20 (A6/TX5)", "19 (A5/SCL)", "18 (A4/SDA)", "17 (A3/TX4/SDA1)", "16 (A2/RX4/SCL1)",
-      "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/LED)", "GND", "41 (A17)",
+      "15 (A1/RX3/SPDIF IN)", "14 (A0/TX3/SPDIF OUT)", "13 (SCK/LED)", "GND_3", "41 (A17)",
       "40 (A16)", "39 (A15/MISO1)", "38 (A14/CS1)", "37 (CS)", "36 (CS)", "35 (TX8)",
       "34 (RX8)", "33 (MCLK2)",
       // Middle cluster (48..52, left to right near push button)
-      "VBAT", "3.3V (Mid)", "GND (Mid)", "Program", "On/Off",
+      "VBAT", "3.3V_3 (Mid)", "GND_4 (Mid)", "Program", "On/Off",
       // Ethernet header (53..58, 3x2)
       "ETH_TX-", "ETH_LED", "ETH_RX+", "ETH_TX+", "ETH_GND", "ETH_RX-",
       // USB Host header (59..63, 1x5)
@@ -177,14 +160,14 @@ public class Teensy extends AbstractMakerBoard {
   // severable VUSB pad next to Vin. Labels follow the PJRC Teensy 3.2 pinout card.
   public static final String[] PIN_NAMES_32 = new String[] {
       // Left row (0..13)
-      "GND", "0 (RX1)", "1 (TX1)", "2", "3 (PWM)", "4 (PWM)", "5 (PWM)", "6 (PWM)", "7 (RX3)",
+      "GND_1", "0 (RX1)", "1 (TX1)", "2", "3 (PWM)", "4 (PWM)", "5 (PWM)", "6 (PWM)", "7 (RX3)",
       "8 (TX3)", "9 (RX2/PWM)", "10 (TX2/CS/PWM)", "11 (MOSI)", "12 (MISO)",
       // Right row (14..27)
-      "Vin (3.6-6.0V)", "AGND", "3.3V (100mA)", "23 (A9/PWM)", "22 (A8/PWM)", "21 (A7/PWM)",
+      "Vin (3.6-6.0V)", "AGND", "3.3V_1 (100mA)", "23 (A9/PWM)", "22 (A8/PWM)", "21 (A7/PWM)",
       "20 (A6/PWM)", "19 (A5/SCL0)", "18 (A4/SDA0)", "17 (A3)", "16 (A2)", "15 (A1/CS)",
       "14 (A0)", "13 (SCK/LED)",
       // End row (28..32, left to right along bottom edge)
-      "VBAT", "3.3V (End)", "GND (End)", "Program", "A14/DAC",
+      "VBAT", "3.3V_2 (End)", "GND_2 (End)", "Program", "A14/DAC",
       // VUSB (33)
       "VUSB"
   };
@@ -236,6 +219,11 @@ public class Teensy extends AbstractMakerBoard {
     this.version = version;
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
   }
 
   @EditableProperty(name = "Headers")
@@ -415,11 +403,9 @@ public class Teensy extends AbstractMakerBoard {
 
     drawingObserver.startTracking();
 
-    // Fill board body (green PCB)
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
 
-    // Board outline
     g2d.setColor(getFinalBorderColor(componentState, outlineMode));
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     g2d.draw(boardShape);
@@ -453,7 +439,6 @@ public class Teensy extends AbstractMakerBoard {
       MakerBoardPainter.drawChip(g2d, chipX, chipY, chipW, chipH,
           getVersion() == TeensyVersion.Teensy_3_2 ? "MK20DX256" : "iMXRT1062");
 
-      // Pushbutton (Program button)
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = centerX - btnW / 2.0;
@@ -462,9 +447,9 @@ public class Teensy extends AbstractMakerBoard {
           : boardY + new Size(35.5d, SizeUnit.mm).convertToPixels() + new Size(0.25d, SizeUnit.in).convertToPixels();
       MakerBoardPainter.drawButton(g2d, btnX, btnY, btnW, btnH);
 
-      // Teensy 4.1 extras: Ethernet PHY + SD card slot
+      // the 4.1's Ethernet PHY and SD card slot
       if (getVersion() == TeensyVersion.Teensy_4_1) {
-        // MicroSD card slot at bottom edge (12mm long, flush with bottom edge so it does not stick out)
+        // flush with the bottom edge so it does not stick out
         double sdW = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdH = new Size(12.0d, SizeUnit.mm).convertToPixels();
         double sdX = centerX - sdW / 2.0;
@@ -494,7 +479,6 @@ public class Teensy extends AbstractMakerBoard {
         g2d.draw(new Rectangle2D.Double(usbBoxX, usbBoxY, usbBoxW, usbBoxW));
       }
 
-      // Silkscreen "TEENSY" label
       g2d.setColor(SILK_COLOR);
       g2d.setFont(SILK_FONT);
       String silkText = getVersion().toString();
@@ -516,7 +500,6 @@ public class Teensy extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Render pin headers or gold solder pads with drill holes
     if (headers) {
       drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
     } else {
@@ -526,9 +509,6 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setComposite(oldComposite);
   }
 
-  /**
-   * Helper to draw GPIO solder pads (copper/gold pads with drill holes, square for Pin 1).
-   */
   protected void drawSolderPads(Graphics2D g2d, boolean outlineMode, IDrawingObserver drawingObserver) {
     drawPcbSolderPads(g2d, 0, controlPoints.length, true, outlineMode, drawingObserver);
   }
@@ -540,18 +520,15 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setColor(TEENSY_GREEN.darker());
     g2d.draw(new RoundRectangle2D.Double(5, 2, width - 10, height - 4, 3, 3));
 
-    // GPIO Solder Pads in icon
     g2d.setColor(PAD_COLOR);
     for (int y = 5; y <= height - 6; y += 3) {
       g2d.fillRect(6, y, 2, 2);
       g2d.fillRect(width - 8, y, 2, 2);
     }
 
-    // MCU chip
     g2d.setColor(IC_BODY_COLOR);
     g2d.fillRect(10, 8, 12, 8);
 
-    // USB connector at top
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect(12, 2, 8, 3);
 
@@ -559,5 +536,22 @@ public class Teensy extends AbstractMakerBoard {
     g2d.setFont(ICON_FONT);
     StringUtils.drawCenteredText(g2d, "TEENSY", width / 2, height / 2 + 8,
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+  }
+
+  public enum TeensyVersion {
+    Teensy_3_2("Teensy 3.2"),
+    Teensy_4_0("Teensy 4.0"),
+    Teensy_4_1("Teensy 4.1");
+
+    private final String label;
+
+    TeensyVersion(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

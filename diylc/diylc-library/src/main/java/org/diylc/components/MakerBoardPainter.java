@@ -22,13 +22,16 @@
 package org.diylc.components;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 
 import org.diylc.awt.StringUtils;
+import org.diylc.common.Display;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
@@ -48,9 +51,6 @@ public class MakerBoardPainter {
 
   private MakerBoardPainter() {}
 
-  /**
-   * Helper to draw a mounting hole.
-   */
   public static void drawMountingHole(Graphics2D g2d, double cx, double cy, double diameter) {
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fill(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
@@ -59,9 +59,6 @@ public class MakerBoardPainter {
     g2d.draw(new Ellipse2D.Double(cx - diameter / 2.0, cy - diameter / 2.0, diameter, diameter));
   }
 
-  /**
-   * Helper to draw an IC chip on the board.
-   */
   public static void drawChip(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(AbstractMakerBoard.IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 4, 4));
@@ -80,9 +77,7 @@ public class MakerBoardPainter {
     }
   }
 
-  /**
-   * Helper to draw an FPC / ribbon cable connector (e.g. MIPI CSI/DSI, PCIe FPC).
-   */
+  /** An FPC / ribbon cable connector, such as a MIPI CSI/DSI or PCIe socket. */
   public static void drawFpcConnector(Graphics2D g2d, double x, double y, double w, double h, boolean vertical, String label) {
     g2d.setColor(AbstractMakerBoard.IC_BODY_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 2, 2));
@@ -111,37 +106,23 @@ public class MakerBoardPainter {
     }
   }
 
-  /**
-   * Helper to draw a standard Micro-USB connector.
-   */
   public static void drawMicroUsb(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-C connector.
-   */
   public static void drawUsbC(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-A connector.
-   */
   public static void drawUsbA(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a standard USB Type-B connector.
-   */
   public static void drawUsbB(Graphics2D g2d, double x, double y, double w, double h, String label) {
     drawMetalConnector(g2d, x, y, w, h, label);
   }
 
-  /**
-   * Helper to draw a metal connector / shield (e.g. RF shield cans, SD card slots, HDMI).
-   */
+  /** A metal shield or connector body: an RF can, an SD card slot, an HDMI socket. */
   public static void drawMetalConnector(Graphics2D g2d, double x, double y, double w, double h, String label) {
     g2d.setColor(AbstractMakerBoard.USB_METAL_COLOR);
     g2d.fill(new RoundRectangle2D.Double(x, y, w, h, 3, 3));
@@ -156,20 +137,18 @@ public class MakerBoardPainter {
   }
 
   /**
-   * Helper to draw a standard ESP-style PCB meander antenna with a dark (#1E1E1E) substrate rectangle underneath.
+   * An ESP-style PCB meander antenna over a dark substrate rectangle.
    *
    * @param g2d Graphics2D context
    * @param x top-left X coordinate of the antenna substrate rectangle
    * @param y top-left Y coordinate of the antenna substrate rectangle
-   * @param width width of the antenna substrate rectangle (e.g. 15.0mm, matching main chip width)
-   * @param height height of the antenna substrate rectangle (e.g. 7.0mm)
+   * @param width width of the antenna substrate rectangle
+   * @param height height of the antenna substrate rectangle
    */
   public static void drawPcbAntenna(Graphics2D g2d, double x, double y, double width, double height) {
-    // Dark rectangle underneath (#1E1E1E)
     g2d.setColor(AbstractMakerBoard.ANTENNA_BG_COLOR);
     g2d.fill(new Rectangle2D.Double(x, y, width, height));
 
-    // Serpentine antenna trace (gold/copper)
     g2d.setColor(AbstractMakerBoard.ANTENNA_COLOR);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1.5f));
     Path2D.Double antPath = new Path2D.Double();
@@ -212,15 +191,13 @@ public class MakerBoardPainter {
     g2d.draw(antPath);
   }
 
-  /**
-   * Helper to draw a standard ESP-style PCB meander antenna using default 15.0mm x 7.0mm dimensions.
-   */
+  /** As above, at the default 15.0 x 7.0 mm. */
   public static void drawPcbAntenna(Graphics2D g2d, double x, double y) {
     drawPcbAntenna(g2d, x, y, AbstractMakerBoard.ANTENNA_WIDTH.convertToPixels(), AbstractMakerBoard.ANTENNA_LENGTH.convertToPixels());
   }
 
   /**
-   * Helper to draw a standard SMD tactile push button (housing + circular actuator).
+   * An SMD tactile push button: housing plus circular actuator.
    *
    * @param g2d Graphics2D context
    * @param x Top-left X coordinate of the button body
@@ -238,5 +215,150 @@ public class MakerBoardPainter {
     double actuatorD = Math.min(w, h) * 0.55;
     g2d.setColor(AbstractMakerBoard.BUTTON_ACTUATOR_COLOR);
     g2d.fill(new Ellipse2D.Double(x + (w - actuatorD) / 2.0, y + (h - actuatorD) / 2.0, actuatorD, actuatorD));
+  }
+
+  /**
+   * An addressable RGB LED in a 5050 package: the white body, the milky phosphor lens over it and
+   * the driver die visible through the lens. Shared by every WS2812B part.
+   *
+   * @param g2d Graphics2D context
+   * @param cx centre X coordinate of the package
+   * @param cy centre Y coordinate of the package
+   * @param size edge length of the square package; lens and die scale with it
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size) {
+    drawAddressableLed(g2d, cx, cy, size, null);
+  }
+
+  /**
+   * Draws one 5050 addressable RGB package. A {@code litColor} shows the LED emitting that colour;
+   * {@code null} draws it dark, which is how an unpowered part looks sitting on a layout.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor) {
+    drawAddressableLed(g2d, cx, cy, size, litColor, 0);
+  }
+
+  /**
+   * As above, turned by {@code rotation} radians about its own centre, for parts laid out on a
+   * circle and mounted facing outwards. The package is square, so the turn only tells modulo a
+   * quarter turn -- still enough to distinguish a radial arrangement from an axis-aligned one.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor, double rotation) {
+    drawAddressableLed(g2d, cx, cy, size, litColor, rotation, AbstractMakerBoard.LedType.RGB);
+  }
+
+  /**
+   * As above, for a package other than the plain RGB one. An RGBW is told from an RGB on sight
+   * only by the white die beside the colour dies, so that is what is drawn; WWA has the same
+   * three-die layout and is told apart by what it emits, which is the caller's palette.
+   */
+  public static void drawAddressableLed(Graphics2D g2d, double cx, double cy, double size,
+      Color litColor, double rotation, AbstractMakerBoard.LedType ledType) {
+    if (rotation != 0) {
+      g2d.rotate(rotation, cx, cy);
+    }
+
+    double half = size / 2.0;
+
+    g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_COLOR);
+    g2d.fill(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
+    g2d.setColor(AbstractMakerBoard.RGB_LED_BODY_BORDER);
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(0.5f));
+    g2d.draw(new RoundRectangle2D.Double(cx - half, cy - half, size, size, 2, 2));
+
+    double lensR = half * 0.7;
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_LENS_COLOR : litColor);
+    g2d.fill(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_LENS_BORDER : litColor.darker());
+    g2d.draw(new Ellipse2D.Double(cx - lensR, cy - lensR, lensR * 2, lensR * 2));
+
+    double dieSize = Math.max(2.0, lensR * 0.4);
+    // the colour dies sit centred on their own, and shoulder aside to make room for a white one
+    double dieOffset = ledType != null && ledType.hasWhiteDie() ? dieSize * 0.7 : 0;
+    g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : litColor.brighter());
+    g2d.fill(new Rectangle2D.Double(cx - dieOffset - dieSize / 2.0, cy - dieSize / 2.0, dieSize,
+        dieSize));
+    if (dieOffset > 0) {
+      g2d.setColor(litColor == null ? AbstractMakerBoard.RGB_LED_CHIP_COLOR : Color.WHITE);
+      g2d.fill(new Rectangle2D.Double(cx + dieOffset - dieSize / 2.0, cy - dieSize / 2.0, dieSize,
+          dieSize));
+    }
+
+    // turned back rather than saving the transform, so nothing is allocated per LED
+    if (rotation != 0) {
+      g2d.rotate(-rotation, cx, cy);
+    }
+  }
+
+  /**
+   * Prints a display's own description on its lit area, wrapped and centred.
+   *
+   * <p>What it prints is what the component already answers for the BOM, so the glass cannot fall
+   * out of step with the part list. Nothing is drawn unless the whole block fits, so a panel too
+   * small for its description shows a bare screen rather than a crop -- the same rule the pin-name
+   * silkscreen follows.
+   *
+   * <p>The area is the part of the panel the text may occupy rather than the panel itself, so a
+   * round display hands over the square inscribed in its glass.
+   */
+  public static void drawScreenText(Graphics2D g2d, Rectangle2D area, Color inkColor,
+      Display display, String name, String value) {
+    String text = screenText(display, name, value);
+    if (text == null) {
+      return;
+    }
+
+    g2d.setFont(AbstractMakerBoard.SILK_FONT);
+    FontMetrics metrics = g2d.getFontMetrics();
+    double margin = AbstractMakerBoard.SCREEN_TEXT_MARGIN.convertToPixels();
+    double maxWidth = area.getWidth() - 2 * margin;
+    double maxHeight = area.getHeight() - 2 * margin;
+    double lineHeight = metrics.getHeight();
+
+    List<String> lines = StringUtils.wrap(text, metrics, (int) maxWidth);
+    if (lines.isEmpty() || lines.size() * lineHeight > maxHeight) {
+      return;
+    }
+    // a single word wider than the area cannot be broken, so the width is checked after wrapping
+    // rather than trusted to it
+    for (String line : lines) {
+      if (metrics.stringWidth(line) > maxWidth) {
+        return;
+      }
+    }
+
+    g2d.setColor(inkColor);
+    double y = area.getCenterY() - (lines.size() - 1) * lineHeight / 2.0;
+    for (String line : lines) {
+      StringUtils.drawCenteredText(g2d, line, area.getCenterX(), y, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+      y += lineHeight;
+    }
+  }
+
+  /**
+   * What each {@link Display} setting puts on the glass, or {@code null} for a screen that prints
+   * nothing. The variant string reads "size, interface", and breaking it at the comma gives one
+   * property per line, which keeps the longest line well inside the glass instead of spanning it.
+   */
+  public static String screenText(Display display, String name, String value) {
+    boolean hasValue = value != null && !value.trim().isEmpty();
+    String variant = hasValue ? value.replace(", ", "\n") : null;
+
+    if (display == null) {
+      return variant;
+    }
+    switch (display) {
+      case NONE:
+        return null;
+      case NAME:
+        return name;
+      case BOTH:
+        return variant == null ? name : name + "\n" + variant;
+      default:
+        return variant;
+    }
   }
 }

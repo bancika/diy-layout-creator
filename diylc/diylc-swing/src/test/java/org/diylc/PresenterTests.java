@@ -2,12 +2,27 @@ package org.diylc;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.junit.Test;
 import junit.framework.Assert;
+import org.junit.Test;
+
+import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.common.ComponentType;
+import org.diylc.common.EventType;
+import org.diylc.common.IPlugIn;
+import org.diylc.common.IPlugInPort;
 import org.diylc.core.Template;
+import org.diylc.presenter.Presenter;
+import org.diylc.swing.ActionFactory;
+import org.diylc.swing.actions.ComponentCategoryAction;
+import org.diylc.swing.actions.ResetCategoriesAction;
+import org.diylc.swing.plugins.tree.CustomTreeModel;
 
 public class PresenterTests extends TestBase {
   
@@ -97,6 +112,114 @@ public class PresenterTests extends TestBase {
         org.diylc.common.IPlugInPort.SHOW_NODE_NAME_TOOLTIPS_KEY, false);
     presenter.mouseMoved(new Point(1000, 1000), false, false, false);
     Assert.assertNull(receivedTooltip[0]);
+  }
+
+  @Test
+  public void testCategoryVisibilityDefaults() {
+    presenter.resetCategoryVisibility();
+    Map<String, List<ComponentType>> all = presenter.getComponentTypes();
+    Map<String, List<ComponentType>> visible = presenter.getVisibleComponentTypes();
+    Assert.assertEquals(all.keySet(), visible.keySet());
+    for (String category : all.keySet()) {
+      Assert.assertTrue(presenter.isCategoryEnabled(category));
+    }
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testDisableAndEnableCategory() {
+    presenter.resetCategoryVisibility();
+
+    final Set<String>[] lastEventDisabled = new Set[1];
+    IPlugIn testPlugin = new IPlugIn() {
+      @Override
+      public void connect(IPlugInPort plugInPort) {}
+
+      @Override
+      public EnumSet<EventType> getSubscribedEventTypes() {
+        return EnumSet.of(EventType.COMPONENT_CATEGORIES_CHANGED);
+      }
+
+      @Override
+      public void processMessage(EventType eventType, Object... params) {
+        if (eventType == EventType.COMPONENT_CATEGORIES_CHANGED && params.length > 0) {
+          lastEventDisabled[0] = (Set<String>) params[0];
+        }
+      }
+    };
+    presenter.installPlugin(() -> testPlugin);
+
+    // Disable "Tubes"
+    presenter.setCategoryEnabled("Tubes", false);
+    Assert.assertFalse(presenter.isCategoryEnabled("Tubes"));
+    Assert.assertFalse(presenter.getVisibleComponentTypes().containsKey("Tubes"));
+    Assert.assertTrue(presenter.getComponentTypes().containsKey("Tubes"));
+    Assert.assertNotNull(lastEventDisabled[0]);
+    Assert.assertTrue(lastEventDisabled[0].contains("Tubes"));
+
+    // Also disable "Robotics"
+    presenter.setCategoryEnabled("Robotics", false);
+    Assert.assertFalse(presenter.isCategoryEnabled("Robotics"));
+    Assert.assertFalse(presenter.getVisibleComponentTypes().containsKey("Robotics"));
+    Assert.assertTrue(lastEventDisabled[0].contains("Robotics"));
+    Assert.assertTrue(lastEventDisabled[0].contains("Tubes"));
+
+    // Check config stores sorted list
+    List<String> stored = (List<String>) InMemoryConfigurationManager.getInstance()
+        .readObject(IPlugInPort.DISABLED_CATEGORIES_KEY, new ArrayList<String>());
+    Assert.assertEquals(2, stored.size());
+    Assert.assertEquals("Robotics", stored.get(0));
+    Assert.assertEquals("Tubes", stored.get(1));
+
+    // Re-enable "Tubes"
+    presenter.setCategoryEnabled("Tubes", true);
+    Assert.assertTrue(presenter.isCategoryEnabled("Tubes"));
+    Assert.assertTrue(presenter.getVisibleComponentTypes().containsKey("Tubes"));
+    Assert.assertFalse(lastEventDisabled[0].contains("Tubes"));
+    Assert.assertTrue(lastEventDisabled[0].contains("Robotics"));
+
+    // Reset all
+    presenter.resetCategoryVisibility();
+    Assert.assertTrue(presenter.isCategoryEnabled("Robotics"));
+    Assert.assertTrue(presenter.isCategoryEnabled("Tubes"));
+    Assert.assertTrue(lastEventDisabled[0].isEmpty());
+  }
+
+  @Test
+  public void testComponentCategoryActions() {
+    Presenter prodPresenter = new Presenter(view, ConfigurationManager.getInstance());
+    prodPresenter.resetCategoryVisibility();
+
+    ComponentCategoryAction catAction =
+        ActionFactory.getInstance().createComponentCategoryAction(prodPresenter, "Tubes");
+    Assert.assertEquals(true, catAction.getValue(javax.swing.AbstractAction.SELECTED_KEY));
+
+    // Toggle off
+    catAction.putValue(javax.swing.AbstractAction.SELECTED_KEY, false);
+    catAction.actionPerformed(null);
+    Assert.assertFalse(prodPresenter.isCategoryEnabled("Tubes"));
+
+    // Reset via ResetCategoriesAction
+    ResetCategoriesAction resetAction =
+        ActionFactory.getInstance().createResetCategoriesAction(prodPresenter);
+    resetAction.actionPerformed(null);
+    Assert.assertTrue(prodPresenter.isCategoryEnabled("Tubes"));
+    Assert.assertEquals(true, catAction.getValue(javax.swing.AbstractAction.SELECTED_KEY));
+  }
+
+  @Test
+  public void testCustomTreeModelRefresh() {
+    presenter.resetCategoryVisibility();
+    CustomTreeModel treeModel = new CustomTreeModel(presenter);
+    Assert.assertTrue(presenter.isCategoryEnabled("Tubes"));
+
+    presenter.setCategoryEnabled("Tubes", false);
+    treeModel.refresh();
+    Assert.assertFalse(presenter.getVisibleComponentTypes().containsKey("Tubes"));
+
+    presenter.resetCategoryVisibility();
+    treeModel.refresh();
+    Assert.assertTrue(presenter.getVisibleComponentTypes().containsKey("Tubes"));
   }
   
 //  @Test

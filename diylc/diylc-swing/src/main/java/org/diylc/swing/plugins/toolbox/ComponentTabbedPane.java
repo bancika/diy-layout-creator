@@ -89,6 +89,9 @@ class ComponentTabbedPane extends JTabbedPane {
   private List<String> pendingRecentComponents = null;
   private List<String> blocks;  
 
+  private final Map<String, Component> categoryPanels = new HashMap<String, Component>();
+  private boolean refreshing = false;
+
   public ComponentTabbedPane(IPlugInPort plugInPort, ISwingUI swingUI) {
     super();
     this.plugInPort = plugInPort;
@@ -100,23 +103,22 @@ class ComponentTabbedPane extends JTabbedPane {
     addTab(LangUtil.translate("(Favorites)"), createFavoritesPanel());
     addTab(LangUtil.translate("(Recently Used)"), createRecentComponentsPanel());
     addTab(LangUtil.translate("(Building Blocks)"), createBuildingBlocksPanel());
-    Map<String, List<ComponentType>> componentTypes = plugInPort.getComponentTypes();
-    List<String> categories = new ArrayList<String>(componentTypes.keySet());
-    Collections.sort(categories);
-    for (String category : categories) {
-      JPanel panel = createTab((componentTypes.get(category)));
-      addTab(category, panel);
-    }
+
+    refreshCategoryTabs();
 
     // restore last selected tab
     int lastSelectedTab = ConfigurationManager.getInstance().readInt(LAST_SELECTED_TAB, -1);
-    if (lastSelectedTab >= 0)
+    if (lastSelectedTab >= 0 && lastSelectedTab < getTabCount()) {
       setSelectedIndex(lastSelectedTab);
+    }
 
     addChangeListener(new ChangeListener() {
 
       @Override
       public void stateChanged(ChangeEvent e) {
+        if (refreshing) {
+          return;
+        }
         ConfigurationManager.getInstance().writeValue(LAST_SELECTED_TAB, getSelectedIndex());
         ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null, null, null, false);
         // Refresh recent components if needed
@@ -129,6 +131,50 @@ class ComponentTabbedPane extends JTabbedPane {
     });
 
     setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+  }
+
+  public void refreshCategoryTabs() {
+    refreshing = true;
+    int restoredIndex = -1;
+    try {
+      int previousIndex = getSelectedIndex();
+      String selectedTitle =
+          previousIndex >= 0 && previousIndex < getTabCount() ? getTitleAt(previousIndex) : null;
+
+      while (getTabCount() > 3) {
+        removeTabAt(3);
+      }
+
+      Map<String, List<ComponentType>> visibleComponentTypes =
+          plugInPort.getVisibleComponentTypes();
+      List<String> categories = new ArrayList<String>(visibleComponentTypes.keySet());
+      Collections.sort(categories);
+      for (String category : categories) {
+        Component panel = categoryPanels.get(category);
+        if (panel == null) {
+          panel = createTab(visibleComponentTypes.get(category));
+          categoryPanels.put(category, panel);
+        }
+        addTab(category, panel);
+      }
+
+      if (selectedTitle != null) {
+        for (int i = 0; i < getTabCount(); i++) {
+          if (selectedTitle.equals(getTitleAt(i))) {
+            restoredIndex = i;
+            break;
+          }
+        }
+      }
+    } finally {
+      refreshing = false;
+    }
+
+    if (restoredIndex >= 0) {
+      setSelectedIndex(restoredIndex);
+    } else if (getTabCount() > 0) {
+      setSelectedIndex(0);
+    }
   }
 
   @SuppressWarnings("unchecked")

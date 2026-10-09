@@ -22,7 +22,10 @@
 package org.diylc.netlist;
 
 import java.awt.geom.Point2D;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.diylc.core.ICommonNode;
 import org.diylc.core.IDIYComponent;
@@ -33,6 +36,10 @@ import org.diylc.core.IDIYComponent;
  * @author Branislav Stojkovic
  */
 public class Node implements Comparable<Node> {
+
+  /** Pin names that mark an absent connection, so repeats of them are not one net. */
+  private static final Set<String> NON_NET_NAMES =
+      new HashSet<String>(Arrays.asList("NC", "RSV"));
 
   private IDIYComponent<?> component;
   private int pointIndex;
@@ -60,8 +67,9 @@ public class Node implements Comparable<Node> {
    * <code>MCU1.D11</code> rather than <code>MCU1.D11 (~, MOSI)</code>. The bare name identifies the
    * pin; everything in parentheses documents its alternate functions and only adds noise here.
    *
-   * <p>A trailing disambiguator such as the <code>_1</code> in <code>GND_1</code> is deliberately
-   * kept, because those mark genuinely different pins that a netlist has to tell apart.
+   * <p>A trailing disambiguator such as the <code>_1</code> in <code>GND_1</code> is kept, so the
+   * netlist can still say which pad a connection reached. Whether two such pins are the same
+   * net is a separate question, answered by {@link #railName(String)}.
    *
    * @param nodeName raw name from {@link IDIYComponent#getControlPointNodeName(int)}
    * @return the sanitized name, or null if the raw name was null
@@ -74,6 +82,28 @@ public class Node implements Comparable<Node> {
     String sanitized = (parenIndex == -1 ? nodeName : nodeName.substring(0, parenIndex)).trim();
     // Never let sanitizing leave a pin nameless
     return sanitized.isEmpty() ? nodeName.trim() : sanitized;
+  }
+
+  /**
+   * The rail a pin belongs to: its sanitized name with a trailing <code>_1</code>, <code>_2</code>
+   * disambiguator removed, so <code>GND_1</code> and <code>GND_2</code> report the same rail.
+   *
+   * <p>Only a numeric suffix is dropped. An underscore does three unrelated jobs across the
+   * pinouts in this library: it disambiguates a repeated rail, it namespaces a connector's signals
+   * (<code>ETH_TX-</code>, <code>USB_D+</code>), and it qualifies a genuinely separate net
+   * (<code>MISO_16U2</code>, <code>3V3_EN</code>). Cutting at the first underscore instead would
+   * report an Ethernet header as one rail.
+   *
+   * @param nodeName raw name from {@link IDIYComponent#getControlPointNodeName(int)}
+   * @return the rail name, or null if the pin has no name or names no net at all
+   */
+  public static String railName(String nodeName) {
+    String sanitized = sanitizeNodeName(nodeName);
+    if (sanitized == null || sanitized.isEmpty()) {
+      return null;
+    }
+    String rail = sanitized.replaceAll("_\\d+$", "");
+    return NON_NET_NAMES.contains(rail) ? null : rail;
   }
   
   public Point2D getPoint2D() {

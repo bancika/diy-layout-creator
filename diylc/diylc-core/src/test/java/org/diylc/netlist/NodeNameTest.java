@@ -48,4 +48,41 @@ public class NodeNameTest {
     Assert.assertEquals("(only annotation)", Node.sanitizeNodeName("(only annotation)"));
     Assert.assertNull(Node.sanitizeNodeName(null));
   }
+
+  @Test
+  public void railNameDropsOnlyANumericDisambiguator() {
+    Assert.assertEquals("GND", Node.railName("GND_1"));
+    Assert.assertEquals("GND", Node.railName("GND_12"));
+    Assert.assertEquals("GND", Node.railName("GND"));
+    Assert.assertEquals("GND", Node.railName("GND (Pin 6)"));
+    Assert.assertEquals("+5V", Node.railName("+5V_2"));
+    // the annotation is stripped before the disambiguator, so an annotated rail still resolves
+    Assert.assertEquals("3.3V", Node.railName("3.3V_2 (250mA)"));
+    Assert.assertEquals("GND", Node.railName("GND_4 (Mid)"));
+  }
+
+  @Test
+  public void railNameKeepsNonNumericQualifiers() {
+    // namespaced connector signals
+    Assert.assertEquals("ETH_TX-", Node.railName("ETH_TX-"));
+    Assert.assertEquals("USB_D+", Node.railName("USB_D+"));
+    // qualifiers that name a separate net
+    Assert.assertEquals("MISO_16U2", Node.railName("MISO_16U2"));
+    Assert.assertEquals("3V3_EN", Node.railName("3V3_EN"));
+    // a bare trailing digit is part of the name, not a disambiguator
+    Assert.assertEquals("GP1", Node.railName("GP1"));
+    Assert.assertEquals("GND1", Node.railName("GND1"));
+    // digits that are not at the end are part of the name too: the 16U2 bridge's ground and 5V
+    // are separate nets from the board's own, and USB_5V is a connector pin, not a 5V rail
+    Assert.assertEquals("GND_16U2", Node.railName("GND_16U2"));
+    Assert.assertEquals("5V_16U2", Node.railName("5V_16U2"));
+    Assert.assertEquals("USB_5V", Node.railName("USB_5V"));
+  }
+
+  @Test
+  public void railNameRejectsPinsThatNameNoNet() {
+    Assert.assertNull(Node.railName("NC_1"));
+    Assert.assertNull(Node.railName("RSV_2"));
+    Assert.assertNull(Node.railName(null));
+  }
 }
