@@ -21,9 +21,12 @@
  */
 package org.diylc.components.micro;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.components.micro.ArduinoUno.ArduinoUnoVersion;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,8 +55,8 @@ public class ArduinoUnoTest {
 
     // the silkscreen prints what is on the board rather than the node name: both grounds of the
     // power header say "GND" and the reserved first pin says nothing at all
-    Assert.assertEquals("GND1", r3.getControlPointNodeName(5));
-    Assert.assertEquals("GND2", r3.getControlPointNodeName(6));
+    Assert.assertEquals("GND_1", r3.getControlPointNodeName(5));
+    Assert.assertEquals("GND_2", r3.getControlPointNodeName(6));
     Assert.assertEquals("GND", r3.getSilkPinLabel(5));
     Assert.assertEquals("GND", r3.getSilkPinLabel(6));
     Assert.assertEquals("", r3.getSilkPinLabel(0));
@@ -117,6 +120,25 @@ public class ArduinoUnoTest {
     for (ArduinoUnoVersion version : ArduinoUnoVersion.values()) {
       MakerBoardTestSupport.assertDrawsCleanly(version(version));
     }
+  }
+
+  /**
+   * The board colour follows the version only while it is still a default: the R3 and the R4 are
+   * genuinely different colours, so switching repaints a board the user has not touched, but a
+   * colour they chose survives.
+   */
+  @Test
+  public void aChosenColourSurvivesAVersionSwitch() {
+    ArduinoUno uno = version(ArduinoUnoVersion.REV3);
+    Assert.assertEquals(AbstractMakerBoard.ARDUINO_TEAL, uno.getBodyColor());
+    uno.setVersion(ArduinoUnoVersion.R4_WIFI);
+    Assert.assertEquals("an untouched board should follow its version",
+        AbstractMakerBoard.ARDUINO_BLUE, uno.getBodyColor());
+
+    Color chosen = Color.decode("#8A2BE2");
+    uno.setBodyColor(chosen);
+    uno.setVersion(ArduinoUnoVersion.REV3);
+    Assert.assertEquals("a chosen colour should survive the switch", chosen, uno.getBodyColor());
   }
 
   private static ArduinoUno version(ArduinoUnoVersion version) {

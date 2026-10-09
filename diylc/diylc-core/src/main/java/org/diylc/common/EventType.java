@@ -117,5 +117,11 @@ public enum EventType {
    * Called when the mouse hovers over sticky control points (nodes) in tooltip mode.
    * Parameters: String text (semicolon-separated component and node names, or null), Point point.
    */
-  NODE_NAME_HOVER_TOOLTIP;
+  NODE_NAME_HOVER_TOOLTIP,
+  /**
+   * Called when the set of enabled component categories changes. The first parameter is a
+   * <code>Set&lt;String&gt;</code> of disabled category names. All categories not included are
+   * enabled.
+   */
+  COMPONENT_CATEGORIES_CHANGED;
 }

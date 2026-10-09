@@ -76,63 +76,11 @@ public class ArduinoNano extends AbstractMakerBoard {
 
   public static final int PINS_PER_ROW = 15;
 
-  // Ordered by label so the Version drop-down reads alphabetically. XStream serializes enum
-  // constants by name, so the order here is free to change without affecting existing .diy files.
-  public enum NanoVersion {
-    CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
-    NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
-    NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
-    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
-    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
-    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
-    NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
-    // Silkscreened "CONNECT" rather than the full name, which does not fit between the two rows of
-    // pad names; the RP2040 package right below it carries the part number
-    NANO_RP2040_CONNECT("Nano RP2040 Connect", "CONNECT", "RP2040", "NINA-W102");
-
-    private final String label;
-    private final String silkLabel;
-    private final String mcuLabel;
-    private final String moduleLabel;
-
-    NanoVersion(String label, String silkLabel, String mcuLabel, String moduleLabel) {
-      this.label = label;
-      this.silkLabel = silkLabel;
-      this.mcuLabel = mcuLabel;
-      this.moduleLabel = moduleLabel;
-    }
-
-    public String getSilkLabel() {
-      return silkLabel;
-    }
-
-    /**
-     * Marking of the separately visible MCU package, or null when the MCU is a die inside the
-     * module rather than its own part on the board.
-     */
-    public String getMcuLabel() {
-      return mcuLabel;
-    }
-
-    /**
-     * Marking of the part occupying the end of the board opposite the USB jack, where the classic
-     * Nano has its ICSP header. Null on the classic Nano, which has the header instead.
-     */
-    public String getModuleLabel() {
-      return moduleLabel;
-    }
-
-    @Override
-    public String toString() {
-      return label;
-    }
-  }
-
   public static final String[] PIN_NAMES = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (~)", "D12",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13",
       // ICSP (30..35)
       "MISO", "5V_ICSP", "SCK", "MOSI", "RST_ICSP", "GND_ICSP"
   };
@@ -145,26 +93,26 @@ public class ArduinoNano extends AbstractMakerBoard {
   // Nano Every (ABX00028): PWM on D3, D5, D6, D9, D10 only, and D13 is SCK.
   public static final String[] PIN_NAMES_EVERY = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
   };
 
   // Nano 33 IoT (ABX00027): the SAMD21 adds PWM on D2 relative to the Every.
   public static final String[] PIN_NAMES_33_IOT = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4", "D5 (~)", "D6 (~)", "D7", "D8", "D9 (~)", "D10 (~)", "D11 (MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (SCK)"
   };
 
   // Nano 33 BLE and BLE Sense (ABX00030): the nRF52840 routes PWM to every digital pin, D13
   // included.
   public static final String[] PIN_NAMES_33_BLE = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (~, SCK)"
+      "VIN", "GND_2", "RST2", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0 (DAC0)", "AREF", "3.3V", "D13 (~, SCK)"
   };
 
   // Nano RP2040 Connect (ABX00053): every RP2040 GPIO has a PWM slice. Note REC (BOOTSEL) where
@@ -173,17 +121,17 @@ public class ArduinoNano extends AbstractMakerBoard {
       // Left row (0..14, top to bottom)
       "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2 (~)", "D3 (~)", "D4 (~)", "D5 (~)", "D6 (~)", "D7 (~)", "D8 (~)", "D9 (~)", "D10 (~)", "D11 (~, MOSI)", "D12 (~, MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
+      "VIN", "GND_2", "REC", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3", "A2", "A1", "A0", "AREF", "3.3V", "D13 (~, SCK)"
   };
 
   // Nano R4 (ABX00142): the Renesas RA4M1 board. Same PWM set as the classic, but D4 / D5 double as
   // the CAN pins, A1-A3 reach the on-chip OPAMP, A0 is the DAC, and BOOT replaces the second RESET.
   public static final String[] PIN_NAMES_R4 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (TX)", "D0 (RX)", "RST1", "GND1", "D2", "D3 (~)", "D4 (CAN TX)", "D5 (~, CAN RX)", "D6 (~)",
+      "D1 (TX)", "D0 (RX)", "RST1", "GND_1", "D2", "D3 (~)", "D4 (CAN TX)", "D5 (~, CAN RX)", "D6 (~)",
       "D7", "D8", "D9 (~)", "D10 (~, CS)", "D11 (~, MOSI)", "D12 (MISO)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "BOOT", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3 (OPAMP OUT)",
+      "VIN", "GND_2", "BOOT", "5V", "A7", "A6", "A5 (SCL)", "A4 (SDA)", "A3 (OPAMP OUT)",
       "A2 (OPAMP -)", "A1 (OPAMP +)", "A0 (DAC)", "AREF", "3.3V", "D13 (SCK)",
       // Qwiic socket (30), a single point at the centre of the connector so a wire can land on it
       "QWIIC"
@@ -194,11 +142,11 @@ public class ArduinoNano extends AbstractMakerBoard {
   // number, which is what the ESP-IDF documentation refers to.
   public static final String[] PIN_NAMES_ESP32 = new String[] {
       // Left row (0..14, top to bottom)
-      "D1 (~, TX/GPIO43)", "D0 (~, RX/GPIO44)", "RST1", "GND1", "D2 (~, GPIO5)", "D3 (~, GPIO6)",
+      "D1 (~, TX/GPIO43)", "D0 (~, RX/GPIO44)", "RST1", "GND_1", "D2 (~, GPIO5)", "D3 (~, GPIO6)",
       "D4 (~, GPIO7)", "D5 (~, GPIO8)", "D6 (~, GPIO9)", "D7 (~, GPIO10)", "D8 (~, GPIO17)",
       "D9 (~, GPIO18)", "D10 (~, GPIO21)", "D11 (~, MOSI/GPIO38)", "D12 (~, MISO/GPIO47)",
       // Right row (15..29, top to bottom)
-      "VIN", "GND2", "B1", "VUSB", "A7 (~, GPIO14)", "A6 (~, GPIO13)", "A5 (~, SCL/GPIO12)",
+      "VIN", "GND_2", "B1", "VUSB", "A7 (~, GPIO14)", "A6 (~, GPIO13)", "A5 (~, SCL/GPIO12)",
       "A4 (~, SDA/GPIO11)", "A3 (~, GPIO4)", "A2 (~, GPIO3)", "A1 (~, GPIO2)", "A0 (~, GPIO1)",
       "B0", "3.3V", "D13 (~, SCK/GPIO48)"
   };
@@ -260,6 +208,11 @@ public class ArduinoNano extends AbstractMakerBoard {
     this.version = version;
     updateControlPoints();
     invalidateCache();
+  }
+
+  @Override
+  protected String getVariantLabel() {
+    return getVersion().toString();
   }
 
   private String[] getPinNames() {
@@ -391,9 +344,8 @@ public class ArduinoNano extends AbstractMakerBoard {
       return relativeOffsets;
     }
 
-    // ICSP header (2x3 pins, 30..35) flush with top edge:
-    // Outer row is 0.05" (10px) from top edge (-20px / -0.10" relative to Pin 0)
-    // Inner row is 0.15" (30px) from top edge (0px / 0.00" relative to Pin 0, aligned with Pin 0 & Pin 15)
+    // ICSP block flush with the top edge: the outer row 0.05" from it and the inner row
+    // 0.15", which puts the inner row level with pins 0 and 15.
     double icspOuterY = -spacing; // -20px (-0.10")
     double icspInnerY = 0;        // 0px (0.00")
 
@@ -401,17 +353,11 @@ public class ArduinoNano extends AbstractMakerBoard {
     double col1X = rowSpacing / 2.0;           // 60px (0.30")
     double col2X = rowSpacing / 2.0 + spacing; // 80px (0.40")
 
-    // Pin 1 (MISO at col2X, outer row)
     relativeOffsets[30] = new double[] {col2X, icspOuterY};
-    // Pin 2 (5V_ICSP at col2X, inner row)
     relativeOffsets[31] = new double[] {col2X, icspInnerY};
-    // Pin 3 (SCK at col1X, outer row)
     relativeOffsets[32] = new double[] {col1X, icspOuterY};
-    // Pin 4 (MOSI at col1X, inner row)
     relativeOffsets[33] = new double[] {col1X, icspInnerY};
-    // Pin 5 (RST_ICSP at col0X, outer row)
     relativeOffsets[34] = new double[] {col0X, icspOuterY};
-    // Pin 6 (GND_ICSP at col0X, inner row)
     relativeOffsets[35] = new double[] {col0X, icspInnerY};
 
     return relativeOffsets;
@@ -480,7 +426,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     Composite oldComposite = applyAlpha(g2d, componentState);
 
-    // Draw PCB body
     drawingObserver.startTracking();
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     g2d.fill(boardShape);
@@ -529,7 +474,6 @@ public class ArduinoNano extends AbstractMakerBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new RoundRectangle2D.Double(-chipSize / 2.0, -chipSize / 2.0, chipSize, chipSize, 4, 4));
 
-        // Pin 1 dot
         g2d.setColor(PIN_MARKER_COLOR);
         g2d.fill(new Ellipse2D.Double(-chipSize / 2.0 + 3, -chipSize / 2.0 + 3, 3, 3));
 
@@ -583,7 +527,6 @@ public class ArduinoNano extends AbstractMakerBoard {
         }
       }
 
-      // Reset Button
       double btnW = BUTTON_WIDTH.convertToPixels();
       double btnH = BUTTON_LENGTH.convertToPixels();
       double btnX = boardX + (boardW - btnW) / 2.0;
@@ -615,7 +558,6 @@ public class ArduinoNano extends AbstractMakerBoard {
 
     g2d.setTransform(oldTx);
 
-    // Draw pins or solder pads
     if (headers) {
       drawPinHeader(g2d, 0, getHeaderPinCount(), outlineMode, drawingObserver);
     } else if (getVersion() == NanoVersion.CLASSIC) {
@@ -637,15 +579,12 @@ public class ArduinoNano extends AbstractMakerBoard {
     g2d.setColor(ARDUINO_TEAL.darker());
     g2d.draw(new RoundRectangle2D.Double(boardX, boardY, boardW, boardH, 4, 4));
 
-    // ICSP header at top
     g2d.setColor(HEADER_BODY_COLOR);
     g2d.fill(new Rectangle2D.Double(width / 2.0 - 4, boardY, 8, 4));
 
-    // Mini USB at bottom
     g2d.setColor(USB_METAL_COLOR);
     g2d.fillRect((int) (width / 2.0 - 4), (int) (boardY + boardH - 4), 8, 4);
 
-    // 45-degree rotated diamond IC chip in center
     AffineTransform oldTx = g2d.getTransform();
     g2d.translate(width / 2.0, boardY + boardH / 2.0 + 1);
     g2d.rotate(Math.PI / 4.0);
@@ -655,11 +594,62 @@ public class ArduinoNano extends AbstractMakerBoard {
     g2d.draw(new RoundRectangle2D.Double(-4, -4, 8, 8, 1, 1));
     g2d.setTransform(oldTx);
 
-    // Pin strips on sides
     g2d.setColor(PIN_COLOR);
     for (int y = 5; y < height - 5; y += 3) {
       g2d.fillRect(7, y, 2, 2);
       g2d.fillRect(width - 9, y, 2, 2);
+    }
+  }
+
+  // Ordered by label so the Version drop-down reads alphabetically. XStream serializes enum
+  // constants by name, so the order here is free to change without affecting existing .diy files.
+  public enum NanoVersion {
+    CLASSIC("Nano (ATmega328)", "NANO", "m328P", null),
+    NANO_33_BLE("Nano 33 BLE", "33 BLE", null, "NINA-B306"),
+    NANO_33_BLE_SENSE("Nano 33 BLE Sense", "33 BLE SENSE", null, "NINA-B306"),
+    NANO_33_IOT("Nano 33 IoT", "33 IOT", "SAMD21", "NINA-W102"),
+    NANO_ESP32("Nano ESP32", "NANO ESP32", null, "NORA-W106"),
+    EVERY("Nano Every", "EVERY", "m4809", "SAMD11"),
+    NANO_R4("Nano R4", "NANO R4", "RA4M1", "QWIIC"),
+    // Silkscreened "CONNECT" rather than the full name, which does not fit between the two rows of
+    // pad names; the RP2040 package right below it carries the part number
+    NANO_RP2040_CONNECT("Nano RP2040 Connect", "CONNECT", "RP2040", "NINA-W102");
+
+    private final String label;
+    private final String silkLabel;
+    private final String mcuLabel;
+    private final String moduleLabel;
+
+    NanoVersion(String label, String silkLabel, String mcuLabel, String moduleLabel) {
+      this.label = label;
+      this.silkLabel = silkLabel;
+      this.mcuLabel = mcuLabel;
+      this.moduleLabel = moduleLabel;
+    }
+
+    public String getSilkLabel() {
+      return silkLabel;
+    }
+
+    /**
+     * Marking of the separately visible MCU package, or null when the MCU is a die inside the
+     * module rather than its own part on the board.
+     */
+    public String getMcuLabel() {
+      return mcuLabel;
+    }
+
+    /**
+     * Marking of the part occupying the end of the board opposite the USB jack, where the classic
+     * Nano has its ICSP header. Null on the classic Nano, which has the header instead.
+     */
+    public String getModuleLabel() {
+      return moduleLabel;
+    }
+
+    @Override
+    public String toString() {
+      return label;
     }
   }
 }

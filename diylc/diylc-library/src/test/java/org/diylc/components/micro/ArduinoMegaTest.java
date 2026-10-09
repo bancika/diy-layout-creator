@@ -23,6 +23,8 @@ package org.diylc.components.micro;
 
 import java.awt.geom.Point2D;
 
+import org.diylc.components.maker.MakerBoardTestSupport;
+
 import org.junit.Assert;
 import org.junit.Test;
 

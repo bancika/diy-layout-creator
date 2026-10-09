@@ -76,20 +76,26 @@ public class CustomTreeModel implements TreeModel {
   public CustomTreeModel(IPlugInPort plugInPort) {
     super();
     this.plugInPort = plugInPort;
-    this.componentTypes = plugInPort.getComponentTypes();
+    this.visibleLeaves = new HashMap<String, List<TreeNode>>();
+
+    this.typesByClass = new HashMap<String, ComponentType>();
+    for (Map.Entry<String, List<ComponentType>> e : plugInPort.getComponentTypes().entrySet()) {
+      for (ComponentType c : e.getValue()) {
+        typesByClass.put(c.getInstanceClass().getCanonicalName(), c);
+      }
+    }
+
+    this.initialize();
+    refresh();
+  }
+
+  public void refresh() {
+    this.componentTypes = plugInPort.getVisibleComponentTypes();
     this.categories = new ArrayList<String>(this.componentTypes.keySet());
     Collections.sort(this.categories);
     this.categories.add(0, BUILDING_BLOCKS);
     this.categories.add(0, RECENTLY_USED);
     this.categories.add(0, FAVORITES);
-    this.visibleLeaves = new HashMap<String, List<TreeNode>>();
-
-    this.typesByClass = new HashMap<String, ComponentType>();
-    for (Map.Entry<String, List<ComponentType>> e : componentTypes.entrySet())
-      for (ComponentType c : e.getValue())
-        typesByClass.put(c.getInstanceClass().getCanonicalName(), c);
-
-    this.initialize();
     updateVisibleCategories();
   }
 

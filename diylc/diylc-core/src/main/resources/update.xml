@@ -496,5 +496,85 @@
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>7</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-10-11 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>7-Segment Display - 1-digit 0.56 inch, 2-digit 0.56 inch, 4-digit in 0.36 inch and 0.56 inch, and TM1637 driver module</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Character LCD - 16x2 and 20x4, with I2C backpack or 16-pin parallel interface</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>LED Bar Graph - 4, 5, 6, 8, 10 and 12 segments</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>LED Matrix (MAX7219) - single 8x8, compact 8x8, 4-in-1 32x8, 8-in-1 64x8</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Breakout (WS2812B) - single LED</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Jewel (WS2812B) - 7 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Panel (WS2812B) - 8x8, 64 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Ring (WS2812B) - 12, 16 and 24 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Stick (WS2812B) - 8 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>NeoPixel Strip (WS2812B) - 30, 60 and 144 LEDs per meter, up to 144 LEDs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Nokia 5110 LCD (PCD8544)</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>OLED Display - 0.96 inch SSD1306, 0.91 inch SSD1306, 1.3 inch SH1106, in I2C, 7-pin SPI and 6-pin SPI</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>TFT Display - 2.8 inch and 2.4 inch ILI9341, 1.8 inch and 0.96 inch ST7735, 1.54 inch ST7789, 1.28 inch round GC9A01</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added ability to hide component categories in the component tree and toolbar from the Config menu</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Bill of Materials now lists the selected variant of microcontroller boards and displays, so different versions of the same board are no longer merged into a single row</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>4-pin Jumbo Tube Socket - the two filament pins are now labeled F1 and F2 instead of both being labeled F, so they no longer read as the same node</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Netlists now treat the repeated supply pins of a microcontroller or display board as one node, so grounding a single GND pin no longer leaves the others floating</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
 	</a>
 </java.util.Arrays_-ArrayList>

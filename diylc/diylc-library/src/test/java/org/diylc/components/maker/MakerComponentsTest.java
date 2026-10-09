@@ -72,6 +72,21 @@ public class MakerComponentsTest {
       ESP8266NodeMCU.class,
       WemosD1Mini.class,
 
+      // Displays & Outputs
+      CharacterLCD.class,
+      OLEDDisplay.class,
+      SevenSegmentDisplay.class,
+      LEDMatrix.class,
+      LEDBarGraph.class,
+      TFTDisplay.class,
+      WS2812BStick.class,
+      WS2812BRing.class,
+      WS2812BStrip.class,
+      WS2812BJewel.class,
+      WS2812BPanel.class,
+      WS2812BBreakout.class,
+      Nokia5110LCD.class,
+
       // Electro-Mechanical
       BatteryHolder18650.class
   );
@@ -89,15 +104,6 @@ public class MakerComponentsTest {
       SoilMoistureSensor.class,
       TCRT5000Sensor.class,
       IRReceiverModule.class,
-
-      // Displays & Outputs
-      CharacterLCD.class,
-      OLEDDisplay.class,
-      SevenSegmentDisplay.class,
-      LEDMatrix8x8.class,
-      TFTDisplay.class,
-      WS2812BStick.class,
-      WS2812BRing.class,
 
       // Modules & Breakouts
       LogicLevelConverter.class,
@@ -186,13 +192,9 @@ public class MakerComponentsTest {
       IDIYComponent<?> component = clazz.getDeclaredConstructor().newInstance();
       component.setControlPoint(new Point2D.Double(200, 200), 0);
 
-      // Normal mode
       component.draw(g2d, ComponentState.NORMAL, false, project, observer);
-      // Selected mode
       component.draw(g2d, ComponentState.SELECTED, false, project, observer);
-      // Outline mode
       component.draw(g2d, ComponentState.NORMAL, true, project, observer);
-      // Icon drawing
       component.drawIcon(g2d, 32, 32);
     }
     g2d.dispose();
@@ -222,7 +224,6 @@ public class MakerComponentsTest {
 
       Assert.assertTrue("Component " + clazz.getSimpleName() + " should be rotatable", transformer.canRotate(component));
 
-      // Rotate 4 times clockwise (360 degrees back to original)
       for (int r = 0; r < 4; r++) {
         transformer.rotate(component, center, 1);
       }
