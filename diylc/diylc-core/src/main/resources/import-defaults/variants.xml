@@ -4897,7 +4897,7 @@
             <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>I2C_Backpack</diylc.displays.CharacterLCD_-LCDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>16x2 Parallel HD44780</name>
@@ -4906,7 +4906,7 @@
             <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>Parallel_16Pin</diylc.displays.CharacterLCD_-LCDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>20x4 I2C Backpack</name>
@@ -4915,7 +4915,7 @@
             <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>I2C_Backpack</diylc.displays.CharacterLCD_-LCDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>20x4 Parallel HD44780</name>
@@ -4924,7 +4924,7 @@
             <entry><string>Interface</string><diylc.displays.CharacterLCD_-LCDInterface>Parallel_16Pin</diylc.displays.CharacterLCD_-LCDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -4938,7 +4938,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.96" SSD1306 SPI (7-Pin)</name>
@@ -4947,7 +4947,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.96" SSD1306 SPI (6-Pin)</name>
@@ -4956,7 +4956,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.96" SSD1306 SPI (8-Pin)</name>
@@ -4965,7 +4965,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.91" SSD1306 I2C</name>
@@ -4974,7 +4974,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.91" SSD1306 SPI (7-Pin)</name>
@@ -4983,7 +4983,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.91" SSD1306 SPI (6-Pin)</name>
@@ -4992,7 +4992,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.91" SSD1306 SPI (8-Pin)</name>
@@ -5001,7 +5001,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.3" SH1106 I2C</name>
@@ -5010,7 +5010,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>I2C_4Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.3" SH1106 SPI (7-Pin)</name>
@@ -5019,7 +5019,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_7Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.3" SH1106 SPI (6-Pin)</name>
@@ -5028,7 +5028,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_6Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.3" SH1106 SPI (8-Pin)</name>
@@ -5037,7 +5037,7 @@
             <entry><string>Interface</string><diylc.displays.OLEDDisplay_-OLEDInterface>SPI_8Pin</diylc.displays.OLEDDisplay_-OLEDInterface></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5050,7 +5050,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ILI9341_2_8</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>2.4" ILI9341 (Touch + SD)</name>
@@ -5058,7 +5058,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ILI9341_2_4</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>0.96" ST7735 80x160</name>
@@ -5066,7 +5066,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_0_96</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.8" ST7735 128x160</name>
@@ -5074,7 +5074,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_1_8</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.8" ST7735 128x160 (SD)</name>
@@ -5082,7 +5082,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7735_1_8_SD</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.54" ST7789 240x240</name>
@@ -5090,7 +5090,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>ST7789_1_54</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1.28" GC9A01 Round</name>
@@ -5098,7 +5098,7 @@
             <entry><string>Controller</string><diylc.displays.TFTDisplay_-Controller>GC9A01_1_28</diylc.displays.TFTDisplay_-Controller></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5112,7 +5112,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>1-Digit 0.56" Common Anode</name>
@@ -5121,7 +5121,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>2-Digit 0.56" Common Cathode</name>
@@ -5130,7 +5130,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>2-Digit 0.56" Common Anode</name>
@@ -5139,7 +5139,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-Digit 0.36" Common Cathode</name>
@@ -5148,7 +5148,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-Digit 0.36" Common Anode</name>
@@ -5157,7 +5157,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-Digit 0.56" Common Cathode</name>
@@ -5166,7 +5166,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Cathode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-Digit 0.56" Common Anode</name>
@@ -5175,7 +5175,7 @@
             <entry><string>Common</string><diylc.displays.SevenSegmentDisplay_-Common>Anode</diylc.displays.SevenSegmentDisplay_-Common></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-Digit TM1637 Module</name>
@@ -5183,7 +5183,7 @@
             <entry><string>Type</string><diylc.displays.SevenSegmentDisplay_-DisplayType>TM1637_Module_4Pin</diylc.displays.SevenSegmentDisplay_-DisplayType></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5196,7 +5196,7 @@
             <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>Single_8x8</diylc.displays.LEDMatrix_-Modules></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Compact 8x8 (MAX7219)</name>
@@ -5204,7 +5204,7 @@
             <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>Compact_8x8</diylc.displays.LEDMatrix_-Modules></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>4-in-1 32x8 (MAX7219)</name>
@@ -5212,7 +5212,7 @@
             <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>FourInOne_32x8</diylc.displays.LEDMatrix_-Modules></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>8-in-1 64x8 (MAX7219)</name>
@@ -5220,7 +5220,7 @@
             <entry><string>Modules</string><diylc.displays.LEDMatrix_-Modules>EightInOne_64x8</diylc.displays.LEDMatrix_-Modules></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5233,7 +5233,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_4</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>5 Segment</name>
@@ -5241,7 +5241,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_5</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>6 Segment</name>
@@ -5249,7 +5249,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_6</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>8 Segment</name>
@@ -5257,7 +5257,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_8</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>10 Segment</name>
@@ -5265,7 +5265,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_10</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>12 Segment</name>
@@ -5273,7 +5273,7 @@
             <entry><string>Segments</string><diylc.displays.LEDBarGraph_-Segments>_12</diylc.displays.LEDBarGraph_-Segments></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5286,7 +5286,7 @@
             <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_12_LED</diylc.displays.WS2812BRing_-RingSize></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>16 LEDs</name>
@@ -5294,7 +5294,7 @@
             <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_16_LED</diylc.displays.WS2812BRing_-RingSize></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>24 LEDs</name>
@@ -5302,7 +5302,7 @@
             <entry><string>Ring Size</string><diylc.displays.WS2812BRing_-RingSize>_24_LED</diylc.displays.WS2812BRing_-RingSize></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
@@ -5315,7 +5315,7 @@
             <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_30</diylc.displays.WS2812BStrip_-Density></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>60 LED/m</name>
@@ -5323,7 +5323,7 @@
             <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_60</diylc.displays.WS2812BStrip_-Density></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>144 LED/m</name>
@@ -5331,7 +5331,7 @@
             <entry><string>Density</string><diylc.displays.WS2812BStrip_-Density>_144</diylc.displays.WS2812BStrip_-Density></entry>
           </values>
           <defaultFlag>false</defaultFlag>
-          <createdOn>2026-10-11T00:00:00.0000000</createdOn>
+          <createdOn>2026-10-09T00:00:00.0000000</createdOn>
         </org.diylc.core.Template>
       </list>
     </entry>
