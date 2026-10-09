@@ -30,7 +30,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -39,18 +41,23 @@ import javax.swing.JPopupMenu;
 import org.apache.log4j.Logger;
 
 import org.diylc.clipboard.ComponentTransferable;
+import org.diylc.common.AlignmentMode;
+import org.diylc.common.DistributionMode;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
+import org.diylc.presenter.AlignmentManager;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.actions.FlexibleLeadsAction;
+import org.diylc.swing.actions.edit.AlignSelectionAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
 import org.diylc.swing.actions.edit.CopyAction;
 import org.diylc.swing.actions.edit.CutAction;
 import org.diylc.swing.actions.edit.DeleteSelectionAction;
+import org.diylc.swing.actions.edit.DistributeSelectionAction;
 import org.diylc.swing.actions.edit.DuplicateAction;
 import org.diylc.swing.actions.edit.EditSelectionAction;
 import org.diylc.swing.actions.edit.ExpandSelectionAction;
@@ -75,6 +82,7 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
   private JMenu selectionMenu;
   private JMenu expandMenu;
   private JMenu transformMenu;
+  private JMenu alignMenu;
   private JMenu applyTemplateMenu;
   private JMenu applyModelMenu;
   private JMenu lockMenu;
@@ -101,6 +109,10 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
   private MirrorSelectionAction mirrorHorizontallyAction;
   private MirrorSelectionAction mirrorVerticallyAction;
   private FlexibleLeadsAction flexibleLeadsAction;
+  private Map<AlignmentMode, AlignSelectionAction> alignActions =
+      new EnumMap<AlignmentMode, AlignSelectionAction>(AlignmentMode.class);
+  private Map<DistributionMode, DistributeSelectionAction> distributeActions =
+      new EnumMap<DistributionMode, DistributeSelectionAction>(DistributionMode.class);
 
   private IPlugInPort plugInPort;
   private Clipboard clipboard;
@@ -124,6 +136,7 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     add(getEditSelectionAction());
     add(getDeleteSelectionAction());
     add(getTransformMenu());
+    add(getAlignMenu());
     add(getSaveAsTemplateAction());
     add(getApplyTemplateMenu());
     add(getApplyModelMenu());
@@ -194,6 +207,21 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     return transformMenu;
   }
 
+  public JMenu getAlignMenu() {
+    if (alignMenu == null) {
+      alignMenu = new TranslatedMenu("Align & Distribute");
+      alignMenu.setIcon(IconLoader.AlignDistribute.getIcon());
+      for (AlignmentMode mode : AlignmentMode.values()) {
+        alignMenu.add(getAlignAction(mode));
+      }
+      alignMenu.addSeparator();
+      for (DistributionMode mode : DistributionMode.values()) {
+        alignMenu.add(getDistributeAction(mode));
+      }
+    }
+    return alignMenu;
+  }
+
   public JMenu getApplyTemplateMenu() {
     if (applyTemplateMenu == null) {
       applyTemplateMenu = new TranslatedMenu("Apply Variant");
@@ -236,6 +264,13 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     getMirrorHorizontallyAction().setEnabled(enabled);
     getMirrorVerticallyAction().setEnabled(enabled);
     getFlexibleLeadsAction().setEnabled(enabled);
+    int unitCount = enabled ? plugInPort.getSelectionUnitCount() : 0;
+    for (AlignmentMode mode : AlignmentMode.values()) {
+      getAlignAction(mode).setEnabled(unitCount >= AlignmentManager.MIN_ALIGN_UNITS);
+    }
+    for (DistributionMode mode : DistributionMode.values()) {
+      getDistributeAction(mode).setEnabled(unitCount >= AlignmentManager.MIN_DISTRIBUTE_UNITS);
+    }
 
     getSaveAsTemplateAction()
         .setEnabled(plugInPort.getSelectedComponents().size() == 1);
@@ -427,6 +462,16 @@ public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
     if (flexibleLeadsAction == null)
       flexibleLeadsAction = ActionFactory.getInstance().createFlexibleLeadsAction(plugInPort);
     return flexibleLeadsAction;
+  }
+
+  public AlignSelectionAction getAlignAction(AlignmentMode mode) {
+    return alignActions.computeIfAbsent(mode,
+        m -> ActionFactory.getInstance().createAlignSelectionAction(plugInPort, m));
+  }
+
+  public DistributeSelectionAction getDistributeAction(DistributionMode mode) {
+    return distributeActions.computeIfAbsent(mode,
+        m -> ActionFactory.getInstance().createDistributeSelectionAction(plugInPort, m));
   }
 
   public SaveAsTemplateAction getSaveAsTemplateAction() {

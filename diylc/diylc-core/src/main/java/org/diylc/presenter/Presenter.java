@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
@@ -139,6 +140,7 @@ public class Presenter implements IPlugInPort {
   private InstantiationManager instantiationManager;
   private VariantManager variantManager;
   private BuildingBlockManager buildingBlockManager;
+  private AlignmentManager alignmentManager;
 
   private Rectangle selectionRect;
 
@@ -188,6 +190,7 @@ public class Presenter implements IPlugInPort {
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
+    alignmentManager = new AlignmentManager();
 
     if (importVariantsAndBlocks) {
       variantManager.upgradeVariants(getComponentTypes());
@@ -1112,6 +1115,114 @@ public class Presenter implements IPlugInPort {
     moveComponents(controlPointMap, dx, dy, false, false);
     notifyProjectModifiedIfNeeded(oldProject, "Move Selection", true, true);
   }
+
+  @Override
+  public void alignSelection(AlignmentMode mode) {
+    LOG.debug(String.format("alignSelection(%s)", mode));
+    moveSelectionUnits(mode.toString(),
+        unitBounds -> alignmentManager.align(unitBounds, mode, getAlignmentGridStep()));
+  }
+
+  @Override
+  public void distributeSelection(DistributionMode mode) {
+    LOG.debug(String.format("distributeSelection(%s)", mode));
+    moveSelectionUnits(mode.toString(),
+        unitBounds -> alignmentManager.distribute(unitBounds, mode, getAlignmentGridStep()));
+  }
+
+  @Override
+  public int getSelectionUnitCount() {
+    return findSelectionUnits().size();
+  }
+
+  private void moveSelectionUnits(String action,
+      Function<List<Rectangle2D>, List<Point2D>> deltaCalculator) {
+    // every outline has to be read before the first move, which clears the whole area map
+    List<Set<IDIYComponent<?>>> units = new ArrayList<Set<IDIYComponent<?>>>();
+    List<Rectangle2D> unitBounds = new ArrayList<Rectangle2D>();
+    Set<IDIYComponent<?>> unitComponents = new HashSet<IDIYComponent<?>>();
+    for (Set<IDIYComponent<?>> unit : findSelectionUnits()) {
+      Rectangle2D bounds = getUnitBounds(unit);
+      if (bounds != null) {
+        units.add(unit);
+        unitBounds.add(bounds);
+        unitComponents.addAll(unit);
+      }
+    }
+    List<Point2D> deltas = deltaCalculator.apply(unitBounds);
+
+    Project oldProject = currentProject.clone();
+    for (int i = 0; i < units.size(); i++) {
+      int dx = (int) Math.round(deltas.get(i).getX());
+      int dy = (int) Math.round(deltas.get(i).getY());
+      if (dx == 0 && dy == 0) {
+        continue;
+      }
+      Map<IDIYComponent<?>, Set<Integer>> controlPointMap =
+          new HashMap<IDIYComponent<?>, Set<Integer>>();
+      for (IDIYComponent<?> c : units.get(i)) {
+        if (c.getControlPointCount() > 0) {
+          Set<Integer> pointIndices = new HashSet<Integer>();
+          for (int j = 0; j < c.getControlPointCount(); j++) {
+            pointIndices.add(j);
+          }
+          controlPointMap.put(c, pointIndices);
+        }
+      }
+      if (controlPointMap.isEmpty()) {
+        continue;
+      }
+      // a component that is a unit of its own must not also be dragged along by another unit,
+      // otherwise it would move twice
+      Set<IDIYComponent<?>> otherUnitComponents = new HashSet<IDIYComponent<?>>(unitComponents);
+      otherUnitComponents.removeAll(units.get(i));
+      includeStuckComponents(controlPointMap, otherUnitComponents);
+      moveComponents(controlPointMap, dx, dy, false, false);
+    }
+    notifyProjectModifiedIfNeeded(oldProject, action, true, true);
+  }
+
+  private List<Set<IDIYComponent<?>>> findSelectionUnits() {
+    List<Set<IDIYComponent<?>>> units = new ArrayList<Set<IDIYComponent<?>>>();
+    if (selectedComponents == null || selectedComponents.isEmpty()) {
+      return units;
+    }
+    Set<IDIYComponent<?>> assigned = new HashSet<IDIYComponent<?>>();
+    // walk the project rather than the selection so that the order of units is deterministic
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      if (selectedComponents.contains(c) && !assigned.contains(c)) {
+        Set<IDIYComponent<?>> unit = new HashSet<IDIYComponent<?>>(findAllGroupedComponents(c));
+        unit.retainAll(selectedComponents);
+        assigned.addAll(unit);
+        units.add(unit);
+      }
+    }
+    return units;
+  }
+
+  private Rectangle2D getUnitBounds(Set<IDIYComponent<?>> unit) {
+    Rectangle2D bounds = null;
+    for (IDIYComponent<?> c : unit) {
+      ComponentArea area = drawingManager.getComponentArea(c);
+      if (area == null || area.getOutlineArea() == null) {
+        return null;
+      }
+      if (bounds == null) {
+        bounds = area.getOutlineArea().getBounds2D();
+      } else {
+        bounds.add(area.getOutlineArea().getBounds2D());
+      }
+    }
+    return bounds;
+  }
+
+  private Double getAlignmentGridStep() {
+    String snapTo = configManager.readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
+    if (snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID)) {
+      return currentProject.getGridSpacing().convertToPixels();
+    }
+    return null;
+  }
   
   @SuppressWarnings("unchecked")
   @Override
@@ -1265,6 +1376,11 @@ public class Presenter implements IPlugInPort {
    * @param controlPointMap
    */
   private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
+    includeStuckComponents(controlPointMap, Collections.emptySet());
+  }
+
+  private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap,
+      Set<IDIYComponent<?>> excludedComponents) {
     int oldSize = controlPointMap.size();
     LOG.trace("Expanding selected component map");
     for (IDIYComponent<?> component : currentProject.getComponents()) {
@@ -1274,7 +1390,8 @@ public class Presenter implements IPlugInPort {
         // Do not process a control point if it's already in the map and
         // if it's locked.
         if ((!controlPointMap.containsKey(component) || !controlPointMap.get(component).contains(i))
-            && !isComponentLocked(component) && isComponentVisible(component)) {
+            && !isComponentLocked(component) && isComponentVisible(component)
+            && !excludedComponents.contains(component)) {
           if (component.isControlPointSticky(i)) {
             boolean componentMatches = false;
             for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
@@ -1321,7 +1438,7 @@ public class Presenter implements IPlugInPort {
     // As long as we're adding new components, do another iteration.
     if (newSize > oldSize) {
       LOG.trace("Component count changed, trying one more time.");
-      includeStuckComponents(controlPointMap);
+      includeStuckComponents(controlPointMap, excludedComponents);
     } else {
       LOG.trace("Component count didn't change, done with expanding.");
       for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
