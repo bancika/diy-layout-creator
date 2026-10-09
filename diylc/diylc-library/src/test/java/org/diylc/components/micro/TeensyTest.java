@@ -21,6 +21,7 @@
  */
 package org.diylc.components.micro;
 
+import org.diylc.components.maker.MakerBoardTestSupport;
 import org.diylc.components.micro.Teensy.TeensyVersion;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -35,7 +36,7 @@ public class TeensyTest {
     Teensy teensy40 = new Teensy();
     Assert.assertEquals(TeensyVersion.Teensy_4_0, teensy40.getVersion());
     Assert.assertEquals(34, teensy40.getControlPointCount());
-    Assert.assertEquals("GND", teensy40.getControlPointNodeName(0));
+    Assert.assertEquals("GND_1", teensy40.getControlPointNodeName(0));
     Assert.assertEquals("0 (RX1/CS1/CRX2)", teensy40.getControlPointNodeName(1));
     Assert.assertEquals("12 (MISO/MQSL)", teensy40.getControlPointNodeName(13));
     Assert.assertEquals("VIN (3.6-5.5V)", teensy40.getControlPointNodeName(14));

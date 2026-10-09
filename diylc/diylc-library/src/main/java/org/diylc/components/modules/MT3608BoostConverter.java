@@ -216,7 +216,7 @@ public class MT3608BoostConverter extends AbstractMakerBoard {
     g2d.setTransform(oldTx);
 
     // Draw square/rounded rectangular tinned solder pads using LIGHT_METAL_COLOR
-    drawSolderPads(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
+    drawPcbSolderPads(g2d, 0, controlPoints.length, false, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
   }

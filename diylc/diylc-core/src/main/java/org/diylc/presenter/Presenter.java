@@ -202,6 +202,14 @@ public class Presenter implements IPlugInPort {
         messageDispatcher.dispatchMessage(EventType.NODE_NAME_HOVER_TOOLTIP, null, null);
       }
     });
+
+    configManager.addConfigListener(IPlugInPort.DISABLED_CATEGORIES_KEY, new IConfigListener() {
+      @Override
+      public void valueChanged(String key, Object value) {
+        messageDispatcher.dispatchMessage(EventType.COMPONENT_CATEGORIES_CHANGED,
+            getDisabledCategories());
+      }
+    });
   }
 
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
@@ -409,9 +417,55 @@ public class Presenter implements IPlugInPort {
   }
 
   @SuppressWarnings("unchecked")
+  private Set<String> getDisabledCategories() {
+    List<String> list = (List<String>) configManager.readObject(
+        IPlugInPort.DISABLED_CATEGORIES_KEY, new ArrayList<String>());
+    if (list == null) {
+      return new HashSet<String>();
+    }
+    return new HashSet<String>(list);
+  }
+
+  @SuppressWarnings("unchecked")
   @Override
   public Map<String, List<ComponentType>> getComponentTypes() {
     return ComponentProcessor.getInstance().getComponentTypes();
+  }
+
+  @Override
+  public Map<String, List<ComponentType>> getVisibleComponentTypes() {
+    Set<String> disabled = getDisabledCategories();
+    Map<String, List<ComponentType>> all = getComponentTypes();
+    Map<String, List<ComponentType>> visible = new HashMap<String, List<ComponentType>>();
+    for (Map.Entry<String, List<ComponentType>> entry : all.entrySet()) {
+      if (!disabled.contains(entry.getKey())) {
+        visible.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return visible;
+  }
+
+  @Override
+  public boolean isCategoryEnabled(String category) {
+    return !getDisabledCategories().contains(category);
+  }
+
+  @Override
+  public void setCategoryEnabled(String category, boolean enabled) {
+    Set<String> disabled = getDisabledCategories();
+    if (enabled) {
+      disabled.remove(category);
+    } else {
+      disabled.add(category);
+    }
+    List<String> list = new ArrayList<String>(disabled);
+    Collections.sort(list);
+    configManager.writeValue(IPlugInPort.DISABLED_CATEGORIES_KEY, list);
+  }
+
+  @Override
+  public void resetCategoryVisibility() {
+    configManager.writeValue(IPlugInPort.DISABLED_CATEGORIES_KEY, new ArrayList<String>());
   }
 
   @SuppressWarnings({"unchecked"})

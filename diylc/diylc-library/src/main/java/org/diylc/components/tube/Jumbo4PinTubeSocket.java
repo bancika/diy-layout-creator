@@ -74,7 +74,7 @@ public class Jumbo4PinTubeSocket extends AbstractAngledComponent<String> {
   public static Size PIN_DIAMETER = new Size(1d, SizeUnit.mm);
   public static Size HOLE_SIZE = new Size(5d, SizeUnit.mm);
   public static Size OCTAL_TICK_SIZE = new Size(2d, SizeUnit.mm);
-  private static String[] electrodeLabels = new String[] {"G", "F", "P", "F"};
+  private static String[] electrodeLabels = new String[] {"G", "F1", "P", "F2"};
 
   private String type = "";
 

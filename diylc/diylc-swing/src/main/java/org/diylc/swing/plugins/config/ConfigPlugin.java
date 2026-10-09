@@ -58,6 +58,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String THEME_MENU = "Theme";
   private static final String RULER_MENU = "Ruler Inch Subdivision...";
   private static final String SNAP_MENU = "Snap To";
+  private static final String CATEGORIES_MENU = "Component Categories";
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
   public static final String PROJECT_EXPLORER = "projectExplorer";
@@ -89,7 +90,15 @@ public class ConfigPlugin implements IPlugIn {
             IPlugInPort.AUTO_UNIT_CONVERSION_KEY, true), CONFIG_MENU);
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Auto-Edit Mode", IPlugInPort.AUTO_EDIT_KEY, true),
-        CONFIG_MENU);    
+        CONFIG_MENU);
+    swingUI.injectSubmenu(CATEGORIES_MENU, IconLoader.FolderPreferences.getIcon(), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createResetCategoriesAction(plugInPort), CATEGORIES_MENU);
+    swingUI.injectMenuAction(null, CATEGORIES_MENU);
+    plugInPort.getComponentTypes().keySet().stream().sorted()
+        .forEach(category -> swingUI.injectMenuAction(
+            ActionFactory.getInstance().createComponentCategoryAction(plugInPort, category),
+            CATEGORIES_MENU));
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Continuous Creation",
             IPlugInPort.CONTINUOUS_CREATION_KEY, false), CONFIG_MENU);

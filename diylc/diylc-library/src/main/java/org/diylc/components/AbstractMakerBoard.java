@@ -24,6 +24,7 @@ package org.diylc.components;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -90,12 +91,28 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static Color BUTTON_ACTUATOR_COLOR = Color.decode("#A0A0A0");
   public static Color DARK_PLASTIC_COLOR = Color.decode("#181818");
   public static Color DARK_PLASTIC_BORDER = Color.decode("#333333");
+  public static Color RGB_LED_BODY_COLOR = Color.decode("#FDFEFE");
+  public static Color RGB_LED_BODY_BORDER = Color.decode("#D0D3D4");
+  public static Color RGB_LED_LENS_COLOR = Color.decode("#EAECEE");
+  public static Color RGB_LED_LENS_BORDER = Color.decode("#BDC3C7");
+  public static Color RGB_LED_CHIP_COLOR = Color.decode("#333333");
+  // The colour wheel addressable RGB parts are drawn lit with. Treated as a loop, so a gradient
+  // spread over any LED count closes without a seam.
+  public static Color[] RGB_LED_GRADIENT = new Color[] {
+      Color.decode("#FFEE00"), Color.decode("#FF8800"), Color.decode("#FF1122"),
+      Color.decode("#AA22EE"), Color.decode("#2255FF"), Color.decode("#22DD44")};
+  // A WWA package carries no colour die, so a part fitted with one cannot show the wheel above.
+  // Its three anchors are the three dies themselves: warm white, white and amber.
+  public static Color[] WWA_LED_GRADIENT = new Color[] {
+      Color.decode("#FFE0BD"), Color.decode("#FFFFFF"), Color.decode("#FFAA00")};
   public static Color SILK_COLOR = Color.WHITE;
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size PAD_SIZE = new Size(0.065d, SizeUnit.in);
   public static Size HOLE_SIZE = new Size(0.7d, SizeUnit.mm);
+  // the 5050 package shared by every addressable RGB part on a maker board
+  public static Size RGB_LED_SIZE = new Size(5.0d, SizeUnit.mm);
   public static Size NOTCH_SIZE = new Size(0.9d, SizeUnit.mm);
   public static Size ANTENNA_WIDTH = new Size(15.0d, SizeUnit.mm);
   public static Size ANTENNA_LENGTH = new Size(7.0d, SizeUnit.mm);
@@ -149,6 +166,14 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   // labels along a row run across the board rather than down a column of pins, so they can afford
   // a size the tightly stacked column labels cannot
   public static Font PIN_ROW_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 9);
+  // a label lying along its row has only the pin pitch to fit into, so it runs a size down from
+  // the rotated ones and sits closer to the pin, which is all the room a shallow strip has
+  public static Font PIN_ROW_FLAT_FONT = new Font(SILK_FONT_FAMILY, Font.PLAIN, 8);
+  public static Size PIN_ROW_FLAT_LABEL_OFFSET = new Size(2.04d, SizeUnit.mm);
+  // Clearance kept between text printed on a lit panel and the panel's edge. A readout is drawn
+  // inside the glass rather than on board material, so unlike a silk label it has no neighbour to
+  // collide with; the margin only stops the longest line from touching the frame.
+  public static Size SCREEN_TEXT_MARGIN = new Size(0.6d, SizeUnit.mm);
 
   protected Orientation orientation = Orientation.DEFAULT;
   protected Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
@@ -223,13 +248,31 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   @Override
   public void setValue(Void value) {}
 
+  /**
+   * The variant this board is set to, or {@code null} for a board that is sold in only one form.
+   * Boards name their variant property differently -- {@code Version}, {@code Size}, {@code Type} --
+   * so each one that has one answers here for itself.
+   */
+  protected String getVariantLabel() {
+    return null;
+  }
+
+  /**
+   * These boards have no value in the usual sense, so the BOM's value column carries the variant
+   * instead. It is not cosmetic: {@code BomMaker} groups rows on type name plus value, so without
+   * it every variant of a board collapses into a single row and a BOM cannot say which one to buy.
+   */
+  @Override
+  public String getValueForDisplay() {
+    String variant = getVariantLabel();
+    return variant == null ? "" : variant;
+  }
+
   protected abstract void updateControlPoints();
 
   protected void invalidateCache() {}
 
-  /**
-   * Helper to rotate an array of relative point offsets around the origin (first point) by orientation.
-   */
+  /** Rotates relative point offsets around the first point by the board's orientation. */
   protected void rotatePoints(Point2D firstPoint, double[][] relativeOffsets) {
     controlPoints = new Point2D[relativeOffsets.length];
     controlPoints[0] = firstPoint;
@@ -242,9 +285,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     }
   }
 
-  /**
-   * Helper to draw standard pin header pins at given control point indices.
-   */
+  /** Draws standard pin header pins at the given control point indices. */
   protected void drawPinHeader(Graphics2D g2d, int startIndex, int count, boolean outlineMode,
       IDrawingObserver drawingObserver) {
     if (outlineMode) return;
@@ -268,12 +309,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to format a pin name for silkscreen display (e.g. "3V3_1" -> "3V3", "A0 (ADC0)" -> "A0").
+   * Formats a pin name for silkscreen display, e.g. "3V3_1" to "3V3" and "A0 (ADC0)" to "A0".
    *
    * <p>Stripping the parenthesized annotation is the same operation the netlist performs, so it is
-   * delegated to {@link Node#sanitizeNodeName(String)} rather than duplicated. The silkscreen goes
-   * one step further and also drops the trailing disambiguator, because a board prints "GND" on
-   * every ground pin even though the netlist has to tell "GND_1" from "GND_2".
+   * delegated to {@link Node#sanitizeNodeName(String)}. The silkscreen also drops the trailing
+   * disambiguator, because a board prints "GND" on every ground pin even though the netlist has to
+   * tell "GND_1" from "GND_2".
    */
   public static String getDisplayPinLabel(String name) {
     String sanitized = Node.sanitizeNodeName(name);
@@ -286,17 +327,15 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   /**
    * Silkscreen text printed next to a pin. Defaults to the node name with its annotation and
-   * disambiguator stripped, which is right whenever the node name is the silkscreen name plus
-   * extra detail. A board whose silkscreen genuinely differs from its node names -- the ESP
-   * DevKits print bare GPIO numbers while their nodes carry the full function list -- overrides
-   * this to return its own silkscreen label.
+   * disambiguator stripped. A board whose silkscreen genuinely differs -- the ESP DevKits print
+   * bare GPIO numbers while their nodes carry the full function list -- overrides this.
    */
   protected String getSilkPinLabel(int index) {
     return getDisplayPinLabel(getControlPointNodeName(index));
   }
 
   /**
-   * Helper to draw rotated control point / pin names next to the pins for dual-row DIP/header boards.
+   * Draws rotated pin names beside the pins of a dual-row DIP or header board.
    *
    * @param g2d Graphics2D context (already transformed for board orientation)
    * @param x Unrotated top-left pin X coordinate (P0.getX())
@@ -351,9 +390,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
   /**
    * Variant for boards too crowded for labels that stand square to their row. Each label is turned
-   * 45 degrees and tucked into the corner of its pad on the side the row reads towards - the top
-   * right corner for the left row and the top left corner for the right one - which is the trick
-   * the Teensy 4.1 uses to fit its pad names between two rows a tenth of an inch apart.
+   * 45 degrees and tucked into the corner of its pad on the side the row reads towards, which is
+   * how the Teensy 4.1 fits its pad names between two rows a tenth of an inch apart.
    *
    * @param g2d Graphics2D context (already transformed for board orientation)
    * @param x Unrotated top-left pin X coordinate (P0.getX())
@@ -394,9 +432,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw rotated pin names next to a horizontal row of pins, the way Arduino-style boards
-   * print their headers. Labels read top to bottom, are centered on the pin they belong to and
-   * start {@link #PIN_ROW_LABEL_OFFSET} away from it, growing away from the row.
+   * Draws rotated pin names beside a horizontal row, the way Arduino-style boards print theirs.
+   * Labels read top to bottom, centred on their pin and starting {@link #PIN_ROW_LABEL_OFFSET}
+   * away from it.
    *
    * @param g2d Graphics2D context (already transformed for board orientation)
    * @param x Unrotated first control point X coordinate (P0.getX())
@@ -435,15 +473,63 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw a complete PCB terminal block (green body + inner compartment lines + screw lugs)
-   * that matches the visuals of the PCBTerminalBlock component.
+   * Baseline for labels that have to sit on one line. {@link StringUtils}'s CENTER alignment
+   * centres each string on its own glyph box, so a name with a descender rides higher than the
+   * names beside it. Measuring one reference glyph gives every label the same baseline.
+   */
+  private static double getLabelBaseline(Graphics2D g2d, double centreY) {
+    Rectangle bounds = g2d.getFont()
+        .createGlyphVector(g2d.getFontRenderContext(), "X").getVisualBounds().getBounds();
+    return centreY - bounds.height / 2.0 - bounds.y;
+  }
+
+  /**
+   * Draws pin names lying flat along a horizontal row, for a board whose strip beside the header is
+   * shallower than the longest name is long. {@link #drawRowPinLabels} stands its labels on end and
+   * has the whole depth of the board to grow into; these have only the pin pitch, so they run in a
+   * smaller font.
+   *
+   * @param g2d Graphics2D context (already transformed for board orientation)
+   * @param x Unrotated first control point X coordinate (P0.getX())
+   * @param y Unrotated first control point Y coordinate (P0.getY())
+   * @param offsets Array of [x, y] relative offsets for all control points
+   * @param startIndex Index of the first pin of the row
+   * @param count Number of pins in the row
+   * @param below True to print the labels below the row, false to print them above it
+   * @param silkColor Silkscreen text color
+   */
+  protected void drawFlatRowPinLabels(Graphics2D g2d, double x, double y, double[][] offsets,
+      int startIndex, int count, boolean below, Color silkColor) {
+    if (offsets == null || offsets.length == 0) {
+      return;
+    }
+    double labelOffset = PIN_ROW_FLAT_LABEL_OFFSET.convertToPixels();
+
+    g2d.setColor(silkColor);
+    g2d.setFont(PIN_ROW_FLAT_FONT);
+
+    for (int i = startIndex; i < startIndex + count && i < offsets.length; i++) {
+      String label = getSilkPinLabel(i);
+      if (label == null || label.isEmpty()) {
+        continue;
+      }
+      double pinX = x + offsets[i][0];
+      double pinY = y + offsets[i][1] + (below ? labelOffset : -labelOffset);
+      // TOP passes the y straight through as the baseline, which is what keeps the row level
+      StringUtils.drawCenteredText(g2d, label, pinX, getLabelBaseline(g2d, pinY),
+          HorizontalAlignment.CENTER, VerticalAlignment.TOP);
+    }
+  }
+
+  /**
+   * Draws a PCB terminal block matching the visuals of the PCBTerminalBlock component.
    *
    * @param g2d Graphics2D context
    * @param startIndex First control point index
    * @param count Number of positions in this terminal block
-   * @param isHorizontal true if terminal block runs horizontally (along X), false if vertically (along Y)
-   * @param wireEntryOffset Direction/offset from pins to the wire entry edge (positive or negative)
-   * @param blockDepth Total depth of the green body (e.g. 50.0px for 5.08mm blocks, or 35.0px for compact)
+   * @param isHorizontal true if the block runs horizontally (along X), false if vertically
+   * @param wireEntryOffset Direction/offset from pins to the wire entry edge
+   * @param blockDepth Total depth of the green body in pixels
    * @param outlineMode Outline mode flag
    * @param drawingObserver Observer
    */
@@ -486,7 +572,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       innerCompartment = new Rectangle2D.Double(minX - pitchPx / 2.0, by, pitchPx, bh);
     }
 
-    // Draw green body and compartment
     g2d.setColor(SCREW_TERMINAL_COLOR);
     g2d.fill(outerBody);
     g2d.setColor(SCREW_TERMINAL_BORDER);
@@ -494,13 +579,11 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     g2d.draw(innerCompartment);
     g2d.draw(outerBody);
 
-    // Draw screw contacts
     drawScrewTerminals(g2d, startIndex, count, pitchPx, outlineMode, drawingObserver);
   }
 
   /**
-   * Helper to draw screw terminal block contacts at given control points.
-   * Visuals match the PCBTerminalBlock component: light metal screw circles with diagonal slot.
+   * Draws screw terminal contacts matching the PCBTerminalBlock component.
    */
   protected void drawScrewTerminals(Graphics2D g2d, int startIndex, int count, double pitchPx, boolean outlineMode, IDrawingObserver drawingObserver) {
     if (outlineMode) return;
@@ -511,11 +594,9 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
     for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
-      // Light metal screw head circle
       g2d.setColor(SCREW_CIRCLE_COLOR);
       g2d.fillOval((int) Math.round(p.getX() - circleDiameter / 2.0), (int) Math.round(p.getY() - circleDiameter / 2.0),
           circleDiameter, circleDiameter);
-      // Diagonal screw slot line
       g2d.setColor(SCREW_CIRCLE_COLOR.darker());
       g2d.drawLine((int) (p.getX() + Math.cos(Math.PI / 4) * circleDiameter / 2.0),
           (int) (p.getY() + Math.sin(Math.PI / 4) * circleDiameter / 2.0),
@@ -526,40 +607,38 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw rectangular tinned solder pads with drill holes at given control points.
+   * Spreads {@link #RGB_LED_GRADIENT} evenly over {@code count} LEDs, treating the anchors as a
+   * loop so the last LED runs back into the first. Called once per palette at class load.
    */
-  protected void drawSolderPads(Graphics2D g2d, int startIndex, int count, boolean outlineMode, IDrawingObserver drawingObserver) {
-    if (outlineMode) return;
-    double padW = 22.0;
-    double padH = 16.0;
-    double holeD = 7.0;
+  protected static Color[] buildLedGradient(int count) {
+    return buildLedGradient(count, RGB_LED_GRADIENT);
+  }
 
-    drawingObserver.startTrackingContinuityArea(true);
-    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
-      Point2D p = controlPoints[i];
-      RoundRectangle2D pad = new RoundRectangle2D.Double(p.getX() - padW / 2.0, p.getY() - padH / 2.0, padW, padH, 2, 2);
-      g2d.setColor(LIGHT_METAL_COLOR);
-      g2d.fill(pad);
-      g2d.setColor(LIGHT_METAL_COLOR.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-      g2d.draw(pad);
-
-      // Central through-hole / drill hole
-      g2d.setColor(Constants.CANVAS_COLOR);
-      g2d.fill(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
-      g2d.setColor(Color.DARK_GRAY);
-      g2d.draw(new Ellipse2D.Double(p.getX() - holeD / 2.0, p.getY() - holeD / 2.0, holeD, holeD));
+  /** As above, over a palette of the caller's choosing. */
+  protected static Color[] buildLedGradient(int count, Color[] anchors) {
+    Color[] colors = new Color[count];
+    int anchorCount = anchors.length;
+    for (int i = 0; i < count; i++) {
+      double position = (double) i * anchorCount / count;
+      int anchor = (int) position;
+      double blend = position - anchor;
+      Color from = anchors[anchor];
+      Color to = anchors[(anchor + 1) % anchorCount];
+      colors[i] = new Color(
+          (int) Math.round(from.getRed() + (to.getRed() - from.getRed()) * blend),
+          (int) Math.round(from.getGreen() + (to.getGreen() - from.getGreen()) * blend),
+          (int) Math.round(from.getBlue() + (to.getBlue() - from.getBlue()) * blend));
     }
-    drawingObserver.stopTrackingContinuityArea();
+    return colors;
   }
 
   /**
-   * Helper to draw standard PCB through-hole solder pads (gold/copper pads with drill holes, square for Pin 1).
+   * Draws through-hole solder pads with drill holes.
    *
    * @param g2d Graphics2D context
    * @param startIndex First control point index
    * @param count Number of pads to draw
-   * @param squarePin1 If true, the first pad (index == startIndex) is drawn as a square pad
+   * @param squarePin1 If true, the first pad is drawn square
    * @param outlineMode Outline mode flag
    * @param drawingObserver Observer
    */
@@ -572,14 +651,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
       if (squarePin1 && i == startIndex) {
-        // Pin 1 is a square solder pad
         g2d.setColor(PAD_COLOR);
         g2d.fill(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
         g2d.setColor(PAD_COLOR.darker());
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
         g2d.draw(new Rectangle2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
       } else {
-        // Round solder pads
         g2d.setColor(PAD_COLOR);
         g2d.fill(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
         g2d.setColor(PAD_COLOR.darker());
@@ -587,11 +664,99 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
         g2d.draw(new Ellipse2D.Double(p.getX() - diameter / 2.0, p.getY() - diameter / 2.0, diameter, diameter));
       }
 
-      // Central drill hole
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
       g2d.setColor(PAD_COLOR.darker());
       g2d.draw(new Ellipse2D.Double(p.getX() - holeDiameter / 2.0, p.getY() - holeDiameter / 2.0, holeDiameter, holeDiameter));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Draws rectangular surface pads: bare copper with no drill through it, which is what a part
+   * meant to be soldered to directly carries rather than the plated holes
+   * {@link #drawPcbSolderPads} draws. Unlike a round pad a rectangular one has an orientation, so
+   * each is turned with the board.
+   *
+   * @param padWidth Pad size across the board, which for an edge pad is its reach inward
+   * @param padLength Pad size along the row of pads
+   */
+  protected void drawSurfacePads(Graphics2D g2d, int startIndex, int count, Size padWidth,
+      Size padLength, boolean outlineMode, IDrawingObserver drawingObserver) {
+    if (outlineMode) {
+      return;
+    }
+    double w = padWidth.convertToPixels();
+    double h = padLength.convertToPixels();
+    double theta = orientation.toRadians();
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (theta != 0) {
+        g2d.rotate(theta, p.getX(), p.getY());
+      }
+
+      Rectangle2D pad = new Rectangle2D.Double(p.getX() - w / 2.0, p.getY() - h / 2.0, w, h);
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(pad);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(pad);
+
+      // turned back rather than saving the transform, as the LED painter does
+      if (theta != 0) {
+        g2d.rotate(-theta, p.getX(), p.getY());
+      }
+    }
+    drawingObserver.stopTrackingContinuityArea();
+  }
+
+  /**
+   * Draws the pads a cut leaves on a part sold by the length. The uncut pad is a pill lying along
+   * the part with the cut through its middle, so each end keeps half of one: flat against the
+   * edge, rounded inward. Built as the pill and then cut rather than drawn as a half, so that it
+   * stays right at both extremes -- half of a pill no longer than it is wide is a semicircle, with
+   * no special case.
+   *
+   * <p>Both sizes are in pixels rather than {@link Size}, a part that caps its pad against the room
+   * a variant leaves having already done the arithmetic.
+   *
+   * @param padWidth Pad size across the part
+   * @param padLength Pad size along the part, before the cut -- half of this is drawn
+   * @param reachesRight Whether the surviving half reaches to the right of the cut
+   */
+  protected void drawBisectedPads(Graphics2D g2d, int startIndex, int count, double padWidth,
+      double padLength, boolean reachesRight, boolean outlineMode,
+      IDrawingObserver drawingObserver) {
+    if (outlineMode) {
+      return;
+    }
+    double w = padWidth;
+    double depth = padLength / 2.0;
+    double theta = orientation.toRadians();
+
+    drawingObserver.startTrackingContinuityArea(true);
+    for (int i = startIndex; i < startIndex + count && i < controlPoints.length; i++) {
+      Point2D p = controlPoints[i];
+      if (theta != 0) {
+        g2d.rotate(theta, p.getX(), p.getY());
+      }
+
+      Area pad = new Area(new RoundRectangle2D.Double(p.getX() - depth, p.getY() - w / 2.0,
+          depth * 2, w, w, w));
+      pad.intersect(new Area(new Rectangle2D.Double(
+          reachesRight ? p.getX() : p.getX() - depth, p.getY() - w / 2.0, depth, w)));
+
+      g2d.setColor(PAD_COLOR);
+      g2d.fill(pad);
+      g2d.setColor(PAD_COLOR.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+      g2d.draw(pad);
+
+      if (theta != 0) {
+        g2d.rotate(-theta, p.getX(), p.getY());
+      }
     }
     drawingObserver.stopTrackingContinuityArea();
   }
@@ -618,12 +783,12 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to draw one column of castellated edge pads: a round through-hole pad joined to the
-   * board edge by a stub, with a semicircular notch bitten out of the edge itself. Pair it with
+   * Draws one column of castellated edge pads: a round through-hole pad joined to the board edge by
+   * a stub, with a semicircular notch bitten out of the edge. Pair it with
    * {@link #subtractCastellationNotches} so the outline and the pads agree.
    *
-   * <p>Unlike the control-point based pad helpers this one works in unrotated board coordinates,
-   * so it has to be called while the board rotation is still applied to {@code g2d}.
+   * <p>Unlike the control-point based pad helpers this works in unrotated board coordinates, so it
+   * has to be called while the board rotation is still applied to {@code g2d}.
    *
    * @param g2d Graphics2D context, already transformed for board orientation
    * @param pinX Unrotated X coordinate of the pad column
@@ -662,7 +827,7 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       g2d.draw(padArea);
 
-      // Inner through-hole drill hole (white circle matching Zero and perfboard)
+      // the drill hole
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(pinX - holeR, py - holeR, holeD, holeD));
       g2d.setColor(padColor.darker());
@@ -672,8 +837,8 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   }
 
   /**
-   * Helper to bite the semicircular castellation notches for one column of pads out of a board
-   * outline, matching what {@link #drawCastellatedPads} draws along the same edge.
+   * Bites the semicircular castellation notches for one column of pads out of a board outline,
+   * matching what {@link #drawCastellatedPads} draws along the same edge.
    */
   protected void subtractCastellationNotches(Area boardArea, double pinY, int count, double spacing,
       double edgeX) {
@@ -685,9 +850,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
     }
   }
 
-  /**
-   * Helper to get outline border color.
-   */
   protected Color getFinalBorderColor(ComponentState componentState, boolean outlineMode) {
     if (outlineMode) {
       Theme theme = Constants.DEFAULT_THEME;
@@ -743,5 +905,34 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
 
     int margin = 50;
     return new Rectangle2D.Double(minX - margin, minY - margin, (maxX - minX) + 2 * margin, (maxY - minY) + 2 * margin);
+  }
+
+  /**
+   * Which addressable package a part is fitted with. The three are pin-compatible and share the
+   * 5050 footprint, so this changes only what the LEDs can emit and what the BOM asks for.
+   *
+   * <p>RGBW adds a fourth, white die to the RGB three and is sold by the tint of that die; WWA
+   * replaces the colour dies altogether with warm white, white and amber.
+   */
+  public enum LedType {
+    RGB("RGB"),
+    RGBW_WARM("RGBW Warm White"),
+    RGBW_NATURAL("RGBW Natural White"),
+    RGBW_COOL("RGBW Cool White"),
+    WWA("WWA");
+
+    private final String label;
+
+    LedType(String label) {
+      this.label = label;
+    }
+
+    @Override public String toString() { return label; }
+
+    /** True for the packages that carry a white die beside the colour ones. */
+    public boolean hasWhiteDie() { return this != RGB && this != WWA; }
+
+    /** The wheel a part fitted with this package is drawn lit with. */
+    public Color[] getGradient() { return this == WWA ? WWA_LED_GRADIENT : RGB_LED_GRADIENT; }
   }
 }
