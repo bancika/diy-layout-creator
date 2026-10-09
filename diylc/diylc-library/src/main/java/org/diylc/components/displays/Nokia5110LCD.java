@@ -87,6 +87,11 @@ public class Nokia5110LCD extends AbstractMakerBoard {
   public static Size CORNER_RADIUS = new Size(1.5d, SizeUnit.mm);
   public static Size SILK_TEXT_GAP = new Size(1.0d, SizeUnit.mm);
 
+  // The PCD8544's own addressable grid. Its pixels are not square, the glass being wider than it
+  // is tall by more than 84:48, so the two pitches are worked out separately.
+  public static final int PIXELS_X = 84;
+  public static final int PIXELS_Y = 48;
+
   public static final String[] PIN_NAMES =
       new String[] {"RST", "CE", "DC", "DIN", "CLK", "VCC", "BL", "GND"};
 
@@ -253,9 +258,14 @@ public class Nokia5110LCD extends AbstractMakerBoard {
       g2d.draw(new RoundRectangle2D.Double(displayX, displayY, displayW, displayH, displayRadius,
           displayRadius));
 
-      MakerBoardPainter.drawScreenText(g2d,
-          new Rectangle2D.Double(displayX, displayY, displayW, displayH), getScreenInk(),
-          getScreen(), getName(), getValueForDisplay());
+      // The panel has no other way to show text, so the label is drawn the way the module would
+      // put it there: lit pixels of its own grid rather than a smooth font laid over the glass.
+      int columns = PIXELS_X / DotMatrixScreen.CELL_WIDTH;
+      int rows = PIXELS_Y / DotMatrixScreen.CELL_HEIGHT;
+      g2d.setColor(getScreenInk());
+      DotMatrixScreen.drawText(g2d,
+          DotMatrixScreen.layOutText(getScreen(), getName(), getValueForDisplay(), columns, rows),
+          PIXELS_X, PIXELS_Y, displayX, displayY, displayW / PIXELS_X, displayH / PIXELS_Y);
 
       // Names lie flat along the row: the strip is 3.5 mm deep and a label stood on end needs
       // 4.7 mm.

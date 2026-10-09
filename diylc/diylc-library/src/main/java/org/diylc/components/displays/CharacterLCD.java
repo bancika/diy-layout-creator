@@ -30,6 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
@@ -304,11 +305,7 @@ public class CharacterLCD extends AbstractMakerBoard {
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));
 
-      Rectangle2D screenArea = new Rectangle2D.Double(screenX, screenY, screenW, screenH);
-      drawCharacterMatrix(g2d, screenArea);
-
-      MakerBoardPainter.drawScreenText(g2d, screenArea, getScreenInk(), getScreen(), getName(),
-          getValueForDisplay());
+      drawCharacterMatrix(g2d, new Rectangle2D.Double(screenX, screenY, screenW, screenH));
 
       // Only the parallel row has anywhere to print. The backpack's column sits 2.5 mm from the
       // left edge with the bezel 1.4 mm further in, so a label beside it would lie across the metal
@@ -327,7 +324,8 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   /**
-   * The unlit dot grid, centred in the lit area. The matrix is narrower than the glass on both
+   * The character grid, centred in the lit area: every cell's dots in the unlit shade first, then
+   * the dots the text lights over the top of them. The matrix is narrower than the glass on both
    * modules, which is why it is centred rather than inset by a margin.
    */
   private void drawCharacterMatrix(Graphics2D g2d, Rectangle2D screenArea) {
@@ -343,7 +341,8 @@ public class CharacterLCD extends AbstractMakerBoard {
     double matrixX = screenArea.getX() + (screenArea.getWidth() - matrixWidth) / 2.0;
     double matrixY = screenArea.getY() + (screenArea.getHeight() - matrixHeight) / 2.0;
 
-    // The 20x4 comes to 3200 dots, so the rectangle is reused rather than allocated per dot.
+    // The 20x4 comes to 3200 dots, so the rectangle is reused rather than allocated per dot, and
+    // the two shades are laid down in one pass each rather than a colour change per dot.
     Rectangle2D.Double dot = new Rectangle2D.Double(0, 0, dotSize, dotSize);
 
     g2d.setColor(getDotColor());
@@ -356,6 +355,33 @@ public class CharacterLCD extends AbstractMakerBoard {
             dot.x = cellX + dotColumn * dotPitch;
             dot.y = cellY + dotRow * dotPitch;
             g2d.fill(dot);
+          }
+        }
+      }
+    }
+
+    List<String> lines = DotMatrixScreen.layOutText(getScreen(), getName(),
+        getValueForDisplay(), lcdSize.getColumns(), lcdSize.getRows());
+    if (lines.isEmpty()) {
+      return;
+    }
+
+    g2d.setColor(getScreenInk());
+    int firstRow = (lcdSize.getRows() - lines.size()) / 2;
+    for (int line = 0; line < lines.size(); line++) {
+      String text = lines.get(line);
+      int firstColumn = (lcdSize.getColumns() - text.length()) / 2;
+      double cellY = matrixY + (firstRow + line) * charPitchY;
+      for (int i = 0; i < text.length(); i++) {
+        char c = text.charAt(i);
+        double cellX = matrixX + (firstColumn + i) * charPitchX;
+        for (int dotRow = 0; dotRow < DotMatrixFont.GLYPH_HEIGHT; dotRow++) {
+          for (int dotColumn = 0; dotColumn < DotMatrixFont.GLYPH_WIDTH; dotColumn++) {
+            if (DotMatrixFont.isDotLit(c, dotRow, dotColumn)) {
+              dot.x = cellX + dotColumn * dotPitch;
+              dot.y = cellY + dotRow * dotPitch;
+              g2d.fill(dot);
+            }
           }
         }
       }

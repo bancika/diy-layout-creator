@@ -343,7 +343,7 @@ public class MakerBoardPainter {
    * nothing. The variant string reads "size, interface", and breaking it at the comma gives one
    * property per line, which keeps the longest line well inside the glass instead of spanning it.
    */
-  private static String screenText(Display display, String name, String value) {
+  public static String screenText(Display display, String name, String value) {
     boolean hasValue = value != null && !value.trim().isEmpty();
     String variant = hasValue ? value.replace(", ", "\n") : null;
 
