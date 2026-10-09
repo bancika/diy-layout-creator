@@ -29,7 +29,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.awt.StringUtils;
@@ -346,9 +345,16 @@ public class OLEDDisplay extends AbstractMakerBoard {
       g2d.setColor(ACTIVE_AREA_COLOR);
       g2d.fill(new RoundRectangle2D.Double(activeX, activeY, activeW, activeH, 2, 2));
 
-      MakerBoardPainter.drawScreenText(g2d,
-          new Rectangle2D.Double(activeX, activeY, activeW, activeH), getPixelColor(), getScreen(),
-          getName(), getValueForDisplay());
+      // Drawn as lit pixels of the controller's own grid, which is the only way this panel can
+      // put text on the glass.
+      int pixelsX = version.getPixelsX();
+      int pixelsY = version.getPixelsY();
+      int columns = pixelsX / DotMatrixScreen.CELL_WIDTH;
+      int rows = pixelsY / DotMatrixScreen.CELL_HEIGHT;
+      g2d.setColor(getPixelColor());
+      DotMatrixScreen.drawText(g2d,
+          DotMatrixScreen.layOutText(getScreen(), getName(), getValueForDisplay(), columns, rows),
+          pixelsX, pixelsY, activeX, activeY, activeW / pixelsX, activeH / pixelsY);
 
       drawPinNames(g2d, boardX, boardY);
     }
@@ -405,15 +411,17 @@ public class OLEDDisplay extends AbstractMakerBoard {
     // Panel and lit-area sizes belong to the display part and are shared by both of a size's
     // boards. Everything belonging to a PCB is on the Layout, including where the lit area sits
     // down the board, which the two 0.91" boards disagree on.
-    SSD1306_0_91("0.91\" SSD1306 128x32", 30.0d, 12.0d, 22.384d, 5.584d, 2.1d,
+    SSD1306_0_91("0.91\" SSD1306 128x32", 128, 32, 30.0d, 12.0d, 22.384d, 5.584d, 2.1d,
         new Layout(35.8d, 12.0d, 1.5d, true, 0d, 0d, 5.0d, 0d, 2.35d),
         new Layout(32.5d, 20.5d, 1.5d, false, 2.5d, 2.0d, 1.25d, 4.0d, 6.6d)),
-    SSD1306_0_96("0.96\" SSD1306 128x64", 26.7d, 19.26d, 21.74d, 11.0d, 2.48d,
+    SSD1306_0_96("0.96\" SSD1306 128x64", 128, 64, 26.7d, 19.26d, 21.74d, 11.0d, 2.48d,
         new Layout(27.0d, 27.0d, 1.6d, false, 2.0d, 2.0d, 0.15d, 3.87d, 6.14d)),
-    SH1106_1_3("1.3\" SH1106 128x64", 35.4d, 23.0d, 29.42d, 14.7d, 2.99d,
+    SH1106_1_3("1.3\" SH1106 128x64", 128, 64, 35.4d, 23.0d, 29.42d, 14.7d, 2.99d,
         new Layout(35.4d, 33.5d, 1.5d, false, 2.5d, 3.0d, 0d, 5.25d, 7.35d));
 
     private final String label;
+    private final int pixelsX;
+    private final int pixelsY;
     private final double panelWidthMm;
     private final double panelLengthMm;
     private final double activeWidthMm;
@@ -423,15 +431,18 @@ public class OLEDDisplay extends AbstractMakerBoard {
     private final Layout spiLayout;
 
     /** For a size sold on one board, which both headers are built onto. */
-    Version(String label, double panelWidthMm, double panelLengthMm, double activeWidthMm,
-        double activeLengthMm, double activeLeftInPanelMm, Layout layout) {
-      this(label, panelWidthMm, panelLengthMm, activeWidthMm, activeLengthMm, activeLeftInPanelMm,
-          layout, layout);
+    Version(String label, int pixelsX, int pixelsY, double panelWidthMm, double panelLengthMm,
+        double activeWidthMm, double activeLengthMm, double activeLeftInPanelMm, Layout layout) {
+      this(label, pixelsX, pixelsY, panelWidthMm, panelLengthMm, activeWidthMm, activeLengthMm,
+          activeLeftInPanelMm, layout, layout);
     }
 
-    Version(String label, double panelWidthMm, double panelLengthMm, double activeWidthMm,
-        double activeLengthMm, double activeLeftInPanelMm, Layout i2cLayout, Layout spiLayout) {
+    Version(String label, int pixelsX, int pixelsY, double panelWidthMm, double panelLengthMm,
+        double activeWidthMm, double activeLengthMm, double activeLeftInPanelMm, Layout i2cLayout,
+        Layout spiLayout) {
       this.label = label;
+      this.pixelsX = pixelsX;
+      this.pixelsY = pixelsY;
       this.panelWidthMm = panelWidthMm;
       this.panelLengthMm = panelLengthMm;
       this.activeWidthMm = activeWidthMm;
@@ -444,6 +455,8 @@ public class OLEDDisplay extends AbstractMakerBoard {
     @Override public String toString() { return label; }
     public double getPanelWidthMm() { return panelWidthMm; }
     public double getPanelLengthMm() { return panelLengthMm; }
+    public int getPixelsX() { return pixelsX; }
+    public int getPixelsY() { return pixelsY; }
     public double getActiveWidthMm() { return activeWidthMm; }
     public double getActiveLengthMm() { return activeLengthMm; }
     public double getActiveLeftInPanelMm() { return activeLeftInPanelMm; }

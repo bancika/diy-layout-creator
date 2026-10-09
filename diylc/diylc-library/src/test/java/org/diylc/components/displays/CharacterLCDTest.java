@@ -91,6 +91,29 @@ public class CharacterLCDTest {
     MakerBoardTestSupport.assertScreenTextIsDrawn(pale, paleBlank);
   }
 
+  /**
+   * The dot figures and the lit-area figures are measured off the module independently, so nothing
+   * but this keeps them consistent: a character matrix wider or taller than the glass it sits on
+   * means one of the two sets has drifted.
+   */
+  @Test
+  public void theCharacterMatrixFitsInsideTheLitArea() {
+    double cellWidth = (CharacterLCD.DOT_COLUMNS - 1) * 0.6d + 0.55d;
+    double cellHeight = (CharacterLCD.DOT_ROWS - 1) * 0.6d + 0.55d;
+
+    for (LCDSize lcdSize : LCDSize.values()) {
+      double matrixWidth = (lcdSize.getColumns() - 1) * 3.55d + cellWidth;
+      double matrixHeight = (lcdSize.getRows() - 1) * 5.35d + cellHeight;
+
+      Assert.assertTrue(lcdSize + " matrix is " + matrixWidth + " mm wide on a "
+          + lcdSize.getDisplayWidthMm() + " mm window",
+          matrixWidth <= lcdSize.getDisplayWidthMm());
+      Assert.assertTrue(lcdSize + " matrix is " + matrixHeight + " mm tall on a "
+          + lcdSize.getDisplayHeightMm() + " mm window",
+          matrixHeight <= lcdSize.getDisplayHeightMm());
+    }
+  }
+
   @Test
   public void drawsCleanlyInEveryState() {
     for (LCDSize lcdSize : LCDSize.values()) {

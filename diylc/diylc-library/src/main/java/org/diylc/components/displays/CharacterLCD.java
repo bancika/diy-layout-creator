@@ -30,6 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.List;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
@@ -62,14 +63,21 @@ public class CharacterLCD extends AbstractMakerBoard {
   private static final long serialVersionUID = 1L;
 
   public static Size HEADER_OFFSET = new Size(2.54d, SizeUnit.mm);
-  // The parallel row is not centred: its leftmost pin starts this far in from the left edge.
-  public static Size PARALLEL_HEADER_INSET = new Size(10.0d, SizeUnit.mm);
   // The I2C backpack's four pins stand in a column against the left edge, centred on the height.
   public static Size I2C_HEADER_INSET = new Size(2.5d, SizeUnit.mm);
   // A 3 mm hole centred 2.5 mm in leaves only 1 mm of board outside it, which is what the part
   // does.
   public static Size MOUNTING_HOLE_INSET = new Size(2.5d, SizeUnit.mm);
   public static Size MOUNTING_HOLE_SIZE = new Size(3.0d, SizeUnit.mm);
+
+  // The HD44780 character box. Square dots on a 0.6 mm pitch make the cell 2.95 x 4.75 mm, the
+  // figure the datasheet quotes, so the cell is derived from the pitch rather than stored twice.
+  public static Size DOT_SIZE = new Size(0.55d, SizeUnit.mm);
+  public static Size DOT_PITCH = new Size(0.6d, SizeUnit.mm);
+  public static Size CHAR_PITCH_X = new Size(3.55d, SizeUnit.mm);
+  public static Size CHAR_PITCH_Y = new Size(5.35d, SizeUnit.mm);
+  public static final int DOT_COLUMNS = 5;
+  public static final int DOT_ROWS = 8;
 
   public static Color PCB_GREEN = Color.decode("#1B5E20");
   public static Color SCREEN_BG = Color.decode("#1E88E5");
@@ -80,17 +88,13 @@ public class CharacterLCD extends AbstractMakerBoard {
   public static Color SCREEN_INK_DARK = Color.decode("#1B2631");
 
   public static final String[] PIN_NAMES_I2C = new String[] {"GND", "VCC", "SDA", "SCL"};
+  // The bare designation the module prints, with the function in parentheses where the pin's name
+  // does not give it away. The silkscreen label is the part before the parenthesis, there being no
+  // room for more along a 0.1" pitch.
   public static final String[] PIN_NAMES_PARALLEL = new String[] {
-      "VSS (GND)", "VCC (+5V)", "VEE (Contrast)", "RS", "RW", "E",
-      "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",
-      "A (Backlight +)", "K (Backlight -)"
-  };
-
-  // The bare designations the module prints. The supply and backlight pins carry their function
-  // in the node name instead, there being no room for it along a 0.1" pitch.
-  public static final String[] SILK_NAMES_PARALLEL = new String[] {
-      "VSS", "VCC", "VEE", "RS", "RW", "E",
-      "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "A", "K"
+      "VSS (GND)", "VDD (+5V)", "VO (Contrast)", "RS", "R/W", "E",
+      "DB0", "DB1", "DB2", "DB3", "DB4", "DB5", "DB6", "DB7",
+      "LEDA (Backlight +)", "LEDK (Backlight -)"
   };
 
   private LCDSize lcdSize = LCDSize._16x2;
@@ -166,15 +170,6 @@ public class CharacterLCD extends AbstractMakerBoard {
     return "Pin " + (index + 1);
   }
 
-  @Override
-  protected String getSilkPinLabel(int index) {
-    if (lcdInterface == LCDInterface.Parallel_16Pin && index >= 0
-        && index < SILK_NAMES_PARALLEL.length) {
-      return SILK_NAMES_PARALLEL[index];
-    }
-    return super.getSilkPinLabel(index);
-  }
-
   private int getPinCount() {
     return lcdInterface == LCDInterface.I2C_Backpack ? PIN_NAMES_I2C.length
         : PIN_NAMES_PARALLEL.length;
@@ -183,6 +178,14 @@ public class CharacterLCD extends AbstractMakerBoard {
   /** The ink that contrasts with the backlight the user has chosen. */
   private Color getScreenInk() {
     return CalcUtils.calculateLuminance(screenColor) < 128d ? SCREEN_INK_LIGHT : SCREEN_INK_DARK;
+  }
+
+  /**
+   * An unlit dot is the backlight seen through the cell, so it shows as a shade of the backlight
+   * rather than a colour of its own and follows whatever the user picks.
+   */
+  private Color getDotColor() {
+    return screenColor.darker();
   }
 
   private double getBoardWidth() {
@@ -194,12 +197,12 @@ public class CharacterLCD extends AbstractMakerBoard {
   }
 
   /**
-   * Neither header is centred: the parallel row starts a fixed distance in from the left, and the
-   * I2C column stands against that same edge.
+   * Neither header is centred: the parallel row starts a distance in from the left that the module
+   * itself dictates, and the I2C column stands against that same edge whatever the module.
    */
   private double getBoardX(double x) {
-    Size inset =
-        lcdInterface == LCDInterface.I2C_Backpack ? I2C_HEADER_INSET : PARALLEL_HEADER_INSET;
+    Size inset = lcdInterface == LCDInterface.I2C_Backpack ? I2C_HEADER_INSET
+        : new Size(lcdSize.getParallelHeaderInsetMm(), SizeUnit.mm);
     return x - inset.convertToPixels();
   }
 
@@ -302,9 +305,7 @@ public class CharacterLCD extends AbstractMakerBoard {
       g2d.setColor(screenColor);
       g2d.fill(new Rectangle2D.Double(screenX, screenY, screenW, screenH));
 
-      MakerBoardPainter.drawScreenText(g2d,
-          new Rectangle2D.Double(screenX, screenY, screenW, screenH), getScreenInk(), getScreen(),
-          getName(), getValueForDisplay());
+      drawCharacterMatrix(g2d, new Rectangle2D.Double(screenX, screenY, screenW, screenH));
 
       // Only the parallel row has anywhere to print. The backpack's column sits 2.5 mm from the
       // left edge with the bezel 1.4 mm further in, so a label beside it would lie across the metal
@@ -320,6 +321,71 @@ public class CharacterLCD extends AbstractMakerBoard {
     drawPinHeader(g2d, 0, controlPoints.length, outlineMode, drawingObserver);
 
     g2d.setComposite(oldComposite);
+  }
+
+  /**
+   * The character grid, centred in the lit area: every cell's dots in the unlit shade first, then
+   * the dots the text lights over the top of them. The matrix is narrower than the glass on both
+   * modules, which is why it is centred rather than inset by a margin.
+   */
+  private void drawCharacterMatrix(Graphics2D g2d, Rectangle2D screenArea) {
+    double dotSize = DOT_SIZE.convertToPixels();
+    double dotPitch = DOT_PITCH.convertToPixels();
+    double charPitchX = CHAR_PITCH_X.convertToPixels();
+    double charPitchY = CHAR_PITCH_Y.convertToPixels();
+
+    double cellWidth = (DOT_COLUMNS - 1) * dotPitch + dotSize;
+    double cellHeight = (DOT_ROWS - 1) * dotPitch + dotSize;
+    double matrixWidth = (lcdSize.getColumns() - 1) * charPitchX + cellWidth;
+    double matrixHeight = (lcdSize.getRows() - 1) * charPitchY + cellHeight;
+    double matrixX = screenArea.getX() + (screenArea.getWidth() - matrixWidth) / 2.0;
+    double matrixY = screenArea.getY() + (screenArea.getHeight() - matrixHeight) / 2.0;
+
+    // The 20x4 comes to 3200 dots, so the rectangle is reused rather than allocated per dot, and
+    // the two shades are laid down in one pass each rather than a colour change per dot.
+    Rectangle2D.Double dot = new Rectangle2D.Double(0, 0, dotSize, dotSize);
+
+    g2d.setColor(getDotColor());
+    for (int row = 0; row < lcdSize.getRows(); row++) {
+      for (int column = 0; column < lcdSize.getColumns(); column++) {
+        double cellX = matrixX + column * charPitchX;
+        double cellY = matrixY + row * charPitchY;
+        for (int dotRow = 0; dotRow < DOT_ROWS; dotRow++) {
+          for (int dotColumn = 0; dotColumn < DOT_COLUMNS; dotColumn++) {
+            dot.x = cellX + dotColumn * dotPitch;
+            dot.y = cellY + dotRow * dotPitch;
+            g2d.fill(dot);
+          }
+        }
+      }
+    }
+
+    List<String> lines = DotMatrixScreen.layOutText(getScreen(), getName(),
+        getValueForDisplay(), lcdSize.getColumns(), lcdSize.getRows());
+    if (lines.isEmpty()) {
+      return;
+    }
+
+    g2d.setColor(getScreenInk());
+    int firstRow = (lcdSize.getRows() - lines.size()) / 2;
+    for (int line = 0; line < lines.size(); line++) {
+      String text = lines.get(line);
+      int firstColumn = (lcdSize.getColumns() - text.length()) / 2;
+      double cellY = matrixY + (firstRow + line) * charPitchY;
+      for (int i = 0; i < text.length(); i++) {
+        char c = text.charAt(i);
+        double cellX = matrixX + (firstColumn + i) * charPitchX;
+        for (int dotRow = 0; dotRow < DotMatrixFont.GLYPH_HEIGHT; dotRow++) {
+          for (int dotColumn = 0; dotColumn < DotMatrixFont.GLYPH_WIDTH; dotColumn++) {
+            if (DotMatrixFont.isDotLit(c, dotRow, dotColumn)) {
+              dot.x = cellX + dotColumn * dotPitch;
+              dot.y = cellY + dotRow * dotPitch;
+              g2d.fill(dot);
+            }
+          }
+        }
+      }
+    }
   }
 
   @Override
@@ -340,36 +406,47 @@ public class CharacterLCD extends AbstractMakerBoard {
   public enum LCDSize {
     // Labels reach the BOM's value column, so they stay short; the dimensions are carried by the
     // fields beside them. The bezel and lit area are measured off the module rather than derived as
-    // margins off the board, which made the window grow with the board.
-    _16x2("16x2", 80.0, 35.0, 72.2, 24.1, 64.5, 14.5),
-    _20x4("20x4", 98.0, 60.0, 96.8, 39.3, 77.0, 25.2);
+    // margins off the board, which made the window grow with the board. The last figure is where
+    // the parallel header starts, which the two modules do not agree on.
+    _16x2("16x2", 16, 2, 80.0, 36.0, 72.2, 24.1, 64.5, 14.5, 7.5),
+    _20x4("20x4", 20, 4, 98.0, 60.0, 96.8, 39.3, 77.0, 25.2, 10.0);
 
     private final String label;
+    private final int columns;
+    private final int rows;
     private final double widthMm;
     private final double heightMm;
     private final double bezelWidthMm;
     private final double bezelHeightMm;
     private final double displayWidthMm;
     private final double displayHeightMm;
+    private final double parallelHeaderInsetMm;
 
-    LCDSize(String label, double widthMm, double heightMm, double bezelWidthMm,
-        double bezelHeightMm, double displayWidthMm, double displayHeightMm) {
+    LCDSize(String label, int columns, int rows, double widthMm, double heightMm,
+        double bezelWidthMm, double bezelHeightMm, double displayWidthMm, double displayHeightMm,
+        double parallelHeaderInsetMm) {
       this.label = label;
+      this.columns = columns;
+      this.rows = rows;
       this.widthMm = widthMm;
       this.heightMm = heightMm;
       this.bezelWidthMm = bezelWidthMm;
       this.bezelHeightMm = bezelHeightMm;
       this.displayWidthMm = displayWidthMm;
       this.displayHeightMm = displayHeightMm;
+      this.parallelHeaderInsetMm = parallelHeaderInsetMm;
     }
 
     @Override public String toString() { return label; }
+    public int getColumns() { return columns; }
+    public int getRows() { return rows; }
     public double getWidthMm() { return widthMm; }
     public double getHeightMm() { return heightMm; }
     public double getBezelWidthMm() { return bezelWidthMm; }
     public double getBezelHeightMm() { return bezelHeightMm; }
     public double getDisplayWidthMm() { return displayWidthMm; }
     public double getDisplayHeightMm() { return displayHeightMm; }
+    public double getParallelHeaderInsetMm() { return parallelHeaderInsetMm; }
   }
 
   public enum LCDInterface {
