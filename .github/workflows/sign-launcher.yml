@@ -1,0 +1,81 @@
+name: Sign Windows Launcher
+
+# The launch4j launcher is a prebuilt binary that changes only when it is regenerated, and
+# Inno Setup cannot sign its payload after the fact. It is therefore signed on its own here
+# and the signed copy is committed to the repository, which keeps releases down to a single
+# signing request. Run this whenever deploy/win/diylc-x64.exe is rebuilt, and once more when
+# the production certificate replaces the test certificate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      signing-policy-slug:
+        description: 'SignPath signing policy'
+        type: choice
+        default: test-signing
+        options:
+          - test-signing
+          - release-signing
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SIGNPATH_ORGANIZATION_ID: 95470a00-59e6-430c-9c81-7393ad16d4e8
+  SIGNPATH_PROJECT_SLUG: diy-layout-creator
+
+jobs:
+  launcher:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Upload unsigned launcher
+        id: upload-unsigned-launcher
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-launcher
+          path: diylc/diylc-swing/deploy/win/diylc-x64.exe
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Sign launcher
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ inputs.signing-policy-slug }}
+          artifact-configuration-slug: windows-launcher
+          github-artifact-id: ${{ steps.upload-unsigned-launcher.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Confirm the signature is present
+        run: python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py signed/diylc-x64.exe
+
+      - name: Upload signed launcher
+        uses: actions/upload-artifact@v7
+        with:
+          name: signed-launcher
+          path: signed/diylc-x64.exe
+          if-no-files-found: error
+
+      - name: Explain the manual step
+        env:
+          POLICY: ${{ inputs.signing-policy-slug }}
+        run: |
+          {
+            echo "## Signed with the \`$POLICY\` policy"
+            echo
+            echo "Download the **signed-launcher** artifact and commit it over"
+            echo "\`diylc/diylc-swing/deploy/win/diylc-x64.exe\`."
+            if [ "$POLICY" != "release-signing" ]; then
+              echo
+              echo "> This is a test signature. Do not commit it — a test-signed binary in a release"
+              echo "> is worse than an unsigned one, because it names a publisher Windows does not trust."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

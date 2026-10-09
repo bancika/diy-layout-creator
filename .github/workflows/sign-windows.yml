@@ -1,0 +1,116 @@
+name: Sign Windows Artifacts
+
+# Signs the Inno Setup installer. The launcher it embeds is signed separately and committed
+# by the Sign Windows Launcher workflow, because Inno Setup cannot sign its payload after the
+# fact and the launcher changes only when launch4j regenerates it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      signing-policy-slug:
+        description: 'SignPath signing policy'
+        type: choice
+        default: test-signing
+        options:
+          - test-signing
+          - release-signing
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SIGNPATH_ORGANIZATION_ID: 95470a00-59e6-430c-9c81-7393ad16d4e8
+  SIGNPATH_PROJECT_SLUG: diy-layout-creator
+
+jobs:
+  windows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # Nothing downstream fails when the committed launcher is unsigned: the zip and the
+      # installed application would just silently ship an unsigned executable.
+      - name: Check the committed launcher carries a signature
+        env:
+          POLICY: ${{ inputs.signing-policy-slug }}
+        run: |
+          if python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py \
+              diylc/diylc-swing/deploy/win/diylc-x64.exe; then
+            exit 0
+          fi
+          if [ "$POLICY" = "release-signing" ]; then
+            echo "::error::deploy/win/diylc-x64.exe is unsigned. Run the Sign Windows Launcher workflow with the release policy, commit the signed launcher, then re-run this workflow."
+            exit 1
+          fi
+          echo "::warning::deploy/win/diylc-x64.exe is unsigned; the zip and the installed application will ship an unsigned launcher."
+
+      - name: Resolve project version
+        working-directory: diylc
+        run: |
+          echo "DIYLC_VERSION=$(mvn -q -N help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_ENV"
+
+      - name: Build Windows zip and installer
+        working-directory: diylc
+        run: |
+          mvn -B -DskipTests -P win64-zip package
+          mvn -B -DskipTests -P win64-installer package
+
+      # The artifact configuration matches a fixed path, so the versioned installer is staged
+      # under a stable name for the round trip and renamed back afterwards.
+      - name: Stage installer for signing
+        run: |
+          mkdir -p staging
+          cp "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe" staging/diylc-setup.exe
+
+      - name: Upload unsigned installer
+        id: upload-unsigned-installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-installer
+          path: staging/diylc-setup.exe
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Sign installer
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ inputs.signing-policy-slug }}
+          artifact-configuration-slug: windows-installer
+          github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Restore signed installer under its release name
+        run: |
+          python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py signed/diylc-setup.exe
+          cp signed/diylc-setup.exe "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe"
+
+      - name: Report signatures
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y osslsigncode
+          # chain validation fails against the self-signed test certificate by design; what
+          # matters is that a signature is present and names the expected subject
+          osslsigncode verify -in "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe" || true
+
+      - name: Upload signed Windows artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: diylc-windows-signed
+          path: |
+            diylc/diylc-swing/target/diylc-${{ env.DIYLC_VERSION }}-win64.exe
+            diylc/diylc-swing/target/diylc-${{ env.DIYLC_VERSION }}-win64.zip
+          if-no-files-found: error

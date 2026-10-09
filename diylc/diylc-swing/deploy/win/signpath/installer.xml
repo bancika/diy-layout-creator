@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Artifact configuration slug: windows-installer
+     Signs the Inno Setup installer. The workflow stages it under a version-independent
+     name because the path below is fixed while the release file name carries the version. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="diylc-setup.exe">
+      <authenticode-sign />
+    </pe-file>
+  </zip-file>
+</artifact-configuration>
