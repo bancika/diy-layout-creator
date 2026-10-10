@@ -120,7 +120,11 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 20;  
+  private static final int MAX_RECENT_FILES = 20;
+
+  // screen pixels the cursor has to travel with shift held before the dominant direction is
+  // picked, so that hand jitter right after pressing shift does not choose the axis
+  private static final int AXIS_LOCK_THRESHOLD = 4;
 
   private Project currentProject;
 
@@ -160,6 +164,12 @@ public class Presenter implements IPlugInPort {
   private Project preDragProject = null;
   private int dragAction;
   private Point2D previousScaledPoint;
+  // Shift held when a drag starts constrains it to the horizontal or vertical line through the
+  // drag start point for the whole drag. The state is not followed mid-drag because native DnD on
+  // macOS keeps reporting the modifiers captured at the start.
+  private Point2D dragStartPoint = null;
+  private boolean dragShiftDown = false;
+  private AxisLock lockedAxis = null;
   
   private DIYTest test = null;
 
@@ -659,7 +669,9 @@ public class Presenter implements IPlugInPort {
             } else {
               // On the second click, add the component to the
               // project.
-              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, model, oldProject);
+              addPendingComponentsToProject(
+                  constrainToAxis(instantiationManager.getFirstControlPoint(), scaledPoint, shiftDown),
+                  componentTypeSlot, template, model, oldProject);
             }
             break;
           default:
@@ -916,7 +928,8 @@ public class Presenter implements IPlugInPort {
             instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
                 currentProject.getGridSpacing());
       } else {
-        refresh = instantiationManager.updatePointByPoint(previousScaledPoint);
+        refresh = instantiationManager.updatePointByPoint(
+            constrainToAxis(instantiationManager.getFirstControlPoint(), previousScaledPoint, shiftDown));
       }
       if (refresh) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1282,15 +1295,16 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void dragStarted(Point point, int dragAction, boolean forceSelectionRect) {
-    LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
-    
+  public void dragStarted(Point point, int dragAction, boolean forceSelectionRect, boolean shiftDown) {
+    LOG.debug(String.format("dragStarted(%s, %s, %s)", point, dragAction, shiftDown));
+
     // record a test step if needed
     if (test != null) {
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("point", point);
       params.put("dragAction", dragAction);
       params.put("forceSelectionRect", forceSelectionRect);
+      params.put("shiftDown", shiftDown);
       test.addStep(DIYTest.DRAG_START, params);
     }    
     
@@ -1311,6 +1325,9 @@ public class Presenter implements IPlugInPort {
     this.preDragProject = currentProject.clone();
     Point2D scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
+    this.dragStartPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
+    this.dragShiftDown = shiftDown;
+    this.lockedAxis = null;
     List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
@@ -1498,12 +1515,15 @@ public class Presenter implements IPlugInPort {
     Point2D scaledPoint = scalePoint(point);
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
-      int dx = (int) (scaledPoint.getX() - previousDragPoint.getX());
-      int dy = (int) (scaledPoint.getY() - previousDragPoint.getY());
+      Point2D targetPoint = constrainToAxis(dragStartPoint, scaledPoint, dragShiftDown);
+      int dx = (int) (targetPoint.getX() - previousDragPoint.getX());
+      int dy = (int) (targetPoint.getY() - previousDragPoint.getY());
 
-      Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
-      if (actualD == null)
+      Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects(),
+          lockedAxis);
+      if (actualD == null) {
         return true;
+      }
 
       // if there's at least one component with only one control point being dragged it means that we are resizing
       if (controlPointMap.size() == 1 && controlPointMap.entrySet().stream()
@@ -1573,7 +1593,36 @@ public class Presenter implements IPlugInPort {
     return new ResizeDimensions(width, height, length);
   }
 
+  /**
+   * Projects the point onto the horizontal or vertical line through the anchor while shift is held.
+   * The axis is picked from the dominant direction of the gesture once it leaves the dead zone and
+   * stays locked until shift is released.
+   */
+  private Point2D constrainToAxis(Point2D anchor, Point2D point, boolean shiftDown) {
+    if (!shiftDown || anchor == null || point == null) {
+      lockedAxis = null;
+      return point;
+    }
+    double dx = point.getX() - anchor.getX();
+    double dy = point.getY() - anchor.getY();
+    if (lockedAxis == null) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < AXIS_LOCK_THRESHOLD / drawingManager.getZoomLevel()) {
+        return new Point2D.Double(anchor.getX(), anchor.getY());
+      }
+      lockedAxis = Math.abs(dx) >= Math.abs(dy) ? AxisLock.HORIZONTAL : AxisLock.VERTICAL;
+    }
+    if (lockedAxis == AxisLock.HORIZONTAL) {
+      return new Point2D.Double(point.getX(), anchor.getY());
+    }
+    return new Point2D.Double(anchor.getX(), point.getY());
+  }
+
   private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
+    return moveComponents(controlPointMap, dx, dy, snapToGrid, snapToObjects, null);
+  }
+
+  private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy,
+      boolean snapToGrid, boolean snapToObjects, AxisLock lockedAxis) {
     // After we make the transfer and snap to grid, calculate actual dx
     // and dy. We'll use them to translate the previous drag point.
     double actualDx = 0;
@@ -1618,6 +1667,13 @@ public class Presenter implements IPlugInPort {
     } else {
       actualDx = dx;
       actualDy = dy;
+    }
+
+    // snapping an off-grid point would otherwise nudge it across the locked axis
+    if (lockedAxis == AxisLock.HORIZONTAL && dy == 0) {
+      actualDy = 0;
+    } else if (lockedAxis == AxisLock.VERTICAL && dx == 0) {
+      actualDx = 0;
     }
 
     if (actualDx == 0 && actualDy == 0) {
@@ -1887,6 +1943,9 @@ public class Presenter implements IPlugInPort {
 
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     dragInProgress = false;
+    dragStartPoint = null;
+    dragShiftDown = false;
+    lockedAxis = null;
   }
 
   @Override
@@ -3197,5 +3256,9 @@ public class Presenter implements IPlugInPort {
   @Override
   public Set<ComponentGroup> getComponentGroups() {
     return currentProject.getGroupsEx();
+  }
+
+  private enum AxisLock {
+    HORIZONTAL, VERTICAL
   }
 }

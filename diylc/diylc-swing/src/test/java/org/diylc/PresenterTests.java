@@ -1,6 +1,7 @@
 package org.diylc;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -17,6 +18,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
@@ -101,7 +103,7 @@ public class PresenterTests extends TestBase {
     Assert.assertNotNull(receivedTooltip[0]);
 
     // Start drag - should hide tooltip
-    presenter.dragStarted(new Point(1000, 1000), java.awt.dnd.DnDConstants.ACTION_MOVE, false);
+    presenter.dragStarted(new Point(1000, 1000), java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
     Assert.assertNull(receivedTooltip[0]);
 
     // End drag
@@ -221,7 +223,58 @@ public class PresenterTests extends TestBase {
     treeModel.refresh();
     Assert.assertTrue(presenter.getVisibleComponentTypes().containsKey("Tubes"));
   }
-  
+
+  @Test
+  public void testShiftDragLocksAxis() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    Point2D start = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+
+    // hovering a control point of the selected component arms it for dragging
+    presenter.mouseMoved(new Point(1200, 1000), false, false, false);
+    presenter.dragStarted(new Point(1200, 1000), java.awt.dnd.DnDConstants.ACTION_MOVE, false, true);
+
+    // mostly horizontal gesture locks the horizontal axis
+    presenter.dragOver(new Point(1300, 1030));
+    Assert.assertTrue(resistor.getControlPoint(1).getX() > start.getX());
+    Assert.assertEquals(start.getY(), resistor.getControlPoint(1).getY());
+
+    // the axis holds for the rest of the drag even when the cursor swings toward the vertical
+    presenter.dragOver(new Point(1300, 1200));
+    Assert.assertEquals(start.getY(), resistor.getControlPoint(1).getY());
+    presenter.dragEnded(new Point(1300, 1200));
+  }
+
+  @Test
+  public void testDragWithoutShiftIsFree() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    Point2D start = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+
+    presenter.mouseMoved(new Point(1200, 1000), false, false, false);
+    presenter.dragStarted(new Point(1200, 1000), java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
+    presenter.dragOver(new Point(1300, 1100));
+    Assert.assertTrue(resistor.getControlPoint(1).getX() > start.getX());
+    Assert.assertTrue(resistor.getControlPoint(1).getY() > start.getY());
+    presenter.dragEnded(new Point(1300, 1100));
+  }
+
+  @Test
+  public void testShiftLocksAxisWhilePlacing() {
+    Map<String, List<ComponentType>> componentTypes = presenter.getComponentTypes();
+    ComponentType resistorType = componentTypes.get("Passive").stream()
+        .filter(x -> x.getName().equals("Resistor")).findFirst().get();
+    presenter.setNewComponentTypeSlot(resistorType, null, null, false);
+    presenter.mouseClicked(new Point(1000, 1000), IPlugInPort.BUTTON1, false, false, false, 1);
+    presenter.mouseMoved(new Point(1030, 1200), false, true, false);
+    presenter.mouseClicked(new Point(1030, 1200), IPlugInPort.BUTTON1, false, true, false, 1);
+
+    Assert.assertEquals(1, presenter.getCurrentProject().getComponents().size());
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    Assert.assertEquals(resistor.getControlPoint(0).getX(), resistor.getControlPoint(1).getX());
+    Assert.assertTrue(resistor.getControlPoint(1).getY() > resistor.getControlPoint(0).getY());
+  }
+
 //  @Test
 //  public void testLoadVariants() {
 //    try {

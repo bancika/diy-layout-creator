@@ -59,8 +59,11 @@ public interface IMouseProcessor {
    * @param point
    * @param dragAction
    * @param forceSelectionRect
+   * @param shiftDown when true, the whole drag is constrained to the horizontal or vertical
+   *        direction of the initial gesture. Shift alone maps to the same drag action as no
+   *        modifier, so it has to be passed separately.
    */
-  void dragStarted(Point point, int dragAction, boolean forceSelectionRect);
+  void dragStarted(Point point, int dragAction, boolean forceSelectionRect, boolean shiftDown);
 
   /**
    * Checks if it's possible to drop over the specified point.
