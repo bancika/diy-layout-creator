@@ -35,13 +35,18 @@ DIYLC runs cross-platform on Windows, macOS, and Linux. The current release is b
 
 ## 3. Essential Key Commands & Controls
 
-* **Pan Canvas**: Spacebar + Drag or Middle Mouse Button Drag
-* **Zoom**: Mouse Scroll Wheel or `Ctrl` / `Cmd` + Scroll
-* **Edit Component Properties**: Double-Click component or press `Ctrl` + `E` (`Cmd` + `E`)
-* **Nudge Selected Component**: Arrow Keys (`Shift` + Arrow Keys for larger jumps)
-* **Rotate Component**: `R` or `Ctrl` + `R`
-* **Change Z-Order / Layer**: `Page Up` / `Page Down`
-* **Delete Component**: `Delete` or `Backspace`
+* **Q:** Jump to search the component tree.
+* **~ (Tilde):** Repeat and place another instance of the previously created component.
+* **Ctrl / Cmd + D:** Duplicate selected component(s).
+* **Ctrl / Cmd + E:** Edit selected component properties (value, package, color, etc.).
+* **Alt / Option + Left / Right Arrow:** Rotate selected component(s) counter-clockwise or clockwise.
+* **Arrow Keys:** Nudge selected component by one grid increment.
+* **Shift + Arrow Keys:** Nudge selected component by one pixel for precision alignment.
+* **Shift (while dragging):** Lock movement along a single axis (horizontal or vertical).
+* **Ctrl (while dragging):** Temporarily toggle Sticky Points to prevent unwanted snapping.
+* **Ctrl / Cmd + G / Ctrl / Cmd + U:** Group or ungroup selected components.
+* **Ctrl / Cmd + 1 – 6:** Toggle visibility of layers (Chassis, Board, Trace, Component, Wiring, Text).
+* **Ctrl / Cmd + F:** Find a component by name, select it, and pan to it on canvas.
 
 ---
 
