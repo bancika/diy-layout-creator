@@ -78,6 +78,12 @@ public class OrthogonalLine extends AbstractOrthogonalComponent<Void> implements
     g2d.draw(createIconPath(width, height));
   }
 
+  // an arrow head spreads one arrow size to either side of the end point it sits on
+  @Override
+  protected double getClipMargin() {
+    return Math.max(getThickness().convertToPixels() / 2, getArrowSize().convertToPixels()) + 1;
+  }
+
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState,
       IDrawingObserver drawingObserver) {

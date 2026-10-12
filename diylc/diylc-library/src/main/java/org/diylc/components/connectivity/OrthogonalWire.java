@@ -65,9 +65,18 @@ public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements 
     return COLOR;
   }
 
+  private int getThickness() {
+    return (int) (gauge.diameterIn() * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT)) - 1;
+  }
+
+  @Override
+  protected double getClipMargin() {
+    return getThickness() / 2d + 1;
+  }
+
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
-    int thickness = (int) (gauge.diameterIn() * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT)) - 1;
+    int thickness = getThickness();
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color;
