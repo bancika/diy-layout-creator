@@ -8,6 +8,7 @@ It provides an intuitive, drag-and-drop interface for placing components, arrang
 
 ### 🚀 Quick Links
 * **[⬇️ Download the latest release](https://github.com/bancika/diy-layout-creator/releases/latest)** for all platforms.
+* **[⚡ Quick Start Guide](https://github.com/bancika/diy-layout-creator/blob/wiki/QuickStart.md)** if you are just getting into DIYLC.
 * **[📄 Read the Wiki](https://github.com/bancika/diy-layout-creator/tree/wiki)** for free user and developer documentation.
 
 > 🍎 **Mac users:** Gatekeeper may block DIYLC since it's from an independent developer. [Read this guide](https://support.apple.com/kb/ph18657?locale=en_US) on how to easily allow DIYLC on your Mac.
