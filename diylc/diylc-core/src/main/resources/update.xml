@@ -601,6 +601,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>'Cut Line' can be rotated using keyboard shortcuts</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include 'Potentiometer (Miniature)' and 'Trimmer Potentiometer' in Guitar Wiring Analyzer</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
