@@ -597,6 +597,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>'S1 Switch' can now be rotated to match the orientation of the potentiometer it is mounted on, so the switching matrix stays correct relative to the pot lugs</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Cut Line' can be rotated using keyboard shortcuts</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
