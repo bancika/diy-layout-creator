@@ -31,7 +31,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -3130,16 +3129,8 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<INetlistAnalyzer> getNetlistAnalyzers() {
-    Set<Class<?>> classes;
     try {
-      classes = Utils.getClasses("org.diylc.netlist");
-      List<INetlistAnalyzer> result = new ArrayList<INetlistAnalyzer>();
-
-      for (Class<?> clazz : classes) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistAnalyzer.class.isAssignableFrom(clazz)) {
-          result.add((INetlistAnalyzer) clazz.getDeclaredConstructor().newInstance());
-        }
-      }
+      List<INetlistAnalyzer> result = ReflectionUtils.getIndexedInstances(INetlistAnalyzer.class);
 
       result.sort(new Comparator<INetlistAnalyzer>() {
 

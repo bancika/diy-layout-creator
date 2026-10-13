@@ -22,6 +22,10 @@
         <!-- Internal module dependencies -->
         <dependency>
             <groupId>org.diylc</groupId>
+            <artifactId>diylc-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.diylc</groupId>
             <artifactId>diylc-core</artifactId>
         </dependency>
         <dependency>

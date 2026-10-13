@@ -15,14 +15,15 @@ if it compiles and works.
 
 ## Modules
 
-Maven reactor rooted at `diylc/pom.xml`, version `6.4.0`, three modules with a strict one-way
-dependency chain:
+Maven reactor rooted at `diylc/pom.xml`, version `6.4.0`, three application modules with a strict
+one-way dependency chain, plus a build-time annotation processor:
 
 | Module | Contains | Depends on |
 | --- | --- | --- |
 | `diylc-core` | Domain model, `Presenter`, rendering pipeline, messaging, serialization, netlist engine, annotations | — |
 | `diylc-library` | Concrete component classes, transformers, datasheets, legacy file parsers, component-aware analyzers | `diylc-core` |
 | `diylc-swing` | Swing shell, plugins, dialogs, editors, `DIYLCStarter` | `diylc-core`, `diylc-library` |
+| `diylc-processor` | `ServiceIndexProcessor`, run by `javac` over the three modules above; never on the runtime classpath | — |
 
 **`diylc-core` must never reference a concrete component type.** It knows components only through
 `IDIYComponent` and the annotations. If core logic seems to need knowledge of a specific component,
@@ -30,8 +31,11 @@ that knowledge belongs in `diylc-library` (an analyzer, a transformer, a parser)
 through a new interface in core that the component implements — look at
 `org.diylc.core.gerber.IGerberComponentSimple` for the established shape of that escape hatch.
 
-Component and plugin classes are discovered at runtime by Reflections scanning the `org.diylc`
-package (`ComponentProcessor`). There is no registry to update when adding a component.
+Components, netlist analyzers and parsers, legacy file parsers and auto-creators are discovered
+through a class index built at compile time: every concrete class implementing a type marked
+`@Indexed` (`IDIYComponent`, `INetlistAnalyzer`, ...) is listed under `META-INF/services/` by
+`diylc-processor`, and `ReflectionUtils.getIndexedClasses()` reads that back at startup. Nothing
+scans the classpath, and there is no registry to update when adding a component.
 
 ## Build and verify
 

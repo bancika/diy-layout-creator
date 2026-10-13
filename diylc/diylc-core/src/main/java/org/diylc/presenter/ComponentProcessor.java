@@ -21,19 +21,13 @@
 */
 package org.diylc.presenter;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 
 import org.diylc.common.ComponentType;
@@ -53,11 +47,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 
 import org.diylc.lang.LangUtil;
-import org.reflections.Reflections;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
-
-import static org.reflections.scanners.Scanners.TypesAnnotated;
+import org.diylc.utils.ReflectionUtils;
 
 /**
  * Utility class with component processing methods.
@@ -138,26 +128,7 @@ public class ComponentProcessor {
     } else { // default
     	return null;
     }
-    icon = null;
-    // Draw component icon.
-    try {
-      IDIYComponent<?> componentInstance = (IDIYComponent<?>) clazz.getDeclaredConstructor().newInstance();
-      Image image =
-          new BufferedImage(Presenter.ICON_SIZE, Presenter.ICON_SIZE, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g2d = (Graphics2D) image.getGraphics();
-      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-          RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-          RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-      // g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-      // RenderingHints.VALUE_STROKE_PURE);
-      componentInstance.drawIcon(g2d, Presenter.ICON_SIZE, Presenter.ICON_SIZE);
-      icon = new ImageIcon(image);
-    } catch (Exception e) {
-      LOG.error("Error drawing component icon", e);
-    }
+    icon = new ComponentIcon(clazz);
     ComponentType componentType =
         new ComponentType(name, description, creationMethod, category, namePrefix, author, icon, clazz, zOrder,
             flexibleZOrder, bomPolicy, autoEdit, transformer, keywordPolicy, keywordTag, cacheDrawing, datasheet,
@@ -254,64 +225,57 @@ public class ComponentProcessor {
     if (componentTypes == null) {
       LOG.info("Loading component types.");
       componentTypes = new HashMap<String, List<ComponentType>>();
-      Reflections reflections = new Reflections(
-          new ConfigurationBuilder()
-              .forPackage("org.diylc")
-              .filterInputsBy(new FilterBuilder().includePackage("org.diylc.components"))
-              .setScanners(TypesAnnotated));
-      Set<Class<?>> componentTypeClasses = null;
       try {
-        componentTypeClasses = reflections.getTypesAnnotatedWith(ComponentDescriptor.class, false);
         List<Map<String, Object>> componentSnapshots = LOG_COMPONENT_TYPE_DETAILS ? new ArrayList<>() : null;
 
-        for (Class<?> clazz : componentTypeClasses) {
-          if (!Modifier.isAbstract(clazz.getModifiers()) && IDIYComponent.class.isAssignableFrom(clazz)) {
-            ComponentType componentType =
-                ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
-            if (componentType == null)
-              continue;
+        for (Class<?> clazz : ReflectionUtils.getIndexedClasses(IDIYComponent.class)) {
+          ComponentType componentType =
+              ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) clazz);
+          if (componentType == null) {
+            continue;
+          }
 
-            // just to store in the cache
-            ComponentProcessor.getInstance().extractProperties(clazz);
+          // just to store in the cache
+          ComponentProcessor.getInstance().extractProperties(clazz);
 
-            // types created only programmatically (e.g. CompositeComponent) don't belong in the
-            // palette, but still need to go through extractProperties() above so the cache is warm
-            if (clazz.getAnnotation(ComponentDescriptor.class).hiddenInPalette())
-              continue;
+          // types created only programmatically (e.g. CompositeComponent) don't belong in the
+          // palette, but still need to go through extractProperties() above so the cache is warm
+          if (clazz.getAnnotation(ComponentDescriptor.class).hiddenInPalette()) {
+            continue;
+          }
 
-            List<ComponentType> nestedList;
-            if (componentTypes.containsKey(componentType.getCategory())) {
-              nestedList = componentTypes.get(componentType.getCategory());
-            } else {
-              nestedList = new ArrayList<ComponentType>();
-              componentTypes.put(componentType.getCategory(), nestedList);
-            }
-            nestedList.add(componentType);
+          List<ComponentType> nestedList;
+          if (componentTypes.containsKey(componentType.getCategory())) {
+            nestedList = componentTypes.get(componentType.getCategory());
+          } else {
+            nestedList = new ArrayList<ComponentType>();
+            componentTypes.put(componentType.getCategory(), nestedList);
+          }
+          nestedList.add(componentType);
 
-            if (LOG_COMPONENT_TYPE_DETAILS) {
-              try {
-                Map<String, Object> snapshot = new LinkedHashMap<>();
-                snapshot.put("name", componentType.getName());
-                snapshot.put("description", componentType.getDescription());
-                snapshot.put("creationMethod", componentType.getCreationMethod());
-                snapshot.put("category", componentType.getCategory());
-                List<PropertyWrapper> props = propertyCache.get(clazz.getName());
-                snapshot.put("properties", props != null ? props.stream()
-                    .map(p -> {
-                      Map<String, Object> prop = new LinkedHashMap<>();
-                      prop.put("name", p.getName());
-                      prop.put("type", formatPropertyType(p.getType()));
-                      List<String> possibleValues = getPossibleValues(p.getType());
-                      if (possibleValues != null) {
-                        prop.put("possibleValues", possibleValues);
-                      }
-                      return prop;
-                    })
-                    .collect(Collectors.toList()) : Collections.emptyList());
-                componentSnapshots.add(snapshot);
-              } catch (Exception e) {
-                LOG.warn("Failed to log component type details for " + clazz.getName(), e);
-              }
+          if (LOG_COMPONENT_TYPE_DETAILS) {
+            try {
+              Map<String, Object> snapshot = new LinkedHashMap<>();
+              snapshot.put("name", componentType.getName());
+              snapshot.put("description", componentType.getDescription());
+              snapshot.put("creationMethod", componentType.getCreationMethod());
+              snapshot.put("category", componentType.getCategory());
+              List<PropertyWrapper> props = propertyCache.get(clazz.getName());
+              snapshot.put("properties", props != null ? props.stream()
+                  .map(p -> {
+                    Map<String, Object> prop = new LinkedHashMap<>();
+                    prop.put("name", p.getName());
+                    prop.put("type", formatPropertyType(p.getType()));
+                    List<String> possibleValues = getPossibleValues(p.getType());
+                    if (possibleValues != null) {
+                      prop.put("possibleValues", possibleValues);
+                    }
+                    return prop;
+                  })
+                  .collect(Collectors.toList()) : Collections.emptyList());
+              componentSnapshots.add(snapshot);
+            } catch (Exception e) {
+              LOG.warn("Failed to log component type details for " + clazz.getName(), e);
             }
           }
         }

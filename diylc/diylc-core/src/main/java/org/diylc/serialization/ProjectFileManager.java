@@ -30,7 +30,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,7 +40,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.Utils;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.appframework.update.VersionNumber;
 import org.w3c.dom.Document;
@@ -59,6 +57,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.presenter.Presenter;
 import org.diylc.test.DIYTest;
+import org.diylc.utils.ReflectionUtils;
 
 public class ProjectFileManager {
 
@@ -144,17 +143,10 @@ public class ProjectFileManager {
 
   public List<IOldFileParser> getParsers() {
     if (parsers == null) {
-      parsers = new ArrayList<IOldFileParser>();
-      Set<Class<?>> componentTypeClasses = null;
       try {
-        componentTypeClasses = Utils.getClasses("org.diylc.serialization");
-        for (Class<?> clazz : componentTypeClasses) {
-          if (!Modifier.isAbstract(clazz.getModifiers()) && IOldFileParser.class.isAssignableFrom(clazz)) {
-            IOldFileParser instance = (IOldFileParser) clazz.getDeclaredConstructor().newInstance();
-            parsers.add(instance);
-          }
-        }
+        parsers = ReflectionUtils.getIndexedInstances(IOldFileParser.class);
       } catch (Exception e) {
+        parsers = new ArrayList<IOldFileParser>();
         LOG.error("Could not find old version parsers", e);
       }
     }

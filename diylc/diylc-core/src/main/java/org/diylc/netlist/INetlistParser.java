@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.Indexed;
 
 /*
  * 
@@ -41,6 +42,7 @@ import org.diylc.core.IDIYComponent;
  * <http://www.gnu.org/licenses/>.
  * 
  */
+@Indexed
 public interface INetlistParser {
 
   String getName();
