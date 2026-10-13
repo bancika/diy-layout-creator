@@ -104,9 +104,7 @@ changes.
 
 - Every read and write of `imageCache`, and of the byte total, is under `synchronized (imageCache)`.
 - The lock covers only the lookup and the insert. Rendering happens outside it.
-- `renderStatsByType` is a `ConcurrentHashMap`. `Counter.add` is not synchronized, so the
-  per-type render timings can undercount slightly under parallel rendering. They are debug
-  statistics only.
+- `renderStatsByType` is a `ConcurrentHashMap`. `Counter.add` is `synchronized`.
 - The hit/miss counters are `AtomicLong`s.
 
 ## 3. Off-screen culling
