@@ -606,6 +606,14 @@
 					<description>Include 'Potentiometer (Miniature)' and 'Trimmer Potentiometer' in Guitar Wiring Analyzer</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Significantly improved rendering performance and reduced lagging with complex projects while dragging components around</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improve performance of 'Project Explorer' pane</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue of disappearing components in some edge cases</description>
 				</org.diylc.appframework.update.Change>

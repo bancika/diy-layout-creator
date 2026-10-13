@@ -1,0 +1,21 @@
+{
+  "storageDir": "storage",
+  "users": [
+    {
+      "userId": 123,
+      "username": "cloud username or email of the user",
+      "machineId": "cron-job",
+      "token": "login token issued to this username and machineId",
+      "category": "Guitar Amplifiers",
+      "keywords": "",
+      "pages": [
+        "https://example.com/layouts.htm",
+        {
+          "url": "https://example.com/templates.htm",
+          "category": "Other",
+          "keywords": "template"
+        }
+      ]
+    }
+  ]
+}

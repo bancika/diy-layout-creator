@@ -154,3 +154,7 @@ buildNumber.properties
 
 # Deployment folder
 deploy/
+
+# Cloud sync job: credentials and downloaded files
+cloud-sync/cloud-sync.json
+cloud-sync/storage/

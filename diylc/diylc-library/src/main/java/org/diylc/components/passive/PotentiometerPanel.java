@@ -776,24 +776,17 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   public Rectangle2D getCachingBounds() {
     Shape[] body = getBody();
     int margin = 20;
-    double minX = 0;
-    double minY = 0;
-    double maxX = 0;
-    double maxY = 0;
+    Rectangle2D bounds = null;
     for (Shape a : body) {
       if (a != null) {
-        Rectangle2D bounds2d = a.getBounds2D();
-        if (bounds2d.getMinX() < minX)
-          minX = bounds2d.getMinX();
-        if (bounds2d.getMinY() < minY)
-          minY = bounds2d.getMinY();
-        if (bounds2d.getMaxX() > maxX)
-          maxX = bounds2d.getMaxX();
-        if (bounds2d.getMaxY() > maxY)
-          maxY = bounds2d.getMaxY();
+        bounds = bounds == null ? a.getBounds2D() : bounds.createUnion(a.getBounds2D());
       }
     }
-    return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+    if (bounds == null) {
+      bounds = new Rectangle2D.Double(getControlPoint(0).getX(), getControlPoint(0).getY(), 0, 0);
+    }
+    return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin,
+        bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
   }
   
   @Override

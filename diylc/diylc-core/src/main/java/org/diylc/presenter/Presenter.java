@@ -1739,10 +1739,13 @@ public class Presenter implements IPlugInPort {
       }
     }
     
-    // Remove from area map.    
-    drawingManager.clearComponentAreaMap();
+    // only the moved components need their areas re-tracked, rebuilding every area on each drag
+    // step makes dragging slow in large projects
+    for (IDIYComponent<?> c : controlPointMap.keySet()) {
+      drawingManager.invalidateComponent(c);
+    }
     drawingManager.clearContinuityArea();
-    
+
     return new Point2D.Double(actualDx, actualDy);
   }
 

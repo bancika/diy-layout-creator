@@ -435,26 +435,43 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     }
 
     Composite oldComposite = applyAlpha(g2d, componentState);
-    if (shouldShadeLeads()) {     
+
+    // a long dashed or dotted lead strokes into hundreds of segments and building the tracked area
+    // from them costs tens of milliseconds per repaint, so track the lead as one solid stroke
+    // instead, which also keeps the gaps between dashes clickable
+    boolean trackSolidLead = getStyle() != LineStyle.SOLID && !isCopperArea;
+    if (trackSolidLead) {
+      Stroke solidStroke = ObjectCache.getInstance().fetchStroke(thickness,
+          getEndingStyle() == LineEndingStyle.Round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT);
+      g2d.setColor(Constants.TRANSPARENT_COLOR);
+      g2d.fill(solidStroke.createStrokedShape(line));
+      observer.stopTracking();
+    }
+
+    if (shouldShadeLeads()) {
       Shape lineShape = stroke.createStrokedShape(line);
-      
+
       g2d.setColor(getLeadColorForPainting(componentState));
       g2d.fill(lineShape);
-  
+
       if (isCopperArea)
         observer.stopTrackingContinuityArea();
-  
+
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       Color leadColor = getLeadColorForPainting(componentState);
       g2d.setColor(leadColor.darker());
-      g2d.draw(lineShape);      
+      g2d.draw(lineShape);
     } else {
       g2d.setColor(getLeadColorForPainting(componentState));
       g2d.setStroke(stroke);
       g2d.draw(line);
-      
+
       if (isCopperArea)
         observer.stopTrackingContinuityArea();
+    }
+
+    if (trackSolidLead) {
+      observer.startTracking();
     }
     g2d.setComposite(oldComposite);
   }
