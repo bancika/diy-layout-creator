@@ -22,6 +22,7 @@
 package org.diylc.presenter;
 
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -33,16 +34,21 @@ public class ComponentArea implements Serializable {
   private Area outlineArea;
   private Collection<Area> continuityPositiveAreas;
   private Collection<Area> continuityNegativeAreas;
+  // everything the component drew, including parts left out of the outline area such as labels;
+  // null when it was not recorded
+  private Rectangle2D drawnBounds;
   
   public ComponentArea() {   
   }
 
-  public ComponentArea(int zOrder, Area outlineArea, Collection<Area> continuityPositiveAreas, Collection<Area> continuityNegativeAreas) {
+  public ComponentArea(int zOrder, Area outlineArea, Collection<Area> continuityPositiveAreas,
+      Collection<Area> continuityNegativeAreas, Rectangle2D drawnBounds) {
     super();
     this.zOrder = zOrder;
     this.outlineArea = outlineArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
     this.continuityNegativeAreas = continuityNegativeAreas;
+    this.drawnBounds = drawnBounds;
   }
   
   public int getZOrder() {
@@ -59,5 +65,9 @@ public class ComponentArea implements Serializable {
 
   public Collection<Area> getContinuityNegativeAreas() {
     return continuityNegativeAreas;
-  }  
+  }
+
+  public Rectangle2D getDrawnBounds() {
+    return drawnBounds;
+  }
 }

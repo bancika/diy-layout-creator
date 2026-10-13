@@ -106,6 +106,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private Map<String, Area> continuityNegativeAreas;
   private String continuityMarker;
   private Shape lastShape;
+  private boolean recordingDrawnBounds = false;
+  private Rectangle2D drawnBounds;
 
   public enum MirrorDirection {
     NONE, HORIZONTAL, VERTICAL
@@ -169,6 +171,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.currentTx = new AffineTransform();
     this.initialTx = canvasGraphics.getTransform();
     this.lastShape = null;
+    this.recordingDrawnBounds = false;
+    this.drawnBounds = null;
     startTracking();
   }
 
@@ -179,6 +183,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
    */
   public ComponentArea finishedDrawingComponent() {
     drawingComponent = false;
+    recordingDrawnBounds = false;
     canvasGraphics.setStroke(originalStroke);
     canvasGraphics.setColor(originalColor);
     canvasGraphics.setTransform(originalTx);
@@ -186,7 +191,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
     return new ComponentArea(zOrder,currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), 
-        new ArrayList<Area>(continuityNegativeAreas.values()));
+        new ArrayList<Area>(continuityNegativeAreas.values()), drawnBounds);
   }
   
   // start - used for caching
@@ -209,6 +214,27 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.currentArea = currentArea;
     this.continuityPositiveAreas = continuityPositiveAreas;
     this.continuityNegativeAreas = continuityNegativeAreas;
+  }
+
+  /**
+   * Starts collecting the bounds of everything the current component draws, regardless of whether
+   * its area is being tracked. They are returned with the area from
+   * {@link #finishedDrawingComponent()}.
+   */
+  public void startRecordingDrawnBounds() {
+    this.recordingDrawnBounds = true;
+  }
+
+  /**
+   * Adds bounds that are already in project coordinates, for a component that was drawn from a
+   * cached image instead of through this wrapper.
+   * 
+   * @param bounds
+   */
+  public void mergeDrawnBounds(Rectangle2D bounds) {
+    if (recordingDrawnBounds && bounds != null) {
+      unionDrawnBounds(bounds);
+    }
   }
 
   @Override
@@ -293,6 +319,73 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     }
   }
   
+  private void appendDrawnBounds(Rectangle2D bounds) {
+    if (!recordingDrawnBounds || bounds == null) {
+      return;
+    }
+    unionDrawnBounds(currentTx.createTransformedShape(bounds).getBounds2D());
+  }
+
+  private void appendDrawnOutlineBounds(Shape s) {
+    if (!recordingDrawnBounds) {
+      return;
+    }
+    Stroke stroke = getStroke();
+    if (stroke instanceof BasicStroke) {
+      BasicStroke basicStroke = (BasicStroke) stroke;
+      // square caps reach sqrt(2) half-widths past the outline, miter joins up to the miter limit
+      double reach = basicStroke.getLineJoin() == BasicStroke.JOIN_MITER
+          ? Math.max(Math.sqrt(2), basicStroke.getMiterLimit()) : Math.sqrt(2);
+      double pad = basicStroke.getLineWidth() / 2 * reach;
+      Rectangle2D bounds = s.getBounds2D();
+      appendDrawnBounds(new Rectangle2D.Double(bounds.getX() - pad, bounds.getY() - pad,
+          bounds.getWidth() + 2 * pad, bounds.getHeight() + 2 * pad));
+    } else {
+      appendDrawnBounds(stroke.createStrokedShape(s).getBounds2D());
+    }
+  }
+
+  private void appendDrawnStringBounds(String str, float x, float y) {
+    if (!recordingDrawnBounds) {
+      return;
+    }
+    Rectangle2D rect = canvasGraphics.getFontMetrics().getStringBounds(str, canvasGraphics);
+    appendDrawnBounds(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(),
+        rect.getHeight()));
+  }
+
+  private void appendDrawnStringBounds(AttributedCharacterIterator iterator, float x, float y) {
+    if (!recordingDrawnBounds || iterator.getBeginIndex() == iterator.getEndIndex()) {
+      return;
+    }
+    Rectangle2D rect = new TextLayout(iterator, canvasGraphics.getFontRenderContext()).getBounds();
+    appendDrawnBounds(new Rectangle2D.Double(rect.getX() + x, rect.getY() + y, rect.getWidth(),
+        rect.getHeight()));
+  }
+
+  private void appendDrawnImageBounds(Image img, AffineTransform xform, ImageObserver observer) {
+    if (!recordingDrawnBounds || img == null) {
+      return;
+    }
+    int width = img.getWidth(observer);
+    int height = img.getHeight(observer);
+    // the size is unknown until the image has loaded, and nothing is drawn before that
+    if (width < 0 || height < 0) {
+      return;
+    }
+    Rectangle rect = new Rectangle(0, 0, width, height);
+    appendDrawnBounds(xform == null ? rect : xform.createTransformedShape(rect).getBounds2D());
+  }
+
+  private void unionDrawnBounds(Rectangle2D bounds) {
+    if (drawnBounds == null) {
+      drawnBounds = new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(),
+          bounds.getHeight());
+    } else {
+      drawnBounds.add(bounds);
+    }
+  }
+
   @SuppressWarnings("unused")
   private void markStack() {
     StringWriter sw = new StringWriter();
@@ -340,6 +433,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void draw(Shape s) {
     canvasGraphics.draw(s);
+    appendDrawnOutlineBounds(s);
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(s);
     }
@@ -376,30 +470,52 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     } else {
       canvasGraphics.drawGlyphVector(g, x, y);
     }
+    if (recordingDrawnBounds) {
+      Rectangle2D bounds = g.getVisualBounds();
+      appendDrawnBounds(new Rectangle2D.Double(bounds.getX() + x, bounds.getY() + y,
+          bounds.getWidth(), bounds.getHeight()));
+    }
   }
 
   @Override
   public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
     // FIXME: process map
-    return canvasGraphics.drawImage(img, xform, obs);
+    boolean result = canvasGraphics.drawImage(img, xform, obs);
+    appendDrawnImageBounds(img, xform, obs);
+    return result;
   }
 
   @Override
   public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
     canvasGraphics.drawImage(img, op, x, y);
     // FIXME: process map
+    if (recordingDrawnBounds && img != null) {
+      Rectangle2D bounds = op == null ? img.getRaster().getBounds() : op.getBounds2D(img);
+      appendDrawnBounds(new Rectangle2D.Double(bounds.getX() + x, bounds.getY() + y,
+          bounds.getWidth(), bounds.getHeight()));
+    }
   }
 
   @Override
   public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
     canvasGraphics.drawRenderableImage(img, xform);
     // FIXME: process map
+    if (recordingDrawnBounds && img != null) {
+      Rectangle2D bounds =
+          new Rectangle2D.Double(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight());
+      appendDrawnBounds(xform.createTransformedShape(bounds).getBounds2D());
+    }
   }
 
   @Override
   public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
     canvasGraphics.drawRenderedImage(img, xform);
     // FIXME: process map
+    if (recordingDrawnBounds && img != null) {
+      Rectangle bounds =
+          new Rectangle(img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight());
+      appendDrawnBounds(xform.createTransformedShape(bounds).getBounds2D());
+    }
   }
 
   @Override
@@ -412,6 +528,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     } else {
       canvasGraphics.drawString(str, x, y);
     }
+    appendDrawnStringBounds(str, x, y);
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
@@ -434,6 +551,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     } else {
       canvasGraphics.drawString(str, x, y);
     }
+    appendDrawnStringBounds(str, x, y);
     if (drawingComponent && trackingAllowed) {
       FontMetrics fontMetrics = canvasGraphics.getFontMetrics();
       Rectangle2D rect = fontMetrics.getStringBounds(str, canvasGraphics);
@@ -451,6 +569,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     } else {
       canvasGraphics.drawString(iterator, x, y);
     }
+    appendDrawnStringBounds(iterator, x, y);
   }
 
   @Override
@@ -463,6 +582,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     } else {
       canvasGraphics.drawString(iterator, x, y);
     }
+    appendDrawnStringBounds(iterator, x, y);
   }
 
   private void drawMirroredString(String str, float x, float y) {
@@ -529,6 +649,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fill(Shape s) {
     canvasGraphics.fill(s);
+    appendDrawnBounds(s.getBounds2D());
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(s);
     }
@@ -690,6 +811,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void clearRect(int x, int y, int width, int height) {
     canvasGraphics.clearRect(x, y, width, height);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
   }
 
   @Override
@@ -700,6 +822,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void copyArea(int x, int y, int width, int height, int dx, int dy) {
     canvasGraphics.copyArea(x, y, width, height, dx, dy);
+    appendDrawnBounds(new Rectangle(x + dx, y + dy, width, height));
   }
 
   @Override
@@ -715,6 +838,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
     canvasGraphics.drawArc(x, y, width, height, startAngle, arcAngle);
+    appendDrawnOutlineBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.OPEN));
     }    
@@ -724,44 +848,60 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
     boolean result = canvasGraphics.drawImage(img, x, y, observer);
     appendShape(new Rectangle2D.Double(x, y, img.getWidth(observer), img.getHeight(observer)));
+    appendDrawnImageBounds(img, AffineTransform.getTranslateInstance(x, y), observer);
     return result;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer) {
     // FIXME: map
-    return canvasGraphics.drawImage(img, x, y, bgcolor, observer);
+    boolean result = canvasGraphics.drawImage(img, x, y, bgcolor, observer);
+    appendDrawnImageBounds(img, AffineTransform.getTranslateInstance(x, y), observer);
+    return result;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer) {
     // FIXME: map
-    return canvasGraphics.drawImage(img, x, y, width, height, observer);
+    boolean result = canvasGraphics.drawImage(img, x, y, width, height, observer);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
+    return result;
   }
 
   @Override
   public boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer) {
     // FIXME: map
-    return canvasGraphics.drawImage(img, x, y, width, height, bgcolor, observer);
+    boolean result = canvasGraphics.drawImage(img, x, y, width, height, bgcolor, observer);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
+    return result;
   }
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
       ImageObserver observer) {
     // FIXME: map
-    return canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+    boolean result =
+        canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+    appendDrawnBounds(new Rectangle(Math.min(dx1, dx2), Math.min(dy1, dy2), Math.abs(dx2 - dx1),
+        Math.abs(dy2 - dy1)));
+    return result;
   }
 
   @Override
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2,
       Color bgcolor, ImageObserver observer) {
     // FIXME: map
-    return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
+    boolean result =
+        canvasGraphics.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer);
+    appendDrawnBounds(new Rectangle(Math.min(dx1, dx2), Math.min(dy1, dy2), Math.abs(dx2 - dx1),
+        Math.abs(dy2 - dy1)));
+    return result;
   }
 
   @Override
   public void drawLine(int x1, int y1, int x2, int y2) {
     canvasGraphics.drawLine(x1, y1, x2, y2);
+    appendDrawnOutlineBounds(new Line2D.Double(x1, y1, x2, y2));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Line2D.Double(x1, y1, x2, y2));
     }
@@ -770,6 +910,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawOval(int x, int y, int width, int height) {
     canvasGraphics.drawOval(x, y, width, height);
+    appendDrawnOutlineBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Ellipse2D.Double(x, y, width, height));
     }
@@ -778,6 +919,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawPolygon(int[] points, int[] points2, int points3) {
     canvasGraphics.drawPolygon(points, points2, points3);
+    if (points3 > 0) {
+      appendDrawnOutlineBounds(new Polygon(points, points2, points3));
+    }
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Polygon(points, points2, points3));
     }
@@ -786,6 +930,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawPolyline(int[] pointsX, int[] pointsY, int pointCount) {
     canvasGraphics.drawPolyline(pointsX, pointsY, pointCount);
+    if (pointCount > 0) {
+      appendDrawnOutlineBounds(new Polygon(pointsX, pointsY, pointCount));
+    }
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed) && pointCount > 1) {
       Path2D path = new Path2D.Double();
       path.moveTo(pointsX[0], pointsY[0]);
@@ -798,6 +945,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
     canvasGraphics.drawRoundRect(x, y, width, height, arcWidth, arcHeight);
+    appendDrawnOutlineBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
     }
@@ -806,6 +954,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
     canvasGraphics.fillArc(x, y, width, height, startAngle, arcAngle);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Arc2D.Double(x, y, width, height, startAngle, arcAngle, Arc2D.PIE));
     }
@@ -814,6 +963,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillOval(int x, int y, int width, int height) {
     canvasGraphics.fillOval(x, y, width, height);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Ellipse2D.Double(x, y, width, height));
     }
@@ -822,6 +972,9 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillPolygon(int[] points, int[] points2, int points3) {
     canvasGraphics.fillPolygon(points, points2, points3);
+    if (points3 > 0) {
+      appendDrawnBounds(new Polygon(points, points2, points3).getBounds2D());
+    }
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Polygon(points, points2, points3));
     }
@@ -830,6 +983,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void drawRect(int x, int y, int width, int height) {
     canvasGraphics.drawRect(x, y, width, height);
+    appendDrawnOutlineBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShapeOutline(new Rectangle(x, y, width, height));
     }
@@ -838,6 +992,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillRect(int x, int y, int width, int height) {
     canvasGraphics.fillRect(x, y, width, height);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Rectangle(x, y, width, height));
     }
@@ -846,6 +1001,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
     canvasGraphics.fillRoundRect(x, y, width, height, arcWidth, arcHeight);
+    appendDrawnBounds(new Rectangle(x, y, width, height));
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new RoundRectangle2D.Double(x, y, width, height, arcWidth, arcHeight));
     }

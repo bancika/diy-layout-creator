@@ -76,6 +76,9 @@ public class DrawingManager {
 
   private static boolean SHADE_EXTRA_SPACE = true;
 
+  // absorbs antialiasing and the whole-pixel placement of cached images around the drawn bounds
+  private static final double OFF_SCREEN_MARGIN = 4;
+
   public static String DEBUG_COMPONENT_AREAS = "org.diylc.debugComponentAreas";
   public static String DEBUG_CONTINUITY_AREAS = "org.diylc.debugContinuityAreas";
 
@@ -291,11 +294,16 @@ public class DrawingManager {
       // Do not track the area if component is not invalidated and was
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
+      // areas are only recorded while drawing, so a component is drawn regardless of visibility
+      // until they are
+      boolean offScreen = !trackArea && isOffScreen(component, visibleRect);
 
       synchronized (this) {
         g2dWrapper.startedDrawingComponent(i);
         if (!trackArea) {
           g2dWrapper.stopTracking();
+        } else {
+          g2dWrapper.startRecordingDrawnBounds();
         }
         Composite oldComposite = g2d.getComposite();
         Font oldFont = g2d.getFont();
@@ -306,12 +314,14 @@ public class DrawingManager {
         // Draw the component through the g2dWrapper.
         long componentStart = System.nanoTime();
         try {
+          if (!offScreen) {
+            drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper,
+                state, zoom, i, outlineMode);
 
-          drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper, state, zoom, i, outlineMode);
-
-          if (g2dWrapper.isTrackingContinuityArea()) {
-            LOG.info("Component " + component.getName() + " of type "
-                + component.getClass().getName() + " did not stop tracking continuity area.");
+            if (g2dWrapper.isTrackingContinuityArea()) {
+              LOG.info("Component " + component.getName() + " of type "
+                  + component.getClass().getName() + " did not stop tracking continuity area.");
+            }
           }
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
@@ -324,16 +334,19 @@ public class DrawingManager {
           g2d.setComposite(oldComposite);
           g2d.setFont(oldFont);
           // record render stats
-          long componentEnd = System.nanoTime();
-          Counter stats = null;
-          String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-          if (renderStatsByType.containsKey(key)) {
-            stats = renderStatsByType.get(key);
-          } else {
-            stats = new Counter();
-            renderStatsByType.put(key, stats);
+          if (!offScreen) {
+            long componentEnd = System.nanoTime();
+            Counter stats = null;
+            String key =
+                component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+            if (renderStatsByType.containsKey(key)) {
+              stats = renderStatsByType.get(key);
+            } else {
+              stats = new Counter();
+              renderStatsByType.put(key, stats);
+            }
+            stats.add(componentEnd - componentStart);
           }
-          stats.add(componentEnd - componentStart);
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
         if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
@@ -614,6 +627,20 @@ public class DrawingManager {
           drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect, drawOptions);
     else // go straight to the wrapper
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+  }
+
+  private boolean isOffScreen(IDIYComponent<?> component, Rectangle2D visibleRect) {
+    if (visibleRect == null) {
+      return false;
+    }
+    ComponentArea area = componentAreaMap.get(component);
+    if (area == null || area.getDrawnBounds() == null) {
+      return false;
+    }
+    Rectangle2D bounds = area.getDrawnBounds();
+    return !visibleRect.intersects(bounds.getX() - OFF_SCREEN_MARGIN,
+        bounds.getY() - OFF_SCREEN_MARGIN, bounds.getWidth() + 2 * OFF_SCREEN_MARGIN,
+        bounds.getHeight() + 2 * OFF_SCREEN_MARGIN);
   }
 
   private void configureRenderingHints(Graphics2D g2d, Set<DrawOption> drawOptions) {

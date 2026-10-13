@@ -22,11 +22,13 @@ import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.lang.ref.SoftReference;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
@@ -50,11 +52,34 @@ import org.diylc.utils.ScaledBufferedImage;
  */
 public class DrawingCache {
 
-  private Map<IDIYComponent<?>, SoftReference<CacheValue>> imageCache = new HashMap<IDIYComponent<?>, SoftReference<CacheValue>>();
-  
-  private Map<String, Pair<Counter, Counter>> renderStatsByType = new HashMap<String, Pair<Counter, Counter>>();
+  // access-ordered, so iteration starts from the least recently used entry; guarded by itself
+  // because bulkPrepare renders from multiple threads
+  private final Map<IDIYComponent<?>, CacheValue> imageCache =
+      new LinkedHashMap<IDIYComponent<?>, CacheValue>(16, 0.75f, true);
+  private long imageCacheBytes = 0;
+
+  // lookups made by bulkPrepare; outdated entries are re-rendered regardless of the budget, while
+  // missing ones may have been evicted
+  private final AtomicLong cacheHits = new AtomicLong();
+  private final AtomicLong cacheMissesNotCached = new AtomicLong();
+  private final AtomicLong cacheMissesOutdated = new AtomicLong();
+  // entries that bulkPrepare rendered but were evicted again before the same repaint drew them,
+  // a sign that the visible components alone exceed the budget
+  private final AtomicLong rerenderedWhilePainting = new AtomicLong();
+
+  private final Map<String, Pair<Counter, Counter>> renderStatsByType =
+      new ConcurrentHashMap<String, Pair<Counter, Counter>>();
 
   private static final Logger LOG = Logger.getLogger(DrawingCache.class);
+
+  // evicted images are released straight away rather than lingering behind soft references until
+  // the heap is nearly full, which lets G1 reclaim the large pixel arrays without a full GC
+  private static final long MAX_CACHE_BYTES =
+      Math.min(Runtime.getRuntime().maxMemory() / 4, 768L * 1024 * 1024);
+
+  // 32 MB per image; a large board at high zoom on a HiDPI screen would otherwise take a big share
+  // of the budget on its own
+  private static final long MAX_CACHED_IMAGE_PIXELS = 8L * 1024 * 1024;
 
   public static DrawingCache Instance = new DrawingCache();
   
@@ -75,8 +100,10 @@ public class DrawingCache {
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) x.getComponent().getClass());
 
-      if (type != null && type.getEnableCache()) {
-        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, scaleFactor, x.getZOrder(), drawOptions);
+      if (type != null && type.getEnableCache()
+          && shouldCache(x.getComponent(), x.getState(), zoom, scaleFactor)) {
+        renderAndCache(x.getComponent(), g2d, x.getState(), outlineMode, project, zoom, scaleFactor,
+            x.getZOrder(), drawOptions, true);
       }
     });
   }
@@ -98,15 +125,15 @@ public class DrawingCache {
     ComponentType type = ComponentProcessor.getInstance()
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
-    if (type != null && type.getEnableCache()) {
-      // if we need to apply caching
+    CacheValue value = null;
+    if (type != null && type.getEnableCache()
+        && shouldCache(component, componentState, zoom, scaleFactor)) {
+      value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom,
+          scaleFactor, zOrder, drawOptions, false);
+    }
+
+    if (value != null) {
       Point2D firstPoint = component.getControlPoint(0);
-      
-      CacheValue value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom, scaleFactor, zOrder, drawOptions); 
-      
-      if (value == null) {
-        return;
-      }
       
       long componentStart = System.nanoTime();
 
@@ -129,21 +156,16 @@ public class DrawingCache {
       }
       
       long componentEnd = System.nanoTime();
-      
-      Pair<Counter, Counter> stats;
-      String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-      if (renderStatsByType.containsKey(key)) {
-        stats = renderStatsByType.get(key);
-      } else {
-        stats = new Pair<Counter, Counter>(new Counter(), new Counter());
-        renderStatsByType.put(key, stats);
-      }
-      stats.getSecond().add(componentEnd - componentStart);
+
+      getRenderStats(component).getSecond().add(componentEnd - componentStart);
 
       // copy over tracking area from the cache, regardless if we rendered or not
       g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());      
+      g2d.mergeDrawnBounds(value.getCacheBounds());
     } else {
-      // no caching, just draw as usual
+      // either not cached, or nothing was rendered because the component is outside the clip;
+      // drawing it directly still records its areas, which the netlist and continuity checks read,
+      // while Java2D discards the pixels
       component.draw(g2d, componentState, outlineMode, project, g2d);
     }
     g2d.stopTracking();
@@ -151,18 +173,20 @@ public class DrawingCache {
   }
      
   public void logStats() {
-    int totalSizeMB = imageCache.values()
-        .stream()        
-        .map(x -> x.get() == null ? 0 : x.get().image.getData().getDataBuffer().getSize())
-        .reduce(0, Integer::sum) * 4 / 1024 / 1024; // 4 bytes per pixel
-    LOG.debug(String.format("Render cache contains %d elements, approx size is %d MB", imageCache.size(), totalSizeMB));
-    
-    long evictedCount = imageCache.values()
-        .stream()
-        .filter(x -> x.get() == null)
-        .count();
-    LOG.debug(String.format("Render cache contains %d evicted entries", evictedCount));
-    
+    synchronized (imageCache) {
+      LOG.debug(String.format("Render cache contains %d elements, approx size is %d MB of %d MB",
+          imageCache.size(), imageCacheBytes / 1024 / 1024, MAX_CACHE_BYTES / 1024 / 1024));
+    }
+
+    long hits = cacheHits.get();
+    long missesNotCached = cacheMissesNotCached.get();
+    long missesOutdated = cacheMissesOutdated.get();
+    long lookups = hits + missesNotCached + missesOutdated;
+    LOG.debug(String.format("Render cache hits: %d, misses: %d not cached + %d outdated, "
+        + "hit rate: %.1f%%, re-rendered while painting: %d",
+        hits, missesNotCached, missesOutdated, lookups == 0 ? 0d : 100d * hits / lookups,
+        rerenderedWhilePainting.get()));
+
     String mapAsString = renderStatsByType.entrySet().stream().sorted((e1, e2) -> -Long.compare(e1.getValue().getFirst().getNanoTime() + e1.getValue().getSecond().getNanoTime(), 
         e2.getValue().getFirst().getNanoTime() + e2.getValue().getSecond().getNanoTime()))
         .map(e -> e.getKey() + ": render: " + e.getValue().getFirst() + ", paste: " + e.getValue().getSecond())
@@ -172,17 +196,76 @@ public class DrawingCache {
   }
 
   public void clear() {
-    imageCache.clear();
-  }
-  
-  public void invalidate(Collection<IDIYComponent<?>> components) {
-    for (IDIYComponent<?> component : components) {
-      imageCache.remove(component);
+    synchronized (imageCache) {
+      for (CacheValue value : imageCache.values()) {
+        value.getImage().flush();
+      }
+      imageCache.clear();
+      imageCacheBytes = 0;
     }
   }
-  
+
+  public void invalidate(Collection<IDIYComponent<?>> components) {
+    synchronized (imageCache) {
+      for (IDIYComponent<?> component : components) {
+        release(imageCache.remove(component));
+      }
+    }
+  }
+
+  private CacheValue getCachedValue(IDIYComponent<?> component) {
+    synchronized (imageCache) {
+      return imageCache.get(component);
+    }
+  }
+
+  private void putCachedValue(IDIYComponent<?> component, CacheValue value) {
+    synchronized (imageCache) {
+      release(imageCache.put(component, value));
+      imageCacheBytes += value.getSizeInBytes();
+      // the entry just added is the most recently used one, so it is never evicted here, even if
+      // it alone exceeds the budget
+      Iterator<CacheValue> iterator = imageCache.values().iterator();
+      while (imageCacheBytes > MAX_CACHE_BYTES && imageCache.size() > 1) {
+        CacheValue eldest = iterator.next();
+        iterator.remove();
+        release(eldest);
+      }
+    }
+  }
+
+  // must be called while holding the imageCache lock
+  private void release(CacheValue value) {
+    if (value == null) {
+      return;
+    }
+    imageCacheBytes -= value.getSizeInBytes();
+    // drops the accelerated (VRAM / native) copy Java2D keeps for images drawn repeatedly, which
+    // would otherwise live until the image is finalized
+    value.getImage().flush();
+  }
+
+  private boolean shouldCache(IDIYComponent<?> component, ComponentState componentState,
+      double zoom, double scaleFactor) {
+    // a dragged component changes on every frame, so its image would be discarded right after
+    // rendering while still pushing useful entries out of the cache
+    if (componentState == ComponentState.DRAGGING) {
+      return false;
+    }
+    Rectangle2D rect = component.getCachingBounds();
+    double pixelScale = zoom * scaleFactor;
+    return rect.getWidth() * pixelScale * rect.getHeight() * pixelScale <= MAX_CACHED_IMAGE_PIXELS;
+  }
+
+  private Pair<Counter, Counter> getRenderStats(IDIYComponent<?> component) {
+    String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+    return renderStatsByType.computeIfAbsent(key,
+        k -> new Pair<Counter, Counter>(new Counter(), new Counter()));
+  }
+
   private CacheValue renderAndCache(IDIYComponent<?> component, G2DWrapper g2d, ComponentState componentState,
-      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder, Set<DrawOption> drawOptions) {
+      boolean outlineMode, Project project, double zoom, double scaleFactor, int zOrder,
+      Set<DrawOption> drawOptions, boolean preparing) {
 
     if (!g2d.getClipBounds().intersects(component.getCachingBounds())) {
       return null;
@@ -192,13 +275,7 @@ public class DrawingCache {
     Point2D firstPoint = component.getControlPoint(0);
 
     // cache hit!
-    CacheValue value = null;
-    if (imageCache.containsKey(component)) {
-      SoftReference<CacheValue> weakReference = imageCache.get(component);
-      if (weakReference != null) {
-        value = weakReference.get();
-      }
-    }
+    CacheValue value = getCachedValue(component);
 
     // only honor the cache if the component hasn't changed in the meantime
     // Also check if drawOptions changed (e.g., MONOCHROMATIC affects rendering)
@@ -216,6 +293,14 @@ public class DrawingCache {
       
       if (width <= 0 || height <= 0) {
         return null;
+      }
+
+      if (!preparing) {
+        rerenderedWhilePainting.incrementAndGet();
+      } else if (value == null) {
+        cacheMissesNotCached.incrementAndGet();
+      } else {
+        cacheMissesOutdated.incrementAndGet();
       }
       
       // create image
@@ -248,16 +333,8 @@ public class DrawingCache {
       component.draw(wrapper, componentState, outlineMode, project, wrapper);
       
       long componentEnd = System.nanoTime();
-      
-      Pair<Counter, Counter> stats;
-      String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-      if (renderStatsByType.containsKey(key)) {
-        stats = renderStatsByType.get(key);
-      } else {
-        stats = new Pair<Counter, Counter>(new Counter(), new Counter());
-        renderStatsByType.put(key, stats);
-      }
-      stats.getFirst().add(componentEnd - componentStart);
+
+      getRenderStats(component).getFirst().add(componentEnd - componentStart);
 
       // finalize wrapper
       wrapper.finishedDrawingComponent();
@@ -280,7 +357,9 @@ public class DrawingCache {
       // add to the cache        
       value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
           wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, scaleFactor, dx, dy, rect, drawOptions);        
-      imageCache.put(component, new SoftReference<DrawingCache.CacheValue>(value));
+      putCachedValue(component, value);
+    } else if (preparing) {
+      cacheHits.incrementAndGet();
     }
     
     return value;
@@ -375,6 +454,11 @@ public class DrawingCache {
     
     public Set<DrawOption> getDrawOptions() {
       return drawOptions;
+    }
+
+    // TYPE_INT_ARGB, four bytes per pixel
+    public long getSizeInBytes() {
+      return (long) image.getWidth() * image.getHeight() * 4;
     }
 
     @Override
