@@ -607,7 +607,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Improved rendering performance and reduced lagging with complex projects while dragging components around</description>
+					<description>Significantly improved rendering performance and reduced lagging with complex projects while dragging components around</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
