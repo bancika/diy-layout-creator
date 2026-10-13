@@ -618,6 +618,10 @@
 					<description>Improved performance of 'Project Explorer' pane</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved memory management when caching rendered components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue of disappearing components in some edge cases</description>
 				</org.diylc.appframework.update.Change>
