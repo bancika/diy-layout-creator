@@ -6,7 +6,8 @@ description: Add a new component type to the DIYLC library, or substantially mod
 # Adding a component to DIYLC
 
 Components live in `diylc-library/src/main/java/org/diylc/components/`. They are discovered at
-runtime by Reflections scanning `org.diylc` — **there is no registry to update**. A class becomes a
+runtime from a class index that `diylc-processor` writes at compile time — **there is no registry
+to update**. A class becomes a
 component by carrying `@ComponentDescriptor` and implementing `IDIYComponent` (in practice, by
 extending one of the abstract bases).
 
