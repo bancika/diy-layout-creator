@@ -834,7 +834,10 @@ public class DrawingManager {
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
-          preliminaryAreas.add(new ContinuityArea(layerId, a1));
+          // a copy, because negative areas are subtracted from it below and the recorded area must
+          // stay whole for when the negative areas move; copying an Area shares its curves, so it
+          // is cheap
+          preliminaryAreas.add(new ContinuityArea(layerId, new Area(a1)));
           checkBreakout.add(false);
         }
       }

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -537,6 +538,25 @@ public class DrawingManagerTest {
     assertTrue(!area.getOutlineArea().contains(30, 30));
   }
 
+  @Test
+  public void testContinuityCalculationLeavesRecordedAreasIntact() {
+    Project project = new Project();
+    ConductorComponent strip = new ConductorComponent(new Rectangle2D.Double(0, 0, 100, 10), true);
+    ConductorComponent cut = new ConductorComponent(new Rectangle2D.Double(40, 0, 20, 10), false);
+    project.getComponents().add(strip);
+    project.getComponents().add(cut);
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+
+    // the cut splits the strip in two for the netlist...
+    assertEquals(2, drawingManager.getContinuityAreas().size());
+    // ...but the strip's own recorded area must stay whole, so that moving or deleting the cut
+    // does not leave a hole behind
+    Area recorded =
+        drawingManager.getComponentArea(strip).getContinuityPositiveAreas().iterator().next();
+    assertTrue(recorded.contains(50, 5));
+  }
+
   private void drawVisibleRect(DrawingManager drawingManager, Project project,
       Rectangle2D visibleRect) {
     BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
@@ -597,6 +617,27 @@ public class DrawingManagerTest {
       drawCount++;
       drawingObserver.startTrackingContinuityArea(true);
       g2d.fill(new Rectangle2D.Double(500, 500, 20, 20));
+      drawingObserver.stopTrackingContinuityArea();
+    }
+  }
+
+  public static class ConductorComponent extends MockDIYComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Rectangle2D shape;
+    private boolean positive;
+
+    public ConductorComponent(Rectangle2D shape, boolean positive) {
+      this.shape = shape;
+      this.positive = positive;
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      drawingObserver.startTrackingContinuityArea(positive);
+      g2d.fill(shape);
       drawingObserver.stopTrackingContinuityArea();
     }
   }
