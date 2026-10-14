@@ -20,6 +20,7 @@ package org.diylc.components.connectivity;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
@@ -76,6 +77,8 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   transient private Area firstLeadStripeArea = null;
   transient private Area secondLeadStripeArea = null;
 
+  transient private LeadGeometry leadGeometry = null;
+
   @Override
   protected Color getDefaultColor() {
     return COLOR;
@@ -94,6 +97,78 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
 
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState,
+      IDrawingObserver drawingObserver) {
+    // stroking paints some pixels more than once, which would show through on a translucent wire,
+    // so that case builds each lead as an area and paints it once instead
+    if (getAlpha().getValue().doubleValue() < MAX_ALPHA) {
+      drawCurveWithAreas(curve, g2d, componentState, drawingObserver);
+    } else {
+      drawCurveWithStrokes(curve, g2d, componentState, drawingObserver);
+    }
+  }
+
+  private void drawCurveWithStrokes(Path2D curve, Graphics2D g2d, ComponentState componentState,
+      IDrawingObserver drawingObserver) {
+    int thickness = getThickness();
+    if (leadGeometry == null) {
+      leadGeometry = buildLeadGeometry(curve, thickness);
+    }
+    boolean selected =
+        componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING;
+    boolean normal = componentState == ComponentState.NORMAL;
+    Color firstColor = selected ? SELECTION_COLOR : color;
+    Color secondColor = selected ? SELECTION_COLOR : color2;
+
+    drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor, normal,
+        thickness, drawingObserver);
+    drawLead(g2d, leadGeometry.secondLead, secondColor, normal && stripe2, stripeColor2, normal,
+        thickness, drawingObserver);
+
+    // the second lead was drawn last and lies on top everywhere; redrawing the first lead inside
+    // its own crossings puts it on top there. Both leads share one colour when selected.
+    if (!selected) {
+      Shape oldClip = g2d.getClip();
+      g2d.clip(leadGeometry.firstOnTop);
+      drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor, normal,
+          thickness, null);
+      g2d.setClip(oldClip);
+    }
+  }
+
+  // drawingObserver is null for a redraw that must not be recorded again
+  private void drawLead(Graphics2D g2d, Path2D lead, Color leadColor, boolean stripe,
+      Color leadStripeColor, boolean outline, int thickness, IDrawingObserver drawingObserver) {
+    // the first stroke covers the whole lead, so it is the one recorded as the component's area
+    if (drawingObserver != null) {
+      drawingObserver.startTracking();
+    }
+    if (outline) {
+      // a dark band one pixel wide centred on the lead's edge, like an outline drawn around an area
+      g2d.setColor(leadColor.darker());
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness + 1));
+      g2d.draw(lead);
+      if (drawingObserver != null) {
+        drawingObserver.stopTracking();
+      }
+      g2d.setColor(leadColor);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(Math.max(thickness - 1, 1)));
+      g2d.draw(lead);
+    } else {
+      g2d.setColor(leadColor);
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness));
+      g2d.draw(lead);
+      if (drawingObserver != null) {
+        drawingObserver.stopTracking();
+      }
+    }
+    if (stripe) {
+      g2d.setColor(leadStripeColor);
+      g2d.setStroke(getStripeStroke(thickness, outline ? Math.max(thickness - 1, 1) : thickness));
+      g2d.draw(lead);
+    }
+  }
+
+  private void drawCurveWithAreas(Path2D curve, Graphics2D g2d, ComponentState componentState,
       IDrawingObserver drawingObserver) {
     int thickness = getThickness();
     Color curveColor1 =
@@ -186,6 +261,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     this.secondLeadArea = null;
     this.firstLeadStripeArea = null;
     this.secondLeadStripeArea = null;
+    this.leadGeometry = null;
   }
 
   @Override
@@ -197,6 +273,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     this.secondLeadArea = null;
     this.firstLeadStripeArea = null;
     this.secondLeadStripeArea = null;
+    this.leadGeometry = null;
   }
 
   @Override
@@ -208,6 +285,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     this.secondLeadArea = null;
     this.firstLeadStripeArea = null;
     this.secondLeadStripeArea = null;
+    this.leadGeometry = null;
   }
 
   @Override
@@ -270,6 +348,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       this.secondLeadArea = null;
       this.firstLeadStripeArea = null;
       this.secondLeadStripeArea = null;
+      this.leadGeometry = null;
     }
   }
 
@@ -287,6 +366,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       this.secondLeadArea = null;
       this.firstLeadStripeArea = null;
       this.secondLeadStripeArea = null;
+      this.leadGeometry = null;
     }
   }
 
@@ -294,6 +374,46 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
 
   public void recalculate(Path2D path, float thickness, Area firstLeadArea, Area secondLeadArea,
       boolean stripe) {
+    LeadGeometry geometry = buildLeadGeometry(path, thickness);
+    Stroke stroke = stripe ? getStripeStroke(thickness, thickness)
+        : ObjectCache.getInstance().fetchBasicStroke(thickness);
+
+    // merging the stroked segments pairwise keeps each union small; adding them one at a time to a
+    // single area would cost as much as everything added before for every segment
+    Area[] outputAreas = new Area[2];
+    List<List<Path2D>> segments = List.of(geometry.firstSegments, geometry.secondSegments);
+    for (int j = 0; j < 2; j++) {
+      List<Area> segmentAreas = new ArrayList<Area>();
+      for (Path2D p : segments.get(j)) {
+        segmentAreas.add(new Area(stroke.createStrokedShape(p)));
+      }
+      outputAreas[j] = union(segmentAreas);
+    }
+
+    // at overlapping points, decide which lead goes on top and clear the overlapping area from the
+    // lead below; all squares of one kind are cut in a single operation, because cutting them one
+    // at a time costs an operation over the whole lead for each
+    Area firstOnTopArea = new Area(geometry.firstOnTop);
+    firstOnTopArea.intersect(outputAreas[0]);
+    outputAreas[1].subtract(firstOnTopArea);
+    // taken after the first cut, so where squares of both kinds overlap only one lead loses it
+    Area secondOnTopArea = new Area(geometry.secondOnTop);
+    secondOnTopArea.intersect(outputAreas[1]);
+    outputAreas[0].subtract(secondOnTopArea);
+
+    // dump to the output areas
+    firstLeadArea.add(outputAreas[0]);
+    secondLeadArea.add(outputAreas[1]);
+  }
+
+  private Stroke getStripeStroke(float thickness, float width) {
+    return ObjectCache.getInstance().fetchStroke(width,
+        new float[] {thickness / 2, thickness * 2}, thickness * 10, BasicStroke.CAP_BUTT);
+  }
+
+  // works out the path of each lead as it winds around the curve, and the squares around the
+  // crossings where each lead goes on top
+  private LeadGeometry buildLeadGeometry(Path2D path, float thickness) {
     PathIterator iterator = path.getPathIterator(null);
     float[] coords = new float[6];
     Point2D current = new Point2D.Double();
@@ -326,14 +446,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       }
       iterator.next();
     }
-
-    Stroke stroke;
-
-    if (stripe)
-      stroke = ObjectCache.getInstance().fetchStroke(thickness,
-          new float[] {thickness / 2, thickness * 2}, thickness * 10, BasicStroke.CAP_BUTT);
-    else
-      stroke = ObjectCache.getInstance().fetchBasicStroke(thickness);
 
     double segmentLength = thickness * 6; // chosen empirically
 
@@ -377,20 +489,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       }
     }
 
-    // the segments are stroked one by one, because stroking them as sub-paths of a single path lets
-    // opposite windings cancel out where neighbouring segments overlap, which leaves holes
-    Area[] outputAreas = new Area[2];
-    for (int j = 0; j < 2; j++) {
-      List<Area> segmentAreas = new ArrayList<Area>();
-      for (Path2D p : segments.get(j)) {
-        segmentAreas.add(new Area(stroke.createStrokedShape(p)));
-      }
-      outputAreas[j] = union(segmentAreas);
-    }
-
-    // at overlapping points, decide which lead goes on top and clear the overlapping area from the
-    // lead below; all squares of one kind are cut in a single operation, because cutting them one
-    // at a time costs an operation over the whole lead for each
     Path2D firstOnTop = new Path2D.Double();
     Path2D secondOnTop = new Path2D.Double();
     for (int i = 0; i < polygon.size(); i++) {
@@ -414,17 +512,17 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       }
     }
 
-    Area firstOnTopArea = new Area(firstOnTop);
-    firstOnTopArea.intersect(outputAreas[0]);
-    outputAreas[1].subtract(firstOnTopArea);
-    // taken after the first cut, so where squares of both kinds overlap only one lead loses the area
-    Area secondOnTopArea = new Area(secondOnTop);
-    secondOnTopArea.intersect(outputAreas[1]);
-    outputAreas[0].subtract(secondOnTopArea);
+    // each lead also as a single path, with its segments as separate sub-paths, for stroking
+    Path2D[] leads = new Path2D[2];
+    for (int j = 0; j < 2; j++) {
+      leads[j] = new Path2D.Double();
+      for (Path2D p : segments.get(j)) {
+        leads[j].append(p, false);
+      }
+    }
 
-    // dump to the output areas
-    firstLeadArea.add(outputAreas[0]);
-    secondLeadArea.add(outputAreas[1]);
+    return new LeadGeometry(leads[0], leads[1], segments.get(0), segments.get(1), firstOnTop,
+        secondOnTop);
   }
 
   // merges the areas pairwise rather than adding each one to a single growing area, which would
@@ -491,5 +589,26 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
   @Override
   public boolean arePointsConnected(int index1, int index2) {
     return Math.abs(index1 - index2) == getControlPointCount() - 1;
+  }
+
+  private static class LeadGeometry {
+
+    final Path2D firstLead;
+    final Path2D secondLead;
+    final List<Path2D> firstSegments;
+    final List<Path2D> secondSegments;
+    // squares around the crossings where the first or the second lead goes on top
+    final Path2D firstOnTop;
+    final Path2D secondOnTop;
+
+    LeadGeometry(Path2D firstLead, Path2D secondLead, List<Path2D> firstSegments,
+        List<Path2D> secondSegments, Path2D firstOnTop, Path2D secondOnTop) {
+      this.firstLead = firstLead;
+      this.secondLead = secondLead;
+      this.firstSegments = firstSegments;
+      this.secondSegments = secondSegments;
+      this.firstOnTop = firstOnTop;
+      this.secondOnTop = secondOnTop;
+    }
   }
 }
