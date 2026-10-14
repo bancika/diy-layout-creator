@@ -1,1 +1,1 @@
-java.lang.NullPointerException: null
+java.lang.NullPointerException: Cannot invoke "java.util.List.iterator()" because "netlists" is null

@@ -1,1 +1,1 @@
-org.diylc.netlist.NetlistException: Maximum number of switching combinations exceeded. Allowed: 64, actual: 288
+java.lang.NullPointerException: Cannot invoke "java.util.List.iterator()" because "netlists" is null

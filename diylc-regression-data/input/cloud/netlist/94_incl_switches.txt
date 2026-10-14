@@ -1,4 +1,4 @@
-Switch setup: [.ON1]
+Switch setup: [ S1.ON1 ]
 
 	C1.1 <-> R1.2
 	C1.2 <-> C3.2 <-> VR2.3
@@ -6,7 +6,7 @@ Switch setup: [.ON1]
 	Q1.2 <-> Q1.3 <-> VR2.1 <-> VR2.2
 	VR1.1 <-> VR1.2
 
-Switch setup: [.ON2]
+Switch setup: [ S1.ON2 ]
 
 	C1.1 <-> R1.2
 	C1.2 <-> C3.2 <-> VR2.3

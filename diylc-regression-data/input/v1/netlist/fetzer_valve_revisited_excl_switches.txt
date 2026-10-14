@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	1M.1 <-> 220p.1 <-> Rs.1 <-> Rs.2
 	1M.2 <-> 33k.2

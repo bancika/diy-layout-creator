@@ -1,6 +1,8 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
+	.05 mF.1 <-> BRIDGE PICKUP.North Finish <-> VOLUME.3
+	.05 mF.2 <-> TONE.2
+	BLENDER.1 <-> J1.Sleeve <-> NECK PICKUP.South Start <-> TONE.1 <-> VOLUME.1
 	BLENDER.2 <-> BRIDGE PICKUP.North Start <-> NECK PICKUP.South Finish
-	BLENDER.3 <-> NECK PICKUP.South Start <-> TONE.3 <-> VOLUME.3
 	J1.Tip <-> VOLUME.2
 

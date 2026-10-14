@@ -1,7 +1,7 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	Balance.1 <-> Balance.2 <-> C1.1 <-> Output Jack.Sleeve <-> Volume.3 <-> VR2.3
-	Balance.3 <-> Volume.1 <-> VR2.1
-	C1.2 <-> Tone.3
+	Balance.1 <-> Volume.3 <-> VR2.3
+	Balance.2 <-> Balance.3 <-> C1.1 <-> Output Jack.Sleeve <-> Volume.1 <-> VR2.1 <-> VR2.2
+	C1.2 <-> Tone.1
 	Tone.2 <-> Volume.2
 

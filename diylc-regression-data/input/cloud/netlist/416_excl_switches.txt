@@ -1,7 +1,12 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	BRIDGE VOL.3 <-> CAP 0.22 uF.2
+	BRIDGE TONE.1 <-> BRIDGE VOL.3 <-> LP BRIDGE.North Start
+	BRIDGE TONE.2 <-> CAP 0.22 uF.1
+	BRIDGE VOL.1 <-> CAP 0.22 uF.2 <-> CAP 0.22 uF.2 <-> J1.Sleeve <-> LP BRIDGE.South Start <-> LP NECK.South Start <-> NECK VOL.1
 	CAP 0.22 uF.1 <-> NECK TONE.2
+	J1.Tip <-> SW1.3
 	LP BRIDGE.North Finish <-> LP BRIDGE.South Finish
 	LP NECK.North Finish <-> LP NECK.South Finish
+	LP NECK.North Start <-> NECK TONE.1 <-> NECK VOL.3
+	NECK VOL.2 <-> SW1.4
 
