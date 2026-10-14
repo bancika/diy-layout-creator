@@ -32,10 +32,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -240,8 +238,8 @@ public class DrawingManager {
     // calculate size to be rendered
     double extraSpace = getExtraSpace(project) * zoom;
 
-    drawGrid(project, g2d, zoom, extraSpace, canvasDimension, visibleRect, drawOptions,
-        extraSpaceRect, extraSpaceTx);
+    drawGridAndExtraSpace(project, g2d, zoom, extraSpace, canvasDimension, visibleRect,
+        drawOptions, extraSpaceRect, extraSpaceTx);
 
     // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
@@ -678,77 +676,15 @@ public class DrawingManager {
         RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
   }
 
-  private double zoomCached = 0;
-  private Dimension canvasDimensionCached;
-  private double extraSpaceCached;
-  private GridType gridTypeCached;
-  private BufferedImage cachedGridImage;
-
-  private void drawGrid(Project project, Graphics2D g2dIn, double zoom, double extraSpace,
-      Dimension canvasDimension, Rectangle2D visibleRect, Set<DrawOption> drawOptions,
-      Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
-
-    GridType gridType = GridType.LINES;
+  private void drawGridAndExtraSpace(Project project, Graphics2D g2dIn, double zoom,
+      double extraSpace, Dimension canvasDimension, Rectangle2D visibleRect,
+      Set<DrawOption> drawOptions, Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
 
     Dimension innerCanvasDimension = getCanvasDimensions(project, zoom, false);
 
-    // draw from cache
-    if (zoom != zoomCached || !canvasDimension.equals(canvasDimensionCached)
-        || extraSpace != extraSpaceCached || gridType != gridTypeCached) {      
-      try {
-        cachedGridImage = new BufferedImage((int) canvasDimension.getWidth(),
-            (int) canvasDimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        // create graphics
-        Graphics2D g2d = cachedGridImage.createGraphics();
-
-        if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
-          double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
-          float gridThickness = (float) (1f * (zoom > 1 ? 1 : zoom));
-          if (gridType == GridType.CROSSHAIR) {
-            g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f,
-                new float[] {(float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
-          } else if (gridType == GridType.DOT) {
-            g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f, new float[] {1f, (float) zoomStep - 1}, 0f));
-          } else {
-            g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness));
-          }
-
-          g2d.setColor(theme.getGridColor());
-          for (double i = zoomStep; i < canvasDimension.width; i += zoomStep) {
-            g2d.draw(new Line2D.Double(i, 0, i, canvasDimension.height - 1));
-          }
-          for (double j = zoomStep; j < canvasDimension.height; j += zoomStep) {
-            g2d.draw(new Line2D.Double(0, j, canvasDimension.width - 1, j));
-          }
-          // draw dots if needed
-          if (project.getDotSpacing() > 1 && zoomStep > 8) {
-            g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness * 3));
-            g2d.setColor(theme.getDotColor());
-            for (double i = extraSpace + zoomStep * project.getDotSpacing(); i < extraSpace
-                + innerCanvasDimension.width; i += zoomStep * project.getDotSpacing())
-              for (double j = extraSpace + zoomStep * project.getDotSpacing(); j < extraSpace
-                  + innerCanvasDimension.height; j += zoomStep * project.getDotSpacing()) {
-                g2d.fillOval((int) Math.round(i - 1), (int) Math.round(j - 1), 3, 3);
-              }
-          }
-        }
-      } finally {
-        zoomCached = zoom;
-        canvasDimensionCached = (Dimension) canvasDimension.clone();
-        extraSpaceCached = extraSpace;
-        gridTypeCached = gridType;
-      }
-    }
-    
-    if (cachedGridImage == null) {
-      LOG.warn("Cached grid image is null!");
-      return;
-    }
-    
-    if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
-      g2dIn.drawImage(cachedGridImage, 0, 0, null);
+    if (drawOptions.contains(DrawOption.GRID)) {
+      GridRenderer.draw(g2dIn, project, theme, zoom, extraSpace, canvasDimension,
+          innerCanvasDimension, visibleRect);
     }
 
     // manage extra space
