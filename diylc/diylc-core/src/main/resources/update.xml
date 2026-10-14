@@ -629,6 +629,14 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue of disappearing components in some edge cases</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed netlists and 'Highlight Connected Areas' giving inconsistent results on boards with trace cuts - running them again could join strips across a cut, and a moved or deleted cut could leave the strip broken where it used to be</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Twisted Leads' - the last few crossings near the end of a wire were drawn with the leads overlapping instead of one passing over the other, and crossings could come out slightly different between redraws</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
