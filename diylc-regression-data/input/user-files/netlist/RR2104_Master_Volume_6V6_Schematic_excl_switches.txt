@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	.022uf.1 <-> 100K 1W.2
 	.022uf.2 <-> 1 M.1
@@ -23,8 +23,8 @@ Switch setup: [Default]
 	5.6K 2W.2 <-> V5 6V6GT.1
 	7.5K.1 <-> Balance.1
 	7.5K.2 <-> R1.1
-	Backup Diode.1 <-> Backup Diode.2
-	Backup Diode.1 <-> Backup Diode.2
+	Backup Diode.A <-> Backup Diode.K
+	Backup Diode.A <-> Backup Diode.K
 	Coupling.2 <-> Grid Leak.2
 	Grid Leak.1 <-> Grid Leak.1
 	J1.4 <-> J2.3

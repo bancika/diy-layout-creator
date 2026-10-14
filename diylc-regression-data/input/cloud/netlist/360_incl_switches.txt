@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	C1.2 <-> R1.1
 	C3.1 <-> R2.1
@@ -6,6 +6,6 @@ Switch setup: [Default]
 	C6.1 <-> R11.1
 	C7.1 <-> R10.1
 	C7.2 <-> C8.1
-	LED .2 <-> R12.2
+	LED .K <-> R12.2
 	R8.2 <-> R9.1
 
