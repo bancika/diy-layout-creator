@@ -353,7 +353,7 @@ public class DrawingManager {
           }
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
-        if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
+        if (trackArea && area != null && area.hasOutline()) {
           componentAreaMap.put(component, area);
           lastDrawnStateMap.put(component, state);
         }
@@ -762,7 +762,9 @@ public class DrawingManager {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
     for (int i = 0; i < project.getComponents().size(); i++) {
       ComponentArea area = componentAreaMap.get(project.getComponents().get(i));
-      if (area != null && area.getOutlineArea().contains(point)) {
+      // the bounds rule most components out without merging their outline into an area
+      if (area != null && area.getOutlineBounds().contains(point)
+          && area.getOutlineArea().contains(point)) {
         components.add(0, project.getComponents().get(i));
       }
     }
@@ -824,7 +826,7 @@ public class DrawingManager {
     for (Map.Entry<IDIYComponent<?>, ComponentArea> entry : this.componentAreaMap.entrySet()) {
       ComponentArea a = entry.getValue();
 
-      if (a == null || a.getOutlineArea() == null)
+      if (a == null)
         continue;
       
       IDIYComponent<?> component = entry.getKey();

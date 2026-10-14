@@ -280,7 +280,9 @@ public class Presenter implements IPlugInPort {
         if (!isComponentLocked(component) && isComponentVisible(component)
             && operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
           ComponentArea area = drawingManager.getComponentArea(component);
-          if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
+          // the bounds rule most components out without merging their outline into an area
+          if (area != null && scaledPoint != null && area.getOutlineBounds().contains(scaledPoint)
+              && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -1099,12 +1101,12 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> c : components) {
 
       ComponentArea compArea = drawingManager.getComponentArea(c);
-      if (compArea == null || compArea.getOutlineArea() == null) {
+      if (compArea == null) {
         LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
         return null;
       }
 
-      Rectangle rect = compArea.getOutlineArea().getBounds();
+      Rectangle rect = compArea.getOutlineBounds().getBounds();
       if (rect.x < minX)
         minX = rect.x;
       if (rect.x + rect.width > maxX)
@@ -1255,13 +1257,13 @@ public class Presenter implements IPlugInPort {
     Rectangle2D bounds = null;
     for (IDIYComponent<?> c : unit) {
       ComponentArea area = drawingManager.getComponentArea(c);
-      if (area == null || area.getOutlineArea() == null) {
+      if (area == null) {
         return null;
       }
       if (bounds == null) {
-        bounds = area.getOutlineArea().getBounds2D();
+        bounds = area.getOutlineBounds();
       } else {
-        bounds.add(area.getOutlineArea().getBounds2D());
+        bounds.add(area.getOutlineBounds());
       }
     }
     return bounds;
@@ -1956,7 +1958,8 @@ public class Presenter implements IPlugInPort {
         for (IDIYComponent<?> component : currentProject.getComponents()) {
           if (!isComponentLocked(component) && isComponentVisible(component)) {
             ComponentArea area = drawingManager.getComponentArea(component);
-            if ((area != null && area.getOutlineArea() != null) && (selectionRect != null)
+            if (area != null && selectionRect != null
+                && area.getOutlineBounds().intersects(selectionRect)
                 && area.getOutlineArea().intersects(selectionRect)) {
               newSelection.addAll(findAllGroupedComponents(component));
             }
@@ -2495,8 +2498,8 @@ public class Presenter implements IPlugInPort {
           
           // do a rough check, if the outlines don't intersect there's no chance of a match
           // so don't waste time doing the precise check
-          if (area.getOutlineArea() != null && selectedArea.getOutlineArea() != null && 
-              !area.getOutlineArea().getBounds().intersects(selectedArea.getOutlineArea().getBounds()))
+          if (!area.getOutlineBounds().getBounds()
+              .intersects(selectedArea.getOutlineBounds().getBounds()))
             continue;          
           
           // create a unified continuity area for both components

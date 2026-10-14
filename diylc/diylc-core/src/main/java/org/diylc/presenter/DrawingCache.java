@@ -18,13 +18,14 @@
 package org.diylc.presenter;
 
 import java.awt.Graphics2D;
-import java.awt.geom.Area;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -167,7 +168,8 @@ public class DrawingCache {
       getRenderStats(component).getSecond().add(componentEnd - componentStart);
 
       // copy over tracking area from the cache, regardless if we rendered or not
-      g2d.merge(value.getCurrentArea(), value.getContinuityPositiveAreas(), value.getContinuityNegativeAreas());      
+      g2d.merge(value.getOutlineParts(), value.getContinuityPositiveParts(),
+          value.getContinuityNegativeParts());
       g2d.mergeDrawnBounds(value.getCacheBounds());
     } else {
       // either not cached, or nothing was rendered because the component is outside the clip;
@@ -367,13 +369,14 @@ public class DrawingCache {
 //        e.printStackTrace();
 //      }
       
-      if (wrapper.getCurrentArea() == null || wrapper.getCurrentArea().isEmpty()) {
+      if (wrapper.getOutlineParts().isEmpty()) {
         LOG.warn("Empty outline area detected for " + component.getName());
       }
       
       // add to the cache        
-      value = new CacheValue(component, image, wrapper.getCurrentArea(), wrapper.getContinuityPositiveAreas(),
-          wrapper.getContinuityNegativeAreas(), componentState, outlineMode, zoom, scaleFactor, dx, dy, rect, drawOptions);        
+      value = new CacheValue(component, image, wrapper.getOutlineParts(),
+          wrapper.getContinuityPositiveParts(), wrapper.getContinuityNegativeParts(),
+          componentState, outlineMode, zoom, scaleFactor, dx, dy, rect, drawOptions);
       putCachedValue(component, value);
     } else if (preparing) {
       cacheHits.incrementAndGet();
@@ -386,9 +389,10 @@ public class DrawingCache {
     // only kept when verifyCache is set
     IDIYComponent<?> component;
     BufferedImage image;
-    Area currentArea;
-    Map<String, Area> continuityPositiveAreas;
-    Map<String, Area> continuityNegativeAreas;
+    // the shapes recorded while rendering, handed to the canvas wrapper on every paste
+    List<Shape> outlineParts;
+    Map<String, List<Shape>> continuityPositiveParts;
+    Map<String, List<Shape>> continuityNegativeParts;
     ComponentState state;
     boolean outlineMode;
     double zoom;
@@ -398,8 +402,9 @@ public class DrawingCache {
     Rectangle2D cacheBounds;
     Set<DrawOption> drawOptions;
 
-    public CacheValue(IDIYComponent<?> component, BufferedImage image, Area currentArea,
-        Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas,
+    public CacheValue(IDIYComponent<?> component, BufferedImage image, List<Shape> outlineParts,
+        Map<String, List<Shape>> continuityPositiveParts,
+        Map<String, List<Shape>> continuityNegativeParts,
         ComponentState state, boolean outlineMode, double zoom, double scaleFactor, int dx, int dy,
         Rectangle2D cacheBounds, Set<DrawOption> drawOptions) {
       super();
@@ -411,9 +416,9 @@ public class DrawingCache {
         }
       }
       this.image = image;
-      this.currentArea = currentArea;
-      this.continuityPositiveAreas = continuityPositiveAreas;
-      this.continuityNegativeAreas = continuityNegativeAreas;
+      this.outlineParts = outlineParts;
+      this.continuityPositiveParts = continuityPositiveParts;
+      this.continuityNegativeParts = continuityNegativeParts;
       this.state = state;
       this.outlineMode = outlineMode;
       this.zoom = zoom;
@@ -431,16 +436,16 @@ public class DrawingCache {
       return image;
     }
 
-    public Area getCurrentArea() {
-      return currentArea;
+    public List<Shape> getOutlineParts() {
+      return outlineParts;
     }
     
-    public Map<String, Area> getContinuityPositiveAreas() {
-      return continuityPositiveAreas;
+    public Map<String, List<Shape>> getContinuityPositiveParts() {
+      return continuityPositiveParts;
     }
     
-    public Map<String, Area> getContinuityNegativeAreas() {
-      return continuityNegativeAreas;
+    public Map<String, List<Shape>> getContinuityNegativeParts() {
+      return continuityNegativeParts;
     }
 
     public ComponentState getState() {

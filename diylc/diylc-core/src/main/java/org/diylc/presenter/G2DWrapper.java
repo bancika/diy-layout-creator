@@ -101,9 +101,12 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   private Font originalFont;
   private AffineTransform currentTx;
   private AffineTransform initialTx;
-  private Area currentArea;
-  private Map<String, Area> continuityPositiveAreas;
-  private Map<String, Area> continuityNegativeAreas;
+  // shapes recorded for the outline and continuity areas, merged only when an area is asked for
+  private List<Shape> outlineParts;
+  private Map<String, List<Shape>> continuityPositiveParts;
+  private Map<String, List<Shape>> continuityNegativeParts;
+  // only kept with debugAreaPerformance, to spot shapes that add nothing to the outline
+  private Area debugOutline;
   private String continuityMarker;
   private Shape lastShape;
   private boolean recordingDrawnBounds = false;
@@ -131,9 +134,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     String debugAreaPerformanceStr = System.getProperty(DEBUG_AREA_PERFORMANCE);
     debugAreaPerformance = "true".equalsIgnoreCase(debugAreaPerformanceStr);
     this.zoom = zoom;
-    currentArea = new Area();
-    continuityPositiveAreas = new HashMap<String, Area>();
-    continuityNegativeAreas = new HashMap<String, Area>();
+    outlineParts = new ArrayList<Shape>();
+    continuityPositiveParts = new HashMap<String, List<Shape>>();
+    continuityNegativeParts = new HashMap<String, List<Shape>>();
+    debugOutline = new Area();
     continuityMarker = null;
     currentTx = new AffineTransform();
   }
@@ -158,9 +162,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void startedDrawingComponent(int zOrder) {
     this.zOrder = zOrder;
     this.drawingComponent = true;
-    this.currentArea = new Area();
-    this.continuityPositiveAreas = new HashMap<String, Area>();
-    this.continuityNegativeAreas = new HashMap<String, Area>();
+    this.outlineParts = new ArrayList<Shape>();
+    this.continuityPositiveParts = new HashMap<String, List<Shape>>();
+    this.continuityNegativeParts = new HashMap<String, List<Shape>>();
+    this.debugOutline = new Area();
 //    trackingStacks.clear();
     this.continuityMarker = null;
     this.originalStroke = canvasGraphics.getStroke();
@@ -190,30 +195,37 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     canvasGraphics.setComposite(originalComposite);
     canvasGraphics.setFont(originalFont);
 //    Map<String, Integer> sorted = sortByComparator(trackingStacks, false);    
-    return new ComponentArea(zOrder,currentArea, new ArrayList<Area>(continuityPositiveAreas.values()), 
-        new ArrayList<Area>(continuityNegativeAreas.values()), drawnBounds);
+    return new ComponentArea(zOrder, outlineParts,
+        new ArrayList<List<Shape>>(continuityPositiveParts.values()),
+        new ArrayList<List<Shape>>(continuityNegativeParts.values()), drawnBounds);
   }
   
   // start - used for caching
   
-  public Area getCurrentArea() {
-    return currentArea;
+  public List<Shape> getOutlineParts() {
+    return outlineParts;
   }
   
-  public Map<String, Area> getContinuityPositiveAreas() {
-    return continuityPositiveAreas;
+  public Map<String, List<Shape>> getContinuityPositiveParts() {
+    return continuityPositiveParts;
   }
   
-  public Map<String, Area> getContinuityNegativeAreas() {
-    return continuityNegativeAreas;
+  public Map<String, List<Shape>> getContinuityNegativeParts() {
+    return continuityNegativeParts;
   }
   
   // end - used for caching
   
-  public void merge(Area currentArea, Map<String, Area> continuityPositiveAreas,  Map<String, Area> continuityNegativeAreas) {
-    this.currentArea = currentArea;
-    this.continuityPositiveAreas = continuityPositiveAreas;
-    this.continuityNegativeAreas = continuityNegativeAreas;
+  /**
+   * Takes over shapes recorded earlier, for a component drawn from a cached image instead of
+   * through this wrapper. The lists are shared rather than copied: nothing is recorded for the
+   * component after this, and a new component starts with new lists.
+   */
+  public void merge(List<Shape> outlineParts, Map<String, List<Shape>> continuityPositiveParts,
+      Map<String, List<Shape>> continuityNegativeParts) {
+    this.outlineParts = outlineParts;
+    this.continuityPositiveParts = continuityPositiveParts;
+    this.continuityNegativeParts = continuityNegativeParts;
   }
 
   /**
@@ -280,54 +292,40 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     Rectangle2D bounds = s.getBounds2D();
     // Only cache the shape if it's not 1D.
     if (bounds.getWidth() > 1 && bounds.getHeight() > 1) {
-      // Area.transform rebuilds the whole area even for an identity transform, so the shape is
-      // transformed before the area is built from it, keeping it to a single pass
-      Area area = currentTx.isIdentity() ? new Area(s)
-          : new Area(currentTx.createTransformedShape(s));
-
-      Area areaBefore = null;
-      if (debugAreaPerformance) {
-        areaBefore = new Area(currentArea);
-      }
+      Shape part = copyTransformed(s);
 
       if (trackingAllowed) {
-        if (currentArea.isEmpty()) {
-          // a union with an empty area still sweeps every edge of the other one; Area operations
-          // replace their curve list instead of modifying it, so sharing it here is safe, but the
-          // Area object itself is not shared because the continuity maps below may add to it
-          currentArea = new Area(area);
-        } else {
-          currentArea.add(area);
-        }
+        outlineParts.add(part);
 
-        if (debugAreaPerformance && currentArea.equals(areaBefore)) {
-          LOG.warn("Detected unnecessary shape tracking at", new Throwable());
+        if (debugAreaPerformance) {
+          Area areaBefore = new Area(debugOutline);
+          debugOutline.add(new Area(part));
+          if (debugOutline.equals(areaBefore)) {
+            LOG.warn("Detected unnecessary shape tracking at", new Throwable());
+          }
         }
       }
 
-      Map<String, Area> toAdd;
       if (trackingContinuityAllowed) {
-        if (trackingContinuityPositive)
-          toAdd = continuityPositiveAreas;
-        else
-          toAdd = continuityNegativeAreas;
+        Map<String, List<Shape>> toAdd =
+            trackingContinuityPositive ? continuityPositiveParts : continuityNegativeParts;
+        // without a marker every shape is a continuity area of its own
         String marker = continuityMarker == null ? ("internalUnique" + uniqueCounter++) : continuityMarker;
-        if (continuityMarker == null) {
-          toAdd.put(marker, area);
-//          markStack();
-        } else {
-          Area current = toAdd.getOrDefault(marker, null); 
-          if (current == null) {            
-            toAdd.put(marker, area);
-//            markStack();          
-          } else
-            current.add(area);
-        }        
+        toAdd.computeIfAbsent(marker, key -> new ArrayList<Shape>()).add(part);
       }
       lastShape = s;
     }
   }
   
+  // a copy, because a component may reuse and change a shape after drawing it; copying an Area
+  // shares its curves, which Area operations replace rather than change
+  private Shape copyTransformed(Shape s) {
+    if (!currentTx.isIdentity()) {
+      return currentTx.createTransformedShape(s);
+    }
+    return s instanceof Area ? new Area(s) : new Path2D.Double(s);
+  }
+
   private void appendDrawnBounds(Rectangle2D bounds) {
     if (!recordingDrawnBounds || bounds == null) {
       return;

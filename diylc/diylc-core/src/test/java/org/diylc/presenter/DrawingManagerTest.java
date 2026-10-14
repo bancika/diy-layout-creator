@@ -551,6 +551,68 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testRecordedShapeUnaffectedByLaterChanges() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    Rectangle2D shape = new Rectangle2D.Double(0, 0, 10, 10);
+    wrapper.fill(shape);
+    // shapes are merged into areas only when asked for, so the recorded one must be a copy
+    shape.setRect(50, 50, 10, 10);
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(new Rectangle2D.Double(0, 0, 10, 10), area.getOutlineArea().getBounds2D());
+  }
+
+  @Test
+  public void testOutlineBoundsMatchMergedArea() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.translate(100, 50);
+    wrapper.fill(new java.awt.geom.Ellipse2D.Double(0, 0, 30, 20));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    Rectangle2D merged = area.getOutlineArea().getBounds2D();
+    Rectangle2D bounds = area.getOutlineBounds();
+    assertEquals(merged.getMinX(), bounds.getMinX(), 1e-6);
+    assertEquals(merged.getMinY(), bounds.getMinY(), 1e-6);
+    assertEquals(merged.getMaxX(), bounds.getMaxX(), 1e-6);
+    assertEquals(merged.getMaxY(), bounds.getMaxY(), 1e-6);
+  }
+
+  @Test
+  public void testContinuityShapesMergedPerMarker() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.startTrackingContinuityArea(true);
+    wrapper.setContinuityMarker("pad");
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(5, 0, 10, 10));
+    // without a marker each shape is an area of its own
+    wrapper.setContinuityMarker(null);
+    wrapper.fill(new Rectangle2D.Double(100, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(150, 0, 10, 10));
+    wrapper.stopTrackingContinuityArea();
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(3, area.getContinuityPositiveAreas().size());
+    boolean merged = false;
+    for (Area a : area.getContinuityPositiveAreas()) {
+      merged |= a.contains(2, 5) && a.contains(13, 5);
+    }
+    assertTrue(merged);
+  }
+
+  @Test
   public void testOutlineAreaIsUnionOfTrackedShapes() {
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     G2DWrapper wrapper =

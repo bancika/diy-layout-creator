@@ -29,6 +29,13 @@ culling never applies to them, and with caching off the output is the same.
      is on, and straight to `component.draw` otherwise.
    - `finishedDrawingComponent()` returns a `ComponentArea`. When tracking and the outline is not
      empty, it is stored in `componentAreaMap` together with the state it was drawn in.
+   - Recording an area only keeps copies of the tracked shapes, transformed into project
+     coordinates. `ComponentArea` merges them into the outline and continuity areas the first time
+     one is asked for, pairwise (`AreaUtils.union`), and keeps the result. `hasOutline()` and
+     `getOutlineBounds()` work from the shapes without merging, and hit tests check the bounds
+     before the area, so storing areas, selection bounds and the rulers never merge anything.
+     The moved components of a drag are recorded on every frame; their areas are merged only
+     if something asks.
    - Mirrored copies for board undersides are drawn after that, outside both mechanisms.
 
 **Areas are invalidated** by `DrawingManager.invalidateComponent`, which Presenter calls for

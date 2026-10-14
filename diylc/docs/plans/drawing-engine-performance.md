@@ -47,6 +47,19 @@ The geometry itself still runs on every frame, because the wire's shape really c
 Grouping fell to 12 samples after §6, and the per-component overhead (now under "Not worth
 optimizing now") showed 1 sample.
 
+**P5 (stroke-drawn twisted wires, moved components bypass the cache):** 248 CPU samples against
+707 in P4 for a similar drag session; `TwistedWire` geometry 35 samples (was 383), workers 70
+(was 537), total allocation 2.3 GB (was 7.4 GB), cached images 0.98 GB (was 4.75 GB), longest GC
+pause 42 ms (was 71 ms). Recording areas was then the largest cost, about 37% of samples, mostly
+for the moved wires on every frame; §2a addresses it.
+
+**P6 (lazy area merging):** 174 CPU samples for a similar drag session; area recording 0 (was
+92), on-demand merges from clicks and hovers 6, total allocation 1.45 GB, longest GC pause 13 ms.
+The cursor check briefly cost 17 samples recomputing outline bounds on every mouse move, fixed by
+caching them in `ComponentArea`. Rasterising (Marlin) is now the largest cost at about a third of
+the samples, so the remaining gains come from drawing less: §2b and §5. Image copies measured 3
+samples, which puts §4 low.
+
 **Baseline before culling,** from the same layout: 327 repaints averaging 26 ms; `HookupWire`
 (then uncached) about 9 ms per repaint; `TwistedWire` about 96 ms per render; `TubeSocket` 572 ms
 in `DrawingManager` against 25 ms of image pasting.
@@ -73,42 +86,16 @@ new `equalsTo` against the current one on a few real components from `diylc-libr
 `-Dorg.diylc.verifyDrawingCache=true` while testing new edit operations or plugins that change
 components.
 
-## 2. Dragging redraws everything and re-records areas every frame
+## 2. Dragging redraws everything
 
-**Problem.** Each drag step invalidates the moved components (`Presenter`, after updating the
-control points). The next frame:
+Each drag step invalidates the moved components, and the next frame redraws the whole visible
+project.
 
-- redraws the whole visible project;
-- re-records the moved components' areas. That does `currentArea.add(...)` for every tracked shape
-  (`G2DWrapper.appendShape`), and continuity areas do the same per marker. Adding shapes one at a
-  time costs more as the area grows, so a board or a part with many pads pays heavily on every
-  frame.
-
-**Done:** a union with an empty area still sweeps every edge of the other shape, so the first
-tracked shape now becomes the outline area directly. `new Area(shape)` is not a cost: for an `Area`
-argument the JDK shares the curve list rather than copying it.
-
-**Done:** `G2DWrapper.appendShape` used to do `new Area(s)` followed by
-`area.transform(currentTx)`. `Area.transform` rebuilds the whole geometry even for an identity
-transform, so every tracked shape was processed twice. It now builds the area once: from the
-shape itself when the transform is the identity, or from `currentTx.createTransformedShape(s)`
-otherwise. Same geometry, checked by `DrawingManagerTest.testOutlineAreaFollowsComponentTransform`.
-
-**2a. Compute areas lazily, or merge them in one batch.**
-
-- Collect the tracked shapes in a list during drawing and merge them in
-  `finishedDrawingComponent` by pairwise merging (merge neighbours, repeat), not one at a time.
-  `AreaUtils` already has helpers.
-- Better: store the shapes and merge only when something asks for the area. The consumers are:
-  - `findComponentsAt` (click);
-  - `Presenter.getComponentBounds` (selection bounds, rulers);
-  - `DrawingManager.getContinuityAreas` / `getContinuityGraph` (netlist, highlight connected
-    areas, compare, chatbot).
-
-  A drag would then never pay for merging. `ComponentArea` would hold the shapes and compute
-  `getOutlineArea()` the first time it is asked.
-- **Watch:** `G2DWrapper.debugAreaPerformance` compares areas before and after each add, and needs
-  rethinking under batching. `Snapshot` (the test recorder) stores `ComponentArea`s.
+**2a. Area recording during drags: done.** Recording areas used to merge every tracked shape into
+an `Area` as it was drawn, which cost the most for the components moved on every frame. Recording
+now keeps copies of the shapes, and `ComponentArea` merges them pairwise the first time an area is
+asked for (ADR §1). `debugAreaPerformance` keeps an eagerly merged outline of its own for its check,
+and `Snapshot`, the test recorder, now stores shapes rather than areas in its `ComponentArea`s.
 
 **2b. Draw the drag over a frozen background.**
 
@@ -241,10 +228,9 @@ stroke outlines are filled with the non-zero rule, so overlapping segments merge
 
 | Step | Item | Size | Risk | Needs |
 | --- | --- | --- | --- | --- |
-| 1 | §2a lazy or batched area merging | medium | medium | `DrawingManagerTest`, netlist checks, regression run |
-| 2 | §4 image formats | small | low | page-time comparison on macOS |
-| 3 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
-| 4 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
-| 5 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
+| 1 | §4 image formats | small | low | page-time comparison on macOS |
+| 2 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
+| 3 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
+| 4 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
 
 Re-profile next: the ranking of the remaining steps still comes from reading the code.
