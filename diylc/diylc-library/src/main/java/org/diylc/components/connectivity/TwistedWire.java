@@ -29,9 +29,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.diylc.common.LineStyle;
 import org.diylc.common.ObjectCache;
@@ -368,76 +366,86 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       double sign = i % 2 == 0 ? 1 : -1;
       double[] thetas = new double[] {theta - sign * Math.PI / 2, theta + sign * Math.PI / 2};
 
-      final int finalI = i;
-      
-      Arrays.stream(new Integer[] { 0, 1 }).parallel().forEach((j) -> {
+      for (int j = 0; j < 2; j++) {
         currentPaths[j].quadTo(centerX + offset * Math.cos(thetas[j]),
             centerY + offset * Math.sin(thetas[j]), line.getX2(), line.getY2());
-        if (finalI % 2 == 0 || finalI == polygon.size() - 1) {
+        if (i % 2 == 0 || i == polygon.size() - 1) {
           segments.get(j).add(currentPaths[j]);
           currentPaths[j] = new Path2D.Double();
           currentPaths[j].moveTo(line.getX2(), line.getY2());
         }
-      });
-    }
-
-    Area[] outputAreas = new Area[] {new Area(), new Area()};
-
-    // create stroked areas in parallel
-    Arrays.stream(new Integer[] {0, 1}).parallel().forEach((j) -> {
-      for (Path2D p : segments.get(j)) {
-        outputAreas[j].add(new Area(stroke.createStrokedShape(p)));
       }
-    });
-
-    int threadCount = 1;
-    while (threadCount * 4 < polygon.size() && threadCount <= 8) {
-      threadCount++;
     }
-    int chunkSize = polygon.size() / threadCount;
+
+    // the segments are stroked one by one, because stroking them as sub-paths of a single path lets
+    // opposite windings cancel out where neighbouring segments overlap, which leaves holes
+    Area[] outputAreas = new Area[2];
+    for (int j = 0; j < 2; j++) {
+      List<Area> segmentAreas = new ArrayList<Area>();
+      for (Path2D p : segments.get(j)) {
+        segmentAreas.add(new Area(stroke.createStrokedShape(p)));
+      }
+      outputAreas[j] = union(segmentAreas);
+    }
 
     // at overlapping points, decide which lead goes on top and clear the overlapping area from the
-    // lead below
-    IntStream.range(0, threadCount).parallel().forEach(threadIdx -> {
-      for (int i = threadIdx * chunkSize; i < (threadIdx + 1) * chunkSize
-          && i < polygon.size(); i++) {
-        Line2D line = polygon.get(i);
-        Area pointRect1 = new Area(new Rectangle2D.Double(line.getX1() - rectSize / 2,
-            line.getY1() - rectSize / 2, rectSize, rectSize));
+    // lead below; all squares of one kind are cut in a single operation, because cutting them one
+    // at a time costs an operation over the whole lead for each
+    Path2D firstOnTop = new Path2D.Double();
+    Path2D secondOnTop = new Path2D.Double();
+    for (int i = 0; i < polygon.size(); i++) {
+      Line2D line = polygon.get(i);
+      Rectangle2D pointRect1 = new Rectangle2D.Double(line.getX1() - rectSize / 2,
+          line.getY1() - rectSize / 2, rectSize, rectSize);
+      if (i % 2 == 1) {
+        firstOnTop.append(pointRect1, false);
+      } else {
+        secondOnTop.append(pointRect1, false);
+      }
 
-        if (i % 2 == 1) {
-          pointRect1.intersect(outputAreas[0]);
-          synchronized (outputAreas[1]) {
-            outputAreas[1].subtract(pointRect1);
-          }
+      if (i == polygon.size() - 1) {
+        Rectangle2D pointRect2 = new Rectangle2D.Double(line.getX2() - rectSize / 2,
+            line.getY2() - rectSize / 2, rectSize, rectSize);
+        if (i % 2 == 0) {
+          firstOnTop.append(pointRect2, false);
         } else {
-          pointRect1.intersect(outputAreas[1]);
-          synchronized (outputAreas[0]) {
-            outputAreas[0].subtract(pointRect1);
-          }
-        }
-
-        if (i == polygon.size() - 1) {
-          Area pointRect2 = new Area(new Rectangle2D.Double(line.getX2() - rectSize / 2,
-              line.getY2() - rectSize / 2, rectSize, rectSize));
-          if (i % 2 == 0) {
-            pointRect2.intersect(outputAreas[0]);
-            synchronized (outputAreas[1]) {
-              outputAreas[1].subtract(pointRect2);
-            }
-          } else {
-            pointRect2.intersect(outputAreas[1]);
-            synchronized (outputAreas[0]) {
-              outputAreas[0].subtract(pointRect2);
-            }
-          }
+          secondOnTop.append(pointRect2, false);
         }
       }
-    });
+    }
+
+    Area firstOnTopArea = new Area(firstOnTop);
+    firstOnTopArea.intersect(outputAreas[0]);
+    outputAreas[1].subtract(firstOnTopArea);
+    // taken after the first cut, so where squares of both kinds overlap only one lead loses the area
+    Area secondOnTopArea = new Area(secondOnTop);
+    secondOnTopArea.intersect(outputAreas[1]);
+    outputAreas[0].subtract(secondOnTopArea);
 
     // dump to the output areas
     firstLeadArea.add(outputAreas[0]);
     secondLeadArea.add(outputAreas[1]);
+  }
+
+  // merges the areas pairwise rather than adding each one to a single growing area, which would
+  // make every addition cost as much as everything added before it
+  private static Area union(List<Area> areas) {
+    if (areas.isEmpty()) {
+      return new Area();
+    }
+    List<Area> current = areas;
+    while (current.size() > 1) {
+      List<Area> next = new ArrayList<Area>((current.size() + 1) / 2);
+      for (int i = 0; i < current.size(); i += 2) {
+        Area area = current.get(i);
+        if (i + 1 < current.size()) {
+          area.add(current.get(i + 1));
+        }
+        next.add(area);
+      }
+      current = next;
+    }
+    return current.get(0);
   }
 
   // splits a curve into a series of lines
