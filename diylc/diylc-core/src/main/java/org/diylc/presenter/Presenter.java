@@ -1445,6 +1445,7 @@ public class Presenter implements IPlugInPort {
               } else {
                 controlPointMap.put(component, indices);
               }
+              includeGroupedComponents(component, controlPointMap, excludedComponents);
             }
           }
         }
@@ -1478,6 +1479,34 @@ public class Presenter implements IPlugInPort {
             }
           }
         }
+      }
+    }
+  }
+
+  /**
+   * A group moves as a single rigid unit, so when one member is dragged along by a stuck control
+   * point the rest of the group has to follow with all of its control points.
+   */
+  private void includeGroupedComponents(IDIYComponent<?> component,
+      Map<IDIYComponent<?>, Set<Integer>> controlPointMap,
+      Set<IDIYComponent<?>> excludedComponents) {
+    Set<IDIYComponent<?>> groupedComponents = findAllGroupedComponents(component);
+    if (groupedComponents.size() <= 1) {
+      return;
+    }
+    for (IDIYComponent<?> groupedComponent : groupedComponents) {
+      if (isComponentLocked(groupedComponent) || !isComponentVisible(groupedComponent)
+          || excludedComponents.contains(groupedComponent)
+          || groupedComponent.getControlPointCount() == 0) {
+        continue;
+      }
+      Set<Integer> indices = controlPointMap.get(groupedComponent);
+      if (indices == null) {
+        indices = new HashSet<Integer>();
+        controlPointMap.put(groupedComponent, indices);
+      }
+      for (int k = 0; k < groupedComponent.getControlPointCount(); k++) {
+        indices.add(k);
       }
     }
   }

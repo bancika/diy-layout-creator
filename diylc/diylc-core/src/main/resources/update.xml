@@ -621,6 +621,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue of disappearing components in some edge cases</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>When a component that belongs to a group is stuck to another component, moving that other component now drags the whole group along instead of only the stuck component</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
