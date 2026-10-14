@@ -34,8 +34,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
- * Remembers, per source URL, which cloud project a file was uploaded as and the hash of the content
- * that was uploaded, so that later runs only upload what is new or changed.
+ * Remembers, per source URL, which cloud project a file was uploaded as, the hash of the content
+ * that was uploaded and the source its description cites, so that later runs only update what is
+ * new or changed.
  */
 public class SyncState {
 
@@ -78,7 +79,12 @@ public class SyncState {
         StandardCopyOption.ATOMIC_MOVE);
   }
 
-  public record SyncedFile(String url, int projectId, String sha256, String syncedOn) {}
+  /**
+   * @param source what the project description cites as the source, null when it is not known,
+   *        as for files synced before it was recorded
+   */
+  public record SyncedFile(String url, int projectId, String sha256, String source,
+      String syncedOn) {}
 
   private record Snapshot(List<SyncedFile> files) {}
 }

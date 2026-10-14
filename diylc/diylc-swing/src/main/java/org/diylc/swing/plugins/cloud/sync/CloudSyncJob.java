@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.BasicConfigurator;
@@ -65,7 +66,8 @@ import org.diylc.swing.plugins.cloud.sync.SyncState.SyncedFile;
  * Command-line job that mirrors .diy files published on users' own web pages into the DIYLC
  * cloud. Each new file is uploaded as a project and each changed file replaces the files of the
  * project it was uploaded as, through the same API calls the Upload action makes on the user's
- * behalf. Meant to run headless from cron:
+ * behalf. The description of each project cites where the file came from, and is updated when the
+ * configured source changes. Meant to run headless from cron:
  *
  * <pre>
  * java -cp diylc.jar org.diylc.swing.plugins.cloud.sync.CloudSyncJob cloud-sync.json [--dry-run]
@@ -88,6 +90,7 @@ public class CloudSyncJob {
   // column sizes of diylc_project on the server
   private static final int MAX_NAME_LENGTH = 50;
   private static final int MAX_DESCRIPTION_LENGTH = 1024;
+  private static final Pattern SOURCE_LINE = Pattern.compile("(?:\\A|\\s+)Source: \\S*\\s*\\z");
 
   private final CloudSyncConfig config;
   private final File storageDir;
@@ -223,8 +226,19 @@ public class CloudSyncJob {
     byte[] content = scraper.download(uri);
     String sha256 = sha256(content);
     SyncedFile synced = state.get(url);
+    String source = user.sourceFor(uri);
     if (synced != null && synced.sha256().equals(sha256)) {
-      return Outcome.UNCHANGED;
+      if (source.equals(synced.source())) {
+        return Outcome.UNCHANGED;
+      }
+      if (dryRun) {
+        LOG.info("Would cite " + source + " in project " + synced.projectId());
+      } else {
+        citeSource(user, synced.projectId(), source);
+        state.put(new SyncedFile(url, synced.projectId(), sha256, source,
+            Instant.now().toString()));
+      }
+      return Outcome.SOURCE_UPDATED;
     }
 
     File projectFile = localFile(userDir, uri);
@@ -247,7 +261,7 @@ public class CloudSyncJob {
 
     if (projectId == null) {
       checkResponse(service.uploadProject(user.username(), user.token(), user.machineId(), name,
-          resolveCategory(user.categoryFor(page)), description(projectDescription, uri),
+          resolveCategory(user.categoryFor(page)), description(projectDescription, source),
           diylcVersion, user.keywordsFor(page), thumbnailFile, projectFile, null));
       // the API does not return the ID of the new project, so the newest unclaimed one with the
       // same name is taken to be it
@@ -260,8 +274,12 @@ public class CloudSyncJob {
       checkResponse(service.replaceProjectFiles(user.username(), user.token(),
           user.machineId(), diylcVersion, thumbnailFile, projectFile, projectId));
       LOG.info("Updated project " + projectId + " from " + url);
+      // replacing the files leaves the description as it was, including the source it cites
+      if (synced == null || !source.equals(synced.source())) {
+        citeSource(user, projectId, source);
+      }
     }
-    state.put(new SyncedFile(url, projectId, sha256, Instant.now().toString()));
+    state.put(new SyncedFile(url, projectId, sha256, source, Instant.now().toString()));
     return outcome;
   }
 
@@ -282,6 +300,26 @@ public class CloudSyncJob {
       throw new IOException("Could not write " + thumbnailFile);
     }
     return presenter.getCurrentProject().getDescription();
+  }
+
+  /**
+   * Points the source line of the project's description at the specified source, keeping the rest
+   * of the project details as they are in the cloud.
+   */
+  private void citeSource(UserConfig user, int projectId, String source) throws CloudException {
+    ProjectEntity project = getUploads(user).stream()
+        .filter(p -> p.getId() == projectId)
+        .findFirst()
+        .orElseThrow(() -> new CloudException(
+            "Project " + projectId + " is not among the user's projects"));
+    String description = withSource(project.getDescription(), source);
+    if (description.equals(project.getDescription())) {
+      return;
+    }
+    checkResponse(service.uploadProject(user.username(), user.token(), user.machineId(),
+        project.getName(), project.getCategoryForDisplay(), description, diylcVersion,
+        project.getKeywords(), null, null, projectId));
+    LOG.info("Cited " + source + " in project " + projectId);
   }
 
   private List<ProjectEntity> getUploads(UserConfig user) throws CloudException {
@@ -350,7 +388,7 @@ public class CloudSyncJob {
     return name.length() > MAX_NAME_LENGTH ? name.substring(0, MAX_NAME_LENGTH).trim() : name;
   }
 
-  static String description(String projectDescription, URI source) {
+  static String description(String projectDescription, String source) {
     String sourceLine = "Source: " + source;
     if (isBlank(projectDescription)) {
       return sourceLine;
@@ -361,6 +399,14 @@ public class CloudSyncJob {
       text = text.substring(0, room).trim();
     }
     return text + "\n\n" + sourceLine;
+  }
+
+  // replaces the source line that description() ends with, or adds one when there is none, and
+  // keeps the rest of the description, which may have been edited in the cloud
+  static String withSource(String description, String source) {
+    String text =
+        description == null ? null : SOURCE_LINE.matcher(description).replaceFirst("");
+    return description(text, source);
   }
 
   static File localFile(File userDir, URI uri) throws IOException {
@@ -381,7 +427,7 @@ public class CloudSyncJob {
   }
 
   private enum Outcome {
-    UNCHANGED, UPLOADED, UPDATED, FAILED
+    UNCHANGED, UPLOADED, UPDATED, SOURCE_UPDATED, FAILED
   }
 
   /**

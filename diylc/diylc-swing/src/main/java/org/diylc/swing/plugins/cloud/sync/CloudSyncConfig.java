@@ -23,6 +23,7 @@ package org.diylc.swing.plugins.cloud.sync;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -59,10 +60,15 @@ public record CloudSyncConfig(String serviceUrl, String storageDir, List<UserCon
 
   /**
    * The cloud API authenticates by username (or email), token and machine ID; {@code userId} only
-   * names the user's storage folder.
+   * names the user's storage folder. {@code sourceUrl}, when set, is the page cited as the source
+   * in project descriptions instead of the link to the file itself.
    */
   public record UserConfig(int userId, String username, String machineId, String token,
-      String category, String keywords, List<PageConfig> pages) {
+      String category, String keywords, String sourceUrl, List<PageConfig> pages) {
+
+    public String sourceFor(URI file) {
+      return sourceUrl == null || sourceUrl.isBlank() ? file.toString() : sourceUrl;
+    }
 
     public String categoryFor(PageConfig page) {
       return page.category() == null ? category : page.category();

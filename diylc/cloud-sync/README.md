@@ -15,13 +15,17 @@ For each user:
 - `username`, `token`, `machineId`: the cloud API authenticates with the username (or email), not
   the numeric ID, plus a login token issued for that machine ID.
 - `userId`: names the user's folder under `storageDir`.
+- `sourceUrl`: optional page cited as the source in project descriptions, instead of the link to
+  each file.
 - `category`, `keywords`: defaults for the user's pages. Category is the name shown in the upload
   dialog; the leading `- ` of subcategories is optional.
 - `pages`: page URLs. Use an object with `url`, `category` and `keywords` to override the defaults
   for one page.
 
 The project name comes from the file name, and the description from the file's own description
-followed by a `Source:` link.
+followed by a `Source:` link to the user's `sourceUrl`, or to the file when there is none. When
+the source changes, the next run rewrites the `Source:` line of every project it cites, keeping the
+rest of the description and the other project details as they are in the cloud.
 
 ## Running
 
@@ -32,6 +36,6 @@ cloud-sync/cloud-sync.sh                          # sync for real
 ```
 
 `storage/<userId>/` mirrors the downloaded files with their thumbnails (`*.diy.png`), and keeps
-`sync-state.json`, which maps each source URL to its cloud project ID and the hash that was last
-uploaded. If the state is lost, the next run takes over the user's existing projects by name
+`sync-state.json`, which maps each source URL to its cloud project ID, the hash that was last
+uploaded and the source its description cites. If the state is lost, the next run takes over the user's existing projects by name
 instead of uploading duplicates. The exit status is non-zero if any page or file failed.
