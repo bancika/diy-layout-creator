@@ -45,8 +45,9 @@ import org.diylc.utils.ScaledBufferedImage;
 /**
  * A layer that injects itself between the provided {@link G2DWrapper} instance and the underlying
  * {@link Graphics2D} instance. For all components that are enabled for caching, it stores a
- * {@link BufferedImage} representing the component. The state of the component is recorded and
- * compared next time it needs to be rendered to make sure that the cache is up to date.
+ * {@link BufferedImage} representing the component. The cache does not detect changes to the
+ * component itself: whoever changes a component must {@link #invalidate(IDIYComponent)} it. Zoom,
+ * component state and draw options are recorded and compared each time.
  * 
  * @author bancika
  */
@@ -70,6 +71,10 @@ public class DrawingCache {
   private final Map<String, Pair<Counter, Counter>> renderStatsByType =
       new ConcurrentHashMap<String, Pair<Counter, Counter>>();
 
+  // when set, each entry keeps a copy of its component and every cache hit is checked against it,
+  // to find code paths that change a component without invalidating it
+  private final boolean verifyCache = "true".equalsIgnoreCase(System.getProperty(VERIFY_CACHE));
+
   private static final Logger LOG = Logger.getLogger(DrawingCache.class);
 
   // evicted images are released straight away rather than lingering behind soft references until
@@ -80,6 +85,8 @@ public class DrawingCache {
   // 32 MB per image; a large board at high zoom on a HiDPI screen would otherwise take a big share
   // of the budget on its own
   private static final long MAX_CACHED_IMAGE_PIXELS = 8L * 1024 * 1024;
+
+  public static String VERIFY_CACHE = "org.diylc.verifyDrawingCache";
 
   public static DrawingCache Instance = new DrawingCache();
   
@@ -213,6 +220,12 @@ public class DrawingCache {
     }
   }
 
+  public void invalidate(IDIYComponent<?> component) {
+    synchronized (imageCache) {
+      release(imageCache.remove(component));
+    }
+  }
+
   private CacheValue getCachedValue(IDIYComponent<?> component) {
     synchronized (imageCache) {
       return imageCache.get(component);
@@ -277,12 +290,16 @@ public class DrawingCache {
     // cache hit!
     CacheValue value = getCachedValue(component);
 
-    // only honor the cache if the component hasn't changed in the meantime
     // Also check if drawOptions changed (e.g., MONOCHROMATIC affects rendering)
-    boolean drawOptionsChanged = value == null || !value.getDrawOptions().equals(drawOptions);
-    if (value == null || !value.getComponent().equalsTo(component)
-        || value.getState() != componentState || value.getZoom() != zoom || value.getOutlineMode() != outlineMode
-        || value.getScaleFactor() != scaleFactor || drawOptionsChanged) {
+    boolean stale = value == null || value.getState() != componentState || value.getZoom() != zoom
+        || value.getOutlineMode() != outlineMode || value.getScaleFactor() != scaleFactor
+        || !value.getDrawOptions().equals(drawOptions);
+    if (!stale && verifyCache && !value.getComponent().equalsTo(component)) {
+      LOG.warn("Cached drawing of " + component.getName() + " of type "
+          + component.getClass().getName() + " was not invalidated after the component changed");
+      stale = true;
+    }
+    if (stale) {
       // figure out size and placement of buffer image
       Rectangle2D rect = component.getCachingBounds();
       int width = (int)Math.round(rect.getWidth() * zoom);
@@ -366,6 +383,7 @@ public class DrawingCache {
   }
 
   private class CacheValue {
+    // only kept when verifyCache is set
     IDIYComponent<?> component;
     BufferedImage image;
     Area currentArea;
@@ -386,10 +404,11 @@ public class DrawingCache {
         Rectangle2D cacheBounds, Set<DrawOption> drawOptions) {
       super();
       this.cacheBounds = cacheBounds;
-      // take a copy of the component, so we can check if it changed in the meantime
-      try {
-        this.component = component.clone();
-      } catch (CloneNotSupportedException e) {
+      if (verifyCache) {
+        try {
+          this.component = component.clone();
+        } catch (CloneNotSupportedException e) {
+        }
       }
       this.image = image;
       this.currentArea = currentArea;
@@ -463,7 +482,7 @@ public class DrawingCache {
 
     @Override
     public String toString() {
-      return component.getName() + ":" + state + ":" + zoom;
+      return (component == null ? "" : component.getName() + ":") + state + ":" + zoom;
     }
   }
 }

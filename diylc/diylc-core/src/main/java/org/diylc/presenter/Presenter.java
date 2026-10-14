@@ -721,6 +721,7 @@ public class Presenter implements IPlugInPort {
   private void notifyProjectModifiedIfNeeded(Project oldProject, String action, boolean clearContinuityArea, boolean repaint) {
     // Notify the listeners.
     if (oldProject == null || !currentProject.equals(oldProject)) {
+      invalidateChangedComponents(oldProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, action);
       if (clearContinuityArea) {
         drawingManager.clearContinuityArea();
@@ -728,6 +729,41 @@ public class Presenter implements IPlugInPort {
       projectFileManager.notifyFileChange();
       if (repaint) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
+      }
+    }
+  }
+
+  /**
+   * Discards what was derived from the last drawing of the component, its areas and its cached
+   * image, so that the next repaint draws it afresh.
+   * 
+   * @param component
+   */
+  private void componentChanged(IDIYComponent<?> component) {
+    drawingManager.invalidateComponent(component);
+    DrawingCache.Instance.invalidate(component);
+  }
+
+  /**
+   * Calls {@link #componentChanged(IDIYComponent)} for every component that differs from its
+   * counterpart in the specified snapshot, matched by id. The drawing cache relies on this rather
+   * than comparing each component on every repaint, so every edit must end up here.
+   * 
+   * @param oldProject snapshot taken before the edit, or null when there is none
+   */
+  private void invalidateChangedComponents(Project oldProject) {
+    if (oldProject == null) {
+      DrawingCache.Instance.clear();
+      return;
+    }
+    Map<UUID, IDIYComponent<?>> oldComponents = new HashMap<UUID, IDIYComponent<?>>();
+    for (IDIYComponent<?> component : oldProject.getComponents()) {
+      oldComponents.put(component.getId(), component);
+    }
+    for (IDIYComponent<?> component : currentProject.getComponents()) {
+      IDIYComponent<?> oldComponent = oldComponents.get(component.getId());
+      if (oldComponent == null || !oldComponent.equalsTo(component)) {
+        componentChanged(component);
       }
     }
   }
@@ -1740,9 +1776,10 @@ public class Presenter implements IPlugInPort {
     }
     
     // only the moved components need their areas re-tracked, rebuilding every area on each drag
-    // step makes dragging slow in large projects
+    // step makes dragging slow in large projects; drag steps do not go through
+    // notifyProjectModifiedIfNeeded, so they invalidate explicitly
     for (IDIYComponent<?> c : controlPointMap.keySet()) {
-      drawingManager.invalidateComponent(c);
+      componentChanged(c);
     }
     drawingManager.clearContinuityArea();
 
@@ -1938,6 +1975,7 @@ public class Presenter implements IPlugInPort {
     // There is selection, so we need to finalize the drag&drop
     // operation.
     if (!preDragProject.equals(currentProject)) {
+      invalidateChangedComponents(preDragProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject, "Drag");
       drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();

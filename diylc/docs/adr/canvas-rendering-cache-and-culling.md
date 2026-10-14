@@ -63,9 +63,21 @@ changes.
   - the outline and continuity areas captured while rendering it;
   - the cache bounds;
   - the parameters the entry is valid for.
-- **Validity:** an entry is reused only if the component still `equalsTo` the clone taken at
-  render time, and state, zoom, scale factor, outline mode and `DrawOption`s all match. Otherwise
-  it is re-rendered and replaced.
+- **Validity.** On every lookup an entry is checked only against state, zoom, scale factor,
+  outline mode and `DrawOption`s, all cheap comparisons. The cache does **not** detect changes to
+  the component itself. An entry stays valid until someone calls `DrawingCache.invalidate`. This
+  replaced a reflective `equalsTo` against a clone kept in every entry, which ran twice per
+  cacheable component on every repaint.
+- **Invalidation lives in `Presenter`:**
+  - `componentChanged(c)` invalidates both the areas and the cached image of one component.
+  - `invalidateChangedComponents(oldProject)` runs from `notifyProjectModifiedIfNeeded` and at the
+    end of a drag. It matches components to the pre-edit snapshot by id and calls
+    `componentChanged` for each one that is new or no longer `equalsTo` its snapshot. Every edit
+    already takes that snapshot and runs `Project.equals`, so this adds one comparison per
+    component per edit, not per repaint.
+  - Drag steps do not go through `notifyProjectModifiedIfNeeded`, so they call `componentChanged`
+    for the moved components explicitly.
+  - `loadProject` (including undo/redo) clears the whole cache, and a null snapshot does too.
 - **Placement:** the image is drawn at the first control point minus an integer offset, so it can
   sit up to one unit away from the cache bounds.
 - **Off-screen components are not rendered into the cache.** `renderAndCache` returns `null` when
@@ -169,10 +181,14 @@ Each rule exists so that one of the mechanisms above stays correct:
   an underlying graphics object. Anything drawn that way is missing from the measured bounds, and
   the component can be culled while part of it is visible. No component in core or library does
   this today.
-- **Anything that changes appearance must invalidate the component.** Use
-  `Presenter`/`DrawingManager.invalidateComponent`, or a wholesale clear. Otherwise both the
-  stored areas and the drawn bounds go stale. With culling, stale bounds show up as a component
-  missing at the edge of the view.
+- **Change components through `Presenter`.** An edit that ends in
+  `notifyProjectModifiedIfNeeded` with a snapshot is detected automatically. Code that changes
+  components on any other path, as drag steps do, must call `Presenter.componentChanged`.
+  Otherwise the cached image, the stored areas and the drawn bounds all go stale. With culling,
+  stale bounds show up as a component missing at the edge of the view. Run with
+  `-Dorg.diylc.verifyDrawingCache=true` (`DrawingCache.VERIFY_CACHE`) to find a missed path: each
+  entry then keeps a clone, and every cache hit is compared against it, logging a warning naming
+  the component and re-rendering it.
 - **For cached types, `getCachingBounds()` must contain everything drawn.** The cached image is
   clipped to it, and the culling bounds come from it.
 - **`draw()` is hot.** Fetch strokes from `ObjectCache` and do not log. See `CLAUDE.md`.
@@ -233,10 +249,8 @@ Ordered by expected payoff.
 7. **Reuse the image buffer** when a stale entry has the same pixel size: clear it and redraw.
    That removes allocation churn for property edits. It must be safe against an export rendering
    concurrently.
-8. **`CacheValue` keeps a full clone** of each component just for `equalsTo`. That is costly for
-   components carrying large data (images, long point lists).
-9. **`DrawingCache.Instance` is a static singleton.** `ProjectPreview` calls `loadProject`, which
-    clears it. If the preview runs its own `Presenter`, browsing files wipes the main canvas
-    cache. Check, and give each `Presenter` its own cache if so.
-10. **Shrink the budget under memory pressure** with a `MemoryPoolMXBean` usage threshold. This
-    is only worth doing if users run with a much smaller `-Xmx`.
+8. **`DrawingCache.Instance` is a static singleton.** `ProjectPreview` calls `loadProject`, which
+   clears it. If the preview runs its own `Presenter`, browsing files wipes the main canvas
+   cache. Check, and give each `Presenter` its own cache if so.
+9. **Shrink the budget under memory pressure** with a `MemoryPoolMXBean` usage threshold. This
+   is only worth doing if users run with a much smaller `-Xmx`.

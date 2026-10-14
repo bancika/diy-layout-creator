@@ -445,6 +445,27 @@ public class DrawingManagerTest {
     assertEquals(1, component.drawCount);
   }
 
+  @Test
+  public void testCachedComponentRedrawnOnlyAfterInvalidation() {
+    Project project = new Project();
+    CachedConductorComponent component = new CachedConductorComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawCachedAndClipped(drawingManager, project, 1000);
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(1, component.drawCount);
+
+    // the cache does not look for changes itself, whoever changes a component invalidates it
+    component.setTestField("changed");
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(1, component.drawCount);
+
+    DrawingCache.Instance.invalidate(component);
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(2, component.drawCount);
+  }
+
   private void drawCachedAndClipped(DrawingManager drawingManager, Project project, int size) {
     BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = img.createGraphics();
