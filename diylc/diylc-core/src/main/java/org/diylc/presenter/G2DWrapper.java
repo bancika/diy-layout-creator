@@ -326,11 +326,11 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     return s instanceof Area ? new Area(s) : new Path2D.Double(s);
   }
 
-  private void appendDrawnBounds(Rectangle2D bounds) {
-    if (!recordingDrawnBounds || bounds == null) {
+  private void appendDrawnBounds(Shape s) {
+    if (!recordingDrawnBounds || s == null) {
       return;
     }
-    unionDrawnBounds(currentTx.createTransformedShape(bounds).getBounds2D());
+    unionDrawnBounds(currentTx.createTransformedShape(s.getBounds2D()).getBounds2D());
   }
 
   private void appendDrawnOutlineBounds(Shape s) {
@@ -656,7 +656,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   @Override
   public void fill(Shape s) {
     canvasGraphics.fill(s);
-    appendDrawnBounds(s.getBounds2D());
+    appendDrawnBounds(s);
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(s);
     }
@@ -980,7 +980,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void fillPolygon(int[] points, int[] points2, int points3) {
     canvasGraphics.fillPolygon(points, points2, points3);
     if (points3 > 0) {
-      appendDrawnBounds(new Polygon(points, points2, points3).getBounds2D());
+      appendDrawnBounds(new Polygon(points, points2, points3));
     }
     if (drawingComponent && (trackingAllowed || trackingContinuityAllowed)) {
       appendShape(new Polygon(points, points2, points3));

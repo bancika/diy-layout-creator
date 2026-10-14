@@ -82,15 +82,15 @@ public class ComponentArea implements Serializable {
   public synchronized Rectangle2D getOutlineBounds() {
     // kept, because the cursor check asks every component on every mouse move
     if (outlineBounds == null) {
-      Rectangle2D bounds = new Rectangle2D.Double();
-      for (int i = 0; i < outlineParts.size(); i++) {
-        if (i == 0) {
-          bounds = outlineParts.get(i).getBounds2D();
+      Rectangle2D bounds = null;
+      for (Shape part : outlineParts) {
+        if (bounds == null) {
+          bounds = part.getBounds2D();
         } else {
-          bounds.add(outlineParts.get(i).getBounds2D());
+          bounds.add(part.getBounds2D());
         }
       }
-      outlineBounds = bounds;
+      outlineBounds = bounds == null ? new Rectangle2D.Double() : bounds;
     }
     return (Rectangle2D) outlineBounds.clone();
   }

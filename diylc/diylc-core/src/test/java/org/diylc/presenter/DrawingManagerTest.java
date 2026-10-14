@@ -515,8 +515,8 @@ public class DrawingManagerTest {
     wrapper.startedDrawingComponent(0);
     wrapper.startTrackingContinuityArea(true);
     wrapper.setContinuityMarker("lead");
-    // the first tracked shape becomes the outline area directly, and the same shape starts the
-    // continuity area for the marker
+    // the first shape counts towards both the outline and the marker's continuity area, the second
+    // only towards the continuity area
     wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
     wrapper.stopTracking();
     wrapper.fill(new Rectangle2D.Double(50, 50, 10, 10));

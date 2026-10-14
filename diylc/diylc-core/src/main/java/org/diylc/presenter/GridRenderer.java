@@ -59,9 +59,6 @@ public class GridRenderer {
       double extraSpace, Dimension canvasDimension, Dimension innerCanvasDimension,
       Rectangle2D visibleRect) {
     GridType gridType = GridType.LINES;
-    if (gridType == GridType.NONE) {
-      return;
-    }
 
     Rectangle2D area =
         new Rectangle2D.Double(0, 0, canvasDimension.width, canvasDimension.height);

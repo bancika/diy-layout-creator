@@ -339,17 +339,10 @@ public class DrawingManager {
           g2d.setFont(oldFont);
           // record render stats
           if (!offScreen) {
-            long componentEnd = System.nanoTime();
-            Counter stats = null;
             String key =
                 component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-            if (renderStatsByType.containsKey(key)) {
-              stats = renderStatsByType.get(key);
-            } else {
-              stats = new Counter();
-              renderStatsByType.put(key, stats);
-            }
-            stats.add(componentEnd - componentStart);
+            renderStatsByType.computeIfAbsent(key, k -> new Counter())
+                .add(System.nanoTime() - componentStart);
           }
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
@@ -843,8 +836,7 @@ public class DrawingManager {
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
           // a copy, because negative areas are subtracted from it below and the recorded area must
-          // stay whole for when the negative areas move; copying an Area shares its curves, so it
-          // is cheap
+          // stay whole for when they move
           preliminaryAreas.add(new ContinuityArea(layerId, new Area(a1)));
           checkBreakout.add(false);
         }

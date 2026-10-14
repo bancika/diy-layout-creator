@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "Twisted Leads", author = "Branislav Stojkovic",
@@ -378,8 +379,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     Stroke stroke = stripe ? getStripeStroke(thickness, thickness)
         : ObjectCache.getInstance().fetchBasicStroke(thickness);
 
-    // merging the stroked segments pairwise keeps each union small; adding them one at a time to a
-    // single area would cost as much as everything added before for every segment
     Area[] outputAreas = new Area[2];
     List<List<Path2D>> segments = List.of(geometry.firstSegments, geometry.secondSegments);
     for (int j = 0; j < 2; j++) {
@@ -387,7 +386,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
       for (Path2D p : segments.get(j)) {
         segmentAreas.add(new Area(stroke.createStrokedShape(p)));
       }
-      outputAreas[j] = union(segmentAreas);
+      outputAreas[j] = AreaUtils.union(segmentAreas);
     }
 
     // at overlapping points, decide which lead goes on top and clear the overlapping area from the
@@ -523,27 +522,6 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
 
     return new LeadGeometry(leads[0], leads[1], segments.get(0), segments.get(1), firstOnTop,
         secondOnTop);
-  }
-
-  // merges the areas pairwise rather than adding each one to a single growing area, which would
-  // make every addition cost as much as everything added before it
-  private static Area union(List<Area> areas) {
-    if (areas.isEmpty()) {
-      return new Area();
-    }
-    List<Area> current = areas;
-    while (current.size() > 1) {
-      List<Area> next = new ArrayList<Area>((current.size() + 1) / 2);
-      for (int i = 0; i < current.size(); i += 2) {
-        Area area = current.get(i);
-        if (i + 1 < current.size()) {
-          area.add(current.get(i + 1));
-        }
-        next.add(area);
-      }
-      current = next;
-    }
-    return current.get(0);
   }
 
   // splits a curve into a series of lines

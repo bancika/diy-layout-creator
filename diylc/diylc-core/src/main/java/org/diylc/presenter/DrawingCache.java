@@ -60,8 +60,7 @@ public class DrawingCache {
       new LinkedHashMap<IDIYComponent<?>, CacheValue>(16, 0.75f, true);
   private long imageCacheBytes = 0;
 
-  // lookups made by bulkPrepare; outdated entries are re-rendered regardless of the budget, while
-  // missing ones may have been evicted
+  // lookups made by bulkPrepare, reported by logStats
   private final AtomicLong cacheHits = new AtomicLong();
   private final AtomicLong cacheMissesNotCached = new AtomicLong();
   private final AtomicLong cacheMissesOutdated = new AtomicLong();
