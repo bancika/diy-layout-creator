@@ -289,7 +289,14 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
       }
 
       if (trackingAllowed) {
-        currentArea.add(area);
+        if (currentArea.isEmpty()) {
+          // a union with an empty area still sweeps every edge of the other one; Area operations
+          // replace their curve list instead of modifying it, so sharing it here is safe, but the
+          // Area object itself is not shared because the continuity maps below may add to it
+          currentArea = new Area(area);
+        } else {
+          currentArea.add(area);
+        }
 
         if (debugAreaPerformance && currentArea.equals(areaBefore)) {
           LOG.warn("Detected unnecessary shape tracking at", new Throwable());

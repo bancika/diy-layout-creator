@@ -477,6 +477,45 @@ public class DrawingManagerTest {
     g2d.dispose();
   }
 
+  @Test
+  public void testOutlineAreaUnaffectedByLaterContinuityShapes() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.startTrackingContinuityArea(true);
+    wrapper.setContinuityMarker("lead");
+    // the first tracked shape becomes the outline area directly, and the same shape starts the
+    // continuity area for the marker
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.stopTracking();
+    wrapper.fill(new Rectangle2D.Double(50, 50, 10, 10));
+    wrapper.stopTrackingContinuityArea();
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(new Rectangle2D.Double(0, 0, 10, 10), area.getOutlineArea().getBounds2D());
+    assertEquals(1, area.getContinuityPositiveAreas().size());
+    assertEquals(new Rectangle2D.Double(0, 0, 60, 60),
+        area.getContinuityPositiveAreas().iterator().next().getBounds2D());
+  }
+
+  @Test
+  public void testOutlineAreaIsUnionOfTrackedShapes() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(50, 50, 10, 10));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertTrue(area.getOutlineArea().contains(5, 5));
+    assertTrue(area.getOutlineArea().contains(55, 55));
+    assertTrue(!area.getOutlineArea().contains(30, 30));
+  }
+
   private void drawVisibleRect(DrawingManager drawingManager, Project project,
       Rectangle2D visibleRect) {
     BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
