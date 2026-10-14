@@ -120,39 +120,50 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     Color firstColor = selected ? SELECTION_COLOR : color;
     Color secondColor = selected ? SELECTION_COLOR : color2;
 
-    drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor, normal,
-        thickness, drawingObserver);
-    drawLead(g2d, leadGeometry.secondLead, secondColor, normal && stripe2, stripeColor2, normal,
-        thickness, drawingObserver);
+    float outlineWidth = 0;
+    if (normal) {
+      // as wide as the 1px outline of a regular wire: the canvas narrows a thin stroke to keep it
+      // one pixel wide when zoomed in, so the stroke it ends up with gives that width
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
+      outlineWidth = ((BasicStroke) g2d.getStroke()).getLineWidth();
+    }
+
+    drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor,
+        outlineWidth, thickness, drawingObserver);
+    drawLead(g2d, leadGeometry.secondLead, secondColor, normal && stripe2, stripeColor2,
+        outlineWidth, thickness, drawingObserver);
 
     // the second lead was drawn last and lies on top everywhere; redrawing the first lead inside
     // its own crossings puts it on top there. Both leads share one colour when selected.
     if (!selected) {
       Shape oldClip = g2d.getClip();
       g2d.clip(leadGeometry.firstOnTop);
-      drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor, normal,
-          thickness, null);
+      drawLead(g2d, leadGeometry.firstLead, firstColor, normal && stripe1, stripeColor,
+          outlineWidth, thickness, null);
       g2d.setClip(oldClip);
     }
   }
 
-  // drawingObserver is null for a redraw that must not be recorded again
+  // drawingObserver is null for a redraw that must not be recorded again; outlineWidth is 0 for
+  // no outline
   private void drawLead(Graphics2D g2d, Path2D lead, Color leadColor, boolean stripe,
-      Color leadStripeColor, boolean outline, int thickness, IDrawingObserver drawingObserver) {
+      Color leadStripeColor, float outlineWidth, int thickness, IDrawingObserver drawingObserver) {
+    boolean outline = outlineWidth > 0;
+    float innerWidth = Math.max(thickness - outlineWidth, 1);
     // the first stroke covers the whole lead, so it is the one recorded as the component's area
     if (drawingObserver != null) {
       drawingObserver.startTracking();
     }
     if (outline) {
-      // a dark band one pixel wide centred on the lead's edge, like an outline drawn around an area
+      // a dark band centred on the lead's edge, like an outline drawn around an area
       g2d.setColor(leadColor.darker());
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness + 1));
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(thickness + outlineWidth));
       g2d.draw(lead);
       if (drawingObserver != null) {
         drawingObserver.stopTracking();
       }
       g2d.setColor(leadColor);
-      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(Math.max(thickness - 1, 1)));
+      g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(innerWidth));
       g2d.draw(lead);
     } else {
       g2d.setColor(leadColor);
@@ -164,7 +175,7 @@ public class TwistedWire extends AbstractCurvedComponent<Void> implements IConti
     }
     if (stripe) {
       g2d.setColor(leadStripeColor);
-      g2d.setStroke(getStripeStroke(thickness, outline ? Math.max(thickness - 1, 1) : thickness));
+      g2d.setStroke(getStripeStroke(thickness, outline ? innerWidth : thickness));
       g2d.draw(lead);
     }
   }
