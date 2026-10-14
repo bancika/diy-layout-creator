@@ -77,13 +77,40 @@ public class CloudSyncJobTests {
   }
 
   @Test
+  public void citesConfiguredSourcePageInsteadOfFile() throws Exception {
+    FakeCloud cloud = new FakeCloud();
+
+    assertEquals(0, newJob(cloud, new FakeScraper(emptyProject()), "https://example.com/").run());
+    assertEquals("Source: https://example.com/", cloud.lastDescription);
+  }
+
+  @Test
   public void takesOverProjectAlreadyUploadedUnderSameName() throws Exception {
     FakeCloud cloud = new FakeCloud();
     cloud.add("My Amp");
     cloud.add("Something Else");
 
     assertEquals(0, newJob(cloud, new FakeScraper(emptyProject())).run());
-    assertEquals(List.of("search", "replaceProjectFiles 1"), cloud.writesAndLookups);
+    assertEquals(List.of("search", "replaceProjectFiles 1", "updateProjectDetails 1"),
+        cloud.writesAndLookups);
+    assertEquals("Source: " + FILE, cloud.lastDescription);
+  }
+
+  @Test
+  public void changedSourceIsCitedInExistingProjects() throws Exception {
+    FakeCloud cloud = new FakeCloud();
+    FakeScraper scraper = new FakeScraper(emptyProject());
+    assertEquals(0, newJob(cloud, scraper).run());
+    cloud.projects.get(0).setDescription("Notes\n\nSource: " + FILE);
+
+    cloud.writesAndLookups.clear();
+    assertEquals(0, newJob(cloud, scraper, "https://example.com/").run());
+    assertEquals(List.of("search", "updateProjectDetails 1"), cloud.writesAndLookups);
+    assertEquals("Notes\n\nSource: https://example.com/", cloud.lastDescription);
+
+    cloud.writesAndLookups.clear();
+    assertEquals(0, newJob(cloud, scraper, "https://example.com/").run());
+    assertEquals(List.of(), cloud.writesAndLookups);
   }
 
   @Test
@@ -117,11 +144,23 @@ public class CloudSyncJobTests {
 
   @Test
   public void descriptionAlwaysCitesSource() {
-    URI source = URI.create("https://example.com/a.diy");
+    String source = "https://example.com/a.diy";
     assertEquals("Source: https://example.com/a.diy", CloudSyncJob.description(null, source));
     String description = CloudSyncJob.description("x".repeat(2000), source);
     assertEquals(1024, description.length());
     assertTrue(description.endsWith("\n\nSource: https://example.com/a.diy"));
+  }
+
+  @Test
+  public void withSourceReplacesOnlyTheSourceLine() {
+    String source = "https://example.com/";
+    assertEquals("Notes\n\nSource: https://example.com/",
+        CloudSyncJob.withSource("Notes\r\n\r\nSource: https://example.com/a.diy\r\n", source));
+    assertEquals("Source: https://example.com/",
+        CloudSyncJob.withSource("Source: https://example.com/a.diy", source));
+    assertEquals("Notes\n\nSource: https://example.com/",
+        CloudSyncJob.withSource("Notes", source));
+    assertEquals("Source: https://example.com/", CloudSyncJob.withSource(null, source));
   }
 
   @Test(expected = IOException.class)
@@ -144,8 +183,13 @@ public class CloudSyncJobTests {
   }
 
   private CloudSyncJob newJob(FakeCloud cloud, FakeScraper scraper) throws IOException {
+    return newJob(cloud, scraper, null);
+  }
+
+  private CloudSyncJob newJob(FakeCloud cloud, FakeScraper scraper, String sourceUrl)
+      throws IOException {
     UserConfig user = new UserConfig(7, "someone", "cron-job", "token", "Guitar Amplifiers", null,
-        List.of(PageConfig.of(PAGE.toString())));
+        sourceUrl, List.of(PageConfig.of(PAGE.toString())));
     CloudSyncConfig config = new CloudSyncConfig(null, null, List.of(user));
     return new CloudSyncJob(config, new File(folder.getRoot(), "storage"), false, cloud.api(),
         scraper);
@@ -188,6 +232,7 @@ public class CloudSyncJobTests {
       ProjectEntity project = new ProjectEntity();
       project.setId(projects.size() + 1);
       project.setName(name);
+      project.setCategoryForDisplay("- Guitar Amplifiers");
       projects.add(project);
     }
 
@@ -203,7 +248,14 @@ public class CloudSyncJobTests {
               case "uploadProject":
                 assertEquals("- Guitar Amplifiers", args[4]);
                 lastDescription = (String) args[5];
+                // a project ID means only the details of that project are updated
+                if (args[10] != null) {
+                  projects.get((Integer) args[10] - 1).setDescription(lastDescription);
+                  writesAndLookups.add("updateProjectDetails " + args[10]);
+                  return "Success";
+                }
                 add((String) args[3]);
+                projects.get(projects.size() - 1).setDescription(lastDescription);
                 writesAndLookups.add("uploadProject " + args[3]);
                 return "Success";
               case "replaceProjectFiles":

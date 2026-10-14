@@ -8,6 +8,7 @@
       "token": "login token issued to this username and machineId",
       "category": "Guitar Amplifiers",
       "keywords": "",
+      "sourceUrl": "https://example.com/",
       "pages": [
         "https://example.com/layouts.htm",
         {
