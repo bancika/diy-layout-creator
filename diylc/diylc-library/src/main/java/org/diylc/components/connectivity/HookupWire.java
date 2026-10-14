@@ -42,7 +42,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
-    transformer = SimpleComponentTransformer.class, enableCache = false)
+    transformer = SimpleComponentTransformer.class, enableCache = true)
 public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
