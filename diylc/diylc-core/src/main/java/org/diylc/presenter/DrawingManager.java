@@ -157,6 +157,9 @@ public class DrawingManager {
    * @param controlPointSlot
    * @param componentSlot
    * @param dragInProgress
+   * @param movingComponents components whose control points the current drag moves, including
+   *        those stuck to the dragged ones; they are drawn directly instead of through the cache,
+   *        because they change on every frame
    * @param externalZoom
    * @param scaleFactor 
    * @param visibleRect
@@ -166,8 +169,9 @@ public class DrawingManager {
       Set<DrawOption> drawOptions, IComponentFilter filter, Rectangle selectionRect,
       Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
       Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
-      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
-      Double scaleFactor, Rectangle2D visibleRect) {
+      List<IDIYComponent<?>> componentSlot, boolean dragInProgress,
+      Collection<IDIYComponent<?>> movingComponents, Double externalZoom, Double scaleFactor,
+      Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -269,7 +273,9 @@ public class DrawingManager {
         }
       }
       componentStateMap.put(component, state);
-      componentForRenderList.add(new ComponentForRender(component, state, i));
+      if (!movingComponents.contains(component)) {
+        componentForRenderList.add(new ComponentForRender(component, state, i));
+      }
     }
 
     boolean outlineMode = drawOptions.contains(DrawOption.OUTLINE_MODE);
@@ -314,7 +320,7 @@ public class DrawingManager {
         try {
           if (!offScreen) {
             drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper,
-                state, zoom, i, outlineMode);
+                state, zoom, i, outlineMode, !movingComponents.contains(component));
 
             if (g2dWrapper.isTrackingContinuityArea()) {
               LOG.info("Component " + component.getName() + " of type "
@@ -619,8 +625,8 @@ public class DrawingManager {
 
   private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,
       Rectangle2D visibleRect, IDIYComponent<?> component, G2DWrapper g2dWrapper, ComponentState state,
-      double zoom, int i, boolean outlineMode) {
-    if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
+      double zoom, int i, boolean outlineMode, boolean cacheable) {
+    if (cacheable && drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
       DrawingCache.Instance.draw(component, g2dWrapper, state,
           drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect, drawOptions);
     else // go straight to the wrapper

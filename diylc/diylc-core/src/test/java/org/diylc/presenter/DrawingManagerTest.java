@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -152,7 +153,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -197,7 +199,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -231,7 +234,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -262,7 +266,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -291,7 +296,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -467,14 +473,36 @@ public class DrawingManagerTest {
     assertEquals(2, component.drawCount);
   }
 
+  @Test
+  public void testMovingComponentBypassesCache() {
+    Project project = new Project();
+    CachedConductorComponent component = new CachedConductorComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    // a component moved along by a drag is drawn directly on every frame...
+    drawCachedAndClipped(drawingManager, project, 1000, Set.of(component));
+    drawCachedAndClipped(drawingManager, project, 1000, Set.of(component));
+    assertEquals(2, component.drawCount);
+
+    // ...and leaves nothing in the cache, so the first ordinary repaint renders it afresh
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(3, component.drawCount);
+  }
+
   private void drawCachedAndClipped(DrawingManager drawingManager, Project project, int size) {
+    drawCachedAndClipped(drawingManager, project, size, Collections.emptySet());
+  }
+
+  private void drawCachedAndClipped(DrawingManager drawingManager, Project project, int size,
+      Set<IDIYComponent<?>> movingComponents) {
     BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = img.createGraphics();
     // CanvasPanel clips its buffer to the visible rect before drawing
     g2d.setClip(0, 0, size, size);
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM, DrawOption.ENABLE_CACHING),
         null, null, Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null,
-        null, false, 1.0, 1.0, new Rectangle2D.Double(0, 0, size, size));
+        null, false, movingComponents, 1.0, 1.0, new Rectangle2D.Double(0, 0, size, size));
     g2d.dispose();
   }
 
@@ -563,7 +591,7 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
         Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
-        1.0, 1.0, visibleRect);
+        Collections.emptySet(), 1.0, 1.0, visibleRect);
     g2d.dispose();
   }
 

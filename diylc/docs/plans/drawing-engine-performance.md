@@ -28,7 +28,7 @@ place. 750 CPU samples over 60 s, so treat the shares as approximate.
 
 | Share | Where | Item |
 | --- | --- | --- |
-| ~52% of CPU samples | `TwistedWire.recalculate` and the `Area` operations under it, mostly on the `bulkPrepare` workers (fixed, see §8) | §8 |
+| ~52% of CPU samples | `TwistedWire.recalculate` and the `Area` operations under it, mostly on the `bulkPrepare` workers (fixed, see §7) | §7 |
 | ~7% of CPU samples | `G2DWrapper.appendShape` recording `TwistedWire`'s outline (`currentArea.add`) | §2a |
 | 16% of CPU samples | Marlin rasterisation (`Renderer._endRendering`): the drawing itself | — |
 | ~19% of EDT samples | `Presenter.findAllGroupedComponents`, from `Presenter.draw` and `mouseMoved` | §6 |
@@ -38,6 +38,14 @@ place. 750 CPU samples over 60 s, so treat the shares as approximate.
 
 GC pauses totalled 348 ms. Most were under 40 ms, with one young-generation pause of 115 ms during
 heavy allocation.
+
+**Profile of 2026-10-14, later (P4),** mostly dragging parts with twisted wires attached: 707 CPU
+samples, 383 of them `TwistedWire` geometry on the `bulkPrepare` workers, and 4.75 GB of cached
+images allocated in 60 s. Wires stuck to a dragged part kept the `NORMAL` state, so every frame
+re-rendered them into a new cache image. Moved-along components now bypass the cache (ADR §2).
+The geometry itself still runs on every frame, because the wire's shape really changes; see §7.
+Grouping fell to 12 samples after §6, and the per-component overhead (now under "Not worth
+optimizing now") showed 1 sample.
 
 **Baseline before culling,** from the same layout: 327 repaints averaging 26 ms; `HookupWire`
 (then uncached) about 9 ms per repaint; `TwistedWire` about 96 ms per render; `TubeSocket` 572 ms
@@ -170,64 +178,58 @@ The buffer has to survive scrolling: either shift its contents and redraw the ex
 make it larger than the viewport. Moderate work. Do it after item 3, since the grid currently
 assumes it draws the whole canvas.
 
-## 6. Bookkeeping in `Presenter.draw` on every repaint
+## 6. Grouping and locking bookkeeping: done
 
-- **Grouped components.** Confirmed by the profile: about 19% of the EDT's own samples.
-  `groupedComponents` calls `findAllGroupedComponents` for every component. For each one it scans every group's ids with a stream, and for a grouped component it
-  filters the whole component list as well. On every repaint that is roughly components × group
-  size, plus the stream allocations.
-- **Locked components.** `getLockedComponents()` rebuilds its set on every repaint.
+`Presenter.draw` used to rebuild group membership and the locked-component set on every repaint,
+and `mouseMoved` looked groups up on every move: about a fifth of the EDT's samples in all three
+profiles. Both now come from `GroupAndLockIndex` (tested by `GroupAndLockIndexTest`), which works
+them out once per project state:
 
-**Fix.** Compute both once and reuse them until the project changes: on `PROJECT_MODIFIED` /
-`PROJECT_LOADED`, group and lock changes, and layer locking. `mouseMoved` calls
-`findAllGroupedComponents` for selected components on every move too, and should use the same
-cached data.
+- group membership is indexed by component id, so a component outside the project, such as one
+  being placed, resolves the same way as before; the sets it hands out are read-only;
+- `Presenter` calls `invalidate()` from `notifyProjectModifiedIfNeeded`, `loadProject`, paste
+  (which copies the clipboard's groups straight in), `ungroupComponents`, `setLayerLocked` (which
+  updates the selection before notifying) and `lockComponent`;
+- asking about a different project object rebuilds the index without an explicit invalidation.
 
-## 7. Per-component overhead in the drawing loop
+**Watch.** Code that changes the current project's groups, locks or component list without going
+through `Presenter` would leave the index stale until the next edit. Nothing does today; plugins
+change the project through `IPlugInPort`, and `LoadlineEditorFrame` builds its own project.
 
-Each item is small, but each is paid for every component on every repaint:
+## 7. Individual components
 
-- **Stats key string.** `getCanonicalName().replace("org.diylc.components.", "")` builds a new
-  string twice per component (in `DrawingManager` and `DrawingCache.getRenderStats`). Look the key
-  up per class instead, e.g. with a `ClassValue<String>`.
-- **Wrapper allocations.** `G2DWrapper.startedDrawingComponent` / `finishedDrawingComponent`
-  allocate an `Area`, two `HashMap`s, two `AffineTransform` copies, a `ComponentArea` and two
-  `ArrayList`s, even when no areas are being recorded. Allocate them only when recording, and
-  return `null` otherwise. The loop in `DrawingManager.drawProject` already ignores the result when
-  it is not recording.
-- **Logging on the render path.** `LOG.warn("Empty outline area detected ...")` in
-  `DrawingCache.renderAndCache` can fire on every render of an affected component. Remove it or
-  downgrade it, per the repository's no-logging-on-hot-paths rule.
+**`TwistedWire`: done in two steps.**
 
-## 8. Individual components
+1. `recalculate` used to build and cut each lead by growing one area segment by segment and
+   cutting every crossing out of the whole lead, so its cost grew with the square of the wire's
+   length. The segment areas are now merged pairwise and each kind of crossing is cut in one
+   operation. That also removed a data race (the parallel crossing loop read one lead while
+   another thread subtracted from it) and a bug that left the last crossings near the end of many
+   wires uncut.
+2. P4 still showed the geometry on every frame for wires whose ends move with a drag. Opaque
+   wires are now drawn with strokes and no `Area` operations: per lead, a dark stroke one pixel
+   wider than the lead and a coloured one a pixel narrower give the outline, the stripe is a
+   dashed stroke on top, and redrawing the first lead clipped to its own crossing squares puts it
+   on top there. `buildLeadGeometry` produces the lead paths and squares once per shape change and
+   is cached in `leadGeometry`. The first stroke of each lead is the one recorded as the
+   component's area.
 
-**`TwistedWire.recalculate`: done.** It was more than half of all CPU samples in the profile,
-because building and cutting the leads cost roughly the square of the wire's length. It now:
-
-- strokes each segment separately and merges the segment areas pairwise (`TwistedWire.union`),
-  instead of adding each segment to one growing area. Do not stroke all segments as sub-paths of a
-  single path: neighbouring segments overlap, and opposite windings there can leave holes;
-- collects the crossing squares of each kind into one path, intersects it with the lead on top, and
-  subtracts the result from the lead below in one operation per kind. The second kind is taken
-  after the first cut, so where squares overlap only one lead loses the area.
-
-On a set of 24 test wires (six shapes, two thicknesses, plain and striped) this took
-1.5–1.8 s down to about 0.45 s. Two bugs went with it:
-
-- **A data race.** The crossing loop ran in parallel and read one lead while another thread
-  subtracted from it. Two runs of the old code on identical input differed by up to ~170 pixels
-  per lead. The new code is sequential and deterministic.
-- **Skipped crossings.** The parallel loop processed `size / threadCount` crossings per thread and
-  dropped the remainder, so the last few crossings near the end of many wires had no over/under.
-  These are cut now, which is the only visible change against the old output; the rest of the
-  difference is single-pixel edge noise of the size the old code produced between its own runs.
-
-A regression run will show `TwistedWire` reference images changing at the wire ends for that
-reason.
+Translucent wires (alpha below 100%) keep the area path, because strokes paint some pixels twice
+and that would show through; its output is pixel-identical to before. On eight test renders the
+stroke path is about 8x faster (97 ms against 772 ms). Opaque output matches apart from
+antialiasing along the edges and a slightly finer outline, and selected wires lose faint seams the
+area cuts used to leave. Stroking a lead as one path whose segments are separate sub-paths is fine:
+stroke outlines are filled with the non-zero rule, so overlapping segments merge.
 
 **`HookupWire`** is now cached and no longer shows up in the profile.
 
 ## Not worth optimizing now
+
+- **Per-component overhead in the drawing loop** (formerly §7): the stats key built with
+  `getCanonicalName().replace(...)`, the `G2DWrapper` allocations on draws that record nothing, and
+  the `LOG.warn("Empty outline area detected ...")` in `DrawingCache.renderAndCache`. P3 and P4
+  show it at 1 sample each. The warning still breaks the no-logging-on-hot-paths rule and can go
+  whenever that file is next touched.
 
 - **Mouse-move handling.** `Presenter.mouseMoved` walks every control point twice per move, but it
   does not repaint. It only becomes worth indexing at much larger project sizes.
@@ -239,12 +241,10 @@ reason.
 
 | Step | Item | Size | Risk | Needs |
 | --- | --- | --- | --- | --- |
-| 1 | §6 cached grouping and locking | small | low | — |
-| 2 | §7 per-component overhead | small | low | — |
-| 3 | §2a lazy or batched area merging | medium | medium | `DrawingManagerTest`, netlist checks, regression run |
-| 4 | §4 image formats | small | low | page-time comparison on macOS |
-| 5 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
-| 6 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
-| 7 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
+| 1 | §2a lazy or batched area merging | medium | medium | `DrawingManagerTest`, netlist checks, regression run |
+| 2 | §4 image formats | small | low | page-time comparison on macOS |
+| 3 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
+| 4 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
+| 5 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
 
-Re-profile after step 1. The ranking of steps 2–7 still comes from reading the code.
+Re-profile next: the ranking of the remaining steps still comes from reading the code.

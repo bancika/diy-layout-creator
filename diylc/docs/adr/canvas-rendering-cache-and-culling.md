@@ -46,6 +46,10 @@ A component is cached when both of these hold:
 - `shouldCache` passes:
   - **not in `ComponentState.DRAGGING`**. A dragged component changes every frame, so its image
     would be thrown away immediately while still pushing useful entries out;
+  - **not moved along by a drag.** `Presenter.getMovingComponents()` passes the keys of the drag's
+    control-point map, which include components stuck to the dragged ones, as
+    `drawProject(..., movingComponents, ...)`. Those keep their normal appearance but are left out
+    of `bulkPrepare` and drawn directly, for the same reason as dragged ones;
   - **at most `MAX_CACHED_IMAGE_PIXELS` (8 Mi pixels, 32 MB)**, measured as
     `getCachingBounds()` × `zoom` × `scaleFactor` on each axis. A big board at high zoom on a
     HiDPI screen would otherwise take a large share of the budget on its own.
@@ -235,22 +239,19 @@ Ordered by expected payoff.
    no longer counted.
 2. **Run the regression suite.** It has not been run on these changes. Exports draw everything, so
    the run guards against exceptions in the new bounds code rather than against culling.
-3. **Components that move with a drag but are not selected** (stuck components) stay in `NORMAL`
-   state. They are re-rendered and re-cached every frame. Fixing this needs Presenter to tell the
-   cache which components are moving.
-4. **Zoom does not invalidate areas or drawn bounds.** Content that is larger at another zoom
+3. **Zoom does not invalidate areas or drawn bounds.** Content that is larger at another zoom
    could be culled at the edge of the view. Raise `OFF_SCREEN_MARGIN`, or invalidate on zoom, if
    that shows up.
-5. **`HookupWire` and `TwistedWire`.** If culling is not enough, either enable caching for
+4. **`HookupWire` and `TwistedWire`.** If culling is not enough, either enable caching for
    `HookupWire` (large, mostly empty bounding boxes, but plenty of budget) or profile it. Profile
    `TwistedWire.draw` in any case.
-6. **Components over the pixel limit are drawn directly.** That may make large perfboards and
+5. **Components over the pixel limit are drawn directly.** That may make large perfboards and
    stripboards slow at high zoom. Caching only the visible tile of such components would fix it.
-7. **Reuse the image buffer** when a stale entry has the same pixel size: clear it and redraw.
+6. **Reuse the image buffer** when a stale entry has the same pixel size: clear it and redraw.
    That removes allocation churn for property edits. It must be safe against an export rendering
    concurrently.
-8. **`DrawingCache.Instance` is a static singleton.** `ProjectPreview` calls `loadProject`, which
+7. **`DrawingCache.Instance` is a static singleton.** `ProjectPreview` calls `loadProject`, which
    clears it. If the preview runs its own `Presenter`, browsing files wipes the main canvas
    cache. Check, and give each `Presenter` its own cache if so.
-9. **Shrink the budget under memory pressure** with a `MemoryPoolMXBean` usage threshold. This
+8. **Shrink the budget under memory pressure** with a `MemoryPoolMXBean` usage threshold. This
    is only worth doing if users run with a much smaller `-Xmx`.
