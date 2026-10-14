@@ -28,12 +28,12 @@ place. 750 CPU samples over 60 s, so treat the shares as approximate.
 
 | Share | Where | Item |
 | --- | --- | --- |
-| ~52% of CPU samples | `TwistedWire.recalculate` and the `Area` operations under it, mostly on the `bulkPrepare` workers | §8 |
+| ~52% of CPU samples | `TwistedWire.recalculate` and the `Area` operations under it, mostly on the `bulkPrepare` workers (fixed, see §8) | §8 |
 | ~7% of CPU samples | `G2DWrapper.appendShape` recording `TwistedWire`'s outline (`currentArea.add`) | §2a |
 | 16% of CPU samples | Marlin rasterisation (`Renderer._endRendering`): the drawing itself | — |
 | ~19% of EDT samples | `Presenter.findAllGroupedComponents`, from `Presenter.draw` and `mouseMoved` | §6 |
 | 958 MB / 60 s | pixel buffers for cache renders | — |
-| 426 MB / 60 s | grid image rebuilt on zoom changes | §3 |
+| 426 MB / 60 s | grid image rebuilt on zoom changes (fixed, see §3) | §3 |
 | 386 MB / 60 s | canvas back buffer re-created on every scroll step (fixed, see §5) | §5 |
 
 GC pauses totalled 348 ms. Most were under 40 ms, with one young-generation pause of 115 ms during
@@ -80,6 +80,12 @@ control points). The next frame:
 tracked shape now becomes the outline area directly. `new Area(shape)` is not a cost: for an `Area`
 argument the JDK shares the curve list rather than copying it.
 
+**Done:** `G2DWrapper.appendShape` used to do `new Area(s)` followed by
+`area.transform(currentTx)`. `Area.transform` rebuilds the whole geometry even for an identity
+transform, so every tracked shape was processed twice. It now builds the area once: from the
+shape itself when the transform is the identity, or from `currentTx.createTransformedShape(s)`
+otherwise. Same geometry, checked by `DrawingManagerTest.testOutlineAreaFollowsComponentTransform`.
+
 **2a. Compute areas lazily, or merge them in one batch.**
 
 - Collect the tracked shapes in a list during drawing and merge them in
@@ -110,25 +116,28 @@ argument the JDK shares the curve list rather than copying it.
 - This is the biggest structural win for dragging, and the most invasive change in this plan. It
   touches `CanvasPanel`, `Presenter.draw` and `DrawingManager.drawProject`.
 
-## 3. The grid image is huge, blurry on HiDPI, and can go stale
+## 3. Grid: done
 
-**Problem.** `DrawingManager.drawGrid` caches the grid as one `TYPE_INT_ARGB` image the size of the
-whole canvas at the current zoom. The profile confirms the cost: 426 MB of grid images were
-allocated in 60 s of zooming.
+`DrawingManager.drawGrid` used to cache the grid as one image the size of the whole canvas at the
+current zoom. That was up to ~190 MB at high zoom, outside the cache budget, and 426–1,041 MB of
+grid images were allocated per profiled minute of zooming. It was rendered at 1× and stretched on
+HiDPI, and its rebuild check ignored grid spacing, dot spacing and theme.
 
-- **Memory.** A 10-inch project at 4× zoom is roughly 8000 × 6000 pixels, about 190 MB. That falls
-  outside the `DrawingCache` budget, and the image is rebuilt on every zoom change.
-- **HiDPI.** The image is rendered at 1× and stretched by the HiDPI scale, so it is blurry on
-  Retina, and the stretched copy is redrawn on every repaint.
-- **Staleness.** The rebuild check covers zoom, canvas size, extra space and grid type (which is a
-  constant). Changing the grid spacing, dot spacing or theme colours, or turning the grid on after
-  starting with it off, would leave a stale grid on screen. *Read from the code, not reproduced.*
-  Check this first. If it is real, it is a user-visible bug independent of performance.
+It now lives in `GridRenderer` (tested by `GridRendererTest`), which draws the lines and dots
+directly, and only those inside the visible rect:
 
-**Fix.** Drop the image and draw only the grid lines and dots that fall inside the visible rect on
-each repaint. That is a few dozen `draw` calls, which is cheaper than the stretched copy, and it
-fixes memory, blur and staleness together. Export and print pass a null visible rect, so they need
-the whole canvas: keep the full loop for that case. Rendering changes, so run the regression suite.
+- **Antialiasing off for the grid.** The lines are axis-aligned, so each one snaps to crisp whole
+  pixels instead of being smeared across two. The thickness formula is unchanged: 1 px at zoom
+  ≥ 1, and `zoom` px below that.
+- **Dense grids are thinned.** When lines would be closer than `GridRenderer.MIN_GRID_LINE_SPACING` (3 canvas
+  pixels at the current zoom), only every 5th line is drawn, then every 25th, and so on. Snapping
+  still uses the real spacing. A 0.5 mm grid shows every line at 100% and every 5th line from
+  75% down.
+- **Exports and printing** pass no visible rect and get the whole grid as vector lines, instead of
+  a raster image embedded in the PDF or SVG.
+
+One viewport of a 0.5 mm grid draws in under a millisecond. There is no cached state any more, so
+the grid cannot go stale.
 
 ## 4. Image formats force slow compositing
 
@@ -192,30 +201,29 @@ Each item is small, but each is paid for every component on every repaint:
 
 ## 8. Individual components
 
-**`TwistedWire.recalculate`** was more than half of all CPU samples in the profile. Its cost grows
-roughly with the square of the wire's length:
+**`TwistedWire.recalculate`: done.** It was more than half of all CPU samples in the profile,
+because building and cutting the leads cost roughly the square of the wire's length. It now:
 
-- each lead's area is built by adding one stroked segment at a time
-  (`outputAreas[j].add(new Area(stroke.createStrokedShape(p)))`);
-- at every crossing, a small square is intersected with the *entire* other lead and subtracted from
-  the *entire* lead, which is two operations over the full area per crossing.
+- strokes each segment separately and merges the segment areas pairwise (`TwistedWire.union`),
+  instead of adding each segment to one growing area. Do not stroke all segments as sub-paths of a
+  single path: neighbouring segments overlap, and opposite windings there can leave holes;
+- collects the crossing squares of each kind into one path, intersects it with the lead on top, and
+  subtracts the result from the lead below in one operation per kind. The second kind is taken
+  after the first cut, so where squares overlap only one lead loses the area.
 
-**Fix.**
+On a set of 24 test wires (six shapes, two thicknesses, plain and striped) this took
+1.5–1.8 s down to about 0.45 s. Two bugs went with it:
 
-- Build each lead with a single `new Area(stroke.createStrokedShape(path))`, where `path` holds all
-  of that lead's segments as separate sub-paths.
-- Combine the crossing squares into one mask per lead. Intersect the mask with the other lead once
-  and subtract the result once.
+- **A data race.** The crossing loop ran in parallel and read one lead while another thread
+  subtracted from it. Two runs of the old code on identical input differed by up to ~170 pixels
+  per lead. The new code is sequential and deterministic.
+- **Skipped crossings.** The parallel loop processed `size / threadCount` crossings per thread and
+  dropped the remainder, so the last few crossings near the end of many wires had no over/under.
+  These are cut now, which is the only visible change against the old output; the rest of the
+  difference is single-pixel edge noise of the size the old code produced between its own runs.
 
-The squares (3.5 × thickness) are smaller than the segment spacing (6 × thickness), so they do not
-overlap and the result should be unchanged. Compare rendering before and after with the regression
-suite.
-
-**This is also a thread-safety bug.** The crossing loop runs in parallel, and
-`pointRect.intersect(outputAreas[0])` reads one lead while another thread may be subtracting from
-it. Only the writes are synchronised, and `Area` is not thread-safe, so the result can depend on
-thread timing. The fix removes that loop, and with it the nested parallel streams that run inside
-the already-parallel `bulkPrepare`.
+A regression run will show `TwistedWire` reference images changing at the wire ends for that
+reason.
 
 **`HookupWire`** is now cached and no longer shows up in the profile.
 
@@ -231,14 +239,12 @@ the already-parallel `bulkPrepare`.
 
 | Step | Item | Size | Risk | Needs |
 | --- | --- | --- | --- | --- |
-| 1 | §8 `TwistedWire.recalculate` | small | medium | before/after rendering comparison, regression run |
-| 2 | §6 cached grouping and locking | small | low | — |
-| 3 | §3 draw the grid directly (first check whether the stale grid reproduces) | small | low | regression run |
-| 4 | §7 per-component overhead | small | low | — |
-| 5 | §2a lazy or batched area merging | medium | medium | `DrawingManagerTest`, netlist checks, regression run |
-| 6 | §4 image formats | small | low | page-time comparison on macOS |
-| 7 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
-| 8 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
-| 9 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
+| 1 | §6 cached grouping and locking | small | low | — |
+| 2 | §7 per-component overhead | small | low | — |
+| 3 | §2a lazy or batched area merging | medium | medium | `DrawingManagerTest`, netlist checks, regression run |
+| 4 | §4 image formats | small | low | page-time comparison on macOS |
+| 5 | §2b frozen drag background | large | medium | manual drag testing incl. stacking order |
+| 6 | §5 redraw only the damaged area | medium | medium | scroll and tooltip testing |
+| 7 | §1 cached reflection metadata for `equalsTo` / `clone` | small | low | unit test for `equalsTo` |
 
-Re-profile after steps 1–3. The ranking of steps 4–9 still comes from reading the code.
+Re-profile after step 1. The ranking of steps 2–7 still comes from reading the code.

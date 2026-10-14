@@ -501,6 +501,27 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testOutlineAreaFollowsComponentTransform() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.translate(100, 50);
+    wrapper.rotate(Math.PI / 2);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 20, 10));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    // rotated a quarter turn about the translated origin, the 20 x 10 rectangle spans
+    // x 90..100 and y 50..70
+    Rectangle2D bounds = area.getOutlineArea().getBounds2D();
+    assertEquals(90, bounds.getMinX(), 1e-6);
+    assertEquals(100, bounds.getMaxX(), 1e-6);
+    assertEquals(50, bounds.getMinY(), 1e-6);
+    assertEquals(70, bounds.getMaxY(), 1e-6);
+  }
+
+  @Test
   public void testOutlineAreaIsUnionOfTrackedShapes() {
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     G2DWrapper wrapper =

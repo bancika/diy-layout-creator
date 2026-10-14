@@ -280,8 +280,10 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     Rectangle2D bounds = s.getBounds2D();
     // Only cache the shape if it's not 1D.
     if (bounds.getWidth() > 1 && bounds.getHeight() > 1) {
-      Area area = new Area(s);
-      area.transform(currentTx);
+      // Area.transform rebuilds the whole area even for an identity transform, so the shape is
+      // transformed before the area is built from it, keeping it to a single pass
+      Area area = currentTx.isIdentity() ? new Area(s)
+          : new Area(currentTx.createTransformedShape(s));
 
       Area areaBefore = null;
       if (debugAreaPerformance) {
