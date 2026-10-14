@@ -46,7 +46,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Right Angle Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Wire that runs horizontally and vertically and turns at right angles",
     zOrder = IDIYComponent.WIRING, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
-    transformer = OrthogonalComponentTransformer.class, enableCache = false, creationMethod = CreationMethod.POINT_BY_POINT)
+    transformer = OrthogonalComponentTransformer.class, enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)
 public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements IContinuity {
 
   private static final long serialVersionUID = 1L;

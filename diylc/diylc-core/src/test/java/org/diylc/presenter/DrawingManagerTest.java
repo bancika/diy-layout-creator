@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
@@ -151,7 +153,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -196,7 +199,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -230,7 +234,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -261,7 +266,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -290,7 +296,8 @@ public class DrawingManagerTest {
     Graphics2D g2d = img.createGraphics();
 
     drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
-        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false, 1.0, 1.0, null);
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
 
     g2d.dispose();
 
@@ -377,6 +384,352 @@ public class DrawingManagerTest {
 
     // After drawing, wrapper transform should still be the mirrorTx
     assertEquals(-1.0, wrapper.getTransform().getScaleY(), 0.001);
+  }
+
+  @Test
+  public void testOffScreenComponentSkippedOnceAreaIsTracked() {
+    Project project = new Project();
+    DrawCountingComponent component = new DrawCountingComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+    // the first pass records the area, so it has to draw even though the component is off-screen
+    assertEquals(1, component.drawCount);
+
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+    assertEquals(1, component.drawCount);
+
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(400, 400, 200, 200));
+    assertEquals(2, component.drawCount);
+
+    drawVisibleRect(drawingManager, project, null);
+    assertEquals(3, component.drawCount);
+  }
+
+  @Test
+  public void testOffScreenComponentDrawnAgainAfterInvalidation() {
+    Project project = new Project();
+    DrawCountingComponent component = new DrawCountingComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+    drawingManager.invalidateComponent(component);
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+
+    assertEquals(2, component.drawCount);
+  }
+
+  @Test
+  public void testUntrackedDrawingKeepsComponentOnScreen() {
+    Project project = new Project();
+    DrawCountingComponent component = new DrawCountingComponent();
+    component.labelPosition = new Point2D.Double(50, 50);
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+    drawVisibleRect(drawingManager, project, new Rectangle2D.Double(0, 0, 100, 100));
+
+    // the label lies outside the selection area but inside the visible rect
+    assertEquals(2, component.drawCount);
+  }
+
+  @Test
+  public void testOffScreenCachedComponentContributesContinuity() {
+    Project project = new Project();
+    CachedConductorComponent component = new CachedConductorComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawCachedAndClipped(drawingManager, project, 100);
+    // the netlist and continuity checks are built from the areas recorded while painting
+    assertEquals(1, drawingManager.getContinuityAreas().size());
+    assertEquals(1, component.drawCount);
+
+    drawCachedAndClipped(drawingManager, project, 100);
+    assertEquals(1, component.drawCount);
+  }
+
+  @Test
+  public void testCachedComponentRedrawnOnlyAfterInvalidation() {
+    Project project = new Project();
+    CachedConductorComponent component = new CachedConductorComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawCachedAndClipped(drawingManager, project, 1000);
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(1, component.drawCount);
+
+    // the cache does not look for changes itself, whoever changes a component invalidates it
+    component.setTestField("changed");
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(1, component.drawCount);
+
+    DrawingCache.Instance.invalidate(component);
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(2, component.drawCount);
+  }
+
+  @Test
+  public void testMovingComponentBypassesCache() {
+    Project project = new Project();
+    CachedConductorComponent component = new CachedConductorComponent();
+    project.getComponents().add(component);
+    DrawingManager drawingManager = createDrawingManager();
+
+    // a component moved along by a drag is drawn directly on every frame...
+    drawCachedAndClipped(drawingManager, project, 1000, Set.of(component));
+    drawCachedAndClipped(drawingManager, project, 1000, Set.of(component));
+    assertEquals(2, component.drawCount);
+
+    // ...and leaves nothing in the cache, so the first ordinary repaint renders it afresh
+    drawCachedAndClipped(drawingManager, project, 1000);
+    assertEquals(3, component.drawCount);
+  }
+
+  private void drawCachedAndClipped(DrawingManager drawingManager, Project project, int size) {
+    drawCachedAndClipped(drawingManager, project, size, Collections.emptySet());
+  }
+
+  private void drawCachedAndClipped(DrawingManager drawingManager, Project project, int size,
+      Set<IDIYComponent<?>> movingComponents) {
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    // CanvasPanel clips its buffer to the visible rect before drawing
+    g2d.setClip(0, 0, size, size);
+    drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM, DrawOption.ENABLE_CACHING),
+        null, null, Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null,
+        null, false, movingComponents, 1.0, 1.0, new Rectangle2D.Double(0, 0, size, size));
+    g2d.dispose();
+  }
+
+  @Test
+  public void testOutlineAreaUnaffectedByLaterContinuityShapes() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.startTrackingContinuityArea(true);
+    wrapper.setContinuityMarker("lead");
+    // the first shape counts towards both the outline and the marker's continuity area, the second
+    // only towards the continuity area
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.stopTracking();
+    wrapper.fill(new Rectangle2D.Double(50, 50, 10, 10));
+    wrapper.stopTrackingContinuityArea();
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(new Rectangle2D.Double(0, 0, 10, 10), area.getOutlineArea().getBounds2D());
+    assertEquals(1, area.getContinuityPositiveAreas().size());
+    assertEquals(new Rectangle2D.Double(0, 0, 60, 60),
+        area.getContinuityPositiveAreas().iterator().next().getBounds2D());
+  }
+
+  @Test
+  public void testOutlineAreaFollowsComponentTransform() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.translate(100, 50);
+    wrapper.rotate(Math.PI / 2);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 20, 10));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    // rotated a quarter turn about the translated origin, the 20 x 10 rectangle spans
+    // x 90..100 and y 50..70
+    Rectangle2D bounds = area.getOutlineArea().getBounds2D();
+    assertEquals(90, bounds.getMinX(), 1e-6);
+    assertEquals(100, bounds.getMaxX(), 1e-6);
+    assertEquals(50, bounds.getMinY(), 1e-6);
+    assertEquals(70, bounds.getMaxY(), 1e-6);
+  }
+
+  @Test
+  public void testRecordedShapeUnaffectedByLaterChanges() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    Rectangle2D shape = new Rectangle2D.Double(0, 0, 10, 10);
+    wrapper.fill(shape);
+    // shapes are merged into areas only when asked for, so the recorded one must be a copy
+    shape.setRect(50, 50, 10, 10);
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(new Rectangle2D.Double(0, 0, 10, 10), area.getOutlineArea().getBounds2D());
+  }
+
+  @Test
+  public void testOutlineBoundsMatchMergedArea() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.translate(100, 50);
+    wrapper.fill(new java.awt.geom.Ellipse2D.Double(0, 0, 30, 20));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    Rectangle2D merged = area.getOutlineArea().getBounds2D();
+    Rectangle2D bounds = area.getOutlineBounds();
+    assertEquals(merged.getMinX(), bounds.getMinX(), 1e-6);
+    assertEquals(merged.getMinY(), bounds.getMinY(), 1e-6);
+    assertEquals(merged.getMaxX(), bounds.getMaxX(), 1e-6);
+    assertEquals(merged.getMaxY(), bounds.getMaxY(), 1e-6);
+  }
+
+  @Test
+  public void testContinuityShapesMergedPerMarker() {
+    BufferedImage img = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.startTrackingContinuityArea(true);
+    wrapper.setContinuityMarker("pad");
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(5, 0, 10, 10));
+    // without a marker each shape is an area of its own
+    wrapper.setContinuityMarker(null);
+    wrapper.fill(new Rectangle2D.Double(100, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(150, 0, 10, 10));
+    wrapper.stopTrackingContinuityArea();
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertEquals(3, area.getContinuityPositiveAreas().size());
+    boolean merged = false;
+    for (Area a : area.getContinuityPositiveAreas()) {
+      merged |= a.contains(2, 5) && a.contains(13, 5);
+    }
+    assertTrue(merged);
+  }
+
+  @Test
+  public void testOutlineAreaIsUnionOfTrackedShapes() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    G2DWrapper wrapper =
+        new G2DWrapper(img.createGraphics(), 1.0, EnumSet.noneOf(DrawOption.class));
+
+    wrapper.startedDrawingComponent(0);
+    wrapper.fill(new Rectangle2D.Double(0, 0, 10, 10));
+    wrapper.fill(new Rectangle2D.Double(50, 50, 10, 10));
+    ComponentArea area = wrapper.finishedDrawingComponent();
+
+    assertTrue(area.getOutlineArea().contains(5, 5));
+    assertTrue(area.getOutlineArea().contains(55, 55));
+    assertTrue(!area.getOutlineArea().contains(30, 30));
+  }
+
+  @Test
+  public void testContinuityCalculationLeavesRecordedAreasIntact() {
+    Project project = new Project();
+    ConductorComponent strip = new ConductorComponent(new Rectangle2D.Double(0, 0, 100, 10), true);
+    ConductorComponent cut = new ConductorComponent(new Rectangle2D.Double(40, 0, 20, 10), false);
+    project.getComponents().add(strip);
+    project.getComponents().add(cut);
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+
+    // the cut splits the strip in two for the netlist...
+    assertEquals(2, drawingManager.getContinuityAreas().size());
+    // ...but the strip's own recorded area must stay whole, so that moving or deleting the cut
+    // does not leave a hole behind
+    Area recorded =
+        drawingManager.getComponentArea(strip).getContinuityPositiveAreas().iterator().next();
+    assertTrue(recorded.contains(50, 5));
+  }
+
+  private void drawVisibleRect(DrawingManager drawingManager, Project project,
+      Rectangle2D visibleRect) {
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, visibleRect);
+    g2d.dispose();
+  }
+
+  public static class DrawCountingComponent extends MockDIYComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    public int drawCount = 0;
+    public Point2D labelPosition = null;
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      drawCount++;
+      g2d.fill(new Rectangle2D.Double(500, 500, 20, 20));
+      if (labelPosition != null) {
+        drawingObserver.stopTracking();
+        g2d.drawString("R1", (float) labelPosition.getX(), (float) labelPosition.getY());
+      }
+    }
+  }
+
+  @ComponentDescriptor(name = "CachedConductor", author = "test", category = "Test",
+      instanceNamePrefix = "C", description = "Cached conductive component for testing",
+      zOrder = IDIYComponent.COMPONENT, enableCache = true)
+  public static class CachedConductorComponent extends MockDIYComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    public int drawCount = 0;
+    private Point2D controlPoint = new Point2D.Double(500, 500);
+
+    @Override
+    public int getControlPointCount() {
+      return 1;
+    }
+
+    @Override
+    public Point2D getControlPoint(int index) {
+      return controlPoint;
+    }
+
+    @Override
+    public Rectangle2D getCachingBounds() {
+      return new Rectangle2D.Double(490, 490, 40, 40);
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      drawCount++;
+      drawingObserver.startTrackingContinuityArea(true);
+      g2d.fill(new Rectangle2D.Double(500, 500, 20, 20));
+      drawingObserver.stopTrackingContinuityArea();
+    }
+  }
+
+  public static class ConductorComponent extends MockDIYComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Rectangle2D shape;
+    private boolean positive;
+
+    public ConductorComponent(Rectangle2D shape, boolean positive) {
+      this.shape = shape;
+      this.positive = positive;
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      drawingObserver.startTrackingContinuityArea(positive);
+      g2d.fill(shape);
+      drawingObserver.stopTrackingContinuityArea();
+    }
   }
 
   // Simple delegating Graphics2D proxy for testing

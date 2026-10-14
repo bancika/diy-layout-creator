@@ -134,7 +134,7 @@ public class Presenter implements IPlugInPort {
   // Maps components that have at least one dragged point to set of indices
   // that designate which of their control points are being dragged.
   private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
-  private Set<IDIYComponent<?>> lockedComponents;
+  private GroupAndLockIndex groupAndLockIndex;
 
   // Utilities
   // private Cloner cloner;
@@ -192,7 +192,7 @@ public class Presenter implements IPlugInPort {
     this.messageDispatcher = messageDispatcher;
     plugIns = new ArrayList<IPlugIn>();
     selectedComponents = new HashSet<IDIYComponent<?>>();
-    lockedComponents = new HashSet<IDIYComponent<?>>();
+    groupAndLockIndex = new GroupAndLockIndex();
     currentProject = new Project();
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
@@ -280,7 +280,9 @@ public class Presenter implements IPlugInPort {
         if (!isComponentLocked(component) && isComponentVisible(component)
             && operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
           ComponentArea area = drawingManager.getComponentArea(component);
-          if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
+          // the bounds rule most components out without merging their outline into an area
+          if (area != null && scaledPoint != null && area.getOutlineBounds().contains(scaledPoint)
+              && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -305,6 +307,7 @@ public class Presenter implements IPlugInPort {
   public void loadProject(Project project, boolean freshStart, String filename) {
     LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
     this.currentProject = project;
+    groupAndLockIndex.invalidate();
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
     DrawingCache.Instance.clear();
@@ -535,7 +538,8 @@ public class Presenter implements IPlugInPort {
                 getLockedComponents(),
                 groupedComponents,
                 Arrays.asList(instantiationManager.getFirstControlPoint(),
-                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom, scaleFactor,
+                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress,
+                getMovingComponents(), externalZoom, scaleFactor,
                 visibleRect);
     List<String> failedComponentNames = new ArrayList<String>();
     for (IDIYComponent<?> component : failedComponents) {
@@ -719,8 +723,10 @@ public class Presenter implements IPlugInPort {
   }
 
   private void notifyProjectModifiedIfNeeded(Project oldProject, String action, boolean clearContinuityArea, boolean repaint) {
+    groupAndLockIndex.invalidate();
     // Notify the listeners.
     if (oldProject == null || !currentProject.equals(oldProject)) {
+      invalidateChangedComponents(oldProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, action);
       if (clearContinuityArea) {
         drawingManager.clearContinuityArea();
@@ -728,6 +734,41 @@ public class Presenter implements IPlugInPort {
       projectFileManager.notifyFileChange();
       if (repaint) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
+      }
+    }
+  }
+
+  /**
+   * Discards what was derived from the last drawing of the component, its areas and its cached
+   * image, so that the next repaint draws it afresh.
+   * 
+   * @param component
+   */
+  private void componentChanged(IDIYComponent<?> component) {
+    drawingManager.invalidateComponent(component);
+    DrawingCache.Instance.invalidate(component);
+  }
+
+  /**
+   * Calls {@link #componentChanged(IDIYComponent)} for every component that differs from its
+   * counterpart in the specified snapshot, matched by id. The drawing cache relies on this rather
+   * than comparing each component on every repaint, so every edit must end up here.
+   * 
+   * @param oldProject snapshot taken before the edit, or null when there is none
+   */
+  private void invalidateChangedComponents(Project oldProject) {
+    if (oldProject == null) {
+      DrawingCache.Instance.clear();
+      return;
+    }
+    Map<UUID, IDIYComponent<?>> oldComponents = new HashMap<UUID, IDIYComponent<?>>();
+    for (IDIYComponent<?> component : oldProject.getComponents()) {
+      oldComponents.put(component.getId(), component);
+    }
+    for (IDIYComponent<?> component : currentProject.getComponents()) {
+      IDIYComponent<?> oldComponent = oldComponents.get(component.getId());
+      if (oldComponent == null || !oldComponent.equalsTo(component)) {
+        componentChanged(component);
       }
     }
   }
@@ -1060,12 +1101,12 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> c : components) {
 
       ComponentArea compArea = drawingManager.getComponentArea(c);
-      if (compArea == null || compArea.getOutlineArea() == null) {
+      if (compArea == null) {
         LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
         return null;
       }
 
-      Rectangle rect = compArea.getOutlineArea().getBounds();
+      Rectangle rect = compArea.getOutlineBounds().getBounds();
       if (rect.x < minX)
         minX = rect.x;
       if (rect.x + rect.width > maxX)
@@ -1216,13 +1257,13 @@ public class Presenter implements IPlugInPort {
     Rectangle2D bounds = null;
     for (IDIYComponent<?> c : unit) {
       ComponentArea area = drawingManager.getComponentArea(c);
-      if (area == null || area.getOutlineArea() == null) {
+      if (area == null) {
         return null;
       }
       if (bounds == null) {
-        bounds = area.getOutlineArea().getBounds2D();
+        bounds = area.getOutlineBounds();
       } else {
-        bounds.add(area.getOutlineArea().getBounds2D());
+        bounds.add(area.getOutlineBounds());
       }
     }
     return bounds;
@@ -1769,9 +1810,10 @@ public class Presenter implements IPlugInPort {
     }
     
     // only the moved components need their areas re-tracked, rebuilding every area on each drag
-    // step makes dragging slow in large projects
+    // step makes dragging slow in large projects; drag steps do not go through
+    // notifyProjectModifiedIfNeeded, so they invalidate explicitly
     for (IDIYComponent<?> c : controlPointMap.keySet()) {
-      drawingManager.invalidateComponent(c);
+      componentChanged(c);
     }
     drawingManager.clearContinuityArea();
 
@@ -1945,7 +1987,8 @@ public class Presenter implements IPlugInPort {
         for (IDIYComponent<?> component : currentProject.getComponents()) {
           if (!isComponentLocked(component) && isComponentVisible(component)) {
             ComponentArea area = drawingManager.getComponentArea(component);
-            if ((area != null && area.getOutlineArea() != null) && (selectionRect != null)
+            if (area != null && selectionRect != null
+                && area.getOutlineBounds().intersects(selectionRect)
                 && area.getOutlineArea().intersects(selectionRect)) {
               newSelection.addAll(findAllGroupedComponents(component));
             }
@@ -1967,6 +2010,7 @@ public class Presenter implements IPlugInPort {
     // There is selection, so we need to finalize the drag&drop
     // operation.
     if (!preDragProject.equals(currentProject)) {
+      invalidateChangedComponents(preDragProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject, "Drag");
       drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();
@@ -1984,6 +2028,8 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("pasteComponents(%s, %s, %s)", componentTransferable, autoGroup, assignNewNames));
     instantiationManager.pasteComponents(componentTransferable, this.previousScaledPoint, isSnapToGrid(),
         currentProject.getGridSpacing(), autoGroup, this.currentProject, assignNewNames);
+    // pasting copies the clipboard's groups into the project straight away
+    groupAndLockIndex.invalidate();
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());
@@ -2120,6 +2166,7 @@ public class Presenter implements IPlugInPort {
     } else {
       currentProject.getLockedLayers().remove(layerZOrder);
     }
+    groupAndLockIndex.invalidate();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
     
@@ -2480,8 +2527,8 @@ public class Presenter implements IPlugInPort {
           
           // do a rough check, if the outlines don't intersect there's no chance of a match
           // so don't waste time doing the precise check
-          if (area.getOutlineArea() != null && selectedArea.getOutlineArea() != null && 
-              !area.getOutlineArea().getBounds().intersects(selectedArea.getOutlineArea().getBounds()))
+          if (!area.getOutlineBounds().getBounds()
+              .intersects(selectedArea.getOutlineBounds().getBounds()))
             continue;          
           
           // create a unified continuity area for both components
@@ -2560,6 +2607,15 @@ public class Presenter implements IPlugInPort {
     currentProject.getGroupsEx().removeIf(
         group -> group.getComponentIds() != null && group.getComponentIds().stream()
             .anyMatch(id -> id != null && componentIds.contains(id)));
+    groupAndLockIndex.invalidate();
+  }
+
+  // the components a drag in progress moves: the dragged ones and those stuck to them
+  private Collection<IDIYComponent<?>> getMovingComponents() {
+    if (!dragInProgress || controlPointMap == null) {
+      return Collections.emptySet();
+    }
+    return controlPointMap.keySet();
   }
 
   /**
@@ -2571,16 +2627,7 @@ public class Presenter implements IPlugInPort {
    *         the minimum, set contains that single component.
    */
   private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
-
-    for (ComponentGroup group : currentProject.getGroupsEx()) {
-      if (group.getComponentIds().stream().anyMatch(id -> Objects.equals(id, component.getId()))) {
-        return currentProject.getComponents().stream()
-            .filter(comp -> group.getComponentIds().contains(comp.getId()))
-            .collect(Collectors.toSet());
-      }
-    }
-
-    return new HashSet<>(Set.of(component));
+    return groupAndLockIndex.findGroup(currentProject, component);
   }
 
   @Override
@@ -3040,13 +3087,7 @@ public class Presenter implements IPlugInPort {
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {
-    lockedComponents.clear();
-    for (IDIYComponent<?> component : currentProject.getComponents()) {
-      if (isComponentLocked(component)) {
-        lockedComponents.add(component);
-      }
-    }
-    return lockedComponents;
+    return groupAndLockIndex.getLockedComponents(currentProject);
   }
   
   @Override
@@ -3060,6 +3101,7 @@ public class Presenter implements IPlugInPort {
       } else {
         currentProject.getLockedComponents().remove(c);        
       }
+      groupAndLockIndex.invalidate();
     } finally {
       notifyProjectModifiedIfNeeded(oldProject, locked ? "Lock Component" : "Unlock Component", false, true);
 
@@ -3068,15 +3110,8 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private boolean isComponentLocked(IDIYComponent<?> component) {
-    ComponentType componentType =
-        ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) component.getClass());
-    // for internal-use components
-    if (componentType == null)
-      return false;
-    return currentProject.getLockedLayers().contains((int) Math.round(componentType.getZOrder())) || currentProject.getLockedComponents().contains(component);
+    return GroupAndLockIndex.isLocked(currentProject, component);
   }
   
   @SuppressWarnings("unchecked")
