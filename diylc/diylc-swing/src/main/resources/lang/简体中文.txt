@@ -501,3 +501,164 @@ Virtual Multimeter (incl. Switches)|虚拟万用表（含开关）
 Become a Patreon and enjoy perks|成为Patreon支持者，享受特权
 Join Patreon|加入Patreon
 
+<empty>|<空>
+Success|成功
+Could not open file. %s|无法打开文件。%s
+Could not save to file. %s|无法保存到文件。%s
+Could not export to PDF. %s|无法导出为 PDF。%s
+Could not export to PNG. %s|无法导出为 PNG。%s
+Could not export to Gerber file. %s|无法导出为 Gerber 文件。%s
+Could not print. %s|无法打印。%s
+Could not import netlist file: %s|无法导入网表文件：%s
+No building blocks found to export.|未找到可导出的构建块。
+No building blocks selected for export.|未选择要导出的构建块。
+Could not export building blocks. Please check the log for details|无法导出构建块。请查看日志了解详情
+Building blocks exported to "%s".|构建块已导出到 "%s"。
+Could not export building blocks: %s|无法导出构建块：%s
+%s building block(s) imported from "%s".|已从 "%2$s" 导入 %1$s 个构建块。
+Could not import building blocks: %s|无法导入构建块：%s
+No variants found to export.|未找到可导出的变体。
+No variants selected for export.|未选择要导出的变体。
+Could not export variants. Please check the log for details|无法导出变体。请查看日志了解详情
+Variants exported to "%s".|变体已导出到 "%s"。
+Could not export variants: %s|无法导出变体：%s
+%s variant(s) imported from "%s".|已从 "%2$s" 导入 %1$s 个变体。
+Could not import variants: %s|无法导入变体：%s
+Edit Project|编辑项目
+Component Categories|元件类别
+Reset All|全部重置
+Controllers|控制器
+Displays & Outputs|显示与输出
+Modules & Breakouts|模块与扩展板
+Robotics|机器人
+Sensors|传感器
+SMD|SMD
+High DPI Rendering|高 DPI 渲染
+Node Name Tooltips|节点名称提示
+Show AI Assistant|显示 AI 助手
+Show Project Explorer|显示项目浏览器
+Gray|灰色
+Me|我
+AI Assistant|AI 助手
+Ask me anything|有什么问题尽管问我
+Please log into your cloud account to use the AI assistant|请登录您的云账户以使用 AI 助手
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|您当前订阅的是 '%s' 等级，到期日为 %s，剩余 %s 积分。
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|如需订阅高级等级、解锁高级 AI 模型并获得更多积分，请访问 %s 并成为 Patreon 支持者。
+All the details about the AI Assistant limits and other benefits will be specified there.|有关 AI 助手限制和其他福利的所有详情都将在那里说明。
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|如果您已经是 Patreon 支持者，请务必通过 '云' 菜单将您的账户与 DIYLC 云账户关联。
+Thank you for supporting further development of DIYLC!|感谢您支持 DIYLC 的进一步开发！
+Failed to retrieve chat history.|无法获取聊天历史记录。
+Welcome to the DIYLC AI Assistant!|欢迎使用 DIYLC AI 助手！
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|我可以帮助您使用 DIY Layout Creator (DIYLC) 设计、制作和排查电子项目。您可以向我询问以下方面的问题：
+Electronics theory or concepts:|电子理论或概念：
+DIYLC features and usage:|DIYLC 功能和用法：
+Your current circuit project:|您当前的电路项目：
+e.g.,|例如，
+Feel free to ask your own question or use one of these examples to get started!|欢迎提出您自己的问题，或使用上面的示例之一开始！
+Waiting for the response...|正在等待回复...
+Failed to retrieve the response from the server.|无法从服务器获取回复。
+Failed to delete chat history from the server.|无法从服务器删除聊天历史记录。
+Chat history exported successfully.|聊天历史记录导出成功。
+Failed to open premium subscription page. Please visit %s manually.|无法打开高级订阅页面。请手动访问 %s。
+45 degrees clockwise|顺时针45度
+135 degrees clockwise|顺时针135度
+225 degrees clockwise|顺时针225度
+315 degrees clockwise|顺时针315度
+1 throws / 2 positions|1 掷 / 2 档
+2 throws / 2 positions|2 掷 / 2 档
+2 throws / 3 positions / OFF even positions|2 掷 / 3 档 / 偶数档断开
+3 throws / 3 positions|3 掷 / 3 档
+3 throws / 5 positions / SHORT even positions|3 掷 / 5 档 / 偶数档短接
+4 throws / 4 positions|4 掷 / 4 档
+5 throws / 5 positions|5 掷 / 5 档
+6 throws / 6 positions|6 掷 / 6 档
+7 throws / 7 positions|7 掷 / 7 档
+8 throws / 8 positions|8 掷 / 8 档
+9 throws / 9 positions|9 掷 / 9 档
+10 throws / 10 positions|10 掷 / 10 档
+11 throws / 11 positions|11 掷 / 11 档
+12 throws / 12 positions|12 掷 / 12 档
+4 band|4 色环
+5 band|5 色环
+DP3T (Import 5-Position Strat)|DP3T（进口5档Strat）
+DP4T (6-Position Oak Grigsby)|DP4T（6档Oak Grigsby）
+Angle Offset|角度偏移
+Apply Model|应用型号
+Background|背景
+Circle|圆形
+Rectangle|矩形
+Coil(s)|线圈
+Configuration|配置
+Designation|标识
+Dimension Mode|尺寸模式
+Dots (Gradual)|圆点（渐变）
+Dots (Uniform)|圆点（均匀）
+Double Rails|双轨
+Double Rods|双杆
+Draw Standard|绘图标准
+One|一
+Six|六
+Eight|八
+Nine|九
+Ten|十
+Filament Voltage|灯丝电压
+Hole Type|孔类型
+Humbucking - 4 leads|降噪 - 4 根引线
+Inner 1|内层 1
+Inner 2|内层 2
+Inner 3|内层 3
+Inner 4|内层 4
+Inner 5|内层 5
+Inner 6|内层 6
+Markers|标记
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|超出最大开关组合数。允许：%s，实际：%s
+Plated Through Hole|金属化通孔
+Non-Plated Through Hole|非金属化通孔
+Shorting|短路型
+Non-shorting|非短路型
+Numeric (0-10)|数字 (0-10)
+Numeric (1-10)|数字 (1-10)
+Numeric (1-11)|数字 (1-11)
+Numeric (1-12)|数字 (1-12)
+Numeric (Even, No Ticks)|数字（偶数，无刻度）
+Numeric (Even, With Ticks)|数字（偶数，有刻度）
+Poles|极数
+Screw Position|螺丝位置
+Single - North|单线圈 - 北极
+Single - South|单线圈 - 南极
+Sort by Name|按名称排序
+Sort by Type|按类型排序
+Sort by Z-index|按 Z 顺序排序
+Source Style|源样式
+Source Type|源类型
+Terminal|端子
+Underside Display|底面显示
+Underside Offset|底面偏移
+Virtual Multimeter|虚拟万用表
+Title Block|标题栏
+Tubular Beveled|斜角管状
+TO-92 w/ 2 Leads|TO-92（2 引脚）
+TO-92 w/ 3 Leads|TO-92（3 引脚）
+Lin|线性
+Log|对数
+Rev log|反对数
+Align & Distribute|对齐与分布
+Align Left|左对齐
+Align Right|右对齐
+Align Top|顶部对齐
+Align Bottom|底部对齐
+Align Horizontal Centers|水平居中对齐
+Align Vertical Centers|垂直居中对齐
+Distribute Centers Horizontally|水平分布中心
+Distribute Spacing Horizontally|水平分布间距
+Distribute Centers Vertically|垂直分布中心
+Distribute Spacing Vertically|垂直分布间距
+No matching components found.|未找到匹配的元件。
+Variant name:|变体名称：
+Block name:|构建块名称：
+A building block named "%s" already exists. Overwrite it?|名为 "%s" 的构建块已存在。是否覆盖？
+Nudge Selection|微调选择
+Include stuck|包括粘附的元件
+Enter group name:|输入组名称：
+Group Components|组合元件
+Could not apply changes to the selection. Check the log for details.|无法将更改应用到所选内容。请查看日志了解详情。

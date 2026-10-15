@@ -5,6 +5,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.diylc.common.IPlugInPort;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.utils.IconLoader;
 
@@ -24,7 +25,8 @@ public class SaveAsTemplateAction extends AbstractAction {
   @Override
   public void actionPerformed(ActionEvent e) {
     ActionFactory.LOG.info("Save as template triggered");
-    String templateName = JOptionPane.showInputDialog(null, "Variant name:", "Save as Variant",
+    String templateName = JOptionPane.showInputDialog(null,
+        LangUtil.translate("Variant name:"), LangUtil.translate("Save as Variant"),
         JOptionPane.PLAIN_MESSAGE);
     if (templateName != null && !templateName.trim().isEmpty()) {
       plugInPort.saveSelectedComponentAsVariant(templateName);

@@ -104,6 +104,10 @@ public class Presenter implements IPlugInPort {
   private static final String ERROR_NEW = LangUtil.translate("Could not create a new file. Check the log for details.");
   private static final String ERROR = LangUtil.translate("Error");
   private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
+  private static final String APPLY_SELECTION_ERROR =
+      LangUtil.translate("Could not apply changes to the selection. Check the log for details.");
+  private static final String GROUP_NAME_PROMPT = LangUtil.translate("Enter group name:");
+  private static final String GROUP_COMPONENTS = LangUtil.translate("Group Components");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -2118,7 +2122,7 @@ public class Presenter implements IPlugInPort {
     }
     
     // Prompt user for group name
-    String groupName = view.showInputDialog("Enter group name:", "Group Components");
+    String groupName = view.showInputDialog(GROUP_NAME_PROMPT, GROUP_COMPONENTS);
     
     // If user cancelled, don't create the group
     if (groupName == null) {
@@ -2761,8 +2765,7 @@ public class Presenter implements IPlugInPort {
       }
     } catch (Exception e) {
       LOG.error("Could not apply selection properties", e);
-      view.showMessage("Could not apply changes to the selection. Check the log for details.", ERROR,
-          IView.ERROR_MESSAGE);
+      view.showMessage(APPLY_SELECTION_ERROR, ERROR, IView.ERROR_MESSAGE);
     } finally {
       notifyProjectModifiedIfNeeded(oldProject, "Edit Selection", true, true);
     }

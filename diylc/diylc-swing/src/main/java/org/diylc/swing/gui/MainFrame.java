@@ -429,7 +429,7 @@ public class MainFrame extends JFrame implements ISwingUI {
     menu.add(submenu);
     menuMap.put(name, submenu);
 
-    final JMenuItem emptyItem = new JMenuItem("<empty>");
+    final JMenuItem emptyItem = new JMenuItem(LangUtil.translate("<empty>"));
     emptyItem.setEnabled(false);
     submenu.add(emptyItem);
 

@@ -178,8 +178,30 @@ existing components too:
   reaching into frames directly.
 - Persisted settings go through `ConfigurationManager.getInstance().readString/writeValue` with a
   `String` key constant.
-- User-visible strings are wrapped in `LangUtil.translate(...)`.
 - Long-running work belongs on a background executor, never on the EDT.
+
+### Localization
+
+Every string the user reads is localized through `LangUtil.translate(...)` and the dictionaries in
+`diylc-swing/src/main/resources/lang/`. The full recipe is in the *Localization* section of
+`.claude/skills/add-plugin/SKILL.md`; the rules that apply to every UI change:
+
+- **A UI change is not finished until its text is in the language files.** Every new user-facing
+  string — menu item, dialog, message, label, tooltip, panel text, and on the component side every
+  new `@EditableProperty` name, enum display value and component category — must be added to
+  `English.txt` and translated into every other file in `lang/`, in the same change. Check first
+  whether the key already exists; leave out pure identifiers (part numbers, switch codes, units).
+- Menu and submenu names and the `Action.NAME` of injected actions are translated by `MainFrame` —
+  pass the English literal. Everything else is yours to translate: the message **and** title of
+  every `showMessage` / `showConfirmDialog` / `showInputDialog`, dialog titles, labels, buttons,
+  tooltips, placeholder text and text rendered into panes.
+- Text containing values is one key with `%s` placeholders, formatted afterwards:
+  `String.format(LangUtil.translate("Could not open file. %s"), e.getMessage())`. Never concatenate
+  values into the string passed to `translate`, and never assemble a sentence from translated
+  fragments.
+- Each new key goes into `English.txt` and, as `English|Translation`, into every other language
+  file in `lang/`, appended at the end with that file's own line endings.
+- Log and exception messages stay in English.
 
 ## Testing
 

@@ -37,7 +37,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import org.apache.log4j.Logger;
 
 import org.diylc.clipboard.ComponentTransferable;
@@ -73,7 +72,7 @@ import org.diylc.swing.actions.edit.UngroupAction;
 import org.diylc.utils.IconLoader;
 import org.diylc.swing.plugins.toolbox.ComponentButtonFactory;
 
-public class ComponentPopupMenu extends JPopupMenu implements ClipboardOwner {
+public class ComponentPopupMenu extends TranslatedPopupMenu implements ClipboardOwner {
 
   private static final long serialVersionUID = 1L;
   

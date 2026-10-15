@@ -308,7 +308,7 @@ Redo|Refaire
 Renumber On Paste|Renuméroter en collant
 Renumber Selection|Renuméroter la sélection
 Resistance|Résistance
-Rev log|Journal de révision
+Rev log|Logarithmique inverse
 Reverse (standing)|Renverser (debout)
 Right|Droit
 Rim|Bord
@@ -494,3 +494,172 @@ Virtual Multimeter (excl. Switches)|Multimètre virtuel (sans commutateurs)
 Virtual Multimeter (incl. Switches)|Multimètre virtuel (avec commutateurs)
 Become a Patreon and enjoy perks|Devenez un Patreon et profitez d'avantages
 Join Patreon|Rejoindre Patreon
+<empty>|<vide>
+Success|Succès
+Could not open file. %s|Impossible d'ouvrir le fichier. %s
+Could not save to file. %s|Impossible d'enregistrer le fichier. %s
+Could not export to PDF. %s|Impossible d'exporter en PDF. %s
+Could not export to PNG. %s|Impossible d'exporter en PNG. %s
+Could not export to Gerber file. %s|Impossible d'exporter en fichier Gerber. %s
+Could not print. %s|Impossible d'imprimer. %s
+Could not import netlist file: %s|Impossible d'importer le fichier de liste de connexions : %s
+No building blocks found to export.|Aucun bloc de construction à exporter.
+No building blocks selected for export.|Aucun bloc de construction sélectionné pour l'exportation.
+Could not export building blocks. Please check the log for details|Impossible d'exporter les blocs de construction. Consultez le journal pour plus de détails
+Building blocks exported to "%s".|Blocs de construction exportés vers "%s".
+Could not export building blocks: %s|Impossible d'exporter les blocs de construction : %s
+%s building block(s) imported from "%s".|%s bloc(s) de construction importé(s) depuis "%s".
+Could not import building blocks: %s|Impossible d'importer les blocs de construction : %s
+No variants found to export.|Aucune variante à exporter.
+No variants selected for export.|Aucune variante sélectionnée pour l'exportation.
+Could not export variants. Please check the log for details|Impossible d'exporter les variantes. Consultez le journal pour plus de détails
+Variants exported to "%s".|Variantes exportées vers "%s".
+Could not export variants: %s|Impossible d'exporter les variantes : %s
+%s variant(s) imported from "%s".|%s variante(s) importée(s) depuis "%s".
+Could not import variants: %s|Impossible d'importer les variantes : %s
+Edit Project|Modifier le projet
+Component Categories|Catégories de composants
+Reset All|Tout réinitialiser
+Controllers|Contrôleurs
+Displays & Outputs|Afficheurs et sorties
+Modules & Breakouts|Modules et cartes d'extension
+Robotics|Robotique
+Sensors|Capteurs
+SMD|CMS
+High DPI Rendering|Rendu haute résolution (DPI)
+Node Name Tooltips|Infobulles des noms de nœuds
+Show AI Assistant|Afficher l'assistant IA
+Show Project Explorer|Afficher l'explorateur de projet
+Gray|Gris
+Me|Moi
+AI Assistant|Assistant IA
+Ask me anything|Posez-moi une question
+Please log into your cloud account to use the AI assistant|Veuillez vous connecter à votre compte cloud pour utiliser l'assistant IA
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|Vous êtes actuellement abonné au niveau '%s', qui expire le %s, avec %s crédits restants.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Pour vous abonner à l'un des niveaux premium, débloquer des modèles d'IA avancés et obtenir plus de crédits, rendez-vous sur %s et devenez soutien sur Patreon.
+All the details about the AI Assistant limits and other benefits will be specified there.|Tous les détails sur les limites de l'assistant IA et les autres avantages y sont indiqués.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Si vous êtes déjà soutien sur Patreon, pensez à lier votre compte à votre compte DIYLC Cloud depuis le menu 'Cloud'.
+Thank you for supporting further development of DIYLC!|Merci de soutenir le développement de DIYLC !
+Failed to retrieve chat history.|Impossible de récupérer l'historique de chat.
+Welcome to the DIYLC AI Assistant!|Bienvenue dans l'assistant IA de DIYLC !
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Je suis là pour vous aider à concevoir, construire et dépanner vos projets électroniques avec DIY Layout Creator (DIYLC). Vous pouvez me poser des questions sur :
+Electronics theory or concepts:|La théorie ou les concepts électroniques :
+DIYLC features and usage:|Les fonctionnalités et l'utilisation de DIYLC :
+Your current circuit project:|Votre projet de circuit actuel :
+e.g.,|p. ex.,
+Feel free to ask your own question or use one of these examples to get started!|N'hésitez pas à poser votre propre question ou à utiliser l'un de ces exemples pour commencer !
+Waiting for the response...|En attente de la réponse...
+Failed to retrieve the response from the server.|Impossible de récupérer la réponse du serveur.
+Failed to delete chat history from the server.|Impossible de supprimer l'historique de chat du serveur.
+Chat history exported successfully.|Historique de chat exporté avec succès.
+Failed to open premium subscription page. Please visit %s manually.|Impossible d'ouvrir la page d'abonnement premium. Veuillez visiter %s manuellement.
+45 degrees clockwise|45 degrés dans le sens horaire
+135 degrees clockwise|135 degrés dans le sens horaire
+225 degrees clockwise|225 degrés dans le sens horaire
+315 degrees clockwise|315 degrés dans le sens horaire
+1 throws / 2 positions|1 sortie / 2 positions
+2 throws / 2 positions|2 sorties / 2 positions
+2 throws / 3 positions / OFF even positions|2 sorties / 3 positions / positions paires OFF
+3 throws / 3 positions|3 sorties / 3 positions
+3 throws / 5 positions / SHORT even positions|3 sorties / 5 positions / positions paires en court-circuit
+4 throws / 4 positions|4 sorties / 4 positions
+5 throws / 5 positions|5 sorties / 5 positions
+6 throws / 6 positions|6 sorties / 6 positions
+7 throws / 7 positions|7 sorties / 7 positions
+8 throws / 8 positions|8 sorties / 8 positions
+9 throws / 9 positions|9 sorties / 9 positions
+10 throws / 10 positions|10 sorties / 10 positions
+11 throws / 11 positions|11 sorties / 11 positions
+12 throws / 12 positions|12 sorties / 12 positions
+4 band|4 anneaux
+5 band|5 anneaux
+DP3T (Import 5-Position Strat)|DP3T (Strat import à 5 positions)
+DP4T (6-Position Oak Grigsby)|DP4T (Oak Grigsby à 6 positions)
+Angle Offset|Décalage d'angle
+Apply Model|Appliquer le modèle
+Background|Arrière-plan
+Circle|Cercle
+Rectangle|Rectangle
+Coil(s)|Bobine(s)
+Configuration|Configuration
+Designation|Désignation
+Dimension Mode|Mode de cotation
+Dots (Gradual)|Points (progressifs)
+Dots (Uniform)|Points (uniformes)
+Double Rails|Double rail
+Double Rods|Double rangée
+Draw Standard|Norme de dessin
+One|Un
+Six|Six
+Eight|Huit
+Nine|Neuf
+Ten|Dix
+Filament Voltage|Tension du filament
+Hole Type|Type de trou
+Humbucking - 4 leads|Humbucking - 4 fils
+Inner 1|Interne 1
+Inner 2|Interne 2
+Inner 3|Interne 3
+Inner 4|Interne 4
+Inner 5|Interne 5
+Inner 6|Interne 6
+Markers|Repères
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Nombre maximal de combinaisons de commutation dépassé. Autorisé : %s, réel : %s
+Plated Through Hole|Trou métallisé
+Non-Plated Through Hole|Trou non métallisé
+Shorting|Court-circuitant
+Non-shorting|Non court-circuitant
+Numeric (0-10)|Numérique (0-10)
+Numeric (1-10)|Numérique (1-10)
+Numeric (1-11)|Numérique (1-11)
+Numeric (1-12)|Numérique (1-12)
+Numeric (Even, No Ticks)|Numérique (pairs, sans graduations)
+Numeric (Even, With Ticks)|Numérique (pairs, avec graduations)
+Poles|Pôles
+Screw Position|Position des vis
+Single - North|Simple - Nord
+Single - South|Simple - Sud
+Sort by Name|Trier par nom
+Sort by Type|Trier par type
+Sort by Z-index|Trier par index Z
+Source Style|Style de source
+Source Type|Type de source
+Terminal|Borne
+Underside Display|Affichage de la face inférieure
+Underside Offset|Décalage de la face inférieure
+Virtual Multimeter|Multimètre virtuel
+Title Block|Cartouche
+Tubular Beveled|Tubulaire biseauté
+TO-92 w/ 2 Leads|TO-92 à 2 broches
+TO-92 w/ 3 Leads|TO-92 à 3 broches
+Lin|Linéaire
+Log|Logarithmique
+Bracket|Support
+Show Bracket|Afficher le support
+Check Trace Proximity|Vérifier la proximité des pistes
+Column Spacing|Espacement des colonnes
+Donate|Faire un don
+Marker Size|Taille des repères
+Panel|Panneau
+Tick Width|Largeur des graduations
+Wiring|Câblage
+Align & Distribute|Aligner et distribuer
+Align Left|Aligner à gauche
+Align Right|Aligner à droite
+Align Top|Aligner en haut
+Align Bottom|Aligner en bas
+Align Horizontal Centers|Aligner les centres horizontalement
+Align Vertical Centers|Aligner les centres verticalement
+Distribute Centers Horizontally|Distribuer les centres horizontalement
+Distribute Spacing Horizontally|Distribuer l'espacement horizontalement
+Distribute Centers Vertically|Distribuer les centres verticalement
+Distribute Spacing Vertically|Distribuer l'espacement verticalement
+No matching components found.|Aucun composant correspondant trouvé.
+Variant name:|Nom de la variante :
+Block name:|Nom du bloc :
+A building block named "%s" already exists. Overwrite it?|Un bloc de construction nommé "%s" existe déjà. L'écraser ?
+Nudge Selection|Pousser la sélection
+Include stuck|Inclure les éléments collés
+Enter group name:|Saisissez le nom du groupe :
+Group Components|Grouper les composants
+Could not apply changes to the selection. Check the log for details.|Impossible d'appliquer les modifications à la sélection. Consultez le journal pour plus de détails.
