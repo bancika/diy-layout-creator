@@ -187,9 +187,9 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements ILayer
 
   @Deprecated
   @Override
-  public LabelOriantation getLabelOriantation() {
+  public LabelOrientation getLabelOrientation() {
     // TODO Auto-generated method stub
-    return super.getLabelOriantation();
+    return super.getLabelOrientation();
   }
   
   @Deprecated
