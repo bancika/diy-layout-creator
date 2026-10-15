@@ -594,6 +594,10 @@
 					<description>Holding 'Shift' when starting to drag components or control points keeps the whole drag strictly horizontal or vertical, in the direction of the initial gesture. Holding 'Shift' while drawing a new wire or two-point component does the same</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Rectangular shape to LED component in addition to Round; added ability to set LED lead spacing</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>'S1 Switch' can now be rotated to match the orientation of the potentiometer it is mounted on, so the switching matrix stays correct relative to the pot lugs</description>
 				</org.diylc.appframework.update.Change>
