@@ -665,3 +665,6 @@ Include stuck|Includi agganciati
 Enter group name:|Inserisci il nome del gruppo:
 Group Components|Raggruppa componenti
 Could not apply changes to the selection. Check the log for details.|Impossibile applicare le modifiche alla selezione. Controlla il registro per i dettagli.
+UI Theme|Tema dell'interfaccia
+System|Sistema
+UI theme selection will be applied after the application is restarted.|La selezione del tema dell'interfaccia verrà applicata dopo il riavvio dell'applicazione.

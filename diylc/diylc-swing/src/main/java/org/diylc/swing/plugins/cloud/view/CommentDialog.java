@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
@@ -91,7 +92,7 @@ public class CommentDialog extends JDialog {
   private JPanel getListPanel() {
     if (listPanel == null) {
       listPanel = new JPanel(new GridBagLayout());
-      listPanel.setBackground(Color.white);
+      listPanel.setBackground(UIManager.getColor("List.background"));
       for (CommentEntity c : comments) {
         addComment(c);
 
@@ -107,7 +108,7 @@ public class CommentDialog extends JDialog {
   private JPanel getMainPanel() {
     if (mainPanel == null) {
       mainPanel = new JPanel(new GridBagLayout());
-      mainPanel.setBackground(Color.white);
+      mainPanel.setBackground(UIManager.getColor("List.background"));
 
       GridBagConstraints gbc = new GridBagConstraints();
       gbc.gridx = 0;

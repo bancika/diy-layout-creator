@@ -18,7 +18,6 @@
  */
 package org.diylc.swing.plugins.cloud.view.browser;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -48,6 +47,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
@@ -507,7 +507,7 @@ public class ResultsScrollPanel extends JScrollPane {
       }
     });
 
-    buttonPanel.setBackground(Color.white);
+    buttonPanel.setBackground(UIManager.getColor("List.background"));
     buttonPanel.add(downloadButton);
     if (showEditControls) {
       buttonPanel.add(editButton);
@@ -651,7 +651,7 @@ public class ResultsScrollPanel extends JScrollPane {
   private JPanel getResultsPanel() {
     if (resultsPanel == null) {
       resultsPanel = new JPanel(new GridBagLayout());
-      resultsPanel.setBackground(Color.white);
+      resultsPanel.setBackground(UIManager.getColor("List.background"));
     }
     return resultsPanel;
   }

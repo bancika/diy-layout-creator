@@ -662,3 +662,6 @@ Include stuck|包括粘附的元件
 Enter group name:|输入组名称：
 Group Components|组合元件
 Could not apply changes to the selection. Check the log for details.|无法将更改应用到所选内容。请查看日志了解详情。
+UI Theme|界面主题
+System|系统
+UI theme selection will be applied after the application is restarted.|界面主题选择将在应用程序重启后生效。

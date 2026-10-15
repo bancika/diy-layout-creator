@@ -21,7 +21,6 @@
 */
 package org.diylc.swing.plugins.cloud.view.browser;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -31,6 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 import org.diylc.utils.IconLoader;
 
@@ -48,7 +48,7 @@ public class SearchHeaderPanel extends JPanel {
   public SearchHeaderPanel() {
     setLayout(new GridBagLayout());
 
-    this.setBackground(Color.white);
+    this.setBackground(UIManager.getColor("List.background"));
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.LINE_START;
     gbc.insets = new Insets(2, 2, 2, 2);

@@ -60,6 +60,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IView;
 import org.diylc.presenter.Presenter;
+import org.diylc.utils.LookAndFeelUtils;
 
 public class TemplateDialog extends JDialog {
 
@@ -201,7 +202,8 @@ public class TemplateDialog extends JDialog {
   public JPanel getInfoPanel() {
     if (infoPanel == null) {
       infoPanel = new JPanel();
-      infoPanel.setBackground(Color.decode("#FFFFCC"));
+      infoPanel.setBackground(
+          LookAndFeelUtils.themeColor(Color.decode("#FFFFCC"), Color.decode("#4B4B3A")));
       infoPanel.setBorder(new JTextField().getBorder());
       JLabel infoLabel =
           new JLabel(

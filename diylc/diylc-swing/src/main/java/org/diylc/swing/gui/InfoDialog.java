@@ -24,11 +24,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.swingframework.ButtonDialog;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.utils.IconLoader;
+import org.diylc.utils.LookAndFeelUtils;
 
 public class InfoDialog extends ButtonDialog {
 
@@ -53,9 +55,10 @@ public class InfoDialog extends ButtonDialog {
   protected JComponent getMainComponent() {
     JLabel label = new JLabel("<html>" + message + "</html>");
     label.setIcon(IconLoader.Help.getIcon());
-    label.setBackground(Color.white);
+    label.setBackground(UIManager.getColor("List.background"));
     label.setOpaque(true);
-    label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray), BorderFactory.createEmptyBorder(16, 16, 16, 16)));
+    label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+        LookAndFeelUtils.themeColor(Color.lightGray, new Color(85, 88, 90))), BorderFactory.createEmptyBorder(16, 16, 16, 16)));
     label.setIconTextGap(8);
     return label;
   }

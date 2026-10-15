@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.MatteBorder;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.IConfigListener;
+import org.diylc.utils.LookAndFeelUtils;
 
 /***
  * Panel that has a clickable line that can used to collapse and expand the contents of the panel.
@@ -49,7 +50,8 @@ public class CollapsiblePanel extends JPanel {
   private MatteBorderEx border;
   private String visibilityConfigKey;
 
-  private Color defaultColor = Color.lightGray;
+  private Color defaultColor =
+      LookAndFeelUtils.themeColor(Color.lightGray, new Color(85, 88, 90));
   private Color highlightColor = Color.decode("#66CCFF");
 
   /**

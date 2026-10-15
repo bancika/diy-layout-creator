@@ -661,3 +661,6 @@ Include stuck
 Enter group name:
 Group Components
 Could not apply changes to the selection. Check the log for details.
+UI Theme
+System
+UI theme selection will be applied after the application is restarted.

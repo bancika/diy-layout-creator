@@ -43,6 +43,7 @@ import org.diylc.lang.Language;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
+import org.diylc.utils.LookAndFeelUtils;
 import org.diylc.utils.ResourceUtils;
 
 /**
@@ -56,6 +57,7 @@ public class ConfigPlugin implements IPlugIn {
 
   private static final String CONFIG_MENU = "Config";
   private static final String THEME_MENU = "Theme";
+  private static final String UI_THEME_MENU = "UI Theme";
   private static final String RULER_MENU = "Ruler Inch Subdivision...";
   private static final String SNAP_MENU = "Snap To";
   private static final String CATEGORIES_MENU = "Component Categories";
@@ -68,6 +70,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String LANGUAGE_MENU = LangUtil.translate("Language");
   
   private static final String LANG_RESTART = LangUtil.translate("Language selection will be applied after the application is restarted.");
+  private static final String UI_THEME_RESTART = LangUtil.translate("UI theme selection will be applied after the application is restarted.");
   public static final String THEMES_DIR = "themes";
 
   private ISwingUI swingUI;
@@ -137,6 +140,14 @@ public class ConfigPlugin implements IPlugIn {
       }
     } catch (Exception e) {
       LOG.error("Error while setting up language menu", e);
+    }
+
+    swingUI.injectSubmenu(UI_THEME_MENU, IconLoader.WindowColors.getIcon(), CONFIG_MENU);
+    for (String uiTheme : new String[] {LookAndFeelUtils.UI_THEME_SYSTEM,
+        LookAndFeelUtils.UI_THEME_LIGHT, LookAndFeelUtils.UI_THEME_DARK}) {
+      swingUI.injectMenuAction(ActionFactory.getInstance().createToggleAction(uiTheme,
+          LookAndFeelUtils.UI_THEME_KEY, UI_THEME_MENU, LookAndFeelUtils.UI_THEME_DEFAULT),
+          UI_THEME_MENU);
     }
    
     
@@ -231,6 +242,16 @@ public class ConfigPlugin implements IPlugIn {
         swingUI.showMessage(LANG_RESTART, LANGUAGE_MENU, ISwingUI.INFORMATION_MESSAGE);
       }
     });
+
+    ConfigurationManager.getInstance().addConfigListener(LookAndFeelUtils.UI_THEME_KEY,
+        new IConfigListener() {
+
+          @Override
+          public void valueChanged(String key, Object value) {
+            swingUI.showMessage(UI_THEME_RESTART, LangUtil.translate(UI_THEME_MENU),
+                ISwingUI.INFORMATION_MESSAGE);
+          }
+        });
   }
 
   @Override

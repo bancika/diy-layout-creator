@@ -660,3 +660,6 @@ Include stuck|Uključi zalepljene
 Enter group name:|Unesite naziv grupe:
 Group Components|Grupiši Komponente
 Could not apply changes to the selection. Check the log for details.|Nije moguće primeniti izmene na izabrane komponente. Proverite log za više informacija.
+UI Theme|Tema interfejsa
+System|Sistemska
+UI theme selection will be applied after the application is restarted.|Odabir teme interfejsa će biti primenjen nakon sledećeg pokretanja aplikacije.

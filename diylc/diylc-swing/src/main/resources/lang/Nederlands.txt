@@ -669,3 +669,6 @@ Include stuck|Vastgeplakte meenemen
 Enter group name:|Voer groepsnaam in:
 Group Components|Componenten groeperen
 Could not apply changes to the selection. Check the log for details.|Kon wijzigingen niet toepassen op de selectie. Controleer het logbestand voor details.
+UI Theme|Interfacethema
+System|Systeem
+UI theme selection will be applied after the application is restarted.|Interfacethema wordt toegepast nadat het programma opnieuw is opgestart.

@@ -664,3 +664,6 @@ Include stuck|Incluir grudados
 Enter group name:|Digite o nome do grupo:
 Group Components|Agrupar Componentes
 Could not apply changes to the selection. Check the log for details.|Não foi possível aplicar as alterações à seleção. Verifique o registro para mais detalhes.
+UI Theme|Tema da interface
+System|Sistema
+UI theme selection will be applied after the application is restarted.|A seleção do tema da interface se aplicará depois de reiniciar o aplicativo.

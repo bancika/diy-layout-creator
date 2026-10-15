@@ -662,3 +662,6 @@ Include stuck|चिपके हुए घटक शामिल करें
 Enter group name:|समूह का नाम दर्ज करें:
 Group Components|घटकों को समूहित करें
 Could not apply changes to the selection. Check the log for details.|चयन पर परिवर्तन लागू नहीं कर सके। विवरण के लिए लॉग जांचें।
+UI Theme|UI थीम
+System|सिस्टम
+UI theme selection will be applied after the application is restarted.|UI थीम चयन एप्लिकेशन रीस्टार्ट होने के बाद लागू होगा।

@@ -668,3 +668,6 @@ Include stuck|Angeheftete einbeziehen
 Enter group name:|Gruppennamen eingeben:
 Group Components|Komponenten gruppieren
 Could not apply changes to the selection. Check the log for details.|Änderungen an der Auswahl konnten nicht angewendet werden. Überprüfen Sie die Protokolldatei auf Details.
+UI Theme|UI-Design
+System|System
+UI theme selection will be applied after the application is restarted.|Das gewählte UI-Design wird nach Neustart der Anwendung verwendet.

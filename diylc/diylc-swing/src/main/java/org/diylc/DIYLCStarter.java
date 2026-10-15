@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.diylc.appframework.miscutils.ConfigurationManager;
@@ -42,6 +41,7 @@ import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.gui.MainFrame;
 import org.diylc.swing.gui.TemplateDialog;
 import org.diylc.swing.plugins.file.ProjectDrawingProvider;
+import org.diylc.utils.LookAndFeelUtils;
 
 /**
  * Main class that runs DIYLC.
@@ -136,7 +136,7 @@ public class DIYLCStarter {
 		LOG.info("Configuration dump end.");
 
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			LookAndFeelUtils.applyLookAndFeel();
 			
 			// Apply configurable font scaling from VM argument: -Dorg.diylc.fontScaleFactor=X
 			org.diylc.utils.FontScalingUtils.applyFontScaling();

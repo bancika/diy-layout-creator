@@ -21,7 +21,6 @@
 */
 package org.diylc.swing.plugins.cloud.view.browser;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -37,6 +36,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
@@ -167,7 +167,7 @@ public class CloudBrowserFrame extends JFrame implements ISimpleView {
     if (searchPanel == null) {
       searchPanel = new JPanel(new GridBagLayout());
       GridBagConstraints gbc = new GridBagConstraints();
-      searchPanel.setBackground(Color.white);
+      searchPanel.setBackground(UIManager.getColor("List.background"));
       gbc.anchor = GridBagConstraints.NORTH;
       gbc.insets = new Insets(2, 2, 2, 2);
       gbc.gridx = 0;

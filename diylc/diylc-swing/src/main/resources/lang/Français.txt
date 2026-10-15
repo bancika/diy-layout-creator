@@ -663,3 +663,6 @@ Include stuck|Inclure les éléments collés
 Enter group name:|Saisissez le nom du groupe :
 Group Components|Grouper les composants
 Could not apply changes to the selection. Check the log for details.|Impossible d'appliquer les modifications à la sélection. Consultez le journal pour plus de détails.
+UI Theme|Thème de l'interface
+System|Système
+UI theme selection will be applied after the application is restarted.|La sélection du thème de l'interface sera appliquée après le redémarrage de l'application.

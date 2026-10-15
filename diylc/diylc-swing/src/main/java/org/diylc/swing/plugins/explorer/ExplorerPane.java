@@ -47,6 +47,7 @@ import org.diylc.swing.gui.ComponentPopupMenu;
 import org.diylc.swing.gui.DragDropList;
 import org.diylc.swing.gui.IDragDropListListener;
 import org.diylc.swing.gui.SearchTextField;
+import org.diylc.utils.LookAndFeelUtils;
 
 public class ExplorerPane extends JPanel {
 
@@ -588,6 +589,9 @@ public class ExplorerPane extends JPanel {
 
     private Map<String, ComponentType> componentTypes;
 
+    private String layerColor = LookAndFeelUtils.themeHtmlColor("#c0c0c0", "#707070");
+    private String valueColor = LookAndFeelUtils.themeHtmlColor("#666666", "#a0a0a0");
+
     public ComponentListCellRenderer(Map<String, List<ComponentType>> componentTypeMap) {
       this.componentTypes = componentTypeMap.values().stream().flatMap(x -> x.stream())
           .collect(Collectors.toMap(x -> x.getInstanceClass().getCanonicalName(), x -> x));
@@ -624,12 +628,12 @@ public class ExplorerPane extends JPanel {
           }
         } else {
           if (valueForDisplay == null || valueForDisplay.trim().isEmpty()) {
-            renderer.setText(String.format("<html><font color='#c0c0c0'>[L%s]</font> %s</html>",
-                layerId, component.getName()));
+            renderer.setText(String.format("<html><font color='%s'>[L%s]</font> %s</html>",
+                layerColor, layerId, component.getName()));
           } else {
             renderer.setText(String.format(
-                "<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>",
-                layerId, component.getName(), valueForDisplay));
+                "<html><font color='%s'>[L%s]</font> %s (<font color='%s'>%s</font>)</html>",
+                layerColor, layerId, component.getName(), valueColor, valueForDisplay));
           }
         }
       } else {
@@ -656,8 +660,8 @@ public class ExplorerPane extends JPanel {
           renderer.setText(String.format("<html>[L%s] <b>%s</b> (<b>%s</b>)</html>", maxLayerId, groupName, componentCount));
         } else {
           renderer.setText(String.format(
-              "<html><font color='#c0c0c0'>[L%s]</font> %s (<font color='#666666'>%s</font>)</html>",
-              maxLayerId, groupName, componentCount));
+              "<html><font color='%s'>[L%s]</font> %s (<font color='%s'>%s</font>)</html>",
+              layerColor, maxLayerId, groupName, valueColor, componentCount));
         }
       }
 
