@@ -626,6 +626,10 @@
 					<description>Improved grid rendering on screen and when exporting; PDF export of the grid is now vector-based and does not get blurry on zooming in</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Updated localization files with translations for recently added UI elements and messages</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed the issue of disappearing components in some edge cases</description>
 				</org.diylc.appframework.update.Change>
