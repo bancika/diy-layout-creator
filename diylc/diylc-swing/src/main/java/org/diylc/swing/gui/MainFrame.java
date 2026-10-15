@@ -397,7 +397,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void injectSubmenu(String name, Icon icon, String parentMenuName) {  
-    LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
+//    LOG.info(String.format("injectSubmenu(%s, icon, %s)", name, parentMenuName));
     
     // translate
     name = LangUtil.translate(name);
@@ -417,7 +417,7 @@ public class MainFrame extends JFrame implements ISwingUI {
 
   @Override
   public void injectDynamicSubmenu(String name, Icon icon, String parentMenuName, final IDynamicSubmenuHandler handler) {
-    LOG.info(String.format("injectDynamicSubmenu(%s, icon, %s)", name, parentMenuName));
+//    LOG.info(String.format("injectDynamicSubmenu(%s, icon, %s)", name, parentMenuName));
     
     // translate
     name = LangUtil.translate(name);

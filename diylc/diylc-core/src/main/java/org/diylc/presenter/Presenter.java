@@ -231,7 +231,7 @@ public class Presenter implements IPlugInPort {
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
     try {
       IPlugIn plugIn = plugInSupplier.get();
-      LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
+//      LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
       plugIns.add(plugIn);
       plugIn.connect(this);
       messageDispatcher.registerListener(plugIn);
