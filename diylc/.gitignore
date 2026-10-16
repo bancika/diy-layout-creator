@@ -152,8 +152,8 @@ buildNumber.properties
 ######  Custom  ######
 ######################
 
-# Deployment folder
-deploy/
+# Deployment folder (build output; the packaging sources under diylc-swing/deploy are tracked)
+/deploy/
 
 # Cloud sync job: credentials and downloaded files
 cloud-sync/cloud-sync.json

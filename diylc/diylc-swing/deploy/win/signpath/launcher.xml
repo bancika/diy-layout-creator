@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Artifact configuration slug: windows-launcher
+     Signs the launch4j launcher that both the win64 zip and the installer embed.
+     GitHub Actions artifacts are always served as zip files, hence the zip-file root. -->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+  <zip-file>
+    <pe-file path="diylc-x64.exe">
+      <authenticode-sign />
+    </pe-file>
+  </zip-file>
+</artifact-configuration>
