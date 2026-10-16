@@ -582,7 +582,7 @@
 				<minor>8</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-10-09 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-10-16 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -596,6 +596,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added Rectangular shape to LED component in addition to Round; added ability to set LED lead spacing</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded AI Models to the latest GPT-6 generation across all tiers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
