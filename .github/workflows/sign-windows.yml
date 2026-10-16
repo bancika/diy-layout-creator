@@ -17,7 +17,8 @@ on:
           - release-signing
 
 permissions:
-  actions: read
+  # write is needed only to delete the unsigned installer once SignPath has fetched it
+  actions: write
   contents: read
 
 env:
@@ -100,6 +101,15 @@ jobs:
           github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: signed
+
+      # SignPath can only fetch the installer from a GitHub artifact, so the unsigned upload cannot
+      # be skipped; it is deleted as soon as signing is over, whether or not signing succeeded.
+      - name: Delete unsigned installer artifact
+        if: always() && steps.upload-unsigned-installer.outputs.artifact-id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
+        run: gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}"
 
       - name: Verify signed installer
         run: |
