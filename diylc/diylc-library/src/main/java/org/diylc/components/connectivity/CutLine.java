@@ -26,7 +26,7 @@ import java.awt.geom.Point2D;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractTransparentComponent;
-import org.diylc.components.transform.SimpleComponentTransformer;
+import org.diylc.components.transform.CutLineTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -40,7 +40,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @ComponentDescriptor(name = "Cut Line", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Cut line", instanceNamePrefix = "CL", zOrder = IDIYComponent.COMPONENT,
-    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
+    bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = CutLineTransformer.class)
 public class CutLine extends AbstractTransparentComponent<Void> {
 
   private static final long serialVersionUID = 1L;

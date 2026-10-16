@@ -31,8 +31,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
@@ -104,6 +104,10 @@ public class Presenter implements IPlugInPort {
   private static final String ERROR_NEW = LangUtil.translate("Could not create a new file. Check the log for details.");
   private static final String ERROR = LangUtil.translate("Error");
   private static final String APPLY_ERROR = LangUtil.translate("Could not apply changes. Check the log for details.");
+  private static final String APPLY_SELECTION_ERROR =
+      LangUtil.translate("Could not apply changes to the selection. Check the log for details.");
+  private static final String GROUP_NAME_PROMPT = LangUtil.translate("Enter group name:");
+  private static final String GROUP_COMPONENTS = LangUtil.translate("Group Components");
 
   private static final Logger LOG = Logger.getLogger(Presenter.class);
 
@@ -119,7 +123,11 @@ public class Presenter implements IPlugInPort {
 
   public static final int ICON_SIZE = 32;
 
-  private static final int MAX_RECENT_FILES = 20;  
+  private static final int MAX_RECENT_FILES = 20;
+
+  // screen pixels the cursor has to travel with shift held before the dominant direction is
+  // picked, so that hand jitter right after pressing shift does not choose the axis
+  private static final int AXIS_LOCK_THRESHOLD = 4;
 
   private Project currentProject;
 
@@ -130,7 +138,7 @@ public class Presenter implements IPlugInPort {
   // Maps components that have at least one dragged point to set of indices
   // that designate which of their control points are being dragged.
   private Map<IDIYComponent<?>, Set<Integer>> controlPointMap;
-  private Set<IDIYComponent<?>> lockedComponents;
+  private GroupAndLockIndex groupAndLockIndex;
 
   // Utilities
   // private Cloner cloner;
@@ -139,6 +147,7 @@ public class Presenter implements IPlugInPort {
   private InstantiationManager instantiationManager;
   private VariantManager variantManager;
   private BuildingBlockManager buildingBlockManager;
+  private AlignmentManager alignmentManager;
 
   private Rectangle selectionRect;
 
@@ -158,6 +167,12 @@ public class Presenter implements IPlugInPort {
   private Project preDragProject = null;
   private int dragAction;
   private Point2D previousScaledPoint;
+  // Shift held when a drag starts constrains it to the horizontal or vertical line through the
+  // drag start point for the whole drag. The state is not followed mid-drag because native DnD on
+  // macOS keeps reporting the modifiers captured at the start.
+  private Point2D dragStartPoint = null;
+  private boolean dragShiftDown = false;
+  private AxisLock lockedAxis = null;
   
   private DIYTest test = null;
 
@@ -181,13 +196,14 @@ public class Presenter implements IPlugInPort {
     this.messageDispatcher = messageDispatcher;
     plugIns = new ArrayList<IPlugIn>();
     selectedComponents = new HashSet<IDIYComponent<?>>();
-    lockedComponents = new HashSet<IDIYComponent<?>>();
+    groupAndLockIndex = new GroupAndLockIndex();
     currentProject = new Project();
     drawingManager = new DrawingManager(messageDispatcher, configManager);
     projectFileManager = new ProjectFileManager(messageDispatcher);
     instantiationManager = new InstantiationManager();
     variantManager = new VariantManager(configManager, projectFileManager.getXStream());
     buildingBlockManager = new BuildingBlockManager(configManager, projectFileManager.getXStream(), instantiationManager);
+    alignmentManager = new AlignmentManager();
 
     if (importVariantsAndBlocks) {
       variantManager.upgradeVariants(getComponentTypes());
@@ -215,7 +231,7 @@ public class Presenter implements IPlugInPort {
   public void installPlugin(Supplier<IPlugIn> plugInSupplier) {
     try {
       IPlugIn plugIn = plugInSupplier.get();
-      LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
+//      LOG.info(String.format("installPlugin(%s)", plugIn.getClass().getSimpleName()));
       plugIns.add(plugIn);
       plugIn.connect(this);
       messageDispatcher.registerListener(plugIn);
@@ -268,7 +284,9 @@ public class Presenter implements IPlugInPort {
         if (!isComponentLocked(component) && isComponentVisible(component)
             && operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
           ComponentArea area = drawingManager.getComponentArea(component);
-          if (area != null && area.getOutlineArea() != null && scaledPoint != null && area.getOutlineArea().contains(scaledPoint)) {
+          // the bounds rule most components out without merging their outline into an area
+          if (area != null && scaledPoint != null && area.getOutlineBounds().contains(scaledPoint)
+              && area.getOutlineArea().contains(scaledPoint)) {
             return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
           }
         }
@@ -293,6 +311,7 @@ public class Presenter implements IPlugInPort {
   public void loadProject(Project project, boolean freshStart, String filename) {
     LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
     this.currentProject = project;
+    groupAndLockIndex.invalidate();
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
     DrawingCache.Instance.clear();
@@ -523,7 +542,8 @@ public class Presenter implements IPlugInPort {
                 getLockedComponents(),
                 groupedComponents,
                 Arrays.asList(instantiationManager.getFirstControlPoint(),
-                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress, externalZoom, scaleFactor,
+                    instantiationManager.getPotentialControlPoint()), componentSlotToDraw, dragInProgress,
+                getMovingComponents(), externalZoom, scaleFactor,
                 visibleRect);
     List<String> failedComponentNames = new ArrayList<String>();
     for (IDIYComponent<?> component : failedComponents) {
@@ -656,7 +676,9 @@ public class Presenter implements IPlugInPort {
             } else {
               // On the second click, add the component to the
               // project.
-              addPendingComponentsToProject(scaledPoint, componentTypeSlot, template, model, oldProject);
+              addPendingComponentsToProject(
+                  constrainToAxis(instantiationManager.getFirstControlPoint(), scaledPoint, shiftDown),
+                  componentTypeSlot, template, model, oldProject);
             }
             break;
           default:
@@ -705,8 +727,10 @@ public class Presenter implements IPlugInPort {
   }
 
   private void notifyProjectModifiedIfNeeded(Project oldProject, String action, boolean clearContinuityArea, boolean repaint) {
+    groupAndLockIndex.invalidate();
     // Notify the listeners.
     if (oldProject == null || !currentProject.equals(oldProject)) {
+      invalidateChangedComponents(oldProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, oldProject, currentProject, action);
       if (clearContinuityArea) {
         drawingManager.clearContinuityArea();
@@ -714,6 +738,41 @@ public class Presenter implements IPlugInPort {
       projectFileManager.notifyFileChange();
       if (repaint) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
+      }
+    }
+  }
+
+  /**
+   * Discards what was derived from the last drawing of the component, its areas and its cached
+   * image, so that the next repaint draws it afresh.
+   * 
+   * @param component
+   */
+  private void componentChanged(IDIYComponent<?> component) {
+    drawingManager.invalidateComponent(component);
+    DrawingCache.Instance.invalidate(component);
+  }
+
+  /**
+   * Calls {@link #componentChanged(IDIYComponent)} for every component that differs from its
+   * counterpart in the specified snapshot, matched by id. The drawing cache relies on this rather
+   * than comparing each component on every repaint, so every edit must end up here.
+   * 
+   * @param oldProject snapshot taken before the edit, or null when there is none
+   */
+  private void invalidateChangedComponents(Project oldProject) {
+    if (oldProject == null) {
+      DrawingCache.Instance.clear();
+      return;
+    }
+    Map<UUID, IDIYComponent<?>> oldComponents = new HashMap<UUID, IDIYComponent<?>>();
+    for (IDIYComponent<?> component : oldProject.getComponents()) {
+      oldComponents.put(component.getId(), component);
+    }
+    for (IDIYComponent<?> component : currentProject.getComponents()) {
+      IDIYComponent<?> oldComponent = oldComponents.get(component.getId());
+      if (oldComponent == null || !oldComponent.equalsTo(component)) {
+        componentChanged(component);
       }
     }
   }
@@ -913,7 +972,8 @@ public class Presenter implements IPlugInPort {
             instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
                 currentProject.getGridSpacing());
       } else {
-        refresh = instantiationManager.updatePointByPoint(previousScaledPoint);
+        refresh = instantiationManager.updatePointByPoint(
+            constrainToAxis(instantiationManager.getFirstControlPoint(), previousScaledPoint, shiftDown));
       }
       if (refresh) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
@@ -1045,12 +1105,12 @@ public class Presenter implements IPlugInPort {
     for (IDIYComponent<?> c : components) {
 
       ComponentArea compArea = drawingManager.getComponentArea(c);
-      if (compArea == null || compArea.getOutlineArea() == null) {
+      if (compArea == null) {
         LOG.debug("Area is null for " + c.getName() + " of type " + c.getClass().getName());
         return null;
       }
 
-      Rectangle rect = compArea.getOutlineArea().getBounds();
+      Rectangle rect = compArea.getOutlineBounds().getBounds();
       if (rect.x < minX)
         minX = rect.x;
       if (rect.x + rect.width > maxX)
@@ -1112,6 +1172,114 @@ public class Presenter implements IPlugInPort {
     moveComponents(controlPointMap, dx, dy, false, false);
     notifyProjectModifiedIfNeeded(oldProject, "Move Selection", true, true);
   }
+
+  @Override
+  public void alignSelection(AlignmentMode mode) {
+    LOG.debug(String.format("alignSelection(%s)", mode));
+    moveSelectionUnits(mode.toString(),
+        unitBounds -> alignmentManager.align(unitBounds, mode, getAlignmentGridStep()));
+  }
+
+  @Override
+  public void distributeSelection(DistributionMode mode) {
+    LOG.debug(String.format("distributeSelection(%s)", mode));
+    moveSelectionUnits(mode.toString(),
+        unitBounds -> alignmentManager.distribute(unitBounds, mode, getAlignmentGridStep()));
+  }
+
+  @Override
+  public int getSelectionUnitCount() {
+    return findSelectionUnits().size();
+  }
+
+  private void moveSelectionUnits(String action,
+      Function<List<Rectangle2D>, List<Point2D>> deltaCalculator) {
+    // every outline has to be read before the first move, which clears the whole area map
+    List<Set<IDIYComponent<?>>> units = new ArrayList<Set<IDIYComponent<?>>>();
+    List<Rectangle2D> unitBounds = new ArrayList<Rectangle2D>();
+    Set<IDIYComponent<?>> unitComponents = new HashSet<IDIYComponent<?>>();
+    for (Set<IDIYComponent<?>> unit : findSelectionUnits()) {
+      Rectangle2D bounds = getUnitBounds(unit);
+      if (bounds != null) {
+        units.add(unit);
+        unitBounds.add(bounds);
+        unitComponents.addAll(unit);
+      }
+    }
+    List<Point2D> deltas = deltaCalculator.apply(unitBounds);
+
+    Project oldProject = currentProject.clone();
+    for (int i = 0; i < units.size(); i++) {
+      int dx = (int) Math.round(deltas.get(i).getX());
+      int dy = (int) Math.round(deltas.get(i).getY());
+      if (dx == 0 && dy == 0) {
+        continue;
+      }
+      Map<IDIYComponent<?>, Set<Integer>> controlPointMap =
+          new HashMap<IDIYComponent<?>, Set<Integer>>();
+      for (IDIYComponent<?> c : units.get(i)) {
+        if (c.getControlPointCount() > 0) {
+          Set<Integer> pointIndices = new HashSet<Integer>();
+          for (int j = 0; j < c.getControlPointCount(); j++) {
+            pointIndices.add(j);
+          }
+          controlPointMap.put(c, pointIndices);
+        }
+      }
+      if (controlPointMap.isEmpty()) {
+        continue;
+      }
+      // a component that is a unit of its own must not also be dragged along by another unit,
+      // otherwise it would move twice
+      Set<IDIYComponent<?>> otherUnitComponents = new HashSet<IDIYComponent<?>>(unitComponents);
+      otherUnitComponents.removeAll(units.get(i));
+      includeStuckComponents(controlPointMap, otherUnitComponents);
+      moveComponents(controlPointMap, dx, dy, false, false);
+    }
+    notifyProjectModifiedIfNeeded(oldProject, action, true, true);
+  }
+
+  private List<Set<IDIYComponent<?>>> findSelectionUnits() {
+    List<Set<IDIYComponent<?>>> units = new ArrayList<Set<IDIYComponent<?>>>();
+    if (selectedComponents == null || selectedComponents.isEmpty()) {
+      return units;
+    }
+    Set<IDIYComponent<?>> assigned = new HashSet<IDIYComponent<?>>();
+    // walk the project rather than the selection so that the order of units is deterministic
+    for (IDIYComponent<?> c : currentProject.getComponents()) {
+      if (selectedComponents.contains(c) && !assigned.contains(c)) {
+        Set<IDIYComponent<?>> unit = new HashSet<IDIYComponent<?>>(findAllGroupedComponents(c));
+        unit.retainAll(selectedComponents);
+        assigned.addAll(unit);
+        units.add(unit);
+      }
+    }
+    return units;
+  }
+
+  private Rectangle2D getUnitBounds(Set<IDIYComponent<?>> unit) {
+    Rectangle2D bounds = null;
+    for (IDIYComponent<?> c : unit) {
+      ComponentArea area = drawingManager.getComponentArea(c);
+      if (area == null) {
+        return null;
+      }
+      if (bounds == null) {
+        bounds = area.getOutlineBounds();
+      } else {
+        bounds.add(area.getOutlineBounds());
+      }
+    }
+    return bounds;
+  }
+
+  private Double getAlignmentGridStep() {
+    String snapTo = configManager.readString(IPlugInPort.SNAP_TO_KEY, IPlugInPort.SNAP_TO_DEFAULT);
+    if (snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID)) {
+      return currentProject.getGridSpacing().convertToPixels();
+    }
+    return null;
+  }
   
   @SuppressWarnings("unchecked")
   @Override
@@ -1171,15 +1339,16 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void dragStarted(Point point, int dragAction, boolean forceSelectionRect) {
-    LOG.debug(String.format("dragStarted(%s, %s)", point, dragAction));
-    
+  public void dragStarted(Point point, int dragAction, boolean forceSelectionRect, boolean shiftDown) {
+    LOG.debug(String.format("dragStarted(%s, %s, %s)", point, dragAction, shiftDown));
+
     // record a test step if needed
     if (test != null) {
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("point", point);
       params.put("dragAction", dragAction);
       params.put("forceSelectionRect", forceSelectionRect);
+      params.put("shiftDown", shiftDown);
       test.addStep(DIYTest.DRAG_START, params);
     }    
     
@@ -1200,6 +1369,9 @@ public class Presenter implements IPlugInPort {
     this.preDragProject = currentProject.clone();
     Point2D scaledPoint = scalePoint(point);
     this.previousDragPoint = scaledPoint;
+    this.dragStartPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
+    this.dragShiftDown = shiftDown;
+    this.lockedAxis = null;
     List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
@@ -1265,6 +1437,11 @@ public class Presenter implements IPlugInPort {
    * @param controlPointMap
    */
   private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
+    includeStuckComponents(controlPointMap, Collections.emptySet());
+  }
+
+  private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap,
+      Set<IDIYComponent<?>> excludedComponents) {
     int oldSize = controlPointMap.size();
     LOG.trace("Expanding selected component map");
     for (IDIYComponent<?> component : currentProject.getComponents()) {
@@ -1274,7 +1451,8 @@ public class Presenter implements IPlugInPort {
         // Do not process a control point if it's already in the map and
         // if it's locked.
         if ((!controlPointMap.containsKey(component) || !controlPointMap.get(component).contains(i))
-            && !isComponentLocked(component) && isComponentVisible(component)) {
+            && !isComponentLocked(component) && isComponentVisible(component)
+            && !excludedComponents.contains(component)) {
           if (component.isControlPointSticky(i)) {
             boolean componentMatches = false;
             for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
@@ -1312,6 +1490,7 @@ public class Presenter implements IPlugInPort {
               } else {
                 controlPointMap.put(component, indices);
               }
+              includeGroupedComponents(component, controlPointMap, excludedComponents);
             }
           }
         }
@@ -1321,7 +1500,7 @@ public class Presenter implements IPlugInPort {
     // As long as we're adding new components, do another iteration.
     if (newSize > oldSize) {
       LOG.trace("Component count changed, trying one more time.");
-      includeStuckComponents(controlPointMap);
+      includeStuckComponents(controlPointMap, excludedComponents);
     } else {
       LOG.trace("Component count didn't change, done with expanding.");
       for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
@@ -1345,6 +1524,34 @@ public class Presenter implements IPlugInPort {
             }
           }
         }
+      }
+    }
+  }
+
+  /**
+   * A group moves as a single rigid unit, so when one member is dragged along by a stuck control
+   * point the rest of the group has to follow with all of its control points.
+   */
+  private void includeGroupedComponents(IDIYComponent<?> component,
+      Map<IDIYComponent<?>, Set<Integer>> controlPointMap,
+      Set<IDIYComponent<?>> excludedComponents) {
+    Set<IDIYComponent<?>> groupedComponents = findAllGroupedComponents(component);
+    if (groupedComponents.size() <= 1) {
+      return;
+    }
+    for (IDIYComponent<?> groupedComponent : groupedComponents) {
+      if (isComponentLocked(groupedComponent) || !isComponentVisible(groupedComponent)
+          || excludedComponents.contains(groupedComponent)
+          || groupedComponent.getControlPointCount() == 0) {
+        continue;
+      }
+      Set<Integer> indices = controlPointMap.get(groupedComponent);
+      if (indices == null) {
+        indices = new HashSet<Integer>();
+        controlPointMap.put(groupedComponent, indices);
+      }
+      for (int k = 0; k < groupedComponent.getControlPointCount(); k++) {
+        indices.add(k);
       }
     }
   }
@@ -1381,12 +1588,15 @@ public class Presenter implements IPlugInPort {
     Point2D scaledPoint = scalePoint(point);
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
-      int dx = (int) (scaledPoint.getX() - previousDragPoint.getX());
-      int dy = (int) (scaledPoint.getY() - previousDragPoint.getY());
+      Point2D targetPoint = constrainToAxis(dragStartPoint, scaledPoint, dragShiftDown);
+      int dx = (int) (targetPoint.getX() - previousDragPoint.getX());
+      int dy = (int) (targetPoint.getY() - previousDragPoint.getY());
 
-      Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects());
-      if (actualD == null)
+      Point2D actualD = moveComponents(this.controlPointMap, dx, dy, isSnapToGrid(), isSnapToObjects(),
+          lockedAxis);
+      if (actualD == null) {
         return true;
+      }
 
       // if there's at least one component with only one control point being dragged it means that we are resizing
       if (controlPointMap.size() == 1 && controlPointMap.entrySet().stream()
@@ -1456,7 +1666,36 @@ public class Presenter implements IPlugInPort {
     return new ResizeDimensions(width, height, length);
   }
 
+  /**
+   * Projects the point onto the horizontal or vertical line through the anchor while shift is held.
+   * The axis is picked from the dominant direction of the gesture once it leaves the dead zone and
+   * stays locked until shift is released.
+   */
+  private Point2D constrainToAxis(Point2D anchor, Point2D point, boolean shiftDown) {
+    if (!shiftDown || anchor == null || point == null) {
+      lockedAxis = null;
+      return point;
+    }
+    double dx = point.getX() - anchor.getX();
+    double dy = point.getY() - anchor.getY();
+    if (lockedAxis == null) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < AXIS_LOCK_THRESHOLD / drawingManager.getZoomLevel()) {
+        return new Point2D.Double(anchor.getX(), anchor.getY());
+      }
+      lockedAxis = Math.abs(dx) >= Math.abs(dy) ? AxisLock.HORIZONTAL : AxisLock.VERTICAL;
+    }
+    if (lockedAxis == AxisLock.HORIZONTAL) {
+      return new Point2D.Double(point.getX(), anchor.getY());
+    }
+    return new Point2D.Double(anchor.getX(), point.getY());
+  }
+
   private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy, boolean snapToGrid, boolean snapToObjects) {
+    return moveComponents(controlPointMap, dx, dy, snapToGrid, snapToObjects, null);
+  }
+
+  private Point2D moveComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap, int dx, int dy,
+      boolean snapToGrid, boolean snapToObjects, AxisLock lockedAxis) {
     // After we make the transfer and snap to grid, calculate actual dx
     // and dy. We'll use them to translate the previous drag point.
     double actualDx = 0;
@@ -1501,6 +1740,13 @@ public class Presenter implements IPlugInPort {
     } else {
       actualDx = dx;
       actualDy = dy;
+    }
+
+    // snapping an off-grid point would otherwise nudge it across the locked axis
+    if (lockedAxis == AxisLock.HORIZONTAL && dy == 0) {
+      actualDy = 0;
+    } else if (lockedAxis == AxisLock.VERTICAL && dx == 0) {
+      actualDx = 0;
     }
 
     if (actualDx == 0 && actualDy == 0) {
@@ -1567,10 +1813,14 @@ public class Presenter implements IPlugInPort {
       }
     }
     
-    // Remove from area map.    
-    drawingManager.clearComponentAreaMap();
+    // only the moved components need their areas re-tracked, rebuilding every area on each drag
+    // step makes dragging slow in large projects; drag steps do not go through
+    // notifyProjectModifiedIfNeeded, so they invalidate explicitly
+    for (IDIYComponent<?> c : controlPointMap.keySet()) {
+      componentChanged(c);
+    }
     drawingManager.clearContinuityArea();
-    
+
     return new Point2D.Double(actualDx, actualDy);
   }
 
@@ -1741,7 +1991,8 @@ public class Presenter implements IPlugInPort {
         for (IDIYComponent<?> component : currentProject.getComponents()) {
           if (!isComponentLocked(component) && isComponentVisible(component)) {
             ComponentArea area = drawingManager.getComponentArea(component);
-            if ((area != null && area.getOutlineArea() != null) && (selectionRect != null)
+            if (area != null && selectionRect != null
+                && area.getOutlineBounds().intersects(selectionRect)
                 && area.getOutlineArea().intersects(selectionRect)) {
               newSelection.addAll(findAllGroupedComponents(component));
             }
@@ -1763,6 +2014,7 @@ public class Presenter implements IPlugInPort {
     // There is selection, so we need to finalize the drag&drop
     // operation.
     if (!preDragProject.equals(currentProject)) {
+      invalidateChangedComponents(preDragProject);
       messageDispatcher.dispatchMessage(EventType.PROJECT_MODIFIED, preDragProject, currentProject, "Drag");
       drawingManager.clearContinuityArea();
       projectFileManager.notifyFileChange();
@@ -1770,6 +2022,9 @@ public class Presenter implements IPlugInPort {
 
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     dragInProgress = false;
+    dragStartPoint = null;
+    dragShiftDown = false;
+    lockedAxis = null;
   }
 
   @Override
@@ -1777,6 +2032,8 @@ public class Presenter implements IPlugInPort {
     LOG.info(String.format("pasteComponents(%s, %s, %s)", componentTransferable, autoGroup, assignNewNames));
     instantiationManager.pasteComponents(componentTransferable, this.previousScaledPoint, isSnapToGrid(),
         currentProject.getGridSpacing(), autoGroup, this.currentProject, assignNewNames);
+    // pasting copies the clipboard's groups into the project straight away
+    groupAndLockIndex.invalidate();
     messageDispatcher.dispatchMessage(EventType.REPAINT);
     messageDispatcher.dispatchMessage(EventType.SLOT_CHANGED, instantiationManager.getComponentTypeSlot(),
         instantiationManager.getFirstControlPoint());
@@ -1865,7 +2122,7 @@ public class Presenter implements IPlugInPort {
     }
     
     // Prompt user for group name
-    String groupName = view.showInputDialog("Enter group name:", "Group Components");
+    String groupName = view.showInputDialog(GROUP_NAME_PROMPT, GROUP_COMPONENTS);
     
     // If user cancelled, don't create the group
     if (groupName == null) {
@@ -1913,6 +2170,7 @@ public class Presenter implements IPlugInPort {
     } else {
       currentProject.getLockedLayers().remove(layerZOrder);
     }
+    groupAndLockIndex.invalidate();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
     
@@ -2273,8 +2531,8 @@ public class Presenter implements IPlugInPort {
           
           // do a rough check, if the outlines don't intersect there's no chance of a match
           // so don't waste time doing the precise check
-          if (area.getOutlineArea() != null && selectedArea.getOutlineArea() != null && 
-              !area.getOutlineArea().getBounds().intersects(selectedArea.getOutlineArea().getBounds()))
+          if (!area.getOutlineBounds().getBounds()
+              .intersects(selectedArea.getOutlineBounds().getBounds()))
             continue;          
           
           // create a unified continuity area for both components
@@ -2353,6 +2611,15 @@ public class Presenter implements IPlugInPort {
     currentProject.getGroupsEx().removeIf(
         group -> group.getComponentIds() != null && group.getComponentIds().stream()
             .anyMatch(id -> id != null && componentIds.contains(id)));
+    groupAndLockIndex.invalidate();
+  }
+
+  // the components a drag in progress moves: the dragged ones and those stuck to them
+  private Collection<IDIYComponent<?>> getMovingComponents() {
+    if (!dragInProgress || controlPointMap == null) {
+      return Collections.emptySet();
+    }
+    return controlPointMap.keySet();
   }
 
   /**
@@ -2364,16 +2631,7 @@ public class Presenter implements IPlugInPort {
    *         the minimum, set contains that single component.
    */
   private Set<IDIYComponent<?>> findAllGroupedComponents(IDIYComponent<?> component) {
-
-    for (ComponentGroup group : currentProject.getGroupsEx()) {
-      if (group.getComponentIds().stream().anyMatch(id -> Objects.equals(id, component.getId()))) {
-        return currentProject.getComponents().stream()
-            .filter(comp -> group.getComponentIds().contains(comp.getId()))
-            .collect(Collectors.toSet());
-      }
-    }
-
-    return new HashSet<>(Set.of(component));
+    return groupAndLockIndex.findGroup(currentProject, component);
   }
 
   @Override
@@ -2507,8 +2765,7 @@ public class Presenter implements IPlugInPort {
       }
     } catch (Exception e) {
       LOG.error("Could not apply selection properties", e);
-      view.showMessage("Could not apply changes to the selection. Check the log for details.", ERROR,
-          IView.ERROR_MESSAGE);
+      view.showMessage(APPLY_SELECTION_ERROR, ERROR, IView.ERROR_MESSAGE);
     } finally {
       notifyProjectModifiedIfNeeded(oldProject, "Edit Selection", true, true);
     }
@@ -2833,13 +3090,7 @@ public class Presenter implements IPlugInPort {
   }
 
   private Set<IDIYComponent<?>> getLockedComponents() {
-    lockedComponents.clear();
-    for (IDIYComponent<?> component : currentProject.getComponents()) {
-      if (isComponentLocked(component)) {
-        lockedComponents.add(component);
-      }
-    }
-    return lockedComponents;
+    return groupAndLockIndex.getLockedComponents(currentProject);
   }
   
   @Override
@@ -2853,6 +3104,7 @@ public class Presenter implements IPlugInPort {
       } else {
         currentProject.getLockedComponents().remove(c);        
       }
+      groupAndLockIndex.invalidate();
     } finally {
       notifyProjectModifiedIfNeeded(oldProject, locked ? "Lock Component" : "Unlock Component", false, true);
 
@@ -2861,15 +3113,8 @@ public class Presenter implements IPlugInPort {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private boolean isComponentLocked(IDIYComponent<?> component) {
-    ComponentType componentType =
-        ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) component.getClass());
-    // for internal-use components
-    if (componentType == null)
-      return false;
-    return currentProject.getLockedLayers().contains((int) Math.round(componentType.getZOrder())) || currentProject.getLockedComponents().contains(component);
+    return GroupAndLockIndex.isLocked(currentProject, component);
   }
   
   @SuppressWarnings("unchecked")
@@ -2954,16 +3199,8 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<INetlistAnalyzer> getNetlistAnalyzers() {
-    Set<Class<?>> classes;
     try {
-      classes = Utils.getClasses("org.diylc.netlist");
-      List<INetlistAnalyzer> result = new ArrayList<INetlistAnalyzer>();
-
-      for (Class<?> clazz : classes) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistAnalyzer.class.isAssignableFrom(clazz)) {
-          result.add((INetlistAnalyzer) clazz.getDeclaredConstructor().newInstance());
-        }
-      }
+      List<INetlistAnalyzer> result = ReflectionUtils.getIndexedInstances(INetlistAnalyzer.class);
 
       result.sort(new Comparator<INetlistAnalyzer>() {
 
@@ -3080,5 +3317,9 @@ public class Presenter implements IPlugInPort {
   @Override
   public Set<ComponentGroup> getComponentGroups() {
     return currentProject.getGroupsEx();
+  }
+
+  private enum AxisLock {
+    HORIZONTAL, VERTICAL
   }
 }

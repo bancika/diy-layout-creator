@@ -354,6 +354,29 @@ public class NetlistBuilder {
           builder.putEdge(nodeArr[i], nodeArr[j]);
         }
       }
+
+      // snapping alone splits points that straddle a cell boundary, e.g. 522 and 520 land in
+      // the cells at 524 and 520, so neighbouring cells are joined by actual distance
+      Point2D cell = entry.getKey();
+      for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+          if (dx == 0 && dy == 0) {
+            continue;
+          }
+          List<ProjectGraphNode> neighbours = nodeMapByPoint
+              .get(new Point2D.Double(cell.getX() + dx * eps, cell.getY() + dy * eps));
+          if (neighbours == null) {
+            continue;
+          }
+          for (ProjectGraphNode node : nodeArr) {
+            for (ProjectGraphNode neighbour : neighbours) {
+              if (node.getPoint().distance(neighbour.getPoint()) < eps) {
+                builder.putEdge(node, neighbour);
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -363,8 +386,8 @@ public class NetlistBuilder {
       Point2D p1 = snapToEps(conn.getP1(), eps);
       Point2D p2 = snapToEps(conn.getP2(), eps);
 
-      ProjectGraphNode graphNode1 = new ProjectGraphNode(p1, conn.getZIndex());
-      ProjectGraphNode graphNode2 = new ProjectGraphNode(p2, conn.getZIndex());
+      ProjectGraphNode graphNode1 = new ProjectGraphNode(conn.getP1(), conn.getZIndex());
+      ProjectGraphNode graphNode2 = new ProjectGraphNode(conn.getP2(), conn.getZIndex());
 
       builder.addNode(graphNode1);
       builder.addNode(graphNode2);
@@ -381,10 +404,10 @@ public class NetlistBuilder {
       Map<Point2D, List<ProjectGraphNode>> nodeMapByPoint, Builder<ProjectGraphNode> builder) {
     for (Node node : nodes) {
       Point2D p = snapToEps(node.getPoint2D(), eps);
-      ProjectGraphNode graphNode = new ProjectGraphNode(p, node);
+      ProjectGraphNode graphNode = new ProjectGraphNode(node.getPoint2D(), node);
       builder.addNode(graphNode);
       nodeMapByPoint.computeIfAbsent(p, (point) -> new ArrayList<ProjectGraphNode>())
-          .add(new ProjectGraphNode(p, node));
+          .add(new ProjectGraphNode(node.getPoint2D(), node));
     }
   }
 

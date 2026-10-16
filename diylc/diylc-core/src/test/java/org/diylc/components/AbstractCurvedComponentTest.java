@@ -22,10 +22,12 @@
 package org.diylc.components;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
@@ -172,6 +174,37 @@ public class AbstractCurvedComponentTest {
     }
   }
 
+  @Test
+  public void checkPointsClipped_keepsAStraightRunThatCrossesTheClipWithBothEndsOutside() {
+    CurvedTestComponent horizontal = new CurvedTestComponent();
+    horizontal.setPointCount(PointCount.TWO);
+    horizontal.stretchBetween(new Point2D.Double(-100, 50), new Point2D.Double(300, 50));
+    assertFalse(horizontal.checkPointsClipped(new Rectangle(0, 0, 200, 100)));
+
+    CurvedTestComponent vertical = new CurvedTestComponent();
+    vertical.setPointCount(PointCount.TWO);
+    vertical.stretchBetween(new Point2D.Double(50, -100), new Point2D.Double(50, 300));
+    assertFalse(vertical.checkPointsClipped(new Rectangle(0, 0, 200, 100)));
+  }
+
+  @Test
+  public void checkPointsClipped_skipsAStraightRunThatMissesTheClip() {
+    CurvedTestComponent c = new CurvedTestComponent();
+    c.setPointCount(PointCount.TWO);
+    c.stretchBetween(new Point2D.Double(-100, 500), new Point2D.Double(300, 500));
+    assertTrue(c.checkPointsClipped(new Rectangle(0, 0, 200, 100)));
+  }
+
+  @Test
+  public void checkPointsClipped_keepsARunWhoseStrokeReachesIntoTheClip() {
+    CurvedTestComponent c = new CurvedTestComponent();
+    c.setPointCount(PointCount.TWO);
+    c.stretchBetween(new Point2D.Double(-100, 105), new Point2D.Double(300, 105));
+    assertTrue(c.checkPointsClipped(new Rectangle(0, 0, 200, 100)));
+    c.clipMargin = 10;
+    assertFalse(c.checkPointsClipped(new Rectangle(0, 0, 200, 100)));
+  }
+
   private static void assertPoint(double x, double y, Point2D actual) {
     assertEquals(x, actual.getX(), DELTA);
     assertEquals(y, actual.getY(), DELTA);
@@ -180,6 +213,13 @@ public class AbstractCurvedComponentTest {
   private static class CurvedTestComponent extends AbstractCurvedComponent<Void> {
 
     private static final long serialVersionUID = 1L;
+
+    private double clipMargin = 1;
+
+    @Override
+    protected double getClipMargin() {
+      return clipMargin;
+    }
 
     @Override
     protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState,

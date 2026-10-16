@@ -8,6 +8,7 @@ import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
 import org.diylc.common.IPlugInPort;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -41,7 +42,8 @@ public class FindAction extends AbstractAction {
       String criteria = dialog.getCriteria();
       plugInPort.selectMatching(criteria);
       if (plugInPort.getSelectedComponents().isEmpty()) {
-        swingUI.showMessage("No matching components found.", "Find",
+        swingUI.showMessage(LangUtil.translate("No matching components found."),
+            LangUtil.translate("Find"),
             ISwingUI.INFORMATION_MESSAGE);
       }
     }

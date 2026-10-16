@@ -79,7 +79,9 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
   protected Color leadColor = LEAD_COLOR;
   protected Display display = Display.NAME;
   private boolean flipStanding = false;
-  private LabelOriantation labelOriantation = LabelOriantation.Directional;
+  @Deprecated
+  private LabelOrientation labelOriantation;
+  private LabelOrientation labelOrientation = LabelOrientation.Directional;
   protected boolean moveLabel = false;
   
   // parameters for adjusting the label control point
@@ -361,13 +363,13 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       if (getMoveLabel()) {
         g2d.setTransform(oldTransform);
         g2d.translate(getPoints()[2].getX(), getPoints()[2].getY());
-        if (getLabelOriantation() != LabelOriantation.Horizontal) {
+        if (getLabelOrientation() != LabelOrientation.Horizontal) {
           g2d.rotate(theta);
         }
         StringUtils.drawCenteredText(g2d, label, offset, 0, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         g2d.setTransform(oldTransform);
       } else {
-        if (isStanding() || getLabelOriantation() == LabelOriantation.Horizontal) {
+        if (isStanding() || getLabelOrientation() == LabelOrientation.Horizontal) {
           g2d.setTransform(oldTransform);
           double x = (getPoints()[0].getX() + getPoints()[1].getX() - length) / 2.0;
           double y = (getPoints()[0].getY() + getPoints()[1].getY() - width) / 2.0;
@@ -381,7 +383,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
       }
       drawingObserver.stopTracking();
     }
-//      if (getLabelOriantation() == LabelOriantation.Horizontal) {        
+//      if (getLabelOrientation() == LabelOrientation.Horizontal) {        
 //
 //        drawCenteredText(g2d, label, getNewPoints()[2].getX(), getNewPoints()[2].getX(), HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
 //        g2d.drawString(label, (int) (x + (length - textRect.getWidth()) / 2 + offset),
@@ -435,26 +437,43 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     }
 
     Composite oldComposite = applyAlpha(g2d, componentState);
-    if (shouldShadeLeads()) {     
+
+    // a long dashed or dotted lead strokes into hundreds of segments and building the tracked area
+    // from them costs tens of milliseconds per repaint, so track the lead as one solid stroke
+    // instead, which also keeps the gaps between dashes clickable
+    boolean trackSolidLead = getStyle() != LineStyle.SOLID && !isCopperArea;
+    if (trackSolidLead) {
+      Stroke solidStroke = ObjectCache.getInstance().fetchStroke(thickness,
+          getEndingStyle() == LineEndingStyle.Round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT);
+      g2d.setColor(Constants.TRANSPARENT_COLOR);
+      g2d.fill(solidStroke.createStrokedShape(line));
+      observer.stopTracking();
+    }
+
+    if (shouldShadeLeads()) {
       Shape lineShape = stroke.createStrokedShape(line);
-      
+
       g2d.setColor(getLeadColorForPainting(componentState));
       g2d.fill(lineShape);
-  
+
       if (isCopperArea)
         observer.stopTrackingContinuityArea();
-  
+
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
       Color leadColor = getLeadColorForPainting(componentState);
       g2d.setColor(leadColor.darker());
-      g2d.draw(lineShape);      
+      g2d.draw(lineShape);
     } else {
       g2d.setColor(getLeadColorForPainting(componentState));
       g2d.setStroke(stroke);
       g2d.draw(line);
-      
+
       if (isCopperArea)
         observer.stopTrackingContinuityArea();
+    }
+
+    if (trackSolidLead) {
+      observer.startTracking();
     }
     g2d.setComposite(oldComposite);
   }
@@ -681,14 +700,20 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
   }
   
   @EditableProperty(name = "Label Orientation")
-  public LabelOriantation getLabelOriantation() {
-    if (labelOriantation == null)
-      labelOriantation = LabelOriantation.Directional;
-    return labelOriantation;
+  public LabelOrientation getLabelOrientation() {
+    if (labelOrientation == null) {
+      if (labelOriantation != null) {
+        labelOrientation = labelOriantation;
+        labelOriantation = null;
+      } else {
+        labelOrientation = LabelOrientation.Directional;
+      }
+    }
+    return labelOrientation;
   }
   
-  public void setLabelOriantation(LabelOriantation labelOriantation) {
-    this.labelOriantation = labelOriantation;
+  public void setLabelOrientation(LabelOrientation labelOrientation) {
+    this.labelOrientation = labelOrientation;
   }
   
   @Override
@@ -768,7 +793,7 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     this.hideShortLeads = hideShortLeads;
   }
 
-  public enum LabelOriantation {
+  public enum LabelOrientation {
     Directional, Horizontal
   }
 }

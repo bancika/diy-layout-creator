@@ -99,4 +99,15 @@ public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Res
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
   }
+
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 > index2)
+      return getInternalLinkName(index2, index1);
+
+    if (index2 - index1 == 1)
+      return getControlPointNodeName(index1) + "-" + getControlPointNodeName(index2);
+
+    return null;
+  }
 }

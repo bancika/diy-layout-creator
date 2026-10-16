@@ -1,6 +1,9 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	1/4'' mono jack socket.Sleeve <-> CAP 0.47 uF.2 <-> Telecaster Bridge Pickup.South Finish <-> Telecaster Neck Pickup.North Finish
+	1/4'' mono jack socket.Sleeve <-> CAP 0.47 uF.2 <-> Telecaster Bridge Pickup.South Finish <-> Telecaster Neck Pickup.North Finish <-> VOL1 250K.1
+	1/4'' mono jack socket.Tip <-> VOL1 250K.2
 	CAP 0.47 uF.1 <-> TONE 250K.2
-	CRL 3 way Tele spring action switch.1 <-> CRL 3 way Tele spring action switch.8 <-> VOL1 250K.1
+	CRL 3 way Tele spring action switch.1 <-> CRL 3 way Tele spring action switch.3 <-> CRL 3 way Tele spring action switch.6 <-> CRL 3 way Tele spring action switch.8 <-> TONE 250K.1 <-> VOL1 250K.3
+	CRL 3 way Tele spring action switch.2 <-> Telecaster Neck Pickup.North Start
+	CRL 3 way Tele spring action switch.7 <-> Telecaster Bridge Pickup.South Start
 

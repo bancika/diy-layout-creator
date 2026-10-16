@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +69,9 @@ public class ExplorerPane extends JPanel {
   private JComboBox<Sort> sortBox;
   private ListSelectionListener selectionListener;
 
+  private boolean stale;
+  private ExplorerSnapshot snapshot;
+
   public ExplorerPane(ISwingUI swingUI, IPlugInPort plugInPort) {
     super();
     this.swingUI = swingUI;
@@ -105,6 +110,12 @@ public class ExplorerPane extends JPanel {
     add(getSortBox(), gbc);
 
     setPreferredSize(new Dimension(240, 200));
+
+    addHierarchyListener(e -> {
+      if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing()) {
+        refreshIfStale();
+      }
+    });
   }
 
   public JLabel getTitleLabel() {
@@ -238,6 +249,13 @@ public class ExplorerPane extends JPanel {
       });
       componentList.setModel(getComponentListModel());
       componentList.setFont(DEFAULT_FONT);
+      // without a fixed height every content change re-measures each row through the HTML
+      // renderer, which dominates the cost of a refresh on large projects
+      componentList.setFixedCellHeight(new DefaultListCellRenderer()
+          .getListCellRendererComponent(componentList,
+              "<html><font color='#c0c0c0'>[L0]</font> Xg (<font color='#666666'>Xg</font>)</html>",
+              0, false, false)
+          .getPreferredSize().height);
       componentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
       componentList.setCellRenderer(new ComponentListCellRenderer(plugInPort.getComponentTypes()));
       selectionListener = new ListSelectionListener() {
@@ -324,8 +342,34 @@ public class ExplorerPane extends JPanel {
 
   public void setComponents(List<IDIYComponent<?>> components,
       Collection<IDIYComponent<?>> selectedComponents) {
-    this.getComponentListModel().setComponents(components);
+    ExplorerSnapshot newSnapshot =
+        ExplorerSnapshot.of(components, plugInPort.getComponentGroups());
+    // moving, rotating or nudging leaves everything the list shows untouched
+    if (!newSnapshot.equals(snapshot)) {
+      snapshot = newSnapshot;
+      this.getComponentListModel().setComponents(components);
+    }
     setSelection(new HashSet<IDIYComponent<?>>(selectedComponents));
+  }
+
+  /**
+   * Called instead of {@link #setComponents} while the pane is not showing. When the project
+   * itself was replaced the list is emptied so it does not hold on to the old one.
+   */
+  public void markStale(boolean projectReplaced) {
+    stale = true;
+    if (projectReplaced && snapshot != null) {
+      snapshot = null;
+      this.getComponentListModel().setComponents(new ArrayList<IDIYComponent<?>>());
+    }
+  }
+
+  private void refreshIfStale() {
+    if (stale) {
+      stale = false;
+      setComponents(plugInPort.getCurrentProject().getComponents(),
+          plugInPort.getSelectedComponents());
+    }
   }
 
   public void setSelection(Set<IDIYComponent<?>> selectedComponents) {
@@ -348,61 +392,16 @@ public class ExplorerPane extends JPanel {
       if (selectedComponents.size() == 0) {
         list.clearSelection();
       } else {
-        // Build a map from component to its group (if any)
-        Set<ComponentGroup> groups = plugInPort.getComponentGroups();
-        Map<IDIYComponent<?>, Set<IDIYComponent<?>>> componentToGroup = new java.util.HashMap<>();
-        if (groups != null && !groups.isEmpty()) {
-          // Build a map from UUID to component for quick lookup
-          List<IDIYComponent<?>> allComponents = plugInPort.getCurrentProject().getComponents();
-          Map<UUID, IDIYComponent<?>> idToComponent = allComponents.stream()
-              .collect(Collectors.toMap(IDIYComponent::getId, comp -> comp));
-          
-          for (ComponentGroup group : groups) {
-            // Convert ComponentGroup (with UUIDs) to Set<IDIYComponent<?>>
-            Set<IDIYComponent<?>> componentSet = group.getComponentIds().stream()
-                .map(idToComponent::get)
-                .filter(java.util.Objects::nonNull)
-                .collect(Collectors.toSet());
-            
-            for (IDIYComponent<?> component : componentSet) {
-              componentToGroup.put(component, componentSet);
-            }
-          }
-        }
-
-        // Find indices of items to select
-        List<ComponentGroupItem> components = this.getComponentListModel().getComponents();
+        Map<IDIYComponent<?>, Integer> rowIndex = this.getComponentListModel().getRowIndex();
         Set<Integer> selectedIndices = new HashSet<>();
-        Set<Set<IDIYComponent<?>>> selectedGroups = new HashSet<>();
-        
         for (IDIYComponent<?> selected : selectedComponents) {
-          Set<IDIYComponent<?>> group = componentToGroup.get(selected);
-          if (group != null) {
-            // Component is in a group
-            if (!selectedGroups.contains(group)) {
-              // Find the ComponentGroupItem for this group
-              for (int i = 0; i < components.size(); i++) {
-                ComponentGroupItem groupItem = components.get(i);
-                if (groupItem.getGroup().equals(group)) {
-                  selectedIndices.add(i);
-                  selectedGroups.add(group);
-                  break;
-                }
-              }
-            }
-          } else {
-            // Component is not in any group, find the ComponentGroupItem that contains only this component
-            for (int i = 0; i < components.size(); i++) {
-              ComponentGroupItem groupItem = components.get(i);
-              if (groupItem.getGroup().size() == 1 && groupItem.getGroup().contains(selected)) {
-                selectedIndices.add(i);
-                break;
-              }
-            }
+          Integer index = rowIndex.get(selected);
+          if (index != null) {
+            selectedIndices.add(index);
           }
         }
 
-        int[] indices = selectedIndices.stream().mapToInt(i -> i).toArray();
+        int[] indices = selectedIndices.stream().mapToInt(i -> i).sorted().toArray();
 
         list.getSelectionModel().setValueIsAdjusting(true);
         list.setSelectedIndices(indices);
@@ -428,6 +427,7 @@ public class ExplorerPane extends JPanel {
 
     private List<IDIYComponent<?>> componentsRaw;
     private List<ComponentGroupItem> components;
+    private Map<IDIYComponent<?>, Integer> rowIndex = new HashMap<>();
 
     private String searchText;
     private Sort sort = Sort.Z_INDEX;
@@ -441,6 +441,10 @@ public class ExplorerPane extends JPanel {
 
     public List<ComponentGroupItem> getComponents() {
       return components;
+    }
+
+    public Map<IDIYComponent<?>, Integer> getRowIndex() {
+      return rowIndex;
     }
 
     public Sort getSort() {
@@ -485,6 +489,13 @@ public class ExplorerPane extends JPanel {
 
       // Build list with groups and ungrouped components
       this.components = buildComponentListWithGroups(sortedComponents);
+      Map<IDIYComponent<?>, Integer> newRowIndex = new HashMap<>();
+      for (int i = 0; i < this.components.size(); i++) {
+        for (IDIYComponent<?> component : this.components.get(i).getGroup()) {
+          newRowIndex.put(component, i);
+        }
+      }
+      this.rowIndex = newRowIndex;
 
       int newSize = this.components.size();
 
@@ -714,6 +725,32 @@ public class ExplorerPane extends JPanel {
     @Override
     public int hashCode() {
       return group.hashCode();
+    }
+  }
+
+  /**
+   * Everything the list reads from the project, copied so that in-place edits of components
+   * and groups are detected. Components compare by identity, so an undo that swaps in clones
+   * still forces a rebuild.
+   */
+  private record ExplorerSnapshot(List<IDIYComponent<?>> components, List<String> labels,
+      Map<Set<UUID>, String> groups) {
+
+    static ExplorerSnapshot of(List<IDIYComponent<?>> components, Set<ComponentGroup> groups) {
+      List<String> labels = new ArrayList<>(components.size() * 3);
+      for (IDIYComponent<?> component : components) {
+        labels.add(component.getName());
+        // toString() drives the name and type sorts
+        labels.add(component.toString());
+        labels.add(component.getValueForDisplay());
+      }
+      Map<Set<UUID>, String> groupNames = new HashMap<>();
+      if (groups != null) {
+        for (ComponentGroup group : groups) {
+          groupNames.put(new HashSet<>(group.getComponentIds()), group.getName());
+        }
+      }
+      return new ExplorerSnapshot(new ArrayList<>(components), labels, groupNames);
     }
   }
 }

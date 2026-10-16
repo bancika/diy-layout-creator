@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	J2.Sleeve <-> J3.Sleeve <-> J4.Sleeve
 	J2.Tip <-> J3.Tip <-> J4.Tip

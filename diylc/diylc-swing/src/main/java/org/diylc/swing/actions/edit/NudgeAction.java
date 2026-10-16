@@ -14,6 +14,7 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.measures.Nudge;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.lang.LangUtil;
 import org.diylc.presenter.Presenter;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.gui.DialogFactory;
@@ -49,7 +50,7 @@ public class NudgeAction extends AbstractAction {
     }
     List<PropertyWrapper> properties = plugInPort.getProperties(n);
     PropertyEditorDialog editor = DialogFactory.getInstance()
-        .createPropertyEditorDialog(properties, "Nudge Selection", false);
+        .createPropertyEditorDialog(properties, LangUtil.translate("Nudge Selection"), false);
     editor.setVisible(true);
     if (ButtonDialog.OK.equals(editor.getSelectedButtonCaption())) {
       plugInPort.applyProperties(n, properties);

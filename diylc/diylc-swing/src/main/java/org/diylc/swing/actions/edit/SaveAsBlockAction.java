@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IBlockProcessor;
 import org.diylc.common.IPlugInPort;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.utils.IconLoader;
 
@@ -46,13 +47,14 @@ public class SaveAsBlockAction extends AbstractAction {
     nameBox.setSelectedItem("");
 
     JPanel panel = new JPanel(new BorderLayout(5, 5));
-    panel.add(new JLabel("Block name:"), BorderLayout.NORTH);
+    panel.add(new JLabel(LangUtil.translate("Block name:")), BorderLayout.NORTH);
     panel.add(nameBox, BorderLayout.CENTER);
 
     // Loop so that declining the overwrite prompt returns to the name dialog (with whatever was
     // typed still in it) rather than cancelling the whole action.
     while (true) {
-      int result = JOptionPane.showConfirmDialog(null, panel, "Save as Building Block",
+      int result = JOptionPane.showConfirmDialog(null, panel,
+          LangUtil.translate("Save as Building Block"),
           JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
       if (result != JOptionPane.OK_OPTION)
         return;
@@ -65,8 +67,10 @@ public class SaveAsBlockAction extends AbstractAction {
 
       if (blockExists(blockName)) {
         int overwrite = JOptionPane.showConfirmDialog(null,
-            "A building block named \"" + blockName + "\" already exists. Overwrite it?",
-            "Save as Building Block", JOptionPane.YES_NO_CANCEL_OPTION,
+            String.format(
+                LangUtil.translate("A building block named \"%s\" already exists. Overwrite it?"),
+                blockName),
+            LangUtil.translate("Save as Building Block"), JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.WARNING_MESSAGE);
         if (overwrite == JOptionPane.NO_OPTION)
           continue; // back to the name dialog

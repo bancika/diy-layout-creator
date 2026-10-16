@@ -78,7 +78,7 @@ public class MiniaturePotentiometer extends AbstractPotentiometer {
   }
 
   protected void updateControlPoints() {
-    int spacing = getClosestOdd(PIN_SPACING.convertToPixels());
+    int spacing = (int) PIN_SPACING.convertToPixels();
     int dx1 = 0;
     int dy1 = 0;
     int dx2 = 0;
@@ -528,6 +528,11 @@ public class MiniaturePotentiometer extends AbstractPotentiometer {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    return Integer.toString(3 - index);
   }
 
   public static enum MiniatureType {

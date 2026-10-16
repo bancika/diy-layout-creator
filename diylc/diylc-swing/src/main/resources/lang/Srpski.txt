@@ -490,3 +490,173 @@ Virtual Multimeter (excl. Switches)|Virtuelni Multimetar (bez prekidača)
 Virtual Multimeter (incl. Switches)|Virtuelni Multimetar (sa prekidačima)
 Become a Patreon and enjoy perks|Postanite Patreon i uživajte u prednostima
 Join Patreon|Pridružite se Patreon-u
+<empty>|<prazno>
+Success|Uspeh
+Could not open file. %s|Neuspelo otvaranje datoteke. %s
+Could not save to file. %s|Neuspelo čuvanje u datoteku. %s
+Could not export to PDF. %s|Neuspeo izvoz u PDF. %s
+Could not export to PNG. %s|Neuspeo izvoz u PNG. %s
+Could not export to Gerber file. %s|Neuspeo izvoz u Gerber datoteku. %s
+Could not print. %s|Neuspelo štampanje. %s
+Could not import netlist file: %s|Neuspeo uvoz netlist datoteke: %s
+No building blocks found to export.|Nema blokova za gradnju za izvoz.
+No building blocks selected for export.|Nijedan blok za gradnju nije izabran za izvoz.
+Could not export building blocks. Please check the log for details|Neuspeo izvoz blokova za gradnju. Proverite log za više informacija
+Building blocks exported to "%s".|Blokovi za gradnju su izvezeni u "%s".
+Could not export building blocks: %s|Neuspeo izvoz blokova za gradnju: %s
+%s building block(s) imported from "%s".|Broj uvezenih blokova za gradnju iz "%2$s": %1$s
+Could not import building blocks: %s|Neuspeo uvoz blokova za gradnju: %s
+No variants found to export.|Nema varijacija za izvoz.
+No variants selected for export.|Nijedna varijacija nije izabrana za izvoz.
+Could not export variants. Please check the log for details|Neuspeo izvoz varijacija. Proverite log za više informacija
+Variants exported to "%s".|Varijacije su izvezene u "%s".
+Could not export variants: %s|Neuspeo izvoz varijacija: %s
+%s variant(s) imported from "%s".|Broj uvezenih varijacija iz "%2$s": %1$s
+Could not import variants: %s|Neuspeo uvoz varijacija: %s
+Edit Project|Izmeni Projekat
+Component Categories|Kategorije Komponenti
+Reset All|Resetuj Sve
+Controllers|Kontroleri
+Displays & Outputs|Displeji i Izlazi
+Modules & Breakouts|Moduli i Breakout Pločice
+Robotics|Robotika
+Sensors|Senzori
+SMD|SMD
+High DPI Rendering|High DPI Iscrtavanje
+Node Name Tooltips|Imena Čvorova u Opisu
+Show AI Assistant|Prikaz AI Asistenta
+Show Project Explorer|Prikaz Pregledača Projekta
+Gray|Siva
+Me|Ja
+AI Assistant|AI Asistent
+Ask me anything|Pitajte me bilo šta
+Please log into your cloud account to use the AI assistant|Prijavite se na svoj nalog u oblaku da biste koristili AI asistenta
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|Trenutno ste pretplaćeni na nivo '%s', koji ističe %s, sa preostalih %s kredita.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Da biste se pretplatili na neki od premium nivoa, otključali napredne AI modele i dobili više kredita, posetite %s i postanite Patreon podržavalac.
+All the details about the AI Assistant limits and other benefits will be specified there.|Tamo ćete naći sve detalje o ograničenjima AI asistenta i ostalim pogodnostima.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Ako ste već Patreon podržavalac, povežite svoj nalog sa DIYLC Cloud nalogom iz menija 'Oblak'.
+Thank you for supporting further development of DIYLC!|Hvala vam što podržavate dalji razvoj DIYLC-a!
+Failed to retrieve chat history.|Neuspelo preuzimanje istorije četa.
+Welcome to the DIYLC AI Assistant!|Dobrodošli u DIYLC AI asistent!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Tu sam da vam pomognem da projektujete, napravite i otklonite probleme u svojim elektronskim projektima koristeći DIY Layout Creator (DIYLC). Možete me pitati o:
+Electronics theory or concepts:|Teoriji ili konceptima elektronike:
+DIYLC features and usage:|Mogućnostima i korišćenju DIYLC-a:
+Your current circuit project:|Vašem trenutnom projektu kola:
+e.g.,|npr.
+Feel free to ask your own question or use one of these examples to get started!|Slobodno postavite svoje pitanje ili iskoristite neki od ovih primera za početak!
+Waiting for the response...|Čekam odgovor...
+Failed to retrieve the response from the server.|Neuspelo preuzimanje odgovora sa servera.
+Failed to delete chat history from the server.|Neuspelo brisanje istorije četa sa servera.
+Chat history exported successfully.|Istorija četa je uspešno izvezena.
+Failed to open premium subscription page. Please visit %s manually.|Neuspelo otvaranje stranice za premium pretplatu. Posetite %s ručno.
+45 degrees clockwise|45 stepeni u pravcu kazaljke
+135 degrees clockwise|135 stepeni u pravcu kazaljke
+225 degrees clockwise|225 stepeni u pravcu kazaljke
+315 degrees clockwise|315 stepeni u pravcu kazaljke
+1 throws / 2 positions|1 izlaz / 2 položaja
+2 throws / 2 positions|2 izlaza / 2 položaja
+2 throws / 3 positions / OFF even positions|2 izlaza / 3 položaja / parni položaji ISKLJUČENI
+3 throws / 3 positions|3 izlaza / 3 položaja
+3 throws / 5 positions / SHORT even positions|3 izlaza / 5 položaja / parni položaji KRATKO SPOJENI
+4 throws / 4 positions|4 izlaza / 4 položaja
+5 throws / 5 positions|5 izlaza / 5 položaja
+6 throws / 6 positions|6 izlaza / 6 položaja
+7 throws / 7 positions|7 izlaza / 7 položaja
+8 throws / 8 positions|8 izlaza / 8 položaja
+9 throws / 9 positions|9 izlaza / 9 položaja
+10 throws / 10 positions|10 izlaza / 10 položaja
+11 throws / 11 positions|11 izlaza / 11 položaja
+12 throws / 12 positions|12 izlaza / 12 položaja
+4 band|4 trake
+5 band|5 traka
+DP3T (Import 5-Position Strat)|DP3T (Import Strat sa 5 Položaja)
+DP4T (6-Position Oak Grigsby)|DP4T (Oak Grigsby sa 6 Položaja)
+Angle Offset|Pomeraj Ugla
+Apply Model|Primeni Model
+Background|Pozadina
+Circle|Krug
+Rectangle|Pravougaonik
+Coil(s)|Kalem(ovi)
+Configuration|Konfiguracija
+Designation|Oznaka
+Dimension Mode|Režim Kotiranja
+Dots (Gradual)|Tačke (Postepeno)
+Dots (Uniform)|Tačke (Ravnomerno)
+Double Rails|Dvostruka Šina
+Double Rods|Dvostruke Šipkice
+Draw Standard|Standard Crtanja
+One|Jedan
+Six|Šest
+Eight|Osam
+Nine|Devet
+Ten|Deset
+Filament Voltage|Napon Vlakna
+Hole Type|Tip Rupe
+Humbucking - 4 leads|Humbucking - 4 Izvoda
+Inner 1|Unutrašnji 1
+Inner 2|Unutrašnji 2
+Inner 3|Unutrašnji 3
+Inner 4|Unutrašnji 4
+Inner 5|Unutrašnji 5
+Inner 6|Unutrašnji 6
+Markers|Oznake
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Premašen je maksimalan broj kombinacija prekidača. Dozvoljeno: %s, stvarno: %s
+Plated Through Hole|Metalizovana Rupa
+Non-Plated Through Hole|Nemetalizovana Rupa
+Shorting|Kratkospajajući
+Non-shorting|Bez Kratkog Spoja
+Numeric (0-10)|Numerički (0-10)
+Numeric (1-10)|Numerički (1-10)
+Numeric (1-11)|Numerički (1-11)
+Numeric (1-12)|Numerički (1-12)
+Numeric (Even, No Ticks)|Numerički (Parni, Bez Crtica)
+Numeric (Even, With Ticks)|Numerički (Parni, Sa Crticama)
+Poles|Polovi
+Screw Position|Položaj Šrafova
+Single - North|Single - Sever
+Single - South|Single - Jug
+Sort by Name|Sortiraj po Imenu
+Sort by Type|Sortiraj po Tipu
+Sort by Z-index|Sortiraj po Z-indeksu
+Source Style|Stil Izvora
+Source Type|Tip Izvora
+Terminal|Priključak
+Underside Display|Prikaz Donje Strane
+Underside Offset|Pomeraj Donje Strane
+Virtual Multimeter|Virtuelni Multimetar
+Title Block|Zaglavlje Crteža
+Tubular Beveled|Cevasti Zakošeni
+TO-92 w/ 2 Leads|TO-92 sa 2 Izvoda
+TO-92 w/ 3 Leads|TO-92 sa 3 Izvoda
+Lin|Lin
+Log|Log
+Rev log|Obrnuto Logaritamski
+Bracket|Nosač
+Show Bracket|Prikaži Nosač
+Check Trace Proximity|Proveri Blizinu Vodova
+Column Spacing|Razmak Kolona
+Donate|Doniraj
+Marker Size|Veličina Oznake
+Panel|Panel
+Tick Width|Širina Crtice
+Wiring|Ožičenje
+Align & Distribute|Poravnaj i Rasporedi
+Align Left|Poravnaj Levo
+Align Right|Poravnaj Desno
+Align Top|Poravnaj Gore
+Align Bottom|Poravnaj Dole
+Align Horizontal Centers|Poravnaj Centre Horizontalno
+Align Vertical Centers|Poravnaj Centre Vertikalno
+Distribute Centers Horizontally|Rasporedi Centre Horizontalno
+Distribute Spacing Horizontally|Rasporedi Razmake Horizontalno
+Distribute Centers Vertically|Rasporedi Centre Vertikalno
+Distribute Spacing Vertically|Rasporedi Razmake Vertikalno
+No matching components found.|Nije pronađena nijedna odgovarajuća komponenta.
+Variant name:|Naziv varijacije:
+Block name:|Naziv bloka:
+A building block named "%s" already exists. Overwrite it?|Blok za gradnju sa nazivom "%s" već postoji. Zameniti ga?
+Nudge Selection|Pomeri Izabrane
+Include stuck|Uključi zalepljene
+Enter group name:|Unesite naziv grupe:
+Group Components|Grupiši Komponente
+Could not apply changes to the selection. Check the log for details.|Nije moguće primeniti izmene na izabrane komponente. Proverite log za više informacija.
