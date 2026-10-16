@@ -1,8 +1,9 @@
 name: Sign Windows Artifacts
 
-# Signs the Inno Setup installer. The launcher it embeds is signed separately and committed
-# by the Sign Windows Launcher workflow, because Inno Setup cannot sign its payload after the
-# fact and the launcher changes only when launch4j regenerates it.
+# Builds and signs the Inno Setup installer; the zip package is not built or signed here. The
+# launcher the installer embeds is signed separately and committed by the Sign Windows Launcher
+# workflow, because Inno Setup cannot sign its payload after the fact and the launcher changes
+# only when launch4j regenerates it.
 
 on:
   workflow_dispatch:
@@ -38,8 +39,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Nothing downstream fails when the committed launcher is unsigned: the zip and the
-      # installed application would just silently ship an unsigned executable.
+      # Nothing downstream fails when the committed launcher is unsigned: the installed
+      # application would just silently ship an unsigned executable.
       - name: Check the committed launcher carries a signature
         env:
           POLICY: ${{ inputs.signing-policy-slug }}
@@ -52,21 +53,28 @@ jobs:
             echo "::error::deploy/win/diylc-x64.exe is unsigned. Run the Sign Windows Launcher workflow with the release policy, commit the signed launcher, then re-run this workflow."
             exit 1
           fi
-          echo "::warning::deploy/win/diylc-x64.exe is unsigned; the zip and the installed application will ship an unsigned launcher."
+          echo "::warning::deploy/win/diylc-x64.exe is unsigned; the installed application will ship an unsigned launcher."
 
       - name: Resolve project version
         working-directory: diylc
         run: |
           echo "DIYLC_VERSION=$(mvn -q -N help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_ENV"
 
-      - name: Build Windows zip and installer
+      # amake/innosetup runs Inno Setup under wine as its own user (uid 1000), not as the runner
+      # (uid 1001), so it cannot write its output into a target directory the runner owns. Docker
+      # Desktop hides this on a developer machine; on a Linux runner it surfaces as "Error 5:
+      # Access denied" copying Setup.e32.
+      - name: Build Windows installer
         working-directory: diylc
         run: |
-          mvn -B -DskipTests -P win64-zip package
+          mkdir -p diylc-swing/target
+          chmod a+rwx diylc-swing/target
           mvn -B -DskipTests -P win64-installer package
 
-      # The artifact configuration matches a fixed path, so the versioned installer is staged
-      # under a stable name for the round trip and renamed back afterwards.
+      # upload-artifact zips the staged installer and SignPath signs the exe inside that zip; the
+      # action then downloads and unpacks the signed zip into signed/. The artifact configuration
+      # matches a fixed path, so the versioned installer travels under a stable name and is
+      # renamed back afterwards.
       - name: Stage installer for signing
         run: |
           mkdir -p staging
@@ -93,24 +101,23 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: signed
 
-      - name: Restore signed installer under its release name
+      - name: Verify signed installer
         run: |
           python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py signed/diylc-setup.exe
-          cp signed/diylc-setup.exe "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe"
-
-      - name: Report signatures
-        run: |
           sudo apt-get update
           sudo apt-get install -y osslsigncode
           # chain validation fails against the self-signed test certificate by design; what
           # matters is that a signature is present and names the expected subject
-          osslsigncode verify -in "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe" || true
+          osslsigncode verify -in signed/diylc-setup.exe || true
 
-      - name: Upload signed Windows artifacts
+      - name: Restore signed installer under its release name
+        run: |
+          mkdir -p release
+          cp signed/diylc-setup.exe "release/diylc-${DIYLC_VERSION}-win64.exe"
+
+      - name: Upload signed installer
         uses: actions/upload-artifact@v7
         with:
-          name: diylc-windows-signed
-          path: |
-            diylc/diylc-swing/target/diylc-${{ env.DIYLC_VERSION }}-win64.exe
-            diylc/diylc-swing/target/diylc-${{ env.DIYLC_VERSION }}-win64.zip
+          name: diylc-windows-installer-signed
+          path: release/diylc-${{ env.DIYLC_VERSION }}-win64.exe
           if-no-files-found: error
