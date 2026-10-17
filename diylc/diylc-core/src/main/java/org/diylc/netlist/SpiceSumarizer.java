@@ -2,15 +2,25 @@ package org.diylc.netlist;
 
 import org.diylc.common.ComponentType;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.presenter.ComponentProcessor;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.diylc.netlist.AbstractNetlistAnalyzer.find;
 
 public class SpiceSumarizer {
+
+  // measures format with the user's locale for display, but SPICE only accepts '.' as the decimal
+  // separator
+  private static final Format VALUE_FORMAT =
+      new DecimalFormat("0.####", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
   public static String summarize(Netlist netlist, boolean useHTML) throws TreeException {
 
@@ -119,12 +129,21 @@ public class SpiceSumarizer {
         sb.append(typeName);
       }
     } else {
-      if (c.getValue().toString().contains(" ")) {
-        sb.append("\"").append(c.getValue()).append("\"");
+      String value = formatValue(c.getValue());
+      if (value.contains(" ")) {
+        sb.append("\"").append(value).append("\"");
       } else {
-        sb.append(c.getValue());
+        sb.append(value);
       }
     }
+  }
+
+  private static String formatValue(Object value) {
+    if (value instanceof AbstractMeasure) {
+      AbstractMeasure<?> measure = (AbstractMeasure<?>) value;
+      return VALUE_FORMAT.format(measure.getValue()) + measure.getUnit();
+    }
+    return value.toString();
   }
 
   private static String formatSpiceNode(int i) {
