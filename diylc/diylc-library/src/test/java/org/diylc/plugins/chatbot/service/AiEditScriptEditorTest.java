@@ -24,17 +24,21 @@ package org.diylc.plugins.chatbot.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.passive.Resistor;
@@ -43,6 +47,7 @@ import org.diylc.core.Project;
 import org.diylc.core.measures.Resistance;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
+import org.diylc.plugins.chatbot.model.AiPoint;
 
 /**
  * Covers how a terminal reference such as {@code "R1.1"} is turned into a control point.
@@ -58,6 +63,14 @@ public class AiEditScriptEditorTest {
 
   private static final Point2D FIRST_LEAD = new Point2D.Double(100, 100);
   private static final Point2D SECOND_LEAD = new Point2D.Double(200, 100);
+
+  @BeforeClass
+  public static void setUp() {
+    try {
+      ConfigurationManager.getInstance().initialize("diylc");
+    } catch (Exception ignored) {
+    }
+  }
 
   @Test
   public void numericReferenceIsAControlPointIndex() {
@@ -140,6 +153,55 @@ public class AiEditScriptEditorTest {
     assertTrue(project.getComponents().isEmpty());
   }
 
+  @Test
+  public void modifyCanFollowTheAddOfTheSameComponent() {
+    Project project = new Project();
+    AiEditOperation add = operation("add", "R2");
+    add.setComponentType("passive.Resistor");
+    add.setFromPos(point(1, 1));
+    add.setToPos(point(5, 1));
+    AiEditOperation modify = operation("modify", "R2");
+    modify.setProperties(Map.of("Value", "4.7K"));
+
+    AiEditScriptEditor editor = new AiEditScriptEditor(script(add, modify));
+    editor.edit(project, new HashSet<IDIYComponent<?>>());
+
+    assertEquals(editor.getWarnings().toString(), 1, project.getComponents().size());
+    assertEquals(Resistance.parseResistance("4.7K"),
+        ((Resistor) project.getComponents().get(0)).getValue());
+    assertTrue(editor.getWarnings().isEmpty());
+  }
+
+  @Test
+  public void removeBeforeAnAddThatReusesTheNameTakesOutTheOldComponent() {
+    Resistor old = resistor();
+    Project project = projectWith(old);
+    AiEditOperation add = operation("add", "R1");
+    add.setComponentType("passive.Resistor");
+    add.setFromPos(point(1, 3));
+    add.setToPos(point(5, 3));
+
+    new AiEditScriptEditor(script(operation("remove", "R1"), add))
+        .edit(project, new HashSet<IDIYComponent<?>>());
+
+    assertEquals(1, project.getComponents().size());
+    assertNotSame(old, project.getComponents().get(0));
+  }
+
+  @Test
+  public void wireIsShapedLikeOneDrawnByHand() {
+    Project project = projectWith(resistor());
+    new AiEditScriptEditor(wireScript("R1.0", "R1.1"))
+        .edit(project, new HashSet<IDIYComponent<?>>());
+
+    HookupWire drawn = new HookupWire();
+    drawn.stretchBetween(FIRST_LEAD, SECOND_LEAD);
+    HookupWire wire = findWire(project);
+    for (int i = 0; i < drawn.getControlPointCount(); i++) {
+      assertEquals("control point " + i, drawn.getControlPoint(i), wire.getControlPoint(i));
+    }
+  }
+
   private static Resistor resistor() {
     Resistor resistor = new Resistor();
     resistor.setName("R1");
@@ -182,10 +244,14 @@ public class AiEditScriptEditorTest {
     return operation;
   }
 
-  private static AiEditScript script(AiEditOperation operation) {
+  private static AiEditScript script(AiEditOperation... operations) {
     AiEditScript script = new AiEditScript();
-    script.setOperations(List.of(operation));
+    script.setOperations(List.of(operations));
     return script;
+  }
+
+  private static AiPoint point(int gridX, int gridY) {
+    return new AiPoint(BigDecimal.valueOf(gridX), BigDecimal.valueOf(gridY));
   }
 
   private static HookupWire findWire(Project project) {

@@ -1,10 +1,36 @@
+/*
+
+    DIY Layout Creator (DIYLC).
+    Copyright (c) 2009-2025 held jointly by the individual authors.
+
+    This file is part of DIYLC.
+
+    DIYLC is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DIYLC is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package org.diylc.plugins.chatbot.service;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
@@ -14,20 +40,21 @@ import org.diylc.common.PropertyWrapper;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
-import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.IDatasheetSupport;
+import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.DatasheetService;
+import org.diylc.presenter.InstantiationManager;
 
 /**
  * Executes an AiEditScript against a Project.
  * <p>
  * Uses a two-pass approach:
  * <ul>
- *   <li><b>Pass 1</b>: Remove, Modify, and Add (non-wires). Sets properties and determines final pin geometry.</li>
+ *   <li><b>Pass 1</b>: Remove, Modify, and Add (non-wires), in the order the script lists them. Sets properties and determines final pin geometry.</li>
  *   <li><b>Pass 2</b>: Add Wires. Resolves terminal references to the final pixel coordinates of the components from Pass 1.</li>
  * </ul>
  */
@@ -37,6 +64,7 @@ public class AiEditScriptEditor implements IProjectEditor {
 
   private final AiEditScript editScript;
   private final List<String> warnings = new ArrayList<>();
+  private final InstantiationManager instantiationManager = new InstantiationManager();
 
   public AiEditScriptEditor(AiEditScript editScript) {
     this.editScript = editScript;
@@ -69,10 +97,9 @@ public class AiEditScriptEditor implements IProjectEditor {
 
     ComponentProcessor processor = ComponentProcessor.getInstance();
     
-    // Split operations into two passes and sort Pass 1 into remove -> modify -> add order
-    List<AiEditOperation> removeOps = new ArrayList<>();
-    List<AiEditOperation> modifyOps = new ArrayList<>();
-    List<AiEditOperation> addOps = new ArrayList<>();
+    // Pass 1 keeps the order of the script, so that an add followed by a modify of the same part,
+    // or a remove followed by an add that reuses the name, does what the model wrote
+    List<AiEditOperation> pass1Ops = new ArrayList<>();
     List<AiEditOperation> pass2Ops = new ArrayList<>();
     List<AiEditOperation> zOrderOps = new ArrayList<>();
 
@@ -81,19 +108,10 @@ public class AiEditScriptEditor implements IProjectEditor {
         zOrderOps.add(op);
       } else if ("add".equalsIgnoreCase(op.getAction()) && op.getFromTerminal() != null && op.getToTerminal() != null) {
         pass2Ops.add(op);
-      } else if ("remove".equalsIgnoreCase(op.getAction())) {
-        removeOps.add(op);
-      } else if ("modify".equalsIgnoreCase(op.getAction())) {
-        modifyOps.add(op);
       } else {
-        addOps.add(op);
+        pass1Ops.add(op);
       }
     }
-
-    List<AiEditOperation> pass1Ops = new ArrayList<>();
-    pass1Ops.addAll(removeOps);
-    pass1Ops.addAll(modifyOps);
-    pass1Ops.addAll(addOps);
 
     // ==========================================
     // PASS 1: Remove, Modify, and Add Non-Wires
@@ -131,10 +149,8 @@ public class AiEditScriptEditor implements IProjectEditor {
             continue;
           }
           
-          IDIYComponent<?> comp = ct.getInstanceClass().getDeclaredConstructor().newInstance();
-          comp.setName(op.getComponentName());
-          comp.createdIn(project);
-          
+          IDIYComponent<?> comp = instantiate(ct, op.getComponentName(), project);
+
           // Apply properties first so geometry (e.g. pin count, orientation) is computed correctly
           applyProperties(comp, op.getProperties(), processor);
           
@@ -162,17 +178,7 @@ public class AiEditScriptEditor implements IProjectEditor {
             if (op.getFromPos() != null && op.getToPos() != null) {
               Point2D from = op.getFromPos().toPixels(project.getGridSpacing());
               Point2D to = op.getToPos().toPixels(project.getGridSpacing());
-              comp.setControlPoint(from, 0);
-              comp.setControlPoint(to, comp.getControlPointCount() - 1);
-              
-              // For components with >2 control points, place intermediate points at center
-              if (comp.getControlPointCount() > 2) {
-                double cx = (from.getX() + to.getX()) / 2;
-                double cy = (from.getY() + to.getY()) / 2;
-                for (int i = 1; i < comp.getControlPointCount() - 1; i++) {
-                  comp.setControlPoint(new Point2D.Double(cx, cy), i);
-                }
-              }
+              comp.stretchBetween(from, to);
             } else {
               warnings.add("Component '" + op.getComponentName() + "' is missing 'fromPos'/'toPos' for POINT_BY_POINT placement.");
             }
@@ -207,23 +213,11 @@ public class AiEditScriptEditor implements IProjectEditor {
           continue;
         }
 
-        IDIYComponent<?> wire = ct.getInstanceClass().getDeclaredConstructor().newInstance();
-        wire.setName(op.getComponentName());
+        IDIYComponent<?> wire = instantiate(ct, op.getComponentName(), project);
         applyProperties(wire, op.getProperties(), processor);
-        
-        int pCount = wire.getControlPointCount();
-        wire.setControlPoint(startPoint, 0);
-        wire.setControlPoint(endPoint, pCount - 1);
-        
-        // For wires with >2 control points (like HookupWire), distribute intermediate points linearly
-        if (pCount > 2) {
-          double dx = (endPoint.getX() - startPoint.getX()) / (pCount - 1);
-          double dy = (endPoint.getY() - startPoint.getY()) / (pCount - 1);
-          for (int i = 1; i < pCount - 1; i++) {
-            wire.setControlPoint(new Point2D.Double(startPoint.getX() + dx * i, startPoint.getY() + dy * i), i);
-          }
-        }
-        
+        // shapes the wire the way it comes out when drawn by hand: a curve, a staircase or a line
+        wire.stretchBetween(startPoint, endPoint);
+
         project.getComponents().add(wire);
         componentByName.put(wire.getName(), wire);
         newSelection.add(wire);
@@ -282,6 +276,22 @@ public class AiEditScriptEditor implements IProjectEditor {
     Set<IDIYComponent<?>> remaining = new HashSet<>(selection);
     remaining.removeAll(removed);
     return remaining;
+  }
+
+  /**
+   * Creates a component the way the toolbox does, with the defaults the user saved for its type,
+   * but under the name the script gave it, because later operations refer to it by that name.
+   */
+  private IDIYComponent<?> instantiate(ComponentType ct, String name, Project project)
+      throws Exception {
+    IDIYComponent<?> comp = ct.getInstanceClass().getDeclaredConstructor().newInstance();
+    comp.createdIn(project);
+    instantiationManager.fillWithDefaultProperties(comp, null);
+    if (name == null || name.isBlank()) {
+      name = instantiationManager.createUniqueName(ct, project.getComponents());
+    }
+    comp.setName(name);
+    return comp;
   }
 
   private void applyProperties(IDIYComponent<?> comp, Map<String, String> properties, ComponentProcessor processor) {

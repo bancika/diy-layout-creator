@@ -219,7 +219,7 @@ public class ChatbotService {
     try {
       String aiProjectStr = MAPPER.writeValueAsString(aiProject);
       File circuitFile = File.createTempFile("diylc_circuit_", ".txt");
-      try (FileWriter writer = new FileWriter(circuitFile)) {
+      try (FileWriter writer = new FileWriter(circuitFile, StandardCharsets.UTF_8)) {
         writer.write(aiProjectStr);
       }
       circuitFile.deleteOnExit();
@@ -258,7 +258,7 @@ public class ChatbotService {
       }
       String analysisStr = MAPPER.writeValueAsString(analysis);
       File analysisFile = File.createTempFile("diylc_client_analysis_", ".txt");
-      try (FileWriter writer = new FileWriter(analysisFile)) {
+      try (FileWriter writer = new FileWriter(analysisFile, StandardCharsets.UTF_8)) {
         writer.write(analysisStr);
       }
       analysisFile.deleteOnExit();
