@@ -669,6 +669,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Gerber export on computers set to a language that uses a decimal comma (e.g. German, French, Serbian) produced files in which drill holes, pads and traces had the wrong size - a 0.8mm hole came out as 0mm and traces and the board outline had no width, so the files could not be used for fabrication</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
