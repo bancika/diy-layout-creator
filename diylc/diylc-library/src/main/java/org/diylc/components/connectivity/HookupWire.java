@@ -31,6 +31,7 @@ import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -43,7 +44,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
+public class HookupWire extends AbstractCurvedComponent<AWG> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 

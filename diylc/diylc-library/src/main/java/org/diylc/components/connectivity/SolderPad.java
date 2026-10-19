@@ -31,6 +31,7 @@ import org.diylc.components.AbstractComponent;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
@@ -56,7 +57,7 @@ import org.diylc.utils.Constants;
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class SolderPad extends AbstractTransparentComponent<Void>
-    implements ILayeredComponent, IGerberComponentCustom {
+    implements IConnective, ILayeredComponent, IGerberComponentCustom {
 
   private static final long serialVersionUID = 1L;
 

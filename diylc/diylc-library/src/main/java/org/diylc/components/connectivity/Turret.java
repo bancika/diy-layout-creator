@@ -30,6 +30,7 @@ import org.diylc.components.AbstractComponent;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -47,7 +48,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class,
     enableCache = true)
-public class Turret extends AbstractTransparentComponent<String> {
+public class Turret extends AbstractTransparentComponent<String> implements IConnective {
 
   private static final long serialVersionUID = 1L;
 

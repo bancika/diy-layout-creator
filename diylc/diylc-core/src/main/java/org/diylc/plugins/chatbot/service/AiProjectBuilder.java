@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.core.IConnective;
+import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
@@ -37,38 +37,17 @@ public class AiProjectBuilder {
     List<String> tags = getTags(project);
 
     Map<IDIYComponent<?>, String> ids = assignIds(project.getComponents());
-    Map<Node, List<String>> contacts = getConnectivityContacts(project, continuityAreas, ids);
+
+    Set<Node> wireEnds = getWireEnds(project);
+    Map<Node, String> wireEndNets = new HashMap<>();
+    Map<String, Set<String>> nets = getNets(project, continuityAreas, ids, wireEnds, wireEndNets);
+    Map<Node, List<String>> contacts =
+        getConnectivityContacts(project, continuityAreas, ids, wireEnds, wireEndNets);
 
     double gridSpacingPx = project.getGridSpacing().convertToPixels();
     List<AiComponent> components = project.getComponents().stream()
-        .map(c -> mapComponent(c, ids.get(c), gridSpacingPx, contacts))
+        .map(c -> mapComponent(c, ids.get(c), gridSpacingPx, contacts, wireEndNets))
         .toList();
-
-//    List<Set<Node>> sets =
-    List<Netlist> netlists = null;
-    try {
-      netlists = NetlistBuilder.extractNetlists(false, project, continuityAreas);
-    } catch (NetlistException e) {
-      throw new RuntimeException(e);
-    }
-    Map<String, Set<String>> nets;
-    if (netlists == null || netlists.isEmpty()) {
-      nets = new HashMap<>();
-    } else {
-      AtomicInteger counter = new AtomicInteger();
-      nets = netlists.get(0).getGroups().stream().map(s -> s.getNodes().stream()
-              .map(node -> mapTerminal(node, ids))
-              .collect(Collectors.toSet()))
-          .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
-              Function.identity()));
-    }
-
-//    Map<String, Set<String>> nets =
-//        sets.stream().map(s -> s.stream()
-//                .map(AiProjectBuilder::mapTerminal)
-//                .collect(Collectors.toSet()))
-//            .collect(Collectors.toMap(x -> "N" + String.format("%03d", counter.incrementAndGet()),
-//                Function.identity()));
 
     List<AiSwitch> switches =
         project.getComponents().stream()
@@ -202,13 +181,75 @@ public class AiProjectBuilder {
   private static final Set<String> PROPERTY_NAMES_TO_SKIP = Set.of("alpha", "name", "value");
 
   /**
-   * What each terminal of a connectivity component (wire, jumper, trace, pad...) lands on: the
+   * Ends of wires and jumpers: points a connectivity component links to another of its own points,
+   * unlike a pad or a tag strip lug that is a connection point by itself.
+   */
+  private static Set<Node> getWireEnds(Project project) {
+    Set<Node> wireEnds = new HashSet<>();
+    for (IDIYComponent<?> c : project.getComponents()) {
+      if (!isConnectivity(c) || !(c instanceof IContinuity continuity)) {
+        continue;
+      }
+      for (int i = 0; i < c.getControlPointCount() - 1; i++) {
+        for (int j = i + 1; j < c.getControlPointCount(); j++) {
+          if (c.isControlPointSticky(i) && c.isControlPointSticky(j)
+              && continuity.arePointsConnected(i, j)) {
+            wireEnds.add(new Node(c, i));
+            wireEnds.add(new Node(c, j));
+          }
+        }
+      }
+    }
+    return wireEnds;
+  }
+
+  /**
+   * Nets of component terminals, named N001, N002... Wire ends are traced along so that each one
+   * can be told its net, but are not listed in the nets themselves.
+   *
+   * @param wireEndNets filled with the net of each wire end that reaches one
+   */
+  private static Map<String, Set<String>> getNets(Project project,
+      List<ContinuityArea> continuityAreas, Map<IDIYComponent<?>, String> ids, Set<Node> wireEnds,
+      Map<Node, String> wireEndNets) {
+    List<Netlist> netlists;
+    try {
+      netlists = NetlistBuilder.extractNetlists(false, project, continuityAreas, wireEnds);
+    } catch (NetlistException e) {
+      throw new RuntimeException(e);
+    }
+    Map<String, Set<String>> nets = new LinkedHashMap<>();
+    if (netlists == null || netlists.isEmpty()) {
+      return nets;
+    }
+    for (Group group : netlists.get(0).getGroups()) {
+      Set<String> terminals = group.getNodes().stream()
+          .filter(node -> !wireEnds.contains(node))
+          .map(node -> mapTerminal(node, ids))
+          .collect(Collectors.toCollection(TreeSet::new));
+      // a terminal with only wires on it connects nothing
+      if (terminals.size() < 2) {
+        continue;
+      }
+      String name = "N" + String.format("%03d", nets.size() + 1);
+      nets.put(name, terminals);
+      group.getNodes().stream().filter(wireEnds::contains)
+          .forEach(node -> wireEndNets.put(node, name));
+    }
+    return nets;
+  }
+
+  /**
+   * What each terminal of a connectivity component (wire, trace, pad, tag strip...) lands on: the
    * terminals of other components at the same spot or on the same copper, such as a strip, a lug
    * or the trace itself. Unlike the nets, this does not follow other wires or switches, so it tells
-   * which wires are attached to a given component, which an edit needs to rewire it.
+   * which wires are attached to a given component, which an edit needs to rewire it. Other wire
+   * ends are left out of a wire end that has a net, which tells where they lead; without one they
+   * are all that shows the end is not loose.
    */
   static Map<Node, List<String>> getConnectivityContacts(Project project,
-      List<ContinuityArea> continuityAreas, Map<IDIYComponent<?>, String> ids) {
+      List<ContinuityArea> continuityAreas, Map<IDIYComponent<?>, String> ids, Set<Node> wireEnds,
+      Map<Node, String> wireEndNets) {
     List<Node> nodes = new ArrayList<>();
     for (IDIYComponent<?> c : project.getComponents()) {
       for (int i = 0; i < c.getControlPointCount(); i++) {
@@ -231,8 +272,10 @@ public class AiProjectBuilder {
         if (!isConnectivity(node.getComponent())) {
           continue;
         }
+        boolean hasNet = wireEndNets.containsKey(node);
         contacts.put(node, group.getNodes().stream()
             .filter(other -> other.getComponent() != node.getComponent())
+            .filter(other -> !hasNet || !wireEnds.contains(other))
             .map(other -> mapTerminal(other, ids))
             .sorted()
             .toList());
@@ -241,11 +284,8 @@ public class AiProjectBuilder {
     return contacts;
   }
 
-  @SuppressWarnings("unchecked")
   private static boolean isConnectivity(IDIYComponent<?> component) {
-    ComponentType type = ComponentProcessor.getInstance()
-        .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
-    return type != null && "Connectivity".equalsIgnoreCase(type.getCategory());
+    return component instanceof IConnective;
   }
 
   static AiSwitch mapSwitch(ISwitch sw, Map<IDIYComponent<?>, String> ids) {
@@ -266,7 +306,7 @@ public class AiProjectBuilder {
   }
 
   static AiComponent mapComponent(IDIYComponent<?> component, String id, double gridSpacingPx,
-      Map<Node, List<String>> contacts) {
+      Map<Node, List<String>> contacts, Map<Node, String> wireEndNets) {
 
     boolean connectivity = isConnectivity(component);
     List<AiTerminal> terminals = new ArrayList<>();
@@ -275,11 +315,12 @@ public class AiProjectBuilder {
       if (component.isControlPointSticky(i)) {
         Point2D controlPoint = component.getControlPoint(i);
         String nodeName = component.getControlPointNodeName(i);
-        // an empty list on a connectivity component tells the AI that the end is not attached
-        List<String> connectedTo =
-            connectivity ? contacts.getOrDefault(new Node(component, i), List.of()) : null;
+        Node node = new Node(component, i);
+        // an empty list and no net on a connectivity component tells the AI that the end is not
+        // attached
+        List<String> connectedTo = connectivity ? contacts.getOrDefault(node, List.of()) : null;
         AiTerminal terminal = new AiTerminal(i, Integer.toString(i+1).equals(nodeName) ? null : nodeName,
-            createAiPoint(controlPoint, gridSpacingPx), connectedTo);
+            createAiPoint(controlPoint, gridSpacingPx), connectedTo, wireEndNets.get(node));
         terminals.add(terminal);
       }
     }

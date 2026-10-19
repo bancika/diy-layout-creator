@@ -34,6 +34,7 @@ import org.diylc.components.LineEndingStyle;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
@@ -52,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)
-public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayeredComponent, IGerberComponentSimple {
+public class CurvedTrace extends AbstractCurvedComponent<Void> implements IConnective, ILayeredComponent, IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;
 

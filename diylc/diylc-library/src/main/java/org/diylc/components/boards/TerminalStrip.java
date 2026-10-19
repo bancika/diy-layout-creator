@@ -34,6 +34,7 @@ import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TerminalStripTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -52,7 +53,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction",
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     transformer = TerminalStripTransformer.class)
-public class TerminalStrip extends AbstractTransparentComponent<String> implements IContinuity {
+public class TerminalStrip extends AbstractTransparentComponent<String> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 

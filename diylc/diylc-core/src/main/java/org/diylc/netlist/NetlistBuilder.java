@@ -53,9 +53,19 @@ public class NetlistBuilder {
   
   private static final Logger LOG = Logger.getLogger(NetlistBuilder.class);
 
-  @SuppressWarnings("unchecked")
   public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
       List<ContinuityArea> continuityAreas) throws NetlistException {
+    return extractNetlists(includeSwitches, project, continuityAreas, List.of());
+  }
+
+  /**
+   * @param extraNodes points to place in the groups they touch on top of the component terminals,
+   *        such as wire ends, so a caller can tell which net a wire is on. They only join existing
+   *        connectivity and never connect anything themselves.
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
+      List<ContinuityArea> continuityAreas, Collection<Node> extraNodes) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
@@ -94,6 +104,12 @@ public class NetlistBuilder {
       // extract switches
       if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
         switches.add((ISwitch) c);
+    }
+
+    for (Node extra : extraNodes) {
+      if (!nodes.contains(extra)) {
+        nodes.add(extra);
+      }
     }
 
     // save us the trouble

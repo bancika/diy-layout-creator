@@ -31,12 +31,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.junit.Test;
 
 import org.diylc.common.Orientation;
+import org.diylc.components.boards.TagStrip;
 import org.diylc.components.connectivity.HookupWire;
+import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
@@ -118,6 +121,82 @@ public class AiProjectBuilderTest {
     List<String> attached = ends.get(ends.size() - 1).connectedTo();
     assertEquals(1, attached.size());
     assertTrue(attached.get(0).startsWith("W2."));
+  }
+
+  @Test
+  public void wireEndOnANetNamesItInsteadOfTheWiresItTouches() {
+    Resistor second = resistor();
+    second.setName("R2");
+    second.setControlPoint(new Point2D.Double(100, 300), 0);
+    second.setControlPoint(new Point2D.Double(200, 300), 1);
+    // R1.1 - W1 - W2 - R2.1, the wires meeting at a point with nothing else on it
+    Point2D junction = new Point2D.Double(300, 200);
+    AiProject export = export(resistor(), second, wire("W1", SECOND_LEAD, junction),
+        wire("W2", junction, LOOSE_END));
+
+    String net = export.nets().entrySet().stream()
+        .filter(e -> e.getValue().equals(Set.of("R1.1", "R2.1"))).findFirst().orElseThrow()
+        .getKey();
+    List<AiTerminal> ends = component(export, "W1").terminals();
+    AiTerminal atJunction = ends.get(ends.size() - 1);
+    assertEquals(List.of(), atJunction.connectedTo());
+    assertEquals(net, atJunction.net());
+    assertEquals(net, ends.get(0).net());
+    assertEquals(List.of("R1.1"), ends.get(0).connectedTo());
+  }
+
+  @Test
+  public void wireEndOffEveryNetKeepsTheWiresItTouches() {
+    AiProject export =
+        export(wire("W1", FIRST_LEAD, LOOSE_END), wire("W2", SECOND_LEAD, LOOSE_END));
+
+    AiTerminal end = component(export, "W1").terminals().get(0);
+    assertNull(end.net());
+    assertTrue(export.nets().isEmpty());
+  }
+
+  @Test
+  public void tagStripLugStaysListedOnAWireEnd() {
+    TagStrip strip = new TagStrip();
+    strip.setName("TS1");
+    Resistor second = resistor();
+    second.setName("R2");
+    second.setControlPoint(strip.getControlPoint(0), 0);
+    second.setControlPoint(new Point2D.Double(500, 500), 1);
+    // R1.1 - W1 - lug 0 - R2.0, so the wire end on the lug has a net too
+    AiProject export = export(strip, resistor(), second,
+        wire("W1", SECOND_LEAD, strip.getControlPoint(0)));
+
+    List<AiTerminal> ends = component(export, "W1").terminals();
+    assertEquals(List.of("R2.0", "TS1.0"), ends.get(ends.size() - 1).connectedTo());
+  }
+
+  @Test
+  public void twoLugTagStripIsNotAWire() {
+    TagStrip strip = new TagStrip();
+    strip.setName("TS1");
+    strip.setTerminalCount(2);
+    Resistor second = resistor();
+    second.setName("R2");
+    second.setControlPoint(strip.getControlPoint(0), 0);
+    second.setControlPoint(new Point2D.Double(500, 500), 1);
+    AiProject export = export(strip, resistor(), second,
+        wire("W1", SECOND_LEAD, strip.getControlPoint(0)));
+
+    List<AiTerminal> ends = component(export, "W1").terminals();
+    assertEquals(List.of("R2.0", "TS1.0"), ends.get(ends.size() - 1).connectedTo());
+    assertNull(component(export, "TS1").terminals().get(0).net());
+  }
+
+  @Test
+  public void padListsTheLeadOnIt() {
+    SolderPad pad = new SolderPad();
+    pad.setName("Pad1");
+    pad.setControlPoint(FIRST_LEAD, 0);
+
+    AiProject export = export(pad, resistor());
+
+    assertEquals(List.of("R1.0"), component(export, "Pad1").terminals().get(0).connectedTo());
   }
 
   @Test
