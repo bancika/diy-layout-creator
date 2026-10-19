@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	C1.2 <-> Q1.3 <-> R1.2
 	C2.1 <-> R3.1

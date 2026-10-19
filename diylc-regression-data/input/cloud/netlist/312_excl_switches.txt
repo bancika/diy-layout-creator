@@ -1,17 +1,17 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	.1 <-> .4
-	.2 <-> Audio In.Tip
-	.3 <-> C1.2
-	.5 <-> Audio Out.Tip
-	.6 <-> C2.2
-	.8 <-> R5.2
-	.9 <-> J1.1 <-> R3.1 <-> R4.2
-	Audio In.Sleeve <-> Audio Out.Sleeve <-> J1.3 <-> LED.2 <-> R2.3
+	Audio In.Sleeve <-> Audio Out.Sleeve <-> J1.3 <-> LED.K <-> R2.1
+	Audio In.Tip <-> SW1.2
+	Audio Out.Tip <-> SW1.5
 	C1.1 <-> R1.2
+	C1.2 <-> SW1.3
 	C2.1 <-> R2.2
-	LED.1 <-> R5.1
-	R1.1 <-> R3.2
-	R2.1 <-> V1.8
+	C2.2 <-> SW1.6
+	J1.1 <-> R3.1 <-> R4.2 <-> SW1.9
+	LED.A <-> R5.1
+	R1.3 <-> R3.2
+	R2.3 <-> V1.8
 	R4.1 <-> V1.7
+	R5.2 <-> SW1.8
+	SW1.1 <-> SW1.4
 

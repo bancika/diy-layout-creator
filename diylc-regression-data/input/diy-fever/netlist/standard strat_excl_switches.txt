@@ -1,10 +1,10 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.3
+	Bridge.North Finish <-> Ct.2 <-> J1.Sleeve <-> Middle.South Finish <-> Neck.North Finish <-> Volume.1
 	Bridge.North Start <-> SW1.1
-	Cb.1 <-> SW1.2 <-> SW1.7 <-> Volume.1
+	Cb.1 <-> SW1.2 <-> SW1.7 <-> Volume.3
 	Cb.2 <-> Rb.2
-	Ct.1 <-> Tone Middle.3 <-> Tone Neck.3
+	Ct.1 <-> Tone Middle.1 <-> Tone Neck.1
 	J1.Tip <-> Rb.1 <-> Volume.2
 	Middle.South Start <-> SW1.3
 	Neck.North Start <-> SW1.5

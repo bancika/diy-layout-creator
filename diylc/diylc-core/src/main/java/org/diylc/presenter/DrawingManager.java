@@ -32,10 +32,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -75,6 +73,9 @@ public class DrawingManager {
   public static final String ZOOM_KEY = "zoom";
 
   private static boolean SHADE_EXTRA_SPACE = true;
+
+  // absorbs antialiasing and the whole-pixel placement of cached images around the drawn bounds
+  private static final double OFF_SCREEN_MARGIN = 4;
 
   public static String DEBUG_COMPONENT_AREAS = "org.diylc.debugComponentAreas";
   public static String DEBUG_CONTINUITY_AREAS = "org.diylc.debugContinuityAreas";
@@ -156,6 +157,9 @@ public class DrawingManager {
    * @param controlPointSlot
    * @param componentSlot
    * @param dragInProgress
+   * @param movingComponents components whose control points the current drag moves, including
+   *        those stuck to the dragged ones; they are drawn directly instead of through the cache,
+   *        because they change on every frame
    * @param externalZoom
    * @param scaleFactor 
    * @param visibleRect
@@ -165,8 +169,9 @@ public class DrawingManager {
       Set<DrawOption> drawOptions, IComponentFilter filter, Rectangle selectionRect,
       Collection<IDIYComponent<?>> selectedComponents, Set<IDIYComponent<?>> lockedComponents,
       Set<IDIYComponent<?>> groupedComponents, List<Point2D> controlPointSlot,
-      List<IDIYComponent<?>> componentSlot, boolean dragInProgress, Double externalZoom,
-      Double scaleFactor, Rectangle2D visibleRect) {
+      List<IDIYComponent<?>> componentSlot, boolean dragInProgress,
+      Collection<IDIYComponent<?>> movingComponents, Double externalZoom, Double scaleFactor,
+      Rectangle2D visibleRect) {
     long totalStartTime = System.nanoTime();
     failedComponents.clear();
     if (project == null) {
@@ -237,8 +242,8 @@ public class DrawingManager {
     // calculate size to be rendered
     double extraSpace = getExtraSpace(project) * zoom;
 
-    drawGrid(project, g2d, zoom, extraSpace, canvasDimension, visibleRect, drawOptions,
-        extraSpaceRect, extraSpaceTx);
+    drawGridAndExtraSpace(project, g2d, zoom, extraSpace, canvasDimension, visibleRect,
+        drawOptions, extraSpaceRect, extraSpaceTx);
 
     // apply zoom
     if (Math.abs(1.0 - zoom) > 1e-4) {
@@ -268,7 +273,9 @@ public class DrawingManager {
         }
       }
       componentStateMap.put(component, state);
-      componentForRenderList.add(new ComponentForRender(component, state, i));
+      if (!movingComponents.contains(component)) {
+        componentForRenderList.add(new ComponentForRender(component, state, i));
+      }
     }
 
     boolean outlineMode = drawOptions.contains(DrawOption.OUTLINE_MODE);
@@ -291,11 +298,16 @@ public class DrawingManager {
       // Do not track the area if component is not invalidated and was
       // drawn in the same state.
       boolean trackArea = lastDrawnStateMap.get(component) != state;
+      // areas are only recorded while drawing, so a component is drawn regardless of visibility
+      // until they are
+      boolean offScreen = !trackArea && isOffScreen(component, visibleRect);
 
       synchronized (this) {
         g2dWrapper.startedDrawingComponent(i);
         if (!trackArea) {
           g2dWrapper.stopTracking();
+        } else {
+          g2dWrapper.startRecordingDrawnBounds();
         }
         Composite oldComposite = g2d.getComposite();
         Font oldFont = g2d.getFont();
@@ -306,12 +318,14 @@ public class DrawingManager {
         // Draw the component through the g2dWrapper.
         long componentStart = System.nanoTime();
         try {
+          if (!offScreen) {
+            drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper,
+                state, zoom, i, outlineMode, !movingComponents.contains(component));
 
-          drawComponent(project, drawOptions, scaleFactor, visibleRect, component, g2dWrapper, state, zoom, i, outlineMode);
-
-          if (g2dWrapper.isTrackingContinuityArea()) {
-            LOG.info("Component " + component.getName() + " of type "
-                + component.getClass().getName() + " did not stop tracking continuity area.");
+            if (g2dWrapper.isTrackingContinuityArea()) {
+              LOG.info("Component " + component.getName() + " of type "
+                  + component.getClass().getName() + " did not stop tracking continuity area.");
+            }
           }
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
@@ -324,19 +338,15 @@ public class DrawingManager {
           g2d.setComposite(oldComposite);
           g2d.setFont(oldFont);
           // record render stats
-          long componentEnd = System.nanoTime();
-          Counter stats = null;
-          String key = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
-          if (renderStatsByType.containsKey(key)) {
-            stats = renderStatsByType.get(key);
-          } else {
-            stats = new Counter();
-            renderStatsByType.put(key, stats);
+          if (!offScreen) {
+            String key =
+                component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+            renderStatsByType.computeIfAbsent(key, k -> new Counter())
+                .add(System.nanoTime() - componentStart);
           }
-          stats.add(componentEnd - componentStart);
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
-        if (trackArea && area != null && !area.getOutlineArea().isEmpty()) {
+        if (trackArea && area != null && area.hasOutline()) {
           componentAreaMap.put(component, area);
           lastDrawnStateMap.put(component, state);
         }
@@ -608,12 +618,26 @@ public class DrawingManager {
 
   private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,
       Rectangle2D visibleRect, IDIYComponent<?> component, G2DWrapper g2dWrapper, ComponentState state,
-      double zoom, int i, boolean outlineMode) {
-    if (drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
+      double zoom, int i, boolean outlineMode, boolean cacheable) {
+    if (cacheable && drawOptions.contains(DrawOption.ENABLE_CACHING)) // go through the DrawingCache
       DrawingCache.Instance.draw(component, g2dWrapper, state,
           drawOptions.contains(DrawOption.OUTLINE_MODE), project, zoom, scaleFactor, i, visibleRect, drawOptions);
     else // go straight to the wrapper
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+  }
+
+  private boolean isOffScreen(IDIYComponent<?> component, Rectangle2D visibleRect) {
+    if (visibleRect == null) {
+      return false;
+    }
+    ComponentArea area = componentAreaMap.get(component);
+    if (area == null || area.getDrawnBounds() == null) {
+      return false;
+    }
+    Rectangle2D bounds = area.getDrawnBounds();
+    return !visibleRect.intersects(bounds.getX() - OFF_SCREEN_MARGIN,
+        bounds.getY() - OFF_SCREEN_MARGIN, bounds.getWidth() + 2 * OFF_SCREEN_MARGIN,
+        bounds.getHeight() + 2 * OFF_SCREEN_MARGIN);
   }
 
   private void configureRenderingHints(Graphics2D g2d, Set<DrawOption> drawOptions) {
@@ -651,77 +675,15 @@ public class DrawingManager {
         RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
   }
 
-  private double zoomCached = 0;
-  private Dimension canvasDimensionCached;
-  private double extraSpaceCached;
-  private GridType gridTypeCached;
-  private BufferedImage cachedGridImage;
-
-  private void drawGrid(Project project, Graphics2D g2dIn, double zoom, double extraSpace,
-      Dimension canvasDimension, Rectangle2D visibleRect, Set<DrawOption> drawOptions,
-      Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
-
-    GridType gridType = GridType.LINES;
+  private void drawGridAndExtraSpace(Project project, Graphics2D g2dIn, double zoom,
+      double extraSpace, Dimension canvasDimension, Rectangle2D visibleRect,
+      Set<DrawOption> drawOptions, Rectangle2D extraSpaceRect, AffineTransform extraSpaceTx) {
 
     Dimension innerCanvasDimension = getCanvasDimensions(project, zoom, false);
 
-    // draw from cache
-    if (zoom != zoomCached || !canvasDimension.equals(canvasDimensionCached)
-        || extraSpace != extraSpaceCached || gridType != gridTypeCached) {      
-      try {
-        cachedGridImage = new BufferedImage((int) canvasDimension.getWidth(),
-            (int) canvasDimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        // create graphics
-        Graphics2D g2d = cachedGridImage.createGraphics();
-
-        if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
-          double zoomStep = project.getGridSpacing().convertToPixels() * zoom;
-          float gridThickness = (float) (1f * (zoom > 1 ? 1 : zoom));
-          if (gridType == GridType.CROSSHAIR) {
-            g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f,
-                new float[] {(float) zoomStep / 2, (float) zoomStep / 2}, (float) zoomStep / 4));
-          } else if (gridType == GridType.DOT) {
-            g2d.setStroke(new BasicStroke(gridThickness, BasicStroke.CAP_BUTT,
-                BasicStroke.JOIN_MITER, 10f, new float[] {1f, (float) zoomStep - 1}, 0f));
-          } else {
-            g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness));
-          }
-
-          g2d.setColor(theme.getGridColor());
-          for (double i = zoomStep; i < canvasDimension.width; i += zoomStep) {
-            g2d.draw(new Line2D.Double(i, 0, i, canvasDimension.height - 1));
-          }
-          for (double j = zoomStep; j < canvasDimension.height; j += zoomStep) {
-            g2d.draw(new Line2D.Double(0, j, canvasDimension.width - 1, j));
-          }
-          // draw dots if needed
-          if (project.getDotSpacing() > 1 && zoomStep > 8) {
-            g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(gridThickness * 3));
-            g2d.setColor(theme.getDotColor());
-            for (double i = extraSpace + zoomStep * project.getDotSpacing(); i < extraSpace
-                + innerCanvasDimension.width; i += zoomStep * project.getDotSpacing())
-              for (double j = extraSpace + zoomStep * project.getDotSpacing(); j < extraSpace
-                  + innerCanvasDimension.height; j += zoomStep * project.getDotSpacing()) {
-                g2d.fillOval((int) Math.round(i - 1), (int) Math.round(j - 1), 3, 3);
-              }
-          }
-        }
-      } finally {
-        zoomCached = zoom;
-        canvasDimensionCached = (Dimension) canvasDimension.clone();
-        extraSpaceCached = extraSpace;
-        gridTypeCached = gridType;
-      }
-    }
-    
-    if (cachedGridImage == null) {
-      LOG.warn("Cached grid image is null!");
-      return;
-    }
-    
-    if (drawOptions.contains(DrawOption.GRID) && gridType != GridType.NONE) {
-      g2dIn.drawImage(cachedGridImage, 0, 0, null);
+    if (drawOptions.contains(DrawOption.GRID)) {
+      GridRenderer.draw(g2dIn, project, theme, zoom, extraSpace, canvasDimension,
+          innerCanvasDimension, visibleRect);
     }
 
     // manage extra space
@@ -793,7 +755,9 @@ public class DrawingManager {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
     for (int i = 0; i < project.getComponents().size(); i++) {
       ComponentArea area = componentAreaMap.get(project.getComponents().get(i));
-      if (area != null && area.getOutlineArea().contains(point)) {
+      // the bounds rule most components out without merging their outline into an area
+      if (area != null && area.getOutlineBounds().contains(point)
+          && area.getOutlineArea().contains(point)) {
         components.add(0, project.getComponents().get(i));
       }
     }
@@ -855,7 +819,7 @@ public class DrawingManager {
     for (Map.Entry<IDIYComponent<?>, ComponentArea> entry : this.componentAreaMap.entrySet()) {
       ComponentArea a = entry.getValue();
 
-      if (a == null || a.getOutlineArea() == null)
+      if (a == null)
         continue;
       
       IDIYComponent<?> component = entry.getKey();
@@ -871,7 +835,9 @@ public class DrawingManager {
       Collection<Area> positiveAreas = a.getContinuityPositiveAreas();
       if (positiveAreas != null) {
         for (Area a1 : positiveAreas) {
-          preliminaryAreas.add(new ContinuityArea(layerId, a1));
+          // a copy, because negative areas are subtracted from it below and the recorded area must
+          // stay whole for when they move
+          preliminaryAreas.add(new ContinuityArea(layerId, new Area(a1)));
           checkBreakout.add(false);
         }
       }

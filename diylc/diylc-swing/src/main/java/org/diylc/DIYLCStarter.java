@@ -186,7 +186,6 @@ public class DIYLCStarter {
     			LOG.info("Hiding splash screen...");
     			splash.setVisible(false);
     			splash.dispose();
-    			LOG.info("Done hiding splash screen.");
     		}
 		}
 

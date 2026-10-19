@@ -16,6 +16,7 @@ import org.diylc.common.ITask;
 import org.diylc.common.VariantPackage;
 import org.diylc.core.IView;
 import org.diylc.core.Template;
+import org.diylc.lang.LangUtil;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
@@ -54,7 +55,8 @@ public class ExportVariantsAction extends AbstractAction {
       Map<String, List<Template>> variantMap = (Map<String, List<Template>>) ConfigurationManager
           .getInstance().readObject(IPlugInPort.TEMPLATES_KEY, null);
       if (variantMap == null || variantMap.isEmpty()) {
-        swingUI.showMessage("No variants found to export.", "Error", IView.ERROR_MESSAGE);
+        swingUI.showMessage(LangUtil.translate("No variants found to export."),
+            LangUtil.translate("Error"), IView.ERROR_MESSAGE);
         return;
       }
 
@@ -76,7 +78,8 @@ public class ExportVariantsAction extends AbstractAction {
       });
 
       CheckBoxListDialog dialog =
-          new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Variants", types.toArray());
+          new CheckBoxListDialog(swingUI.getOwnerFrame(), LangUtil.translate("Export Variants"),
+              types.toArray());
 
       dialog.setVisible(true);
 
@@ -86,7 +89,8 @@ public class ExportVariantsAction extends AbstractAction {
       Object[] selected = dialog.getSelectedOptions();
 
       if (selected.length == 0) {
-        swingUI.showMessage("No variants selected for export.", "Error", IView.ERROR_MESSAGE);
+        swingUI.showMessage(LangUtil.translate("No variants selected for export."),
+            LangUtil.translate("Error"), IView.ERROR_MESSAGE);
         return;
       }
 
@@ -100,8 +104,9 @@ public class ExportVariantsAction extends AbstractAction {
       }
     } catch (Exception ex) {
       ActionFactory.LOG.error("Error preparing variants for export", ex);
-      swingUI.showMessage("Could not export variants. Please check the log for details",
-          "Export Variants", ISwingUI.ERROR_MESSAGE);
+      swingUI.showMessage(
+          LangUtil.translate("Could not export variants. Please check the log for details"),
+          LangUtil.translate("Export Variants"), ISwingUI.ERROR_MESSAGE);
       return;
     }
 
@@ -135,13 +140,16 @@ public class ExportVariantsAction extends AbstractAction {
 
         @Override
         public void complete(Void result) {
-          swingUI.showMessage("Variants exported to \"" + file.getName() + "\".", "Success",
-              ISwingUI.INFORMATION_MESSAGE);
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Variants exported to \"%s\"."), file.getName()),
+              LangUtil.translate("Success"), ISwingUI.INFORMATION_MESSAGE);
         }
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not export variants: " + e.getMessage(), "Error",
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not export variants: %s"), e.getMessage()),
+              LangUtil.translate("Error"),
               ISwingUI.ERROR_MESSAGE);
         }
       }, true);

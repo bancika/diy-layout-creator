@@ -26,7 +26,9 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import org.diylc.core.Project;
+import org.diylc.core.annotations.Indexed;
 
+@Indexed
 public interface IOldFileParser {
 
   boolean canParse(String version);

@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	.2 <-> .2 <-> .2
+	SW1.2 <-> SW2.2 <-> SW3.2
 

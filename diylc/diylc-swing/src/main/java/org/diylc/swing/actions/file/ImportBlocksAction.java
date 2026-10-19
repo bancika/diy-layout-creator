@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -44,13 +45,17 @@ public class ImportBlocksAction extends AbstractAction {
         @Override
         public void complete(Integer result) {
           swingUI.showMessage(
-              result + " building block(s) imported from \"" + file.getName() + "\".", "Success",
-              ISwingUI.INFORMATION_MESSAGE);
+              String.format(LangUtil.translate("%s building block(s) imported from \"%s\"."),
+                  result, file.getName()),
+              LangUtil.translate("Success"), ISwingUI.INFORMATION_MESSAGE);
         }
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not import building blocks: " + e.getMessage(), "Error",
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not import building blocks: %s"),
+                  e.getMessage()),
+              LangUtil.translate("Error"),
               ISwingUI.ERROR_MESSAGE);
         }
       }, true);

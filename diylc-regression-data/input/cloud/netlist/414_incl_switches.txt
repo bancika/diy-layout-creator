@@ -1,4 +1,8 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	CAP 0.47 uF.2 <-> GND <-> Precision South Coil.South Finish <-> Presa Jack.Sleeve
+	CAP 0.47 uF.1 <-> TONE.2
+	CAP 0.47 uF.2 <-> GND <-> Precision South Coil.South Finish <-> Presa Jack.Sleeve <-> VOL.1
+	Precision North Coil.North Finish <-> Precision South Coil.South Start
+	Precision North Coil.North Start <-> TONE.1 <-> VOL.3
+	Presa Jack.Tip <-> VOL.2
 

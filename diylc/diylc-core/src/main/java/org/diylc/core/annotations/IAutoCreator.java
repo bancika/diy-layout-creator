@@ -30,6 +30,7 @@ import org.diylc.core.IDIYComponent;
  * 
  * @author Branislav Stojkovic
  */
+@Indexed
 public interface IAutoCreator {
 
   /**

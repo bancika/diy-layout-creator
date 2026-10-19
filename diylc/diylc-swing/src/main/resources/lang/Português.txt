@@ -497,3 +497,170 @@ Virtual Multimeter (excl. Switches)|Multímetro Virtual (sem interruptores)
 Virtual Multimeter (incl. Switches)|Multímetro Virtual (com interruptores)
 Become a Patreon and enjoy perks|Torne-se um Patreon e aproveite benefícios
 Join Patreon|Juntar-se ao Patreon
+<empty>|<vazio>
+Success|Sucesso
+Could not open file. %s|Não foi possível abrir o arquivo. %s
+Could not save to file. %s|Não foi possível salvar o arquivo. %s
+Could not export to PDF. %s|Não foi possível exportar para PDF. %s
+Could not export to PNG. %s|Não foi possível exportar para PNG. %s
+Could not export to Gerber file. %s|Não foi possível exportar para arquivo Gerber. %s
+Could not print. %s|Não foi possível imprimir. %s
+Could not import netlist file: %s|Não foi possível importar o arquivo de lista de rede: %s
+No building blocks found to export.|Nenhum bloco encontrado para exportar.
+No building blocks selected for export.|Nenhum bloco selecionado para exportar.
+Could not export building blocks. Please check the log for details|Não foi possível exportar os blocos. Verifique o registro para mais detalhes
+Building blocks exported to "%s".|Blocos exportados para "%s".
+Could not export building blocks: %s|Não foi possível exportar os blocos: %s
+%s building block(s) imported from "%s".|%s bloco(s) importado(s) de "%s".
+Could not import building blocks: %s|Não foi possível importar os blocos: %s
+No variants found to export.|Nenhuma variante encontrada para exportar.
+No variants selected for export.|Nenhuma variante selecionada para exportar.
+Could not export variants. Please check the log for details|Não foi possível exportar as variantes. Verifique o registro para mais detalhes
+Variants exported to "%s".|Variantes exportadas para "%s".
+Could not export variants: %s|Não foi possível exportar as variantes: %s
+%s variant(s) imported from "%s".|%s variante(s) importada(s) de "%s".
+Could not import variants: %s|Não foi possível importar as variantes: %s
+Edit Project|Editar Projeto
+Component Categories|Categorias de Componentes
+Reset All|Redefinir Tudo
+Controllers|Controladores
+Displays & Outputs|Displays e Saídas
+Modules & Breakouts|Módulos e Placas de Expansão
+Robotics|Robótica
+Sensors|Sensores
+SMD|SMD
+High DPI Rendering|Renderização em Alta Resolução (DPI)
+Node Name Tooltips|Dicas com Nomes dos Nós
+Show AI Assistant|Mostrar Assistente de IA
+Show Project Explorer|Mostrar Explorador de Projeto
+Gray|Cinza
+Me|Eu
+AI Assistant|Assistente de IA
+Ask me anything|Pergunte-me qualquer coisa
+Please log into your cloud account to use the AI assistant|Faça login na sua conta na nuvem para usar o assistente de IA
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|Você está inscrito no nível '%s', com vencimento em %s, com %s créditos restantes.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Para assinar um dos níveis premium, desbloquear modelos de IA avançados e obter mais créditos, visite %s e torne-se um apoiador no Patreon.
+All the details about the AI Assistant limits and other benefits will be specified there.|Todos os detalhes sobre os limites do Assistente de IA e outros benefícios estarão especificados lá.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Se você já é um apoiador no Patreon, vincule sua conta à conta DIYLC Cloud pelo menu 'Nuvem'.
+Thank you for supporting further development of DIYLC!|Obrigado por apoiar o desenvolvimento do DIYLC!
+Failed to retrieve chat history.|Não foi possível obter o histórico de chat.
+Welcome to the DIYLC AI Assistant!|Bem-vindo ao Assistente de IA do DIYLC!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Estou aqui para ajudar você a projetar, montar e solucionar problemas em seus projetos eletrônicos usando o DIY Layout Creator (DIYLC). Você pode me perguntar sobre:
+Electronics theory or concepts:|Teoria ou conceitos de eletrônica:
+DIYLC features and usage:|Recursos e uso do DIYLC:
+Your current circuit project:|Seu projeto de circuito atual:
+e.g.,|ex.:
+Feel free to ask your own question or use one of these examples to get started!|Fique à vontade para fazer sua própria pergunta ou usar um destes exemplos para começar!
+Waiting for the response...|Aguardando a resposta...
+Failed to retrieve the response from the server.|Não foi possível obter a resposta do servidor.
+Failed to delete chat history from the server.|Não foi possível excluir o histórico de chat do servidor.
+Chat history exported successfully.|Histórico de chat exportado com sucesso.
+Failed to open premium subscription page. Please visit %s manually.|Não foi possível abrir a página de assinatura premium. Visite %s manualmente.
+45 degrees clockwise|45 graus em Sentido Horário
+135 degrees clockwise|135 graus em Sentido Horário
+225 degrees clockwise|225 graus em Sentido Horário
+315 degrees clockwise|315 graus em Sentido Horário
+1 throws / 2 positions|1 via / 2 posições
+2 throws / 2 positions|2 vias / 2 posições
+2 throws / 3 positions / OFF even positions|2 vias / 3 posições / posições pares em OFF
+3 throws / 3 positions|3 vias / 3 posições
+3 throws / 5 positions / SHORT even positions|3 vias / 5 posições / posições pares em CURTO
+4 throws / 4 positions|4 vias / 4 posições
+5 throws / 5 positions|5 vias / 5 posições
+6 throws / 6 positions|6 vias / 6 posições
+7 throws / 7 positions|7 vias / 7 posições
+8 throws / 8 positions|8 vias / 8 posições
+9 throws / 9 positions|9 vias / 9 posições
+10 throws / 10 positions|10 vias / 10 posições
+11 throws / 11 positions|11 vias / 11 posições
+12 throws / 12 positions|12 vias / 12 posições
+4 band|4 faixas
+5 band|5 faixas
+DP3T (Import 5-Position Strat)|DP3T (5-Posições Import Stratocaster)
+DP4T (6-Position Oak Grigsby)|DP4T (6-Posições Oak Grigsby)
+Angle Offset|Deslocamento de Ângulo
+Apply Model|Aplicar Modelo
+Background|Fundo
+Circle|Círculo
+Rectangle|Retângulo
+Coil(s)|Bobina(s)
+Configuration|Configuração
+Designation|Designação
+Dimension Mode|Modo de Dimensão
+Dots (Gradual)|Pontos (Graduais)
+Dots (Uniform)|Pontos (Uniformes)
+Double Rails|Rail Duplo
+Double Rods|Barras Duplas
+Draw Standard|Padrão de Desenho
+One|Um
+Six|Seis
+Eight|Oito
+Nine|Nove
+Ten|Dez
+Filament Voltage|Tensão do Filamento
+Hole Type|Tipo de Furo
+Humbucking - 4 leads|Humbucking - 4 fios
+Inner 1|Interna 1
+Inner 2|Interna 2
+Inner 3|Interna 3
+Inner 4|Interna 4
+Inner 5|Interna 5
+Inner 6|Interna 6
+Markers|Marcadores
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Número máximo de combinações de chaveamento excedido. Permitido: %s, atual: %s
+Plated Through Hole|Furo Metalizado
+Non-Plated Through Hole|Furo Não Metalizado
+Shorting|Com curto
+Non-shorting|Sem curto
+Numeric (0-10)|Numérico (0-10)
+Numeric (1-10)|Numérico (1-10)
+Numeric (1-11)|Numérico (1-11)
+Numeric (1-12)|Numérico (1-12)
+Numeric (Even, No Ticks)|Numérico (Pares, Sem Traços)
+Numeric (Even, With Ticks)|Numérico (Pares, Com Traços)
+Poles|Polos
+Screw Position|Posição do Parafuso
+Single - North|Simples - Norte
+Single - South|Simples - Sul
+Sort by Name|Ordenar por Nome
+Sort by Type|Ordenar por Tipo
+Sort by Z-index|Ordenar por Índice Z
+Source Style|Estilo da Fonte
+Source Type|Tipo da Fonte
+Terminal|Terminal
+Underside Display|Exibir Face Inferior
+Underside Offset|Deslocamento da Face Inferior
+Virtual Multimeter|Multímetro Virtual
+Title Block|Carimbo
+Tubular Beveled|Tubular Chanfrado
+TO-92 w/ 2 Leads|TO-92 com 2 Terminais
+TO-92 w/ 3 Leads|TO-92 com 3 Terminais
+Bracket|Suporte
+Show Bracket|Mostrar Suporte
+Check Trace Proximity|Verificar Proximidade das Trilhas
+Column Spacing|Espaçamento de Colunas
+Donate|Doar
+Marker Size|Tamanho do Marcador
+Panel|Painel
+Tick Width|Largura do Traço
+Wiring|Fiação
+Align & Distribute|Alinhar e Distribuir
+Align Left|Alinhar à Esquerda
+Align Right|Alinhar à Direita
+Align Top|Alinhar Acima
+Align Bottom|Alinhar Abaixo
+Align Horizontal Centers|Alinhar Centros Horizontalmente
+Align Vertical Centers|Alinhar Centros Verticalmente
+Distribute Centers Horizontally|Distribuir Centros Horizontalmente
+Distribute Spacing Horizontally|Distribuir Espaçamento Horizontalmente
+Distribute Centers Vertically|Distribuir Centros Verticalmente
+Distribute Spacing Vertically|Distribuir Espaçamento Verticalmente
+No matching components found.|Nenhum componente correspondente encontrado.
+Variant name:|Nome da variação:
+Block name:|Nome do bloco:
+A building block named "%s" already exists. Overwrite it?|Já existe um bloco chamado "%s". Deseja sobrescrevê-lo?
+Nudge Selection|Empurrar Seleção
+Include stuck|Incluir grudados
+Enter group name:|Digite o nome do grupo:
+Group Components|Agrupar Componentes
+Could not apply changes to the selection. Check the log for details.|Não foi possível aplicar as alterações à seleção. Verifique o registro para mais detalhes.

@@ -116,7 +116,10 @@ public class ImportNetlistAction extends AbstractAction {
               plugInPort.pasteComponents(new ComponentTransferable(components, "Imported Netlist"), false, false);
             }
           } catch (Exception e) {
-            swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
+            swingUI.showMessage(
+                String.format(LangUtil.translate("Could not import netlist file: %s"),
+                    e.getMessage()),
+                LangUtil.translate("Error"),
                 ISwingUI.ERROR_MESSAGE);
             e.printStackTrace();
           }
@@ -124,7 +127,10 @@ public class ImportNetlistAction extends AbstractAction {
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not import netlist file: " + e.getMessage(), "Error",
+          swingUI.showMessage(
+                String.format(LangUtil.translate("Could not import netlist file: %s"),
+                    e.getMessage()),
+                LangUtil.translate("Error"),
               ISwingUI.ERROR_MESSAGE);
         }
       }, true);

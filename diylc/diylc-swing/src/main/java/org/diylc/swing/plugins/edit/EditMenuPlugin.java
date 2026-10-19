@@ -27,26 +27,33 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.FlavorEvent;
 import java.awt.datatransfer.FlavorListener;
 import java.awt.datatransfer.Transferable;
+import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.Map;
 import org.diylc.appframework.undo.IUndoListener;
 import org.diylc.appframework.undo.UndoHandler;
 
 import org.diylc.clipboard.ComponentTransferable;
+import org.diylc.common.AlignmentMode;
+import org.diylc.common.DistributionMode;
 import org.diylc.common.EventType;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
 import org.diylc.core.Project;
+import org.diylc.presenter.AlignmentManager;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.actions.FindAction;
 import org.diylc.swing.actions.FlexibleLeadsAction;
 import org.diylc.swing.actions.RenumberAction;
+import org.diylc.swing.actions.edit.AlignSelectionAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
 import org.diylc.swing.actions.edit.CopyAction;
 import org.diylc.swing.actions.edit.CutAction;
 import org.diylc.swing.actions.edit.DeleteSelectionAction;
+import org.diylc.swing.actions.edit.DistributeSelectionAction;
 import org.diylc.swing.actions.edit.DuplicateAction;
 import org.diylc.swing.actions.edit.EditSelectionAction;
 import org.diylc.swing.actions.edit.ExpandSelectionAction;
@@ -65,6 +72,7 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
 
   private static final String EDIT_TITLE = "Edit";
   private static final String TRANSFORM_TITLE = "Transform Selection";
+  private static final String ALIGN_TITLE = "Align & Distribute";
   private static final String RENUMBER_TITLE = "Renumber Selection";
   private static final String EXPAND_TITLE = "Expand Selection";
 
@@ -97,6 +105,10 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
   private MirrorSelectionAction mirrorVerticallyAction;
   private FindAction findAction;
   private FlexibleLeadsAction flexibleLeadsAction;
+  private Map<AlignmentMode, AlignSelectionAction> alignActions =
+      new EnumMap<AlignmentMode, AlignSelectionAction>(AlignmentMode.class);
+  private Map<DistributionMode, DistributeSelectionAction> distributeActions =
+      new EnumMap<DistributionMode, DistributeSelectionAction>(DistributionMode.class);
 
   private UndoHandler<Project> undoHandler;
 
@@ -297,6 +309,16 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     return flexibleLeadsAction;
   }
 
+  public AlignSelectionAction getAlignAction(AlignmentMode mode) {
+    return alignActions.computeIfAbsent(mode,
+        m -> ActionFactory.getInstance().createAlignSelectionAction(plugInPort, m));
+  }
+
+  public DistributeSelectionAction getDistributeAction(DistributionMode mode) {
+    return distributeActions.computeIfAbsent(mode,
+        m -> ActionFactory.getInstance().createDistributeSelectionAction(plugInPort, m));
+  }
+
   @Override
   public void connect(IPlugInPort plugInPort) {
     this.plugInPort = plugInPort;
@@ -329,6 +351,14 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     swingUI.injectMenuAction(null, TRANSFORM_TITLE);
     swingUI.injectMenuAction(getGroupAction(), TRANSFORM_TITLE);
     swingUI.injectMenuAction(getUngroupAction(), TRANSFORM_TITLE);
+    swingUI.injectSubmenu(ALIGN_TITLE, IconLoader.AlignDistribute.getIcon(), EDIT_TITLE);
+    for (AlignmentMode mode : AlignmentMode.values()) {
+      swingUI.injectMenuAction(getAlignAction(mode), ALIGN_TITLE);
+    }
+    swingUI.injectMenuAction(null, ALIGN_TITLE);
+    for (DistributionMode mode : DistributionMode.values()) {
+      swingUI.injectMenuAction(getDistributeAction(mode), ALIGN_TITLE);
+    }
     swingUI.injectMenuAction(null, EDIT_TITLE);
     // swingUI.injectMenuAction(getSaveAsTemplateAction(), EDIT_TITLE);
     swingUI.injectSubmenu(RENUMBER_TITLE, IconLoader.Sort.getIcon(), EDIT_TITLE);
@@ -395,6 +425,13 @@ public class EditMenuPlugin implements IPlugIn, ClipboardOwner {
     getSaveAsTemplateAction().setEnabled(enabled);
     getSaveAsBlockAction().setEnabled(enabled);
     getFlexibleLeadsAction().setEnabled(enabled);
+    int unitCount = enabled ? plugInPort.getSelectionUnitCount() : 0;
+    for (AlignmentMode mode : AlignmentMode.values()) {
+      getAlignAction(mode).setEnabled(unitCount >= AlignmentManager.MIN_ALIGN_UNITS);
+    }
+    for (DistributionMode mode : DistributionMode.values()) {
+      getDistributeAction(mode).setEnabled(unitCount >= AlignmentManager.MIN_DISTRIBUTE_UNITS);
+    }
   }
 
   // ClipboardOwner

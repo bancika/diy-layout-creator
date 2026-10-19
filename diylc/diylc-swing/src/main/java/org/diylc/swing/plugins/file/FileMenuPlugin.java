@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.*;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.IDynamicSubmenuHandler;
 
 import org.diylc.swing.ActionFactory;
@@ -157,8 +158,9 @@ public class FileMenuPlugin implements IPlugIn, IDynamicSubmenuHandler {
 
       @Override
       public void failed(Exception e) {
-        swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
-            ISwingUI.ERROR_MESSAGE);
+        swingUI.showMessage(
+            String.format(LangUtil.translate("Could not open file. %s"), e.getMessage()),
+            LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
       }
     }, true);
   }

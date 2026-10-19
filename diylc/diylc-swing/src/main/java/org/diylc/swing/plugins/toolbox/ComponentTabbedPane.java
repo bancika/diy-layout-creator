@@ -90,6 +90,8 @@ class ComponentTabbedPane extends JTabbedPane {
   private List<String> blocks;  
 
   private final Map<String, Component> categoryPanels = new HashMap<String, Component>();
+  private final Map<Component, List<ComponentType>> unpopulatedPanels =
+      new HashMap<Component, List<ComponentType>>();
   private boolean refreshing = false;
 
   public ComponentTabbedPane(IPlugInPort plugInPort, ISwingUI swingUI) {
@@ -111,6 +113,7 @@ class ComponentTabbedPane extends JTabbedPane {
     if (lastSelectedTab >= 0 && lastSelectedTab < getTabCount()) {
       setSelectedIndex(lastSelectedTab);
     }
+    populateTab(getSelectedComponent());
 
     addChangeListener(new ChangeListener() {
 
@@ -119,6 +122,7 @@ class ComponentTabbedPane extends JTabbedPane {
         if (refreshing) {
           return;
         }
+        populateTab(getSelectedComponent());
         ConfigurationManager.getInstance().writeValue(LAST_SELECTED_TAB, getSelectedIndex());
         ComponentTabbedPane.this.plugInPort.setNewComponentTypeSlot(null, null, null, false);
         // Refresh recent components if needed
@@ -157,6 +161,11 @@ class ComponentTabbedPane extends JTabbedPane {
         }
         addTab(category, panel);
       }
+      // the tabbed pane takes its height from the tallest tab, so keep one category populated
+      // even while a sparse tab like Favorites is selected
+      if (getTabCount() > 3) {
+        populateTab(getComponentAt(3));
+      }
 
       if (selectedTitle != null) {
         for (int i = 0; i < getTabCount(); i++) {
@@ -175,6 +184,7 @@ class ComponentTabbedPane extends JTabbedPane {
     } else if (getTabCount() > 0) {
       setSelectedIndex(0);
     }
+    populateTab(getSelectedComponent());
   }
 
   @SuppressWarnings("unchecked")
@@ -238,9 +248,19 @@ class ComponentTabbedPane extends JTabbedPane {
     JPanel panel = new JPanel(new BorderLayout());
 
     panel.setOpaque(false);
-    panel.add(createComponentPanel(componentTypes), BorderLayout.CENTER);
+    // buttons are added by populateTab() when the tab is first shown, as creating a button draws
+    // its component icon
+    unpopulatedPanels.put(panel, componentTypes);
 
     return panel;
+  }
+
+  private void populateTab(Component panel) {
+    List<ComponentType> componentTypes = unpopulatedPanels.remove(panel);
+    if (componentTypes != null) {
+      ((JPanel) panel).add(createComponentPanel(componentTypes), BorderLayout.CENTER);
+      panel.revalidate();
+    }
   }
 
   public Container getRecentToolbar() {

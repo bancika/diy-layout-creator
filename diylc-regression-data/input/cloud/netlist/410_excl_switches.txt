@@ -1,6 +1,12 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	CAP.2 <-> CENTER PU.South Finish <-> J1.Sleeve <-> NECK PU.North Finish <-> VOL.3
-	Strat 5 Way Switch.2 <-> Strat 5 Way Switch.7 <-> SW1.1
-	Tone1.3 <-> Tone2.2
+	BRIDGE PU.North Finish <-> CAP.2 <-> CENTER PU.South Finish <-> J1.Sleeve <-> NECK PU.North Finish <-> VOL.1
+	BRIDGE PU.North Start <-> Strat 5 Way Switch.1
+	CAP.1 <-> Tone1.1 <-> Tone2.2
+	CENTER PU.South Start <-> Strat 5 Way Switch.3
+	J1.Tip <-> VOL.2
+	NECK PU.North Start <-> Strat 5 Way Switch.5
+	Strat 5 Way Switch.2 <-> Strat 5 Way Switch.7 <-> SW1.1 <-> VOL.3
+	Strat 5 Way Switch.4 <-> Strat 5 Way Switch.6 <-> Tone2.1
+	Strat 5 Way Switch.8 <-> Tone1.2
 

@@ -500,3 +500,164 @@ Virtual Multimeter (excl. Switches)
 Virtual Multimeter (incl. Switches)
 Become a Patreon and enjoy perks
 Join Patreon
+<empty>
+Success
+Could not open file. %s
+Could not save to file. %s
+Could not export to PDF. %s
+Could not export to PNG. %s
+Could not export to Gerber file. %s
+Could not print. %s
+Could not import netlist file: %s
+No building blocks found to export.
+No building blocks selected for export.
+Could not export building blocks. Please check the log for details
+Building blocks exported to "%s".
+Could not export building blocks: %s
+%s building block(s) imported from "%s".
+Could not import building blocks: %s
+No variants found to export.
+No variants selected for export.
+Could not export variants. Please check the log for details
+Variants exported to "%s".
+Could not export variants: %s
+%s variant(s) imported from "%s".
+Could not import variants: %s
+Edit Project
+Component Categories
+Reset All
+Controllers
+Displays & Outputs
+Modules & Breakouts
+Robotics
+Sensors
+SMD
+High DPI Rendering
+Node Name Tooltips
+Show AI Assistant
+Show Project Explorer
+Gray
+Me
+AI Assistant
+Ask me anything
+Please log into your cloud account to use the AI assistant
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.
+All the details about the AI Assistant limits and other benefits will be specified there.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.
+Thank you for supporting further development of DIYLC!
+Failed to retrieve chat history.
+Welcome to the DIYLC AI Assistant!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:
+Electronics theory or concepts:
+DIYLC features and usage:
+Your current circuit project:
+e.g.,
+Feel free to ask your own question or use one of these examples to get started!
+Waiting for the response...
+Failed to retrieve the response from the server.
+Failed to delete chat history from the server.
+Chat history exported successfully.
+Failed to open premium subscription page. Please visit %s manually.
+45 degrees clockwise
+135 degrees clockwise
+225 degrees clockwise
+315 degrees clockwise
+1 throws / 2 positions
+2 throws / 2 positions
+2 throws / 3 positions / OFF even positions
+3 throws / 3 positions
+3 throws / 5 positions / SHORT even positions
+4 throws / 4 positions
+5 throws / 5 positions
+6 throws / 6 positions
+7 throws / 7 positions
+8 throws / 8 positions
+9 throws / 9 positions
+10 throws / 10 positions
+11 throws / 11 positions
+12 throws / 12 positions
+4 band
+5 band
+DP3T (Import 5-Position Strat)
+DP4T (6-Position Oak Grigsby)
+Angle Offset
+Apply Model
+Background
+Circle
+Rectangle
+Coil(s)
+Configuration
+Designation
+Dimension Mode
+Dots (Gradual)
+Dots (Uniform)
+Double Rails
+Double Rods
+Draw Standard
+One
+Six
+Eight
+Nine
+Ten
+Filament Voltage
+Hole Type
+Humbucking - 4 leads
+Inner 1
+Inner 2
+Inner 3
+Inner 4
+Inner 5
+Inner 6
+Markers
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s
+Plated Through Hole
+Non-Plated Through Hole
+Shorting
+Non-shorting
+Numeric (0-10)
+Numeric (1-10)
+Numeric (1-11)
+Numeric (1-12)
+Numeric (Even, No Ticks)
+Numeric (Even, With Ticks)
+Poles
+Screw Position
+Single - North
+Single - South
+Sort by Name
+Sort by Type
+Sort by Z-index
+Source Style
+Source Type
+Terminal
+Underside Display
+Underside Offset
+Virtual Multimeter
+Title Block
+Tubular Beveled
+TO-92 w/ 2 Leads
+TO-92 w/ 3 Leads
+Lin
+Log
+Rev log
+Align & Distribute
+Align Left
+Align Right
+Align Top
+Align Bottom
+Align Horizontal Centers
+Align Vertical Centers
+Distribute Centers Horizontally
+Distribute Spacing Horizontally
+Distribute Centers Vertically
+Distribute Spacing Vertically
+No matching components found.
+Variant name:
+Block name:
+A building block named "%s" already exists. Overwrite it?
+Nudge Selection
+Include stuck
+Enter group name:
+Group Components
+Could not apply changes to the selection. Check the log for details.

@@ -55,7 +55,6 @@ public class DatasheetService {
   public List<String[]> loadDatasheet(Class<?> clazz) {
     return datasheetCache.computeIfAbsent(clazz.getCanonicalName(), key -> {
       String fileName = clazz.getSimpleName() + ".datasheet";
-      LOG.info("Loading datasheet file for " + fileName);
       InputStream inputStream = clazz.getResourceAsStream("/datasheets/"  + fileName);
       if (inputStream == null) {
         LOG.warn("Datasheet file not found: " + fileName);
@@ -67,7 +66,7 @@ public class DatasheetService {
           List<String[]> types =
               reader.lines().map(line -> line.split("\\s*,\\s*")).collect(Collectors.toList());
 
-          LOG.info(String.format("Loaded %d component sizes from the file", types.size()));
+          LOG.info(String.format("Loaded %d component sizes from the file %s", types.size(), fileName));
           return types;
         }
       } catch (IOException e) {

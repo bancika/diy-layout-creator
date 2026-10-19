@@ -34,8 +34,8 @@ public class ChatbotPane extends JPanel {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = Logger.getLogger(ChatbotPane.class);
-  public static final String ME = "Me: ";
-  public static final String AI_ASSISTANT = "AI Assistant: ";
+  public static final String ME = LangUtil.translate("Me") + ": ";
+  public static final String AI_ASSISTANT = LangUtil.translate("AI Assistant") + ": ";
   public static final String FREE_TIER = "Free";
   public static final String GET_PREMIUM_URL = "www.diy-fever.com/get-premium";
 
@@ -210,7 +210,7 @@ public class ChatbotPane extends JPanel {
       });
 
       // Add placeholder text behavior
-      final String placeholder = "Ask me anything";
+      final String placeholder = LangUtil.translate("Ask me anything");
       promptArea.setText(placeholder);
       promptArea.setForeground(new Color(128, 128, 128));  // Dimmer text for placeholder
 
@@ -279,7 +279,8 @@ public class ChatbotPane extends JPanel {
 
     clearChat();
     if (!currentLoggedIn) {
-      appendSection(ChatbotService.SYSTEM, "Please log into your cloud account to use the AI assistant");
+      appendSection(ChatbotService.SYSTEM,
+          LangUtil.translate("Please log into your cloud account to use the AI assistant"));
       getAskButton().setEnabled(false);
       getClearButton().setEnabled(false);
       getPremiumButton().setVisible(false);
@@ -299,18 +300,25 @@ public class ChatbotPane extends JPanel {
         public void complete(Void result) {
           if (ChatbotPane.this.subscriptionInfo != null) {
             getPremiumButton().setVisible(FREE_TIER.equals(ChatbotPane.this.subscriptionInfo.getTier()));
-            String subscriptionInfoText = "Your are currently subscribed to the '" +
-                ChatbotPane.this.subscriptionInfo.getTier() + "' tier, expiring on " +
-                ChatbotPane.this.subscriptionInfo.getEndDate() + ", with " +
-                ChatbotPane.this.subscriptionInfo.getRemainingCredits() + " credits remaining.";
+            String subscriptionInfoText = String.format(LangUtil.translate(
+                    "You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining."),
+                ChatbotPane.this.subscriptionInfo.getTier(),
+                ChatbotPane.this.subscriptionInfo.getEndDate(),
+                ChatbotPane.this.subscriptionInfo.getRemainingCredits());
 
             if (FREE_TIER.equals(ChatbotPane.this.subscriptionInfo.getTier())) {
-              subscriptionInfoText +=
-                  " To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit <a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a> and become a Patreon supporter. " +
-                      "All the details about the AI Assistant limits and other benefits will be specified there. " +
-                      "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.";
+              String premiumLink =
+                  "<a href='http://" + GET_PREMIUM_URL + "'>" + GET_PREMIUM_URL + "</a>";
+              subscriptionInfoText += " " + String.format(LangUtil.translate(
+                  "To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter."),
+                  premiumLink)
+                  + " " + LangUtil.translate(
+                      "All the details about the AI Assistant limits and other benefits will be specified there.")
+                  + " " + LangUtil.translate(
+                      "If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.");
             } else {
-              subscriptionInfoText += " Thank you for supporting further development of DIYLC!";
+              subscriptionInfoText +=
+                  " " + LangUtil.translate("Thank you for supporting further development of DIYLC!");
             }
             appendSection(ChatbotService.SYSTEM, subscriptionInfoText);
           }
@@ -348,7 +356,7 @@ public class ChatbotPane extends JPanel {
         appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + message.getResponse());
       });
     } catch (NotLoggedInException e) {
-      appendSection(ChatbotService.SYSTEM, "Failed to retrieve chat history.");
+      appendSection(ChatbotService.SYSTEM, LangUtil.translate("Failed to retrieve chat history."));
     }
   }
 
@@ -395,18 +403,19 @@ public class ChatbotPane extends JPanel {
   private String getInitialChatContents() {
     Random r = new Random();
 
+    String example = LangUtil.translate("e.g.,");
     String chatHtml =
-        "<div class='system'>" + ChatbotService.WELCOME_MESSAGE + "</div><br><br>\n" +
-            "<div class='assistant'>I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:</div><br>\n" +
+        "<div class='system'>" + LangUtil.translate(ChatbotService.WELCOME_MESSAGE) + "</div><br><br>\n" +
+            "<div class='assistant'>" + LangUtil.translate("I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:") + "</div><br>\n" +
             //            "<ul>\n" +
             "\n" +
-            "- <b>Electronics theory or concepts:</b> <i>e.g.,</i> '<span class='user'>" +ChatbotService.electronicsQuestions[r.nextInt(
+            "- <b>" + LangUtil.translate("Electronics theory or concepts:") + "</b> <i>" + example + "</i> '<span class='user'>" +ChatbotService.electronicsQuestions[r.nextInt(
             ChatbotService.electronicsQuestions.length)] + "</span>'<br>\n" +
-            "- <b>DIYLC features and usage:</b> <i>e.g.,</i> '<span class='user'>" + ChatbotService.diylcQuestions[r.nextInt(ChatbotService.diylcQuestions.length)] + "</span>'<br>\n" +
-            "- <b>Your current circuit project:</b> <i>e.g.,</i> '<span class='user'>" + ChatbotService.circuitQuestions[r.nextInt(ChatbotService.circuitQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("DIYLC features and usage:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.diylcQuestions[r.nextInt(ChatbotService.diylcQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("Your current circuit project:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.circuitQuestions[r.nextInt(ChatbotService.circuitQuestions.length)] + "</span>'<br>\n" +
             //            "</ul><br>\n" +
             "<br>\n" +
-            "<div class='assistant'>Feel free to ask your own question or use one of these examples to get started!</div><br>\n";
+            "<div class='assistant'>" + LangUtil.translate("Feel free to ask your own question or use one of these examples to get started!") + "</div><br>\n";
 
     return chatHtml;
   }
@@ -425,7 +434,7 @@ public class ChatbotPane extends JPanel {
           prompt += ". Respond in " + lang + " language.";
         }
         String finalPrompt = prompt;
-        appendSection(ChatbotService.TEMPORARY, "Waiting for the response...");
+        appendSection(ChatbotService.TEMPORARY, LangUtil.translate("Waiting for the response..."));
         getPromptArea().setText(null);
 
 
@@ -440,7 +449,8 @@ public class ChatbotPane extends JPanel {
 
           @Override
           public void failed(Exception e) {
-            appendSection(ChatbotService.SYSTEM, "Failed to retrieve the response from the server.");
+            appendSection(ChatbotService.SYSTEM,
+                LangUtil.translate("Failed to retrieve the response from the server."));
             LOG.error("Failed to retrieve the response from the server", e);
             getClearButton().setEnabled(true);
           }
@@ -477,7 +487,7 @@ public class ChatbotPane extends JPanel {
         // Show confirmation dialog
         int result = swingUI.showConfirmDialog(
             LangUtil.translate("Are you sure you want to clear the chat history for this project? This action cannot be undone!"),
-            "AI Assistant",
+            LangUtil.translate("AI Assistant"),
             ISwingUI.YES_NO_OPTION,
             ISwingUI.WARNING_MESSAGE);
             
@@ -492,7 +502,8 @@ public class ChatbotPane extends JPanel {
 
             @Override
             public void failed(Exception e) {
-              appendSection(ChatbotService.SYSTEM, "Failed to delete chat history from the server.");
+              appendSection(ChatbotService.SYSTEM,
+                  LangUtil.translate("Failed to delete chat history from the server."));
               LOG.error("Failed to delete chat history from the server", e);
               getClearButton().setEnabled(true);
             }
@@ -522,12 +533,13 @@ public class ChatbotPane extends JPanel {
           try {
             String content = getChatEditorPane().getText();
             Files.writeString(Paths.get(file.getAbsolutePath()), content);
-            swingUI.showMessage(LangUtil.translate("Chat history exported successfully."), "Export",
-                ISwingUI.INFORMATION_MESSAGE);
+            swingUI.showMessage(LangUtil.translate("Chat history exported successfully."),
+                LangUtil.translate("Export"), ISwingUI.INFORMATION_MESSAGE);
           } catch (IOException ex) {
             LOG.error("Failed to export chat history to file", ex);
-            swingUI.showMessage("Could not save to file. " + ex.getMessage(), "Error",
-                ISwingUI.ERROR_MESSAGE);
+            swingUI.showMessage(
+                String.format(LangUtil.translate("Could not save to file. %s"), ex.getMessage()),
+                LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
           }
         }
       });
@@ -545,8 +557,10 @@ public class ChatbotPane extends JPanel {
           java.awt.Desktop.getDesktop().browse(new java.net.URI("http://diy-fever.com/get-premium"));
         } catch (Exception ex) {
           LOG.error("Failed to open premium subscription page", ex);
-          swingUI.showMessage("Failed to open premium subscription page. Please visit http://diy-fever.com/get-premium manually.", "Error",
-              ISwingUI.ERROR_MESSAGE);
+          swingUI.showMessage(String.format(LangUtil.translate(
+                  "Failed to open premium subscription page. Please visit %s manually."),
+                  "http://diy-fever.com/get-premium"),
+              LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
         }
       });
     }

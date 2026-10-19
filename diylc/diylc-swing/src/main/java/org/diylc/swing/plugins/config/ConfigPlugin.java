@@ -207,7 +207,7 @@ public class ConfigPlugin implements IPlugIn {
             if (entry.getKey().toLowerCase().endsWith(".xml")) {
               try {
                 Theme theme = (Theme) xStream.fromXML(entry.getValue());
-                LOG.debug("Found theme: " + theme.getName());
+//                LOG.debug("Found theme: " + theme.getName());
                 swingUI.injectMenuAction(ActionFactory.getInstance().createThemeAction(plugInPort, theme), THEME_MENU);
               } catch (Exception e) {
                 LOG.error("Could not load theme file " + entry.getKey(), e);

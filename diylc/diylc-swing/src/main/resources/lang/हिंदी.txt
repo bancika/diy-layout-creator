@@ -501,3 +501,164 @@ Virtual Multimeter (incl. Switches)|वर्चुअल मल्टीमी�
 Become a Patreon and enjoy perks|Patreon बनें और लाभ उठाएं
 Join Patreon|Patreon में शामिल हों
 
+<empty>|<खाली>
+Success|सफल
+Could not open file. %s|फ़ाइल नहीं खोल सके। %s
+Could not save to file. %s|फ़ाइल में सहेज नहीं सके। %s
+Could not export to PDF. %s|PDF में निर्यात नहीं कर सके। %s
+Could not export to PNG. %s|PNG में निर्यात नहीं कर सके। %s
+Could not export to Gerber file. %s|Gerber फ़ाइल में निर्यात नहीं कर सके। %s
+Could not print. %s|प्रिंट नहीं कर सके। %s
+Could not import netlist file: %s|नेटलिस्ट फ़ाइल आयात नहीं कर सके: %s
+No building blocks found to export.|निर्यात करने के लिए कोई बिल्डिंग ब्लॉक नहीं मिला।
+No building blocks selected for export.|निर्यात के लिए कोई बिल्डिंग ब्लॉक नहीं चुना गया।
+Could not export building blocks. Please check the log for details|बिल्डिंग ब्लॉक्स निर्यात नहीं कर सके। विवरण के लिए लॉग जांचें
+Building blocks exported to "%s".|बिल्डिंग ब्लॉक्स "%s" में निर्यात किए गए।
+Could not export building blocks: %s|बिल्डिंग ब्लॉक्स निर्यात नहीं कर सके: %s
+%s building block(s) imported from "%s".|%s बिल्डिंग ब्लॉक "%s" से आयात किए गए।
+Could not import building blocks: %s|बिल्डिंग ब्लॉक्स आयात नहीं कर सके: %s
+No variants found to export.|निर्यात करने के लिए कोई वेरिएंट नहीं मिला।
+No variants selected for export.|निर्यात के लिए कोई वेरिएंट नहीं चुना गया।
+Could not export variants. Please check the log for details|वेरिएंट निर्यात नहीं कर सके। विवरण के लिए लॉग जांचें
+Variants exported to "%s".|वेरिएंट "%s" में निर्यात किए गए।
+Could not export variants: %s|वेरिएंट निर्यात नहीं कर सके: %s
+%s variant(s) imported from "%s".|%s वेरिएंट "%s" से आयात किए गए।
+Could not import variants: %s|वेरिएंट आयात नहीं कर सके: %s
+Edit Project|प्रोजेक्ट संपादित करें
+Component Categories|घटक श्रेणियाँ
+Reset All|सभी रीसेट करें
+Controllers|कंट्रोलर
+Displays & Outputs|डिस्प्ले और आउटपुट
+Modules & Breakouts|मॉड्यूल और ब्रेकआउट
+Robotics|रोबोटिक्स
+Sensors|सेंसर
+SMD|SMD
+High DPI Rendering|हाई DPI रेंडरिंग
+Node Name Tooltips|नोड नाम टूलटिप
+Show AI Assistant|AI सहायक दिखाएं
+Show Project Explorer|प्रोजेक्ट एक्सप्लोरर दिखाएं
+Gray|ग्रे
+Me|मैं
+AI Assistant|AI सहायक
+Ask me anything|मुझसे कुछ भी पूछें
+Please log into your cloud account to use the AI assistant|AI सहायक का उपयोग करने के लिए कृपया अपने क्लाउड खाते में लॉग इन करें
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|आपने वर्तमान में '%s' स्तर की सदस्यता ली है, जो %s को समाप्त होगी, और %s क्रेडिट शेष हैं।
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|किसी प्रीमियम स्तर की सदस्यता लेने, उन्नत AI मॉडल अनलॉक करने और अधिक क्रेडिट पाने के लिए %s पर जाएं और Patreon समर्थक बनें।
+All the details about the AI Assistant limits and other benefits will be specified there.|AI सहायक की सीमाओं और अन्य लाभों का पूरा विवरण वहां दिया जाएगा।
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|यदि आप पहले से Patreon समर्थक हैं, तो 'क्लाउड' मेनू से अपने खाते को DIYLC क्लाउड खाते से अवश्य लिंक करें।
+Thank you for supporting further development of DIYLC!|DIYLC के आगे के विकास में सहयोग देने के लिए धन्यवाद!
+Failed to retrieve chat history.|चैट हिस्ट्री प्राप्त नहीं कर सके।
+Welcome to the DIYLC AI Assistant!|DIYLC AI सहायक में आपका स्वागत है!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|मैं DIY Layout Creator (DIYLC) का उपयोग करके आपके इलेक्ट्रॉनिक्स प्रोजेक्ट को डिज़ाइन करने, बनाने और उनकी समस्याएं हल करने में आपकी मदद के लिए यहां हूं। आप मुझसे इनके बारे में प्रश्न पूछ सकते हैं:
+Electronics theory or concepts:|इलेक्ट्रॉनिक्स सिद्धांत या अवधारणाएं:
+DIYLC features and usage:|DIYLC की सुविधाएं और उपयोग:
+Your current circuit project:|आपका वर्तमान सर्किट प्रोजेक्ट:
+e.g.,|उदा.,
+Feel free to ask your own question or use one of these examples to get started!|अपना स्वयं का प्रश्न पूछें या शुरू करने के लिए इनमें से किसी उदाहरण का उपयोग करें!
+Waiting for the response...|प्रतिक्रिया की प्रतीक्षा की जा रही है...
+Failed to retrieve the response from the server.|सर्वर से प्रतिक्रिया प्राप्त नहीं कर सके।
+Failed to delete chat history from the server.|सर्वर से चैट हिस्ट्री हटा नहीं सके।
+Chat history exported successfully.|चैट हिस्ट्री सफलतापूर्वक निर्यात की गई।
+Failed to open premium subscription page. Please visit %s manually.|प्रीमियम सदस्यता पेज नहीं खोल सके। कृपया %s पर मैन्युअल रूप से जाएं।
+45 degrees clockwise|दक्षिणावर्त 45 डिग्री
+135 degrees clockwise|दक्षिणावर्त 135 डिग्री
+225 degrees clockwise|दक्षिणावर्त 225 डिग्री
+315 degrees clockwise|दक्षिणावर्त 315 डिग्री
+1 throws / 2 positions|1 थ्रो / 2 पोजीशन
+2 throws / 2 positions|2 थ्रो / 2 पोजीशन
+2 throws / 3 positions / OFF even positions|2 थ्रो / 3 पोजीशन / सम पोजीशन OFF
+3 throws / 3 positions|3 थ्रो / 3 पोजीशन
+3 throws / 5 positions / SHORT even positions|3 थ्रो / 5 पोजीशन / सम पोजीशन SHORT
+4 throws / 4 positions|4 थ्रो / 4 पोजीशन
+5 throws / 5 positions|5 थ्रो / 5 पोजीशन
+6 throws / 6 positions|6 थ्रो / 6 पोजीशन
+7 throws / 7 positions|7 थ्रो / 7 पोजीशन
+8 throws / 8 positions|8 थ्रो / 8 पोजीशन
+9 throws / 9 positions|9 थ्रो / 9 पोजीशन
+10 throws / 10 positions|10 थ्रो / 10 पोजीशन
+11 throws / 11 positions|11 थ्रो / 11 पोजीशन
+12 throws / 12 positions|12 थ्रो / 12 पोजीशन
+4 band|4 बैंड
+5 band|5 बैंड
+DP3T (Import 5-Position Strat)|DP3T (इम्पोर्ट 5-पोजीशन Strat)
+DP4T (6-Position Oak Grigsby)|DP4T (6-पोजीशन Oak Grigsby)
+Angle Offset|कोण ऑफ़सेट
+Apply Model|मॉडल लागू करें
+Background|पृष्ठभूमि
+Circle|वृत्त
+Rectangle|आयत
+Coil(s)|कॉइल
+Configuration|कॉन्फ़िगरेशन
+Designation|पदनाम
+Dimension Mode|आयाम मोड
+Dots (Gradual)|डॉट्स (क्रमिक)
+Dots (Uniform)|डॉट्स (समान)
+Double Rails|डबल रेल
+Double Rods|डबल रॉड्स
+Draw Standard|ड्रॉइंग मानक
+One|एक
+Six|छह
+Eight|आठ
+Nine|नौ
+Ten|दस
+Filament Voltage|फिलामेंट वोल्टेज
+Hole Type|होल प्रकार
+Humbucking - 4 leads|हम्बकिंग - 4 लीड
+Inner 1|आंतरिक 1
+Inner 2|आंतरिक 2
+Inner 3|आंतरिक 3
+Inner 4|आंतरिक 4
+Inner 5|आंतरिक 5
+Inner 6|आंतरिक 6
+Markers|मार्कर
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|स्विचिंग संयोजनों की अधिकतम संख्या पार हो गई। अनुमत: %s, वास्तविक: %s
+Plated Through Hole|प्लेटेड थ्रू होल
+Non-Plated Through Hole|नॉन-प्लेटेड थ्रू होल
+Shorting|शॉर्टिंग
+Non-shorting|नॉन-शॉर्टिंग
+Numeric (0-10)|संख्यात्मक (0-10)
+Numeric (1-10)|संख्यात्मक (1-10)
+Numeric (1-11)|संख्यात्मक (1-11)
+Numeric (1-12)|संख्यात्मक (1-12)
+Numeric (Even, No Ticks)|संख्यात्मक (सम, बिना टिक्स)
+Numeric (Even, With Ticks)|संख्यात्मक (सम, टिक्स के साथ)
+Poles|पोल
+Screw Position|स्क्रू की स्थिति
+Single - North|सिंगल - नॉर्थ
+Single - South|सिंगल - साउथ
+Sort by Name|नाम से क्रमबद्ध करें
+Sort by Type|प्रकार से क्रमबद्ध करें
+Sort by Z-index|Z-इंडेक्स से क्रमबद्ध करें
+Source Style|स्रोत शैली
+Source Type|स्रोत प्रकार
+Terminal|टर्मिनल
+Underside Display|निचली सतह प्रदर्शन
+Underside Offset|निचली सतह ऑफ़सेट
+Virtual Multimeter|वर्चुअल मल्टीमीटर
+Title Block|टाइटल ब्लॉक
+Tubular Beveled|ट्यूबलर बेवेल्ड
+TO-92 w/ 2 Leads|TO-92 (2 लीड)
+TO-92 w/ 3 Leads|TO-92 (3 लीड)
+Lin|लिन
+Log|लॉग
+Rev log|रिवर्स लॉग
+Align & Distribute|संरेखित और वितरित करें
+Align Left|बाएं संरेखित करें
+Align Right|दाएं संरेखित करें
+Align Top|ऊपर संरेखित करें
+Align Bottom|नीचे संरेखित करें
+Align Horizontal Centers|केंद्रों को क्षैतिज रूप से संरेखित करें
+Align Vertical Centers|केंद्रों को ऊर्ध्वाधर रूप से संरेखित करें
+Distribute Centers Horizontally|केंद्रों को क्षैतिज रूप से वितरित करें
+Distribute Spacing Horizontally|अंतराल को क्षैतिज रूप से वितरित करें
+Distribute Centers Vertically|केंद्रों को ऊर्ध्वाधर रूप से वितरित करें
+Distribute Spacing Vertically|अंतराल को ऊर्ध्वाधर रूप से वितरित करें
+No matching components found.|कोई मेल खाते घटक नहीं मिले।
+Variant name:|वेरिएंट का नाम:
+Block name:|ब्लॉक का नाम:
+A building block named "%s" already exists. Overwrite it?|"%s" नाम का बिल्डिंग ब्लॉक पहले से मौजूद है। क्या इसे अधिलेखित करें?
+Nudge Selection|चयन को नज करें
+Include stuck|चिपके हुए घटक शामिल करें
+Enter group name:|समूह का नाम दर्ज करें:
+Group Components|घटकों को समूहित करें
+Could not apply changes to the selection. Check the log for details.|चयन पर परिवर्तन लागू नहीं कर सके। विवरण के लिए लॉग जांचें।

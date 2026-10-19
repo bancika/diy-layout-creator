@@ -101,7 +101,9 @@ public class VariantManager {
       configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY,
           LocalDateTime.now());
       configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
-      LOG.info(String.format("Imported default %d variants", importCount));
+      if (importCount > 0) {
+        LOG.info(String.format("Imported default %d variants", importCount));
+      }
     } catch (Exception e) {
       LOG.error("Could not load default variants", e);
     }
@@ -116,7 +118,6 @@ public class VariantManager {
 
     upgradedVariants = true;
 
-    LOG.info("Checking if variants need to be updated");
     Map<String, List<Template>> lookupMap =
         new TreeMap<String, List<Template>>(String.CASE_INSENSITIVE_ORDER);
     Map<String, List<Template>> variantMap =

@@ -9,6 +9,7 @@ import javax.swing.KeyStroke;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -55,8 +56,9 @@ public class OpenAction extends AbstractAction {
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not open file. " + e.getMessage(), "Error",
-              ISwingUI.ERROR_MESSAGE);
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not open file. %s"), e.getMessage()),
+              LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
         }
       }, true);
     }

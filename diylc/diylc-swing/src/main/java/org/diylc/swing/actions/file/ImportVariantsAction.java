@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -42,13 +43,17 @@ public class ImportVariantsAction extends AbstractAction {
 
         @Override
         public void complete(Integer result) {
-          swingUI.showMessage(result + " variant(s) imported from \"" + file.getName() + "\".",
-              "Success", ISwingUI.INFORMATION_MESSAGE);
+          swingUI.showMessage(
+              String.format(LangUtil.translate("%s variant(s) imported from \"%s\"."), result,
+                  file.getName()),
+              LangUtil.translate("Success"), ISwingUI.INFORMATION_MESSAGE);
         }
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not import variants: " + e.getMessage(), "Error",
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not import variants: %s"), e.getMessage()),
+              LangUtil.translate("Error"),
               ISwingUI.ERROR_MESSAGE);
         }
       }, true);

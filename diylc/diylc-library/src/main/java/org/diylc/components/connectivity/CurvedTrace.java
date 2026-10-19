@@ -69,6 +69,11 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements ILayer
   }
   
   @Override
+  protected double getClipMargin() {
+    return size.convertToPixels() / 2 + 1;
+  }
+
+  @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
     float thickness = (float) size.convertToPixels();
     g2d.setStroke(ObjectCache.getInstance().fetchStroke(thickness, getEndingStyle() == LineEndingStyle.Round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT));

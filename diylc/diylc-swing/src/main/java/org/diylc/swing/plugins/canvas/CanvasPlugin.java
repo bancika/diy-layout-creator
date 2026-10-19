@@ -118,7 +118,6 @@ public class CanvasPlugin implements IPlugIn{
 
         @Override
         public void adjustmentValueChanged(AdjustmentEvent e) {
-          getCanvasPanel().invalidateCache();
           getCanvasPanel().revalidate();
         }
       });
@@ -127,7 +126,6 @@ public class CanvasPlugin implements IPlugIn{
 
         @Override
         public void adjustmentValueChanged(AdjustmentEvent e) {
-          getCanvasPanel().invalidateCache();
           getCanvasPanel().revalidate();
         }
       });

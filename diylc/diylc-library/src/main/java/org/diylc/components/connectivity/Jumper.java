@@ -163,9 +163,9 @@ public class Jumper extends AbstractLeadedComponent<Void> implements IContinuity
 
   @Deprecated
   @Override
-  public LabelOriantation getLabelOriantation() {
+  public LabelOrientation getLabelOrientation() {
     // TODO Auto-generated method stub
-    return super.getLabelOriantation();
+    return super.getLabelOrientation();
   }
 
   @Override

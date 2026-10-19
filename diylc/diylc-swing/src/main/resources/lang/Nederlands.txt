@@ -497,3 +497,175 @@ Virtual Multimeter (excl. Switches)|Virtuele Multimeter (zonder schakelaars)
 Virtual Multimeter (incl. Switches)|Virtuele Multimeter (met schakelaars)
 Become a Patreon and enjoy perks|Word een Patreon en geniet van voordelen
 Join Patreon|Lid worden van Patreon
+<empty>|<leeg>
+Success|Gelukt
+Could not open file. %s|Kon bestand niet openen. %s
+Could not save to file. %s|Kon niet opslaan in bestand. %s
+Could not export to PDF. %s|Kon niet exporteren naar PDF. %s
+Could not export to PNG. %s|Kon niet exporteren naar PNG. %s
+Could not export to Gerber file. %s|Kon niet exporteren naar Gerber-bestand. %s
+Could not print. %s|Kon niet afdrukken. %s
+Could not import netlist file: %s|Kon netlist bestand niet importeren: %s
+No building blocks found to export.|Geen bouwstenen gevonden om te exporteren.
+No building blocks selected for export.|Geen bouwstenen geselecteerd om te exporteren.
+Could not export building blocks. Please check the log for details|Kon bouwstenen niet exporteren. Controleer het logbestand voor details
+Building blocks exported to "%s".|Bouwstenen geëxporteerd naar "%s".
+Could not export building blocks: %s|Kon bouwstenen niet exporteren: %s
+%s building block(s) imported from "%s".|%s bouwsteen/bouwstenen geïmporteerd uit "%s".
+Could not import building blocks: %s|Kon bouwstenen niet importeren: %s
+No variants found to export.|Geen varianten gevonden om te exporteren.
+No variants selected for export.|Geen varianten geselecteerd om te exporteren.
+Could not export variants. Please check the log for details|Kon varianten niet exporteren. Controleer het logbestand voor details
+Variants exported to "%s".|Varianten geëxporteerd naar "%s".
+Could not export variants: %s|Kon varianten niet exporteren: %s
+%s variant(s) imported from "%s".|%s variant(en) geïmporteerd uit "%s".
+Could not import variants: %s|Kon varianten niet importeren: %s
+Edit Project|Project bewerken
+Component Categories|Componentcategorieën
+Reset All|Alles herstellen
+Controllers|Controllers
+Displays & Outputs|Displays & uitgangen
+Modules & Breakouts|Modules & breakout-boards
+Robotics|Robotica
+Sensors|Sensoren
+SMD|SMD
+High DPI Rendering|Hoge-DPI-weergave
+Node Name Tooltips|Knooppuntnamen als tooltip
+Show AI Assistant|AI-assistent weergeven
+Show Project Explorer|Projectverkenner weergeven
+Gray|Grijs
+Me|Ik
+AI Assistant|AI-assistent
+Ask me anything|Vraag me wat je wilt
+Please log into your cloud account to use the AI assistant|Log in op uw cloudaccount om de AI-assistent te gebruiken
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|U bent momenteel geabonneerd op het niveau '%s', geldig tot %s, met nog %s credits.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Om u te abonneren op een van de premiumniveaus, geavanceerde AI-modellen te ontgrendelen en meer credits te krijgen, bezoek %s en word Patreon-supporter.
+All the details about the AI Assistant limits and other benefits will be specified there.|Daar vindt u alle details over de limieten van de AI-assistent en andere voordelen.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Als u al Patreon-supporter bent, koppel dan uw account aan het DIYLC Cloud-account via het menu 'Cloud'.
+Thank you for supporting further development of DIYLC!|Bedankt voor het steunen van de verdere ontwikkeling van DIYLC!
+Failed to retrieve chat history.|Kon chatgeschiedenis niet ophalen.
+Welcome to the DIYLC AI Assistant!|Welkom bij de DIYLC AI-assistent!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Ik help u bij het ontwerpen, bouwen en oplossen van problemen in uw elektronicaprojecten met DIY Layout Creator (DIYLC). U kunt mij vragen stellen over:
+Electronics theory or concepts:|Elektronicatheorie of -concepten:
+DIYLC features and usage:|Functies en gebruik van DIYLC:
+Your current circuit project:|Uw huidige schakelingsproject:
+e.g.,|bijv.
+Feel free to ask your own question or use one of these examples to get started!|Stel gerust uw eigen vraag of gebruik een van deze voorbeelden om te beginnen!
+Waiting for the response...|Wachten op het antwoord...
+Failed to retrieve the response from the server.|Kon het antwoord niet van de server ophalen.
+Failed to delete chat history from the server.|Kon chatgeschiedenis niet van de server verwijderen.
+Chat history exported successfully.|Chatgeschiedenis succesvol geëxporteerd.
+Failed to open premium subscription page. Please visit %s manually.|Kon de premium-abonnementspagina niet openen. Bezoek %s handmatig.
+Ruler Inch Subdivision...|Inch lineaal onderverdelen in...
+45 degrees clockwise|45 graden rechtsom
+135 degrees clockwise|135 graden rechtsom
+225 degrees clockwise|225 graden rechtsom
+315 degrees clockwise|315 graden rechtsom
+1 throws / 2 positions|1 uitgang / 2 posities
+2 throws / 2 positions|2 uitgangen / 2 posities
+2 throws / 3 positions / OFF even positions|2 uitgangen / 3 posities / even posities UIT
+3 throws / 3 positions|3 uitgangen / 3 posities
+3 throws / 5 positions / SHORT even positions|3 uitgangen / 5 posities / even posities KORTGESLOTEN
+4 throws / 4 positions|4 uitgangen / 4 posities
+5 throws / 5 positions|5 uitgangen / 5 posities
+6 throws / 6 positions|6 uitgangen / 6 posities
+7 throws / 7 positions|7 uitgangen / 7 posities
+8 throws / 8 positions|8 uitgangen / 8 posities
+9 throws / 9 positions|9 uitgangen / 9 posities
+10 throws / 10 positions|10 uitgangen / 10 posities
+11 throws / 11 positions|11 uitgangen / 11 posities
+12 throws / 12 positions|12 uitgangen / 12 posities
+4 band|4 ringen
+5 band|5 ringen
+DP3T (Import 5-Position Strat)|DP3T (Import Strat met 5 posities)
+DP4T (6-Position Oak Grigsby)|DP4T (Oak Grigsby met 6 posities)
+Angle Offset|Hoekverschuiving
+Apply Model|Model toepassen
+Background|Achtergrond
+Circle|Cirkel
+Rectangle|Rechthoek
+Coil(s)|Spoel(en)
+Configuration|Configuratie
+Designation|Aanduiding
+Dimension Mode|Maatvoeringsmodus
+Dots (Gradual)|Punten (geleidelijk)
+Dots (Uniform)|Punten (gelijk)
+Double Rails|Dubbele rails
+Double Rods|Dubbele polen
+Draw Standard|Tekennorm
+One|Een
+Six|Zes
+Eight|Acht
+Nine|Negen
+Ten|Tien
+Filament Voltage|Gloeidraadspanning
+Hole Type|Gattype
+Humbucking - 4 leads|Humbucking - 4 aansluitingen
+Inner 1|Binnenlaag 1
+Inner 2|Binnenlaag 2
+Inner 3|Binnenlaag 3
+Inner 4|Binnenlaag 4
+Inner 5|Binnenlaag 5
+Inner 6|Binnenlaag 6
+Markers|Markeringen
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Maximaal aantal schakelcombinaties overschreden. Toegestaan: %s, werkelijk: %s
+Plated Through Hole|Doorgemetalliseerd gat
+Non-Plated Through Hole|Niet-doorgemetalliseerd gat
+Shorting|Kortsluitend
+Non-shorting|Niet-kortsluitend
+Numeric (0-10)|Numeriek (0-10)
+Numeric (1-10)|Numeriek (1-10)
+Numeric (1-11)|Numeriek (1-11)
+Numeric (1-12)|Numeriek (1-12)
+Numeric (Even, No Ticks)|Numeriek (even, zonder streepjes)
+Numeric (Even, With Ticks)|Numeriek (even, met streepjes)
+Poles|Polen
+Screw Position|Schroefpositie
+Single - North|Enkel - Noord
+Single - South|Enkel - Zuid
+Sort by Name|Sorteren op naam
+Sort by Type|Sorteren op type
+Sort by Z-index|Sorteren op Z-index
+Source Style|Bronstijl
+Source Type|Brontype
+Terminal|Aansluiting
+Underside Display|Onderzijde weergeven
+Underside Offset|Verschuiving onderzijde
+Virtual Multimeter|Virtuele multimeter
+Title Block|Titelblok
+Tubular Beveled|Buisvormig afgeschuind
+TO-92 w/ 2 Leads|TO-92 met 2 aansluitingen
+TO-92 w/ 3 Leads|TO-92 met 3 aansluitingen
+Access User Files|Gebruikersbestanden openen
+Bracket|Beugel
+Show Bracket|Beugel weergeven
+Check Trace Proximity|Spoorafstand controleren
+Column Spacing|Kolomafstand
+Donate|Doneren
+Marker Size|Markeringsgrootte
+Panel|Paneel
+Tick Width|Streepjesbreedte
+Wiring|Bedrading
+Inline|In lijn
+Round WOG A|Rond WOG A
+Round WOG B|Rond WOG B
+Align & Distribute|Uitlijnen & verdelen
+Align Left|Links uitlijnen
+Align Right|Rechts uitlijnen
+Align Top|Boven uitlijnen
+Align Bottom|Onder uitlijnen
+Align Horizontal Centers|Horizontaal centreren
+Align Vertical Centers|Verticaal centreren
+Distribute Centers Horizontally|Middelpunten horizontaal verdelen
+Distribute Spacing Horizontally|Tussenruimte horizontaal verdelen
+Distribute Centers Vertically|Middelpunten verticaal verdelen
+Distribute Spacing Vertically|Tussenruimte verticaal verdelen
+No matching components found.|Geen overeenkomende componenten gevonden.
+Variant name:|Naam van variant:
+Block name:|Naam van bouwsteen:
+A building block named "%s" already exists. Overwrite it?|Er bestaat al een bouwsteen met de naam "%s". Overschrijven?
+Nudge Selection|Selectie duwen
+Include stuck|Vastgeplakte meenemen
+Enter group name:|Voer groepsnaam in:
+Group Components|Componenten groeperen
+Could not apply changes to the selection. Check the log for details.|Kon wijzigingen niet toepassen op de selectie. Controleer het logbestand voor details.

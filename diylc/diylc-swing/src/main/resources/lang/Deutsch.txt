@@ -497,3 +497,174 @@ Virtual Multimeter (excl. Switches)|Virtuelles Multimeter (ohne Schalter)
 Virtual Multimeter (incl. Switches)|Virtuelles Multimeter (mit Schaltern)
 Become a Patreon and enjoy perks|Werden Sie Patreon und genießen Sie Vorteile
 Join Patreon|Patreon beitreten
+<empty>|<leer>
+Success|Erfolg
+Could not open file. %s|Datei konnte nicht geöffnet werden. %s
+Could not save to file. %s|Datei konnte nicht gespeichert werden. %s
+Could not export to PDF. %s|Export als PDF fehlgeschlagen. %s
+Could not export to PNG. %s|Export als PNG fehlgeschlagen. %s
+Could not export to Gerber file. %s|Export als Gerber-Datei fehlgeschlagen. %s
+Could not print. %s|Drucken fehlgeschlagen. %s
+Could not import netlist file: %s|Netlist-Datei konnte nicht importiert werden: %s
+No building blocks found to export.|Keine Bausteine zum Exportieren gefunden.
+No building blocks selected for export.|Keine Bausteine zum Exportieren ausgewählt.
+Could not export building blocks. Please check the log for details|Bausteine konnten nicht exportiert werden. Überprüfen Sie die Protokolldatei auf Details
+Building blocks exported to "%s".|Bausteine wurden nach "%s" exportiert.
+Could not export building blocks: %s|Bausteine konnten nicht exportiert werden: %s
+%s building block(s) imported from "%s".|%s Baustein(e) aus "%s" importiert.
+Could not import building blocks: %s|Bausteine konnten nicht importiert werden: %s
+No variants found to export.|Keine Varianten zum Exportieren gefunden.
+No variants selected for export.|Keine Varianten zum Exportieren ausgewählt.
+Could not export variants. Please check the log for details|Varianten konnten nicht exportiert werden. Überprüfen Sie die Protokolldatei auf Details
+Variants exported to "%s".|Varianten wurden nach "%s" exportiert.
+Could not export variants: %s|Varianten konnten nicht exportiert werden: %s
+%s variant(s) imported from "%s".|%s Variante(n) aus "%s" importiert.
+Could not import variants: %s|Varianten konnten nicht importiert werden: %s
+Edit Project|Projekt bearbeiten
+Component Categories|Komponentenkategorien
+Reset All|Alle zurücksetzen
+Controllers|Controller
+Displays & Outputs|Anzeigen & Ausgaben
+Modules & Breakouts|Module & Breakout-Boards
+Robotics|Robotik
+Sensors|Sensoren
+SMD|SMD
+High DPI Rendering|High-DPI-Darstellung
+Node Name Tooltips|Knotennamen-Tooltips
+Show AI Assistant|KI-Assistent anzeigen
+Show Project Explorer|Projekt-Explorer anzeigen
+Gray|Grau
+Me|Ich
+AI Assistant|KI-Assistent
+Ask me anything|Fragen Sie mich etwas
+Please log into your cloud account to use the AI assistant|Bitte melden Sie sich bei Ihrem Cloud-Konto an, um den KI-Assistenten zu nutzen
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|Sie haben derzeit die Stufe '%s' abonniert, gültig bis %s, mit %s verbleibenden Credits.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Um eine der Premium-Stufen zu abonnieren, erweiterte KI-Modelle freizuschalten und mehr Credits zu erhalten, besuchen Sie %s und werden Sie Patreon-Unterstützer.
+All the details about the AI Assistant limits and other benefits will be specified there.|Dort finden Sie alle Details zu den Limits des KI-Assistenten und weiteren Vorteilen.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Wenn Sie bereits Patreon-Unterstützer sind, verknüpfen Sie Ihr Konto über das Menü 'Cloud' mit Ihrem DIYLC-Cloud-Konto.
+Thank you for supporting further development of DIYLC!|Vielen Dank, dass Sie die Weiterentwicklung von DIYLC unterstützen!
+Failed to retrieve chat history.|Chat-Verlauf konnte nicht abgerufen werden.
+Welcome to the DIYLC AI Assistant!|Willkommen beim DIYLC KI-Assistenten!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Ich helfe Ihnen beim Entwerfen, Bauen und bei der Fehlersuche Ihrer Elektronikprojekte mit DIY Layout Creator (DIYLC). Sie können mir Fragen stellen zu:
+Electronics theory or concepts:|Elektronik-Theorie oder -Konzepten:
+DIYLC features and usage:|Funktionen und Bedienung von DIYLC:
+Your current circuit project:|Ihrem aktuellen Schaltungsprojekt:
+e.g.,|z. B.
+Feel free to ask your own question or use one of these examples to get started!|Stellen Sie gerne Ihre eigene Frage oder verwenden Sie eines dieser Beispiele für den Einstieg!
+Waiting for the response...|Warte auf Antwort...
+Failed to retrieve the response from the server.|Die Antwort konnte nicht vom Server abgerufen werden.
+Failed to delete chat history from the server.|Chat-Verlauf konnte nicht vom Server gelöscht werden.
+Chat history exported successfully.|Chat-Verlauf erfolgreich exportiert.
+Failed to open premium subscription page. Please visit %s manually.|Die Premium-Abonnementseite konnte nicht geöffnet werden. Bitte besuchen Sie %s manuell.
+45 degrees clockwise|45 Grad rechts
+135 degrees clockwise|135 Grad rechts
+225 degrees clockwise|225 Grad rechts
+315 degrees clockwise|315 Grad rechts
+1 throws / 2 positions|1 Ausgang / 2 Stellungen
+2 throws / 2 positions|2 Ausgänge / 2 Stellungen
+2 throws / 3 positions / OFF even positions|2 Ausgänge / 3 Stellungen / gerade Stellungen AUS
+3 throws / 3 positions|3 Ausgänge / 3 Stellungen
+3 throws / 5 positions / SHORT even positions|3 Ausgänge / 5 Stellungen / gerade Stellungen KURZGESCHLOSSEN
+4 throws / 4 positions|4 Ausgänge / 4 Stellungen
+5 throws / 5 positions|5 Ausgänge / 5 Stellungen
+6 throws / 6 positions|6 Ausgänge / 6 Stellungen
+7 throws / 7 positions|7 Ausgänge / 7 Stellungen
+8 throws / 8 positions|8 Ausgänge / 8 Stellungen
+9 throws / 9 positions|9 Ausgänge / 9 Stellungen
+10 throws / 10 positions|10 Ausgänge / 10 Stellungen
+11 throws / 11 positions|11 Ausgänge / 11 Stellungen
+12 throws / 12 positions|12 Ausgänge / 12 Stellungen
+4 band|4 Ringe
+5 band|5 Ringe
+DP3T (Import 5-Position Strat)|DP3T (Import Strat 5-Positionen Schalter)
+DP4T (6-Position Oak Grigsby)|DP4T (Oak Grigsby 6-Positionen Schalter)
+Angle Offset|Winkelversatz
+Apply Model|Modell anwenden
+Background|Hintergrund
+Circle|Kreis
+Rectangle|Rechteck
+Coil(s)|Spule(n)
+Configuration|Konfiguration
+Designation|Bezeichnung
+Dimension Mode|Bemaßungsmodus
+Dots (Gradual)|Punkte (zunehmend)
+Dots (Uniform)|Punkte (gleichmäßig)
+Double Rails|Doppelschienen
+Double Rods|Doppelstäbe
+Draw Standard|Zeichennorm
+One|Eins
+Six|Sechs
+Eight|Acht
+Nine|Neun
+Ten|Zehn
+Filament Voltage|Glühfadenspannung
+Hole Type|Lochtyp
+Humbucking - 4 leads|Humbucking - 4 Anschlüsse
+Inner 1|Innenlage 1
+Inner 2|Innenlage 2
+Inner 3|Innenlage 3
+Inner 4|Innenlage 4
+Inner 5|Innenlage 5
+Inner 6|Innenlage 6
+Markers|Markierungen
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Maximale Anzahl an Schaltkombinationen überschritten. Erlaubt: %s, tatsächlich: %s
+Plated Through Hole|Durchkontaktiertes Loch
+Non-Plated Through Hole|Nicht durchkontaktiertes Loch
+Shorting|Kurzschließend
+Non-shorting|Nicht kurzschließend
+Numeric (0-10)|Numerisch (0-10)
+Numeric (1-10)|Numerisch (1-10)
+Numeric (1-11)|Numerisch (1-11)
+Numeric (1-12)|Numerisch (1-12)
+Numeric (Even, No Ticks)|Numerisch (gerade, ohne Striche)
+Numeric (Even, With Ticks)|Numerisch (gerade, mit Strichen)
+Poles|Pole
+Screw Position|Schraubenposition
+Single - North|Single - Nord
+Single - South|Single - Süd
+Sort by Name|Nach Name sortieren
+Sort by Type|Nach Typ sortieren
+Sort by Z-index|Nach Z-Index sortieren
+Source Style|Quellenstil
+Source Type|Quellentyp
+Terminal|Anschluss
+Underside Display|Unterseitenanzeige
+Underside Offset|Unterseitenversatz
+Virtual Multimeter|Virtuelles Multimeter
+Title Block|Schriftfeld
+Tubular Beveled|Röhrenförmig abgeschrägt
+TO-92 w/ 2 Leads|TO-92 mit 2 Anschlüssen
+TO-92 w/ 3 Leads|TO-92 mit 3 Anschlüssen
+Access User Files|Benutzerdateien öffnen
+Bracket|Halterung
+Show Bracket|Halterung anzeigen
+Check Trace Proximity|Leiterbahnabstand prüfen
+Column Spacing|Spaltenabstand
+Donate|Spenden
+Marker Size|Markierungsgröße
+Panel|Frontplatte
+Tick Width|Strichbreite
+Wiring|Verdrahtung
+Inline|In Reihe
+Round WOG A|Rund WOG A
+Round WOG B|Rund WOG B
+Align & Distribute|Ausrichten & Verteilen
+Align Left|Links ausrichten
+Align Right|Rechts ausrichten
+Align Top|Oben ausrichten
+Align Bottom|Unten ausrichten
+Align Horizontal Centers|Horizontal zentrieren
+Align Vertical Centers|Vertikal zentrieren
+Distribute Centers Horizontally|Mittelpunkte horizontal verteilen
+Distribute Spacing Horizontally|Abstände horizontal verteilen
+Distribute Centers Vertically|Mittelpunkte vertikal verteilen
+Distribute Spacing Vertically|Abstände vertikal verteilen
+No matching components found.|Keine passenden Komponenten gefunden.
+Variant name:|Name der Variante:
+Block name:|Name des Bausteins:
+A building block named "%s" already exists. Overwrite it?|Ein Baustein namens "%s" existiert bereits. Überschreiben?
+Nudge Selection|Auswahl stupsen
+Include stuck|Angeheftete einbeziehen
+Enter group name:|Gruppennamen eingeben:
+Group Components|Komponenten gruppieren
+Could not apply changes to the selection. Check the log for details.|Änderungen an der Auswahl konnten nicht angewendet werden. Überprüfen Sie die Protokolldatei auf Details.

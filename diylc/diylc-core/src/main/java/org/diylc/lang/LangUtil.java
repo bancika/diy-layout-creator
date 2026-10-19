@@ -39,6 +39,7 @@ import org.diylc.utils.ResourceUtils;
 public class LangUtil {
 
   private static final String LANG_DIR = "lang";
+  private static final String PENDING_TRANSLATIONS_FILE = "pending_translations.txt";
 
   private static final Logger LOG = Logger.getLogger(LangUtil.class);
 
@@ -65,7 +66,7 @@ public class LangUtil {
           if (!missing.contains(text)) {
             missing.add(text);
             Collections.sort(missing);
-            try (PrintWriter out = new PrintWriter("dict.txt")) {
+            try (PrintWriter out = new PrintWriter(PENDING_TRANSLATIONS_FILE)) {
               for (String m : missing) {
                 out.println(m);
               }
@@ -113,7 +114,8 @@ public class LangUtil {
     if (missing == null) {
       missing = new ArrayList<String>();
       try {
-        try (Stream<String> stream = Files.lines(Paths.get("dict.txt"), StandardCharsets.UTF_8)) {
+        try (Stream<String> stream =
+            Files.lines(Paths.get(PENDING_TRANSLATIONS_FILE), StandardCharsets.UTF_8)) {
           stream.forEach(s -> missing.add(s));
         } catch (IOException e) {
           e.printStackTrace();

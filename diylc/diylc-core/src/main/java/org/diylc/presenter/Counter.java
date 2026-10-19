@@ -32,7 +32,7 @@ public class Counter {
     return nanotime;
   }
   
-  public void add(long nanotime) {
+  public synchronized void add(long nanotime) {
     count++;
     this.nanotime += nanotime;
   }

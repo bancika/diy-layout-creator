@@ -1,0 +1,133 @@
+name: Sign Windows Artifacts
+
+# Builds and signs the Inno Setup installer; the zip package is not built or signed here. The
+# launcher the installer embeds is signed separately and committed by the Sign Windows Launcher
+# workflow, because Inno Setup cannot sign its payload after the fact and the launcher changes
+# only when launch4j regenerates it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      signing-policy-slug:
+        description: 'SignPath signing policy'
+        type: choice
+        default: test-signing
+        options:
+          - test-signing
+          - release-signing
+
+permissions:
+  # write is needed only to delete the unsigned installer once SignPath has fetched it
+  actions: write
+  contents: read
+
+env:
+  SIGNPATH_ORGANIZATION_ID: 95470a00-59e6-430c-9c81-7393ad16d4e8
+  SIGNPATH_PROJECT_SLUG: diy-layout-creator
+
+jobs:
+  windows:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # Nothing downstream fails when the committed launcher is unsigned: the installed
+      # application would just silently ship an unsigned executable.
+      - name: Check the committed launcher carries a signature
+        env:
+          POLICY: ${{ inputs.signing-policy-slug }}
+        run: |
+          if python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py \
+              diylc/diylc-swing/deploy/win/diylc-x64.exe; then
+            exit 0
+          fi
+          if [ "$POLICY" = "release-signing" ]; then
+            echo "::error::deploy/win/diylc-x64.exe is unsigned. Run the Sign Windows Launcher workflow with the release policy, commit the signed launcher, then re-run this workflow."
+            exit 1
+          fi
+          echo "::warning::deploy/win/diylc-x64.exe is unsigned; the installed application will ship an unsigned launcher."
+
+      - name: Resolve project version
+        working-directory: diylc
+        run: |
+          echo "DIYLC_VERSION=$(mvn -q -N help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_ENV"
+
+      # amake/innosetup runs Inno Setup under wine as its own user (uid 1000), not as the runner
+      # (uid 1001), so it cannot write its output into a target directory the runner owns. Docker
+      # Desktop hides this on a developer machine; on a Linux runner it surfaces as "Error 5:
+      # Access denied" copying Setup.e32.
+      - name: Build Windows installer
+        working-directory: diylc
+        run: |
+          mkdir -p diylc-swing/target
+          chmod a+rwx diylc-swing/target
+          mvn -B -DskipTests -P win64-installer package
+
+      # upload-artifact zips the staged installer and SignPath signs the exe inside that zip; the
+      # action then downloads and unpacks the signed zip into signed/. The artifact configuration
+      # matches a fixed path, so the versioned installer travels under a stable name and is
+      # renamed back afterwards.
+      - name: Stage installer for signing
+        run: |
+          mkdir -p staging
+          cp "diylc/diylc-swing/target/diylc-${DIYLC_VERSION}-win64.exe" staging/diylc-setup.exe
+
+      - name: Upload unsigned installer
+        id: upload-unsigned-installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-installer
+          path: staging/diylc-setup.exe
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Sign installer
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ inputs.signing-policy-slug }}
+          artifact-configuration-slug: windows-installer
+          github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      # SignPath can only fetch the installer from a GitHub artifact, so the unsigned upload cannot
+      # be skipped; it is deleted as soon as signing is over, whether or not signing succeeded.
+      - name: Delete unsigned installer artifact
+        if: always() && steps.upload-unsigned-installer.outputs.artifact-id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
+        run: gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}"
+
+      - name: Verify signed installer
+        run: |
+          python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py signed/diylc-setup.exe
+          sudo apt-get update
+          sudo apt-get install -y osslsigncode
+          # chain validation fails against the self-signed test certificate by design; what
+          # matters is that a signature is present and names the expected subject
+          osslsigncode verify -in signed/diylc-setup.exe || true
+
+      - name: Restore signed installer under its release name
+        run: |
+          mkdir -p release
+          cp signed/diylc-setup.exe "release/diylc-${DIYLC_VERSION}-win64.exe"
+
+      - name: Upload signed installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: diylc-windows-installer-signed
+          path: release/diylc-${{ env.DIYLC_VERSION }}-win64.exe
+          if-no-files-found: error

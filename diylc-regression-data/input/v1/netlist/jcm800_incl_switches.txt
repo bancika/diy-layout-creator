@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	C12.1 <-> Q6.1 <-> VR5.1
 	C12.2 <-> R17.1

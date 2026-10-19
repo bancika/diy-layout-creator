@@ -181,8 +181,24 @@ public abstract class AbstractComponent<T> implements IDIYComponent<T> {
         maxY = p.getY();
       }
     }
-    Rectangle2D rect = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+    double margin = getClipMargin();
+    Rectangle2D rect = new Rectangle2D.Double(minX - margin, minY - margin,
+        maxX - minX + 2 * margin, maxY - minY + 2 * margin);
     return !clip.intersects(rect);
+  }
+
+  /**
+   * Distance in pixels that the drawing may reach beyond the bounding box of the control points,
+   * such as half the width of a stroke running through them. {@link #checkPointsClipped(Shape)}
+   * widens the box by this much before testing it against the clip. The margin must stay positive,
+   * because {@link Shape#intersects(Rectangle2D)} reports a box with no width or height as disjoint
+   * from everything, which would hide a straight horizontal or vertical component whose control
+   * points all lie outside the clip.
+   *
+   * @return margin around the control points.
+   */
+  protected double getClipMargin() {
+    return 1;
   }
 
   @SuppressWarnings("unchecked")

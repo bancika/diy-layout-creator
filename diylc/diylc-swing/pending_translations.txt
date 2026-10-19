@@ -1,0 +1,106 @@
+#10 / 2.59mm
+#12 / 2.05mm
+#14 / 1.63mm
+#16 / 1.29mm
+#18 / 1.02mm
+#20 / 0.81mm
+#22 / 0.64mm
+#24 / 0.51mm
+#26 / 0.40mm
+#28 / 0.32mm
+#30 / 0.25mm
+#32 / 0.20mm
+#34 / 0.16mm
+#36 / 0.13mm
+#8 / 3.26mm
+1P12T
+2P5T
+2P6T
+3P4T
+3PDT
+3PDT (On/Off/On)
+4P3T
+4P5T
+4P5T (Super/Mega)
+4P6T
+4PDT
+4PDT (On/Off/On)
+4PDT (On/On/On Type 1)
+4PDT (On/On/On Type 2)
+5PDT
+5PDT (On/Off/On)
+A-O-I     REGULATOR
+AC
+ANSI
+AWG
+Alternate
+And
+B-C-E     BJT
+Board1
+Board2
+Box
+C-B-E     BJT
+D-G-S     JFET
+D-G-S     MOSFET
+D-S-G     JFET
+D-S-G     MOSFET
+DC
+DFM A
+DFM B
+DIP
+DP3T
+DP5T
+6P5T
+DPDT
+DPDT (On/Off/On)
+DPDT (On/On)
+DPDT (On/On/On Type 1)
+DPDT (On/On/On Type 2)
+Deutsch
+Drop
+DualPot
+E+
+E-B-C     BJT
+English
+Español
+Français
+G-D-S     JFET
+G-D-S     MOSFET
+G-I-O     REGULATOR
+G-O-I     REGULATOR
+G-S-D     JFET
+G-S-D     MOSFET
+I-G-O     REGULATOR
+IEC
+Italiano
+MPJA
+NPN
+Nand
+Nederlands
+Nor
+Not
+O-G-I     REGULATOR
+Or
+PAF
+PCB
+PNP
+Pitch
+Português
+RS
+S-G-D     JFET
+S-G-D     MOSFET
+SPDT
+SPDT (On/Off/On)
+SPDT (On/On)
+SPST
+Srpski
+Stroke
+Timing
+Xnor
+Xor
+cm
+ft
+in
+mm
+px
+yd

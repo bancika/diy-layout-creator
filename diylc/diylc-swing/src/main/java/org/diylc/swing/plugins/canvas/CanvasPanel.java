@@ -306,7 +306,11 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     
     Rectangle visibleRect = getVisibleRect();
 
-    if (bufferImage == null) {
+    // the buffer is redrawn in full on every paint, so only a change in size, which includes the
+    // HiDPI scale, calls for a new one; scrolling does not
+    if (bufferImage == null
+        || bufferImage.getWidth() != (int) Math.round(visibleRect.width * scaleFactor)
+        || bufferImage.getHeight() != (int) Math.round(visibleRect.height * scaleFactor)) {
       createBufferImage(visibleRect, scaleFactor);
     }
     Graphics2D bufferG2d = (Graphics2D) bufferImage.getGraphics();

@@ -291,7 +291,7 @@ public class Line extends AbstractLeadedComponent<Void> {
   
   @Deprecated
   @Override
-  public org.diylc.components.AbstractLeadedComponent.LabelOriantation getLabelOriantation() {
-    return super.getLabelOriantation();
+  public org.diylc.components.AbstractLeadedComponent.LabelOrientation getLabelOrientation() {
+    return super.getLabelOrientation();
   }
 }

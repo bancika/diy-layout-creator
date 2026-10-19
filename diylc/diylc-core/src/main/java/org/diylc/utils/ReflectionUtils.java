@@ -21,23 +21,30 @@
 */
 package org.diylc.utils;
 
-import java.lang.reflect.Modifier;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.log4j.Logger;
-import org.diylc.appframework.miscutils.Utils;
 
 import org.diylc.core.annotations.IAutoCreator;
+import org.diylc.core.annotations.Indexed;
 import org.diylc.netlist.IGuitarDiagramAnalyzer;
 import org.diylc.netlist.INetlistParser;
-import org.diylc.presenter.Presenter;
 
 public class ReflectionUtils {
   
-  private static final Logger LOG = Logger.getLogger(Presenter.class);
+  private static final Logger LOG = Logger.getLogger(ReflectionUtils.class);
+
+  private static final String SERVICES_DIR = "META-INF/services/";
   
   /**
    * {@link List} of {@link IAutoCreator} objects that are capable of creating more components
@@ -45,19 +52,66 @@ public class ReflectionUtils {
    */ 
   private static List<IAutoCreator> autoCreators;
 
-  public static List<IAutoCreator> getAutoCreators() {
-    if (autoCreators == null) {
-      autoCreators = new ArrayList<IAutoCreator>();
-      Set<Class<?>> classes = null;
-      try {
-        classes = Utils.getClasses("org.diylc.components.autocreate");
-        for (Class<?> clazz : classes) {
-          if (IAutoCreator.class.isAssignableFrom(clazz)) {
-            autoCreators.add((IAutoCreator) clazz.getDeclaredConstructor().newInstance());
-            LOG.debug("Loaded auto-creator: " + clazz.getName());
+  /**
+   * Returns the concrete implementations of an {@link Indexed} type, as listed at build time by
+   * {@code diylc-processor}. Classes are loaded but not initialized.
+   */
+  public static <T> List<Class<? extends T>> getIndexedClasses(Class<T> type) {
+    ClassLoader classLoader = ReflectionUtils.class.getClassLoader();
+    // each module jar carries its own index file for the same type
+    Set<String> classNames = new LinkedHashSet<String>();
+    try {
+      Enumeration<URL> indexFiles = classLoader.getResources(SERVICES_DIR + type.getName());
+      while (indexFiles.hasMoreElements()) {
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(indexFiles.nextElement().openStream(), StandardCharsets.UTF_8))) {
+          String line;
+          while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (!line.isEmpty() && !line.startsWith("#")) {
+              classNames.add(line);
+            }
           }
         }
+      }
+    } catch (IOException e) {
+      LOG.error("Could not read the class index of " + type.getName(), e);
+    }
+
+    List<Class<? extends T>> result = new ArrayList<Class<? extends T>>(classNames.size());
+    for (String className : classNames) {
+      try {
+        Class<?> clazz = Class.forName(className, false, classLoader);
+        if (type.isAssignableFrom(clazz)) {
+          result.add(clazz.asSubclass(type));
+        } else {
+          LOG.warn("Class index of " + type.getName() + " lists unrelated class " + className);
+        }
+      } catch (ClassNotFoundException e) {
+        LOG.warn("Class index of " + type.getName() + " lists missing class " + className);
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Instantiates every class returned by {@link #getIndexedClasses(Class)} through its no-arg
+   * constructor.
+   */
+  public static <T> List<T> getIndexedInstances(Class<T> type) throws ReflectiveOperationException {
+    List<T> result = new ArrayList<T>();
+    for (Class<? extends T> clazz : getIndexedClasses(type)) {
+      result.add(clazz.getDeclaredConstructor().newInstance());
+    }
+    return result;
+  }
+
+  public static List<IAutoCreator> getAutoCreators() {
+    if (autoCreators == null) {
+      try {
+        autoCreators = getIndexedInstances(IAutoCreator.class);
       } catch (Exception e) {
+        autoCreators = new ArrayList<IAutoCreator>();
         LOG.error("Error loading auto-creator types", e);
       }
     }
@@ -65,16 +119,8 @@ public class ReflectionUtils {
   }
   
   public static List<INetlistParser> getNetlistParserDefinitions() {
-    Set<Class<?>> classes;
     try {
-      classes = Utils.getClasses("org.diylc.netlist");
-      List<INetlistParser> result = new ArrayList<INetlistParser>();
-
-      for (Class<?> clazz : classes) {
-        if (!Modifier.isAbstract(clazz.getModifiers()) && INetlistParser.class.isAssignableFrom(clazz)) {
-          result.add((INetlistParser) clazz.getDeclaredConstructor().newInstance());
-        }
-      }
+      List<INetlistParser> result = getIndexedInstances(INetlistParser.class);
 
       Collections.sort(result, new Comparator<INetlistParser>() {
 
@@ -92,16 +138,7 @@ public class ReflectionUtils {
   }
 
   public static IGuitarDiagramAnalyzer getGuitarDiagramAnalyzer() throws Exception {
-    Set<Class<?>> classes;
-    classes = Utils.getClasses("org.diylc.netlist");
-    List<IGuitarDiagramAnalyzer> result = new ArrayList<>();
-
-    for (Class<?> clazz : classes) {
-      if (!Modifier.isAbstract(clazz.getModifiers()) && IGuitarDiagramAnalyzer.class.isAssignableFrom(clazz)) {
-        result.add((IGuitarDiagramAnalyzer) clazz.getDeclaredConstructor().newInstance());
-      }
-    }
-
+    List<IGuitarDiagramAnalyzer> result = getIndexedInstances(IGuitarDiagramAnalyzer.class);
 
     if (result.isEmpty()) {
       return null;

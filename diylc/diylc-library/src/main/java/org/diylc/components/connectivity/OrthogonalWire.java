@@ -46,7 +46,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Right Angle Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Wire that runs horizontally and vertically and turns at right angles",
     zOrder = IDIYComponent.WIRING, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
-    transformer = OrthogonalComponentTransformer.class, enableCache = false, creationMethod = CreationMethod.POINT_BY_POINT)
+    transformer = OrthogonalComponentTransformer.class, enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)
 public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements IContinuity {
 
   private static final long serialVersionUID = 1L;
@@ -65,9 +65,18 @@ public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements 
     return COLOR;
   }
 
+  private int getThickness() {
+    return (int) (gauge.diameterIn() * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT)) - 1;
+  }
+
+  @Override
+  protected double getClipMargin() {
+    return getThickness() / 2d + 1;
+  }
+
   @Override
   protected void drawCurve(Path2D curve, Graphics2D g2d, ComponentState componentState, IDrawingObserver drawingObserver) {
-    int thickness = (int) (gauge.diameterIn() * Constants.PIXELS_PER_INCH * (1 + 2 * INSULATION_THICKNESS_PCT)) - 1;
+    int thickness = getThickness();
     Color curveColor =
         componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
             : color;

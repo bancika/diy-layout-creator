@@ -31,6 +31,33 @@ import java.util.Set;
 public class AreaUtils {  
 
   /**
+   * Unions the areas pairwise, rather than adding each one to a single growing area, which would
+   * make every addition cost as much as everything added before it. The areas in the list are
+   * changed in the process.
+   * 
+   * @param areas
+   * @return the union, or an empty area for an empty list
+   */
+  public static Area union(List<Area> areas) {
+    if (areas.isEmpty()) {
+      return new Area();
+    }
+    List<Area> current = areas;
+    while (current.size() > 1) {
+      List<Area> next = new ArrayList<Area>((current.size() + 1) / 2);
+      for (int i = 0; i < current.size(); i += 2) {
+        Area area = current.get(i);
+        if (i + 1 < current.size()) {
+          area.add(current.get(i + 1));
+        }
+        next.add(area);
+      }
+      current = next;
+    }
+    return current.get(0);
+  }
+
+  /**
    * Merges all areas that either overlap or are joined by connections.
    * 
    * @param areas

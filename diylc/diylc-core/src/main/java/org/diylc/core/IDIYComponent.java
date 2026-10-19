@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.Indexed;
 
 /**
  * Interface for component instance. Implementation classes of this interface will be instantiated
@@ -47,6 +48,7 @@ import org.diylc.core.annotations.EditableProperty;
  * 
  * @param <T> type of component values, e.g. Resistance for resistors or String for transistors.
  */
+@Indexed
 public interface IDIYComponent<T> extends Serializable, Cloneable {
 
   public static final int CHASSIS = 1;

@@ -11,6 +11,7 @@ import org.diylc.swingframework.IDrawingProvider;
 import org.diylc.swingframework.export.DrawingExporter;
 
 import org.diylc.common.ITask;
+import org.diylc.lang.LangUtil;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -57,8 +58,9 @@ public class PrintAction extends AbstractAction {
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not print. " + e.getMessage(), "Error",
-              ISwingUI.ERROR_MESSAGE);
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not print. %s"), e.getMessage()),
+              LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
         }
       }, true);          
     }

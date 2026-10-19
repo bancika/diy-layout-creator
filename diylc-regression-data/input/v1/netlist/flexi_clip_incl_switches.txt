@@ -1,5 +1,5 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	D2.2 <-> D9.1 <-> Ge1.2 <-> Q2.1 <-> Q2.3 <-> Re1.2 <-> Si1.2 <-> Si2.1
-	Ge4.1 <-> Q1.1 <-> Q1.3
+	D2.K <-> D9.A <-> Ge1.K <-> Q2.1 <-> Q2.3 <-> Re1.K <-> Si1.K <-> Si2.A
+	Ge4.A <-> Q1.1 <-> Q1.3
 

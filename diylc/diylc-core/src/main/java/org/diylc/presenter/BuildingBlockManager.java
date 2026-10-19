@@ -86,8 +86,10 @@ public class BuildingBlockManager {
           // update templates and a flag marking that we imported them
           configManager.writeValue(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, true);
           configManager.writeValue(IPlugInPort.BLOCKS_KEY, blocksMap);
-          LOG.info(String.format("Imported %d default building blocks",
-              defaults == null ? 0 : defaults.size()));
+          int importCount = defaults.size();
+          if (importCount > 0) {
+            LOG.info(String.format("Imported %d default building blocks", importCount));
+          }
       } catch (Exception e) {
         LOG.error("Could not load default blocks", e);
       }

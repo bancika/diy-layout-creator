@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
 import org.diylc.swing.actions.analyze.*;
 import org.diylc.swingframework.IDrawingProvider;
 
+import org.diylc.common.AlignmentMode;
+import org.diylc.common.DistributionMode;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ExpansionMode;
@@ -40,10 +42,12 @@ import org.diylc.swing.actions.RenumberAction;
 import org.diylc.swing.actions.ResetCategoriesAction;
 import org.diylc.swing.actions.ThemeAction;
 import org.diylc.swing.actions.ToggleAction;
+import org.diylc.swing.actions.edit.AlignSelectionAction;
 import org.diylc.swing.actions.edit.BringToFrontAction;
 import org.diylc.swing.actions.edit.CopyAction;
 import org.diylc.swing.actions.edit.CutAction;
 import org.diylc.swing.actions.edit.DeleteSelectionAction;
+import org.diylc.swing.actions.edit.DistributeSelectionAction;
 import org.diylc.swing.actions.edit.DuplicateAction;
 import org.diylc.swing.actions.edit.EditProjectAction;
 import org.diylc.swing.actions.edit.EditSelectionAction;
@@ -231,6 +235,16 @@ public class ActionFactory {
 
   public NudgeAction createNudgeAction(IPlugInPort plugInPort) {
     return new NudgeAction(plugInPort);
+  }
+
+  public AlignSelectionAction createAlignSelectionAction(IPlugInPort plugInPort,
+      AlignmentMode mode) {
+    return new AlignSelectionAction(plugInPort, mode);
+  }
+
+  public DistributeSelectionAction createDistributeSelectionAction(IPlugInPort plugInPort,
+      DistributionMode mode) {
+    return new DistributeSelectionAction(plugInPort, mode);
   }
 
   public FindAction createFindAction(IPlugInPort plugInPort, ISwingUI swingUI) {
