@@ -582,7 +582,7 @@
 				<minor>8</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-10-09 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-10-16 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
@@ -592,6 +592,14 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Holding 'Shift' when starting to drag components or control points keeps the whole drag strictly horizontal or vertical, in the direction of the initial gesture. Holding 'Shift' while drawing a new wire or two-point component does the same</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Rectangular shape to LED component in addition to Round; added ability to set LED lead spacing</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded AI Models to the latest GPT-6 generation across all tiers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -644,6 +652,26 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>When a component that belongs to a group is stuck to another component, moving that other component now drags the whole group along instead of only the stuck component</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>9</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-10-17 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Gerber export on computers set to a language that uses a decimal comma (e.g. German, French, Serbian) produced files in which drill holes, pads and traces had the wrong size - a 0.8mm hole came out as 0mm and traces and the board outline had no width, so the files could not be used for fabrication</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

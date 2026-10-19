@@ -20,8 +20,10 @@ package org.diylc.components.passive;
 
 import java.awt.Color;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,7 +39,10 @@ public class CapacitorDatasheetService {
 
   private static CapacitorDatasheetService instance;
 
-  private static NumberFormat format = new DecimalFormat("##.###");
+  // lookup keys are matched against the datasheet files, which always use '.' as the decimal
+  // separator
+  private static NumberFormat format =
+      new DecimalFormat("##.###", DecimalFormatSymbols.getInstance(Locale.ROOT));
 
   private Map<String, CapacitorDatasheet> cache = new HashMap<String, CapacitorDatasheet>();
 

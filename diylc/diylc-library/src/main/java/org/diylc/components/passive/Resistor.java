@@ -197,7 +197,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance> implements IGe
 
   @Override
   protected int getLabelOffset(int bodyLength, int bodyWidth, int labelLength) {
-    if (value == null || getColorCode() == ResistorColorCode.NONE || getLabelOriantation() != AbstractLeadedComponent.LabelOriantation.Directional)
+    if (value == null || getColorCode() == ResistorColorCode.NONE || getLabelOrientation() != AbstractLeadedComponent.LabelOrientation.Directional)
       return 0;
     Color[] bands = value.getColorCode(colorCode);
     

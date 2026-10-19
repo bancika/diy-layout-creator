@@ -133,6 +133,14 @@ public class ProjectFileManager {
     xStream.addImmutableType(org.diylc.core.measures.Inductance.class, true);
     xStream.addImmutableType(org.diylc.core.measures.Size.class, true);
     xStream.addPermission(AnyTypePermission.ANY);
+    try {
+      for (ISerializationAliasProvider provider : ReflectionUtils
+          .getIndexedInstances(ISerializationAliasProvider.class)) {
+        provider.registerAliases(xStream);
+      }
+    } catch (ReflectiveOperationException e) {
+      LOG.error("Could not register serialization aliases", e);
+    }
   }
 
   public void startNewFile() {
