@@ -69,6 +69,9 @@
       "name" : "PCB Terminal Block",
       "className" : "connectivity.PCBTerminalBlock"
     }, {
+      "name" : "Right Angle Wire",
+      "className" : "connectivity.OrthogonalWire"
+    }, {
       "name" : "Solder Lug",
       "className" : "connectivity.SolderLug"
     }, {
@@ -114,6 +117,46 @@
     }, {
       "name" : "WeMos D1 Mini",
       "className" : "micro.WemosD1Mini"
+    } ],
+    "Displays & Outputs" : [ {
+      "name" : "7-Segment Display",
+      "className" : "displays.SevenSegmentDisplay"
+    }, {
+      "name" : "Character LCD",
+      "className" : "displays.CharacterLCD"
+    }, {
+      "name" : "LED Bar Graph",
+      "className" : "displays.LEDBarGraph"
+    }, {
+      "name" : "LED Matrix",
+      "className" : "displays.LEDMatrix"
+    }, {
+      "name" : "NeoPixel Breakout",
+      "className" : "displays.WS2812BBreakout"
+    }, {
+      "name" : "NeoPixel Jewel",
+      "className" : "displays.WS2812BJewel"
+    }, {
+      "name" : "NeoPixel Panel",
+      "className" : "displays.WS2812BPanel"
+    }, {
+      "name" : "NeoPixel Ring",
+      "className" : "displays.WS2812BRing"
+    }, {
+      "name" : "NeoPixel Stick",
+      "className" : "displays.WS2812BStick"
+    }, {
+      "name" : "NeoPixel Strip",
+      "className" : "displays.WS2812BStrip"
+    }, {
+      "name" : "Nokia 5110 LCD",
+      "className" : "displays.Nokia5110LCD"
+    }, {
+      "name" : "OLED Display",
+      "className" : "displays.OLEDDisplay"
+    }, {
+      "name" : "TFT Display",
+      "className" : "displays.TFTDisplay"
     } ],
     "Electro-Mechanical" : [ {
       "name" : "18650 Battery Holder",
@@ -396,6 +439,9 @@
     }, {
       "name" : "Resistor (Schematic)",
       "className" : "passive.ResistorSymbol"
+    }, {
+      "name" : "Right Angle Line (Schematic)",
+      "className" : "connectivity.OrthogonalLine"
     }, {
       "name" : "Schottky Diode (Schematic)",
       "className" : "semiconductors.SchottkyDiodeSymbol"

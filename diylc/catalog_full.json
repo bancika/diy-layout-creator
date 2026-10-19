@@ -1051,7 +1051,7 @@
     "category" : "Connectivity",
     "namePrefix" : "Trace",
     "description" : "Curved copper trace with two control points",
-    "creationMethod" : "SINGLE_CLICK",
+    "creationMethod" : "POINT_BY_POINT",
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1280,7 +1280,7 @@
     "category" : "Connectivity",
     "namePrefix" : "W",
     "description" : "Flexible wire with two control points",
-    "creationMethod" : "SINGLE_CLICK",
+    "creationMethod" : "POINT_BY_POINT",
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1551,6 +1551,94 @@
       } ]
     }
   }, {
+    "name" : "Right Angle Wire",
+    "className" : "connectivity.OrthogonalWire",
+    "category" : "Connectivity",
+    "namePrefix" : "W",
+    "description" : "Wire that runs horizontally and vertically and turns at right angles",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "AWG",
+      "type" : "AWG",
+      "possibleValues" : [ "_8", "_10", "_12", "_14", "_16", "_18", "_20", "_22", "_24", "_26", "_28", "_30", "_32", "_34", "_36" ],
+      "defaultValue" : "_22"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#00FF00"
+    }, {
+      "name" : "Corner Radius",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Point Count",
+      "type" : "PointCount",
+      "possibleValues" : [ "THREE", "FOUR", "FIVE" ],
+      "defaultValue" : "THREE"
+    }, {
+      "name" : "Stripe",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Stripe Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#FFFF00"
+    }, {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "SOLID", "DASHED", "DOTTED" ],
+      "defaultValue" : "SOLID"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Point Count" ],
+      "variants" : [ {
+        "when" : {
+          "Point Count" : "THREE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 2,
+          "label" : "3"
+        } ]
+      }, {
+        "when" : {
+          "Point Count" : "FOUR"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 3,
+          "label" : "4"
+        } ]
+      }, {
+        "when" : {
+          "Point Count" : "FIVE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 4,
+          "label" : "5"
+        } ]
+      } ]
+    }
+  }, {
     "name" : "Solder Lug",
     "className" : "connectivity.SolderLug",
     "category" : "Connectivity",
@@ -1720,7 +1808,7 @@
     "category" : "Connectivity",
     "namePrefix" : "W",
     "description" : "A pair of flexible leads twisted tightly together",
-    "creationMethod" : "SINGLE_CLICK",
+    "creationMethod" : "POINT_BY_POINT",
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1870,10 +1958,10 @@
         "label" : "5V"
       }, {
         "i" : 5,
-        "label" : "GND1"
+        "label" : "GND_1"
       }, {
         "i" : 6,
-        "label" : "GND2"
+        "label" : "GND_2"
       }, {
         "i" : 7,
         "label" : "VIN"
@@ -1969,7 +2057,7 @@
         "label" : "D13 (~)"
       }, {
         "i" : 38,
-        "label" : "GND3"
+        "label" : "GND_3"
       }, {
         "i" : 39,
         "label" : "AREF"
@@ -2201,7 +2289,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2"
@@ -2240,7 +2328,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "RST2"
@@ -2314,7 +2402,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2 (~)"
@@ -2353,7 +2441,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "RST2"
@@ -2409,7 +2497,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2 (~)"
@@ -2448,7 +2536,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "RST2"
@@ -2504,7 +2592,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2 (~)"
@@ -2543,7 +2631,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "RST2"
@@ -2599,7 +2687,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2 (~, GPIO5)"
@@ -2638,7 +2726,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "B1"
@@ -2694,7 +2782,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2"
@@ -2733,7 +2821,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "RST2"
@@ -2789,7 +2877,7 @@
           "label" : "RST1"
         }, {
           "i" : 3,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 4,
           "label" : "D2"
@@ -2828,7 +2916,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "BOOT"
@@ -2926,7 +3014,7 @@
           "label" : "VIN"
         }, {
           "i" : 16,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 17,
           "label" : "REC"
@@ -3023,10 +3111,10 @@
           "label" : "5V"
         }, {
           "i" : 5,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 6,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 7,
           "label" : "VIN"
@@ -3092,7 +3180,7 @@
           "label" : "D13"
         }, {
           "i" : 28,
-          "label" : "GND3"
+          "label" : "GND_3"
         }, {
           "i" : 29,
           "label" : "AREF"
@@ -3142,10 +3230,10 @@
           "label" : "5V"
         }, {
           "i" : 5,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 6,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 7,
           "label" : "VIN"
@@ -3211,7 +3299,7 @@
           "label" : "D13"
         }, {
           "i" : 28,
-          "label" : "GND3"
+          "label" : "GND_3"
         }, {
           "i" : 29,
           "label" : "AREF"
@@ -3279,10 +3367,10 @@
           "label" : "5V"
         }, {
           "i" : 5,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 6,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 7,
           "label" : "VIN"
@@ -3348,7 +3436,7 @@
           "label" : "D13"
         }, {
           "i" : 28,
-          "label" : "GND3"
+          "label" : "GND_3"
         }, {
           "i" : 29,
           "label" : "AREF"
@@ -3401,10 +3489,10 @@
           "label" : "5V"
         }, {
           "i" : 5,
-          "label" : "GND1"
+          "label" : "GND_1"
         }, {
           "i" : 6,
-          "label" : "GND2"
+          "label" : "GND_2"
         }, {
           "i" : 7,
           "label" : "VIN"
@@ -3470,7 +3558,7 @@
           "label" : "D13"
         }, {
           "i" : 28,
-          "label" : "GND3"
+          "label" : "GND_3"
         }, {
           "i" : 29,
           "label" : "AREF"
@@ -4751,7 +4839,7 @@
         "label" : "GP1"
       }, {
         "i" : 2,
-        "label" : "GND1"
+        "label" : "GND_1"
       }, {
         "i" : 3,
         "label" : "GP2"
@@ -4766,7 +4854,7 @@
         "label" : "GP5"
       }, {
         "i" : 7,
-        "label" : "GND2"
+        "label" : "GND_2"
       }, {
         "i" : 8,
         "label" : "GP6"
@@ -4781,7 +4869,7 @@
         "label" : "GP9"
       }, {
         "i" : 12,
-        "label" : "GND3"
+        "label" : "GND_3"
       }, {
         "i" : 13,
         "label" : "GP10"
@@ -4796,7 +4884,7 @@
         "label" : "GP13"
       }, {
         "i" : 17,
-        "label" : "GND4"
+        "label" : "GND_4"
       }, {
         "i" : 18,
         "label" : "GP14"
@@ -4811,7 +4899,7 @@
         "label" : "VSYS"
       }, {
         "i" : 22,
-        "label" : "GND5"
+        "label" : "GND_5"
       }, {
         "i" : 23,
         "label" : "3V3_EN"
@@ -4826,7 +4914,7 @@
         "label" : "GP28"
       }, {
         "i" : 27,
-        "label" : "GND6"
+        "label" : "GND_6"
       }, {
         "i" : 28,
         "label" : "GP27"
@@ -4841,7 +4929,7 @@
         "label" : "GP22"
       }, {
         "i" : 32,
-        "label" : "GND7"
+        "label" : "GND_7"
       }, {
         "i" : 33,
         "label" : "GP21"
@@ -4856,7 +4944,7 @@
         "label" : "GP18"
       }, {
         "i" : 37,
-        "label" : "GND8"
+        "label" : "GND_8"
       }, {
         "i" : 38,
         "label" : "GP17"
@@ -5090,7 +5178,7 @@
         },
         "pins" : [ {
           "i" : 0,
-          "label" : "GND"
+          "label" : "GND_1"
         }, {
           "i" : 1,
           "label" : "0 (RX1)"
@@ -5138,7 +5226,7 @@
           "label" : "AGND"
         }, {
           "i" : 16,
-          "label" : "3.3V (100mA)"
+          "label" : "3.3V_1 (100mA)"
         }, {
           "i" : 17,
           "label" : "23 (A9/PWM)"
@@ -5177,10 +5265,10 @@
           "label" : "VBAT"
         }, {
           "i" : 29,
-          "label" : "3.3V (End)"
+          "label" : "3.3V_2 (End)"
         }, {
           "i" : 30,
-          "label" : "GND (End)"
+          "label" : "GND_2 (End)"
         }, {
           "i" : 31,
           "label" : "Program"
@@ -5197,7 +5285,7 @@
         },
         "pins" : [ {
           "i" : 0,
-          "label" : "GND"
+          "label" : "GND_1"
         }, {
           "i" : 1,
           "label" : "0 (RX1/CS1/CRX2)"
@@ -5242,10 +5330,10 @@
           "label" : "VIN (3.6-5.5V)"
         }, {
           "i" : 15,
-          "label" : "GND"
+          "label" : "GND_2"
         }, {
           "i" : 16,
-          "label" : "3.3V (250mA)"
+          "label" : "3.3V_1 (250mA)"
         }, {
           "i" : 17,
           "label" : "23 (A9/CRX1)"
@@ -5284,10 +5372,10 @@
           "label" : "VBAT"
         }, {
           "i" : 29,
-          "label" : "3.3V (End)"
+          "label" : "3.3V_2 (End)"
         }, {
           "i" : 30,
-          "label" : "GND (End)"
+          "label" : "GND_3 (End)"
         }, {
           "i" : 31,
           "label" : "Program"
@@ -5304,7 +5392,7 @@
         },
         "pins" : [ {
           "i" : 0,
-          "label" : "GND"
+          "label" : "GND_1"
         }, {
           "i" : 1,
           "label" : "0 (RX1/CS1/CRX2)"
@@ -5346,7 +5434,7 @@
           "label" : "12 (MISO/MQSL)"
         }, {
           "i" : 14,
-          "label" : "3.3V"
+          "label" : "3.3V_1"
         }, {
           "i" : 15,
           "label" : "24 (A10/TX6/SCL2)"
@@ -5379,10 +5467,10 @@
           "label" : "VIN (3.6-5.5V)"
         }, {
           "i" : 25,
-          "label" : "GND"
+          "label" : "GND_2"
         }, {
           "i" : 26,
-          "label" : "3.3V (250mA)"
+          "label" : "3.3V_2 (250mA)"
         }, {
           "i" : 27,
           "label" : "23 (A9/CRX1)"
@@ -5418,7 +5506,7 @@
           "label" : "13 (SCK/LED)"
         }, {
           "i" : 38,
-          "label" : "GND"
+          "label" : "GND_3"
         }, {
           "i" : 39,
           "label" : "41 (A17)"
@@ -5451,10 +5539,10 @@
           "label" : "VBAT"
         }, {
           "i" : 49,
-          "label" : "3.3V (Mid)"
+          "label" : "3.3V_3 (Mid)"
         }, {
           "i" : 50,
-          "label" : "GND (Mid)"
+          "label" : "GND_4 (Mid)"
         }, {
           "i" : 51,
           "label" : "Program"
@@ -5579,6 +5667,1401 @@
       }, {
         "i" : 15,
         "label" : "TX (GPIO1)"
+      } ]
+    }
+  }, {
+    "name" : "7-Segment Display",
+    "className" : "displays.SevenSegmentDisplay",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "DISP",
+    "description" : "7-Segment LED Display (1-Digit, 2-Digit, 4-Digit, or TM1637 I2C Driver Module)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#004488"
+    }, {
+      "name" : "Body",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1C1C1C"
+    }, {
+      "name" : "Common",
+      "type" : "Common",
+      "possibleValues" : [ "Cathode", "Anode" ],
+      "defaultValue" : "Cathode"
+    }, {
+      "name" : "LED Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#E53935"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Punctuation",
+      "type" : "Punctuation",
+      "possibleValues" : [ "None", "DecimalPoints", "Colon", "Both" ],
+      "defaultValue" : "DecimalPoints"
+    }, {
+      "name" : "Type",
+      "type" : "DisplayType",
+      "possibleValues" : [ "SingleDigit_10Pin", "TwoDigit_0_56_10Pin", "FourDigit_0_36_12Pin", "FourDigit_0_56_12Pin", "TM1637_Module_4Pin" ],
+      "defaultValue" : "SingleDigit_10Pin"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Type" ],
+      "variants" : [ {
+        "when" : {
+          "Type" : "SingleDigit_10Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "COM1"
+        }, {
+          "i" : 3,
+          "label" : "C"
+        }, {
+          "i" : 4,
+          "label" : "DP"
+        }, {
+          "i" : 5,
+          "label" : "B"
+        }, {
+          "i" : 6,
+          "label" : "A"
+        }, {
+          "i" : 7,
+          "label" : "COM2"
+        }, {
+          "i" : 8,
+          "label" : "F"
+        }, {
+          "i" : 9,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Type" : "TwoDigit_0_56_10Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "DP"
+        }, {
+          "i" : 3,
+          "label" : "C"
+        }, {
+          "i" : 4,
+          "label" : "G"
+        }, {
+          "i" : 5,
+          "label" : "B"
+        }, {
+          "i" : 6,
+          "label" : "D2"
+        }, {
+          "i" : 7,
+          "label" : "D1"
+        }, {
+          "i" : 8,
+          "label" : "F"
+        }, {
+          "i" : 9,
+          "label" : "A"
+        } ]
+      }, {
+        "when" : {
+          "Type" : "FourDigit_0_36_12Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "DP"
+        }, {
+          "i" : 3,
+          "label" : "C"
+        }, {
+          "i" : 4,
+          "label" : "G"
+        }, {
+          "i" : 5,
+          "label" : "D4"
+        }, {
+          "i" : 6,
+          "label" : "B"
+        }, {
+          "i" : 7,
+          "label" : "D3"
+        }, {
+          "i" : 8,
+          "label" : "D2"
+        }, {
+          "i" : 9,
+          "label" : "F"
+        }, {
+          "i" : 10,
+          "label" : "A"
+        }, {
+          "i" : 11,
+          "label" : "D1"
+        } ]
+      }, {
+        "when" : {
+          "Type" : "FourDigit_0_56_12Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "DP"
+        }, {
+          "i" : 3,
+          "label" : "C"
+        }, {
+          "i" : 4,
+          "label" : "G"
+        }, {
+          "i" : 5,
+          "label" : "D4"
+        }, {
+          "i" : 6,
+          "label" : "B"
+        }, {
+          "i" : 7,
+          "label" : "D3"
+        }, {
+          "i" : 8,
+          "label" : "D2"
+        }, {
+          "i" : 9,
+          "label" : "F"
+        }, {
+          "i" : 10,
+          "label" : "A"
+        }, {
+          "i" : 11,
+          "label" : "D1"
+        } ]
+      }, {
+        "when" : {
+          "Type" : "TM1637_Module_4Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "CLK"
+        }, {
+          "i" : 1,
+          "label" : "DIO"
+        }, {
+          "i" : 2,
+          "label" : "VCC"
+        }, {
+          "i" : 3,
+          "label" : "GND"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "Character LCD",
+    "className" : "displays.CharacterLCD",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LCD",
+    "description" : "HD44780-Compatible Character LCD Display (Parallel / I2C Backpack)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Backlight Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1E88E5"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1B5E20"
+    }, {
+      "name" : "Interface",
+      "type" : "LCDInterface",
+      "possibleValues" : [ "I2C_Backpack", "Parallel_16Pin" ],
+      "defaultValue" : "I2C_Backpack"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Screen",
+      "type" : "Display",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
+      "defaultValue" : "VALUE"
+    }, {
+      "name" : "Size",
+      "type" : "LCDSize",
+      "possibleValues" : [ "_16x2", "_20x4" ],
+      "defaultValue" : "_16x2"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Interface" ],
+      "variants" : [ {
+        "when" : {
+          "Interface" : "I2C_Backpack"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SDA"
+        }, {
+          "i" : 3,
+          "label" : "SCL"
+        } ]
+      }, {
+        "when" : {
+          "Interface" : "Parallel_16Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "VSS (GND)"
+        }, {
+          "i" : 1,
+          "label" : "VDD (+5V)"
+        }, {
+          "i" : 2,
+          "label" : "VO (Contrast)"
+        }, {
+          "i" : 3,
+          "label" : "RS"
+        }, {
+          "i" : 4,
+          "label" : "R/W"
+        }, {
+          "i" : 5,
+          "label" : "E"
+        }, {
+          "i" : 6,
+          "label" : "DB0"
+        }, {
+          "i" : 7,
+          "label" : "DB1"
+        }, {
+          "i" : 8,
+          "label" : "DB2"
+        }, {
+          "i" : 9,
+          "label" : "DB3"
+        }, {
+          "i" : 10,
+          "label" : "DB4"
+        }, {
+          "i" : 11,
+          "label" : "DB5"
+        }, {
+          "i" : 12,
+          "label" : "DB6"
+        }, {
+          "i" : 13,
+          "label" : "DB7"
+        }, {
+          "i" : 14,
+          "label" : "LEDA (Backlight +)"
+        }, {
+          "i" : 15,
+          "label" : "LEDK (Backlight -)"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "LED Bar Graph",
+    "className" : "displays.LEDBarGraph",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "BAR",
+    "description" : "Segmented LED bar in a DIP package, for VU and level meters",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Body",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#2B2B2B"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#1A1A1A"
+    }, {
+      "name" : "Color",
+      "type" : "BarColor",
+      "possibleValues" : [ "GREEN_YELLOW_RED", "BLUE_GREEN_YELLOW_RED", "RED", "GREEN", "YELLOW", "BLUE", "ORANGE", "WHITE" ],
+      "defaultValue" : "GREEN_YELLOW_RED"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Segments",
+      "type" : "Segments",
+      "possibleValues" : [ "_4", "_5", "_6", "_8", "_10", "_12" ],
+      "defaultValue" : "_10"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Segments" ],
+      "pinCountExpression" : "2 * Segments",
+      "labels" : "custom",
+      "pinCountSamples" : {
+        "_4" : 8,
+        "_6" : 12,
+        "_10" : 20
+      },
+      "example" : {
+        "when" : {
+          "Segments" : "_4"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 1,
+          "label" : "2"
+        }, {
+          "i" : 2,
+          "label" : "3"
+        }, {
+          "i" : 3,
+          "label" : "4"
+        }, {
+          "i" : 4,
+          "label" : "8"
+        }, {
+          "i" : 5,
+          "label" : "7"
+        }, {
+          "i" : 6,
+          "label" : "6"
+        }, {
+          "i" : 7,
+          "label" : "5"
+        } ]
+      }
+    }
+  }, {
+    "name" : "LED Matrix",
+    "className" : "displays.LEDMatrix",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "DISP",
+    "description" : "MAX7219 Dot LED Matrix Display Module (Cascadable SPI)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#0055A5"
+    }, {
+      "name" : "Dot Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#E53935"
+    }, {
+      "name" : "Modules",
+      "type" : "Modules",
+      "possibleValues" : [ "Single_8x8", "Compact_8x8", "FourInOne_32x8", "EightInOne_64x8" ],
+      "defaultValue" : "Single_8x8"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "VCC_IN"
+      }, {
+        "i" : 1,
+        "label" : "GND_IN"
+      }, {
+        "i" : 2,
+        "label" : "DIN"
+      }, {
+        "i" : 3,
+        "label" : "CS_IN"
+      }, {
+        "i" : 4,
+        "label" : "CLK_IN"
+      }, {
+        "i" : 5,
+        "label" : "VCC_OUT"
+      }, {
+        "i" : 6,
+        "label" : "GND_OUT"
+      }, {
+        "i" : 7,
+        "label" : "DOUT"
+      }, {
+        "i" : 8,
+        "label" : "CS_OUT"
+      }, {
+        "i" : 9,
+        "label" : "CLK_OUT"
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Breakout",
+    "className" : "displays.WS2812BBreakout",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "Single-LED Addressable RGB WS2812B NeoPixel Breakout",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#111111"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "GND_1"
+      }, {
+        "i" : 1,
+        "label" : "VIN_1"
+      }, {
+        "i" : 2,
+        "label" : "IN"
+      }, {
+        "i" : 3,
+        "label" : "GND_2"
+      }, {
+        "i" : 4,
+        "label" : "VIN_2"
+      }, {
+        "i" : 5,
+        "label" : "OUT"
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Jewel",
+    "className" : "displays.WS2812BJewel",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "Addressable RGB WS2812B NeoPixel Jewel (7 LEDs)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#111111"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "OUT"
+      }, {
+        "i" : 1,
+        "label" : "G_1"
+      }, {
+        "i" : 2,
+        "label" : "G_2"
+      }, {
+        "i" : 3,
+        "label" : "PWR"
+      }, {
+        "i" : 4,
+        "label" : "IN"
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Panel",
+    "className" : "displays.WS2812BPanel",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "Addressable RGB WS2812B NeoPixel Matrix Panel (8x8, 64 LEDs)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#111111"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "DIN"
+      }, {
+        "i" : 1,
+        "label" : "+5V_1"
+      }, {
+        "i" : 2,
+        "label" : "GND_1"
+      }, {
+        "i" : 3,
+        "label" : "DOUT"
+      }, {
+        "i" : 4,
+        "label" : "+5V_2"
+      }, {
+        "i" : 5,
+        "label" : "GND_2"
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Ring",
+    "className" : "displays.WS2812BRing",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "Addressable RGB WS2812B NeoPixel Ring (12/16/24 LEDs)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#111111"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Ring Size",
+      "type" : "RingSize",
+      "possibleValues" : [ "_12_LED", "_16_LED", "_24_LED" ],
+      "defaultValue" : "_16_LED"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Ring Size" ],
+      "variants" : [ {
+        "when" : {
+          "Ring Size" : "_12_LED"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "OUT"
+        }, {
+          "i" : 1,
+          "label" : "IN"
+        }, {
+          "i" : 2,
+          "label" : "GND"
+        }, {
+          "i" : 3,
+          "label" : "PWR"
+        } ]
+      }, {
+        "when" : {
+          "Ring Size" : "_16_LED"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "IN"
+        }, {
+          "i" : 1,
+          "label" : "OUT"
+        }, {
+          "i" : 2,
+          "label" : "G_1"
+        }, {
+          "i" : 3,
+          "label" : "G_2"
+        }, {
+          "i" : 4,
+          "label" : "V+_1"
+        }, {
+          "i" : 5,
+          "label" : "V+_2"
+        } ]
+      }, {
+        "when" : {
+          "Ring Size" : "_24_LED"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "OUT"
+        }, {
+          "i" : 1,
+          "label" : "IN"
+        }, {
+          "i" : 2,
+          "label" : "G_1"
+        }, {
+          "i" : 3,
+          "label" : "G_2"
+        }, {
+          "i" : 4,
+          "label" : "PWR_1"
+        }, {
+          "i" : 5,
+          "label" : "PWR_2"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Stick",
+    "className" : "displays.WS2812BStick",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "8-LED Addressable RGB WS2812B NeoPixel Stick",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#111111"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "GND_1"
+      }, {
+        "i" : 1,
+        "label" : "DIN"
+      }, {
+        "i" : 2,
+        "label" : "+5V_1"
+      }, {
+        "i" : 3,
+        "label" : "GND_2"
+      }, {
+        "i" : 4,
+        "label" : "GND_3"
+      }, {
+        "i" : 5,
+        "label" : "DOUT"
+      }, {
+        "i" : 6,
+        "label" : "+5V_2"
+      }, {
+        "i" : 7,
+        "label" : "GND_4"
+      } ]
+    }
+  }, {
+    "name" : "NeoPixel Strip",
+    "className" : "displays.WS2812BStrip",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LED",
+    "description" : "Addressable RGB WS2812B LED Strip (30, 60 or 144 LEDs per metre)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#F2F2F2"
+    }, {
+      "name" : "Density",
+      "type" : "Density",
+      "possibleValues" : [ "_30", "_60", "_144" ],
+      "defaultValue" : "_60"
+    }, {
+      "name" : "LED Type",
+      "type" : "LedType",
+      "possibleValues" : [ "RGB", "RGBW_WARM", "RGBW_NATURAL", "RGBW_COOL", "WWA" ],
+      "defaultValue" : "RGB"
+    }, {
+      "name" : "LEDs",
+      "type" : "Integer",
+      "defaultValue" : "8"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "+5V_1"
+      }, {
+        "i" : 1,
+        "label" : "DIN"
+      }, {
+        "i" : 2,
+        "label" : "GND_1"
+      }, {
+        "i" : 3,
+        "label" : "+5V_2"
+      }, {
+        "i" : 4,
+        "label" : "DOUT"
+      }, {
+        "i" : 5,
+        "label" : "GND_2"
+      } ]
+    }
+  }, {
+    "name" : "Nokia 5110 LCD",
+    "className" : "displays.Nokia5110LCD",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "LCD",
+    "description" : "84x48 graphic LCD module with a PCD8544 controller and an SPI interface",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Backlight Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#6B7668"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#15548C"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Screen",
+      "type" : "Display",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
+      "defaultValue" : "VALUE"
+    } ],
+    "pinout" : {
+      "pins" : [ {
+        "i" : 0,
+        "label" : "RST"
+      }, {
+        "i" : 1,
+        "label" : "CE"
+      }, {
+        "i" : 2,
+        "label" : "DC"
+      }, {
+        "i" : 3,
+        "label" : "DIN"
+      }, {
+        "i" : 4,
+        "label" : "CLK"
+      }, {
+        "i" : 5,
+        "label" : "VCC"
+      }, {
+        "i" : 6,
+        "label" : "BL"
+      }, {
+        "i" : 7,
+        "label" : "GND"
+      } ]
+    }
+  }, {
+    "name" : "OLED Display",
+    "className" : "displays.OLEDDisplay",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "DISP",
+    "description" : "Monochrome OLED Display Module (SSD1306 / SH1106, I2C or SPI)",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#004488"
+    }, {
+      "name" : "Interface",
+      "type" : "OLEDInterface",
+      "possibleValues" : [ "I2C_4Pin", "SPI_6Pin", "SPI_7Pin", "SPI_8Pin" ],
+      "defaultValue" : "I2C_4Pin"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Pixel Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#00D4FF"
+    }, {
+      "name" : "Screen",
+      "type" : "Display",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
+      "defaultValue" : "VALUE"
+    }, {
+      "name" : "Size",
+      "type" : "Version",
+      "possibleValues" : [ "SSD1306_0_91", "SSD1306_0_96", "SH1106_1_3" ],
+      "defaultValue" : "SSD1306_0_96"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Interface" ],
+      "variants" : [ {
+        "when" : {
+          "Interface" : "I2C_4Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        } ]
+      }, {
+        "when" : {
+          "Interface" : "SPI_6Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        } ]
+      }, {
+        "when" : {
+          "Interface" : "SPI_7Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        }, {
+          "i" : 6,
+          "label" : "CS"
+        } ]
+      }, {
+        "when" : {
+          "Interface" : "SPI_8Pin"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "SDA"
+        }, {
+          "i" : 1,
+          "label" : "SCL"
+        }, {
+          "i" : 2,
+          "label" : "DC"
+        }, {
+          "i" : 3,
+          "label" : "RES"
+        }, {
+          "i" : 4,
+          "label" : "CS"
+        }, {
+          "i" : 5,
+          "label" : "VDD"
+        }, {
+          "i" : 6,
+          "label" : "VIN"
+        }, {
+          "i" : 7,
+          "label" : "GND"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "TFT Display",
+    "className" : "displays.TFTDisplay",
+    "category" : "Displays & Outputs",
+    "namePrefix" : "DISP",
+    "description" : "Color TFT LCD display module with an SPI interface",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Board Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#C0392B"
+    }, {
+      "name" : "Controller",
+      "type" : "Controller",
+      "possibleValues" : [ "ST7735_0_96", "GC9A01_1_28", "ST7789_1_54", "ST7735_1_8", "ST7735_1_8_SD", "ILI9341_2_4", "ILI9341_2_8" ],
+      "defaultValue" : "ILI9341_2_8"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Screen",
+      "type" : "Display",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
+      "defaultValue" : "VALUE"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Controller" ],
+      "variants" : [ {
+        "when" : {
+          "Controller" : "ST7735_0_96"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        }, {
+          "i" : 6,
+          "label" : "CS"
+        }, {
+          "i" : 7,
+          "label" : "BLK"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "GC9A01_1_28"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "RST"
+        }, {
+          "i" : 1,
+          "label" : "CS"
+        }, {
+          "i" : 2,
+          "label" : "DC"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "SCL"
+        }, {
+          "i" : 5,
+          "label" : "GND"
+        }, {
+          "i" : 6,
+          "label" : "VCC"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "ST7789_1_54"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        }, {
+          "i" : 6,
+          "label" : "CS"
+        }, {
+          "i" : 7,
+          "label" : "BLK"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "ST7735_1_8"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        }, {
+          "i" : 6,
+          "label" : "CS"
+        }, {
+          "i" : 7,
+          "label" : "BLK"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "ST7735_1_8_SD"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "GND"
+        }, {
+          "i" : 1,
+          "label" : "VCC"
+        }, {
+          "i" : 2,
+          "label" : "SCL"
+        }, {
+          "i" : 3,
+          "label" : "SDA"
+        }, {
+          "i" : 4,
+          "label" : "RES"
+        }, {
+          "i" : 5,
+          "label" : "DC"
+        }, {
+          "i" : 6,
+          "label" : "CS"
+        }, {
+          "i" : 7,
+          "label" : "BLK"
+        }, {
+          "i" : 8,
+          "label" : "SD_CS"
+        }, {
+          "i" : 9,
+          "label" : "SD_MOSI"
+        }, {
+          "i" : 10,
+          "label" : "SD_MISO"
+        }, {
+          "i" : 11,
+          "label" : "SD_SCK"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "ILI9341_2_4"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "VCC"
+        }, {
+          "i" : 1,
+          "label" : "GND"
+        }, {
+          "i" : 2,
+          "label" : "CS"
+        }, {
+          "i" : 3,
+          "label" : "RESET"
+        }, {
+          "i" : 4,
+          "label" : "DC"
+        }, {
+          "i" : 5,
+          "label" : "MOSI (SDI)"
+        }, {
+          "i" : 6,
+          "label" : "SCK"
+        }, {
+          "i" : 7,
+          "label" : "LED"
+        }, {
+          "i" : 8,
+          "label" : "MISO (SDO)"
+        }, {
+          "i" : 9,
+          "label" : "T_CLK"
+        }, {
+          "i" : 10,
+          "label" : "T_CS"
+        }, {
+          "i" : 11,
+          "label" : "T_DIN"
+        }, {
+          "i" : 12,
+          "label" : "T_DO"
+        }, {
+          "i" : 13,
+          "label" : "T_IRQ"
+        }, {
+          "i" : 14,
+          "label" : "SD_CS"
+        }, {
+          "i" : 15,
+          "label" : "SD_MOSI"
+        }, {
+          "i" : 16,
+          "label" : "SD_MISO"
+        }, {
+          "i" : 17,
+          "label" : "SD_SCK"
+        } ]
+      }, {
+        "when" : {
+          "Controller" : "ILI9341_2_8"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "VCC"
+        }, {
+          "i" : 1,
+          "label" : "GND"
+        }, {
+          "i" : 2,
+          "label" : "CS"
+        }, {
+          "i" : 3,
+          "label" : "RESET"
+        }, {
+          "i" : 4,
+          "label" : "DC"
+        }, {
+          "i" : 5,
+          "label" : "MOSI (SDI)"
+        }, {
+          "i" : 6,
+          "label" : "SCK"
+        }, {
+          "i" : 7,
+          "label" : "LED"
+        }, {
+          "i" : 8,
+          "label" : "MISO (SDO)"
+        }, {
+          "i" : 9,
+          "label" : "T_CLK"
+        }, {
+          "i" : 10,
+          "label" : "T_CS"
+        }, {
+          "i" : 11,
+          "label" : "T_DIN"
+        }, {
+          "i" : 12,
+          "label" : "T_DO"
+        }, {
+          "i" : 13,
+          "label" : "T_IRQ"
+        }, {
+          "i" : 14,
+          "label" : "SD_CS"
+        }, {
+          "i" : 15,
+          "label" : "SD_MOSI"
+        }, {
+          "i" : 16,
+          "label" : "SD_MISO"
+        }, {
+          "i" : 17,
+          "label" : "SD_SCK"
+        } ]
       } ]
     }
   }, {
@@ -9422,6 +10905,11 @@
       "name" : "Name",
       "type" : "String"
     }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
       "name" : "Selected Position",
       "type" : "Integer"
     } ],
@@ -10188,7 +11676,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10402,7 +11890,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10490,7 +11978,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10570,7 +12058,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10699,7 +12187,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10806,7 +12294,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -10901,7 +12389,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11015,7 +12503,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11140,7 +12628,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11222,7 +12710,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11301,7 +12789,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11770,8 +13258,16 @@
       "possibleUnits" : [ "R", "K", "M" ]
     } ],
     "pinout" : {
-      "pinCount" : 3,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "3"
+      }, {
+        "i" : 1,
+        "label" : "2"
+      }, {
+        "i" : 2,
+        "label" : "1"
+      } ]
     }
   }, {
     "name" : "Resistor",
@@ -11815,7 +13311,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -11923,7 +13419,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12233,7 +13729,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12323,7 +13819,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12401,7 +13897,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12485,7 +13981,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12591,7 +14087,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12674,7 +14170,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -12981,7 +14477,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -13156,7 +14652,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -13282,7 +14778,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -13659,7 +15155,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -13782,7 +15278,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -13831,6 +15327,100 @@
       "labels" : "sequential"
     }
   }, {
+    "name" : "Right Angle Line (Schematic)",
+    "className" : "connectivity.OrthogonalLine",
+    "category" : "Schematic Symbols",
+    "namePrefix" : "LN",
+    "description" : "Line with rounded right angle turns and optional arrows",
+    "creationMethod" : "POINT_BY_POINT",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Arrow Size",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "5px"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Corner Radius",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "End Arrow",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Point Count",
+      "type" : "PointCount",
+      "possibleValues" : [ "THREE", "FOUR", "FIVE" ],
+      "defaultValue" : "THREE"
+    }, {
+      "name" : "Start Arrow",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Style",
+      "type" : "LineStyle",
+      "possibleValues" : [ "SOLID", "DASHED", "DOTTED" ],
+      "defaultValue" : "SOLID"
+    }, {
+      "name" : "Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "1px"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Point Count" ],
+      "variants" : [ {
+        "when" : {
+          "Point Count" : "THREE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 2,
+          "label" : "3"
+        } ]
+      }, {
+        "when" : {
+          "Point Count" : "FOUR"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 3,
+          "label" : "4"
+        } ]
+      }, {
+        "when" : {
+          "Point Count" : "FIVE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 4,
+          "label" : "5"
+        } ]
+      } ]
+    }
+  }, {
     "name" : "Schottky Diode (Schematic)",
     "className" : "semiconductors.SchottkyDiodeSymbol",
     "category" : "Schematic Symbols",
@@ -13862,7 +15452,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -14521,7 +16111,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -14610,7 +16200,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -14691,7 +16281,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -14972,7 +16562,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -15058,7 +16648,7 @@
       "defaultValue" : "#FFFFFF"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -15120,11 +16710,6 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#41B007"
-    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -15144,7 +16729,7 @@
       "defaultValue" : "#000000"
     }, {
       "name" : "Label Orientation",
-      "type" : "LabelOriantation",
+      "type" : "LabelOrientation",
       "possibleValues" : [ "Directional", "Horizontal" ],
       "defaultValue" : "Directional"
     }, {
@@ -15153,12 +16738,23 @@
       "format" : "hex",
       "defaultValue" : "#CCCCCC"
     }, {
+      "name" : "Lead Spacing",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "2.54mm"
+    }, {
       "name" : "Moveable Label",
       "type" : "Boolean",
       "defaultValue" : "false"
     }, {
       "name" : "Name",
       "type" : "String"
+    }, {
+      "name" : "Shape",
+      "type" : "BodyShape",
+      "possibleValues" : [ "ROUND", "RECTANGLE" ],
+      "defaultValue" : "ROUND"
     }, {
       "name" : "Size",
       "type" : "Size",
@@ -15168,6 +16764,12 @@
     }, {
       "name" : "Value",
       "type" : "String"
+    }, {
+      "name" : "Width",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "2mm"
     } ],
     "pinout" : {
       "pins" : [ {
@@ -16943,13 +18545,13 @@
         "label" : "G"
       }, {
         "i" : 2,
-        "label" : "F"
+        "label" : "F1"
       }, {
         "i" : 3,
         "label" : "P"
       }, {
         "i" : 4,
-        "label" : "F"
+        "label" : "F2"
       } ]
     }
   }, {

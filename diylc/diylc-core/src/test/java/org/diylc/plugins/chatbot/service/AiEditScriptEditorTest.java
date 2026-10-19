@@ -56,6 +56,8 @@ public class AiEditScriptEditorTest {
         @Override
         public void setControlPoint(Point2D point, int index) { controlPoints[index] = point; }
         @Override
+        public void stretchBetween(Point2D first, Point2D second) { controlPoints[0] = first; controlPoints[controlPoints.length - 1] = second; }
+        @Override
         public boolean isControlPointSticky(int index) { return false; }
         @Override
         public java.awt.geom.Rectangle2D getCachingBounds() { return null; }
