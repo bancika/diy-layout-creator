@@ -47,9 +47,9 @@ import org.diylc.presenter.ComponentProcessor;
  * <p>
  * Produces two files:
  * <ul>
- *   <li><b>catalog_full.json</b> — all component types with all editable properties and their
+ *   <li><b>catalog_full.json</b> - all component types with all editable properties and their
  *       possible values. Used by the main LLM call (filtered to selected types).</li>
- *   <li><b>catalog_index.json</b> — compact index with just component names grouped by category.
+ *   <li><b>catalog_index.json</b> - compact index with just component names grouped by category.
  *       Used by the preliminary LLM call to select which types are needed.</li>
  * </ul>
  * <p>
@@ -61,7 +61,7 @@ public class ComponentCatalogGenerator {
 
   private static final Logger LOG = Logger.getLogger(ComponentCatalogGenerator.class);
 
-  /** Current DIYLC version — should match pom.xml */
+  /** Current DIYLC version - should match pom.xml */
   private static final String VERSION = "6.5.0";
 
   /**
@@ -288,7 +288,7 @@ public class ComponentCatalogGenerator {
   /**
    * Formats a default value for display in the catalog.
    */
-  private static String formatDefaultValue(Object value) {
+  static String formatDefaultValue(Object value) {
     if (value == null) return null;
 
     if (value instanceof Color) {

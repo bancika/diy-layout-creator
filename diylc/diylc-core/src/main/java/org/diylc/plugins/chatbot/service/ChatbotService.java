@@ -49,6 +49,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.List;
 
@@ -155,7 +158,8 @@ public class ChatbotService {
       } else {
         response.setString(rawResponse);
       }
-      
+      response.setProjectFingerprint(fingerprint(aiProject));
+
       return response;
     } catch (CloudException ce) {
       throw ce;
@@ -262,6 +266,40 @@ public class ChatbotService {
     } catch (Exception e) {
       LOG.error("Could not extract guitar diagram notes", e);
       return null;
+    }
+  }
+
+  /**
+   * @return a fingerprint of the current project, comparable with
+   *         {@link ChatbotResponse#getProjectFingerprint()} to tell whether the project still looks
+   *         the way it did when the response was produced
+   */
+  public String getProjectFingerprint() {
+    return fingerprint(extractAiProject());
+  }
+
+  /**
+   * Hashes the part of the project description that an edit script depends on: the components,
+   * their terminals and z-order, and how the terminals are connected. Net names and the order in
+   * which nets and their members are listed are left out, because the netlist does not promise to
+   * produce them in the same order twice.
+   */
+  static String fingerprint(AiProject aiProject) {
+    if (aiProject == null) {
+      return "";
+    }
+    List<List<String>> nets = new ArrayList<>();
+    for (Set<String> net : aiProject.nets().values()) {
+      nets.add(net.stream().sorted().toList());
+    }
+    nets.sort(Comparator.comparing(net -> String.join(",", net)));
+    try {
+      byte[] canonical =
+          MAPPER.writeValueAsString(List.of(aiProject.components(), nets)).getBytes(
+              StandardCharsets.UTF_8);
+      return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(canonical));
+    } catch (JsonProcessingException | NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Could not fingerprint the project", e);
     }
   }
 

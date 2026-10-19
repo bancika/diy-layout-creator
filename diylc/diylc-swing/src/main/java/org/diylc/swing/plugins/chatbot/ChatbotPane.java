@@ -12,6 +12,7 @@ import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.service.AiEditScriptEditor;
 import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.chatbot.service.ChatbotService;
+import org.diylc.plugins.chatbot.service.JsonToHtmlConverter;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -30,11 +31,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static org.diylc.plugins.chatbot.service.JsonToHtmlConverter.escapeHtml;
 
 public class ChatbotPane extends JPanel {
 
@@ -45,6 +52,8 @@ public class ChatbotPane extends JPanel {
   public static final String AI_ASSISTANT = LangUtil.translate("AI Assistant") + ": ";
   public static final String FREE_TIER = "Free";
   public static final String GET_PREMIUM_URL = "www.diy-fever.com/get-premium";
+  private static final String APPLY_PROPOSAL_LINK = "diy://applyEditScript/";
+  private static final String ASK_AGAIN_LINK = "diy://askAgain/";
   
   private static final String[] WAITING_MESSAGES = {
       "Consulting the digital oracle...",
@@ -109,7 +118,8 @@ public class ChatbotPane extends JPanel {
   private JButton clearButton;
   private JButton exportButton;
   
-  private AiEditScript lastEditScript;
+  private final Map<String, Proposal> proposals = new HashMap<>();
+  private int proposalCount = 0;
 
   private boolean loggedIn = false;
   private String projectFileName = null;
@@ -384,7 +394,7 @@ public class ChatbotPane extends JPanel {
     try {
       List<ChatMessageEntity> chatHistory = plugInPort.getChatbotService().getChatHistory();
       chatHistory.forEach(message -> {
-        appendSection(ChatbotService.USER, ME + message.getPrompt());
+        appendSection(ChatbotService.USER, ME + escapeHtml(message.getPrompt()));
         appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + message.getResponse());
       });
     } catch (NotLoggedInException e) {
@@ -411,26 +421,12 @@ public class ChatbotPane extends JPanel {
           if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
             try {
               String urlStr = hle.getURL() != null ? hle.getURL().toString() : hle.getDescription();
-              if ("diy://applyEditScript".equals(urlStr)) {
-                if (lastEditScript != null) {
-                  AiEditScriptEditor editor = new AiEditScriptEditor(lastEditScript);
-                  plugInPort.applyEditor(editor);
-                  
-                  // Build replacement text: either success or warnings
-                  String replacementText;
-                  if (!editor.getWarnings().isEmpty()) {
-                    String warningMsg = String.join("<br>", editor.getWarnings());
-                    replacementText = "<font color='orange'><b>\u26A0 Warnings during apply:</b><br>" + warningMsg + "</font>";
-                  } else {
-                    replacementText = "<b>\u2705 Changes applied</b>";
-                  }
-                  
-                  // Replace the Apply Changes link with the result text using regex (handles Swing JEditorPane HTML reformatting)
-                  String chatText = getChatEditorPane().getText();
-                  chatText = chatText.replaceAll("(?is)<a\\s+href=['\"]diy://applyEditScript['\"][^>]*>.*?</a>", java.util.regex.Matcher.quoteReplacement(replacementText));
-                  getChatEditorPane().setText(chatText);
-                  lastEditScript = null; // Consume the script
-                }
+              if (urlStr != null && urlStr.startsWith(APPLY_PROPOSAL_LINK)) {
+                applyProposal(urlStr.substring(APPLY_PROPOSAL_LINK.length()));
+                return;
+              }
+              if (urlStr != null && urlStr.startsWith(ASK_AGAIN_LINK)) {
+                askAgain(urlStr.substring(ASK_AGAIN_LINK.length()));
                 return;
               }
               
@@ -452,6 +448,7 @@ public class ChatbotPane extends JPanel {
 
   private void clearChat() {
     String sampleChat = getInitialChatContents();
+    proposals.clear();
 
     chatEditorPane.setContentType("text/html");
     chatEditorPane.setText(HTML_STYLE + "<body>" + sampleChat + "</body>");
@@ -483,116 +480,218 @@ public class ChatbotPane extends JPanel {
       styleButton(askButton);
       askButton.addActionListener(e -> {
         String prompt = getPromptArea().getText();
-        appendSection(ChatbotService.USER, ME + prompt);
-
-        String lang = ConfigurationManager.getInstance()
-            .readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
-        if (!IPlugInPort.LANGUAGE_DEFAULT.equals(lang)) {
-          prompt += ". Respond in " + lang + " language.";
-        }
-        String finalPrompt = prompt;
-        String waitingMessage = WAITING_MESSAGES[new Random().nextInt(WAITING_MESSAGES.length)];
-        appendSection(ChatbotService.TEMPORARY, waitingMessage);
         getPromptArea().setText(null);
-
-
-        getAskButton().setEnabled(false);
-        getClearButton().setEnabled(false);
-        swingUI.executeBackgroundTask(new ITask<ChatbotResponse>() {
-
-          @Override
-          public ChatbotResponse doInBackground() throws Exception {
-            return chatbotService.promptChatbot(finalPrompt);
-          }
-
-          @Override
-          public void failed(Exception e) {
-            appendSection(ChatbotService.SYSTEM,
-                LangUtil.translate("Failed to retrieve the response from the server."));
-            LOG.error("Failed to retrieve the response from the server", e);
-            getClearButton().setEnabled(true);
-          }
-
-          @Override
-          public void complete(ChatbotResponse result) {
-            if (result.getEditScript() != null) {
-              lastEditScript = result.getEditScript();
-              StringBuilder html = new StringBuilder();
-              html.append(AI_ASSISTANT + "<b>Proposed Changes:</b><br>");
-              if (lastEditScript.getExplanation() != null) {
-                html.append(lastEditScript.getExplanation()).append("<br><br>");
-              }
-              
-              // Render per-operation summary
-              if (lastEditScript.getOperations() != null) {
-                Map<String, List<String>> groupedOps = new LinkedHashMap<>();
-                for (AiEditOperation op : lastEditScript.getOperations()) {
-                  String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
-                  String compStr = op.getComponentName();
-                  switch (action) {
-                    case "add":
-                      if (op.getProperties() != null && op.getProperties().containsKey("Value")) {
-                        compStr += " (" + op.getProperties().get("Value") + ")";
-                      }
-                      break;
-                    case "modify":
-                      if (op.getProperties() != null) {
-                        compStr += " (" + String.join(", ", op.getProperties().entrySet().stream()
-                            .map(e -> e.getKey() + "=" + e.getValue()).toArray(String[]::new)) + ")";
-                      }
-                      break;
-                    case "send_behind":
-                      if (op.getReferenceComponent() != null) {
-                        compStr += " (behind " + op.getReferenceComponent() + ")";
-                      }
-                      break;
-                    case "bring_in_front":
-                      if (op.getReferenceComponent() != null) {
-                        compStr += " (in front of " + op.getReferenceComponent() + ")";
-                      }
-                      break;
-                  }
-                  groupedOps.computeIfAbsent(action, k -> new ArrayList<>()).add(compStr);
-                }
-
-                for (Map.Entry<String, List<String>> entry : groupedOps.entrySet()) {
-                  String action = entry.getKey();
-                  String compsStr = String.join(", ", entry.getValue());
-                  switch (action) {
-                    case "add":
-                      html.append("\u2795 Add ").append(compsStr);
-                      break;
-                    case "modify":
-                      html.append("\u270E Modify ").append(compsStr);
-                      break;
-                    case "remove":
-                      html.append("\u274C Remove ").append(compsStr);
-                      break;
-                    case "send_behind":
-                      html.append("\u2B07\uFE0F Send Behind ").append(compsStr);
-                      break;
-                    case "bring_in_front":
-                      html.append("\u2B06\uFE0F Bring in Front ").append(compsStr);
-                      break;
-                    default:
-                      html.append("\u2022 ").append(action).append(" ").append(compsStr);
-                  }
-                  html.append("<br>");
-                }
-                html.append("<br>");
-              }
-              
-              html.append("<a href='diy://applyEditScript'><b>[ Apply Changes ]</b></a>");
-              appendSection(ChatbotService.ASSISTANT, html.toString());
-            } else {
-              appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + result.getString());
-            }
-            getClearButton().setEnabled(true);
-          }
-        }, false);
+        ask(prompt);
       });
     }
     return askButton;
+  }
+
+  private void ask(String prompt) {
+    appendSection(ChatbotService.USER, ME + escapeHtml(prompt));
+
+    String finalPrompt = prompt;
+    String lang = ConfigurationManager.getInstance()
+        .readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
+    if (!IPlugInPort.LANGUAGE_DEFAULT.equals(lang)) {
+      finalPrompt += ". Respond in " + lang + " language.";
+    }
+    String requestPrompt = finalPrompt;
+    String waitingMessage = LangUtil.translate(
+        WAITING_MESSAGES[new Random().nextInt(WAITING_MESSAGES.length)]);
+    appendSection(ChatbotService.TEMPORARY, waitingMessage);
+
+    getAskButton().setEnabled(false);
+    getClearButton().setEnabled(false);
+    swingUI.executeBackgroundTask(new ITask<ChatbotResponse>() {
+
+      @Override
+      public ChatbotResponse doInBackground() throws Exception {
+        return chatbotService.promptChatbot(requestPrompt);
+      }
+
+      @Override
+      public void failed(Exception e) {
+        appendSection(ChatbotService.SYSTEM,
+            LangUtil.translate("Failed to retrieve the response from the server."));
+        LOG.error("Failed to retrieve the response from the server", e);
+        getClearButton().setEnabled(true);
+      }
+
+      @Override
+      public void complete(ChatbotResponse result) {
+        AiEditScript editScript = result.getEditScript();
+        if (editScript != null && editScript.getOperations() != null
+            && !editScript.getOperations().isEmpty()) {
+          String id = Integer.toString(++proposalCount);
+          proposals.put(id, new Proposal(editScript, result.getProjectFingerprint(), prompt));
+          appendSection(ChatbotService.ASSISTANT,
+              renderProposal(id, result.getString(), editScript));
+        } else if (result.getString() != null) {
+          appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + result.getString());
+        } else if (editScript != null && editScript.getExplanation() != null) {
+          // an edit script with nothing to do is the model declining, and its explanation is
+          // the only account of why
+          appendSection(ChatbotService.ASSISTANT,
+              AI_ASSISTANT + escapeHtml(editScript.getExplanation()));
+        } else {
+          appendSection(ChatbotService.SYSTEM,
+              LangUtil.translate("Failed to retrieve the response from the server."));
+        }
+        getClearButton().setEnabled(true);
+      }
+    }, false);
+  }
+
+  /**
+   * The edit script comes from the model, including component names it echoes back from the
+   * project, so all of it is escaped before it goes into the chat pane. The message is the
+   * server's own formatted answer and is shown the way a plain answer would be.
+   */
+  private String renderProposal(String id, String message, AiEditScript editScript) {
+    StringBuilder html = new StringBuilder();
+    html.append(AI_ASSISTANT);
+    if (message != null && !message.isBlank()) {
+      // the server formats its message the same way as a plain answer, so it goes in as is
+      html.append(message).append("<br><br>");
+    }
+    html.append("<b>" + LangUtil.translate("Proposed Changes:") + "</b><br>");
+    if (editScript.getExplanation() != null) {
+      html.append(escapeHtml(editScript.getExplanation())).append("<br><br>");
+    }
+
+    if (editScript.getOperations() != null) {
+      Map<String, List<String>> groupedOps = new LinkedHashMap<>();
+      // a z-order change names two components, so each one gets a line of its own instead of
+      // being folded into a list
+      List<String> zOrderLines = new ArrayList<>();
+      for (AiEditOperation op : editScript.getOperations()) {
+        String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
+        String compStr = escapeHtml(op.getComponentName());
+        switch (action) {
+          case "add":
+            if (op.getProperties() != null && op.getProperties().containsKey("Value")) {
+              compStr += " (" + escapeHtml(op.getProperties().get("Value")) + ")";
+            }
+            break;
+          case "modify":
+            if (op.getProperties() != null) {
+              compStr += " (" + String.join(", ", op.getProperties().entrySet().stream()
+                  .map(e -> escapeHtml(e.getKey()) + "=" + escapeHtml(e.getValue()))
+                  .toArray(String[]::new)) + ")";
+            }
+            break;
+          case "send_behind":
+            zOrderLines.add("\u2B07\uFE0F " + String.format(LangUtil.translate("Send %s behind %s"),
+                compStr, escapeHtml(op.getReferenceComponent())));
+            continue;
+          case "bring_in_front":
+            zOrderLines.add("\u2B06\uFE0F " + String.format(
+                LangUtil.translate("Bring %s in front of %s"), compStr,
+                escapeHtml(op.getReferenceComponent())));
+            continue;
+        }
+        groupedOps.computeIfAbsent(action, k -> new ArrayList<>()).add(compStr);
+      }
+
+      for (Map.Entry<String, List<String>> entry : groupedOps.entrySet()) {
+        String action = entry.getKey();
+        String compsStr = String.join(", ", entry.getValue());
+        switch (action) {
+          case "add":
+            html.append("\u2795 ").append(String.format(LangUtil.translate("Add %s"), compsStr));
+            break;
+          case "modify":
+            html.append("\u270E ").append(String.format(LangUtil.translate("Modify %s"), compsStr));
+            break;
+          case "remove":
+            html.append("\u274C ").append(String.format(LangUtil.translate("Remove %s"), compsStr));
+            break;
+          default:
+            html.append("\u2022 ").append(escapeHtml(action)).append(" ").append(compsStr);
+        }
+        html.append("<br>");
+      }
+      for (String line : zOrderLines) {
+        html.append(line).append("<br>");
+      }
+      html.append("<br>");
+    }
+
+    html.append("<a href='" + APPLY_PROPOSAL_LINK + id + "'><b>[ "
+        + LangUtil.translate("Apply Changes") + " ]</b></a>");
+    return html.toString();
+  }
+
+  /**
+   * An edit script refers to components by name and places new ones by position, so it is only
+   * safe to run against the project exactly as the model saw it. Anything that happened since,
+   * whether a manual edit, another proposal being applied or a different project being opened,
+   * shows up as a different fingerprint.
+   */
+  private void applyProposal(String id) {
+    Proposal proposal = proposals.remove(id);
+    if (proposal == null) {
+      return;
+    }
+    swingUI.executeBackgroundTask(new ITask<String>() {
+
+      @Override
+      public String doInBackground() throws Exception {
+        return chatbotService.getProjectFingerprint();
+      }
+
+      @Override
+      public void failed(Exception e) {
+        LOG.error("Could not check the project before applying the proposed changes", e);
+        proposals.put(id, proposal);
+      }
+
+      @Override
+      public void complete(String fingerprint) {
+        if (!fingerprint.equals(proposal.projectFingerprint())) {
+          proposals.put(id, proposal);
+          replaceLink(APPLY_PROPOSAL_LINK + id, "<font color='orange'>" + LangUtil.translate(
+              "The project has changed since these changes were proposed, so they can no longer be applied.")
+              + "</font> <a href='" + ASK_AGAIN_LINK + id + "'>"
+              + LangUtil.translate("Ask again") + "</a>");
+          return;
+        }
+
+        AiEditScriptEditor editor = new AiEditScriptEditor(proposal.editScript());
+        plugInPort.applyEditor(editor);
+
+        String replacementText;
+        if (!editor.getWarnings().isEmpty()) {
+          String warningMsg = editor.getWarnings().stream()
+              .map(JsonToHtmlConverter::escapeHtml)
+              .collect(Collectors.joining("<br>"));
+          replacementText = "<font color='orange'><b>\u26A0 "
+              + LangUtil.translate("Warnings during apply:") + "</b><br>" + warningMsg + "</font>";
+        } else {
+          replacementText = "<b>\u2705 " + LangUtil.translate("Changes applied") + "</b>";
+        }
+        replaceLink(APPLY_PROPOSAL_LINK + id, replacementText);
+      }
+    }, false);
+  }
+
+  private void askAgain(String id) {
+    Proposal proposal = proposals.remove(id);
+    if (proposal == null) {
+      return;
+    }
+    replaceLink(ASK_AGAIN_LINK + id, "");
+    ask(proposal.prompt());
+  }
+
+  private void replaceLink(String href, String replacement) {
+    // matched loosely because JEditorPane rewrites the markup it is given, quotes included
+    String chatText = getChatEditorPane().getText();
+    chatText = chatText.replaceAll(
+        "(?is)<a\\s+href=['\"]" + Pattern.quote(href) + "['\"][^>]*>.*?</a>",
+        Matcher.quoteReplacement(replacement));
+    getChatEditorPane().setText(chatText);
   }
 
   private void appendSection(String style, String insertText) {
@@ -708,5 +807,9 @@ public class ChatbotPane extends JPanel {
     // Set minimum and preferred size based on button type
     button.setMinimumSize(new Dimension(80, 25));
     button.setPreferredSize(new Dimension(80, 25));
+  }
+
+  /** An edit script waiting to be applied, with the prompt that produced it, to ask again. */
+  private record Proposal(AiEditScript editScript, String projectFingerprint, String prompt) {
   }
 }

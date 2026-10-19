@@ -23,11 +23,15 @@ package org.diylc.plugins.chatbot.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -36,6 +40,7 @@ import org.diylc.components.electromechanical.ClosedJack1_4;
 import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.measures.Resistance;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 
@@ -82,6 +87,59 @@ public class AiEditScriptEditorTest {
     assertFalse("the model should be told, not guessed at", editor.getWarnings().isEmpty());
   }
 
+  @Test
+  public void removeOnlyScriptDropsTheRemovedComponentFromTheSelection() {
+    Resistor resistor = resistor();
+    Project project = projectWith(resistor);
+    Set<IDIYComponent<?>> selection = new HashSet<IDIYComponent<?>>();
+    selection.add(resistor);
+
+    Set<IDIYComponent<?>> newSelection =
+        new AiEditScriptEditor(script(operation("remove", "R1"))).edit(project, selection);
+
+    assertTrue(project.getComponents().isEmpty());
+    assertFalse("a removed component must not stay selected", newSelection.contains(resistor));
+  }
+
+  @Test
+  public void removeDoesNotFallBackToAPrefixMatch() {
+    Resistor resistor = resistor();
+    resistor.setName("R10");
+    Project project = projectWith(resistor);
+
+    AiEditScriptEditor editor = new AiEditScriptEditor(script(operation("remove", "R1")));
+    editor.edit(project, new HashSet<IDIYComponent<?>>());
+
+    assertTrue("R10 must survive a request to remove R1",
+        project.getComponents().contains(resistor));
+    assertFalse(editor.getWarnings().isEmpty());
+  }
+
+  @Test
+  public void modifyDoesNotFallBackToANormalizedMatch() {
+    Resistor resistor = resistor();
+    resistor.setName("R_1");
+    Project project = projectWith(resistor);
+    AiEditOperation operation = operation("modify", "R1");
+    operation.setProperties(Map.of("Value", "4.7K"));
+
+    AiEditScriptEditor editor = new AiEditScriptEditor(script(operation));
+    editor.edit(project, new HashSet<IDIYComponent<?>>());
+
+    assertNotEquals(Resistance.parseResistance("4.7K"), resistor.getValue());
+    assertFalse(editor.getWarnings().isEmpty());
+  }
+
+  @Test
+  public void removeStillForgivesADifferenceInCase() {
+    Project project = projectWith(resistor());
+
+    new AiEditScriptEditor(script(operation("remove", "r1")))
+        .edit(project, new HashSet<IDIYComponent<?>>());
+
+    assertTrue(project.getComponents().isEmpty());
+  }
+
   private static Resistor resistor() {
     Resistor resistor = new Resistor();
     resistor.setName("R1");
@@ -112,6 +170,19 @@ public class AiEditScriptEditorTest {
     operation.setFromTerminal(fromTerminal);
     operation.setToTerminal(toTerminal);
 
+    AiEditScript script = new AiEditScript();
+    script.setOperations(List.of(operation));
+    return script;
+  }
+
+  private static AiEditOperation operation(String action, String componentName) {
+    AiEditOperation operation = new AiEditOperation();
+    operation.setAction(action);
+    operation.setComponentName(componentName);
+    return operation;
+  }
+
+  private static AiEditScript script(AiEditOperation operation) {
     AiEditScript script = new AiEditScript();
     script.setOperations(List.of(operation));
     return script;

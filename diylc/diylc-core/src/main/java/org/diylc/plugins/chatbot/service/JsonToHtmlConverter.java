@@ -74,7 +74,10 @@ public class JsonToHtmlConverter {
   /**
    * Very basic HTML escapement; for more robust use Apache Commons StringEscapeUtils.escapeHtml4().
    */
-  private static String escapeHtml(String s) {
+  public static String escapeHtml(String s) {
+    if (s == null) {
+      return "";
+    }
     return s.replace("&", "&amp;")
         .replace("<", "&lt;")
         .replace(">", "&gt;")

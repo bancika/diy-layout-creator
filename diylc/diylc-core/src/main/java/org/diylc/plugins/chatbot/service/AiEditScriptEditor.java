@@ -58,16 +58,18 @@ public class AiEditScriptEditor implements IProjectEditor {
     }
 
     Set<IDIYComponent<?>> newSelection = new HashSet<>();
+    Set<IDIYComponent<?>> removed = new HashSet<>();
     Map<String, IDIYComponent<?>> componentByName = new HashMap<>();
 
-    // Populate initial lookup map
-    for (IDIYComponent<?> comp : project.getComponents()) {
-      componentByName.put(comp.getName(), comp);
+    // the script names components by the ids they were exported with, W3#a1b2 for a repeated name
+    for (Map.Entry<IDIYComponent<?>, String> entry
+        : AiProjectBuilder.assignIds(project.getComponents()).entrySet()) {
+      componentByName.put(entry.getValue(), entry.getKey());
     }
 
     ComponentProcessor processor = ComponentProcessor.getInstance();
     
-    // Split operations into two passes and sort Pass 1 into remove → modify → add order
+    // Split operations into two passes and sort Pass 1 into remove -> modify -> add order
     List<AiEditOperation> removeOps = new ArrayList<>();
     List<AiEditOperation> modifyOps = new ArrayList<>();
     List<AiEditOperation> addOps = new ArrayList<>();
@@ -99,17 +101,19 @@ public class AiEditScriptEditor implements IProjectEditor {
     for (AiEditOperation op : pass1Ops) {
       try {
         if ("remove".equalsIgnoreCase(op.getAction())) {
-          IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
+          IDIYComponent<?> target = findExactComponent(op.getComponentName(), componentByName);
           if (target != null) {
-            componentByName.remove(target.getName());
+            // by entry, not name: the key may be a W3#a1b2 id while the name is W3
+            componentByName.values().removeIf(c -> c == target);
             project.getComponents().remove(target);
             newSelection.remove(target);
+            removed.add(target);
           } else {
             warnings.add("Cannot remove component '" + op.getComponentName() + "' (not found).");
           }
         } 
         else if ("modify".equalsIgnoreCase(op.getAction())) {
-          IDIYComponent<?> target = findComponentByName(op.getComponentName(), componentByName);
+          IDIYComponent<?> target = findExactComponent(op.getComponentName(), componentByName);
           if (target != null) {
             applyProperties(target, op.getProperties(), processor);
             if (op.getDatasheetModel() != null && !op.getDatasheetModel().isEmpty()) {
@@ -270,7 +274,14 @@ public class AiEditScriptEditor implements IProjectEditor {
       }
     }
 
-    return newSelection.isEmpty() ? selection : newSelection;
+    if (!newSelection.isEmpty()) {
+      return newSelection;
+    }
+    // a script that only removes leaves nothing new to select, and the old selection may still
+    // hold the components it just took out of the project
+    Set<IDIYComponent<?>> remaining = new HashSet<>(selection);
+    remaining.removeAll(removed);
+    return remaining;
   }
 
   private void applyProperties(IDIYComponent<?> comp, Map<String, String> properties, ComponentProcessor processor) {
@@ -436,6 +447,36 @@ public class AiEditScriptEditor implements IProjectEditor {
     return null;
   }
 
+  /**
+   * Looks a component up for an operation that removes or changes it, where acting on the wrong
+   * component is worse than reporting that none was found. Only an exact name, or a name that
+   * differs in case alone and matches a single component, is accepted.
+   */
+  private IDIYComponent<?> findExactComponent(String searchName,
+      Map<String, IDIYComponent<?>> map) {
+    if (searchName == null) {
+      return null;
+    }
+    String name = searchName.trim();
+    if (map.containsKey(name)) {
+      return map.get(name);
+    }
+    IDIYComponent<?> match = null;
+    for (Map.Entry<String, IDIYComponent<?>> entry : map.entrySet()) {
+      if (entry.getKey().equalsIgnoreCase(name)) {
+        if (match != null) {
+          return null;
+        }
+        match = entry.getValue();
+      }
+    }
+    return match;
+  }
+
+  /**
+   * Looks a component up for a reference that only adds to the project, such as a wire terminal,
+   * where a near miss in the name is worth forgiving.
+   */
   private IDIYComponent<?> findComponentByName(String searchName, Map<String, IDIYComponent<?>> map) {
     if (searchName == null) return null;
     String name = searchName.trim();
