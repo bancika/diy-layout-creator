@@ -344,8 +344,8 @@ public class TapeMeasure extends AbstractLeadedComponent<String> {
     
   @Deprecated
   @Override
-  public org.diylc.components.AbstractLeadedComponent.LabelOriantation getLabelOriantation() {
-    return org.diylc.components.AbstractLeadedComponent.LabelOriantation.Directional;
+  public org.diylc.components.AbstractLeadedComponent.LabelOrientation getLabelOrientation() {
+    return org.diylc.components.AbstractLeadedComponent.LabelOrientation.Directional;
   }
   
   @Deprecated

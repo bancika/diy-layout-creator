@@ -54,7 +54,8 @@ class CanvasDragGestureListener implements DragGestureListener {
       forceReSelection = me.getButton() != MouseEvent.BUTTON1;
     }
     canvasPanel.setClickInProgress(false);
-    presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction(), forceReSelection);
+    presenter.dragStarted(dge.getDragOrigin(), dge.getDragAction(), forceReSelection,
+        e.isShiftDown());
     // Get the appropriate cursor from the presenter (e.g., HAND_CURSOR over components)
     // Preserve the cursor context (HAND_CURSOR, CROSSHAIR_CURSOR, etc.) for drag operations
     // On Linux, DEFAULT_CURSOR during drag can show "No" cursor, so use MOVE_CURSOR as fallback

@@ -36,8 +36,11 @@ import java.io.IOException;
  */
 public enum IconLoader {
 
-  About("about.png"), Add("add.png"), ApplicationEdit("application_edit.png"), Arrow(
-      "arrow.png"), BOM("bom.png"), Back("back.png"), Barcode("barcode.png"), BlackBoard(
+  About("about.png"), Add("add.png"), AlignBottom("align_bottom.png"), AlignCenterHorizontal(
+      "align_center_horizontal.png"), AlignCenterVertical(
+      "align_center_vertical.png"), AlignDistribute("align_distribute.png"), AlignLeft(
+      "align_left.png"), AlignRight("align_right.png"), AlignTop(
+      "align_top.png"), ApplicationEdit("application_edit.png"), Arrow("arrow.png"), BOM("bom.png"), Back("back.png"), Barcode("barcode.png"), BlackBoard(
       "blackboard.png"), Brain("brain.png"), BrainBig("brain_big.png"), BranchAdd(
       "branch_add.png"), BriefcaseAdd("briefcase_add.png"), BriefcaseInto(
       "briefcase_into.png"), Bug("bug.png"), CSV("csv.png"), Chest("chest.png"), Cloud(
@@ -49,7 +52,11 @@ public enum IconLoader {
       "component_add.png"), ComponentLarge("component_large.png"), ComponentPreferences(
       "component_preferences.png"), ComponentReplace("component_replace.png"), Copy(
       "copy.png"), Cut("cut.png"), Dashboard("dashboard.png"), DataFind("data_find.png"), Delete(
-      "delete.png"), DiskBlue("disk_blue.png"), DocumentEdit("document_edit.png"), DocumentGerber(
+      "delete.png"), DiskBlue("disk_blue.png"), DistributeCentersHorizontal(
+      "distribute_centers_horizontal.png"), DistributeCentersVertical(
+      "distribute_centers_vertical.png"), DistributeSpacingHorizontal(
+      "distribute_spacing_horizontal.png"), DistributeSpacingVertical(
+      "distribute_spacing_vertical.png"), DocumentEdit("document_edit.png"), DocumentGerber(
       "document_gerber.png"), DocumentInfo("document_info.png"), DocumentPlain(
       "document_plain.png"), DocumentPlainYellow("document_plain_yellow.png"), DocumentX2(
       "document_x2.png"), DocumentsGear("documents_gear.png"), Donate("donate.png"), Download(

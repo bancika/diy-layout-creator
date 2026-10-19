@@ -1,7 +1,8 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	C1.1 <-> IC1.2 <-> IC1.6
-	C1.2 <-> C2.1 <-> D1.1 <-> D1.2 <-> D2.2
-	C2.2 <-> DP.1 <-> IC1.3 <-> IC1.4 <-> IC1.7 <-> IC1.8
-	D2.1 <-> DP.2 <-> IC1.1 <-> IC1.5
+	C1.+ <-> IC1.2
+	C1.- <-> D1.A <-> D2.K
+	C2.+ <-> D1.K
+	C2.- <-> DP.A <-> IC1.3 <-> IC1.8
+	D2.A <-> DP.K <-> IC1.1 <-> IC1.5
 

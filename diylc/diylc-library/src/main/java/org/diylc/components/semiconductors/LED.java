@@ -23,6 +23,7 @@ package org.diylc.components.semiconductors;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -35,6 +36,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
+import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
@@ -47,10 +49,14 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
   private static final long serialVersionUID = 1L;
 
   public static Size DEFAULT_SIZE = new Size(5d, SizeUnit.mm);
+  public static Size DEFAULT_WIDTH = new Size(2d, SizeUnit.mm);
+  public static Size PIN_SPACING = new Size(2.54d, SizeUnit.mm);
   public static Color BODY_COLOR = Color.decode("#5DFC0A");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
 
   private String value = "";
+  private BodyShape shape = BodyShape.ROUND;
+  private Size pinSpacing = PIN_SPACING;
 
   public LED() {
     super();
@@ -65,6 +71,35 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   public void setValue(String value) {
     this.value = value;
+  }
+
+  @EditableProperty
+  public BodyShape getShape() {
+    if (shape == null) {
+      shape = BodyShape.ROUND;
+    }
+    return shape;
+  }
+
+  public void setShape(BodyShape shape) {
+    this.shape = shape;
+  }
+
+  @Override
+  protected int calculatePinSpacing(Rectangle shapeRect) {
+    return (int) getPinSpacing().convertToPixels();
+  }
+
+  @EditableProperty(name = "Lead Spacing")
+  public Size getPinSpacing() {
+    if (pinSpacing == null) {
+      pinSpacing = PIN_SPACING;
+    }
+    return pinSpacing;
+  }
+
+  public void setPinSpacing(Size pinSpacing) {
+    this.pinSpacing = pinSpacing;
   }
 
   @Override
@@ -97,7 +132,7 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   @Override
   protected Size getDefaultWidth() {
-    return DEFAULT_SIZE;
+    return DEFAULT_WIDTH;
   }
 
   @Override
@@ -107,6 +142,10 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   @Override
   protected Shape getBodyShape() {
+    if (getShape() == BodyShape.RECTANGLE) {
+      return new Rectangle2D.Double(0, 0, getClosestOdd(getLength().convertToPixels()),
+          getClosestOdd(getWidth().convertToPixels()));
+    }
     int size = getClosestOdd((int) (getLength().convertToPixels() * 1.2));
     Area area = new Area(new Ellipse2D.Double(0, 0, size, size));
     area.intersect(new Area(new Rectangle2D.Double(0, 0, getLength().convertToPixels() * 1.15, size)));
@@ -115,7 +154,7 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   @Override
   protected void decorateComponentBody(Graphics2D g2d, boolean outlineMode) {
-    if (!outlineMode) {
+    if (!outlineMode && getShape() == BodyShape.ROUND) {
       int size = getClosestOdd((int) (getLength().convertToPixels() * 1.2));
       int innerSize = getClosestOdd(getLength().convertToPixels());
       int x = (size - innerSize) / 2;
@@ -125,14 +164,47 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
     }
   }
 
+  // the border always follows the body color; the inherited borderColor field stays only so
+  // that older files and older builds keep reading it
+  @Override
+  public Color getBorderColor() {
+    Color bodyColor = getBodyColor();
+    return bodyColor == null ? null : bodyColor.darker();
+  }
+
+  @Deprecated
+  @Override
+  public void setBorderColor(Color borderColor) {
+    super.setBorderColor(borderColor);
+  }
+
   @EditableProperty(name = "Size")
   @Override
   public Size getLength() {
     return super.getLength();
   }
 
+  // only rectangular LEDs use the width; a round body is sized by its diameter alone
+  @EditableProperty(name = "Width", validatorClass = PositiveNonZeroMeasureValidator.class,
+      sortOrder = 102)
   @Override
   public Size getWidth() {
     return super.getWidth();
+  }
+
+  public enum BodyShape {
+
+    ROUND("Round"), RECTANGLE("Rectangle");
+
+    private String label;
+
+    private BodyShape(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

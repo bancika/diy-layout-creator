@@ -27,6 +27,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -36,9 +37,11 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.electromechanical.SwitchPositionPropertyValueSource;
+import org.diylc.components.transform.S1SwitchTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -55,7 +58,7 @@ import org.diylc.utils.Constants;
 
 @ComponentDescriptor(name = "S1 Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Fender S1 4 pole pushbutton switch", zOrder = IDIYComponent.COMPONENT,
-    instanceNamePrefix = "SW", enableCache = true)
+    instanceNamePrefix = "SW", enableCache = true, transformer = S1SwitchTransformer.class)
 public class S1Switch extends AbstractTransparentComponent<Void> implements ISwitch {
 
   private static final long serialVersionUID = 1L;
@@ -79,6 +82,7 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
   transient protected Shape body;
   
   private boolean showMarkers = true;
+  private Orientation orientation = Orientation.DEFAULT;
   private Integer selectedPosition;
 
   public S1Switch() {
@@ -111,6 +115,14 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
     controlPoints[10] = new Point2D.Double(firstPoint.getX() - 2 * spacing, firstPoint.getY() - spacing + yOffset);
     controlPoints[11] = new Point2D.Double(firstPoint.getX() - 2 * spacing, firstPoint.getY() + yOffset);
     controlPoints[12] = new Point2D.Double(firstPoint.getX() - 2 * spacing, firstPoint.getY() + spacing + yOffset);
+
+    if (getOrientation() != Orientation.DEFAULT) {
+      AffineTransform rotation = AffineTransform.getRotateInstance(getOrientation().toRadians(),
+          firstPoint.getX(), firstPoint.getY());
+      for (int i = 1; i < controlPoints.length; i++) {
+        rotation.transform(controlPoints[i], controlPoints[i]);
+      }
+    }
   }
 
   @Override
@@ -185,6 +197,7 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
     
     int padDiameter = getClosestOdd((int) PAD_DIAMETER.convertToPixels());
     int holeDiameter = getClosestOdd((int) HOLE_DIAMETER.convertToPixels());
+    AffineTransform markerRotation = AffineTransform.getRotateInstance(getOrientation().toRadians());
     
     for (int i = 1; i < controlPoints.length; i++) {
       Point2D p = controlPoints[i];
@@ -216,29 +229,40 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
       Stroke stroke = g2d.getStroke();
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(2f));
       g2d.setColor(LINE_COLOR);
-      g2d.drawLine((int) Math.round(p.getX() - padDiameter / 3), (int) Math.round(p.getY() + dy * padDiameter * 4 / 5), 
-          (int) Math.round(p.getX() + padDiameter / 3), (int) Math.round(p.getY() + dy * padDiameter * 4 / 5));
+      Point2D start = markerRotation.deltaTransform(
+          new Point2D.Double(-padDiameter / 3, dy * padDiameter * 4 / 5), null);
+      Point2D end = markerRotation.deltaTransform(
+          new Point2D.Double(padDiameter / 3, dy * padDiameter * 4 / 5), null);
+      g2d.drawLine((int) Math.round(p.getX() + start.getX()), (int) Math.round(p.getY() + start.getY()),
+          (int) Math.round(p.getX() + end.getX()), (int) Math.round(p.getY() + end.getY()));
       g2d.setStroke(stroke);
     }
     
-    double yOffset = Y_OFFSET.convertToPixels();
+    Point2D center = getBodyCenter();
     
     g2d.setFont(g2d.getFont().deriveFont(1.5f * g2d.getFont().getSize()));
     
     g2d.setColor(LABEL_COLOR);
-    StringUtils.drawCenteredText(g2d, getName(), controlPoints[0].getX(), controlPoints[0].getY() + yOffset, 
+    StringUtils.drawCenteredText(g2d, getName(), center.getX(), center.getY(),
         HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
   }
 
   public Shape getBody() {
     if (body == null) {
       int diameter = getClosestOdd(DIAMETER.convertToPixels());
-      double yOffset = Y_OFFSET.convertToPixels();
-      body =
-          new Ellipse2D.Double(controlPoints[0].getX() - diameter / 2, controlPoints[0].getY() - diameter / 2 + yOffset,
-              diameter, diameter);
+      Point2D center = getBodyCenter();
+      body = new Ellipse2D.Double(center.getX() - diameter / 2, center.getY() - diameter / 2,
+          diameter, diameter);
     }
     return body;
+  }
+
+  private Point2D getBodyCenter() {
+    Point2D center = new Point2D.Double(controlPoints[0].getX(),
+        controlPoints[0].getY() + Y_OFFSET.convertToPixels());
+    AffineTransform.getRotateInstance(getOrientation().toRadians(), controlPoints[0].getX(),
+        controlPoints[0].getY()).transform(center, center);
+    return center;
   }
 
   @Override
@@ -292,6 +316,23 @@ public class S1Switch extends AbstractTransparentComponent<Void> implements ISwi
   
   public void setShowMarkers(boolean showMarkers) {
     this.showMarkers = showMarkers;
+  }
+
+  // the switching matrix is not symmetric under rotation, so the switch has to follow the
+  // orientation of the potentiometer it is mounted on; the default matches the default
+  // potentiometer orientation, with the lugs pointing down
+  @EditableProperty
+  public Orientation getOrientation() {
+    if (orientation == null) {
+      orientation = Orientation.DEFAULT;
+    }
+    return orientation;
+  }
+
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+    updateControlPoints();
+    body = null;
   }
 
   @Override

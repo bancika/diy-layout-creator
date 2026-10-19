@@ -114,6 +114,30 @@ public interface ISelectionProcessor extends IGroupProcessor {
    * @param includeStuckComponents
    */
   void nudgeSelection(Size xOffset, Size yOffset, boolean includeStuckComponents);
+
+  /**
+   * Moves selected components so that their outlines line up as specified. Grouped components move
+   * together as a single unit.
+   *
+   * @param mode
+   */
+  void alignSelection(AlignmentMode mode);
+
+  /**
+   * Moves selected components so that they are evenly spaced as specified. Grouped components move
+   * together as a single unit.
+   *
+   * @param mode
+   */
+  void distributeSelection(DistributionMode mode);
+
+  /**
+   * Returns the number of units that align and distribute operate on, where each group counts as
+   * one unit.
+   *
+   * @return
+   */
+  int getSelectionUnitCount();
   
   /**
    * Selects components that match the criteria.

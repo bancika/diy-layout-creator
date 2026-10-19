@@ -15,6 +15,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
+import org.diylc.lang.LangUtil;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
@@ -46,7 +47,8 @@ public class ExportBlocksAction extends AbstractAction {
           (Map<String, List<IDIYComponent<?>>>) ConfigurationManager.getInstance()
               .readObject(IPlugInPort.BLOCKS_KEY, null);
       if (blocks == null || blocks.isEmpty()) {
-        swingUI.showMessage("No building blocks found to export.", "Error", IView.ERROR_MESSAGE);
+        swingUI.showMessage(LangUtil.translate("No building blocks found to export."),
+            LangUtil.translate("Error"), IView.ERROR_MESSAGE);
         return;
       }
 
@@ -61,7 +63,8 @@ public class ExportBlocksAction extends AbstractAction {
       });
 
       CheckBoxListDialog dialog =
-          new CheckBoxListDialog(swingUI.getOwnerFrame(), "Export Building Blocks", options);
+          new CheckBoxListDialog(swingUI.getOwnerFrame(),
+              LangUtil.translate("Export Building Blocks"), options);
 
       dialog.setVisible(true);
 
@@ -71,7 +74,8 @@ public class ExportBlocksAction extends AbstractAction {
       Object[] selected = dialog.getSelectedOptions();
 
       if (selected.length == 0) {
-        swingUI.showMessage("No building blocks selected for export.", "Error",
+        swingUI.showMessage(LangUtil.translate("No building blocks selected for export."),
+            LangUtil.translate("Error"),
             IView.ERROR_MESSAGE);
         return;
       }
@@ -82,8 +86,10 @@ public class ExportBlocksAction extends AbstractAction {
       }
     } catch (Exception ex) {
       ActionFactory.LOG.error("Error preparing building blocks for export", ex);
-      swingUI.showMessage("Could not export building blocks. Please check the log for details",
-          "Export Building Blocks", ISwingUI.ERROR_MESSAGE);
+      swingUI.showMessage(
+          LangUtil.translate(
+              "Could not export building blocks. Please check the log for details"),
+          LangUtil.translate("Export Building Blocks"), ISwingUI.ERROR_MESSAGE);
       return;
     }
 
@@ -117,13 +123,18 @@ public class ExportBlocksAction extends AbstractAction {
 
         @Override
         public void complete(Void result) {
-          swingUI.showMessage("Building blocks exported to \"" + file.getName() + "\".",
-              "Success", ISwingUI.INFORMATION_MESSAGE);
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Building blocks exported to \"%s\"."),
+                  file.getName()),
+              LangUtil.translate("Success"), ISwingUI.INFORMATION_MESSAGE);
         }
 
         @Override
         public void failed(Exception e) {
-          swingUI.showMessage("Could not export building blocks: " + e.getMessage(), "Error",
+          swingUI.showMessage(
+              String.format(LangUtil.translate("Could not export building blocks: %s"),
+                  e.getMessage()),
+              LangUtil.translate("Error"),
               ISwingUI.ERROR_MESSAGE);
         }
       }, true);

@@ -39,7 +39,9 @@ public class TestPlayer {
             res.add(new StepResult(i, step.getAction(), "OK", false));
             break;
           case DIYTest.DRAG_START:
-            plugInPort.dragStarted((Point)step.getParams().get("point"), (int)step.getParams().get("dragAction"), (boolean)step.getParams().get("forceSelectionRect"));
+            // tests recorded before shift was passed in carry no value for it
+            plugInPort.dragStarted((Point)step.getParams().get("point"), (int)step.getParams().get("dragAction"), (boolean)step.getParams().get("forceSelectionRect"),
+                Boolean.TRUE.equals(step.getParams().get("shiftDown")));
             res.add(new StepResult(i, step.getAction(), "OK", false));
             break;
           case DIYTest.DRAG_OVER:

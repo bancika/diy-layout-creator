@@ -6,13 +6,14 @@
 
     <groupId>org.diylc</groupId>
     <artifactId>diylc-parent</artifactId>
-    <version>6.7.0</version>
+    <version>6.9.0</version>
     <packaging>pom</packaging>
     
     <name>DIY Layout Creator</name>
     <description>A free, open-source, cross-platform tool for drawing circuit layouts</description>
     
     <modules>
+        <module>diylc-processor</module>
         <module>diylc-core</module>
         <module>diylc-library</module>
         <module>diylc-swing</module>
@@ -31,6 +32,13 @@
     <dependencyManagement>
         <dependencies>
             <!-- Internal module dependencies -->
+            <dependency>
+                <groupId>org.diylc</groupId>
+                <artifactId>diylc-processor</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+                <optional>true</optional>
+            </dependency>
             <dependency>
                 <groupId>org.diylc</groupId>
                 <artifactId>diylc-core</artifactId>
@@ -94,7 +102,20 @@
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
                         <encoding>${project.build.sourceEncoding}</encoding>
+                        <!-- writes the META-INF/services class index; see org.diylc.core.annotations.Indexed -->
+                        <annotationProcessors>
+                            <annotationProcessor>org.diylc.processor.ServiceIndexProcessor</annotationProcessor>
+                        </annotationProcessors>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <!-- test fixtures must not end up in the index -->
+                            <id>default-testCompile</id>
+                            <configuration>
+                                <proc>none</proc>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

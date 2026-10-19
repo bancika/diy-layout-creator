@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>6.7.0</version>
+        <version>6.9.0</version>
     </parent>
     
     <artifactId>diylc-swing</artifactId>
@@ -20,6 +20,10 @@
     
     <dependencies>
         <!-- Internal module dependencies -->
+        <dependency>
+            <groupId>org.diylc</groupId>
+            <artifactId>diylc-processor</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.diylc</groupId>
             <artifactId>diylc-core</artifactId>
@@ -136,10 +140,10 @@
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>
-            <artifactId>gerber-writer-api-1.0.0</artifactId>
+            <artifactId>gerber-writer-api-1.1.0</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/gerber-writer-api-1.0.0.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/gerber-writer-api-1.1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.diylc.local</groupId>

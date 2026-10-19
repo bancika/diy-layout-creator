@@ -582,7 +582,107 @@
 				<minor>8</minor>
 				<build>0</build>
 			</versionNumber>
-			<releaseDate>2026-09-29 00:00:00.000 CET</releaseDate>
+			<releaseDate>2026-10-16 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Align &amp; Distribute' to the Edit menu and the right-click menu - align the selected components by their left, right, top or bottom edges or their centers, or space them evenly by their centers or by the gaps between them</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Holding 'Shift' when starting to drag components or control points keeps the whole drag strictly horizontal or vertical, in the direction of the initial gesture. Holding 'Shift' while drawing a new wire or two-point component does the same</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added Rectangular shape to LED component in addition to Round; added ability to set LED lead spacing</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Upgraded AI Models to the latest GPT-6 generation across all tiers</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'S1 Switch' can now be rotated to match the orientation of the potentiometer it is mounted on, so the switching matrix stays correct relative to the pot lugs</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Cut Line' can be rotated using keyboard shortcuts</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Include 'Potentiometer (Miniature)' and 'Trimmer Potentiometer' in Guitar Wiring Analyzer</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Significantly improved rendering performance and reduced lagging with complex projects while dragging components around</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of application initialization</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved performance of 'Project Explorer' pane</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved memory management when caching rendered components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved grid rendering on screen and when exporting; PDF export of the grid is now vector-based and does not get blurry on zooming in</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Updated localization files with translations for recently added UI elements and messages</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed the issue of disappearing components in some edge cases</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed netlists and 'Highlight Connected Areas' giving inconsistent results on boards with trace cuts - running them again could join strips across a cut, and a moved or deleted cut could leave the strip broken where it used to be</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Twisted Leads' - the last few crossings near the end of a wire were drawn with the leads overlapping instead of one passing over the other, and crossings could come out slightly different between redraws</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>When a component that belongs to a group is stuck to another component, moving that other component now drags the whole group along instead of only the stuck component</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>9</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-10-17 00:00:00.000 CET</releaseDate>
+			<name></name>
+			<changes>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Gerber export on computers set to a language that uses a decimal comma (e.g. German, French, Serbian) produced files in which drill holes, pads and traces had the wrong size - a 0.8mm hole came out as 0mm and traces and the board outline had no width, so the files could not be used for fabrication</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
+				</org.diylc.appframework.update.Change>
+			</changes>
+			<url>https://github.com/bancika/diy-layout-creator/releases</url>
+		</org.diylc.appframework.update.Version>
+		<org.diylc.appframework.update.Version>
+			<versionNumber>
+				<major>6</major>
+				<minor>10</minor>
+				<build>0</build>
+			</versionNumber>
+			<releaseDate>2026-10-19 00:00:00.000 CET</releaseDate>
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>

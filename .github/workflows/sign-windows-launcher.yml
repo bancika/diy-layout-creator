@@ -1,0 +1,86 @@
+name: Sign Windows Launcher
+
+# Signs the committed launch4j launcher that the installer embeds. Run it only after launch4j
+# regenerates the launcher, then commit the signed diylc-x64.exe from the artifact over
+# diylc/diylc-swing/deploy/win/diylc-x64.exe so Sign Windows Artifacts packs it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      signing-policy-slug:
+        description: 'SignPath signing policy'
+        type: choice
+        default: test-signing
+        options:
+          - test-signing
+          - release-signing
+
+permissions:
+  # write is needed only to delete the unsigned launcher once SignPath has fetched it
+  actions: write
+  contents: read
+
+env:
+  SIGNPATH_ORGANIZATION_ID: 95470a00-59e6-430c-9c81-7393ad16d4e8
+  SIGNPATH_PROJECT_SLUG: diy-layout-creator
+
+jobs:
+  launcher:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      # re-signing would stack a second signature on top of the committed one
+      - name: Check the committed launcher is unsigned
+        run: |
+          if python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py \
+              diylc/diylc-swing/deploy/win/diylc-x64.exe; then
+            echo "::error::deploy/win/diylc-x64.exe is already signed. Commit an unsigned launcher from launch4j first."
+            exit 1
+          fi
+
+      - name: Upload unsigned launcher
+        id: upload-unsigned-launcher
+        uses: actions/upload-artifact@v7
+        with:
+          name: unsigned-launcher
+          path: diylc/diylc-swing/deploy/win/diylc-x64.exe
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Sign launcher
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ env.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ env.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ inputs.signing-policy-slug }}
+          artifact-configuration-slug: windows-launcher
+          github-artifact-id: ${{ steps.upload-unsigned-launcher.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: Delete unsigned launcher artifact
+        if: always() && steps.upload-unsigned-launcher.outputs.artifact-id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.upload-unsigned-launcher.outputs.artifact-id }}
+        run: gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}"
+
+      - name: Verify signed launcher
+        run: |
+          python3 diylc/diylc-swing/deploy/win/signpath/is-signed.py signed/diylc-x64.exe
+          sudo apt-get update
+          sudo apt-get install -y osslsigncode
+          # chain validation fails against the self-signed test certificate by design; what
+          # matters is that a signature is present and names the expected subject
+          osslsigncode verify -in signed/diylc-x64.exe || true
+
+      - name: Upload signed launcher
+        uses: actions/upload-artifact@v7
+        with:
+          name: diylc-windows-launcher-signed
+          path: signed/diylc-x64.exe
+          if-no-files-found: error

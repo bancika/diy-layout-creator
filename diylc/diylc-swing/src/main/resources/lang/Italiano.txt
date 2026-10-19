@@ -229,12 +229,12 @@ Legs|Reoforo
 Length|lunghezza
 Letters|lettere
 Light|luce
-Lin|biancheria
+Lin|Lineare
 Lip|labbro
 Load From File|Carica da file
 Loadline Editor|Editor rette di carico
 Lock|Blocco
-Log|Accesso
+Log|Logaritmica
 Log In|Accedi
 Log Out|Esci
 Look for|Cerca
@@ -497,3 +497,171 @@ Virtual Multimeter (excl. Switches)|Multimetro Virtuale (escl. interruttori)
 Virtual Multimeter (incl. Switches)|Multimetro Virtuale (incl. interruttori)
 Become a Patreon and enjoy perks|Diventa un Patreon e goditi i vantaggi
 Join Patreon|Unisciti a Patreon
+<empty>|<vuoto>
+Success|Operazione riuscita
+Could not open file. %s|Impossibile aprire il file. %s
+Could not save to file. %s|Impossibile salvare il file. %s
+Could not export to PDF. %s|Impossibile esportare in PDF. %s
+Could not export to PNG. %s|Impossibile esportare in PNG. %s
+Could not export to Gerber file. %s|Impossibile esportare in file Gerber. %s
+Could not print. %s|Impossibile stampare. %s
+Could not import netlist file: %s|Impossibile importare il file netlist: %s
+No building blocks found to export.|Nessun blocco di costruzione da esportare.
+No building blocks selected for export.|Nessun blocco di costruzione selezionato per l'esportazione.
+Could not export building blocks. Please check the log for details|Impossibile esportare i blocchi di costruzione. Controlla il registro per i dettagli
+Building blocks exported to "%s".|Blocchi di costruzione esportati in "%s".
+Could not export building blocks: %s|Impossibile esportare i blocchi di costruzione: %s
+%s building block(s) imported from "%s".|%s blocco/i di costruzione importato/i da "%s".
+Could not import building blocks: %s|Impossibile importare i blocchi di costruzione: %s
+No variants found to export.|Nessuna variante da esportare.
+No variants selected for export.|Nessuna variante selezionata per l'esportazione.
+Could not export variants. Please check the log for details|Impossibile esportare le varianti. Controlla il registro per i dettagli
+Variants exported to "%s".|Varianti esportate in "%s".
+Could not export variants: %s|Impossibile esportare le varianti: %s
+%s variant(s) imported from "%s".|%s variante/i importata/e da "%s".
+Could not import variants: %s|Impossibile importare le varianti: %s
+Edit Project|Modifica progetto
+Component Categories|Categorie di componenti
+Reset All|Ripristina tutto
+Controllers|Controller
+Displays & Outputs|Display e uscite
+Modules & Breakouts|Moduli e breakout
+Robotics|Robotica
+Sensors|Sensori
+SMD|SMD
+High DPI Rendering|Rendering ad alta risoluzione (DPI)
+Node Name Tooltips|Suggerimenti con nomi dei nodi
+Show AI Assistant|Mostra assistente IA
+Show Project Explorer|Mostra esplora progetto
+Gray|Grigio
+Me|Io
+AI Assistant|Assistente IA
+Ask me anything|Chiedimi qualsiasi cosa
+Please log into your cloud account to use the AI assistant|Accedi al tuo account cloud per usare l'assistente IA
+You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining.|Sei attualmente abbonato al livello '%s', in scadenza il %s, con %s crediti rimanenti.
+To subscribe to one of the premium tiers, unlock advanced AI models and get more credits, visit %s and become a Patreon supporter.|Per abbonarti a uno dei livelli premium, sbloccare modelli IA avanzati e ottenere più crediti, visita %s e diventa sostenitore su Patreon.
+All the details about the AI Assistant limits and other benefits will be specified there.|Lì troverai tutti i dettagli sui limiti dell'assistente IA e sugli altri vantaggi.
+If you are already a Patreon supporter, make sure to link your account with the DIYLC Cloud account from the 'Cloud' menu.|Se sei già un sostenitore su Patreon, assicurati di collegare il tuo account all'account DIYLC Cloud dal menu 'Cloud'.
+Thank you for supporting further development of DIYLC!|Grazie per sostenere lo sviluppo di DIYLC!
+Failed to retrieve chat history.|Impossibile recuperare la cronologia della chat.
+Welcome to the DIYLC AI Assistant!|Benvenuto nell'assistente IA di DIYLC!
+I'm here to help you design, build, and troubleshoot your electronics projects using DIY Layout Creator (DIYLC). You can ask me questions about:|Sono qui per aiutarti a progettare, costruire e risolvere i problemi dei tuoi progetti elettronici con DIY Layout Creator (DIYLC). Puoi farmi domande su:
+Electronics theory or concepts:|Teoria o concetti di elettronica:
+DIYLC features and usage:|Funzionalità e utilizzo di DIYLC:
+Your current circuit project:|Il tuo progetto di circuito attuale:
+e.g.,|ad es.
+Feel free to ask your own question or use one of these examples to get started!|Sentiti libero di fare la tua domanda o di usare uno di questi esempi per iniziare!
+Waiting for the response...|In attesa della risposta...
+Failed to retrieve the response from the server.|Impossibile recuperare la risposta dal server.
+Failed to delete chat history from the server.|Impossibile eliminare la cronologia della chat dal server.
+Chat history exported successfully.|Cronologia della chat esportata correttamente.
+Failed to open premium subscription page. Please visit %s manually.|Impossibile aprire la pagina dell'abbonamento premium. Visita %s manualmente.
+45 degrees clockwise|45 gradi in senso orario
+135 degrees clockwise|135 gradi in senso orario
+225 degrees clockwise|225 gradi in senso orario
+315 degrees clockwise|315 gradi in senso orario
+1 throws / 2 positions|1 via / 2 posizioni
+2 throws / 2 positions|2 vie / 2 posizioni
+2 throws / 3 positions / OFF even positions|2 vie / 3 posizioni / posizioni pari OFF
+3 throws / 3 positions|3 vie / 3 posizioni
+3 throws / 5 positions / SHORT even positions|3 vie / 5 posizioni / posizioni pari in cortocircuito
+4 throws / 4 positions|4 vie / 4 posizioni
+5 throws / 5 positions|5 vie / 5 posizioni
+6 throws / 6 positions|6 vie / 6 posizioni
+7 throws / 7 positions|7 vie / 7 posizioni
+8 throws / 8 positions|8 vie / 8 posizioni
+9 throws / 9 positions|9 vie / 9 posizioni
+10 throws / 10 positions|10 vie / 10 posizioni
+11 throws / 11 positions|11 vie / 11 posizioni
+12 throws / 12 positions|12 vie / 12 posizioni
+4 band|4 bande
+5 band|5 bande
+DP3T (Import 5-Position Strat)|DP3T (Strat import a 5 posizioni)
+DP4T (6-Position Oak Grigsby)|DP4T (Oak Grigsby a 6 posizioni)
+Angle Offset|Offset angolo
+Apply Model|Applica modello
+Background|Sfondo
+Circle|Cerchio
+Rectangle|Rettangolo
+Coil(s)|Bobina/e
+Configuration|Configurazione
+Designation|Designazione
+Dimension Mode|Modalità quota
+Dots (Gradual)|Punti (graduali)
+Dots (Uniform)|Punti (uniformi)
+Double Rails|Doppia rail
+Double Rods|Doppie barre
+Draw Standard|Standard di disegno
+One|Uno
+Six|Sei
+Eight|Otto
+Nine|Nove
+Ten|Dieci
+Filament Voltage|Tensione del filamento
+Hole Type|Tipo di foro
+Humbucking - 4 leads|Humbucking - 4 fili
+Inner 1|Interno 1
+Inner 2|Interno 2
+Inner 3|Interno 3
+Inner 4|Interno 4
+Inner 5|Interno 5
+Inner 6|Interno 6
+Markers|Marcatori
+Maximum number of switching combinations exceeded. Allowed: %s, actual: %s|Superato il numero massimo di combinazioni di commutazione. Consentite: %s, effettive: %s
+Plated Through Hole|Foro metallizzato
+Non-Plated Through Hole|Foro non metallizzato
+Shorting|Con cortocircuito
+Non-shorting|Senza cortocircuito
+Numeric (0-10)|Numerico (0-10)
+Numeric (1-10)|Numerico (1-10)
+Numeric (1-11)|Numerico (1-11)
+Numeric (1-12)|Numerico (1-12)
+Numeric (Even, No Ticks)|Numerico (pari, senza tacche)
+Numeric (Even, With Ticks)|Numerico (pari, con tacche)
+Poles|Poli
+Screw Position|Posizione delle viti
+Single - North|Singolo - Nord
+Single - South|Singolo - Sud
+Sort by Name|Ordina per nome
+Sort by Type|Ordina per tipo
+Sort by Z-index|Ordina per indice Z
+Source Style|Stile del generatore
+Source Type|Tipo di generatore
+Terminal|Terminale
+Underside Display|Visualizzazione lato inferiore
+Underside Offset|Offset lato inferiore
+Virtual Multimeter|Multimetro virtuale
+Title Block|Cartiglio
+Tubular Beveled|Tubolare smussato
+TO-92 w/ 2 Leads|TO-92 con 2 terminali
+TO-92 w/ 3 Leads|TO-92 con 3 terminali
+Bracket|Staffa
+Show Bracket|Mostra staffa
+Check Trace Proximity|Verifica prossimità piste
+Column Spacing|Spaziatura colonne
+Donate|Dona
+Marker Size|Dimensione marcatore
+Panel|Pannello
+Tick Width|Larghezza tacca
+Wiring|Cablaggio
+Rim|Bordo
+Align & Distribute|Allinea e distribuisci
+Align Left|Allinea a sinistra
+Align Right|Allinea a destra
+Align Top|Allinea in alto
+Align Bottom|Allinea in basso
+Align Horizontal Centers|Allinea centri orizzontalmente
+Align Vertical Centers|Allinea centri verticalmente
+Distribute Centers Horizontally|Distribuisci centri orizzontalmente
+Distribute Spacing Horizontally|Distribuisci spaziatura orizzontalmente
+Distribute Centers Vertically|Distribuisci centri verticalmente
+Distribute Spacing Vertically|Distribuisci spaziatura verticalmente
+No matching components found.|Nessun componente corrispondente trovato.
+Variant name:|Nome della variante:
+Block name:|Nome del blocco:
+A building block named "%s" already exists. Overwrite it?|Esiste già un blocco di costruzione chiamato "%s". Sovrascriverlo?
+Nudge Selection|Sposta selezione
+Include stuck|Includi agganciati
+Enter group name:|Inserisci il nome del gruppo:
+Group Components|Raggruppa componenti
+Could not apply changes to the selection. Check the log for details.|Impossibile applicare le modifiche alla selezione. Controlla il registro per i dettagli.

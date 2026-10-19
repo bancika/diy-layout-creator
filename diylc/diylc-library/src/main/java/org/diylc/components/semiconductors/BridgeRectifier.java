@@ -37,7 +37,7 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.*;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.RoundedPolygon;
-import org.diylc.components.AbstractLeadedComponent.LabelOriantation;
+import org.diylc.components.AbstractLeadedComponent.LabelOrientation;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -107,7 +107,9 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
   private Voltage voltage;
   private Current current;
   transient private Area[] body;
-  private LabelOriantation labelOriantation = LabelOriantation.Directional;
+  @Deprecated
+  private LabelOrientation labelOriantation;
+  private LabelOrientation labelOrientation = LabelOrientation.Directional;
 
   public BridgeRectifier() {
     super();
@@ -457,7 +459,7 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
 
         AffineTransform oldTransform = g2d.getTransform();
 
-        if (getLabelOriantation() == LabelOriantation.Directional
+        if (getLabelOrientation() == LabelOrientation.Directional
             && (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180)) {
           double centerX = bounds.getX() + bounds.width / 2;
           double centerY = bounds.getY() + bounds.height / 2;
@@ -671,14 +673,20 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
   }
 
   @EditableProperty(name = "Label Orientation")
-  public LabelOriantation getLabelOriantation() {
-    if (labelOriantation == null)
-      labelOriantation = LabelOriantation.Directional;
-    return labelOriantation;
+  public LabelOrientation getLabelOrientation() {
+    if (labelOrientation == null) {
+      if (labelOriantation != null) {
+        labelOrientation = labelOriantation;
+        labelOriantation = null;
+      } else {
+        labelOrientation = LabelOrientation.Directional;
+      }
+    }
+    return labelOrientation;
   }
 
-  public void setLabelOriantation(LabelOriantation labelOriantation) {
-    this.labelOriantation = labelOriantation;
+  public void setLabelOrientation(LabelOrientation labelOrientation) {
+    this.labelOrientation = labelOrientation;
   }
 
   @Override

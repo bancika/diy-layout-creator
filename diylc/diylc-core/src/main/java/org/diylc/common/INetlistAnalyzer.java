@@ -24,11 +24,13 @@ package org.diylc.common;
 import java.util.List;
 import java.util.Set;
 
+import org.diylc.core.annotations.Indexed;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Node;
 import org.diylc.netlist.Summary;
 import org.diylc.netlist.TreeException;
 
+@Indexed
 public interface INetlistAnalyzer {
 
   /**   

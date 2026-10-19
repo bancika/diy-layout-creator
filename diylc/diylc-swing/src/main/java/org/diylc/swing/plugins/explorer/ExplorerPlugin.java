@@ -57,12 +57,19 @@ public class ExplorerPlugin implements IPlugIn {
 
   @Override
   public EnumSet<EventType> getSubscribedEventTypes() {
-    return EnumSet.of(EventType.FILE_STATUS_CHANGED, EventType.PROJECT_LOADED, EventType.PROJECT_MODIFIED, EventType.SELECTION_CHANGED);
+    return EnumSet.of(EventType.PROJECT_LOADED, EventType.PROJECT_MODIFIED,
+        EventType.SELECTION_CHANGED);
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void processMessage(EventType eventType, Object... params) {
+    // the dispatcher offers no way to unsubscribe, so a collapsed pane only records that it
+    // has to catch up once it is shown again
+    if (!getExplorerPane().isShowing()) {
+      getExplorerPane().markStale(eventType == EventType.PROJECT_LOADED);
+      return;
+    }
     switch (eventType) {
       case PROJECT_MODIFIED:
         getExplorerPane().setComponents(((Project)params[1]).getComponents(), plugInPort.getSelectedComponents());
@@ -72,6 +79,7 @@ public class ExplorerPlugin implements IPlugIn {
         break;
       case SELECTION_CHANGED:
         getExplorerPane().setSelection((Set<IDIYComponent<?>>)params[0]);
+        break;
       default:
         break;
     }

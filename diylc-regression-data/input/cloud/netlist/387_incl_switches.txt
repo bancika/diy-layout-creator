@@ -1,4 +1,4 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
 	C1.1 <-> J1.1 <-> V1.1 <-> V1.2 <-> V1.3 <-> V1.6 <-> V1.7 <-> V1.8
 	GND <-> J1.2

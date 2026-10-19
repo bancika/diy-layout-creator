@@ -1,7 +1,7 @@
-Switch setup: [Default]
+Switch setup: [ ALL ]
 
-	Bypass V1.1 <-> Cathode V1.2 <-> V1.3 <-> V1.8
-	Bypass V1.2 <-> Cathode V1.1 <-> Power Tube Cathode.2
+	Bypass V1.+ <-> Cathode V1.2 <-> V1.3 <-> V1.8
+	Bypass V1.- <-> Cathode V1.1 <-> Power Tube Cathode.2
 	Cathode PI.1 <-> Grid Leak PI.1 <-> Grid Leak PI.1 <-> Tail Load PI.2
 	Cathode PI.2 <-> V3.8
 	Cathode V2A.1 <-> Cathode V2B.1
@@ -12,7 +12,7 @@ Switch setup: [Default]
 	Coupling PI.2 <-> Grid Leak V5.1 <-> Grid Stopper V4B.1
 	Coupling V1B.1 <-> Load V1B.2
 	Coupling.1 <-> Grid Leak PI.2
-	Dropping B+4.1 <-> Filter B+4.1 <-> Load V2A.1
+	Dropping B+4.1 <-> Filter B+4.+ <-> Load V2A.1
 	Grid AC Ground V3B.1 <-> Grid Leak PI.2
 	Grid AC Ground V3B.2 <-> Tail Load PI.1
 	Grid Leak V4.2 <-> Grid Leak V5.2

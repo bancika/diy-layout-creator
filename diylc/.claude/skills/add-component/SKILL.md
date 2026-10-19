@@ -6,7 +6,8 @@ description: Add a new component type to the DIYLC library, or substantially mod
 # Adding a component to DIYLC
 
 Components live in `diylc-library/src/main/java/org/diylc/components/`. They are discovered at
-runtime by Reflections scanning `org.diylc` — **there is no registry to update**. A class becomes a
+runtime from a class index that `diylc-processor` writes at compile time — **there is no registry
+to update**. A class becomes a
 component by carrying `@ComponentDescriptor` and implementing `IDIYComponent` (in practice, by
 extending one of the abstract bases).
 
@@ -112,6 +113,25 @@ Requirements the framework enforces:
   is stale — that attribute no longer exists.)
 - Override `getValueForDisplay()` when the canvas label should combine several properties.
 
+## Translations
+
+The property editor translates what it shows: `PropertyEditorDialog` passes every property name
+through `LangUtil.translate`, and `EnumEditor` does the same for each enum value's `toString()`. A
+component therefore needs no `LangUtil` calls of its own, but every **new** user-facing string it
+introduces must be added to the language files in `diylc-swing/src/main/resources/lang/` and
+translated, or it shows up in English for everyone:
+
+- each new `@EditableProperty` name;
+- each display value of a new enum property (what `toString()` returns), including generated ones
+  such as `"45 degrees clockwise"` — every value is its own key;
+- a new `category` in `@ComponentDescriptor`, which also appears in the toolbox and in
+  *Config > Component Categories*.
+
+Before adding a key, check whether it already exists (lookups are case-insensitive), and skip pure
+identifiers that read the same in every language: part numbers, switch codes such as `DPDT`,
+pinouts, units and standards. How to write the entries is described in the *Localization* section
+of the `add-plugin` skill.
+
 ## Drawing
 
 `draw(Graphics2D, ComponentState, boolean outlineMode, Project, IDrawingObserver)` runs on every
@@ -171,6 +191,9 @@ Once a component ships, its serialized shape is a contract:
 ```bash
 mvn -q -pl diylc-library -am test
 ```
+
+Confirm that every new property name, enum display value and category has an entry in each file
+under `diylc-swing/src/main/resources/lang/`.
 
 Then state plainly that the component still needs a visual check in the running app — automated tests
 do not cover component appearance. Offer a regression-suite run (see the `regression-test` skill) for

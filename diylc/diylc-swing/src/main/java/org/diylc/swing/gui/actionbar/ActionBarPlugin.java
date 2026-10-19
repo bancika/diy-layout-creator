@@ -93,7 +93,17 @@ public class ActionBarPlugin implements IPlugIn {
 
   public JPanel getActionPanel() {
     if (actionPanel == null) {
-      actionPanel = new JPanel();
+      actionPanel = new JPanel() {
+
+        private static final long serialVersionUID = 1L;
+
+        // shares a vertical BoxLayout with the canvas on Mac; without a height cap it absorbs
+        // half of the spare space whenever the zoomed-out canvas is smaller than the viewport
+        @Override
+        public Dimension getMaximumSize() {
+          return new Dimension(Integer.MAX_VALUE, getPreferredSize().height);
+        }
+      };
       actionPanel.setOpaque(false);
       actionPanel.setLayout(new GridBagLayout());
       

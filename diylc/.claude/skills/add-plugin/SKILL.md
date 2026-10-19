@@ -1,6 +1,6 @@
 ---
 name: add-plugin
-description: Add or modify a DIYLC Swing plugin, menu action, toolbar item, dialog or side panel. Use when asked to add a UI feature, a menu entry, a new tool window, a background task, or to react to domain events like selection or project changes.
+description: Add or modify a DIYLC Swing plugin, menu action, toolbar item, dialog or side panel. Use when asked to add a UI feature, a menu entry, a new tool window, a background task, to react to domain events like selection or project changes, or to localize UI text and update the language files.
 ---
 
 # Adding a plugin or UI feature to DIYLC
@@ -115,14 +115,73 @@ handles the busy cursor and optional glass pane, or a dedicated executor for per
 - Persisted preferences: `ConfigurationManager.getInstance().readString(KEY, default)` and
   `writeValue(KEY, value)`, with the key as a `String` constant. Implement `IConfigListener` to react
   to changes.
-- Every user-visible string goes through `LangUtil.translate("...")`.
+- Every user-visible string goes through `LangUtil.translate("...")` — see *Localization* below.
 - Icons come from `IconLoader`.
+
+## Localization
+
+DIYLC ships translations in `diylc-swing/src/main/resources/lang/`. `LangUtil.translate(text)` looks
+the whole English string up, case-insensitively, and falls back to the English text when there is no
+entry. A string that never reaches `translate` is never localized, so every new piece of UI needs
+both the call and the dictionary entries. Adding the entries and translating them into **every**
+language file is part of the change itself — do not leave it as a follow-up or ship English-only
+keys.
+
+**What `MainFrame` translates for you.** Menu names and the `Action.NAME` of every action passed to
+`injectMenuAction`, `injectSubmenu` and `injectDynamicSubmenu` are translated on injection. Pass the
+English literal there and do not translate it yourself: `ToggleAction` and `ComponentBrowserAction`
+use their English title as the persisted config value, and translating a translated string can hit
+an unrelated entry.
+
+**What you must translate yourself.** Everything else the user reads:
+
+- the message *and* the title of `showMessage`, `showConfirmDialog` and `showInputDialog` — titles
+  like `"Error"`, `"Success"` and `"Export"` included;
+- dialog titles, button and label text, tooltips, placeholder text and borders;
+- text rendered into panes, including HTML (translate the sentence, keep the markup outside it).
+
+**Text with variables uses placeholders, never concatenation.** The key passed to `translate` is the
+whole sentence with `%s` where the values go, and `String.format` fills them in afterwards:
+
+```java
+// BAD — every file name produces a different key, so nothing is ever translated
+swingUI.showMessage("Variants exported to \"" + file.getName() + "\".", "Success", ...);
+
+// GOOD
+swingUI.showMessage(
+    String.format(LangUtil.translate("Variants exported to \"%s\"."), file.getName()),
+    LangUtil.translate("Success"), ISwingUI.INFORMATION_MESSAGE);
+```
+
+- Use `%s` for every value, numbers included; a translator whose grammar needs another order writes
+  `%2$s ... %1$s`. A literal percent sign must be `%%`.
+- One key per complete sentence. Do not build a sentence from translated fragments — word order
+  differs between languages. A long paragraph may be several keys, one per sentence.
+- URLs, file names, HTML links and other values that must not change go in through `%s`, not into
+  the key.
+- Log messages and exception text stay in English and are not translated.
+
+**Dictionary entries.** For each new key:
+
+- append the English text on its own line to `English.txt`;
+- append `English text|Translation` to every other file in `lang/`, keeping the terminology that
+  file already uses (grep it for `Error`, `Export`, `Variants`, ...). The translation must contain
+  the same number of placeholders as the key, and neither side may contain `|`;
+- recent entries are appended at the end of each file; do the same, and preserve each file's line
+  endings (most use CRLF, `हिंदी.txt` and `简体中文.txt` use LF) and UTF-8 encoding.
+
+Running the app with `-Dorg.diylc.storeDict=true` writes every string that reached `translate`
+without a dictionary entry to `pending_translations.txt` in the working directory, which is a quick
+way to find gaps after a UI change.
 
 ## Verify
 
 ```bash
 mvn -q -pl diylc-swing -am compile
 ```
+
+Confirm that every new user-facing string reaches `LangUtil.translate` and has an entry in each file
+under `diylc-swing/src/main/resources/lang/`.
 
 Compilation is not evidence that the UI works. Say so, and offer to walk through launching the app
 via `.run/DIYLCStarter.run.xml` (which carries the required `--add-opens` / `--add-exports` flags) for
