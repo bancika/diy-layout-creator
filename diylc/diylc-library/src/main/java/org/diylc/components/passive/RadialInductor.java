@@ -33,6 +33,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.schematic.InductorSchematicFactory;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -44,7 +45,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@ComponentDescriptor(name = "Inductor (Radial)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = InductorSchematicFactory.class,
+    name = "Inductor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
     description = "Vertically mounted ferrite core inductor", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)

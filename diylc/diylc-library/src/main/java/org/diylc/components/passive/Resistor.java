@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.schematic.ResistorSchematicFactory;
 import org.diylc.common.ResistorColorCode;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -45,7 +46,8 @@ import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = ResistorSchematicFactory.class,
+    name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true)
 public class Resistor extends AbstractLeadedComponent<Resistance> implements IGerberComponentSimple {
