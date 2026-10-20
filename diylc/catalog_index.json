@@ -3,7 +3,8 @@
   "categories" : {
     "Boards" : [ {
       "name" : "Blank Board",
-      "className" : "boards.BlankBoard"
+      "className" : "boards.BlankBoard",
+      "notes" : [ "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise" ]
     }, {
       "name" : "Breadboard",
       "className" : "boards.Breadboard"
@@ -12,10 +13,12 @@
       "className" : "boards.EurorackStripboard"
     }, {
       "name" : "Eyelet Board",
-      "className" : "boards.EyeletBoard"
+      "className" : "boards.EyeletBoard",
+      "notes" : [ "Use this type of board only when explicitly asked to" ]
     }, {
       "name" : "Marshall Style Perf Board",
-      "className" : "boards.MarshallPerfBoard"
+      "className" : "boards.MarshallPerfBoard",
+      "notes" : [ "Use this type of board only when explicitly asked to" ]
     }, {
       "name" : "P-0+o (Proto) Board",
       "className" : "boards.ProtoBoard"

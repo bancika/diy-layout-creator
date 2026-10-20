@@ -7,6 +7,7 @@
     "namePrefix" : "Board",
     "description" : "Blank circuit board",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -22,11 +23,6 @@
       "type" : "Color",
       "format" : "hex",
       "defaultValue" : "#F8EBB3"
-    }, {
-      "name" : "Coordinate Origin",
-      "type" : "CoordinateOrigin",
-      "possibleValues" : [ "Top_Left", "Top_Right", "Bottom_Right", "Bottom_Left" ],
-      "defaultValue" : "Top_Left"
     }, {
       "name" : "Dimension Mode",
       "type" : "BoardSizingMode",
@@ -138,6 +134,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board with eyelets",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked to", "This board comes with pre-installed eyelets spaced apart equally", "Eyelets spacing and spacing to the left and top edges is driven by 'Spacing' property", "Typically requires no additional eyelets or turrets" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -233,6 +230,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board as found on some Marshall and Trainwreck amps",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked to", "This board comes with pre-drilled holes spaced apart equally", "Hole spacing and spacing to the left and top edges is driven by 'Spacing' property", "There are no conductive surfaces on this board; place eyelets or turrets exactly on the holes to create connection points" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -369,6 +367,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board with solder pads",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -802,6 +801,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -906,6 +906,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated FR4 board with copper strips connecting all holes in a row",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
