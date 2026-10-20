@@ -29,6 +29,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,9 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.Percentage;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.measures.AbstractMeasure;
+import org.diylc.plugins.chatbot.model.AiCatalogIndexEntry;
 import org.diylc.plugins.chatbot.model.pinout.AiPinout;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
@@ -95,24 +99,24 @@ public class ComponentCatalogGenerator {
     Map<String, List<ComponentType>> componentTypes = processor.getComponentTypes();
 
     List<Map<String, Object>> fullComponents = new ArrayList<>();
-    Map<String, List<Map<String, String>>> indexCategories = new TreeMap<>();
+    Map<String, List<AiCatalogIndexEntry>> indexCategories = new TreeMap<>();
 
     for (Map.Entry<String, List<ComponentType>> entry : componentTypes.entrySet()) {
       String category = entry.getKey();
-      List<Map<String, String>> indexEntries = new ArrayList<>();
+      List<AiCatalogIndexEntry> indexEntries = new ArrayList<>();
 
       for (ComponentType ct : entry.getValue()) {
         // Build full catalog entry
         Map<String, Object> comp = buildFullEntry(ct, processor);
         fullComponents.add(comp);
         // Build index entry
-        Map<String, String> idx = new LinkedHashMap<>();
-        idx.put("name", (String) comp.get("name"));
-        idx.put("className", (String) comp.get("className"));
-        indexEntries.add(idx);
+        List<String> selectionNotes =
+            collectNotes(ct.getInstanceClass(), EnumSet.of(AiNote.Scope.SELECTION));
+        indexEntries.add(new AiCatalogIndexEntry(catalogName(ct), catalogClassName(ct),
+            selectionNotes.isEmpty() ? null : selectionNotes));
       }
 
-      indexEntries.sort((a, b) -> a.get("name").compareTo(b.get("name")));
+      indexEntries.sort(Comparator.comparing(AiCatalogIndexEntry::name));
       indexCategories.put(category, indexEntries);
     }
 
@@ -158,18 +162,18 @@ public class ComponentCatalogGenerator {
    */
   private static Map<String, Object> buildFullEntry(ComponentType ct, ComponentProcessor processor) {
     Map<String, Object> comp = new LinkedHashMap<>();
-    
-    String name = ct.getName();
-    if ("Schematic Symbols".equals(ct.getCategory()) && !name.contains("Symbol")) {
-      name += " (Schematic)";
-    }
-    
-    comp.put("name", name);
-    comp.put("className", ct.getInstanceClass().getCanonicalName().replace("org.diylc.components.", ""));
+
+    comp.put("name", catalogName(ct));
+    comp.put("className", catalogClassName(ct));
     comp.put("category", ct.getCategory());
     comp.put("namePrefix", ct.getNamePrefix());
     comp.put("description", ct.getDescription());
     comp.put("creationMethod", ct.getCreationMethod().name());
+
+    List<String> notes = collectNotes(ct.getInstanceClass(), EnumSet.allOf(AiNote.Scope.class));
+    if (!notes.isEmpty()) {
+      comp.put("notes", notes);
+    }
 
     // Extract editable properties
     try {
@@ -252,6 +256,41 @@ public class ComponentCatalogGenerator {
     }
 
     return comp;
+  }
+
+  /**
+   * @return the name the model refers to the type by, which tells schematic symbols apart from the
+   *         layout components they share a name with
+   */
+  private static String catalogName(ComponentType ct) {
+    String name = ct.getName();
+    if ("Schematic Symbols".equals(ct.getCategory()) && !name.contains("Symbol")) {
+      name += " (Schematic)";
+    }
+    return name;
+  }
+
+  private static String catalogClassName(ComponentType ct) {
+    return ct.getInstanceClass().getCanonicalName().replace("org.diylc.components.", "");
+  }
+
+  /**
+   * @return the distinct {@link AiNote}s of the class and all of its superclasses that have one of
+   *         the given scopes, most general first
+   */
+  static List<String> collectNotes(Class<?> clazz, Set<AiNote.Scope> scopes) {
+    List<String> notes = new ArrayList<>();
+    for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
+      List<String> own = new ArrayList<>();
+      for (AiNote annotation : c.getDeclaredAnnotationsByType(AiNote.class)) {
+        if (scopes.contains(annotation.scope()) && !notes.contains(annotation.value())
+            && !own.contains(annotation.value())) {
+          own.add(annotation.value());
+        }
+      }
+      notes.addAll(0, own);
+    }
+    return notes;
   }
 
   private static List<String> extractUnits(Class<?> propType) {

@@ -21,13 +21,11 @@
 */
 package org.diylc.components.boards;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -35,10 +33,14 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.AiNote;
+import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 
+@AiNote(value = "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise",
+    scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
         zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
         bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, transformer = SimpleComponentTransformer.class)
@@ -111,6 +113,12 @@ public class BlankBoard extends AbstractBoard {
   public Color getCoordinateColor() {
     // Override to prevent editing.
     return super.getCoordinateColor();
+  }
+
+  @Override
+  public CoordinateOrigin getCoordinateOrigin() {
+    // Override to prevent editing.
+    return super.getCoordinateOrigin();
   }
 
   @EditableProperty(name = "Shape")

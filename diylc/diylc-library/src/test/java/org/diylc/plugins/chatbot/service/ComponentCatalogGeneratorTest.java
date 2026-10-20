@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.diylc.core.annotations.AiNote;
+import org.diylc.core.annotations.AiNote.Scope;
 
 /**
  * Lives in diylc-library rather than diylc-core on purpose. The generator finds components by
@@ -94,8 +98,38 @@ public class ComponentCatalogGeneratorTest {
     assertTrue("a switch carries its switching table", variants.get(0).containsKey("switching"));
   }
 
+  @Test
+  public void notesOfBaseClassesComeFirst() {
+    assertEquals(List.of("base", "middle 1", "middle 2", "leaf"),
+        ComponentCatalogGenerator.collectNotes(Leaf.class, EnumSet.allOf(Scope.class)));
+    assertEquals(List.of("base"),
+        ComponentCatalogGenerator.collectNotes(Unannotated.class, EnumSet.allOf(Scope.class)));
+  }
+
+  @Test
+  public void selectionNotesCanBeCollectedOnTheirOwn() {
+    assertEquals(List.of("middle 2"),
+        ComponentCatalogGenerator.collectNotes(Leaf.class, EnumSet.of(Scope.SELECTION)));
+  }
+
   private static Map<String, Object> find(List<Map<String, Object>> components, String className) {
     return components.stream().filter(c -> className.equals(c.get("className"))).findFirst()
         .orElseThrow(() -> new AssertionError("no catalog entry for " + className));
+  }
+
+  @AiNote("base")
+  private static class Base {
+  }
+
+  @AiNote("middle 1")
+  @AiNote(value = "middle 2", scope = Scope.SELECTION)
+  private static class Middle extends Base {
+  }
+
+  @AiNote("leaf")
+  private static class Leaf extends Middle {
+  }
+
+  private static class Unannotated extends Base {
   }
 }
