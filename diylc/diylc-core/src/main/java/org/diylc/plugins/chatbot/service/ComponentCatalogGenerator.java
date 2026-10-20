@@ -48,6 +48,7 @@ import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.plugins.chatbot.model.pinout.AiPinout;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.ReleaseHistory;
 
 /**
  * Standalone tool that generates component catalog JSON files from the current codebase.
@@ -67,9 +68,6 @@ import org.diylc.presenter.ComponentProcessor;
 public class ComponentCatalogGenerator {
 
   private static final Logger LOG = Logger.getLogger(ComponentCatalogGenerator.class);
-
-  /** Current DIYLC version - should match pom.xml */
-  private static final String VERSION = "6.5.0";
 
   /**
    * Property types that are purely cosmetic and not useful for LLM-driven circuit editing.
@@ -131,9 +129,11 @@ public class ComponentCatalogGenerator {
       return catCmp != 0 ? catCmp : ((String) a.get("name")).compareTo((String) b.get("name"));
     });
 
+    String version = ReleaseHistory.getCurrentVersion().toString();
+
     // Write catalog_full.json
     Map<String, Object> fullCatalog = new LinkedHashMap<>();
-    fullCatalog.put("version", VERSION);
+    fullCatalog.put("version", version);
     fullCatalog.put("components", fullComponents);
 
     ObjectMapper mapper = new ObjectMapper();
@@ -145,7 +145,7 @@ public class ComponentCatalogGenerator {
 
     // Write catalog_index.json
     Map<String, Object> indexCatalog = new LinkedHashMap<>();
-    indexCatalog.put("version", VERSION);
+    indexCatalog.put("version", version);
     indexCatalog.put("categories", indexCategories);
 
     File indexFile = new File(outputDir, "catalog_index.json");

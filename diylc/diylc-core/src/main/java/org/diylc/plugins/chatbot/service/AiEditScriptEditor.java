@@ -42,7 +42,6 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.measures.AbstractMeasure;
-import org.diylc.core.measures.Capacitance;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 import org.diylc.presenter.ComponentProcessor;
@@ -320,74 +319,23 @@ public class AiEditScriptEditor implements IProjectEditor {
   }
 
   private void applyDatasheetModel(IDIYComponent<?> comp, String datasheetModel) {
-    if (!(comp instanceof IDatasheetSupport) || datasheetModel == null || datasheetModel.trim().isEmpty()) {
+    if (!(comp instanceof IDatasheetSupport)) {
+      warnings.add("Component '" + comp.getName() + "' does not take datasheet models.");
       return;
     }
-    List<String[]> datasheet = DatasheetService.getInstance().loadDatasheet(comp.getClass());
-    if (datasheet == null || datasheet.isEmpty()) {
+    DatasheetService datasheetService = DatasheetService.getInstance();
+    List<String[]> rows = datasheetService.findSeries(comp.getClass(), datasheetModel.trim());
+    if (rows.isEmpty()) {
+      warnings.add("No datasheet model '" + datasheetModel + "' found for " + comp.getName() + ".");
       return;
     }
-
-    String targetModel = datasheetModel.trim();
-    List<String[]> modelCandidates = new ArrayList<>();
-    for (String[] row : datasheet) {
-      if (row.length > 0 && row[0].trim().equalsIgnoreCase(targetModel)) {
-        modelCandidates.add(row);
-      }
-    }
-
-    if (modelCandidates.isEmpty()) {
-      for (String[] row : datasheet) {
-        if (row.length > 0 && row[0].trim().toLowerCase().contains(targetModel.toLowerCase())) {
-          modelCandidates.add(row);
-        }
-      }
-    }
-
-    if (modelCandidates.isEmpty()) {
-      LOG.warn("No datasheet model found matching '" + datasheetModel + "' for " + comp.getName());
+    String[] model = datasheetService.findModel(comp, rows);
+    if (model == null) {
+      warnings.add("Datasheet model '" + datasheetModel + "' has no part with the value "
+          + comp.getValue() + " of " + comp.getName() + ".");
       return;
     }
-
-    if (modelCandidates.size() == 1) {
-      try {
-        ((IDatasheetSupport) comp).applyModel(modelCandidates.get(0));
-      } catch (Exception e) {
-        LOG.warn("Failed to apply datasheet model " + datasheetModel + " to " + comp.getName(), e);
-      }
-      return;
-    }
-
-    String[] bestMatch = modelCandidates.get(0);
-    Object valObj = comp.getValue();
-    
-    Double compCapValue = null;
-    if (valObj instanceof Capacitance) {
-      compCapValue = ((Capacitance) valObj).getNormalizedValue();
-    } else if (valObj != null) {
-      try {
-        compCapValue = Capacitance.parseCapacitance(valObj.toString()).getNormalizedValue();
-      } catch (Exception ignored) {}
-    }
-
-    for (String[] row : modelCandidates) {
-      if (row.length >= 3 && compCapValue != null) {
-        try {
-          String[] capParts = row[2].split(" ");
-          Capacitance rowCap = Capacitance.parseCapacitance(capParts[0] + capParts[1]);
-          if (rowCap.getNormalizedValue() != null && Math.abs(rowCap.getNormalizedValue() - compCapValue) / compCapValue < 0.05) {
-            bestMatch = row;
-            break;
-          }
-        } catch (Exception ignored) {}
-      }
-    }
-
-    try {
-      ((IDatasheetSupport) comp).applyModel(bestMatch);
-    } catch (Exception e) {
-      LOG.warn("Failed to apply datasheet model " + datasheetModel + " to " + comp.getName(), e);
-    }
+    ((IDatasheetSupport) comp).applyModel(model);
   }
 
   private Object parsePropertyValue(Class<?> type, String value) throws Exception {
