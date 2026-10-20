@@ -41,6 +41,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -49,6 +50,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Each terminal is one node made of its A and B holes, plus C when 'Center Terminal' is on; separate terminals are not connected")
 @ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction",
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,

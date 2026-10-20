@@ -44,7 +44,7 @@ import org.diylc.utils.Constants;
 
 @AiNote(value = "Use this type of board only when explicitly asked to", scope = Scope.SELECTION)
 @AiNote("This board comes with pre-drilled holes spaced apart equally")
-@AiNote("Hole spacing and spacing to the left and top edges is driven by 'Spacing' property")
+@AiNote("'Spacing' sets the center-to-center pitch of the hole grid; the first row and column of hole centers sit one 'Spacing' in from the top and left edges")
 @AiNote("There are no conductive surfaces on this board; place eyelets or turrets exactly on the holes to create connection points")
 @ComponentDescriptor(name = "Marshall Style Perf Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
