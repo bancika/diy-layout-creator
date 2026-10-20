@@ -115,7 +115,7 @@ public class Presenter implements IPlugInPort {
   public static final Double[] ZOOM_LEVELS =
       {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
 
-  public static VersionNumber CURRENT_VERSION = null;
+  private static VersionNumber CURRENT_VERSION = null;
   private static List<Version> RECENT_VERSIONS = null;
 
   public static final String DEFAULTS_KEY_PREFIX = "default.";
@@ -408,7 +408,7 @@ public class Presenter implements IPlugInPort {
   public void saveProjectToFile(String fileName, boolean isBackup) {
     LOG.info(String.format("saveProjectToFile(%s)", fileName));
     try {
-      currentProject.setFileVersion(CURRENT_VERSION);
+      currentProject.setFileVersion(getCurrentVersion());
       projectFileManager.serializeProjectToFile(currentProject, fileName, isBackup);
       if (!isBackup)
         addToRecentFiles(fileName);
@@ -1305,8 +1305,12 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public VersionNumber getCurrentVersionNumber() {
+    return getCurrentVersion();
+  }
+
+  public static VersionNumber getCurrentVersion() {
     if (CURRENT_VERSION == null) {
-      List<Version> recentUpdates = getRecentUpdates();
+      List<Version> recentUpdates = getRecentVersions();
       CURRENT_VERSION = recentUpdates.stream()
           .findFirst().map(v -> v.getVersionNumber())
           .orElse(new VersionNumber(5, 0, 0));
