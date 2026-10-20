@@ -28,6 +28,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -41,10 +42,15 @@ import org.junit.Test;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.electromechanical.ClosedJack1_4;
+import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.measures.Capacitance;
+import org.diylc.core.measures.CapacitanceUnit;
 import org.diylc.core.measures.Resistance;
+import org.diylc.core.measures.Voltage;
+import org.diylc.core.measures.VoltageUnit;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 import org.diylc.plugins.chatbot.model.AiPoint;
@@ -63,6 +69,8 @@ public class AiEditScriptEditorTest {
 
   private static final Point2D FIRST_LEAD = new Point2D.Double(100, 100);
   private static final Point2D SECOND_LEAD = new Point2D.Double(200, 100);
+  // body color of every Mallory 150 row in AxialFilmCapacitor.datasheet
+  private static final Color MALLORY_150_BODY = Color.decode("#FFE303");
 
   @BeforeClass
   public static void setUp() {
@@ -202,6 +210,44 @@ public class AiEditScriptEditorTest {
     }
   }
 
+  @Test
+  public void datasheetSeriesKeepsTheValueAndTheVoltage() {
+    AxialFilmCapacitor capacitor = capacitor(new Capacitance(0.22, CapacitanceUnit.uF));
+    capacitor.setVoltageNew(new Voltage(250d, VoltageUnit.V));
+
+    AiEditScriptEditor editor = applySeries(capacitor, "Mallory 150");
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(MALLORY_150_BODY, capacitor.getBodyColor());
+    assertEquals(0.22, capacitor.getValue().getNormalizedValue(), 1e-9);
+    assertEquals(new Voltage(250d, VoltageUnit.V), capacitor.getVoltageNew());
+  }
+
+  @Test
+  public void datasheetSeriesMatchesAValueWrittenInOtherUnits() {
+    AxialFilmCapacitor capacitor = capacitor(new Capacitance(220d, CapacitanceUnit.nF));
+
+    AiEditScriptEditor editor = applySeries(capacitor, "Mallory 150");
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(MALLORY_150_BODY, capacitor.getBodyColor());
+    assertEquals(0.22, capacitor.getValue().getNormalizedValue(), 1e-9);
+  }
+
+  @Test
+  public void datasheetSeriesWithoutTheValueLeavesTheComponentAlone() {
+    Capacitance value = new Capacitance(1.234, CapacitanceUnit.uF);
+    AxialFilmCapacitor capacitor = capacitor(value);
+    Color bodyColor = capacitor.getBodyColor();
+
+    AiEditScriptEditor editor = applySeries(capacitor, "Mallory 150");
+
+    assertFalse("the model should be told the series has no such part",
+        editor.getWarnings().isEmpty());
+    assertEquals(value, capacitor.getValue());
+    assertEquals(bodyColor, capacitor.getBodyColor());
+  }
+
   private static Resistor resistor() {
     Resistor resistor = new Resistor();
     resistor.setName("R1");
@@ -248,6 +294,21 @@ public class AiEditScriptEditorTest {
     AiEditScript script = new AiEditScript();
     script.setOperations(List.of(operations));
     return script;
+  }
+
+  private static AxialFilmCapacitor capacitor(Capacitance value) {
+    AxialFilmCapacitor capacitor = new AxialFilmCapacitor();
+    capacitor.setName("C1");
+    capacitor.setValue(value);
+    return capacitor;
+  }
+
+  private static AiEditScriptEditor applySeries(IDIYComponent<?> component, String series) {
+    AiEditOperation operation = operation("modify", component.getName());
+    operation.setDatasheetModel(series);
+    AiEditScriptEditor editor = new AiEditScriptEditor(script(operation));
+    editor.edit(projectWith(component), new HashSet<IDIYComponent<?>>());
+    return editor;
   }
 
   private static AiPoint point(int gridX, int gridY) {

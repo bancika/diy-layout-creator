@@ -26,7 +26,6 @@ import java.awt.dnd.DnDConstants;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -115,7 +114,6 @@ public class Presenter implements IPlugInPort {
       {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
 
   public static VersionNumber CURRENT_VERSION = null;
-  private static List<Version> RECENT_VERSIONS = null;
 
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
@@ -1303,10 +1301,7 @@ public class Presenter implements IPlugInPort {
   @Override
   public VersionNumber getCurrentVersionNumber() {
     if (CURRENT_VERSION == null) {
-      List<Version> recentUpdates = getRecentUpdates();
-      CURRENT_VERSION = recentUpdates.stream()
-          .findFirst().map(v -> v.getVersionNumber())
-          .orElse(new VersionNumber(5, 0, 0));
+      CURRENT_VERSION = ReleaseHistory.getCurrentVersion();
       LOG.info("Current DIYLC version: " + CURRENT_VERSION);
     }
     return CURRENT_VERSION;
@@ -1314,28 +1309,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<Version> getRecentUpdates() {
-    return getRecentVersions();
-  }
-
-  private static List<Version> getRecentVersions() {
-    if (RECENT_VERSIONS == null) {
-      try {
-        BufferedInputStream in =
-            new BufferedInputStream(Presenter.class.getResourceAsStream("/update.xml"));
-        XStream xStream = new XStream(new DomDriver());
-        xStream.addPermission(AnyTypePermission.ANY);
-        @SuppressWarnings("unchecked")
-        List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-        RECENT_VERSIONS = allVersions.stream()
-            .sorted(Comparator.comparing(x -> ((Version) x).getVersionNumber()).reversed())
-            .limit(10).collect(Collectors.toList());
-        in.close();
-      } catch (Exception e) {
-        LOG.error("Could not load recent versions", e);
-        RECENT_VERSIONS = new ArrayList<>();
-      }
-    }
-    return RECENT_VERSIONS;
+    return ReleaseHistory.getRecentVersions();
   }
 
   @Override
