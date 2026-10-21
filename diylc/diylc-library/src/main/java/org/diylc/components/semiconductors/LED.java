@@ -23,28 +23,28 @@ package org.diylc.components.semiconductors;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.components.passive.AbstractRadialComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
-import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("'Size' is the lens diameter seen from above; 'Width' is used only when 'Shape' is RECTANGLE")
 @ComponentDescriptor(name = "LED", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D", description = "Light Emitting Diode",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class)
-public class LED extends AbstractLeadedComponent<String> implements IGerberComponentSimple {
+public class LED extends AbstractRadialComponent<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,12 +56,12 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   private String value = "";
   private BodyShape shape = BodyShape.ROUND;
-  private Size pinSpacing = PIN_SPACING;
 
   public LED() {
     super();
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
+    this.pinSpacing = PIN_SPACING;
   }
 
   @EditableProperty
@@ -83,23 +83,6 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
 
   public void setShape(BodyShape shape) {
     this.shape = shape;
-  }
-
-  @Override
-  protected int calculatePinSpacing(Rectangle shapeRect) {
-    return (int) getPinSpacing().convertToPixels();
-  }
-
-  @EditableProperty(name = "Lead Spacing")
-  public Size getPinSpacing() {
-    if (pinSpacing == null) {
-      pinSpacing = PIN_SPACING;
-    }
-    return pinSpacing;
-  }
-
-  public void setPinSpacing(Size pinSpacing) {
-    this.pinSpacing = pinSpacing;
   }
 
   @Override
@@ -190,6 +173,12 @@ public class LED extends AbstractLeadedComponent<String> implements IGerberCompo
   @Override
   public Size getWidth() {
     return super.getWidth();
+  }
+
+  @Override
+  public String getType() {
+    // Override to prevent editing.
+    return super.getType();
   }
 
   public enum BodyShape {
