@@ -50,6 +50,7 @@ import org.diylc.core.measures.SizeUnit;
 
 @AiNote(value = "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", scope = Scope.SELECTION)
 @AiNote("A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace")
+@AiNote("The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross")
 @ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace",
     description = "Straight copper trace", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,

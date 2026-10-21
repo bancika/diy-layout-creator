@@ -38,6 +38,8 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -48,8 +50,11 @@ import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote(value = "Use for a curved copper trace on a PCB layout; for a straight one use Copper Trace", scope = Scope.SELECTION)
+@AiNote("The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross")
+@AiNote("Only the first and last control points are the trace ends; the points between them are curve handles the trace does not necessarily pass through")
 @ComponentDescriptor(name = "Curved Trace", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "Trace", description = "Curved copper trace with two control points",
+    instanceNamePrefix = "Trace", description = "Curved copper trace",
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)

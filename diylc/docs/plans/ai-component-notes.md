@@ -68,20 +68,23 @@ that names the alternative; alternatives should point at each other (Jumper and 
 | --- | --- |
 | Boards | `AbstractBoard`, `BlankBoard`, `PerfBoard`, `EyeletBoard`, `MarshallPerfBoard`, `VeroBoard`, `TriPadBoard`, `Breadboard`, `ProtoBoard`, `TerminalStrip`, `TagStrip` |
 | Leaded | `Resistor`, `DiodePlastic` (body between the points, standing when closer than 'Length') |
-| Radial | `AbstractRadialComponent` ('Lead Spacing'), `RadialFilmCapacitor` (same, plus 'Length'/'Width' vs datasheet), `RadialElectrolytic` ('Diameter', 'Height' only when folded), `RadialCeramicDiskCapacitor` (disc diameter and thickness) |
+| Radial | `AbstractRadialComponent` ('Lead Spacing'), `RadialFilmCapacitor` (same, plus 'Length'/'Width' vs datasheet), `RadialElectrolytic` ('Diameter', 'Height' only when folded), `RadialCeramicDiskCapacitor` (disc diameter and thickness), `TantalumCapacitor`, `RadialInductor`, `Buzzer` (same 'Diameter'/'Height' note as the electrolytic) |
 | Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor lug, lug direction per orientation, 16mm/25mm sizes), `DIL_IC` |
-| Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `SolderPad` (selection notes that name each other) |
+| Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing) |
 | Misc | `BOM` |
 
 `Label` deliberately has none: its alignment properties already say how the text sits on the anchor.
+
+How the netlist connects things, which several notes rely on (`NetlistBuilder`): control points at
+the same coordinates are one node; a copper area connects every terminal it covers and every copper
+area it overlaps on the same layer; an `IContinuity` part such as a wire joins its own points. A
+component with a null node name, like Dot, takes no part.
 
 Open items:
 
 - `PotentiometerPanel`: the size note says the choice depends on the type of circuit; an example of
   which circuits take which size would make it actionable. The sentence naming the anchor lug per
   view repeats the pinout block, which already maps index 0 to "3" in the back views; drop it.
-- Tantalum, Radial Inductor and PCB Buzzer have the same 'Diameter'/'Height'/'Folded' properties as
-  `RadialElectrolytic`; check whether its note applies to them as written.
 - `ProtoBoard` (P-0+o): the central V+/GND/V- bus is not described; its trace geometry does not line
   up obviously with the pad columns and needs reading carefully before it can be noted.
 - `ProtoBoard780` and `EurorackStripboard`: no notes. 780 shifts its grid by `X_OFFSET` and half a
@@ -101,11 +104,9 @@ Potentiometer, DIL IC; 100+ projects each) is done, see section 3.
 
 | Type | Projects | Note should cover |
 | --- | --- | --- |
-| Dot | 87 | Schematic and wiring junctions only, not a pad |
 | Mini Toggle Switch | 76 | Lug grid geometry relative to the anchor |
 | Trimmer Potentiometer | 74 | Lug geometry per type |
 | Trace Cut | 68 | On a hole vs `Cut Between Holes`; pairs with the Vero Board note |
-| Curved Trace | 65 | Curved Trace vs Copper Trace, joining the connectivity selection notes |
 | Axial Film | 56 | The Resistor standing note applies as written |
 | Axial Electrolytic | 63 | Body between the points; no standing mode |
 | Ground Symbol | 59 | Schematic only |
@@ -127,12 +128,10 @@ Tier 2.
 
 ## 5. Next steps
 
-1. Close the Tier 1 open items in section 3.
-2. Curved Trace and Dot, completing the connectivity selection notes.
-3. Tier 2 electromechanical: Mini Toggle, Trimmer, jacks, Tube Socket, Trace Cut.
-4. The leaded leftovers: Axial Film, Glass Diode, Axial Electrolytic, LED.
-5. Maker components.
-6. The board leftovers in section 3.
+1. Tier 2 electromechanical: Mini Toggle, Trimmer, jacks, Tube Socket, Trace Cut.
+2. The leaded leftovers: Axial Film, Glass Diode, Axial Electrolytic, LED.
+3. Maker components.
+4. The board leftovers and the `PotentiometerPanel` items in section 3.
 
 After each batch, read the entries back as the model sees them. Run `ComponentCatalogGenerator`
 with an output directory outside the repository so the committed catalogs stay untouched;
