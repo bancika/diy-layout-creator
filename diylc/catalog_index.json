@@ -14,7 +14,7 @@
     }, {
       "name" : "Eyelet Board",
       "className" : "boards.EyeletBoard",
-      "notes" : [ "Use this type of board only when explicitly asked to" ]
+      "notes" : [ "Use this type of board only when explicitly asked for a prefabricated grid eyelet board; most eyelet boards are built on blank boards" ]
     }, {
       "name" : "Marshall Style Perf Board",
       "className" : "boards.MarshallPerfBoard",
@@ -43,7 +43,8 @@
     } ],
     "Connectivity" : [ {
       "name" : "Copper Trace",
-      "className" : "connectivity.CopperTrace"
+      "className" : "connectivity.CopperTrace",
+      "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire" ]
     }, {
       "name" : "Curved Trace",
       "className" : "connectivity.CurvedTrace"
@@ -61,10 +62,12 @@
       "className" : "connectivity.GroundFill"
     }, {
       "name" : "Hookup Wire",
-      "className" : "connectivity.HookupWire"
+      "className" : "connectivity.HookupWire",
+      "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper" ]
     }, {
       "name" : "Jumper",
-      "className" : "connectivity.Jumper"
+      "className" : "connectivity.Jumper",
+      "notes" : [ "Use for a bare-wire link between two holes, typically on perf and strip boards; for insulated or off-board wiring use Hookup Wire, and for copper on a PCB use Copper Trace" ]
     }, {
       "name" : "Multimeter Probe",
       "className" : "connectivity.MultimeterProbe"
@@ -79,7 +82,8 @@
       "className" : "connectivity.SolderLug"
     }, {
       "name" : "Solder Pad",
-      "className" : "connectivity.SolderPad"
+      "className" : "connectivity.SolderPad",
+      "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads" ]
     }, {
       "name" : "Trace Cut",
       "className" : "connectivity.TraceCut"

@@ -72,6 +72,7 @@
     "namePrefix" : "BB",
     "description" : "Prototyping solderless breadboard",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The control point is the top-left corner of the body and 'Orientation' rotates the board around it. The body is 2.3in wide and 3.1in (Half) or 6.4in (Full) long", "With 'Orientation' DEFAULT, terminal row n is n x 0.1in below the control point; columns a-e are 0.6-1.0in and f-j 1.3-1.7in to the right of it. Holes a-e of a row are connected, as are f-j; DIP ICs straddle the gap between e and f", "Each side has two power rail columns connected along their full length: '+' at 0.2in and '-' at 0.3in on the left, '+' at 2.0in and '-' at 2.1in on the right. Rail holes come in groups of five" ],
     "properties" : [ {
       "name" : "Name",
       "type" : "String"
@@ -134,7 +135,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board with eyelets",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked to", "This board comes with pre-installed eyelets spaced apart equally", "Eyelets spacing and spacing to the left and top edges is driven by 'Spacing' property", "Typically requires no additional eyelets or turrets" ],
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked for a prefabricated grid eyelet board; most eyelet boards are built on blank boards", "This board comes with pre-installed eyelets spaced apart equally", "'Spacing' sets the center-to-center pitch of the eyelet grid; the first row and column of eyelet centers sit one 'Spacing' in from the top and left edges", "Typically requires no additional eyelets or turrets" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -230,7 +231,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board as found on some Marshall and Trainwreck amps",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked to", "This board comes with pre-drilled holes spaced apart equally", "Hole spacing and spacing to the left and top edges is driven by 'Spacing' property", "There are no conductive surfaces on this board; place eyelets or turrets exactly on the holes to create connection points" ],
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Use this type of board only when explicitly asked to", "This board comes with pre-drilled holes spaced apart equally", "'Spacing' sets the center-to-center pitch of the hole grid; the first row and column of hole centers sit one 'Spacing' in from the top and left edges", "There are no conductive surfaces on this board; place eyelets or turrets exactly on the holes to create connection points" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -321,6 +322,7 @@
     "namePrefix" : "BB",
     "description" : "A prototyping board for modular synths, central bus with V+ GND and V-",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The control point is the top-left corner of the 2in x 4in body and 'Orientation' rotates the board around it", "With 'Orientation' DEFAULT, pad row n (1-33) is (0.4 + n x 0.1)in below the control point. Each row is split into separately connected groups, labeled by column: 1-2, 3-5, 6-8, 9-11, 12-14 and 15-16, at 0.1-0.2, 0.4-0.6, 0.7-0.9, 1.2-1.4, 1.5-1.7 and 1.8-1.9in to the right of it" ],
     "properties" : [ {
       "name" : "Board Color",
       "type" : "Color",
@@ -367,7 +369,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated board with solder pads",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "This board comes with drilled copper pads spaced apart equally", "'Spacing' sets the center-to-center pitch of the pad grid; the first row and column of pad centers sit one 'Spacing' in from the top and left edges" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -504,6 +506,7 @@
     "namePrefix" : "TS",
     "description" : "Row of terminals for point-to-point construction",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Each terminal is an independent connection point; the mounting lugs are not connection points" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -558,6 +561,7 @@
     "namePrefix" : "TS",
     "description" : "Row of terminals for point-to-point construction",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Each terminal is one node made of its A and B holes, plus C when 'Center Terminal' is on; separate terminals are not connected" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -801,7 +805,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Hole centers follow 'Spacing' like Perf Board: the first row and column sit one 'Spacing' in from the top and left edges", "Copper strips run along 'Orientation' and join 'Holes Per Strip' consecutive holes, counted from the left edge (HORIZONTAL) or top edge (VERTICAL); neighbouring strips are not connected" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -906,7 +910,7 @@
     "namePrefix" : "Board",
     "description" : "Perforated FR4 board with copper strips connecting all holes in a row",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'" ],
+    "notes" : [ "Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions", "Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'", "Hole centers follow 'Spacing' like Perf Board: the first row and column sit one 'Spacing' in from the top and left edges", "With 'Orientation' HORIZONTAL every row of holes is one continuous copper strip, with VERTICAL every column; break a strip with a 'Trace Cut'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1007,6 +1011,7 @@
     "namePrefix" : "Trace",
     "description" : "Straight copper trace",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", "A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1280,8 +1285,9 @@
     "className" : "connectivity.HookupWire",
     "category" : "Connectivity",
     "namePrefix" : "W",
-    "description" : "Flexible wire with two control points",
+    "description" : "Insulated flexible wire, straight or curved",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper", "Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1383,8 +1389,9 @@
     "className" : "connectivity.Jumper",
     "category" : "Connectivity",
     "namePrefix" : "J",
-    "description" : "",
+    "description" : "Straight bare wire link between two holes",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "Use for a bare-wire link between two holes, typically on perf and strip boards; for insulated or off-board wiring use Hookup Wire, and for copper on a PCB use Copper Trace" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1679,6 +1686,7 @@
     "namePrefix" : "Pad",
     "description" : "Copper solder pad, round or square",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11438,6 +11446,7 @@
     "namePrefix" : "BOM",
     "description" : "",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Its content is generated from every component in the project that has a value; place at most one, outside the layout, and set 'Width' to the width its columns may fill" ],
     "properties" : [ {
       "name" : "Color",
       "type" : "Color",
@@ -11622,6 +11631,7 @@
     "namePrefix" : "BZ",
     "description" : "Vertically mounted Buzzer, active or passive",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11861,6 +11871,7 @@
     "namePrefix" : "C",
     "description" : "Standard radial ceramic capacitor",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Length' and 'Width' are the disc as seen from above: 'Length' is its diameter and 'Width' its thickness" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12142,6 +12153,7 @@
     "namePrefix" : "C",
     "description" : "Vertically mounted electrolytic capacitor, polarized or bipolar",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Diameter' is the can as seen from above; 'Height' is drawn only when 'Folded' lays the can on its side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12360,6 +12372,7 @@
     "namePrefix" : "C",
     "description" : "Radial film capacitor, similar to Sprague Orange Drop",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Length' and 'Width' are the body as seen from above: 'Length' runs along the line between the leads and 'Width' across it, i.e. the datasheet width and thickness; body height is not drawn" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12572,6 +12585,7 @@
     "namePrefix" : "L",
     "description" : "Vertically mounted ferrite core inductor",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12760,6 +12774,7 @@
     "namePrefix" : "C",
     "description" : "Standard radial mica capacitor",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13051,8 +13066,9 @@
     "className" : "passive.PotentiometerPanel",
     "category" : "Passive",
     "namePrefix" : "VR",
-    "description" : "Panel mount potentiometer with solder lugs",
+    "description" : "Metal body panel mount potentiometer with solder lugs or PCB terminals (Alpha, CTS, Bourns)",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Leave 'View' at its default, ShaftDown, unless asked otherwise: the pot is seen from the back, and with 'Orientation' DEFAULT its lugs face down", "The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor. In the back views the anchor is lug 3, in the ShaftUp and TerminalsUp views lug 1", "Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270", "Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13277,6 +13293,7 @@
     "namePrefix" : "R",
     "description" : "Resistor layout symbol",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13370,6 +13387,7 @@
     "namePrefix" : "C",
     "description" : "Vertically mounted tantalum capacitor",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16318,6 +16336,7 @@
     "namePrefix" : "IC",
     "description" : "Dual-in-line package IC",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16619,6 +16638,7 @@
     "namePrefix" : "D",
     "description" : "Plastic diode, like most rectifier, zener, schottky, etc.",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.25in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17988,6 +18008,7 @@
     "namePrefix" : "Q",
     "description" : "Transistor with small plastic or epoxy body",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or keep it and add a short Jumper from that pin to a free hole to show the bent lead" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

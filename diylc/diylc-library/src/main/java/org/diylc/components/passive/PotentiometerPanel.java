@@ -21,7 +21,6 @@
 */
 package org.diylc.components.passive;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
@@ -49,15 +48,20 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Leave 'View' at its default, ShaftDown, unless asked otherwise: the pot is seen from the back, and with 'Orientation' DEFAULT its lugs face down")
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor. In the back views the anchor is lug 3, in the ShaftUp and TerminalsUp views lug 1")
+@AiNote("Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270")
+@AiNote("Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)")
 @ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
-    description = "Panel mount potentiometer with solder lugs", zOrder = IDIYComponent.COMPONENT,
+    description = "Metal body panel mount potentiometer with solder lugs or PCB terminals (Alpha, CTS, Bourns)", zOrder = IDIYComponent.COMPONENT,
     transformer = PotentiometerTransformer.class, enableCache = true)
 public class PotentiometerPanel extends AbstractPotentiometer implements ILayeredComponent {
 
@@ -76,7 +80,6 @@ public class PotentiometerPanel extends AbstractPotentiometer implements ILayere
   protected static Color NUT_COLOR = Color.decode("#CBD5DB");
   protected static Color MARKER_COLOR_DEFAULT = Color.gray;
   protected static Color LUG_COLOR = Color.decode("#B0B0B0");
-
 
   protected Size bodyDiameter = BODY_DIAMETER;
   protected Size spacing = SPACING;

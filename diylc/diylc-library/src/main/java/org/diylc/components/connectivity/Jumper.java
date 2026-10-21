@@ -35,13 +35,16 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 
+@AiNote(value = "Use for a bare-wire link between two holes, typically on perf and strip boards; for insulated or off-board wiring use Hookup Wire, and for copper on a PCB use Copper Trace", scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Jumper", author = "Branislav Stojkovic", category = "Connectivity",
-    creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "",
+    creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "J", description = "Straight bare wire link between two holes",
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,
     transformer = SimpleComponentTransformer.class)
 public class Jumper extends AbstractLeadedComponent<Void> implements IConnective, IContinuity {

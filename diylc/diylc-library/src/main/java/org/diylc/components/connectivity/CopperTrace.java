@@ -36,6 +36,8 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -46,6 +48,8 @@ import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote(value = "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", scope = Scope.SELECTION)
+@AiNote("A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace")
 @ComponentDescriptor(name = "Copper Trace", author = "Branislav Stojkovic", category = "Connectivity",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "Trace",
     description = "Straight copper trace", zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,

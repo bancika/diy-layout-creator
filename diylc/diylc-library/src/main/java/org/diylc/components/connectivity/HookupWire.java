@@ -35,13 +35,17 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
+@AiNote(value = "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper", scope = Scope.SELECTION)
+@AiNote("Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through")
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
+    instanceNamePrefix = "W", description = "Insulated flexible wire, straight or curved", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class HookupWire extends AbstractCurvedComponent<AWG> implements IConnective, IContinuity {

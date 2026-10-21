@@ -36,6 +36,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -44,6 +45,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.BomEntry;
 import org.diylc.utils.BomMaker;
 
+@AiNote("Its content is generated from every component in the project that has a value; place at most one, outside the layout, and set 'Width' to the width its columns may fill")
 @ComponentDescriptor(name = "Bill of Materials", author = "Branislav Stojkovic", category = "Misc", description = "",
     instanceNamePrefix = "BOM", zOrder = IDIYComponent.TEXT, bomPolicy = BomPolicy.NEVER_SHOW,
     autoEdit = false)
