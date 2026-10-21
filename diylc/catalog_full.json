@@ -1011,7 +1011,7 @@
     "namePrefix" : "Trace",
     "description" : "Straight copper trace",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", "A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace" ],
+    "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", "A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace", "The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1056,8 +1056,9 @@
     "className" : "connectivity.CurvedTrace",
     "category" : "Connectivity",
     "namePrefix" : "Trace",
-    "description" : "Curved copper trace with two control points",
+    "description" : "Curved copper trace",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "Use for a curved copper trace on a PCB layout; for a straight one use Copper Trace", "The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross", "Only the first and last control points are the trace ends; the points between them are curve handles the trace does not necessarily pass through" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1193,6 +1194,7 @@
     "namePrefix" : "Dot",
     "description" : "Connector dot",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "A junction marker for schematics and wiring diagrams; it is drawing only and connects nothing, since ends that meet at the same point are already connected. For a pad on a board use Solder Pad" ],
     "properties" : [ {
       "name" : "Color",
       "type" : "Color",
@@ -1216,6 +1218,7 @@
     "namePrefix" : "Eyelet",
     "description" : "Eyelet or turret terminal",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Every lead, wire or terminal end placed inside its 'Size' circle is connected to it, so bring all the ends that share a node to the same eyelet" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1739,6 +1742,7 @@
     "namePrefix" : "Cut",
     "description" : "Designates the place where a trace on the vero board needs to be cut",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Place the control point on a hole centre. By default the copper around that hole is removed, cutting the strip there and leaving the hole itself connected to nothing", "With 'Cut Between Holes' the cut runs between that hole and the one to its left ('Cut Orientation' VERTICAL) or above it (HORIZONTAL), and both holes stay on their part of the strip. 'Cut Orientation' is the direction of the cut, so a Vero Board with HORIZONTAL strips needs VERTICAL cuts" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1778,6 +1782,7 @@
     "namePrefix" : "Turret",
     "description" : "Turret terminal lug",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Every lead, wire or terminal end placed inside its 'Size' circle is connected to it, so bring all the ends that share a node to the same turret" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7830,6 +7835,7 @@
     "namePrefix" : "SW",
     "description" : "Panel mounted mini toggle switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' VERTICAL each pole is a column of three lugs (two for SPST) running down from it 'Spacing' apart, and further poles sit 'Spacing' apart to the right. HORIZONTAL turns this 90 degrees counterclockwise around the anchor, so each pole runs to the right and further poles stack upward" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8210,6 +8216,7 @@
     "namePrefix" : "J",
     "description" : "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the Tip lug; with 'Angle' 0 the jack's centre is 0.5in below it and the other lugs sit around that centre: Sleeve to the upper right and, for STEREO, Ring to the lower right; for SWITCHED, Sleeve to the lower left and Shunt to the upper left. 'Angle' rotates the whole jack clockwise around the Tip lug, in degrees" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11631,7 +11638,7 @@
     "namePrefix" : "BZ",
     "description" : "Vertically mounted Buzzer, active or passive",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Diameter' is the body as seen from above; 'Height' is drawn only when 'Folded' lays the part on its side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12040,6 +12047,7 @@
     "namePrefix" : "C",
     "description" : "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "It has no standing mode: keep the control points at least 'Length' apart, or the body is drawn past the holes" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12277,6 +12285,7 @@
     "namePrefix" : "C",
     "description" : "Axial film capacitor, similar to Mallory 150s",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12585,7 +12594,7 @@
     "namePrefix" : "L",
     "description" : "Vertically mounted ferrite core inductor",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Diameter' is the body as seen from above; 'Height' is drawn only when 'Folded' lays the part on its side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13387,7 +13396,7 @@
     "namePrefix" : "C",
     "description" : "Vertically mounted tantalum capacitor",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Diameter' is the body as seen from above; 'Height' is drawn only when 'Folded' lays the part on its side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13494,6 +13503,7 @@
     "namePrefix" : "VR",
     "description" : "Various types of board mounted trimmer potentiometers",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the third lug is 0.2in below it (0.4in for FLAT_XLARGE) and the wiper sits halfway between them, offset to the right by 0.2in for FLAT_SMALL and FLAT_XSMALL, 0.4in for FLAT_SMALL2 and FLAT_LARGE, 0.5in for FLAT_XLARGE, 0.1in for VERTICAL_OFFSET, 0.2in for VERTICAL_OFFSET_BIG_GAP and not at all for VERTICAL_INLINE. The other orientations rotate this around the anchor" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -14545,6 +14555,7 @@
     "namePrefix" : "GND",
     "description" : "Ground schematic symbol",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Every Ground Symbol is the same GND node, so give each ground point its own nearby symbol rather than wiring the grounds together" ],
     "properties" : [ {
       "name" : "Color",
       "type" : "Color",
@@ -16547,6 +16558,7 @@
     "namePrefix" : "D",
     "description" : "Glass diode, like most small signal diodes.",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.2in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16725,6 +16737,7 @@
     "namePrefix" : "D",
     "description" : "Light Emitting Diode",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "The two control points are the holes; the LED's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Size' is the lens diameter seen from above; 'Width' is used only when 'Shape' is RECTANGLE" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18008,7 +18021,7 @@
     "namePrefix" : "Q",
     "description" : "Transistor with small plastic or epoxy body",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or keep it and add a short Jumper from that pin to a free hole to show the bent lead" ],
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in;,or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18728,6 +18741,7 @@
     "namePrefix" : "V",
     "description" : "Various types of tube/valve sockets",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the socket centre, not a pin. Pins sit on a circle and are numbered clockwise, starting after the gap (B9A, B7G, B12C) or the key (OCTAL), which points right at 'Angle' 0; 'Angle' rotates the socket clockwise in degrees. This is the bottom view used for wiring" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

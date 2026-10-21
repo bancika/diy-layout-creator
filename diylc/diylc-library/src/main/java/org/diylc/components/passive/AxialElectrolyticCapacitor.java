@@ -36,6 +36,7 @@ import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
@@ -45,6 +46,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
+@AiNote("It has no standing mode: keep the control points at least 'Length' apart, or the body is drawn past the holes")
 @ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",

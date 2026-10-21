@@ -67,11 +67,13 @@ that names the alternative; alternatives should point at each other (Jumper and 
 | Area | Types with notes |
 | --- | --- |
 | Boards | `AbstractBoard`, `BlankBoard`, `PerfBoard`, `EyeletBoard`, `MarshallPerfBoard`, `VeroBoard`, `TriPadBoard`, `Breadboard`, `ProtoBoard`, `TerminalStrip`, `TagStrip` |
-| Leaded | `Resistor`, `DiodePlastic` (body between the points, standing when closer than 'Length') |
+| Leaded | `Resistor`, `DiodePlastic`, `AxialFilmCapacitor`, `DiodeGlass` (body between the points, standing when closer than 'Length'; the last two also name 'Reverse (standing)'), `AxialElectrolyticCapacitor` (no standing mode), `LED` (own 'Lead Spacing', 'Size' is the lens) |
 | Radial | `AbstractRadialComponent` ('Lead Spacing'), `RadialFilmCapacitor` (same, plus 'Length'/'Width' vs datasheet), `RadialElectrolytic` ('Diameter', 'Height' only when folded), `RadialCeramicDiskCapacitor` (disc diameter and thickness), `TantalumCapacitor`, `RadialInductor`, `Buzzer` (same 'Diameter'/'Height' note as the electrolytic) |
 | Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor lug, lug direction per orientation, 16mm/25mm sizes), `DIL_IC` |
 | Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing) |
-| Misc | `BOM` |
+| Terminals | `Eyelet`, `Turret` (every end inside the circle connects), `GroundSymbol` (all symbols are one GND node) |
+| Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key) |
+| Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip) |
 
 `Label` deliberately has none: its alignment properties already say how the text sits on the anchor.
 
@@ -102,18 +104,7 @@ Potentiometer, DIL IC; 100+ projects each) is done, see section 3.
 
 ### 4.1 Tier 2: common in particular build styles (40-90 projects)
 
-| Type | Projects | Note should cover |
-| --- | --- | --- |
-| Mini Toggle Switch | 76 | Lug grid geometry relative to the anchor |
-| Trimmer Potentiometer | 74 | Lug geometry per type |
-| Trace Cut | 68 | On a hole vs `Cut Between Holes`; pairs with the Vero Board note |
-| Axial Film | 56 | The Resistor standing note applies as written |
-| Axial Electrolytic | 63 | Body between the points; no standing mode |
-| Ground Symbol | 59 | Schematic only |
-| Open 1/4" Jack | 57 | Lug geometry relative to the anchor |
-| Tube Socket | 50 | Pin circle direction and key position |
-| Eyelet / Turret | 46 / 39 | Placed on a Blank Board; one per connection point |
-| LED | 44 | Has its own pin spacing, not the body; read before noting |
+Done, see section 3.
 
 ### 4.2 Tier 3: guitar, amp and chassis (15-30 projects)
 
@@ -128,10 +119,9 @@ Tier 2.
 
 ## 5. Next steps
 
-1. Tier 2 electromechanical: Mini Toggle, Trimmer, jacks, Tube Socket, Trace Cut.
-2. The leaded leftovers: Axial Film, Glass Diode, Axial Electrolytic, LED.
-3. Maker components.
-4. The board leftovers and the `PotentiometerPanel` items in section 3.
+1. Maker components: list them and see what the board notes already cover before writing any.
+2. Tier 3.
+3. The board leftovers and the `PotentiometerPanel` items in section 3.
 
 After each batch, read the entries back as the model sees them. Run `ComponentCatalogGenerator`
 with an output directory outside the repository so the committed catalogs stay untouched;

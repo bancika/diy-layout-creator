@@ -47,13 +47,15 @@
       "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire" ]
     }, {
       "name" : "Curved Trace",
-      "className" : "connectivity.CurvedTrace"
+      "className" : "connectivity.CurvedTrace",
+      "notes" : [ "Use for a curved copper trace on a PCB layout; for a straight one use Copper Trace" ]
     }, {
       "name" : "Cut Line",
       "className" : "connectivity.CutLine"
     }, {
       "name" : "Dot",
-      "className" : "connectivity.Dot"
+      "className" : "connectivity.Dot",
+      "notes" : [ "A junction marker for schematics and wiring diagrams; it is drawing only and connects nothing, since ends that meet at the same point are already connected. For a pad on a board use Solder Pad" ]
     }, {
       "name" : "Eyelet",
       "className" : "connectivity.Eyelet"
