@@ -10133,6 +10133,7 @@
     "namePrefix" : "PKP",
     "description" : "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10223,6 +10224,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil pickup for Jazz Bass and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10335,6 +10337,7 @@
     "namePrefix" : "SW",
     "description" : "Les Paul style 3 position toggle switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Drawn from the bottom, where the solder lugs are. The first control point is the anchor at the top of the switch, not a switched terminal; with 'Orientation' DEFAULT the terminals sit in a row 1.3in below it, centred under it, 0.2in apart, or 0.1in apart with a gap in the middle when 'Middle Terminals' is Disconnected" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10406,6 +10409,7 @@
     "namePrefix" : "SW",
     "description" : "Strat-style lever switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the first terminal; with 'Angle' 0 the terminals run down from it 0.1in apart (0.15in for DP3T_5pos_Import and DP3T_5pos_2502N), every second one offset 0.1in to the right on the zig-zag types. 'Angle' rotates the switch clockwise in degrees" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10679,6 +10683,7 @@
     "namePrefix" : "PKP",
     "description" : "Split-coil pickup for P-Bass and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10791,6 +10796,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11235,6 +11241,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil guitar pickup, both Strat and Tele style",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points form a row 0.1in apart along the bottom edge of the pickup in 'Orientation' DEFAULT, centred under it, and turn with the pickup, so they stay along that edge in every orientation; a single coil uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11367,6 +11374,7 @@
     "namePrefix" : "PKP",
     "description" : "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16737,7 +16745,7 @@
     "namePrefix" : "D",
     "description" : "Light Emitting Diode",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "The two control points are the holes; the LED's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Size' is the lens diameter seen from above; 'Width' is used only when 'Shape' is RECTANGLE" ],
+    "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Size' is the lens diameter seen from above; 'Width' is used only when 'Shape' is RECTANGLE" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

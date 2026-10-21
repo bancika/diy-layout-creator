@@ -693,6 +693,10 @@
 					<changeType>IMPROVEMENT</changeType>
 					<description>Allow active position selection for 'Rotary Switch Sealed', 'DIP Switch', 'Latching Switch Symbol', 'LP Switch', 'S1 Switch', allowing for more accurate circuit analysis and debugging</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

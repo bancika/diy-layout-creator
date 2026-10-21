@@ -28,6 +28,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -38,6 +39,7 @@ import org.diylc.utils.Constants;
 import java.awt.*;
 import java.awt.geom.*;
 
+@AiNote("The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation")
 @ComponentDescriptor(name = "Stingray Bass Pickup", category = "Guitar", author = "JD",
     description = "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
