@@ -205,7 +205,7 @@ public class AiProjectBuilder {
    * Ends of wires and jumpers: points a connectivity component links to another of its own points,
    * unlike a pad or a tag strip lug that is a connection point by itself.
    */
-  private static Set<Node> getWireEnds(Project project) {
+  static Set<Node> getWireEnds(Project project) {
     Set<Node> wireEnds = new HashSet<>();
     for (IDIYComponent<?> c : project.getComponents()) {
       if (!isConnectivity(c) || !(c instanceof IContinuity continuity)) {

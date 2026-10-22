@@ -21,11 +21,13 @@
 */
 package org.diylc.plugins.chatbot.service;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -40,8 +42,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.common.Orientation;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.electromechanical.ClosedJack1_4;
+import org.diylc.components.guitar.HumbuckerPickup;
+import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.diylc.core.IDIYComponent;
@@ -69,6 +74,8 @@ public class AiEditScriptEditorTest {
 
   private static final Point2D FIRST_LEAD = new Point2D.Double(100, 100);
   private static final Point2D SECOND_LEAD = new Point2D.Double(200, 100);
+  private static final Point2D FAR_END = new Point2D.Double(600, 500);
+  private static final Point2D OTHER_FAR_END = new Point2D.Double(700, 450);
   // body color of every Mallory 150 row in AxialFilmCapacitor.datasheet
   private static final Color MALLORY_150_BODY = Color.decode("#FFE303");
 
@@ -248,6 +255,254 @@ public class AiEditScriptEditorTest {
     assertEquals(bodyColor, capacitor.getBodyColor());
   }
 
+  @Test
+  public void replaceMovesTheAttachedWireEndsToTheMappedTerminals() {
+    SingleCoilPickup pickup = singleCoil();
+    Point2D anchor = copy(pickup.getControlPoint(0));
+    HookupWire w1 = wire("W1", pickup.getControlPoint(1), FAR_END);
+    HookupWire w2 = wire("W2", pickup.getControlPoint(2), OTHER_FAR_END);
+    Point2D[] w1Before = points(w1);
+    Point2D[] w2Before = points(w2);
+    Project project = projectWith(pickup, w1, w2);
+
+    AiEditScriptEditor editor = run(project, replaceWithHumbucker(Map.of("1", "0", "2", "3")));
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(3, project.getComponents().size());
+    IDIYComponent<?> humbucker = project.getComponents().get(0);
+    assertTrue("the new pickup keeps the place of the old one in the z-order",
+        humbucker instanceof HumbuckerPickup);
+    assertEquals("PU1", humbucker.getName());
+    assertEquals(anchor, humbucker.getControlPoint(0));
+    assertNotEquals("the test needs a terminal that is not where the old one was",
+        w2Before[0], humbucker.getControlPoint(3));
+    assertOnlyStartMoved(w1Before, w1, humbucker.getControlPoint(0));
+    assertOnlyStartMoved(w2Before, w2, humbucker.getControlPoint(3));
+  }
+
+  @Test
+  public void replaceRemovesAWireOnAnUnmappedTerminal() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire kept = wire("W1", pickup.getControlPoint(1), FAR_END);
+    HookupWire dropped = wire("W2", pickup.getControlPoint(2), OTHER_FAR_END);
+    Point2D[] keptBefore = points(kept);
+    Project project = projectWith(pickup, kept, dropped);
+
+    AiEditScriptEditor editor = run(project, replaceWithHumbucker(Map.of("1", "0")));
+
+    assertFalse(project.getComponents().contains(dropped));
+    assertTrue(project.getComponents().contains(kept));
+    assertOnlyStartMoved(keptBefore, kept, project.getComponents().get(0).getControlPoint(0));
+    assertFalse("the user should hear that a wire went", editor.getWarnings().isEmpty());
+  }
+
+  @Test
+  public void replaceMovesBothEndsOfAWireBetweenTwoOfItsTerminals() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), pickup.getControlPoint(2));
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire);
+
+    run(project, replaceWithHumbucker(Map.of("1", "0", "2", "3")));
+
+    IDIYComponent<?> humbucker = project.getComponents().get(0);
+    Point2D start = humbucker.getControlPoint(0);
+    Point2D end = humbucker.getControlPoint(3);
+    assertEquals(start, wire.getControlPoint(0));
+    assertEquals(moved(before[1], before[0], start), wire.getControlPoint(1));
+    assertEquals(moved(before[2], before[3], end), wire.getControlPoint(2));
+    assertEquals(end, wire.getControlPoint(3));
+  }
+
+  @Test
+  public void replaceLeavesAWireThatOnlyReachesItThroughAnotherWire() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire attached = wire("W1", pickup.getControlPoint(1), FAR_END);
+    HookupWire chained = wire("W2", FAR_END, OTHER_FAR_END);
+    Point2D[] attachedBefore = points(attached);
+    Point2D[] chainedBefore = points(chained);
+    Project project = projectWith(pickup, attached, chained);
+
+    run(project, replaceWithHumbucker(Map.of("1", "0", "2", "3")));
+
+    assertOnlyStartMoved(attachedBefore, attached,
+        project.getComponents().get(0).getControlPoint(0));
+    assertArrayEquals(chainedBefore, points(chained));
+  }
+
+  @Test
+  public void laterWireReachesTheNewComponentByTheOldName() {
+    Project project = projectWith(singleCoil(), resistor());
+    AiEditOperation add = operation("add", "W9");
+    add.setComponentType("connectivity.HookupWire");
+    add.setFromTerminal("PU1.3");
+    add.setToTerminal("R1.0");
+
+    AiEditScriptEditor editor =
+        run(project, replaceWithHumbucker(Map.of("1", "0", "2", "3")), add);
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    IDIYComponent<?> humbucker = project.getComponents().get(0);
+    assertEquals(humbucker.getControlPoint(3), findWire(project).getControlPoint(0));
+  }
+
+  @Test
+  public void undoSnapshotRestoresTheOldComponentAndItsWires() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire w1 = wire("W1", pickup.getControlPoint(1), FAR_END);
+    HookupWire w2 = wire("W2", pickup.getControlPoint(2), OTHER_FAR_END);
+    Project project = projectWith(pickup, w1, w2);
+    Project original = project.clone();
+    // Presenter.applyEditor keeps exactly this clone, and undo puts it back
+    Project undoSnapshot = project.clone();
+
+    run(project, replaceWithHumbucker(Map.of("1", "0")));
+
+    assertNotEquals("the replace must have changed the project", original, project);
+    assertEquals(original, undoSnapshot);
+    assertTrue(undoSnapshot.getComponents().get(0) instanceof SingleCoilPickup);
+    assertArrayEquals(points(pickup), points(undoSnapshot.getComponents().get(0)));
+  }
+
+  @Test
+  public void unknownComponentOrTypeIsSkippedAndTheScriptGoesOn() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] wireBefore = points(wire);
+    Resistor resistor = resistor();
+    Project project = projectWith(pickup, wire, resistor);
+    AiEditOperation unknownName = replaceWithHumbucker(Map.of("1", "0"));
+    unknownName.setComponentName("PU9");
+    AiEditOperation unknownType = operation("replace", "PU1");
+    unknownType.setComponentType("guitar.NoSuchPickup");
+    AiEditOperation modify = operation("modify", "R1");
+    modify.setProperties(Map.of("Value", "4.7K"));
+
+    AiEditScriptEditor editor = run(project, unknownName, unknownType, modify);
+
+    assertEquals(editor.getWarnings().toString(), 2, editor.getWarnings().size());
+    assertSame(pickup, project.getComponents().get(0));
+    assertArrayEquals(wireBefore, points(wire));
+    assertEquals(Resistance.parseResistance("4.7K"), resistor.getValue());
+  }
+
+  @Test
+  public void replaceWithoutAPinMapPairsTerminalsByName() {
+    SingleCoilPickup pickup = singleCoil();
+    String name = pickup.getControlPointNodeName(1);
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire);
+
+    run(project, replaceWithHumbucker(null));
+
+    IDIYComponent<?> humbucker = project.getComponents().get(0);
+    int terminal = -1;
+    for (int i = 0; i < humbucker.getControlPointCount(); i++) {
+      if (name.equalsIgnoreCase(humbucker.getControlPointNodeName(i))) {
+        terminal = i;
+      }
+    }
+    assertTrue("the humbucker should have a terminal named " + name, terminal >= 0);
+    assertOnlyStartMoved(before, wire, humbucker.getControlPoint(terminal));
+  }
+
+  @Test
+  public void replaceKeepsTheOrientationUnlessItIsGiven() {
+    SingleCoilPickup pickup = singleCoil();
+    pickup.setOrientation(Orientation._90);
+    Project project = projectWith(pickup);
+
+    run(project, replaceWithHumbucker(Map.of()));
+
+    assertEquals(Orientation._90,
+        ((HumbuckerPickup) project.getComponents().get(0)).getOrientation());
+
+    AiEditOperation rotated = operation("replace", "PU1");
+    rotated.setComponentType("guitar.SingleCoilPickup");
+    rotated.setProperties(Map.of("Orientation", Orientation._180.name()));
+    run(project, rotated);
+
+    assertEquals(Orientation._180,
+        ((SingleCoilPickup) project.getComponents().get(0)).getOrientation());
+  }
+
+  @Test
+  public void componentOnATerminalIsReportedAndLeftAlone() {
+    SingleCoilPickup pickup = singleCoil();
+    Resistor resistor = resistor();
+    resistor.setControlPoint(copy(pickup.getControlPoint(1)), 0);
+    Point2D[] before = points(resistor);
+    Project project = projectWith(pickup, resistor);
+
+    AiEditScriptEditor editor = run(project, replaceWithHumbucker(Map.of("1", "0")));
+
+    assertArrayEquals(before, points(resistor));
+    assertEquals(editor.getWarnings().toString(), 1, editor.getWarnings().size());
+    assertTrue(editor.getWarnings().get(0).contains("R1"));
+  }
+
+  private static SingleCoilPickup singleCoil() {
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("PU1");
+    // away from the origin, where a stray default point could pass for a terminal
+    for (int i = 0; i < pickup.getControlPointCount(); i++) {
+      Point2D p = pickup.getControlPoint(i);
+      pickup.setControlPoint(new Point2D.Double(p.getX() + 300, p.getY() + 200), i);
+    }
+    return pickup;
+  }
+
+  private static HookupWire wire(String name, Point2D from, Point2D to) {
+    HookupWire wire = new HookupWire();
+    wire.setName(name);
+    wire.stretchBetween(from, to);
+    return wire;
+  }
+
+  private static AiEditOperation replaceWithHumbucker(Map<String, String> pinMap) {
+    AiEditOperation operation = operation("replace", "PU1");
+    operation.setComponentType("guitar.HumbuckerPickup");
+    operation.setPinMap(pinMap);
+    return operation;
+  }
+
+  private static AiEditScriptEditor run(Project project, AiEditOperation... operations) {
+    AiEditScriptEditor editor = new AiEditScriptEditor(script(operations));
+    editor.edit(project, new HashSet<IDIYComponent<?>>());
+    return editor;
+  }
+
+  /**
+   * The first end of the wire sits on the terminal and its handle moved along with it, while the
+   * rest of the wire stayed where it was.
+   */
+  private static void assertOnlyStartMoved(Point2D[] before, HookupWire wire, Point2D terminal) {
+    assertEquals(terminal, wire.getControlPoint(0));
+    assertEquals(moved(before[1], before[0], terminal), wire.getControlPoint(1));
+    for (int i = 2; i < before.length; i++) {
+      assertEquals("control point " + i, before[i], wire.getControlPoint(i));
+    }
+  }
+
+  /** Where a handle lands when the end it belongs to moves from {@code end} to {@code target}. */
+  private static Point2D moved(Point2D handle, Point2D end, Point2D target) {
+    return new Point2D.Double(handle.getX() + (target.getX() - end.getX()),
+        handle.getY() + (target.getY() - end.getY()));
+  }
+
+  private static Point2D[] points(IDIYComponent<?> component) {
+    Point2D[] points = new Point2D[component.getControlPointCount()];
+    for (int i = 0; i < points.length; i++) {
+      points[i] = copy(component.getControlPoint(i));
+    }
+    return points;
+  }
+
+  private static Point2D copy(Point2D point) {
+    return new Point2D.Double(point.getX(), point.getY());
+  }
+
   private static Resistor resistor() {
     Resistor resistor = new Resistor();
     resistor.setName("R1");
@@ -264,9 +519,9 @@ public class AiEditScriptEditorTest {
     return wire == null ? null : wire.getControlPoint(0);
   }
 
-  private static Project projectWith(IDIYComponent<?> component) {
+  private static Project projectWith(IDIYComponent<?>... components) {
     Project project = new Project();
-    project.getComponents().add(component);
+    project.getComponents().addAll(List.of(components));
     return project;
   }
 

@@ -1434,15 +1434,9 @@ public class Presenter implements IPlugInPort {
                 break;
               }
               for (Integer j : entry.getValue()) {
-                Point2D firstPoint = component.getControlPoint(i);
-                if (entry.getKey().isControlPointSticky(j)) {
-                  Point2D secondPoint = entry.getKey().getControlPoint(j);
-                  // If they are close enough we can consider
-                  // them matched.
-                  if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
-                    componentMatches = true;
-                    break;
-                  }
+                if (CalcUtils.areControlPointsStuck(component, i, entry.getKey(), j)) {
+                  componentMatches = true;
+                  break;
                 }
               }
             }

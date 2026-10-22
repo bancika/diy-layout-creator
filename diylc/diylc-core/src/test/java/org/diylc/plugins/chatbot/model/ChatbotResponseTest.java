@@ -24,6 +24,8 @@ package org.diylc.plugins.chatbot.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Map;
+
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +48,15 @@ public class ChatbotResponseTest {
     assertEquals("Your circuit contains too many components to process within your current plan.",
         response.getString());
     assertTrue(response.getEditScript().getOperations().isEmpty());
+  }
+
+  @Test
+  public void replaceCarriesItsPinMapEvenWithNumbersForValues() throws Exception {
+    AiEditScript script = MAPPER.readValue("{\"operations\": [{\"action\": \"replace\", "
+        + "\"componentName\": \"PU1\", \"componentType\": \"guitar.HumbuckerPickup\", "
+        + "\"pinMap\": {\"0\": \"1\", \"1\": 3}}]}", AiEditScript.class);
+
+    assertEquals(Map.of("0", "1", "1", "3"), script.getOperations().get(0).getPinMap());
   }
 
   @Test

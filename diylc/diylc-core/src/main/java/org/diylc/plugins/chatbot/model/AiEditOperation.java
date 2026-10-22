@@ -53,6 +53,9 @@ public class AiEditOperation {
   // Datasheet model identifier (e.g. "F&T Typ A")
   private String datasheetModel;
 
+  // For replace: old terminal index to new terminal index, e.g. {"0": "1"}
+  private Map<String, String> pinMap;
+
   public String getAction() { return action; }
   public void setAction(String action) { this.action = action; }
   
@@ -85,4 +88,7 @@ public class AiEditOperation {
 
   public String getDatasheetModel() { return datasheetModel; }
   public void setDatasheetModel(String datasheetModel) { this.datasheetModel = datasheetModel; }
+
+  public Map<String, String> getPinMap() { return pinMap; }
+  public void setPinMap(Map<String, String> pinMap) { this.pinMap = pinMap; }
 }

@@ -583,9 +583,9 @@ public class ChatbotPane extends JPanel {
 
     if (editScript.getOperations() != null) {
       Map<String, List<String>> groupedOps = new LinkedHashMap<>();
-      // a z-order change names two components, so each one gets a line of its own instead of
-      // being folded into a list
-      List<String> zOrderLines = new ArrayList<>();
+      // a z-order change names two components and a replace names a component and its new type,
+      // so each one gets a line of its own instead of being folded into a list
+      List<String> separateLines = new ArrayList<>();
       for (AiEditOperation op : editScript.getOperations()) {
         String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
         String compStr = escapeHtml(op.getComponentName());
@@ -602,12 +602,17 @@ public class ChatbotPane extends JPanel {
                   .toArray(String[]::new)) + ")";
             }
             break;
+          case "replace":
+            separateLines.add("\u21C4 " + String.format(LangUtil.translate("Replace %s with %s"),
+                compStr, escapeHtml(op.getComponentType())));
+            continue;
           case "send_behind":
-            zOrderLines.add("\u2B07\uFE0F " + String.format(LangUtil.translate("Send %s behind %s"),
-                compStr, escapeHtml(op.getReferenceComponent())));
+            separateLines.add("\u2B07\uFE0F " + String.format(
+                LangUtil.translate("Send %s behind %s"), compStr,
+                escapeHtml(op.getReferenceComponent())));
             continue;
           case "bring_in_front":
-            zOrderLines.add("\u2B06\uFE0F " + String.format(
+            separateLines.add("\u2B06\uFE0F " + String.format(
                 LangUtil.translate("Bring %s in front of %s"), compStr,
                 escapeHtml(op.getReferenceComponent())));
             continue;
@@ -633,7 +638,7 @@ public class ChatbotPane extends JPanel {
         }
         html.append("<br>");
       }
-      for (String line : zOrderLines) {
+      for (String line : separateLines) {
         html.append(line).append("<br>");
       }
       html.append("<br>");

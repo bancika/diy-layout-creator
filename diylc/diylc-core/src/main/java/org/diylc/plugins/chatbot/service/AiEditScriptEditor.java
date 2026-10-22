@@ -28,6 +28,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,13 +38,16 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.IProjectEditor;
 import org.diylc.common.Percentage;
 import org.diylc.common.PropertyWrapper;
+import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.measures.AbstractMeasure;
+import org.diylc.netlist.Node;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
+import org.diylc.presenter.CalcUtils;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.DatasheetService;
 import org.diylc.presenter.InstantiationManager;
@@ -53,13 +57,16 @@ import org.diylc.presenter.InstantiationManager;
  * <p>
  * Uses a two-pass approach:
  * <ul>
- *   <li><b>Pass 1</b>: Remove, Modify, and Add (non-wires), in the order the script lists them. Sets properties and determines final pin geometry.</li>
+ *   <li><b>Pass 1</b>: Remove, Modify, Replace and Add (non-wires), in the order the script lists them. Sets properties and determines final pin geometry.</li>
  *   <li><b>Pass 2</b>: Add Wires. Resolves terminal references to the final pixel coordinates of the components from Pass 1.</li>
  * </ul>
  */
 public class AiEditScriptEditor implements IProjectEditor {
 
   private static final Logger LOG = Logger.getLogger(AiEditScriptEditor.class);
+
+  // the one property a replace carries over unasked, so the new part faces the way the old one did
+  private static final String ORIENTATION = "Orientation";
 
   private final AiEditScript editScript;
   private final List<String> warnings = new ArrayList<>();
@@ -120,11 +127,7 @@ public class AiEditScriptEditor implements IProjectEditor {
         if ("remove".equalsIgnoreCase(op.getAction())) {
           IDIYComponent<?> target = findExactComponent(op.getComponentName(), componentByName);
           if (target != null) {
-            // by entry, not name: the key may be a W3#a1b2 id while the name is W3
-            componentByName.values().removeIf(c -> c == target);
-            project.getComponents().remove(target);
-            newSelection.remove(target);
-            removed.add(target);
+            removeComponent(target, project, componentByName, newSelection, removed);
           } else {
             warnings.add("Cannot remove component '" + op.getComponentName() + "' (not found).");
           }
@@ -140,7 +143,10 @@ public class AiEditScriptEditor implements IProjectEditor {
           } else {
             warnings.add("Cannot modify component '" + op.getComponentName() + "' (not found).");
           }
-        } 
+        }
+        else if ("replace".equalsIgnoreCase(op.getAction())) {
+          replace(op, project, processor, componentByName, newSelection, removed);
+        }
         else if ("add".equalsIgnoreCase(op.getAction())) {
           ComponentType ct = findComponentType(processor, op.getComponentType());
           if (ct == null) {
@@ -161,15 +167,7 @@ public class AiEditScriptEditor implements IProjectEditor {
           // Position the component
           if (ct.getCreationMethod() == CreationMethod.SINGLE_CLICK) {
             if (op.getPosition() != null) {
-              Point2D targetPixels = op.getPosition().toPixels(project.getGridSpacing());
-              Point2D currentAnchor = comp.getControlPoint(0);
-              double dx = targetPixels.getX() - currentAnchor.getX();
-              double dy = targetPixels.getY() - currentAnchor.getY();
-              
-              for (int i = 0; i < comp.getControlPointCount(); i++) {
-                Point2D p = comp.getControlPoint(i);
-                comp.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
-              }
+              moveTo(comp, op.getPosition().toPixels(project.getGridSpacing()));
             } else {
               warnings.add("Component '" + op.getComponentName() + "' is missing 'position' for SINGLE_CLICK placement.");
             }
@@ -293,6 +291,207 @@ public class AiEditScriptEditor implements IProjectEditor {
     return comp;
   }
 
+  /**
+   * Swaps a component for one of another type and carries the wire ends that sit on its terminals
+   * over to the new ones, so the wiring keeps its routing and colours. A wire with an end on a
+   * terminal the pin map leaves out has nowhere to go and is removed.
+   */
+  private void replace(AiEditOperation op, Project project, ComponentProcessor processor,
+      Map<String, IDIYComponent<?>> componentByName, Set<IDIYComponent<?>> newSelection,
+      Set<IDIYComponent<?>> removed) throws Exception {
+    IDIYComponent<?> old = findExactComponent(op.getComponentName(), componentByName);
+    if (old == null) {
+      warnings.add("Cannot replace component '" + op.getComponentName() + "' (not found).");
+      return;
+    }
+    ComponentType ct = findComponentType(processor, op.getComponentType());
+    if (ct == null) {
+      warnings.add("Cannot replace '" + op.getComponentName() + "' (unknown type: "
+          + op.getComponentType() + " - consider updating DIYLC).");
+      return;
+    }
+
+    // collected before anything moves, while the wire ends still sit on the old terminals
+    Set<Node> wireEnds = AiProjectBuilder.getWireEnds(project);
+    List<AttachedEnd> attachedEnds = new ArrayList<>();
+    for (IDIYComponent<?> c : project.getComponents()) {
+      if (c == old) {
+        continue;
+      }
+      for (int i = 0; i < c.getControlPointCount(); i++) {
+        int pin = findStuckPin(c, i, old);
+        if (pin < 0) {
+          continue;
+        }
+        if (wireEnds.contains(new Node(c, i))) {
+          attachedEnds.add(new AttachedEnd(c, i, pin));
+        } else {
+          warnings.add("'" + c.getName() + "' touches " + op.getComponentName() + "." + pin
+              + " directly and was left where it is.");
+        }
+      }
+    }
+
+    IDIYComponent<?> replacement = instantiate(ct, old.getName(), project);
+    if (op.getProperties() == null || op.getProperties().keySet().stream()
+        .noneMatch(ORIENTATION::equalsIgnoreCase)) {
+      copyProperty(ORIENTATION, old, replacement, processor);
+    }
+    applyProperties(replacement, op.getProperties(), processor);
+    if (op.getDatasheetModel() != null && !op.getDatasheetModel().isEmpty()) {
+      applyDatasheetModel(replacement, op.getDatasheetModel());
+    }
+    moveTo(replacement, old.getControlPoint(0));
+
+    List<IDIYComponent<?>> components = project.getComponents();
+    components.set(components.indexOf(old), replacement);
+    // the old id is kept, so later operations in the script reach the new component by it
+    componentByName.replaceAll((id, c) -> c == old ? replacement : c);
+    newSelection.remove(old);
+    removed.add(old);
+    newSelection.add(replacement);
+
+    Map<Integer, Integer> pinMap = op.getPinMap() == null || op.getPinMap().isEmpty()
+        ? matchPinsByLabel(old, replacement) : parsePinMap(op, replacement);
+
+    // a wire goes as soon as one of its ends is unmapped, even if the other one could be moved
+    Map<IDIYComponent<?>, Integer> unmappedWires = new LinkedHashMap<>();
+    for (AttachedEnd end : attachedEnds) {
+      if (!pinMap.containsKey(end.oldPin())) {
+        unmappedWires.putIfAbsent(end.wire(), end.oldPin());
+      }
+    }
+    for (Map.Entry<IDIYComponent<?>, Integer> entry : unmappedWires.entrySet()) {
+      removeComponent(entry.getKey(), project, componentByName, newSelection, removed);
+      warnings.add("Removed '" + entry.getKey().getName() + "', attached to "
+          + op.getComponentName() + "." + entry.getValue()
+          + ", which has no counterpart on the new component.");
+    }
+    for (AttachedEnd end : attachedEnds) {
+      if (!unmappedWires.containsKey(end.wire())) {
+        moveWireEnd(end.wire(), end.pointIndex(),
+            replacement.getControlPoint(pinMap.get(end.oldPin())));
+      }
+    }
+  }
+
+  private void removeComponent(IDIYComponent<?> target, Project project,
+      Map<String, IDIYComponent<?>> componentByName, Set<IDIYComponent<?>> newSelection,
+      Set<IDIYComponent<?>> removed) {
+    // by entry, not name: the key may be a W3#a1b2 id while the name is W3
+    componentByName.values().removeIf(c -> c == target);
+    project.getComponents().remove(target);
+    newSelection.remove(target);
+    removed.add(target);
+  }
+
+  /**
+   * Moves a component as a whole, so that its first control point lands on the target.
+   */
+  private static void moveTo(IDIYComponent<?> comp, Point2D target) {
+    Point2D anchor = comp.getControlPoint(0);
+    double dx = target.getX() - anchor.getX();
+    double dy = target.getY() - anchor.getY();
+    for (int i = 0; i < comp.getControlPointCount(); i++) {
+      Point2D p = comp.getControlPoint(i);
+      comp.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), i);
+    }
+  }
+
+  /**
+   * @return the terminal of the component that the given control point is stuck to, or -1
+   */
+  private static int findStuckPin(IDIYComponent<?> c, int index, IDIYComponent<?> component) {
+    for (int pin = 0; pin < component.getControlPointCount(); pin++) {
+      if (CalcUtils.areControlPointsStuck(c, index, component, pin)) {
+        return pin;
+      }
+    }
+    return -1;
+  }
+
+  private Map<Integer, Integer> parsePinMap(AiEditOperation op, IDIYComponent<?> replacement) {
+    Map<Integer, Integer> pinMap = new HashMap<>();
+    for (Map.Entry<String, String> entry : op.getPinMap().entrySet()) {
+      int oldPin = parseIndex(entry.getKey());
+      int newPin = parseIndex(entry.getValue());
+      if (oldPin < 0) {
+        warnings.add("Ignoring pinMap entry '" + entry.getKey() + "' of "
+            + op.getComponentName() + " (not a terminal index).");
+      } else if (newPin < 0 || newPin >= replacement.getControlPointCount()
+          || !replacement.isControlPointSticky(newPin)) {
+        warnings.add("pinMap of " + op.getComponentName() + " maps terminal " + oldPin + " to '"
+            + entry.getValue() + "', which the new component does not have.");
+      } else {
+        pinMap.put(oldPin, newPin);
+      }
+    }
+    return pinMap;
+  }
+
+  private static int parseIndex(String value) {
+    if (value == null) {
+      return -1;
+    }
+    try {
+      return Integer.parseInt(value.trim());
+    } catch (NumberFormatException e) {
+      return -1;
+    }
+  }
+
+  /**
+   * Pairs the terminals of two components by their names, for a replace that came without a pin
+   * map. Terminals without a name are left unpaired.
+   */
+  private static Map<Integer, Integer> matchPinsByLabel(IDIYComponent<?> old,
+      IDIYComponent<?> replacement) {
+    Map<Integer, Integer> pinMap = new HashMap<>();
+    for (int oldPin = 0; oldPin < old.getControlPointCount(); oldPin++) {
+      String label = getPinLabel(old, oldPin);
+      if (label == null) {
+        continue;
+      }
+      for (int newPin = 0; newPin < replacement.getControlPointCount(); newPin++) {
+        if (label.equals(getPinLabel(replacement, newPin))) {
+          pinMap.put(oldPin, newPin);
+          break;
+        }
+      }
+    }
+    return pinMap;
+  }
+
+  private static String getPinLabel(IDIYComponent<?> component, int index) {
+    if (!component.isControlPointSticky(index)) {
+      return null;
+    }
+    String name = component.getControlPointNodeName(index);
+    return name == null || name.isBlank() ? null : name.trim().toLowerCase();
+  }
+
+  /**
+   * Moves one end of a wire and leaves the rest of it alone. On a curve, the handle next to that
+   * end moves along with it, so the curve leaves the terminal at the same angle as before.
+   */
+  private static void moveWireEnd(IDIYComponent<?> wire, int index, Point2D target) {
+    Point2D end = wire.getControlPoint(index);
+    double dx = target.getX() - end.getX();
+    double dy = target.getY() - end.getY();
+    if (wire instanceof AbstractCurvedComponent) {
+      int last = wire.getControlPointCount() - 1;
+      int handle = index == 0 ? 1 : last - 1;
+      // a three point curve shares its only handle between both ends, so neither end owns it
+      if (handle != last - handle && !wire.isControlPointSticky(handle)) {
+        Point2D p = wire.getControlPoint(handle);
+        wire.setControlPoint(new Point2D.Double(p.getX() + dx, p.getY() + dy), handle);
+      }
+    }
+    // the end is set last: a smooth curve realigns its other handles around the point that was
+    // set last, unless that point is an end
+    wire.setControlPoint(new Point2D.Double(target.getX(), target.getY()), index);
+  }
+
   private void applyProperties(IDIYComponent<?> comp, Map<String, String> properties, ComponentProcessor processor) {
     if (properties == null || properties.isEmpty()) return;
 
@@ -316,6 +515,33 @@ public class AiEditScriptEditor implements IProjectEditor {
         }
       }
     }
+  }
+
+  /**
+   * Carries a property over to a component of another type, if both have it and it holds the same
+   * kind of value on both.
+   */
+  private void copyProperty(String name, IDIYComponent<?> from, IDIYComponent<?> to,
+      ComponentProcessor processor) throws Exception {
+    PropertyWrapper source = findProperty(name, from, processor);
+    PropertyWrapper target = findProperty(name, to, processor);
+    if (source == null || target == null || target.isReadOnly()
+        || source.getType() != target.getType()) {
+      return;
+    }
+    source.readFrom(from);
+    target.setValue(source.getValue());
+    target.writeTo(to);
+  }
+
+  private static PropertyWrapper findProperty(String name, IDIYComponent<?> comp,
+      ComponentProcessor processor) {
+    for (PropertyWrapper pw : processor.extractProperties(comp.getClass())) {
+      if (pw.getName().equalsIgnoreCase(name)) {
+        return pw;
+      }
+    }
+    return null;
   }
 
   private void applyDatasheetModel(IDIYComponent<?> comp, String datasheetModel) {
@@ -524,5 +750,11 @@ public class AiEditScriptEditor implements IProjectEditor {
     // Return a copy to avoid accidentally moving the source component's pin
     Point2D p = comp.getControlPoint(resolvedIndex);
     return new Point2D.Double(p.getX(), p.getY());
+  }
+
+  /**
+   * A wire end found on a terminal of a component that is about to be replaced.
+   */
+  private record AttachedEnd(IDIYComponent<?> wire, int pointIndex, int oldPin) {
   }
 }
