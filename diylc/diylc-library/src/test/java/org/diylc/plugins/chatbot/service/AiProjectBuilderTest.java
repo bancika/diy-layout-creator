@@ -39,6 +39,7 @@ import org.junit.Test;
 import org.diylc.common.Orientation;
 import org.diylc.components.boards.TagStrip;
 import org.diylc.components.connectivity.HookupWire;
+import org.diylc.components.connectivity.SolderLug;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.Resistor;
@@ -197,6 +198,23 @@ public class AiProjectBuilderTest {
     AiProject export = export(pad, resistor());
 
     assertEquals(List.of("R1.0"), component(export, "Pad1").terminals().get(0).connectedTo());
+  }
+
+  @Test
+  public void lugListsTheLeadsOnItButStaysOutOfTheNet() {
+    SolderLug lug = new SolderLug();
+    lug.setName("SL1");
+    Resistor first = resistor();
+    first.setControlPoint(lug.getControlPoint(1), 0);
+    Resistor second = resistor();
+    second.setName("R2");
+    second.setControlPoint(lug.getControlPoint(1), 0);
+    second.setControlPoint(LOOSE_END, 1);
+
+    AiProject export = export(lug, first, second);
+
+    assertEquals(List.of("R1.0", "R2.0"), component(export, "SL1").terminals().get(1).connectedTo());
+    assertEquals(List.of(Set.of("R1.0", "R2.0")), List.copyOf(export.nets().values()));
   }
 
   @Test
