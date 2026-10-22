@@ -583,8 +583,9 @@ public class ChatbotPane extends JPanel {
 
     if (editScript.getOperations() != null) {
       Map<String, List<String>> groupedOps = new LinkedHashMap<>();
-      // a z-order change names two components and a replace names a component and its new type,
-      // so each one gets a line of its own instead of being folded into a list
+      // a z-order change names two components, a replace names a component and its new type and
+      // a reconnect names a wire end and its new terminal, so each one gets a line of its own
+      // instead of being folded into a list
       List<String> separateLines = new ArrayList<>();
       for (AiEditOperation op : editScript.getOperations()) {
         String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
@@ -605,6 +606,11 @@ public class ChatbotPane extends JPanel {
           case "replace":
             separateLines.add("\u21C4 " + String.format(LangUtil.translate("Replace %s with %s"),
                 compStr, escapeHtml(op.getComponentType())));
+            continue;
+          case "reconnect":
+            separateLines.add("\u21AA " + String.format(LangUtil.translate("Reconnect %s to %s"),
+                escapeHtml(op.getComponentName() + "." + op.getTerminal()),
+                escapeHtml(op.getToTerminal())));
             continue;
           case "send_behind":
             separateLines.add("\u2B07\uFE0F " + String.format(

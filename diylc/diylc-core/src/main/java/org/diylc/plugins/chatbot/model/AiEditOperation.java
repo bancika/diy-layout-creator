@@ -56,6 +56,9 @@ public class AiEditOperation {
   // For replace: old terminal index to new terminal index, e.g. {"0": "1"}
   private Map<String, String> pinMap;
 
+  // For reconnect: the index of the wire end that moves to toTerminal, e.g. "0"
+  private String terminal;
+
   public String getAction() { return action; }
   public void setAction(String action) { this.action = action; }
   
@@ -91,4 +94,7 @@ public class AiEditOperation {
 
   public Map<String, String> getPinMap() { return pinMap; }
   public void setPinMap(Map<String, String> pinMap) { this.pinMap = pinMap; }
+
+  public String getTerminal() { return terminal; }
+  public void setTerminal(String terminal) { this.terminal = terminal; }
 }

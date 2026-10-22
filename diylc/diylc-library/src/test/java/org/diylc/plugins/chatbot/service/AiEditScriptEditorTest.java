@@ -442,6 +442,120 @@ public class AiEditScriptEditorTest {
     assertTrue(editor.getWarnings().get(0).contains("R1"));
   }
 
+  @Test
+  public void reconnectMovesOneEndToAnotherLugOfTheSameComponent() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", FAR_END, pickup.getControlPoint(1));
+    wire.setLeadColor(Color.green);
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire, resistor());
+
+    AiEditScriptEditor editor = run(project, reconnect("W1", "1", "PU1.2"));
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    Point2D lug = pickup.getControlPoint(2);
+    assertNotEquals("the test needs a lug that is not where the end was", before[3], lug);
+    assertEquals(before[0], wire.getControlPoint(0));
+    assertEquals(before[1], wire.getControlPoint(1));
+    assertEquals(moved(before[2], before[3], lug), wire.getControlPoint(2));
+    assertEquals(lug, wire.getControlPoint(3));
+    assertEquals(Color.green, wire.getLeadColor());
+    assertSame("the wire keeps its place in the z-order", wire, project.getComponents().get(1));
+  }
+
+  @Test
+  public void reconnectMovesOneEndToAnotherComponent() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire, resistor());
+
+    // the end is named by the index the project export gives it, the last control point
+    AiEditScriptEditor editor = run(project, reconnect("W1", "3", "R1.1"));
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(before[0], wire.getControlPoint(0));
+    assertEquals(before[1], wire.getControlPoint(1));
+    assertEquals(moved(before[2], before[3], SECOND_LEAD), wire.getControlPoint(2));
+    assertEquals(SECOND_LEAD, wire.getControlPoint(3));
+  }
+
+  @Test
+  public void reconnectCanMoveBothEndsOfTheSameWire() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire, resistor());
+
+    AiEditScriptEditor editor =
+        run(project, reconnect("W1", "0", "R1.0"), reconnect("W1", "1", "R1.1"));
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(FIRST_LEAD, wire.getControlPoint(0));
+    assertEquals(moved(before[1], before[0], FIRST_LEAD), wire.getControlPoint(1));
+    assertEquals(moved(before[2], before[3], SECOND_LEAD), wire.getControlPoint(2));
+    assertEquals(SECOND_LEAD, wire.getControlPoint(3));
+  }
+
+  @Test
+  public void laterOperationSeesTheReconnectedEnd() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", FAR_END, OTHER_FAR_END);
+    Project project = projectWith(pickup, wire);
+
+    AiEditScriptEditor editor = run(project, reconnect("W1", "0", "PU1.2"),
+        replaceWithHumbucker(Map.of("2", "3")));
+
+    assertTrue(editor.getWarnings().toString(), editor.getWarnings().isEmpty());
+    assertEquals(project.getComponents().get(0).getControlPoint(3), wire.getControlPoint(0));
+  }
+
+  @Test
+  public void unresolvableReconnectIsSkippedAndTheScriptGoesOn() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] before = points(wire);
+    Resistor resistor = resistor();
+    Point2D[] resistorBefore = points(resistor);
+    Project project = projectWith(pickup, wire, resistor);
+    AiEditOperation modify = operation("modify", "R1");
+    modify.setProperties(Map.of("Value", "4.7K"));
+
+    AiEditScriptEditor editor = run(project,
+        reconnect("W9", "0", "PU1.2"),
+        // a curve handle, past the last point, not a number, and a part that is not a wire
+        reconnect("W1", "2", "PU1.2"),
+        reconnect("W1", "4", "PU1.2"),
+        reconnect("W1", "end", "PU1.2"),
+        reconnect("R1", "0", "PU1.2"),
+        reconnect("W1", "0", "PU9.2"),
+        reconnect("W1", "0", "PU1.99"),
+        modify);
+
+    assertEquals(editor.getWarnings().toString(), 7,
+        editor.getWarnings().stream().filter(w -> w.startsWith("Cannot reconnect")).count());
+    assertArrayEquals(before, points(wire));
+    assertArrayEquals(resistorBefore, points(resistor));
+    assertEquals(Resistance.parseResistance("4.7K"), resistor.getValue());
+  }
+
+  @Test
+  public void undoSnapshotRestoresTheReconnectedWire() {
+    SingleCoilPickup pickup = singleCoil();
+    HookupWire wire = wire("W1", pickup.getControlPoint(1), FAR_END);
+    Point2D[] before = points(wire);
+    Project project = projectWith(pickup, wire);
+    Project original = project.clone();
+    // Presenter.applyEditor keeps exactly this clone, and undo puts it back
+    Project undoSnapshot = project.clone();
+
+    run(project, reconnect("W1", "0", "PU1.2"));
+
+    assertNotEquals("the reconnect must have changed the project", original, project);
+    assertEquals(original, undoSnapshot);
+    assertArrayEquals(before, points(undoSnapshot.getComponents().get(1)));
+  }
+
   private static SingleCoilPickup singleCoil() {
     SingleCoilPickup pickup = new SingleCoilPickup();
     pickup.setName("PU1");
@@ -464,6 +578,13 @@ public class AiEditScriptEditorTest {
     AiEditOperation operation = operation("replace", "PU1");
     operation.setComponentType("guitar.HumbuckerPickup");
     operation.setPinMap(pinMap);
+    return operation;
+  }
+
+  private static AiEditOperation reconnect(String wire, String terminal, String toTerminal) {
+    AiEditOperation operation = operation("reconnect", wire);
+    operation.setTerminal(terminal);
+    operation.setToTerminal(toTerminal);
     return operation;
   }
 

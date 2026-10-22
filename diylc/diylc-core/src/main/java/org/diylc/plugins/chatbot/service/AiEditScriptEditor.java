@@ -57,7 +57,7 @@ import org.diylc.presenter.InstantiationManager;
  * <p>
  * Uses a two-pass approach:
  * <ul>
- *   <li><b>Pass 1</b>: Remove, Modify, Replace and Add (non-wires), in the order the script lists them. Sets properties and determines final pin geometry.</li>
+ *   <li><b>Pass 1</b>: Remove, Modify, Replace, Reconnect and Add (non-wires), in the order the script lists them. Sets properties and determines final pin geometry.</li>
  *   <li><b>Pass 2</b>: Add Wires. Resolves terminal references to the final pixel coordinates of the components from Pass 1.</li>
  * </ul>
  */
@@ -146,6 +146,9 @@ public class AiEditScriptEditor implements IProjectEditor {
         }
         else if ("replace".equalsIgnoreCase(op.getAction())) {
           replace(op, project, processor, componentByName, newSelection, removed);
+        }
+        else if ("reconnect".equalsIgnoreCase(op.getAction())) {
+          reconnect(op, project, componentByName, newSelection);
         }
         else if ("add".equalsIgnoreCase(op.getAction())) {
           ComponentType ct = findComponentType(processor, op.getComponentType());
@@ -373,6 +376,38 @@ public class AiEditScriptEditor implements IProjectEditor {
             replacement.getControlPoint(pinMap.get(end.oldPin())));
       }
     }
+  }
+
+  /**
+   * Moves one end of an existing wire to another terminal, keeping its routing, properties and
+   * place in the z-order, which a remove followed by an add would lose.
+   */
+  private void reconnect(AiEditOperation op, Project project,
+      Map<String, IDIYComponent<?>> componentByName, Set<IDIYComponent<?>> newSelection) {
+    IDIYComponent<?> wire = findExactComponent(op.getComponentName(), componentByName);
+    if (wire == null) {
+      warnings.add("Cannot reconnect '" + op.getComponentName() + "' (not found).");
+      return;
+    }
+    int index = parseIndex(op.getTerminal());
+    // the exported terminals of a curve are its first and last control points, but "1" is also
+    // taken to mean the far end, which on a curve is never a terminal of its own
+    if (index == 1 && wire instanceof AbstractCurvedComponent) {
+      index = wire.getControlPointCount() - 1;
+    }
+    if (index < 0 || !AiProjectBuilder.getWireEnds(project).contains(new Node(wire, index))) {
+      warnings.add("Cannot reconnect '" + op.getComponentName() + "' (terminal '"
+          + op.getTerminal() + "' is not one of its wire ends).");
+      return;
+    }
+    Point2D target = resolveTerminal(op.getToTerminal(), componentByName);
+    if (target == null) {
+      warnings.add("Cannot reconnect '" + op.getComponentName()
+          + "' (could not resolve terminal reference " + op.getToTerminal() + ").");
+      return;
+    }
+    moveWireEnd(wire, index, target);
+    newSelection.add(wire);
   }
 
   private void removeComponent(IDIYComponent<?> target, Project project,
