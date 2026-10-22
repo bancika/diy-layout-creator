@@ -27,8 +27,11 @@ import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 
 
+@AiNote("Set 'Coil(s)' to North for a regular single coil and South for a reverse-wound, reverse-polarity (RWRP) one; Humbucking gives the two coils of a four-conductor humbucker, and the Stacked values a stacked humbucker with two leads, which the wiring analysis takes as hum-cancelling on its own")
+@AiNote("The wiring analysis takes coils as in phase when they all run the same way between the output jack's Tip and Sleeve: a single coil, North or South, runs from Start at the Tip side to Finish at the Sleeve side, and a North and a South coil in phase cancel hum. With 'Coil(s)' Humbucking the South coil runs the other way, Finish at the Tip side, so the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground")
 public abstract class AbstractSingleOrHumbuckerPickup extends AbstractGuitarPickup {
 
   private static final long serialVersionUID = 1L;

@@ -50,6 +50,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation")
+@AiNote("The wiring analysis takes the coils as in phase when the North coil has its Start and the South coil its Finish on the side of the output jack's Tip: the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground; in parallel, North Start and South Finish go to hot and North Finish and South Start to ground")
 @ComponentDescriptor(name = "Humbucker Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",

@@ -483,4 +483,26 @@ public class GuitarDiagramAnalyzerTests {
     assertTrue(notes.contains("This configuration is hum-cancelling"));
     assertTrue(notes.contains("All pickup coils are wired in-phase"));
   }
+
+  @Test
+  public void testNorthAndSouthSinglePickupsParallel() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    SingleCoilPickup pickup1 = new SingleCoilPickup();
+    pickup1.setName("Pickup1");
+    SingleCoilPickup pickup2 = new SingleCoilPickup();
+    pickup2.setName("Pickup2");
+    pickup2.setPolarity(Polarity.South);
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup1, pickup2));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup1, 1).connect(pickup2, 1);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup1, 2).connect(pickup2, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(Pickup1.North<- || Pickup2.South<-)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("All pickup coils are wired in-phase"));
+  }
 }
