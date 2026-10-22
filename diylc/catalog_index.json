@@ -65,7 +65,7 @@
     }, {
       "name" : "Hookup Wire",
       "className" : "connectivity.HookupWire",
-      "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper" ]
+      "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper, and for each conductor of a twisted pair in a circuit that must be analyzable use one Hookup Wire, since Twisted Leads is a single conductor drawn for looks" ]
     }, {
       "name" : "Jumper",
       "className" : "connectivity.Jumper",

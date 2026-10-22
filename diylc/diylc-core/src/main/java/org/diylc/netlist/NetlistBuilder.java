@@ -156,7 +156,7 @@ public class NetlistBuilder {
         switchPositions.put(switches.get(j), positions[j]);
         posList.add(new Position(switches.get(j), positions[j]));
       }
-      List<Connection> connections = getConnections(project, switchPositions);
+      List<Connection> connections = getConnections(includeSwitches, project, switchPositions);
 
       Netlist netlist =
           NetlistBuilder.buildNetlist(project.getComponents(), nodes, continuityAreas, connections);
@@ -431,7 +431,7 @@ public class NetlistBuilder {
   }
 
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
-  private static List<Connection> getConnections(Project project,
+  private static List<Connection> getConnections(boolean includeSwitches, Project project,
       Map<ISwitch, Integer> switchPositions) {
     Set<Connection> connections = new TreeSet<Connection>();
 
@@ -442,12 +442,9 @@ public class NetlistBuilder {
       IDIYComponent<?> c = project.getComponents().get(z);
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      // handle direct connections or connections through a switch
-      // when not using "includeSwitches" flag
-      if (c instanceof IContinuity &&
-          // ugly way to check if running in "exclude switches" mode.
-          (!(c instanceof ISwitch) || (switchPositions.size() == 1 &&
-              switchPositions.keySet().stream().findFirst().get() instanceof TrivialSwitch))) {
+      // handle direct connections, and switches in their selected position when switch positions
+      // are not being enumerated
+      if (c instanceof IContinuity && (!(c instanceof ISwitch) || !includeSwitches)) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))

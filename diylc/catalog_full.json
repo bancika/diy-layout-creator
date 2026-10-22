@@ -1290,7 +1290,7 @@
     "namePrefix" : "W",
     "description" : "Insulated flexible wire, straight or curved",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper", "Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through" ],
+    "notes" : [ "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper, and for each conductor of a twisted pair in a circuit that must be analyzable use one Hookup Wire, since Twisted Leads is a single conductor drawn for looks", "Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7739,7 +7739,7 @@
     "namePrefix" : "FH",
     "description" : "Panel mounted fuse holder",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them" ],
+    "notes" : [ "The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them", "Set 'Fuse' on when the holder carries a fuse: only then does the netlist join the two lugs, and with the default off the circuit through it is open" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8426,7 +8426,7 @@
     "namePrefix" : "PL",
     "description" : "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the upper hole of the lug for the bulb's centre contact; with 'Angle' 0 its other hole, pin 3, is 0.1in below it and the lamp centre 0.4in below it. Pins 2 and 4 are the matching holes of the shell lug, which is the same lug turned 53 degrees clockwise around the lamp centre. 'Angle' rotates the holder clockwise around the first pin, in degrees" ],
+    "notes" : [ "The first control point is the upper hole of the lug for the bulb's centre contact; with 'Angle' 0 its other hole, pin 3, is 0.1in below it and the lamp centre 0.4in below it. Pins 2 and 4 are the matching holes of the shell lug, which is the same lug turned 53 degrees clockwise around the lamp centre. 'Angle' rotates the holder clockwise around the first pin, in degrees. The netlist does not join the two holes of a lug, so each is a terminal of its own" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13161,7 +13161,7 @@
     "namePrefix" : "VR",
     "description" : "Metal body panel mount potentiometer with solder lugs or PCB terminals (Alpha, CTS, Bourns)",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Leave 'View' at its default, ShaftDown, unless asked otherwise: the pot is seen from the back, and with 'Orientation' DEFAULT its lugs face down", "The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor. In the back views the anchor is lug 3, in the ShaftUp and TerminalsUp views lug 1", "Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270", "Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)" ],
+    "notes" : [ "Leave 'View' at its default, ShaftDown, unless asked otherwise: the pot is seen from the back, and with 'Orientation' DEFAULT its lugs face down", "The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor", "Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270", "Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

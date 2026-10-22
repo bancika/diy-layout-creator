@@ -702,6 +702,10 @@
 					<description>'Cliff 1/4" Jack' and 'Cliff 1/8" Jack' lugs are now correctly labeled as Tip, Sleeve, Ring and their switched contacts instead of plain numbers, so netlists show what each lug does and 'Analyze Guitar Diagrams' can find the output jack</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Fuse Holder (Panel)' with 'Fuse' turned on now connects its two lugs in the netlist, so a circuit running through the fuse is no longer reported as open</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
 				</org.diylc.appframework.update.Change>
