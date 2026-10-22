@@ -42,7 +42,7 @@ import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
-@AiNote(value = "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper", scope = Scope.SELECTION)
+@AiNote(value = "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper, and for each conductor of a twisted pair in a circuit that must be analyzable use one Hookup Wire, since Twisted Leads is a single conductor drawn for looks", scope = Scope.SELECTION)
 @AiNote("Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through")
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
     instanceNamePrefix = "W", description = "Insulated flexible wire, straight or curved", zOrder = IDIYComponent.WIRING,

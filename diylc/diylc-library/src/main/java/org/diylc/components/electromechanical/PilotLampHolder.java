@@ -52,7 +52,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@AiNote("The first control point is the upper hole of the lug for the bulb's centre contact; with 'Angle' 0 its other hole, pin 3, is 0.1in below it and the lamp centre 0.4in below it. Pins 2 and 4 are the matching holes of the shell lug, which is the same lug turned 53 degrees clockwise around the lamp centre. 'Angle' rotates the holder clockwise around the first pin, in degrees")
+@AiNote("The first control point is the upper hole of the lug for the bulb's centre contact; with 'Angle' 0 its other hole, pin 3, is 0.1in below it and the lamp centre 0.4in below it. Pins 2 and 4 are the matching holes of the shell lug, which is the same lug turned 53 degrees clockwise around the lamp centre. 'Angle' rotates the holder clockwise around the first pin, in degrees. The netlist does not join the two holes of a lug, so each is a terminal of its own")
 @ComponentDescriptor(name = "Pilot Lamp Holder", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Fender-style pilot bulb holder for T2 and T-3 \u00BC miniature bayonet lamps",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PL", enableCache = true)

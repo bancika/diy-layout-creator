@@ -56,7 +56,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("Leave 'View' at its default, ShaftDown, unless asked otherwise: the pot is seen from the back, and with 'Orientation' DEFAULT its lugs face down")
-@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor. In the back views the anchor is lug 3, in the ShaftUp and TerminalsUp views lug 1")
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor")
 @AiNote("Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270")
 @AiNote("Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)")
 @ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
