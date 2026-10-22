@@ -29,7 +29,6 @@ import com.google.common.graph.ImmutableGraph.Builder;
 
 import org.diylc.common.ComponentType;
 import org.diylc.core.ICommonNode;
-import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
@@ -79,10 +78,8 @@ public class NetlistBuilder {
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
 
-      // extract nodes; wires and strips only join other terminals and get none, while a part that
-      // conducts internally, like a fuse holder, keeps its own
-      if (!(c instanceof IConnective && c instanceof IContinuity && !(c instanceof ISwitch))
-          && !(c instanceof ICommonNode)) {
+      // extract nodes
+      if (!(c instanceof IContinuity && !(c instanceof ISwitch)) && !(c instanceof ICommonNode)) {
         // regular components, create a node per control point
         for (int i = 0; i < c.getControlPointCount(); i++) {
           // Node renders the name through Node.sanitizeNodeName; here it only marks a named point

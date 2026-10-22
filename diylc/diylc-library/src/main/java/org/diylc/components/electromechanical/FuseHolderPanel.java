@@ -40,7 +40,6 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
-import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -54,11 +53,10 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them")
-@AiNote("Set 'Fuse' on when the holder carries a fuse: only then does the netlist join the two lugs, and with the default off the circuit through it is open")
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "FH", enableCache = true)
-public class FuseHolderPanel extends AbstractMultiPartComponent<String> implements IContinuity {
+public class FuseHolderPanel extends AbstractMultiPartComponent<String> {
 
   private static final long serialVersionUID = 1L;  
 
@@ -166,11 +164,6 @@ public class FuseHolderPanel extends AbstractMultiPartComponent<String> implemen
   public void setHasFuse(boolean hasFuse) {
     this.hasFuse = hasFuse;
     body = null;
-  }
-
-  @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    return hasFuse && index1 != index2;
   }
 
   @Override
