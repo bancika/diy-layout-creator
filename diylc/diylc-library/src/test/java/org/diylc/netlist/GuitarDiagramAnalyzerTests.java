@@ -28,6 +28,7 @@ import org.diylc.components.passive.AxialFilmCapacitor;
 import org.diylc.components.passive.Resistor;
 import org.junit.Test;
 
+import org.diylc.components.electromechanical.CliffJack1_4;
 import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.AbstractGuitarPickup.Polarity;
 import org.diylc.components.guitar.HumbuckerPickup;
@@ -526,5 +527,19 @@ public class GuitarDiagramAnalyzerTests {
     assertTrue(notes.contains("'Pickup' pickup wired in humbucking mode with series coils"));
     assertTrue(notes.contains("This configuration is hum-cancelling"));
     assertTrue(notes.contains("All pickup coils are wired in-phase"));
+  }
+
+  @Test
+  public void testOneSinglePickupCliffJack() throws TreeException {
+    CliffJack1_4 jack = new CliffJack1_4();
+    SingleCoilPickup pickup = new SingleCoilPickup();
+    pickup.setName("Pickup");
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup));
+    Group tipGroup = new Group().connect(jack, 1).connect(pickup, 1);
+    Group sleeveGroup = new Group().connect(jack, 3).connect(pickup, 2);
+    netlist.add(tipGroup).add(sleeveGroup);
+    Tree tree = new GuitarDiagramAnalyzer().constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("Pickup.North<-", s);
   }
 }

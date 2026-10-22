@@ -70,11 +70,11 @@ that names the alternative; alternatives should point at each other (Jumper and 
 | Leaded | `Resistor`, `DiodePlastic`, `AxialFilmCapacitor`, `DiodeGlass` (body between the points, standing when closer than 'Length'; the last two also name 'Reverse (standing)'), `AxialElectrolyticCapacitor` (no standing mode), `LED` (own 'Lead Spacing', 'Size' is the lens) |
 | Radial | `AbstractRadialComponent` ('Lead Spacing'), `RadialFilmCapacitor` (same, plus 'Length'/'Width' vs datasheet), `RadialElectrolytic` ('Diameter', 'Height' only when folded), `RadialCeramicDiskCapacitor` (disc diameter and thickness), `TantalumCapacitor`, `RadialInductor`, `Buzzer` (same 'Diameter'/'Height' note as the electrolytic) |
 | Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor lug, lug direction per orientation, 16mm/25mm sizes), `DIL_IC` |
-| Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing) |
+| Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing), `TwistedWire` (selection note: one conductor like Hookup Wire, for looks only; use a pair of Hookup or Right Angle Wires for an analyzable circuit) |
 | Terminals | `Eyelet`, `Turret` (every end inside the circle connects), `GroundSymbol` (all symbols are one GND node) |
 | Guitar | `AbstractGuitarPickup` (coils horizontal in DEFAULT, clockwise rotation), `AbstractSingleOrHumbuckerPickup` ('Coil(s)' values; coil direction the wiring analysis takes as in phase), `SingleCoilPickup` (terminals along the bottom edge), `HumbuckerPickup`, `P90Pickup`, `JazzBassPickup`, `PBassPickup`, `StingrayBassPickup` (terminals down the top-right edge; all turn with the body; the humbucker and Stingray also give the in-phase series and parallel connections), `LeverSwitch`, `LPSwitch`, `FreewayBlade`, `SchallerMegaSwitch`, `Freeway3x3_03`, `Freeway3x3_05` (terminal layout relative to the anchor), `S1Switch` (lug grid around the disc; same 'Orientation' as its pot) |
-| Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key) |
-| Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip) |
+| Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key), `CliffJack1_4` (named lugs on a square, nose direction), `PilotLampHolder` (which holes belong to which lug), `FuseHolderPanel` |
+| Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip), `TransformerCoil` (winding side per orientation) |
 
 `Label` deliberately has none: its alignment properties already say how the text sits on the anchor.
 
@@ -92,6 +92,10 @@ Open items:
   up obviously with the pad columns and needs reading carefully before it can be noted.
 - `ProtoBoard780` and `EurorackStripboard`: no notes. 780 shifts its grid by `X_OFFSET` and half a
   pitch when `translateToGrid` is set; Eurorack has an irregular pad map.
+- `PilotLampHolder`: the reference netlist of `Silvertone 1484 v6f` connects pin 1 without pin 3,
+  so it is unclear whether the netlist joins the two holes of a lug. Check before noting it.
+- `FuseHolderPanel` and the fuse symbol never join their two ends in the netlist, even with
+  'Fuse' on, so a mains path through a fuse reads as open. Decide whether that is intended.
 - `Breadboard` draws both power rails as `+` then `-` left to right rather than mirrored. Confirm
   this is intended before relying on the rail note.
 
@@ -109,8 +113,10 @@ Done, see section 3.
 
 ### 4.2 Tier 3: guitar, amp and chassis (15-30 projects)
 
-Cliff Jack, Glass Diode (Resistor standing note applies), Single Coil Pickup, Capacitor and Resistor
-symbols, Twisted Wire, Pilot Lamp Holder, Transformer Coil, Fuse Holder.
+Done, see section 3. `CapacitorSymbol`
+and `ResistorSymbol` deliberately have none: the index lists them as "Capacitor (Schematic)" and
+"Resistor (Schematic)", their geometry is that of any two-lead part, and the pinout gives the
+capacitor's polarity.
 
 ### 4.3 Outside the sample
 
@@ -120,11 +126,9 @@ builds) are covered first.
 
 ## 5. Next steps
 
-1. Tier 3: Cliff Jack, the capacitor and resistor symbols, Twisted Wire, Pilot Lamp Holder,
-   Transformer Coil, Fuse Holder.
-2. The rest of the established circuit types below Tier 3 in the usage count.
-3. The board leftovers and the `PotentiometerPanel` items in section 3.
-4. Maker components, once maker support settles: list them and see what the board notes already
+1. The rest of the established circuit types below Tier 3 in the usage count.
+2. The board leftovers and the `PotentiometerPanel` items in section 3.
+3. Maker components, once maker support settles: list them and see what the board notes already
    cover before writing any.
 
 After each batch, read the entries back as the model sees them. Run `ComponentCatalogGenerator`
