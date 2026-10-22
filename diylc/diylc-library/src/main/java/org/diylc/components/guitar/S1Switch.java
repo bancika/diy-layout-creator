@@ -49,6 +49,7 @@ import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -56,6 +57,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor, not a terminal, 0.05in below the centre of the 1in disc. The twelve lugs sit in four groups of three on a 4.5mm grid around the disc centre: with 'Orientation' DEFAULT lugs 2-4 run left to right 9mm above the centre, 5-7 top to bottom 9mm right of it, 8-10 left to right 9mm below it and 11-13 top to bottom 9mm left of it; the other orientations rotate this clockwise around the anchor")
+@AiNote("Give the switch the same 'Orientation' as the panel potentiometer it is mounted on; the switching is not symmetric under rotation, and DEFAULT matches the pot's DEFAULT")
 @ComponentDescriptor(name = "S1 Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Fender S1 4 pole pushbutton switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", enableCache = true, transformer = S1SwitchTransformer.class)
