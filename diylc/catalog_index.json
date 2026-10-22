@@ -94,7 +94,8 @@
       "className" : "connectivity.Turret"
     }, {
       "name" : "Twisted Leads",
-      "className" : "connectivity.TwistedWire"
+      "className" : "connectivity.TwistedWire",
+      "notes" : [ "Electrically a single conductor between its two ends, exactly like Hookup Wire, even though two twisted leads are drawn; use it only for the look of a twisted pair, and where the circuit must be electrically correct and analyzable, draw each conductor as its own Hookup Wire or Right Angle Wire instead" ]
     } ],
     "Controllers" : [ {
       "name" : "Arduino Mega 2560",

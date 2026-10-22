@@ -133,7 +133,9 @@ builds) are covered first.
 
 After each batch, read the entries back as the model sees them. Run `ComponentCatalogGenerator`
 with an output directory outside the repository so the committed catalogs stay untouched;
-`ComponentCatalogGeneratorTest` covers note collection.
+`ComponentCatalogGeneratorTest` covers note collection. Launch it with the `--add-opens` and
+`--add-exports` flags from `.run/DIYLCStarter.run.xml`: without them `ReleaseHistory` cannot read
+`update.xml` and the catalogs silently carry version 5.0.0.
 
 ## 6. Measuring usage
 

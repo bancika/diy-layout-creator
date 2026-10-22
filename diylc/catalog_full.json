@@ -1823,6 +1823,7 @@
     "namePrefix" : "W",
     "description" : "A pair of flexible leads twisted tightly together",
     "creationMethod" : "POINT_BY_POINT",
+    "notes" : [ "Electrically a single conductor between its two ends, exactly like Hookup Wire, even though two twisted leads are drawn; use it only for the look of a twisted pair, and where the circuit must be electrically correct and analyzable, draw each conductor as its own Hookup Wire or Right Angle Wire instead", "The points between the first and last are curve handles the leads do not necessarily pass through" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7188,6 +7189,7 @@
     "namePrefix" : "J",
     "description" : "Cliff-style closed panel mount 1/4\" phono jack",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is a corner lug; with 'Orientation' DEFAULT the lugs sit on the corners of a 0.6in square to the right of and below it, Tip Switch and Tip down the left side and Sleeve Switch and Sleeve down the right, and STEREO adds Ring Switch and Ring midway along the top and bottom edges. The body is centred on the square with its threaded nose pointing right, and the other orientations rotate all of this clockwise around the first lug" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7216,14 +7218,42 @@
         "when" : {
           "Type" : "MONO"
         },
-        "pinCount" : 4,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "Tip Switch"
+        }, {
+          "i" : 1,
+          "label" : "Tip"
+        }, {
+          "i" : 2,
+          "label" : "Sleeve Switch"
+        }, {
+          "i" : 3,
+          "label" : "Sleeve"
+        } ]
       }, {
         "when" : {
           "Type" : "STEREO"
         },
-        "pinCount" : 6,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "Tip Switch"
+        }, {
+          "i" : 1,
+          "label" : "Tip"
+        }, {
+          "i" : 2,
+          "label" : "Sleeve Switch"
+        }, {
+          "i" : 3,
+          "label" : "Sleeve"
+        }, {
+          "i" : 4,
+          "label" : "Ring Switch"
+        }, {
+          "i" : 5,
+          "label" : "Ring"
+        } ]
       } ]
     }
   }, {
@@ -7265,14 +7295,42 @@
         "when" : {
           "Type" : "MONO"
         },
-        "pinCount" : 4,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "Tip Switch"
+        }, {
+          "i" : 1,
+          "label" : "Tip"
+        }, {
+          "i" : 2,
+          "label" : "Sleeve Switch"
+        }, {
+          "i" : 3,
+          "label" : "Sleeve"
+        } ]
       }, {
         "when" : {
           "Type" : "STEREO"
         },
-        "pinCount" : 6,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "Tip Switch"
+        }, {
+          "i" : 1,
+          "label" : "Tip"
+        }, {
+          "i" : 2,
+          "label" : "Sleeve Switch"
+        }, {
+          "i" : 3,
+          "label" : "Sleeve"
+        }, {
+          "i" : 4,
+          "label" : "Ring Switch"
+        }, {
+          "i" : 5,
+          "label" : "Ring"
+        } ]
       } ]
     }
   }, {
@@ -7681,6 +7739,7 @@
     "namePrefix" : "FH",
     "description" : "Panel mounted fuse holder",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8365,8 +8424,9 @@
     "className" : "electromechanical.PilotLampHolder",
     "category" : "Electro-Mechanical",
     "namePrefix" : "PL",
-    "description" : "Fender-style pilot bulb holder for T2 and T-3 ï¿½ miniature bayonet lamps",
+    "description" : "Fender-style pilot bulb holder for T2 and T-3 ¼ miniature bayonet lamps",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the upper hole of the lug for the bulb's centre contact; with 'Angle' 0 its other hole, pin 3, is 0.1in below it and the lamp centre 0.4in below it. Pins 2 and 4 are the matching holes of the shell lug, which is the same lug turned 53 degrees clockwise around the lamp centre. 'Angle' rotates the holder clockwise around the first pin, in degrees" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -9674,6 +9734,7 @@
     "namePrefix" : "SW",
     "description" : "Freeway 3X3-03 (Standard) Toggle Switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is pad CA at the top of the board. With 'Orientation' DEFAULT, CB is 6mm to its right, the B pads run down a column 12mm to its right and the A pads up a column 6mm to its left, 4.5mm apart from 2mm to 24.5mm below CA, and GND is 27mm below CA and 3mm to the right. The other orientations rotate this clockwise around CA" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -9725,7 +9786,7 @@
         "label" : "GND"
       }, {
         "i" : 9,
-        "label" : "A-12"
+        "label" : "A-N1"
       }, {
         "i" : 10,
         "label" : "A-N2"
@@ -9772,6 +9833,7 @@
     "namePrefix" : "SW",
     "description" : "Freeway 3X3-05 (Ultra) Toggle Switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is pad 1B, the pad just left of the top of the round switch. The 28 pads sit on a circle of 15.3mm radius around the switch centre, which is 15.2mm below and 1.7mm right of 1B, and continue counterclockwise from it, so the first 14 (the B pads) form the left half and the rest (the A pads) the right half. 'Orientation' rotates the switch clockwise around 1B" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -9909,6 +9971,7 @@
     "namePrefix" : "SW",
     "description" : "Several variations of Freeway Blade switches",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the first terminal; with 'Angle' 0 the terminals run up from it in a straight line 0.15in apart. 'Angle' rotates the switch clockwise in degrees" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -9965,22 +10028,22 @@
           "positionCount" : 6,
           "positions" : [ {
             "name" : "1",
-            "connected" : [ ]
+            "connected" : [ [ 1, 3 ] ]
           }, {
             "name" : "2",
-            "connected" : [ ]
+            "connected" : [ [ 0, 4 ], [ 1, 3 ], [ 1, 6 ], [ 3, 6 ] ]
           }, {
             "name" : "3",
-            "connected" : [ ]
+            "connected" : [ [ 0, 4 ], [ 3, 6 ] ]
           }, {
             "name" : "4",
-            "connected" : [ [ 0, 6 ], [ 1, 5 ] ]
+            "connected" : [ [ 0, 6 ], [ 1, 3 ], [ 1, 5 ], [ 3, 5 ] ]
           }, {
             "name" : "5",
-            "connected" : [ ]
+            "connected" : [ [ 1, 6 ], [ 2, 3 ], [ 2, 5 ], [ 3, 5 ] ]
           }, {
             "name" : "6",
-            "connected" : [ ]
+            "connected" : [ [ 1, 4 ], [ 2, 3 ], [ 2, 6 ], [ 3, 6 ] ]
           } ]
         }
       }, {
@@ -10022,34 +10085,34 @@
           "positionCount" : 10,
           "positions" : [ {
             "name" : "1",
-            "connected" : [ ]
+            "connected" : [ [ 0, 7 ], [ 1, 6 ] ]
           }, {
             "name" : "2",
-            "connected" : [ ]
+            "connected" : [ [ 0, 3 ], [ 0, 7 ], [ 1, 6 ], [ 3, 7 ] ]
           }, {
             "name" : "3",
-            "connected" : [ ]
+            "connected" : [ [ 3, 7 ] ]
           }, {
             "name" : "4",
-            "connected" : [ ]
+            "connected" : [ [ 3, 7 ], [ 3, 8 ], [ 6, 9 ], [ 7, 8 ] ]
           }, {
             "name" : "5",
-            "connected" : [ ]
+            "connected" : [ [ 6, 9 ], [ 7, 8 ] ]
           }, {
             "name" : "6",
-            "connected" : [ ]
+            "connected" : [ [ 0, 7 ], [ 2, 5 ], [ 4, 9 ] ]
           }, {
             "name" : "7",
-            "connected" : [ ]
+            "connected" : [ [ 0, 3 ], [ 0, 7 ], [ 0, 8 ], [ 1, 6 ], [ 1, 9 ], [ 3, 7 ], [ 3, 8 ], [ 6, 9 ], [ 7, 8 ] ]
           }, {
             "name" : "8",
-            "connected" : [ [ 0, 9 ] ]
+            "connected" : [ [ 0, 9 ], [ 1, 6 ], [ 7, 8 ] ]
           }, {
             "name" : "9",
-            "connected" : [ ]
+            "connected" : [ [ 0, 7 ], [ 0, 8 ], [ 1, 6 ], [ 1, 9 ], [ 6, 9 ], [ 7, 8 ] ]
           }, {
             "name" : "10",
-            "connected" : [ ]
+            "connected" : [ [ 1, 6 ], [ 3, 9 ], [ 7, 8 ] ]
           } ]
         }
       }, {
@@ -10094,34 +10157,34 @@
           "positionCount" : 10,
           "positions" : [ {
             "name" : "1",
-            "connected" : [ ]
+            "connected" : [ [ 0, 6 ] ]
           }, {
             "name" : "2",
-            "connected" : [ ]
+            "connected" : [ [ 0, 1 ], [ 0, 6 ], [ 1, 6 ] ]
           }, {
             "name" : "3",
-            "connected" : [ ]
+            "connected" : [ [ 0, 2 ], [ 0, 6 ], [ 0, 10 ], [ 2, 6 ], [ 2, 10 ], [ 4, 8 ], [ 4, 9 ], [ 6, 10 ], [ 8, 9 ] ]
           }, {
             "name" : "4",
-            "connected" : [ ]
+            "connected" : [ [ 3, 6 ], [ 3, 10 ], [ 6, 10 ] ]
           }, {
             "name" : "5",
-            "connected" : [ ]
+            "connected" : [ [ 6, 10 ] ]
           }, {
             "name" : "6",
-            "connected" : [ ]
+            "connected" : [ [ 0, 6 ], [ 5, 9 ] ]
           }, {
             "name" : "7",
-            "connected" : [ ]
+            "connected" : [ [ 0, 6 ], [ 0, 7 ], [ 5, 9 ], [ 6, 7 ] ]
           }, {
             "name" : "8",
-            "connected" : [ ]
+            "connected" : [ [ 6, 7 ] ]
           }, {
             "name" : "9",
-            "connected" : [ ]
+            "connected" : [ [ 5, 8 ], [ 6, 7 ], [ 6, 10 ], [ 7, 10 ] ]
           }, {
             "name" : "10",
-            "connected" : [ ]
+            "connected" : [ [ 5, 8 ], [ 6, 10 ] ]
           } ]
         }
       } ]
@@ -10133,7 +10196,7 @@
     "namePrefix" : "PKP",
     "description" : "Double-coil humbucker guitar pickup (PAF, Mini Humbuckers, Filtertrons)",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation", "The wiring analysis takes the coils as in phase when the North coil has its Start and the South coil its Finish on the side of the output jack's Tip: the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground; in parallel, North Start and South Finish go to hot and North Finish and South Start to ground" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10224,7 +10287,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil pickup for Jazz Bass and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "Set 'Coil(s)' to North for a regular single coil and South for a reverse-wound, reverse-polarity (RWRP) one; Humbucking gives the two coils of a four-conductor humbucker, and the Stacked values a stacked humbucker with two leads, which the wiring analysis takes as hum-cancelling on its own", "The wiring analysis takes coils as in phase when they all run the same way between the output jack's Tip and Sleeve: a single coil, North or South, runs from Start at the Tip side to Finish at the Sleeve side, and a North and a South coil in phase cancel hum. With 'Coil(s)' Humbucking the South coil runs the other way, Finish at the Tip side, so the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10683,7 +10746,7 @@
     "namePrefix" : "PKP",
     "description" : "Split-coil pickup for P-Bass and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "Set 'Coil(s)' to North for a regular single coil and South for a reverse-wound, reverse-polarity (RWRP) one; Humbucking gives the two coils of a four-conductor humbucker, and the Stacked values a stacked humbucker with two leads, which the wiring analysis takes as hum-cancelling on its own", "The wiring analysis takes coils as in phase when they all run the same way between the output jack's Tip and Sleeve: a single coil, North or South, runs from Start at the Tip side to Finish at the Sleeve side, and a North and a South coil in phase cancel hum. With 'Coil(s)' Humbucking the South coil runs the other way, Finish at the Tip side, so the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10796,7 +10859,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil P-90 guitar pickup, both \"dog ear\" and \"soap bar\"",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "Set 'Coil(s)' to North for a regular single coil and South for a reverse-wound, reverse-polarity (RWRP) one; Humbucking gives the two coils of a four-conductor humbucker, and the Stacked values a stacked humbucker with two leads, which the wiring analysis takes as hum-cancelling on its own", "The wiring analysis takes coils as in phase when they all run the same way between the output jack's Tip and Sleeve: a single coil, North or South, runs from Start at the Tip side to Finish at the Sleeve side, and a North and a South coil in phase cancel hum. With 'Coil(s)' Humbucking the South coil runs the other way, Finish at the Tip side, so the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10914,6 +10977,7 @@
     "namePrefix" : "SW",
     "description" : "Fender S1 4 pole pushbutton switch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor, not a terminal, 0.05in below the centre of the 1in disc. The twelve lugs sit in four groups of three on a 4.5mm grid around the disc centre: with 'Orientation' DEFAULT lugs 2-4 run left to right 9mm above the centre, 5-7 top to bottom 9mm right of it, 8-10 left to right 9mm below it and 11-13 top to bottom 9mm left of it; the other orientations rotate this clockwise around the anchor", "Give the switch the same 'Orientation' as the panel potentiometer it is mounted on; the switching is not symmetric under rotation, and DEFAULT matches the pot's DEFAULT" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -10991,6 +11055,7 @@
     "namePrefix" : "SW",
     "description" : "Several variations of Schaller Megaswitch",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the first terminal; with 'Angle' 0 the terminals run up from it in a straight line 0.15in apart. Type M has two columns of twelve 0.1in apart, about 2.6mm between columns: A to L run up from the first point, M to X come back down the column to its right, so X sits beside A. 'Angle' rotates the switch clockwise in degrees" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11241,7 +11306,7 @@
     "namePrefix" : "PKP",
     "description" : "Single coil guitar pickup, both Strat and Tele style",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points form a row 0.1in apart along the bottom edge of the pickup in 'Orientation' DEFAULT, centred under it, and turn with the pickup, so they stay along that edge in every orientation; a single coil uses only the middle two as terminals" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "Set 'Coil(s)' to North for a regular single coil and South for a reverse-wound, reverse-polarity (RWRP) one; Humbucking gives the two coils of a four-conductor humbucker, and the Stacked values a stacked humbucker with two leads, which the wiring analysis takes as hum-cancelling on its own", "The wiring analysis takes coils as in phase when they all run the same way between the output jack's Tip and Sleeve: a single coil, North or South, runs from Start at the Tip side to Finish at the Sleeve side, and a North and a South coil in phase cancel hum. With 'Coil(s)' Humbucking the South coil runs the other way, Finish at the Tip side, so the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground", "The four control points form a row 0.1in apart along the bottom edge of the pickup in 'Orientation' DEFAULT, centred under it, and turn with the pickup, so they stay along that edge in every orientation; a single coil uses only the middle two as terminals" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11374,7 +11439,7 @@
     "namePrefix" : "PKP",
     "description" : "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation" ],
+    "notes" : [ "With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise", "The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation", "The wiring analysis takes the coils as in phase when the North coil has its Start and the South coil its Finish on the side of the output jack's Tip: the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground; in parallel, North Start and South Finish go to hot and North Finish and South Start to ground" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -11411,8 +11476,19 @@
       "defaultValue" : "#759DAF"
     } ],
     "pinout" : {
-      "pinCount" : 4,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "North Start"
+      }, {
+        "i" : 1,
+        "label" : "North Finish"
+      }, {
+        "i" : 2,
+        "label" : "South Finish"
+      }, {
+        "i" : 3,
+        "label" : "South Start"
+      } ]
     }
   }, {
     "name" : "Auto-Wrap Label",
@@ -15971,6 +16047,7 @@
     "namePrefix" : "L",
     "description" : "Transformer coil symbol. Use multiple instances together with \"Transformer Core Symbol\"<br>to draw transformer schematics.",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The two control points are the ends of the winding, 'Size' apart: in 'Orientation' DEFAULT the second is below the first and the winding is drawn to the right of them, and _90, _180 and _270 turn this clockwise, putting the second point to the left of, above and to the right of the first" ],
     "properties" : [ {
       "name" : "Color",
       "type" : "Color",
