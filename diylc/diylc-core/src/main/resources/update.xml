@@ -701,6 +701,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Analyze Guitar Diagrams' ignored 'Stingray Bass Pickup', so a diagram built around it was reported as having no pickups connected to the output jack, and its coils were left out of the hum-cancelling and phase checks</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

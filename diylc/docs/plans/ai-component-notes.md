@@ -72,7 +72,7 @@ that names the alternative; alternatives should point at each other (Jumper and 
 | Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor lug, lug direction per orientation, 16mm/25mm sizes), `DIL_IC` |
 | Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing) |
 | Terminals | `Eyelet`, `Turret` (every end inside the circle connects), `GroundSymbol` (all symbols are one GND node) |
-| Guitar | `AbstractGuitarPickup` (coils horizontal in DEFAULT, clockwise rotation), `AbstractSingleOrHumbuckerPickup` ('Coil(s)' values; coil direction the wiring analysis takes as in phase), `SingleCoilPickup` (terminals along the bottom edge), `HumbuckerPickup` (in-phase series and parallel connections), `P90Pickup`, `JazzBassPickup`, `PBassPickup`, `StingrayBassPickup` (terminals down the top-right edge; all turn with the body), `LeverSwitch`, `LPSwitch`, `FreewayBlade`, `SchallerMegaSwitch`, `Freeway3x3_03`, `Freeway3x3_05` (terminal layout relative to the anchor), `S1Switch` (lug grid around the disc; same 'Orientation' as its pot) |
+| Guitar | `AbstractGuitarPickup` (coils horizontal in DEFAULT, clockwise rotation), `AbstractSingleOrHumbuckerPickup` ('Coil(s)' values; coil direction the wiring analysis takes as in phase), `SingleCoilPickup` (terminals along the bottom edge), `HumbuckerPickup`, `P90Pickup`, `JazzBassPickup`, `PBassPickup`, `StingrayBassPickup` (terminals down the top-right edge; all turn with the body; the humbucker and Stingray also give the in-phase series and parallel connections), `LeverSwitch`, `LPSwitch`, `FreewayBlade`, `SchallerMegaSwitch`, `Freeway3x3_03`, `Freeway3x3_05` (terminal layout relative to the anchor), `S1Switch` (lug grid around the disc; same 'Orientation' as its pot) |
 | Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key) |
 | Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip) |
 
@@ -92,9 +92,6 @@ Open items:
   up obviously with the pad columns and needs reading carefully before it can be noted.
 - `ProtoBoard780` and `EurorackStripboard`: no notes. 780 shifts its grid by `X_OFFSET` and half a
   pitch when `translateToGrid` is set; Eurorack has an irregular pad map.
-- `StingrayBassPickup` is in the guitar analyzer's pickup types but names neither its terminals nor
-  its coil links, so the analyzer cannot trace a signal through it and no phase note is true for
-  it. Give it the humbucker's node and link names before noting its wiring.
 - `Breadboard` draws both power rails as `+` then `-` left to right rather than mirrored. Confirm
   this is intended before relying on the rail note.
 

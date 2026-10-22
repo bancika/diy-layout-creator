@@ -32,6 +32,7 @@ import org.diylc.components.electromechanical.OpenJack1_4;
 import org.diylc.components.guitar.AbstractGuitarPickup.Polarity;
 import org.diylc.components.guitar.HumbuckerPickup;
 import org.diylc.components.guitar.SingleCoilPickup;
+import org.diylc.components.guitar.StingrayBassPickup;
 import org.diylc.components.passive.PotentiometerPanel;
 import org.diylc.components.passive.RadialCeramicDiskCapacitor;
 
@@ -502,6 +503,27 @@ public class GuitarDiagramAnalyzerTests {
     assertEquals("(Pickup1.North<- || Pickup2.South<-)", s);
 
     List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("This configuration is hum-cancelling"));
+    assertTrue(notes.contains("All pickup coils are wired in-phase"));
+  }
+
+  @Test
+  public void testStingrayPickupSeries() throws TreeException {
+    OpenJack1_4 jack = new OpenJack1_4();
+    StingrayBassPickup pickup = new StingrayBassPickup();
+    pickup.setName("Pickup");
+    Netlist netlist = new Netlist(Arrays.<IDIYComponent<?>>asList(jack, pickup));
+    Group tipGroup = new Group().connect(jack, 0).connect(pickup, 0);
+    Group coilTapGroup = new Group().connect(pickup, 1).connect(pickup, 2);
+    Group sleeveGroup = new Group().connect(jack, 1).connect(pickup, 3);
+    netlist.add(tipGroup).add(coilTapGroup).add(sleeveGroup);
+    GuitarDiagramAnalyzer analyzer = new GuitarDiagramAnalyzer();
+    Tree tree = analyzer.constructTree(netlist);
+    String s = tree.toString();
+    assertEquals("(Pickup.North<- + Pickup.South<-)", s);
+
+    List<String> notes = analyzer.collectNotes(netlist);
+    assertTrue(notes.contains("'Pickup' pickup wired in humbucking mode with series coils"));
     assertTrue(notes.contains("This configuration is hum-cancelling"));
     assertTrue(notes.contains("All pickup coils are wired in-phase"));
   }
