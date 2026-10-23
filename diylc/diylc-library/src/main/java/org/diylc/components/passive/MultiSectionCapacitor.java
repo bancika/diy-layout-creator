@@ -48,6 +48,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -57,6 +58,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Each entry in 'Value' is one section; the first control point is the common negative lug, marked '-', and there is one further lug per section, marked '+'")
+@AiNote("The first control point is the anchor and the can is centred below it in DEFAULT 'Orientation'. With one section the '+' lug is 0.4 x 'Diameter' straight below the anchor; with two the '+' lugs sit 0.3 x 'Diameter' below it, one to the right and one to the left; with three or more all lugs lie evenly spaced clockwise from the anchor on a circle of 0.6 x 'Diameter' whose top is the anchor. The other orientations rotate this around the anchor")
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)

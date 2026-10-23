@@ -69,14 +69,16 @@ that names the alternative; alternatives should point at each other (Jumper and 
 | Boards | `AbstractBoard`, `BlankBoard`, `PerfBoard`, `EyeletBoard`, `MarshallPerfBoard`, `VeroBoard`, `TriPadBoard`, `Breadboard`, `ProtoBoard`, `TerminalStrip`, `TagStrip` |
 | Leaded | `Resistor`, `DiodePlastic`, `AxialFilmCapacitor`, `DiodeGlass` (body between the points, standing when closer than 'Length'; the last two also name 'Reverse (standing)'), `AxialElectrolyticCapacitor` (no standing mode), `LED` (own 'Lead Spacing', 'Size' is the lens) |
 | Radial | `AbstractRadialComponent` ('Lead Spacing'), `RadialFilmCapacitor` (same, plus 'Length'/'Width' vs datasheet), `RadialElectrolytic` ('Diameter', 'Height' only when folded), `RadialCeramicDiskCapacitor` (disc diameter and thickness), `TantalumCapacitor`, `RadialInductor`, `Buzzer` (same 'Diameter'/'Height' note as the electrolytic) |
-| Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor, lug direction per orientation, 16mm/25mm sizes), `DIL_IC` |
+| Multi-pin | `TransistorTO92`, `PotentiometerPanel` (view, anchor, lug direction per orientation, 16mm/25mm sizes), `DIL_IC`, `SIL_IC`, `TransistorTO220` (tab side, folded layout, datasheet reading of 'Pinout'), `TransistorTO1` (pin triangle, grid spacing), `MultiSectionCapacitor` (common '-' lug, lug layout per section count), `MiniRelay` (pin columns and offsets per 'Size' and 'Type'), `AudioTransformer` (winding columns, centre taps), `PinHeader` ('Columns' run down from pin 1, 'Rows' stack sideways; numbering and 'Node Names' order) |
 | Connectivity | `Jumper`, `HookupWire`, `CopperTrace`, `CurvedTrace`, `SolderPad`, `Dot` (selection notes that name each other; both traces are copper along their whole length; Dot connects nothing), `TwistedWire` (selection note: one conductor like Hookup Wire, for looks only; use a pair of Hookup or Right Angle Wires for an analyzable circuit) |
 | Terminals | `Eyelet`, `Turret` (every end inside the circle connects), `GroundSymbol` (all symbols are one GND node) |
 | Guitar | `AbstractGuitarPickup` (coils horizontal in DEFAULT, clockwise rotation), `AbstractSingleOrHumbuckerPickup` ('Coil(s)' values; coil direction the wiring analysis takes as in phase), `SingleCoilPickup` (terminals along the bottom edge), `HumbuckerPickup`, `P90Pickup`, `JazzBassPickup`, `PBassPickup`, `StingrayBassPickup` (terminals down the top-right edge; all turn with the body; the humbucker and Stingray also give the in-phase series and parallel connections), `LeverSwitch`, `LPSwitch`, `FreewayBlade`, `SchallerMegaSwitch`, `Freeway3x3_03`, `Freeway3x3_05` (terminal layout relative to the anchor), `S1Switch` (lug grid around the disc; same 'Orientation' as its pot) |
-| Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key), `CliffJack1_4` (named lugs on a square, nose direction), `PilotLampHolder` (which holes belong to which lug; the two holes of a lug are not joined), `FuseHolderPanel` |
-| Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip), `TransformerCoil` (winding side per orientation) |
+| Lugs and sockets | `MiniToggleSwitch` (pole grid; HORIZONTAL turns it counterclockwise), `TrimmerPotentiometer` (wiper offset per 'Type'), `OpenJack1_4` (lugs around a centre 0.5in below the Tip lug), `TubeSocket` (anchor is the centre; pins clockwise from the gap or key), `CliffJack1_4` (named lugs on a square, nose direction), `PilotLampHolder` (which holes belong to which lug; the two holes of a lug are not joined), `FuseHolderPanel`, `ClosedJack1_4`, `RCAJack`, `PlasticDCJack` (which lug is sleeve and which centre pin), `IECSocket` (earth lug on the chamfered side), `RotarySelectorSwitch` (position lugs around the centre) |
+| Misc | `BOM`, `TraceCut` (on-hole cut leaves the hole unconnected; 'Cut Orientation' is the cut, not the strip), `TransformerCoil` (winding side per orientation), `ChassisPanel` (five panels for an exploded chassis, three for top, front and back, the top in the centre, front above it, back below it, left and right sides on their own edges; not conductive) |
 
 `Label` deliberately has none: its alignment properties already say how the text sits on the anchor.
+Nor does `TransformerCore`: it is two lines between two free points, and its description already
+pairs it with the coil symbol.
 
 How the netlist connects things, which several notes rely on (`NetlistBuilder`): control points at
 the same coordinates are one node; a copper area connects every terminal it covers and every copper
@@ -96,6 +98,15 @@ Open items:
 - `Breadboard` draws both power rails as `+` then `-` left to right rather than mirrored: on each
   side the red line runs beside the outer rail column and the blue beside the inner one. The rail
   note matches the drawing; confirm it matches real boards.
+- `IECSocket`, `PlasticDCJack`, `MiniRelay` and `MultiSectionCapacitor` have no
+  `getControlPointNodeName`, so the pinout lists their terminals by number. The notes name the IEC
+  earth lug, the DC jack's sleeve and centre pin and the capacitor's common lug from the drawing;
+  line and neutral, the DC jack's middle lug and the relay's coil and contact pins are not said
+  anywhere. Naming them in code would serve the netlist as well as the model.
+- `MiniRelay` and `RotarySelectorSwitch` do not implement `ISwitch`, so the netlist never joins a
+  relay contact or the selector's Common to a position. Not something a note can work around.
+- `BatterySnap9V` has a single control point and no lead terminals, so + and - cannot be told apart
+  or wired separately. It needs a terminal per lead in code; until then it gets no note.
 
 ## 4. Priority
 
@@ -124,7 +135,8 @@ builds) are covered first.
 
 ## 5. Next steps
 
-1. The rest of the established circuit types below Tier 3 in the usage count.
+1. The rest of the established circuit types below Tier 3 in the usage count. Done down to 6
+   projects, see section 3; below that each type appears in a handful of projects at most.
 2. The board leftovers and the `PotentiometerPanel` items in section 3.
 3. Maker components, once maker support settles: list them and see what the board notes already
    cover before writing any.

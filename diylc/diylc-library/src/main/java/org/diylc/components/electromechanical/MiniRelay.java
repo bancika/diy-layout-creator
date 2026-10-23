@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -53,6 +54,8 @@ import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the first column of pins runs down from it, the second column sits to the right and the indent is at the anchor's end. The other orientations rotate this around the anchor")
+@AiNote("Pin offsets down each column from the anchor: Miniature DPDT 0, 0.3, 0.5 and 0.7in, SPDT 0, 0.5 and 0.7in, columns 0.3in apart; Ultra_miniature DPDT 0, 0.2, 0.3 and 0.4in, SPDT 0, 0.3 and 0.4in, columns 0.2in apart")
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)

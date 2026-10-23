@@ -55,7 +55,7 @@ import org.diylc.utils.Constants;
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor")
 @AiNote("Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead")
 @AiNote("'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written")
-@AiNote("On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in;,or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board")
+@AiNote("On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board")
 @ComponentDescriptor(name = "Transistor (TO-92)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class,

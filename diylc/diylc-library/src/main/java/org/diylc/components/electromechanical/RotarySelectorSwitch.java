@@ -46,6 +46,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -53,6 +54,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the Common lug and the centre of the switch is 20mm above it in DEFAULT 'Orientation'; the position lugs 1, 2, ... follow in 45 degree steps counterclockwise around that centre, so lug 1 is to the lower right. The other orientations rotate everything around the Common lug")
 @ComponentDescriptor(name = "Rotary Selector Switch", author = "Branislav Stojkovic",
     category = "Electro-Mechanical", creationMethod = CreationMethod.SINGLE_CLICK,
     instanceNamePrefix = "SW",

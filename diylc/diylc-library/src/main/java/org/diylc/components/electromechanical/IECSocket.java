@@ -45,12 +45,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the lug centred on the chamfered side of the outline, the earth lug of a standard inlet; with 'Orientation' DEFAULT the other two lugs sit 0.3in to its left and right and 0.2in below it, and the mounting holes are 40mm apart on the line halfway between. The other orientations rotate this around the first lug")
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted IEC power socket", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "IEC", enableCache = true)

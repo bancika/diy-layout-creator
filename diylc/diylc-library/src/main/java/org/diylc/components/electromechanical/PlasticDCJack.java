@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -51,6 +52,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the sleeve lug; the second lug is 0.1in to the right of and 0.1in below it, and the third, the centre pin lug, is 0.1in to the left of and 0.2in below it. The round body is centred 0.1in below the first lug")
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, enableCache = true)
