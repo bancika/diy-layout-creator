@@ -705,3 +705,5 @@ Transmitting your request into the cyber-ether...|आपका अनुरो�
 The AI is busy reading a textbook to answer this...|इसका जवाब देने के लिए AI एक पाठ्यपुस्तक पढ़ रहा है...
 Replace %s with %s|%s को %s से बदलें
 Reconnect %s to %s|%s को %s से फिर से जोड़ें
+Editing your circuit:|आपके सर्किट को संपादित करना:
+Generating new layouts:|नए लेआउट बनाना:

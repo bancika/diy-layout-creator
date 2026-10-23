@@ -706,3 +706,5 @@ Transmitting your request into the cyber-ether...|Transmission de votre demande 
 The AI is busy reading a textbook to answer this...|L'IA lit un manuel pour répondre à cette question...
 Replace %s with %s|Remplacer %s par %s
 Reconnect %s to %s|Reconnecter %s à %s
+Editing your circuit:|La modification de votre circuit :
+Generating new layouts:|La génération de nouvelles implantations :

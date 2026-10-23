@@ -711,3 +711,5 @@ Transmitting your request into the cyber-ether...|Übertrage Ihre Anfrage in den
 The AI is busy reading a textbook to answer this...|Die KI liest gerade ein Lehrbuch, um das zu beantworten...
 Replace %s with %s|%s durch %s ersetzen
 Reconnect %s to %s|%s mit %s neu verbinden
+Editing your circuit:|Der Bearbeitung Ihrer Schaltung:
+Generating new layouts:|Der Erstellung neuer Layouts:

@@ -703,3 +703,5 @@ Transmitting your request into the cyber-ether...|Šaljem vaš zahtev u sajber-e
 The AI is busy reading a textbook to answer this...|AI čita udžbenik da bi odgovorio na ovo...
 Replace %s with %s|Zameni %s sa %s
 Reconnect %s to %s|Ponovo poveži %s sa %s
+Editing your circuit:|Izmenama vašeg kola:
+Generating new layouts:|Generisanju novih rasporeda:

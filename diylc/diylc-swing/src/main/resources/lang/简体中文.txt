@@ -705,3 +705,5 @@ Transmitting your request into the cyber-ether...|正在把您的请求发送到
 The AI is busy reading a textbook to answer this...|AI 正在翻阅教科书来回答这个问题……
 Replace %s with %s|将 %s 替换为 %s
 Reconnect %s to %s|将 %s 重新连接到 %s
+Editing your circuit:|编辑您的电路：
+Generating new layouts:|生成新的布局：

@@ -488,6 +488,8 @@ public class ChatbotPane extends JPanel {
             ChatbotService.electronicsQuestions.length)] + "</span>'<br>\n" +
             "- <b>" + LangUtil.translate("DIYLC features and usage:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.diylcQuestions[r.nextInt(ChatbotService.diylcQuestions.length)] + "</span>'<br>\n" +
             "- <b>" + LangUtil.translate("Your current circuit project:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.circuitQuestions[r.nextInt(ChatbotService.circuitQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("Editing your circuit:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.editQuestions[r.nextInt(ChatbotService.editQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("Generating new layouts:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.generationQuestions[r.nextInt(ChatbotService.generationQuestions.length)] + "</span>'<br>\n" +
             //            "</ul><br>\n" +
             "<br>\n" +
             "<div class='assistant'>" + LangUtil.translate("Feel free to ask your own question or use one of these examples to get started!") + "</div><br>\n";

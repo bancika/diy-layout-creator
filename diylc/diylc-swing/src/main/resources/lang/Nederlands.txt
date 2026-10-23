@@ -712,3 +712,5 @@ Transmitting your request into the cyber-ether...|Je verzoek de cyberether in st
 The AI is busy reading a textbook to answer this...|De AI leest een studieboek om dit te beantwoorden...
 Replace %s with %s|%s vervangen door %s
 Reconnect %s to %s|%s opnieuw verbinden met %s
+Editing your circuit:|Uw schakeling bewerken:
+Generating new layouts:|Nieuwe layouts genereren:
