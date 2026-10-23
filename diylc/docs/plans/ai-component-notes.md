@@ -81,7 +81,9 @@ that names the alternative; alternatives should point at each other (Jumper and 
 How the netlist connects things, which several notes rely on (`NetlistBuilder`): control points at
 the same coordinates are one node; a copper area connects every terminal it covers and every copper
 area it overlaps on the same layer; an `IContinuity` part such as a wire joins its own points. A
-component with a null node name, like Dot, takes no part.
+component with a null node name, like Dot, takes no part. A series part keeps its terminals on
+separate nets even when it conducts: `FuseHolderPanel` and the fuse symbol sit between two nets like
+a resistor, and joining their ends would read as the fuse shorted out.
 
 Open items:
 
@@ -91,8 +93,6 @@ Open items:
   up obviously with the pad columns and needs reading carefully before it can be noted.
 - `ProtoBoard780` and `EurorackStripboard`: no notes. 780 shifts its grid by `X_OFFSET` and half a
   pitch when `translateToGrid` is set; Eurorack has an irregular pad map.
-- `FuseHolderPanel` and the fuse symbol never join their two ends in the netlist, even with
-  'Fuse' on, so a mains path through a fuse reads as open. Decide whether that is intended.
 - `Breadboard` draws both power rails as `+` then `-` left to right rather than mirrored: on each
   side the red line runs beside the outer rail column and the blue beside the inner one. The rail
   note matches the drawing; confirm it matches real boards.
