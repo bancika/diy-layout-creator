@@ -547,7 +547,7 @@
     "pinout" : {
       "drivers" : [ "Terminals" ],
       "pinCountExpression" : "Terminals",
-      "labels" : "sequential",
+      "labels" : "none",
       "pinCountSamples" : {
         "7" : 7,
         "8" : 8,
@@ -1671,16 +1671,8 @@
       "defaultValue" : "DEFAULT"
     } ],
     "pinout" : {
-      "pins" : [ {
-        "i" : 0,
-        "label" : "Tip"
-      }, {
-        "i" : 1,
-        "label" : "Sleeve"
-      }, {
-        "i" : 2,
-        "label" : "Sleeve"
-      } ]
+      "pinCount" : 3,
+      "labels" : "none"
     }
   }, {
     "name" : "Solder Pad",
@@ -7121,6 +7113,7 @@
     "namePrefix" : "BTR",
     "description" : "",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the + terminal, at the middle of the snap's flat end where the leads come out; the - terminal is 0.1in below it in DEFAULT 'Orientation', the body extends to the right and the other orientations rotate this around the + terminal" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7141,8 +7134,13 @@
       "defaultValue" : "DEFAULT"
     } ],
     "pinout" : {
-      "pinCount" : 1,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "+"
+      }, {
+        "i" : 1,
+        "label" : "-"
+      } ]
     }
   }, {
     "name" : "Chassis Panel",
@@ -7151,6 +7149,7 @@
     "namePrefix" : "CP",
     "description" : "One side of a chassis, with or withouth rounded edges",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Each instance is one side of the chassis: an exploded view of a whole chassis takes five panels, while the top, front and back alone take three, which is typical for pedals and amplifiers. The top panel goes in the centre with the front panel against its upper edge and the back panel against its lower edge; in the five-panel view the left side panel goes against its left edge and the right side panel against its right edge", "The panel is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7340,6 +7339,7 @@
     "namePrefix" : "J",
     "description" : "Enclosed panel mount 1/4\" phono jack",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the Tip lug; with 'Orientation' DEFAULT the Sleeve lug is 0.8in to the right of it, near the far end of the body, and for STEREO the Ring lug is 0.2in below the Tip lug. The body runs to the right from the Tip lug with the threaded bushing beyond it, and the other orientations rotate all of this around the Tip lug" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7739,7 +7739,7 @@
     "namePrefix" : "FH",
     "description" : "Panel mounted fuse holder",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them", "Set 'Fuse' on when the holder carries a fuse: only then does the netlist join the two lugs, and with the default off the circuit through it is open" ],
+    "notes" : [ "The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7795,6 +7795,7 @@
     "namePrefix" : "IEC",
     "description" : "Panel mounted IEC power socket",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The Earth lug is centred on the chamfered side of the outline; with 'Orientation' DEFAULT the Line lug sits 0.3in to its left and the Neutral lug 0.3in to its right, both 0.2in below it, and the mounting holes are 40mm apart on the line halfway between. The other orientations rotate this around the Earth lug" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7820,8 +7821,16 @@
       "defaultValue" : "DEFAULT"
     } ],
     "pinout" : {
-      "pinCount" : 3,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "Earth"
+      }, {
+        "i" : 1,
+        "label" : "Line"
+      }, {
+        "i" : 2,
+        "label" : "Neutral"
+      } ]
     }
   }, {
     "name" : "Mini Relay",
@@ -7830,6 +7839,7 @@
     "namePrefix" : "RY",
     "description" : "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the first column of pins runs down from it, the second column sits to the right and the indent is at the anchor's end. The other orientations rotate this around the anchor", "Pin offsets down each column from the anchor: Miniature DPDT 0, 0.3, 0.5 and 0.7in, SPDT 0, 0.5 and 0.7in, columns 0.3in apart; Ultra_miniature DPDT 0, 0.2, 0.3 and 0.4in, SPDT 0, 0.3 and 0.4in, columns 0.2in apart" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -7877,14 +7887,54 @@
         "when" : {
           "Type" : "SPDT"
         },
-        "pinCount" : 6,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "COM1"
+        }, {
+          "i" : 1,
+          "label" : "Coil1"
+        }, {
+          "i" : 2,
+          "label" : "NC"
+        }, {
+          "i" : 3,
+          "label" : "COM2"
+        }, {
+          "i" : 4,
+          "label" : "Coil2"
+        }, {
+          "i" : 5,
+          "label" : "NO"
+        } ]
       }, {
         "when" : {
           "Type" : "DPDT"
         },
-        "pinCount" : 8,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "Coil1"
+        }, {
+          "i" : 1,
+          "label" : "COM1"
+        }, {
+          "i" : 2,
+          "label" : "NC1"
+        }, {
+          "i" : 3,
+          "label" : "NO1"
+        }, {
+          "i" : 4,
+          "label" : "Coil2"
+        }, {
+          "i" : 5,
+          "label" : "COM2"
+        }, {
+          "i" : 6,
+          "label" : "NC2"
+        }, {
+          "i" : 7,
+          "label" : "NO2"
+        } ]
       } ]
     }
   }, {
@@ -8454,6 +8504,7 @@
     "namePrefix" : "PH",
     "description" : "PCB mount male pin header with editable number or pins and pin spacing",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is pin 1; with 'Orientation' DEFAULT 'Columns' sets how many pins run straight down from it and 'Rows' how many such lines sit side by side to the right, all 'Spacing' apart, so the default 2 'Rows' x 5 'Columns' is two vertical lines of five pins. The other orientations rotate this around pin 1", "Pins are numbered down the first line and then down the next, so in the default header pin 6 is beside pin 1; 'Node Names' is a comma-separated list in that order, and a blank entry keeps the pin's number" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8516,6 +8567,7 @@
     "namePrefix" : "J",
     "description" : "Panel mount plastic DC jack",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The Switch lug is 0.1in to the right of and 0.1in below the Sleeve lug, and the Center lug 0.1in to the left of and 0.2in below it; the round body is centred 0.1in below the Sleeve lug" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8534,8 +8586,16 @@
       "type" : "String"
     } ],
     "pinout" : {
-      "pinCount" : 3,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "Sleeve"
+      }, {
+        "i" : 1,
+        "label" : "Switch"
+      }, {
+        "i" : 2,
+        "label" : "Center"
+      } ]
     }
   }, {
     "name" : "Polygonal Cutout",
@@ -8581,6 +8641,7 @@
     "namePrefix" : "J",
     "description" : "Panel mount RCA phono jack socket",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the Tip contact at the centre of the jack; the Sleeve lug is 0.5in below it in DEFAULT 'Orientation', and the other orientations rotate it around the centre" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -8649,6 +8710,7 @@
     "namePrefix" : "SW",
     "description" : "Single pole rotary switch, typically used for impedance selector",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the Common lug and the centre of the switch is 20mm above it in DEFAULT 'Orientation'; the position lugs 1, 2, ... follow in 45 degree steps counterclockwise around that centre, so lug 1 is to the lower right. The other orientations rotate everything around the Common lug" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12956,6 +13018,7 @@
     "namePrefix" : "TR",
     "description" : "Miniature PCB-mount signal transformer with EI core",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the top primary pin; with 'Orientation' DEFAULT the primary pins run down from it and the secondary pins form a matching column 'Winding Spacing' to the right. Each winding spans 2 x 'Lead Spacing', with a centre tap pin midway when 'Primary CT' or 'Secondary CT' is set and only its two ends otherwise. Pins are numbered down the primary, then down the secondary, and the other orientations rotate this around the first pin" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13089,6 +13152,7 @@
     "namePrefix" : "C",
     "description" : "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Each entry in 'Value' is one section; '+1', '+2', ... are the positive lugs of the sections in the order of the entries, and all sections share the '-' lug", "The '-' lug is the anchor and the can is centred below it in DEFAULT 'Orientation'. With one section the '+' lug is 0.4 x 'Diameter' straight below the anchor; with two the '+' lugs sit 0.3 x 'Diameter' below it, one to the right and one to the left; with three or more all lugs lie evenly spaced clockwise from the anchor on a circle of 0.6 x 'Diameter' whose top is the anchor. The other orientations rotate this around the anchor" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13151,8 +13215,19 @@
       "possibleUnits" : [ "MV", "V", "KV" ]
     } ],
     "pinout" : {
-      "pinCount" : 4,
-      "labels" : "sequential"
+      "pins" : [ {
+        "i" : 0,
+        "label" : "-"
+      }, {
+        "i" : 1,
+        "label" : "+1"
+      }, {
+        "i" : 2,
+        "label" : "+2"
+      }, {
+        "i" : 3,
+        "label" : "+3"
+      } ]
     }
   }, {
     "name" : "Potentiometer",
@@ -16981,6 +17056,7 @@
     "namePrefix" : "IC",
     "description" : "Single-in-line package IC",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the pins run straight down from it 'Pin Spacing' apart and the indent is at the anchor's end of the body. The other orientations rotate this around the anchor" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17052,6 +17128,7 @@
     "namePrefix" : "Q",
     "description" : "Transistor with small metal body",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17714,6 +17791,7 @@
     "namePrefix" : "Q",
     "description" : "Transistors with metal tab for heat sink mounting",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 0.1in apart, and the other orientations rotate this around the anchor", "Seen from above, the metal tab is on the right of the pin row in DEFAULT orientation and the printed front faces left; 'Folded' lays the body flat on the right of the pin row, 'Lead Length' away from it, with the tab and its mounting hole at the far end", "'Pinout' values list the pins as a datasheet does, facing the printed front with the legs down, left to right; pick the value that matches the part's datasheet as written" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18106,7 +18184,7 @@
     "namePrefix" : "Q",
     "description" : "Transistor with small plastic or epoxy body",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in;,or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

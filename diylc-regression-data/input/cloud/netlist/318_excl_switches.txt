@@ -22,7 +22,7 @@ Switch setup: [ ALL ]
 	100K 1W.1 <-> 10K 2W.2 <-> V7.6
 	100K 1W.2 <-> V7.1 <-> V7.7
 	10K 1W.2 <-> V3 Cathode.1 <-> V3A Grid Leak.2 <-> V3B Grid Leak.2
-	20uF 500V.- <-> 510 3W.2 <-> Bleeder/Divider.2 <-> IEC1.1 <-> Power Transformer.5 <-> R1.2
+	20uF 500V.- <-> 510 3W.2 <-> Bleeder/Divider.2 <-> IEC1.Earth <-> Power Transformer.5 <-> R1.2
 	40uF  500V.+ <-> Choke 4H 50ma.2 <-> D1.K <-> D2.K
 	40uF  500V.- <-> Bypass.- <-> High Input Jack.Shunt <-> High Input Jack.Sleeve <-> Input.1 <-> Preamp Volume.1 <-> V1A Cathode.1 <-> V1B Cathode.1
 	Attenuator.1 <-> Input 2.Tip <-> Treble Peak.2

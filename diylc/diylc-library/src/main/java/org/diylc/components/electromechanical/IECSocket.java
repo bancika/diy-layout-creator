@@ -52,7 +52,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@AiNote("The first control point is the lug centred on the chamfered side of the outline, the earth lug of a standard inlet; with 'Orientation' DEFAULT the other two lugs sit 0.3in to its left and right and 0.2in below it, and the mounting holes are 40mm apart on the line halfway between. The other orientations rotate this around the first lug")
+@AiNote("The Earth lug is centred on the chamfered side of the outline; with 'Orientation' DEFAULT the Line lug sits 0.3in to its left and the Neutral lug 0.3in to its right, both 0.2in below it, and the mounting holes are 40mm apart on the line halfway between. The other orientations rotate this around the Earth lug")
 @ComponentDescriptor(name = "IEC Socket", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted IEC power socket", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "IEC", enableCache = true)
@@ -151,6 +151,19 @@ public class IECSocket extends AbstractMultiPartComponent<String> {
     controlPoints[index].setLocation(point);
     // Reset body shape.
     body = null;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "Earth";
+      case 1:
+        return "Line";
+      case 2:
+        return "Neutral";
+    }
+    return null;
   }
 
   @EditableProperty

@@ -1,7 +1,7 @@
 Switch setup: [ ALL ]
 
 	C1.+ <-> R4.2 <-> R5.1
-	C1.- <-> C2.- <-> D1.K <-> D2.A <-> Gain.1 <-> J2.Sleeve <-> J3.1 <-> R2.2 <-> R3.2 <-> vol.1
+	C1.- <-> C2.- <-> D1.K <-> D2.A <-> Gain.1 <-> J2.Sleeve <-> J3.Sleeve <-> R2.2 <-> R3.2 <-> vol.1
 	C2.+ <-> Gain.2
 	C3.1 <-> Q1.2 <-> R1.2
 	C3.2 <-> R3.1 <-> SW1.2

@@ -710,6 +710,10 @@
 					<description>'9V Battery Snap' now has separate + and - terminals, so hookup wires can be connected to each lead and the netlist tells the battery's positive and negative sides apart</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'IEC Socket', 'Plastic DC Jack', 'Multi-Section Capacitor' and 'Mini Relay' terminals are now labeled by function (Earth, Line, Neutral; Sleeve, Switch, Center; the shared negative and each section's positive; coil, COM, NC and NO) instead of plain numbers, so netlists show what each terminal does</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
 				</org.diylc.appframework.update.Change>
