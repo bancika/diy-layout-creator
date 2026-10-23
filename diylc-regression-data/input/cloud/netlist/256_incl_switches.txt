@@ -2,8 +2,8 @@ Switch setup: [ ALL ]
 
 	    2MH.1 <-> BOOST.2
 	    2MH.2 <-> 470nF.1
-	.1 <-> 10nf.2 <-> 22K.2 <-> 470nF.2 <-> 50uF.- <-> BOOST.1 <-> GAIN.1 <-> J1.1 <-> J1.3 <-> J1.4 <-> J2.1 <-> J2.3 <-> J2.3 <-> J2.3 <-> J2.4 <-> J2.4 <-> J2.4 <-> R2.2 <-> R3.1 <-> V1.2
-	.2 <-> J1.2 <-> R2.1
+	.1 <-> 10nf.2 <-> 22K.2 <-> 470nF.2 <-> 50uF.- <-> BOOST.1 <-> GAIN.1 <-> J1.Sleeve <-> J1.Sleeve Switch <-> J1.Tip Switch <-> J2.Sleeve <-> J2.Sleeve <-> J2.Sleeve <-> J2.Sleeve Switch <-> J2.Sleeve Switch <-> J2.Sleeve Switch <-> J2.Tip Switch <-> R2.2 <-> R3.1 <-> V1.2
+	.2 <-> J1.Tip <-> R2.1
 	1,5nf.1 <-> TREBLE.1
 	1,5nf.2 <-> 100K.2 <-> 68nf.1
 	100K 2watt.1 <-> 100K 2Watt.1 <-> 32uF.+ <-> 32uF.-
@@ -14,8 +14,8 @@ Switch setup: [ ALL ]
 	100K.1 <-> 1K5.1 <-> 220K.1
 	100K.1 <-> 2.2nf.1 <-> 2.2nf.2 <-> BASS.2
 	100K.1 <-> 2.2nf.1 <-> BASS.3
-	100K.1 <-> J2.1 <-> J2.2
-	100K.1 <-> J2.1 <-> J2.2
+	100K.1 <-> J2.Tip <-> J2.Tip Switch
+	100K.1 <-> J2.Tip <-> J2.Tip Switch
 	100K.2 <-> 100K.2 <-> 220K.2 <-> V2.2
 	100K.2 <-> 1K5.2 <-> 1M.2 <-> 68nF.2
 	100K.2 <-> 1nF.2 <-> 68nF.2
@@ -23,7 +23,7 @@ Switch setup: [ ALL ]
 	100K.2 <-> C2.2 <-> GAIN.3 <-> TREBLE.2
 	10nf.1 <-> TREBLE.3
 	15K.1 <-> 1K5.2 <-> BOOST.3 <-> V2.3
-	15K.2 <-> 1Ohm.2 <-> J18.1 <-> J18.1 <-> J18.2 <-> J18.2 <-> J18.3 <-> J18.3 <-> J18.4 <-> J18.4
+	15K.2 <-> 1Ohm.2 <-> J18.Sleeve <-> J18.Sleeve <-> J18.Sleeve Switch <-> J18.Sleeve Switch <-> J18.Tip <-> J18.Tip <-> J18.Tip Switch <-> J18.Tip Switch
 	1K.1 <-> 220K.1 <-> 220K.2 <-> 22uF  63v.- <-> TREBLE.1
 	1K.2 <-> 22uf  63v.- <-> D2.A <-> D3.A
 	1K5.1 <-> V2.8
@@ -35,7 +35,7 @@ Switch setup: [ ALL ]
 	220K.1 <-> 220K.1 <-> 33K.2
 	220K.2 <-> 68nf.2
 	220K.2 <-> 68nf.2
-	22uf  63v.+ <-> 22uF  63v.+ <-> D1.A <-> D1.K <-> D2.K <-> D3.K <-> GND <-> TREBLE.2 <-> TREBLE.3
+	22uF  63v.+ <-> 22uf  63v.+ <-> D1.A <-> D1.K <-> D2.K <-> D3.K <-> GND <-> TREBLE.2 <-> TREBLE.3
 	2K4.1 <-> 2K4.1 <-> 68nF.1
 	4,7nf.1 <-> 4,7nf.2
 	4,7nf.2 <-> 68nf.1
@@ -48,5 +48,5 @@ Switch setup: [ ALL ]
 	D1.A <-> D1.K
 	D1.A <-> D1.K
 	D1.K <-> D1.K
-	J2.2 <-> R3.2
+	J2.Tip <-> R3.2
 

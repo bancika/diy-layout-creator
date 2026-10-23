@@ -691,7 +691,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>AI Assistant can actively participate in circuit design and make changes to the project</description>
+					<description>AI Assistant can actively participate in circuit design, make changes to the project and designs circuits from scratch</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

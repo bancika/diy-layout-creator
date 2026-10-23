@@ -5,7 +5,7 @@ Switch setup: [ SW1.ON1:SW3.ON1 ]
 	Bass.1 <-> Middle.3
 	Bass.2 <-> Bass.3 <-> C8.2 <-> Treble.1
 	C1.+ <-> V1.C <-> V1.C
-	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.4 <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.1 <-> J2.4 <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
+	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.Sleeve <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.Sleeve <-> J2.Tip Switch <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
 	C10.1 <-> R18.1 <-> R22.1 <-> V3.G <-> V3.G
 	C10.2 <-> Treble.2
 	C11.1 <-> C11.1 <-> C11.2 <-> C4.1 <-> C6.1 <-> R19.1 <-> R20.1 <-> V3.P <-> V3.P
@@ -35,14 +35,14 @@ Switch setup: [ SW1.ON1:SW3.ON1 ]
 	FH1.2 <-> IEC1.2
 	IEC1.1 <-> J15.J15Sleeve
 	IEC1.3 <-> PL1.2
-	Impedance.Common <-> J16.1 <-> J17.2
-	J1.1 <-> J2.2 <-> R2.1 <-> R3.1
-	J1.2 <-> R1.1
+	Impedance.Common <-> J16.Tip Switch <-> J17.Tip
+	J1.Tip <-> R1.1
+	J1.Tip Switch <-> J2.Tip <-> R2.1 <-> R3.1
 	J10.J10Tip <-> J13.J13Tip <-> J14.J14Tip <-> J9.J9Tip
-	J11.1 <-> J11.4 <-> J12.4 <-> R6.2
-	J11.2 <-> J12.1 <-> R5.2 <-> R6.1
-	J12.2 <-> R4.2
-	J16.3 <-> J17.4
+	J11.Sleeve <-> J11.Tip Switch <-> J12.Sleeve <-> R6.2
+	J11.Tip <-> J12.Tip Switch <-> R5.2 <-> R6.1
+	J12.Tip <-> R4.2
+	J16.Sleeve Switch <-> J17.Sleeve
 	Not Original.1 <-> Not Original.2 <-> R32.2
 	Not Original.1 <-> V4.G
 	Not Original.1 <-> V5.S
@@ -69,7 +69,7 @@ Switch setup: [ SW1.ON1:SW3.ON2 ]
 	Bass.1 <-> Middle.3
 	Bass.2 <-> Bass.3 <-> C8.2 <-> Treble.1
 	C1.+ <-> V1.C <-> V1.C
-	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.4 <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.1 <-> J2.4 <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
+	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.Sleeve <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.Sleeve <-> J2.Tip Switch <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
 	C10.1 <-> R18.1 <-> R22.1 <-> V3.G <-> V3.G
 	C10.2 <-> Treble.2
 	C11.1 <-> C11.1 <-> C11.2 <-> C4.1 <-> C6.1 <-> R19.1 <-> R20.1 <-> V3.P <-> V3.P
@@ -99,14 +99,14 @@ Switch setup: [ SW1.ON1:SW3.ON2 ]
 	FH1.2 <-> IEC1.2
 	IEC1.1 <-> J15.J15Sleeve
 	IEC1.3 <-> PL1.2
-	Impedance.Common <-> J16.1 <-> J17.2
-	J1.1 <-> J2.2 <-> R2.1 <-> R3.1
-	J1.2 <-> R1.1
+	Impedance.Common <-> J16.Tip Switch <-> J17.Tip
+	J1.Tip <-> R1.1
+	J1.Tip Switch <-> J2.Tip <-> R2.1 <-> R3.1
 	J10.J10Tip <-> J13.J13Tip <-> J14.J14Tip <-> J9.J9Tip
-	J11.1 <-> J11.4 <-> J12.4 <-> R6.2
-	J11.2 <-> J12.1 <-> R5.2 <-> R6.1
-	J12.2 <-> R4.2
-	J16.3 <-> J17.4
+	J11.Sleeve <-> J11.Tip Switch <-> J12.Sleeve <-> R6.2
+	J11.Tip <-> J12.Tip Switch <-> R5.2 <-> R6.1
+	J12.Tip <-> R4.2
+	J16.Sleeve Switch <-> J17.Sleeve
 	Not Original.1 <-> Not Original.2 <-> R32.2
 	Not Original.1 <-> V4.G
 	Not Original.1 <-> V5.S
@@ -133,7 +133,7 @@ Switch setup: [ SW1.ON2:SW3.ON1 ]
 	Bass.1 <-> Middle.3
 	Bass.2 <-> Bass.3 <-> C8.2 <-> Treble.1
 	C1.+ <-> V1.C <-> V1.C
-	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.4 <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.1 <-> J2.4 <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
+	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.Sleeve <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.Sleeve <-> J2.Tip Switch <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
 	C10.1 <-> R18.1 <-> R22.1 <-> V3.G <-> V3.G
 	C10.2 <-> Treble.2
 	C11.1 <-> C11.1 <-> C11.2 <-> C4.1 <-> C6.1 <-> R19.1 <-> R20.1 <-> V3.P <-> V3.P
@@ -161,14 +161,14 @@ Switch setup: [ SW1.ON2:SW3.ON1 ]
 	D3.A <-> V6.NC
 	FH1.2 <-> IEC1.2
 	IEC1.1 <-> J15.J15Sleeve
-	Impedance.Common <-> J16.1 <-> J17.2
-	J1.1 <-> J2.2 <-> R2.1 <-> R3.1
-	J1.2 <-> R1.1
+	Impedance.Common <-> J16.Tip Switch <-> J17.Tip
+	J1.Tip <-> R1.1
+	J1.Tip Switch <-> J2.Tip <-> R2.1 <-> R3.1
 	J10.J10Tip <-> J13.J13Tip <-> J14.J14Tip <-> J9.J9Tip
-	J11.1 <-> J11.4 <-> J12.4 <-> R6.2
-	J11.2 <-> J12.1 <-> R5.2 <-> R6.1
-	J12.2 <-> R4.2
-	J16.3 <-> J17.4
+	J11.Sleeve <-> J11.Tip Switch <-> J12.Sleeve <-> R6.2
+	J11.Tip <-> J12.Tip Switch <-> R5.2 <-> R6.1
+	J12.Tip <-> R4.2
+	J16.Sleeve Switch <-> J17.Sleeve
 	Not Original.1 <-> Not Original.2 <-> R32.2
 	Not Original.1 <-> V4.G
 	Not Original.1 <-> V5.S
@@ -195,7 +195,7 @@ Switch setup: [ SW1.ON2:SW3.ON2 ]
 	Bass.1 <-> Middle.3
 	Bass.2 <-> Bass.3 <-> C8.2 <-> Treble.1
 	C1.+ <-> V1.C <-> V1.C
-	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.4 <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.1 <-> J2.4 <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
+	C1.- <-> C12.2 <-> C16/C17.1 <-> C6.1 <-> J1.Sleeve <-> J10.J10Sleeve <-> J13.J13Sleeve <-> J14.J14Sleeve <-> J2.Sleeve <-> J2.Tip Switch <-> Not Original.1 <-> Not Original.2 <-> Presence.1 <-> R3.2
 	C10.1 <-> R18.1 <-> R22.1 <-> V3.G <-> V3.G
 	C10.2 <-> Treble.2
 	C11.1 <-> C11.1 <-> C11.2 <-> C4.1 <-> C6.1 <-> R19.1 <-> R20.1 <-> V3.P <-> V3.P
@@ -223,14 +223,14 @@ Switch setup: [ SW1.ON2:SW3.ON2 ]
 	D3.A <-> V6.NC
 	FH1.2 <-> IEC1.2
 	IEC1.1 <-> J15.J15Sleeve
-	Impedance.Common <-> J16.1 <-> J17.2
-	J1.1 <-> J2.2 <-> R2.1 <-> R3.1
-	J1.2 <-> R1.1
+	Impedance.Common <-> J16.Tip Switch <-> J17.Tip
+	J1.Tip <-> R1.1
+	J1.Tip Switch <-> J2.Tip <-> R2.1 <-> R3.1
 	J10.J10Tip <-> J13.J13Tip <-> J14.J14Tip <-> J9.J9Tip
-	J11.1 <-> J11.4 <-> J12.4 <-> R6.2
-	J11.2 <-> J12.1 <-> R5.2 <-> R6.1
-	J12.2 <-> R4.2
-	J16.3 <-> J17.4
+	J11.Sleeve <-> J11.Tip Switch <-> J12.Sleeve <-> R6.2
+	J11.Tip <-> J12.Tip Switch <-> R5.2 <-> R6.1
+	J12.Tip <-> R4.2
+	J16.Sleeve Switch <-> J17.Sleeve
 	Not Original.1 <-> Not Original.2 <-> R32.2
 	Not Original.1 <-> V4.G
 	Not Original.1 <-> V5.S
