@@ -2,6 +2,6 @@ Switch setup: [ ALL ]
 
 	C10.1 <-> PR6 (GAIN).2
 	C10.2 <-> C9.1 <-> PR6 (GAIN).1 <-> R10.2 <-> R9.2
-	C9.2 <-> INPUT.1 <-> R9.1
+	C9.2 <-> INPUT.Tip Switch <-> R9.1
 	GND <-> PR6 (GAIN).3 <-> R10.1
 

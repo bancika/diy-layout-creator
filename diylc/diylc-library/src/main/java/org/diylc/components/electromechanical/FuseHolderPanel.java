@@ -45,12 +45,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The two control points are the lugs, 0.2in apart: the second is below the first with 'Orientation' VERTICAL and to its right with HORIZONTAL, and the round body is centred between them")
 @ComponentDescriptor(name = "Fuse Holder (Panel)", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted fuse holder", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "FH", enableCache = true)

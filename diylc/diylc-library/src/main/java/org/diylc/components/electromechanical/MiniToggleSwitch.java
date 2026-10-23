@@ -47,6 +47,7 @@ import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -57,6 +58,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
+@AiNote("The first control point is the anchor; with 'Orientation' VERTICAL each pole is a column of three lugs (two for SPST) running down from it 'Spacing' apart, and further poles sit 'Spacing' apart to the right. HORIZONTAL turns this 90 degrees counterclockwise around the anchor, so each pole runs to the right and further poles stack upward")
 @ComponentDescriptor(name = "Mini Toggle Switch", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mounted mini toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", enableCache = true, transformer = MiniToggleSwitchTransformer.class)

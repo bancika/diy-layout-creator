@@ -48,6 +48,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -57,6 +58,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the top primary pin; with 'Orientation' DEFAULT the primary pins run down from it and the secondary pins form a matching column 'Winding Spacing' to the right. Each winding spans 2 x 'Lead Spacing', with a centre tap pin midway when 'Primary CT' or 'Secondary CT' is set and only its two ends otherwise. Pins are numbered down the primary, then down the secondary, and the other orientations rotate this around the first pin")
 @ComponentDescriptor(name = "Mini Signal Transformer", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "TR", description = "Miniature PCB-mount signal transformer with EI core",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)

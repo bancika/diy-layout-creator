@@ -261,7 +261,7 @@ public class ProjectFileManager {
     VersionNumber fileVersion;
     try { 
       fileVersion = readV3Version(fileName);
-      if (fileVersion.compareTo(Presenter.CURRENT_VERSION) > 0)
+      if (fileVersion.compareTo(Presenter.getCurrentVersion()) > 0)
         warnings.add("The file is created with a newer version of DIYLC and may contain features that are not supported by your version of DIYLC. Please update.");
     } catch (Exception e) {
       warnings.add("Could not read file version number, the file may be corrupted.");

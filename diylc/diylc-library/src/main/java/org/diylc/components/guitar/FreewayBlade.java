@@ -41,6 +41,7 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -49,6 +50,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the first terminal; with 'Angle' 0 the terminals run up from it in a straight line 0.15in apart. 'Angle' rotates the switch clockwise in degrees")
 @ComponentDescriptor(name = "Freeway Blade", category = "Guitar", author = "Martin Morrell", description = "Several variations of Freeway Blade switches", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "Guitar Wiring Diagram", transformer = AngledComponentTransformer.class)
 public class FreewayBlade extends AbstractAngledComponent<String> implements ISwitch {
 
@@ -448,7 +450,8 @@ public class FreewayBlade extends AbstractAngledComponent<String> implements ISw
 
     List<int[]> positionConnections = connections.get(position);
     for (int[] arr : positionConnections) {
-      if (arr[0] == index1 && arr[1] == index2) {
+      // the tables list most pairs high index first, while callers ask low index first
+      if (Math.min(arr[0], arr[1]) == index1 && Math.max(arr[0], arr[1]) == index2) {
         return true;
       }
     }

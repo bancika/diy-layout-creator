@@ -38,6 +38,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -45,6 +46,8 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("The control point is the top-left corner of the 2in x 4in body and 'Orientation' rotates the board around it")
+@AiNote("With 'Orientation' DEFAULT, pad row n (1-33) is (0.4 + n x 0.1)in below the control point. Each row is split into separately connected groups, labeled by column: 1-2, 3-5, 6-8, 9-11, 12-14 and 15-16, at 0.1-0.2, 0.4-0.6, 0.7-0.9, 1.2-1.4, 1.5-1.7 and 1.8-1.9in to the right of it")
 @ComponentDescriptor(name = "P-0+o (Proto) Board", category = "Boards", author = "Branislav Stojkovic",
     description = "A prototyping board for modular synths, central bus with V+ GND and V-", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,

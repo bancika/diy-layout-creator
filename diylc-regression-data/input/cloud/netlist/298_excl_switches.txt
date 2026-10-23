@@ -13,8 +13,8 @@ Switch setup: [ ALL ]
 	C7.+ <-> R10.1
 	C8.+ <-> C9.1 <-> R6.2 <-> V1.3
 	C8.- <-> SW2.1
-	J1.1 <-> J1.2 <-> J1.4 <-> R3.1
-	J1.3 <-> R4.1
+	J1.Sleeve <-> J1.Tip <-> J1.Tip Switch <-> R3.1
+	J1.Sleeve Switch <-> R4.1
 	R11.1 <-> V2.5
 	R12.2 <-> R7.1
 	R13.2 <-> R14.1 <-> SW2.2

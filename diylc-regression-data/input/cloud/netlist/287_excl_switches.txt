@@ -19,6 +19,6 @@ Switch setup: [ ALL ]
 	C9.- <-> R9.1
 	D2.K <-> D3.A <-> R9.2 <-> Tone.2 <-> Tone.3
 	D4.A <-> R13.1
-	J1.1 <-> R1.1 <-> R13.2
+	J1.Sleeve <-> R1.1 <-> R13.2
 	R10.1 <-> Tone.1
 

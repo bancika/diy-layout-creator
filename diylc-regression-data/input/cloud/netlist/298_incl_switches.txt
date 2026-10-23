@@ -12,8 +12,8 @@ Switch setup: [ SW2.OFF,SW2.ON2 ]
 	C6.2 <-> R8.2 <-> V1.6
 	C7.+ <-> R10.1
 	C8.+ <-> C9.1 <-> R6.2 <-> V1.3
-	J1.1 <-> J1.2 <-> J1.4 <-> R3.1
-	J1.3 <-> R4.1
+	J1.Sleeve <-> J1.Tip <-> J1.Tip Switch <-> R3.1
+	J1.Sleeve Switch <-> R4.1
 	R11.1 <-> V2.5
 	R12.2 <-> R7.1
 	R13.2 <-> R14.1
@@ -34,8 +34,8 @@ Switch setup: [ SW2.ON1 ]
 	C7.+ <-> R10.1
 	C8.+ <-> C9.1 <-> R6.2 <-> V1.3
 	C8.- <-> R13.2 <-> R14.1
-	J1.1 <-> J1.2 <-> J1.4 <-> R3.1
-	J1.3 <-> R4.1
+	J1.Sleeve <-> J1.Tip <-> J1.Tip Switch <-> R3.1
+	J1.Sleeve Switch <-> R4.1
 	R11.1 <-> V2.5
 	R12.2 <-> R7.1
 	R4.2 <-> V1.2

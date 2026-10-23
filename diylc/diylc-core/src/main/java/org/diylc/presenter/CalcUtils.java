@@ -65,6 +65,17 @@ public class CalcUtils {
     }
   }
   
+  /**
+   * Tells whether two control points are stuck together, so that dragging one drags the other
+   * along with it.
+   */
+  public static boolean areControlPointsStuck(IDIYComponent<?> c1, int index1,
+      IDIYComponent<?> c2, int index2) {
+    return c1.isControlPointSticky(index1) && c2.isControlPointSticky(index2)
+        && c1.getControlPoint(index1).distance(c2.getControlPoint(index2))
+            < DrawingManager.CONTROL_POINT_SIZE;
+  }
+
   public static boolean pointsMatch(Point2D point1, Point2D point2, double delta) {
     if (Math.abs(point1.getX() - point2.getX()) > delta)
       return false;

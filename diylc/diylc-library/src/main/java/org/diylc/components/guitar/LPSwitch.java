@@ -37,6 +37,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
+import org.diylc.components.electromechanical.SwitchPositionPropertyValueSource;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -44,12 +45,15 @@ import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Drawn from the bottom, where the solder lugs are. The first control point is the anchor at the top of the switch, not a switched terminal; with 'Orientation' DEFAULT the terminals sit in a row 1.3in below it, centred under it, 0.2in apart, or 0.1in apart with a gap in the middle when 'Middle Terminals' is Disconnected")
 @ComponentDescriptor(name = "LP Toggle Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Les Paul style 3 position toggle switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW")
@@ -71,6 +75,7 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private MiddleTerminalConfiguration middleTerminalConfiguration;
+  private Integer selectedPosition;
 
   public LPSwitch() {
     super();
@@ -435,5 +440,17 @@ public class LPSwitch extends AbstractTransparentComponent<String> implements IS
 
   public enum MiddleTerminalConfiguration {
     Connected, Disconnected
+  }
+
+  @DynamicEditableProperty(source = SwitchPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

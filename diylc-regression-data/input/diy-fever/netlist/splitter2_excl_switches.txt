@@ -1,13 +1,13 @@
 Switch setup: [ ALL ]
 
-	4001.A <-> C2.+ <-> J6.1
+	4001.A <-> C2.+ <-> J6.Sleeve
 	4001.K <-> R1.1 <-> TL072.5
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> SW1.1
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.3 <-> R1.1 <-> R1.2 <-> SW1.2 <-> SW1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> R1.1 <-> R1.2 <-> SW1.2 <-> SW1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
 	Impedance.2 <-> SW1.6
 	J2.Sleeve <-> SW1.2 <-> SW1.3

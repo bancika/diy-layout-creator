@@ -46,6 +46,7 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -55,6 +56,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the first terminal; with 'Angle' 0 the terminals run up from it in a straight line 0.15in apart. Type M has two columns of twelve 0.1in apart, about 2.6mm between columns: A to L run up from the first point, M to X come back down the column to its right, so X sits beside A. 'Angle' rotates the switch clockwise in degrees")
 @ComponentDescriptor(name = "Schaller Megaswitch", category = "Guitar",
     author = "Branislav Stojkovic", description = "Several variations of Schaller Megaswitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
