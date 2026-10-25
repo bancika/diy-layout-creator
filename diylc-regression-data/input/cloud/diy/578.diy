@@ -1,0 +1,2829 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>5</major>
+    <minor>8</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>A3 drawing</title>
+  <author>Gebruiker</author>
+  <description>A3 blank sheet</description>
+  <width value="42.0" unit="cm"/>
+  <height value="29.7" unit="cm"/>
+  <gridSpacing value="0.5" unit="mm"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.boards.VeroBoard>
+      <name>Board1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="3.4861417322834645" y="4.3411417322834644"/>
+        <point x="4.8811417322834645" y="6.961141732283463"/>
+      </controlPoints>
+      <firstPoint x="3.4861417322834645" y="4.3411417322834644"/>
+      <secondPoint x="4.8811417322834645" y="6.961141732283463"/>
+      <boardColor hex="f8ebb3"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <xType>Numbers</xType>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <coordinateDisplay>One_Side</coordinateDisplay>
+      <yType>Letters</yType>
+      <length value="38.1" unit="mm"/>
+      <width value="30.479999999999983" unit="mm"/>
+      <mode>TwoPoints</mode>
+      <boardUndersideDisplay>NONE</boardUndersideDisplay>
+      <undersideOffset value="0.1" unit="in"/>
+      <undersideTransparency>true</undersideTransparency>
+      <spacing value="0.1" unit="in"/>
+      <stripColor hex="da8a67"/>
+      <orientation>VERTICAL</orientation>
+    </diylc.boards.VeroBoard>
+    <diylc.connectivity.Jumper>
+      <name>J1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="4.0911417322834644" y="6.3461417322834635"/>
+        <point x="4.181141732283464" y="6.3461417322834635"/>
+        <point x="4.136141732283464" y="6.3461417322834635"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J2</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.8861417322834644" y="5.641141732283464"/>
+        <point x="4.081141732283465" y="5.641141732283464"/>
+        <point x="3.9836417322834645" y="5.641141732283464"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="4.286141732283465" y="5.5461417322834645"/>
+        <point x="4.481141732283464" y="5.5461417322834645"/>
+        <point x="4.383641732283464" y="5.5461417322834645"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J4</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.9911417322834644" y="6.3461417322834635"/>
+        <point x="4.081141732283465" y="6.3461417322834635"/>
+        <point x="4.036141732283465" y="6.3461417322834635"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.Jumper>
+      <name>J5</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.981141732283464" y="5.841141732283464"/>
+        <point x="4.071141732283464" y="5.841141732283464"/>
+        <point x="4.026141732283464" y="5.841141732283464"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="0000ff"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <style>SOLID</style>
+    </diylc.connectivity.Jumper>
+    <diylc.connectivity.TraceCut>
+      <name>Cut1</name>
+      <alpha>127</alpha>
+      <size value="0.08" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.1" unit="in"/>
+      <point x="3.981141732283464" y="5.956141732283465"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.TraceCut>
+      <name>Cut2</name>
+      <alpha>127</alpha>
+      <size value="0.08" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.1" unit="in"/>
+      <point x="4.081141732283465" y="5.961141732283465"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.TraceCut>
+      <name>Cut3</name>
+      <alpha>127</alpha>
+      <size value="0.08" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.1" unit="in"/>
+      <point x="3.6811417322834643" y="5.261141732283464"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.TraceCut>
+      <name>Cut4</name>
+      <alpha>127</alpha>
+      <size value="0.08" unit="in"/>
+      <fillColor hex="ffffff"/>
+      <borderColor hex="ff0000"/>
+      <boardColor hex="f8ebb3"/>
+      <cutBetweenHoles>false</cutBetweenHoles>
+      <orientation>VERTICAL</orientation>
+      <holeSpacing value="0.1" unit="in"/>
+      <point x="4.281141732283464" y="5.261141732283464"/>
+    </diylc.connectivity.TraceCut>
+    <diylc.connectivity.Turret>
+      <name>Turret1</name>
+      <alpha>127</alpha>
+      <size value="0.09" unit="in"/>
+      <holeSize value="0.05" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="4.186141732283464" y="5.841141732283464"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret2</name>
+      <alpha>127</alpha>
+      <size value="0.09" unit="in"/>
+      <holeSize value="0.05" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="4.496141732283465" y="5.8461417322834635"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret6</name>
+      <alpha>127</alpha>
+      <size value="0.09" unit="in"/>
+      <holeSize value="0.05" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="3.8861417322834644" y="4.941141732283463"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Turret>
+      <name>Turret7</name>
+      <alpha>127</alpha>
+      <size value="0.09" unit="in"/>
+      <holeSize value="0.05" unit="in"/>
+      <color hex="e0c04c"/>
+      <point x="4.181141732283464" y="4.936141732283464"/>
+      <value></value>
+    </diylc.connectivity.Turret>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet1</name>
+      <alpha>127</alpha>
+      <size value="2.0" unit="mm"/>
+      <holeSize value="1.5" unit="mm"/>
+      <color hex="000000"/>
+      <point x="6.471141732283464" y="5.751141732283465"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet2</name>
+      <alpha>127</alpha>
+      <size value="2.0" unit="mm"/>
+      <holeSize value="1.5" unit="mm"/>
+      <color hex="000000"/>
+      <point x="6.471141732283464" y="5.956141732283465"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <alpha>127</alpha>
+      <size value="2.0" unit="mm"/>
+      <holeSize value="1.5" unit="mm"/>
+      <color hex="000000"/>
+      <point x="8.811141732283465" y="5.526141732283464"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet4</name>
+      <alpha>127</alpha>
+      <size value="2.0" unit="mm"/>
+      <holeSize value="1.5" unit="mm"/>
+      <color hex="000000"/>
+      <point x="8.811141732283465" y="5.706141732283465"/>
+      <value></value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Line>
+      <name>LN1</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="16.141732283464567" y="0.3937007874015748"/>
+        <point x="0.7874015748031497" y="0.3937007874015748"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN2</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="16.141732283464567" y="0.3937007874015748"/>
+        <point x="16.141732283464567" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN3</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="0.3937007874015748"/>
+        <point x="0.7874015748031497" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN4</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="11.41732283464567"/>
+        <point x="16.141732283464567" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN5</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.984251968503937" y="0.5905511811023623"/>
+        <point x="15.944881889763781" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN6</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.984251968503937" y="0.5905511811023623"/>
+        <point x="0.984251968503937" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN7</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.984251968503937" y="11.220472440944881"/>
+        <point x="15.944881889763781" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN8</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="0.5905511811023623"/>
+        <point x="15.944881889763781" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN9</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.165354330708661" y="0.3937007874015748"/>
+        <point x="2.165354330708661" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN10</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.7401574803149606" y="0.3937007874015748"/>
+        <point x="3.7401574803149606" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN11</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.314960629921261" y="0.3937007874015748"/>
+        <point x="5.314960629921261" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN12</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.88976377952756" y="0.3937007874015748"/>
+        <point x="6.88976377952756" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN13</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.46456692913386" y="0.3937007874015748"/>
+        <point x="8.46456692913386" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN14</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.039370078740157" y="0.3937007874015748"/>
+        <point x="10.039370078740157" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN15</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="11.614173228346456" y="0.3937007874015748"/>
+        <point x="11.614173228346456" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN16</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="13.188976377952754" y="0.3937007874015748"/>
+        <point x="13.188976377952754" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN17</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="14.763779527559054" y="0.3937007874015748"/>
+        <point x="14.763779527559054" y="0.5905511811023623"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN18</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="2.165354330708661" y="11.220472440944881"/>
+        <point x="2.165354330708661" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN19</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="3.7401574803149606" y="11.220472440944881"/>
+        <point x="3.7401574803149606" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN20</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="5.31496062992126" y="11.220472440944881"/>
+        <point x="5.31496062992126" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN21</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527559" y="11.220472440944881"/>
+        <point x="6.889763779527559" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN22</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.46456692913386" y="11.220472440944881"/>
+        <point x="8.46456692913386" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN23</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.039370078740157" y="10.236220472440946"/>
+        <point x="10.039370078740157" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN24</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="11.614173228346457" y="11.220472440944881"/>
+        <point x="11.614173228346457" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN25</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="13.188976377952756" y="11.220472440944881"/>
+        <point x="13.188976377952756" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN26</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="14.763779527559057" y="11.220472440944881"/>
+        <point x="14.763779527559057" y="11.41732283464567"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN27</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="1.5748031496062993"/>
+        <point x="0.984251968503937" y="1.5748031496062993"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN28</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="3.1496062992125986"/>
+        <point x="0.984251968503937" y="3.1496062992125986"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN29</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="4.724409448818898"/>
+        <point x="0.984251968503937" y="4.724409448818898"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN30</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="6.299212598425197"/>
+        <point x="0.984251968503937" y="6.299212598425197"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN31</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="7.874015748031496"/>
+        <point x="0.984251968503937" y="7.874015748031496"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN32</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.7874015748031497" y="9.448818897637796"/>
+        <point x="0.984251968503937" y="9.448818897637796"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN33</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="1.5748031496062993"/>
+        <point x="16.141732283464567" y="1.5748031496062993"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN34</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="3.1496062992125986"/>
+        <point x="16.141732283464567" y="3.1496062992125986"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN35</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="16.141732283464567" y="4.724409448818898"/>
+        <point x="15.944881889763781" y="4.724409448818898"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN36</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="6.299212598425197"/>
+        <point x="16.141732283464567" y="6.299212598425197"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN37</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="7.874015748031496"/>
+        <point x="16.141732283464567" y="7.874015748031496"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN38</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.944881889763781" y="9.448818897637796"/>
+        <point x="16.141732283464567" y="9.448818897637796"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN39</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="0.984251968503937" y="10.236220472440946"/>
+        <point x="15.944881889763781" y="10.236220472440946"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN40</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="11.614173228346457" y="10.236220472440946"/>
+        <point x="11.614173228346457" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN42</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527559" y="10.433070866141732"/>
+        <point x="11.614173228346457" y="10.433070866141732"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN43</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527559" y="10.62992125984252"/>
+        <point x="11.614173228346457" y="10.62992125984252"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN44</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527559" y="10.826771653543307"/>
+        <point x="11.614173228346457" y="10.826771653543307"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN45</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527559" y="11.023622047244094"/>
+        <point x="11.614173228346457" y="11.023622047244094"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN47</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="10.433070866141732" y="10.236220472440946"/>
+        <point x="10.433070866141732" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN48</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="11.614173228346457" y="11.023622047244094"/>
+        <point x="15.944881889763781" y="11.023622047244094"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN49</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="13.188976377952756" y="11.023622047244094"/>
+        <point x="13.188976377952756" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN50</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="15.354330708661418" y="11.023622047244094"/>
+        <point x="15.354330708661418" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN51</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="14.173228346456694" y="11.023622047244094"/>
+        <point x="14.173228346456694" y="11.220472440944881"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN41</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.889763779527561" y="10.236220472440943"/>
+        <point x="6.889763779527561" y="11.22047244094488"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN46</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="7.3031496062992085" y="10.236220472440943"/>
+        <point x="7.3031496062992085" y="11.22047244094488"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="3.0" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.misc.Image>
+      <name>Img1</name>
+      <alpha>127</alpha>
+      <point x="14.766141732283463" y="10.286141732283463"/>
+      <secondPoint x="15.853543307086607" y="10.998661417322838"/>
+      <orientation>DEFAULT</orientation>
+      <data>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</data>
+      <newScale>25</newScale>
+      <sizingMode>TwoPoints</sizingMode>
+    </diylc.misc.Image>
+    <diylc.semiconductors.TransistorTO92>
+      <name>Q1</name>
+      <alpha>100</alpha>
+      <value>BF245A</value>
+      <pinout>JFET_GSD</pinout>
+      <orientation>_270</orientation>
+      <controlPoints>
+        <point x="4.081141732283465" y="5.441141732283463"/>
+        <point x="4.181141732283464" y="5.441141732283463"/>
+        <point x="4.281141732283464" y="5.441141732283463"/>
+      </controlPoints>
+      <bodyColor hex="808080"/>
+      <borderColor hex="595959"/>
+      <labelColor hex="ffff00"/>
+      <display>PINOUT</display>
+      <folded>false</folded>
+      <pinSpacing value="0.1" unit="in"/>
+    </diylc.semiconductors.TransistorTO92>
+    <diylc.passive.Resistor>
+      <name>R1</name>
+      <alpha>63</alpha>
+      <length value="7.0" unit="mm"/>
+      <width value="2.5" unit="mm"/>
+      <points>
+        <point x="4.086141732283465" y="5.836141732283463"/>
+        <point x="4.0911417322834644" y="6.271141732283463"/>
+        <point x="4.088641732283464" y="6.053641732283463"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="M"/>
+      <power>HALF</power>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R2</name>
+      <alpha>63</alpha>
+      <length value="7.0" unit="mm"/>
+      <width value="2.5" unit="mm"/>
+      <points>
+        <point x="4.281141732283464" y="4.731141732283463"/>
+        <point x="4.286141732283465" y="5.331141732283463"/>
+        <point x="4.283641732283464" y="5.031141732283463"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.PotentiometerPanel>
+      <name>VR1</name>
+      <alpha>127</alpha>
+      <controlPoints>
+        <point x="4.076141732283464" y="6.441141732283463"/>
+        <point x="3.876141732283464" y="6.441141732283463"/>
+        <point x="3.6761417322834644" y="6.441141732283463"/>
+      </controlPoints>
+      <resistance value="10.0" unit="K"/>
+      <orientation>_180</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="16.0" unit="mm"/>
+      <spacing value="0.2" unit="in"/>
+      <lugDiameter value="0.1" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>PCB</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.electromechanical.BatterySnap9V>
+      <name>BTR1</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="4.401141732283464" y="3.7861417322834643"/>
+      <orientation>DEFAULT</orientation>
+      <color hex="404040"/>
+    </diylc.electromechanical.BatterySnap9V>
+    <diylc.electromechanical.BatterySnap9V>
+      <name>BTR2</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoint x="3.9661417322834644" y="3.7661417322834643"/>
+      <orientation>_180</orientation>
+      <color hex="404040"/>
+    </diylc.electromechanical.BatterySnap9V>
+    <diylc.passive.Resistor>
+      <name>R3</name>
+      <alpha>63</alpha>
+      <length value="7.0" unit="mm"/>
+      <width value="2.5" unit="mm"/>
+      <points>
+        <point x="3.6811417322834643" y="4.746141732283465"/>
+        <point x="3.686141732283464" y="5.3461417322834635"/>
+        <point x="3.6836417322834643" y="5.046141732283463"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.passive.Resistor>
+      <name>R4</name>
+      <alpha>63</alpha>
+      <length value="7.0" unit="mm"/>
+      <width value="2.5" unit="mm"/>
+      <points>
+        <point x="3.981141732283464" y="5.836141732283463"/>
+        <point x="3.9861417322834645" y="6.271141732283463"/>
+        <point x="3.9836417322834645" y="6.053641732283463"/>
+      </points>
+      <bodyColor hex="82cffd"/>
+      <borderColor hex="5b90b1"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <value value="10.0" unit="M"/>
+      <power>HALF</power>
+      <colorCode>NONE</colorCode>
+      <shape>Standard</shape>
+    </diylc.passive.Resistor>
+    <diylc.semiconductors.JFETSymbol>
+      <name>Q2</name>
+      <value>BF245A</value>
+      <controlPoints>
+        <point x="8.136141732283464" y="5.7561417322834645"/>
+        <point x="8.336141732283464" y="5.556141732283464"/>
+        <point x="8.336141732283464" y="5.956141732283465"/>
+        <point x="8.286141732283465" y="5.7561417322834645"/>
+      </controlPoints>
+      <color hex="000000"/>
+      <flip>NONE</flip>
+      <display>VALUE</display>
+      <orientation>DEFAULT</orientation>
+      <moveLabel>false</moveLabel>
+      <polarity>NEGATIVE</polarity>
+    </diylc.semiconductors.JFETSymbol>
+    <diylc.passive.ResistorSymbol>
+      <name>R5</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="8.331141732283465" y="4.856141732283464"/>
+        <point x="8.331141732283465" y="5.576141732283464"/>
+        <point x="8.336141732283467" y="5.216141732283465"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <labelPosition>ABOVE</labelPosition>
+      <draw__style>IEC</draw__style>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.passive.ResistorSymbol>
+      <name>R6</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="7.856141732283464" y="5.7561417322834645"/>
+        <point x="7.856141732283464" y="6.476141732283464"/>
+        <point x="7.861141732283467" y="6.116141732283466"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <labelPosition>ABOVE</labelPosition>
+      <draw__style>IEC</draw__style>
+      <value value="10.0" unit="M"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.passive.ResistorSymbol>
+      <name>R7</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="7.711141732283465" y="5.7561417322834645"/>
+        <point x="7.711141732283465" y="6.476141732283464"/>
+        <point x="7.716141732283466" y="6.116141732283466"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <labelPosition>ABOVE</labelPosition>
+      <draw__style>IEC</draw__style>
+      <value value="10.0" unit="M"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN52</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.501141732283465" y="5.751141732283465"/>
+        <point x="8.141141732283465" y="5.7561417322834645"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.passive.PotentiometerSymbol>
+      <name>VR2</name>
+      <value>10k</value>
+      <controlPoints>
+        <point x="7.196141732283464" y="5.751141732283465"/>
+        <point x="7.396141732283464" y="5.951141732283464"/>
+        <point x="6.996141732283465" y="5.951141732283464"/>
+        <point x="7.196141732283464" y="6.016141732283464"/>
+      </controlPoints>
+      <color hex="0000ff"/>
+      <flip>NONE</flip>
+      <display>VALUE</display>
+      <orientation>_90</orientation>
+      <moveLabel>true</moveLabel>
+    </diylc.passive.PotentiometerSymbol>
+    <diylc.connectivity.Line>
+      <name>LN53</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.656141732283464" y="6.481141732283464"/>
+        <point x="8.631141732283464" y="6.481141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot1</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.191141732283464" y="5.751141732283465"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot2</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.711141732283465" y="5.7561417322834645"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot3</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.856141732283464" y="5.7561417322834645"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot4</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.711141732283465" y="6.476141732283464"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot5</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.856141732283464" y="6.476141732283464"/>
+    </diylc.connectivity.Dot>
+    <diylc.passive.ResistorSymbol>
+      <name>R8</name>
+      <alpha>127</alpha>
+      <length value="0.3" unit="in"/>
+      <width value="0.08" unit="in"/>
+      <points>
+        <point x="6.986141732283464" y="4.861141732283464"/>
+        <point x="6.991141732283464" y="5.571141732283464"/>
+        <point x="6.993641608304741" y="5.216106521888949"/>
+      </points>
+      <borderColor hex="0000ff"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="000000"/>
+      <display>VALUE</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>true</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <labelPosition>ABOVE</labelPosition>
+      <draw__style>IEC</draw__style>
+      <value value="10.0" unit="K"/>
+      <power>HALF</power>
+      <powerNew value="0.5" unit="W"/>
+    </diylc.passive.ResistorSymbol>
+    <diylc.connectivity.Line>
+      <name>LN54</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="7.396141732283464" y="5.956141732283465"/>
+        <point x="7.401141732283464" y="6.491141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN55</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.991141732283464" y="5.561141732283464"/>
+        <point x="6.996141732283465" y="5.956141732283465"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot6</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="7.396141732283464" y="6.476141732283464"/>
+    </diylc.connectivity.Dot>
+    <diylc.misc.GroundSymbol>
+      <name>GND1</name>
+      <point x="7.711141732283465" y="6.481141732283464"/>
+      <color hex="000000"/>
+      <size value="0.15" unit="in"/>
+      <type>DEFAULT</type>
+      <orientation>DEFAULT</orientation>
+      <stroke>1</stroke>
+    </diylc.misc.GroundSymbol>
+    <diylc.connectivity.Line>
+      <name>LN56</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.336141732283464" y="5.931141732283464"/>
+        <point x="8.336141732283464" y="6.476141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN57</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.651141732283464" y="5.9661417322834644"/>
+        <point x="6.651141732283464" y="6.481141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN58</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="6.656141732283464" y="5.961141732283465"/>
+        <point x="6.496141732283465" y="5.961141732283465"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN59</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.806141732283464" y="5.526141732283464"/>
+        <point x="8.331141732283465" y="5.526141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN60</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.631141732283464" y="5.7161417322834644"/>
+        <point x="8.631141732283464" y="6.481141732283464"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Line>
+      <name>LN61</name>
+      <alpha>127</alpha>
+      <points>
+        <point x="8.791141732283464" y="5.7161417322834644"/>
+        <point x="8.631141732283464" y="5.7161417322834644"/>
+        <point x="0.0" y="0.0"/>
+      </points>
+      <bodyColor hex="ffffff"/>
+      <borderColor hex="000000"/>
+      <labelColor hex="000000"/>
+      <leadColor hex="cccccc"/>
+      <display>NAME</display>
+      <flipStanding>false</flipStanding>
+      <labelOriantation>Directional</labelOriantation>
+      <moveLabel>false</moveLabel>
+      <hideShortLeads>false</hideShortLeads>
+      <color hex="000000"/>
+      <style>SOLID</style>
+      <thickness value="0.75" unit="px"/>
+      <arrowSize value="5.0" unit="px"/>
+      <arrowStart>false</arrowStart>
+      <arrowEnd>false</arrowEnd>
+    </diylc.connectivity.Line>
+    <diylc.connectivity.Dot>
+      <name>Dot8</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="8.336141732283464" y="6.481141732283464"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.Dot>
+      <name>Dot9</name>
+      <size value="1.0" unit="mm"/>
+      <color hex="000000"/>
+      <point x="8.336141732283464" y="5.526141732283464"/>
+    </diylc.connectivity.Dot>
+    <diylc.connectivity.TwistedWire>
+      <name>W1</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="3.956141732283464" y="3.7811417322834644"/>
+        <point x="4.1311417322834645" y="3.7861417322834643"/>
+        <point x="4.101141732283464" y="4.016141732283464"/>
+        <point x="4.101141732283464" y="4.181141732283464"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <color2 hex="ff0000"/>
+      <stripeColor hex="ffff00"/>
+      <stripeColor2 hex="ff00ff"/>
+      <stripe1>false</stripe1>
+      <stripe2>false</stripe2>
+    </diylc.connectivity.TwistedWire>
+    <diylc.connectivity.HookupWire>
+      <name>W2</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.106141732283464" y="4.191141732283464"/>
+        <point x="4.181141732283464" y="4.441141732283464"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W3</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.076141732283464" y="4.191141732283464"/>
+        <point x="3.686141732283464" y="4.431141732283464"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.TwistedWire>
+      <name>W4</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.476141732283464" y="3.7811417322834644"/>
+        <point x="4.241141732283464" y="3.7961417322834645"/>
+        <point x="4.2561417322834645" y="4.061141732283464"/>
+        <point x="4.326141732283464" y="4.226141732283464"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <color2 hex="ff0000"/>
+      <stripeColor hex="ffff00"/>
+      <stripeColor2 hex="ff00ff"/>
+      <stripe1>false</stripe1>
+      <stripe2>false</stripe2>
+    </diylc.connectivity.TwistedWire>
+    <diylc.connectivity.HookupWire>
+      <name>W5</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.301141732283464" y="4.221141732283464"/>
+        <point x="4.181141732283464" y="4.531141732283464"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <name>W6</name>
+      <alpha>127</alpha>
+      <controlPoints2>
+        <point x="4.326141732283464" y="4.236141732283464"/>
+        <point x="4.286141732283465" y="4.441141732283464"/>
+      </controlPoints2>
+      <color hex="ff0000"/>
+      <pointCount>TWO</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_22</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.misc.Label>
+      <name>LAB1</name>
+      <point x="1.4763779527559058" y="0.4921259842519682"/>
+      <text>0</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB2</name>
+      <point x="2.9527559055118116" y="0.49212598425196846"/>
+      <text>1</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB3</name>
+      <point x="4.527559055118111" y="0.49212598425196846"/>
+      <text>2</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB4</name>
+      <point x="6.10236220472441" y="0.49212598425196846"/>
+      <text>3</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB5</name>
+      <point x="7.677165354330709" y="0.49212598425196846"/>
+      <text>4</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB6</name>
+      <point x="9.25196850393701" y="0.49212598425196846"/>
+      <text>5</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB7</name>
+      <point x="10.826771653543307" y="0.49212598425196846"/>
+      <text>6</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB8</name>
+      <point x="12.401574803149606" y="0.49212598425196846"/>
+      <text>7</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB9</name>
+      <point x="15.452755905511811" y="0.49212598425196874"/>
+      <text>9</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB10</name>
+      <point x="13.976377952755902" y="0.4921259842519682"/>
+      <text>8</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB11</name>
+      <point x="0.8858267716535434" y="0.9842519685039366"/>
+      <text>A</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB12</name>
+      <point x="0.8858267716535434" y="2.3622047244094486"/>
+      <text>B</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB13</name>
+      <point x="0.8858267716535431" y="3.937007874015748"/>
+      <text>C</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB14</name>
+      <point x="0.8858267716535434" y="5.511811023622045"/>
+      <text>D</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB15</name>
+      <point x="0.8858267716535434" y="7.086614173228347"/>
+      <text>E</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB16</name>
+      <point x="0.8858267716535434" y="8.661417322834644"/>
+      <text>F</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB17</name>
+      <point x="0.8858267716535434" y="10.334645669291337"/>
+      <text>G</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB18</name>
+      <point x="2.9527559055118116" y="11.318897637795281"/>
+      <text>1</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB19</name>
+      <point x="1.476377952755905" y="11.318897637795278"/>
+      <text>0</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB20</name>
+      <point x="4.527559055118111" y="11.318897637795274"/>
+      <text>2</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB21</name>
+      <point x="6.10236220472441" y="11.318897637795274"/>
+      <text>3</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB22</name>
+      <point x="7.677165354330709" y="11.318897637795276"/>
+      <text>4</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB23</name>
+      <point x="9.25196850393701" y="11.318897637795274"/>
+      <text>5</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB24</name>
+      <point x="10.826771653543307" y="11.318897637795274"/>
+      <text>6</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB25</name>
+      <point x="12.401574803149606" y="11.318897637795274"/>
+      <text>7</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB26</name>
+      <point x="13.976377952755906" y="11.318897637795274"/>
+      <text>8</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB27</name>
+      <point x="15.452755905511811" y="11.318897637795274"/>
+      <text>9</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB28</name>
+      <point x="16.043307086614174" y="1.0826771653543303"/>
+      <text>A</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB29</name>
+      <point x="16.043307086614174" y="2.362204724409449"/>
+      <text>B</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB30</name>
+      <point x="16.043307086614174" y="3.9370078740157486"/>
+      <text>C</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB31</name>
+      <point x="16.043307086614174" y="5.610236220472439"/>
+      <text>D</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB32</name>
+      <point x="16.043307086614174" y="7.0866141732283445"/>
+      <text>E</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB33</name>
+      <point x="16.043307086614174" y="8.661417322834644"/>
+      <text>F</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB34</name>
+      <point x="16.043307086614174" y="10.334645669291337"/>
+      <text>G</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB35</name>
+      <point x="7.086614173228347" y="11.122047244094487"/>
+      <text>Rev</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB36</name>
+      <point x="7.460629921259843" y="11.122047244094487"/>
+      <text>Item</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB38</name>
+      <point x="11.906023622047242" y="11.122047244094485"/>
+      <text>Page  1/1</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB39</name>
+      <point x="13.42740157480315" y="11.122047244094487"/>
+      <text>By PDC</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB40</name>
+      <point x="14.69007874015748" y="11.122047244094487"/>
+      <text>Date   06/01/2025</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB41</name>
+      <point x="15.649606299212598" y="11.122047244094487"/>
+      <text>Rev.0</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB42</name>
+      <point x="11.811023622047244" y="10.433070866141732"/>
+      <text>Title</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB43</name>
+      <point x="1.3779527559055118" y="10.433070866141732"/>
+      <text>Description</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB44</name>
+      <point x="7.086614173228347" y="10.354330708661418"/>
+      <text>4</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB45</name>
+      <point x="7.086614173228347" y="10.531496062992126"/>
+      <text>3</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB46</name>
+      <point x="7.086614173228347" y="10.728346456692913"/>
+      <text>2</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB47</name>
+      <point x="7.086614173228347" y="10.925196850393702"/>
+      <text>1</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB49</name>
+      <point x="3.941496062992126" y="10.767716535433072"/>
+      <text>GSD FET MATCHING TESTER</text>
+      <font name="Bahnschrift" size="36" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB37</name>
+      <point x="10.989291338582674" y="11.122047244094487"/>
+      <text>Date  </text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>LAB50</name>
+      <point x="10.236220472440946" y="11.122047244094487"/>
+      <text>Chk</text>
+      <font name="Bahnschrift" size="18" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.WrapLabel>
+      <name>L1</name>
+      <controlPoints>
+        <point x="5.116141732283464" y="5.7211417322834635"/>
+        <point x="5.801141732283464" y="5.866141732283463"/>
+      </controlPoints>
+      <firstPoint x="5.116141732283464" y="5.7211417322834635"/>
+      <secondPoint x="5.801141732283464" y="5.866141732283463"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>VDS Measure</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L2</name>
+      <controlPoints>
+        <point x="4.391141732283464" y="4.271141732283464"/>
+        <point x="4.711141732283465" y="4.376141732283465"/>
+      </controlPoints>
+      <firstPoint x="4.391141732283464" y="4.271141732283464"/>
+      <secondPoint x="4.711141732283465" y="4.376141732283465"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>+10VDC</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L3</name>
+      <controlPoints>
+        <point x="3.5161417322834643" y="4.211141732283465"/>
+        <point x="3.836141732283464" y="4.316141732283464"/>
+      </controlPoints>
+      <firstPoint x="3.5161417322834643" y="4.211141732283465"/>
+      <secondPoint x="3.836141732283464" y="4.316141732283464"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>-10VDC</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L4</name>
+      <controlPoints>
+        <point x="3.981141732283464" y="4.511141732283464"/>
+        <point x="4.301141732283464" y="4.616141732283466"/>
+      </controlPoints>
+      <firstPoint x="3.981141732283464" y="4.511141732283464"/>
+      <secondPoint x="4.301141732283464" y="4.616141732283466"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>GND</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L5</name>
+      <controlPoints>
+        <point x="3.936141732283464" y="4.811141732283464"/>
+        <point x="4.116141732283464" y="4.851141732283464"/>
+      </controlPoints>
+      <firstPoint x="3.936141732283464" y="4.811141732283464"/>
+      <secondPoint x="4.116141732283464" y="4.851141732283464"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>VGS Measure</value>
+    </diylc.misc.WrapLabel>
+    <diylc.connectivity.MultimeterProbe>
+      <name>Probe1</name>
+      <alpha>63</alpha>
+      <point x="4.521141732283464" y="5.856141732283463"/>
+      <handleColor hex="ff0000"/>
+      <orientation>_45</orientation>
+    </diylc.connectivity.MultimeterProbe>
+    <diylc.connectivity.MultimeterProbe>
+      <name>Probe2</name>
+      <alpha>63</alpha>
+      <point x="4.176141732283464" y="5.851141732283463"/>
+      <handleColor hex="000000"/>
+      <orientation>_135</orientation>
+    </diylc.connectivity.MultimeterProbe>
+    <diylc.connectivity.MultimeterProbe>
+      <name>Probe3</name>
+      <alpha>63</alpha>
+      <point x="4.176141732283464" y="4.926141732283464"/>
+      <handleColor hex="ff0000"/>
+      <orientation>_45</orientation>
+    </diylc.connectivity.MultimeterProbe>
+    <diylc.connectivity.MultimeterProbe>
+      <name>Probe4</name>
+      <alpha>63</alpha>
+      <point x="3.8861417322834644" y="4.936141732283464"/>
+      <handleColor hex="000000"/>
+      <orientation>_225</orientation>
+    </diylc.connectivity.MultimeterProbe>
+    <diylc.misc.CommonNode>
+      <name>CN1</name>
+      <point x="8.331141732283465" y="4.7961417322834645"/>
+      <text>+ VDC</text>
+      <font name="Bahnschrift" size="14" style="0"/>
+      <color hex="000000"/>
+      <bgColor hex="eeeeee"/>
+      <shape>RECTANGLE</shape>
+    </diylc.misc.CommonNode>
+    <diylc.misc.CommonNode>
+      <name>CN2</name>
+      <point x="6.976141732283464" y="4.7961417322834645"/>
+      <text>- VDC</text>
+      <font name="Bahnschrift" size="14" style="0"/>
+      <color hex="000000"/>
+      <bgColor hex="eeeeee"/>
+      <shape>RECTANGLE</shape>
+    </diylc.misc.CommonNode>
+    <diylc.misc.CommonNode>
+      <name>CN3</name>
+      <point x="7.7161417322834644" y="6.701141732283464"/>
+      <text>GND</text>
+      <font name="Bahnschrift" size="14" style="0"/>
+      <color hex="000000"/>
+      <bgColor hex="eeeeee"/>
+      <shape>RECTANGLE</shape>
+    </diylc.misc.CommonNode>
+    <diylc.misc.WrapLabel>
+      <name>L6</name>
+      <controlPoints>
+        <point x="8.561141732283465" y="5.586141732283465"/>
+        <point x="9.246141732283464" y="5.731141732283464"/>
+      </controlPoints>
+      <firstPoint x="8.561141732283465" y="5.586141732283465"/>
+      <secondPoint x="9.246141732283464" y="5.731141732283464"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>VDS Measure</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L7</name>
+      <controlPoints>
+        <point x="6.241141732283464" y="5.826141732283464"/>
+        <point x="6.926141732283464" y="5.971141732283464"/>
+      </controlPoints>
+      <firstPoint x="6.241141732283464" y="5.826141732283464"/>
+      <secondPoint x="6.926141732283464" y="5.971141732283464"/>
+      <font name="Bahnschrift" size="16" style="1"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>VGS Measure</value>
+    </diylc.misc.WrapLabel>
+    <diylc.misc.WrapLabel>
+      <name>L8</name>
+      <controlPoints>
+        <point x="9.996141732283464" y="5.306141732283464"/>
+        <point x="12.686141732283463" y="6.306141732283464"/>
+      </controlPoints>
+      <firstPoint x="9.996141732283464" y="5.306141732283464"/>
+      <secondPoint x="12.686141732283463" y="6.306141732283464"/>
+      <font name="Bahnschrift" size="32" style="0"/>
+      <color hex="000000"/>
+      <horizontalAlignment>LEFT</horizontalAlignment>
+      <value>Calculation of Id (mA):&lt;br&gt;Id = (V - Vds)/R&lt;br&gt;Where:&lt;br&gt;V is the supply voltage&lt;br&gt;Vds is what is measured between the drain and source of the FET.&lt;br&gt;R is the drain resistor in k.</value>
+    </diylc.misc.WrapLabel>
+  </components>
+  <groups/>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Bahnschrift" size="14" style="0"/>
+</project>

@@ -1,8 +1,0 @@
-Switch setup: [ ALL ]
-
-	B1.+ <-> CTS Push/Pull.1
-	B1.- <-> GND <-> J1.Sleeve <-> Volume.1
-	CTS Push/Pull.2 <-> J1.Ring
-	J1.Tip <-> Volume.2
-	SW1.2 <-> SW2.2 <-> SW3.2
-

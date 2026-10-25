@@ -1,7 +1,0 @@
-Switch setup: [ ALL ]
-
-	0,02 mF.1 <-> 100K.1 <-> PICKUP.North Start <-> TONE.1 <-> VOL.3
-	0,02 mF.2 <-> 100K.2 <-> J1.Tip <-> VOL.2
-	CAP 0.47 uF.1 <-> TONE.2
-	CAP 0.47 uF.2 <-> J1.Sleeve <-> PICKUP.North Finish <-> VOL.1
-
