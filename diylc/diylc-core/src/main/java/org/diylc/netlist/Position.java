@@ -83,8 +83,17 @@ public class Position implements Comparable<Position> {
 
   @Override
   public int compareTo(Position o) {
-    if (theSwitch instanceof IDIYComponent<?> && o.theSwitch instanceof IDIYComponent<?>)
-      return ((IDIYComponent<?>) theSwitch).getName().compareToIgnoreCase(((IDIYComponent<?>) o.theSwitch).getName());
-    return 0;
+    int comparison = getSwitchName().compareToIgnoreCase(o.getSwitchName());
+    return comparison != 0
+            ? comparison
+            : Integer.compare(position, o.position);
+  }
+
+  String getSwitchName() {
+    String name = theSwitch instanceof IDIYComponent<?>
+            ? ((IDIYComponent<?>) theSwitch).getName()
+            : theSwitch.getClass().getName();
+
+    return name == null ? "" : name;
   }
 }
