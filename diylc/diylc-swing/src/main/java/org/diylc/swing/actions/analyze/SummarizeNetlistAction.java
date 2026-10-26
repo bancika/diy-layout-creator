@@ -24,14 +24,17 @@ package org.diylc.swing.actions.analyze;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 
 import org.diylc.swingframework.TextDialog;
 
+import org.diylc.core.ISwitch;
 import org.diylc.common.INetlistAnalyzer;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.netlist.Netlist;
+import org.diylc.netlist.Position;
 import org.diylc.netlist.Summary;
 import org.diylc.netlist.NetlistSummaryHtmlReport;
 import org.diylc.swing.ISwingUI;
@@ -90,8 +93,23 @@ public class SummarizeNetlistAction extends AbstractAction {
               summarizer.getName(), ISwingUI.INFORMATION_MESSAGE);
           return;
         }
-        
-        String html = NetlistSummaryHtmlReport.generateHtml(res, summarizer.getFontName());
+
+        List<Position> fixedPositions = new ArrayList<>();
+
+        if (includeSwitches && !res.isEmpty()) {
+          for (var component : res.get(0).getNetlist().getComponents()) {
+            if (component instanceof ISwitch theSwitch) {
+              Integer selected = theSwitch.getSelectedPosition();
+              if (selected != null) {
+                fixedPositions.add(new Position(theSwitch, selected));
+              }
+            }
+          }
+        }
+
+        String html = NetlistSummaryHtmlReport.generateHtml(
+                res, summarizer.getFontName(), fixedPositions);
+
         new TextDialog(swingUI.getOwnerFrame().getRootPane(), html, summarizer.getName(),
             new Dimension(800, 600)).setVisible(true);
       }
