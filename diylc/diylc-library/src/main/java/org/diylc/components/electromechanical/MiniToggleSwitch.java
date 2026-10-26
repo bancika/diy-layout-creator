@@ -171,6 +171,15 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                 new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + spacing),
                 new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + 2 * spacing)};
         break;
+      case _6PDT:
+      case _6PDT_off:
+        controlPoints = new Point2D[18];
+        for (int i = 0; i < controlPoints.length; i++) {
+          controlPoints[i] = new Point2D.Double(
+                  firstPoint.getX() + (i / 3) * spacing,
+                  firstPoint.getY() + (i % 3) * spacing);
+        }
+        break;
     }
     AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
     if (getOrientation() == OrientationHV.HORIZONTAL) {
@@ -408,6 +417,15 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
               new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 4 * spacing, 2
                   * margin + 2 * spacing, margin, margin);
           break;
+        case _6PDT:
+        case _6PDT_off:
+          body = new RoundRectangle2D.Double(
+                  firstPoint.getX() - margin,
+                  firstPoint.getY() - margin,
+                  2 * margin + 5 * spacing,
+                  2 * margin + 2 * spacing,
+                  margin, margin);
+          break;
       }
       if (getOrientation() == OrientationHV.HORIZONTAL) {
         AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
@@ -548,12 +566,14 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _3PDT:
       case _4PDT:
       case _5PDT:
+      case _6PDT:
         return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;
       case SPDT_off:        
       case DPDT_off:
       case _3PDT_off:
       case _4PDT_off:
       case _5PDT_off:
+      case _6PDT_off:
         if (position == 1)
           return false;
         if (position == 2)
