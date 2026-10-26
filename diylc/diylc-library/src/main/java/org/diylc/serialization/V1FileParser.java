@@ -48,6 +48,7 @@ import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.connectivity.SolderPad;
 import org.diylc.components.connectivity.TraceCut;
 import org.diylc.components.electromechanical.MiniToggleSwitch;
+import org.diylc.components.electromechanical.MiniToggleSwitchOrientation;
 import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.components.misc.BOM;
 import org.diylc.components.misc.Label;
@@ -395,7 +396,7 @@ public class V1FileParser implements IOldFileParser {
             }
           } else {
             sw.setName(nameAttr);
-            sw.setOrientation(orientation);
+            sw.setOrientation(MiniToggleSwitchOrientation.valueOf(orientation.name()));
             sw.setValue(switchType);
             sw.setSpacing(new Size(0.1, SizeUnit.in));
             // compensate for potential negative coordinates after the type and orientation have
