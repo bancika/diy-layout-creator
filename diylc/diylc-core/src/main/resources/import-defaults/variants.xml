@@ -3382,7 +3382,7 @@
             </entry>
             <entry>
               <string>Orientation</string>
-              <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
+              <org.diylc.components.electromechanical.MiniToggleSwitchOrientation>VERTICAL</org.diylc.components.electromechanical.MiniToggleSwitchOrientation>
             </entry>
             <entry>
               <string>Body</string>
@@ -3417,7 +3417,7 @@
             </entry>
             <entry>
               <string>Orientation</string>
-              <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
+              <org.diylc.components.electromechanical.MiniToggleSwitchOrientation>VERTICAL</org.diylc.components.electromechanical.MiniToggleSwitchOrientation>
             </entry>
             <entry>
               <string>Body</string>
@@ -3449,7 +3449,7 @@
           </entry>
           <entry>
             <string>Orientation</string>
-            <org.diylc.common.OrientationHV>VERTICAL</org.diylc.common.OrientationHV>
+            <org.diylc.components.electromechanical.MiniToggleSwitchOrientation>VERTICAL</org.diylc.components.electromechanical.MiniToggleSwitchOrientation>
           </entry>
           <entry>
             <string>Border</string>
