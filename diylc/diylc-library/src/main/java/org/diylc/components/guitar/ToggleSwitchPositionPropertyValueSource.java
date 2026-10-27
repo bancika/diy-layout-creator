@@ -35,4 +35,43 @@ public class ToggleSwitchPositionPropertyValueSource extends AbstractDynamicProp
     }
     return res;
   }
+
+  @Override
+  public String getDisplayValue(Object value) {
+    if (value == null) {
+      return "None";
+    }
+
+    if (properties == null) {
+      return super.getDisplayValue(value);
+    }
+
+    Optional<PropertyWrapper> typeProperty = properties.stream()
+            .filter(p -> {
+              try {
+                return p.getGetter().getName().equals("getValue");
+              } catch (NoSuchMethodException e) {
+                return false;
+              }
+            })
+            .findFirst();
+
+    if (typeProperty.isEmpty()) {
+      return super.getDisplayValue(value);
+    }
+
+    ToggleSwitchType switchType =
+            (ToggleSwitchType) typeProperty.get().getValue();
+
+    int position = (Integer) value;
+
+    if (switchType.name().endsWith("_off")) {
+      if (position == 1) {
+        return "OFF";
+      }
+      return "ON" + (position == 0 ? 1 : 2);
+    }
+
+    return "ON" + (position + 1);
+  }
 }
