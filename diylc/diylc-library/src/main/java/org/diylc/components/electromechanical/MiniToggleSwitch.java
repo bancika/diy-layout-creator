@@ -172,6 +172,15 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
                 new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + spacing),
                 new Point2D.Double(firstPoint.getX() + 4 * spacing, firstPoint.getY() + 2 * spacing)};
         break;
+      case _6PDT:
+      case _6PDT_off:
+        controlPoints = new Point2D[18];
+        for (int i = 0; i < controlPoints.length; i++) {
+          controlPoints[i] = new Point2D.Double(
+                  firstPoint.getX() + (i / 3) * spacing,
+                  firstPoint.getY() + (i % 3) * spacing);
+        }
+        break;
     }
     if (isStackedOrientation() && switchType != ToggleSwitchType.SPST) {
       int poleCount = controlPoints.length / 3;
@@ -560,12 +569,14 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
       case _3PDT:
       case _4PDT:
       case _5PDT:
+      case _6PDT:
         return (index2 - index1) < 3 && index1 % 3 == position && index2 % 3 == position + 1;
       case SPDT_off:        
       case DPDT_off:
       case _3PDT_off:
       case _4PDT_off:
       case _5PDT_off:
+      case _6PDT_off:
         if (position == 1)
           return false;
         if (position == 2)
