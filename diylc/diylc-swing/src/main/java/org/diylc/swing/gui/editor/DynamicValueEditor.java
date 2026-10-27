@@ -106,10 +106,12 @@ public class DynamicValueEditor extends JComboBox<Object> {
 
       @Override
       public void itemStateChanged(ItemEvent e) {
-        if (e.getStateChange() == ItemEvent.SELECTED) {
+        if (e.getStateChange() == ItemEvent.SELECTED
+                || (e.getStateChange() == ItemEvent.DESELECTED
+                && getSelectedItem() == null)) {
           property.setChanged(true);
           setBackground(oldBg);
-          DynamicValueEditor.this.property.setValue(e.getItem());
+          DynamicValueEditor.this.property.setValue(getSelectedItem());
         }
       }
     });
