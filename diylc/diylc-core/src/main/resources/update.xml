@@ -670,6 +670,10 @@
 					<description>Rotating and mirroring the selection with 'Sticky Points' enabled now keeps the circuit connected, the same way moving it does - wires and leads stuck to the selection stay attached to their pins, and other rigid components stuck to it are rotated or mirrored along with it</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved sorting of switching combinations in 'Analyze Guitar Diagrams' tool</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Fixed Guitar Analyzer logic that merges switching configuration that produce the same outcome; in some cases it would remove switches from the list when it shouldn't</description>
 				</org.diylc.appframework.update.Change>
