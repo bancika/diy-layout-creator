@@ -82,6 +82,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   transient protected Shape body;
   protected ToggleSwitchType switchType = ToggleSwitchType.DPDT;
   private OrientationHV orientation = OrientationHV.VERTICAL;
+  private Boolean stacked;
   private Size spacing = SPACING;
 
   private Color bodyColor = BODY_COLOR;
@@ -181,8 +182,23 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         }
         break;
     }
+    if (isStackedOrientation() && switchType != ToggleSwitchType.SPST) {
+      int poleCount = controlPoints.length / 3;
+      int columns = poleCount % 2 == 0 ? 2 : 1;
+
+      for (int i = 0; i < controlPoints.length; i++) {
+        int pole = i / 3;
+        int terminal = i % 3;
+        int column = pole % columns;
+        int row = (pole / columns) * 3 + terminal;
+
+        controlPoints[i] = new Point2D.Double(
+                firstPoint.getX() + column * spacing,
+                firstPoint.getY() + row * spacing);
+      }
+    }
     AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
-    if (getOrientation() == OrientationHV.HORIZONTAL) {
+    if (isHorizontalOrientation()) {
       for (int i = 1; i < controlPoints.length; i++) {
         xform.transform(controlPoints[i], controlPoints[i]);
       }
@@ -247,18 +263,43 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
   }
 
   @EditableProperty
-  public OrientationHV getOrientation() {
-    if (orientation == null) {
-      orientation = OrientationHV.VERTICAL;
+  public MiniToggleSwitchOrientation getOrientation() {
+    boolean horizontal = orientation == OrientationHV.HORIZONTAL;
+
+    if (Boolean.TRUE.equals(stacked)) {
+      return horizontal
+              ? MiniToggleSwitchOrientation.STACKED_HORIZONTAL
+              : MiniToggleSwitchOrientation.STACKED_VERTICAL;
     }
-    return orientation;
+
+    return horizontal
+            ? MiniToggleSwitchOrientation.HORIZONTAL
+            : MiniToggleSwitchOrientation.VERTICAL;
   }
 
-  public void setOrientation(OrientationHV orientation) {
-    this.orientation = orientation;
+  public void setOrientation(MiniToggleSwitchOrientation value) {
+    boolean horizontal =
+            value == MiniToggleSwitchOrientation.HORIZONTAL
+                    || value == MiniToggleSwitchOrientation.STACKED_HORIZONTAL;
+
+    this.orientation = horizontal
+            ? OrientationHV.HORIZONTAL
+            : OrientationHV.VERTICAL;
+
+    this.stacked =
+            value == MiniToggleSwitchOrientation.STACKED_VERTICAL
+                    || value == MiniToggleSwitchOrientation.STACKED_HORIZONTAL;
+
     updateControlPoints();
-    // Reset body shape.
     body = null;
+  }
+
+  private boolean isHorizontalOrientation() {
+    return orientation == OrientationHV.HORIZONTAL;
+  }
+
+  private boolean isStackedOrientation() {
+    return Boolean.TRUE.equals(stacked);
   }
 
   @EditableProperty(validatorClass = PositiveNonZeroMeasureValidator.class)
@@ -313,7 +354,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
     int lugWidth;
     int lugHeight;
     
-    if (getOrientation() == OrientationHV.HORIZONTAL) {
+    if (isHorizontalOrientation()) {
       lugHeight = getClosestOdd((int) LUG_WIDTH.convertToPixels());
       lugWidth = getClosestOdd((int) LUG_THICKNESS.convertToPixels());
     } else {
@@ -360,7 +401,7 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
         Point2D labelPoint = new Point2D.Double(offset, 0);
 
         AffineTransform tx = null;
-        if (getOrientation() == OrientationHV.HORIZONTAL) {
+        if (isHorizontalOrientation()) {
           tx = AffineTransform.getRotateInstance(-Math.PI / 2, 0, 0);
         }
         if (tx != null) {
@@ -374,64 +415,26 @@ public class MiniToggleSwitch extends AbstractTransparentComponent<ToggleSwitchT
 
   public Shape getBody() {
     if (body == null) {
-      Point2D firstPoint = controlPoints[0];
+      double minX = Double.POSITIVE_INFINITY;
+      double minY = Double.POSITIVE_INFINITY;
+      double maxX = Double.NEGATIVE_INFINITY;
+      double maxY = Double.NEGATIVE_INFINITY;
+
+      for (Point2D point : controlPoints) {
+        minX = Math.min(minX, point.getX());
+        minY = Math.min(minY, point.getY());
+        maxX = Math.max(maxX, point.getX());
+        maxY = Math.max(maxY, point.getY());
+      }
+
       int margin = (int) MARGIN.convertToPixels();
-      int spacing = (int) getSpacing().convertToPixels();
-      switch (switchType) {
-        case SPST:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin, 2 * margin
-                  + spacing, margin, margin);
-          break;
-        case SPDT:
-        case SPDT_off:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin, 2 * margin + 2
-                  * spacing, margin, margin);
-          break;
-        case DPDT:
-        case DPDT_off:
-        case DPDT_ononon_1:
-        case DPDT_ononon_2:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + spacing, 2
-                  * margin + 2 * spacing, margin, margin);
-          break;
-        case _3PDT:
-        case _3PDT_off:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 2 * spacing, 2
-                  * margin + 2 * spacing, margin, margin);
-          break;
-        case _4PDT:
-        case _4PDT_off:
-        case _4PDT_ononon_1:
-        case _4PDT_ononon_2:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 3 * spacing, 2
-                  * margin + 2 * spacing, margin, margin);
-          break;
-        case _5PDT:
-        case _5PDT_off:
-          body =
-              new RoundRectangle2D.Double(firstPoint.getX() - margin, firstPoint.getY() - margin, 2 * margin + 4 * spacing, 2
-                  * margin + 2 * spacing, margin, margin);
-          break;
-        case _6PDT:
-        case _6PDT_off:
-          body = new RoundRectangle2D.Double(
-                  firstPoint.getX() - margin,
-                  firstPoint.getY() - margin,
-                  2 * margin + 5 * spacing,
-                  2 * margin + 2 * spacing,
-                  margin, margin);
-          break;
-      }
-      if (getOrientation() == OrientationHV.HORIZONTAL) {
-        AffineTransform xform = AffineTransform.getRotateInstance(-Math.PI / 2, firstPoint.getX(), firstPoint.getY());
-        body = new Area(body);
-        ((Area) body).transform(xform);
-      }
+      body = new RoundRectangle2D.Double(
+              minX - margin,
+              minY - margin,
+              maxX - minX + 2 * margin,
+              maxY - minY + 2 * margin,
+              margin,
+              margin);
     }
     return body;
   }
