@@ -206,21 +206,138 @@ public class NetlistBuilder {
   }
 
   public static void cleanupRedundantSwitches(List<SwitchSetup> switchSetups) {
-    Map<ISwitch, Set<Integer>> positionCountMap = new HashMap<>();
-    switchSetups.forEach(s -> s.getPositions().forEach(pos -> {
-      positionCountMap.computeIfAbsent(pos.getSwitch(), k -> new HashSet<Integer>()).add(pos.getPosition());
-    }));
-    // find switches that are here in all the positions, meaning that they don't affect the circuit
-    Set<ISwitch> switchesToPrune = positionCountMap.entrySet().stream()
-        .filter(e -> e.getKey().getPositionCount() == e.getValue().size())
-        .map(x -> x.getKey())
-        .collect(Collectors.toSet());
-    switchSetups.forEach(s -> s.getPositions().removeIf(x -> switchesToPrune.contains(x.getSwitch())));
-    switchSetups.removeIf(x -> x.getPositions().isEmpty());
-    HashSet<SwitchSetup> uniqueSetups = new HashSet<>(switchSetups);
+    if (switchSetups.isEmpty()) {
+      return;
+    }
+
+    // An empty setup means every switch position is allowed.
+    if (switchSetups.stream().anyMatch(s -> s.getPositions().isEmpty())) {
+      switchSetups.clear();
+      return;
+    }
+
+    Set<ISwitch> switches = switchSetups.stream()
+            .flatMap(setup -> setup.getPositions().stream())
+            .map(Position::getSwitch)
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+    // Restore concrete states from any previously simplified setups.
+    // A missing switch means all positions of that switch are allowed.
+    Set<Set<Position>> concreteStates = new HashSet<>();
+
+    for (SwitchSetup setup : switchSetups) {
+      Set<Set<Position>> expanded = new HashSet<>();
+      expanded.add(new HashSet<>(setup.getPositions()));
+
+      for (ISwitch theSwitch : switches) {
+        Set<Set<Position>> next = new HashSet<>();
+
+        for (Set<Position> state : expanded) {
+          boolean present = state.stream()
+                  .anyMatch(p -> p.getSwitch().equals(theSwitch));
+
+          if (present) {
+            next.add(state);
+          } else {
+            for (int position = 0;
+                 position < theSwitch.getPositionCount(); position++) {
+              Set<Position> copy = new HashSet<>(state);
+              copy.add(new Position(theSwitch, position));
+              next.add(copy);
+            }
+          }
+        }
+
+        expanded = next;
+      }
+
+      concreteStates.addAll(expanded);
+    }
+
+    // Find maximally simplified descriptions. Keep all overlapping
+    // combinations at each level, rather than committing to one merge.
+    Set<Set<Position>> current = new HashSet<>(concreteStates);
+    Set<Set<Position>> primeSetups = new HashSet<>();
+
+    while (!current.isEmpty()) {
+      Set<Set<Position>> combined = new HashSet<>();
+      Set<Set<Position>> next = new HashSet<>();
+
+      for (ISwitch theSwitch : switches) {
+        Map<Set<Position>, List<Set<Position>>> groups = new HashMap<>();
+
+        for (Set<Position> setup : current) {
+          boolean present = setup.stream()
+                  .anyMatch(p -> p.getSwitch().equals(theSwitch));
+
+          if (!present) {
+            continue;
+          }
+
+          Set<Position> otherPositions = setup.stream()
+                  .filter(p -> !p.getSwitch().equals(theSwitch))
+                  .collect(Collectors.toSet());
+
+          groups.computeIfAbsent(otherPositions, key -> new ArrayList<>())
+                  .add(setup);
+        }
+
+        for (Map.Entry<Set<Position>, List<Set<Position>>> entry
+                : groups.entrySet()) {
+          if (entry.getValue().size() == theSwitch.getPositionCount()) {
+            next.add(entry.getKey());
+            combined.addAll(entry.getValue());
+          }
+        }
+      }
+
+      for (Set<Position> setup : current) {
+        if (!combined.contains(setup)) {
+          primeSetups.add(setup);
+        }
+      }
+
+      current = next;
+    }
+
+    // A fully unrestricted description covers every configuration.
+    if (primeSetups.stream().anyMatch(Set::isEmpty)) {
+      switchSetups.clear();
+      return;
+    }
+
+    List<SwitchSetup> result = primeSetups.stream()
+            .map(setup -> new SwitchSetup(new ArrayList<>(setup)))
+            .collect(Collectors.toCollection(ArrayList::new));
+
+    // Prefer removing longer descriptions first; use text as a stable
+    // tie-breaker so HashSet iteration order does not affect the result.
+    result.sort(Comparator
+            .comparingInt((SwitchSetup s) -> s.getPositions().size())
+            .reversed()
+            .thenComparing(SwitchSetup::toString));
+
+    // Remove a description only if the remaining descriptions still
+    // cover every concrete state it represents.
+    for (int i = 0; i < result.size();) {
+      SwitchSetup candidate = result.get(i);
+
+      boolean redundant = concreteStates.stream()
+              .filter(state -> state.containsAll(candidate.getPositions()))
+              .allMatch(state -> result.stream()
+                      .anyMatch(other -> other != candidate
+                              && state.containsAll(other.getPositions())));
+
+      if (redundant) {
+        result.remove(i);
+      } else {
+        i++;
+      }
+    }
+
+    result.sort(Comparator.comparing(SwitchSetup::toString));
     switchSetups.clear();
-    switchSetups.addAll(uniqueSetups);
-    switchSetups.sort(Comparator.comparing(x -> x.toString()));
+    switchSetups.addAll(result);
   }
 
   public static Netlist buildNetlist(List<IDIYComponent<?>> components, Collection<Node> nodes,
