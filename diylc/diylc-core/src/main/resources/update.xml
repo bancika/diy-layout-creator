@@ -681,6 +681,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed a bug that makes it impossible to clear a property with dynamic values, e.g. selected position of a switch</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>
