@@ -706,6 +706,10 @@
 					<description>'AI Circuit Analyzer' offers to log in instead of just showing the error</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'AI Assistant' is now aware of what is selected so natural language prompts can refer to selected components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
 				</org.diylc.appframework.update.Change>

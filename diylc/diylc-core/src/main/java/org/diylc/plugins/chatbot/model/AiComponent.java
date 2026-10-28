@@ -26,7 +26,9 @@ import java.util.Map;
 
 /**
  * @param properties current values of the editable properties
+ * @param bounds where the component is drawn, the only position given for components without
+ *        terminals, such as boards and labels
  */
 public record AiComponent(String id, String type, String value, Map<String, String> properties,
-    List<AiTerminal> terminals) {
+    AiBounds bounds, List<AiTerminal> terminals) {
 }

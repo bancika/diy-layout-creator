@@ -350,7 +350,7 @@ public class ComponentCatalogGenerator {
 
     // Measures - format with unit
     if (value instanceof AbstractMeasure) {
-      return value.toString();
+      return formatMeasure((AbstractMeasure<?>) value);
     }
 
     // Enums
@@ -368,5 +368,19 @@ public class ComponentCatalogGenerator {
     }
 
     return null;
+  }
+
+  /**
+   * Formats a measure the way {@link AbstractMeasure#toString()} does, but always with a decimal
+   * point, where the measure's own format follows the locale and writes a decimal comma in some.
+   */
+  static String formatMeasure(AbstractMeasure<?> measure) {
+    if (measure.getValue() == null) {
+      return null;
+    }
+    // four decimals rounded half-even, like the "0.####" DecimalFormat the measure uses
+    return java.math.BigDecimal.valueOf(measure.getValue())
+        .setScale(4, java.math.RoundingMode.HALF_EVEN).stripTrailingZeros().toPlainString()
+        + measure.getUnit();
   }
 }
