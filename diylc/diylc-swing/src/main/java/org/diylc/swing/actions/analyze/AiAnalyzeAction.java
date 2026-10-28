@@ -1,7 +1,10 @@
 package org.diylc.swing.actions.analyze;
 
 import org.diylc.common.IPlugInPort;
+import org.diylc.lang.LangUtil;
+import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
+import org.diylc.swing.plugins.cloud.actions.LoginAction;
 import org.diylc.swingframework.TextDialog;
 import org.diylc.utils.IconLoader;
 
@@ -55,6 +58,10 @@ public class AiAnalyzeAction extends AbstractAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    if (!plugInPort.getCloudService().isLoggedIn()) {
+      offerLogin(e);
+      return;
+    }
 
     String message = WAITING_MESSAGES[(int) (Math.random() * WAITING_MESSAGES.length)];
     JOptionPane optionPane = new JOptionPane(message,
@@ -86,6 +93,10 @@ public class AiAnalyzeAction extends AbstractAction {
           new TextDialog(swingUI.getOwnerFrame().getRootPane(), res, "AI Circuit Analyzer",
               new Dimension(800, 600)).setVisible(true);
         } catch (Exception ex) {
+          if (ex.getCause() instanceof NotLoggedInException) {
+            offerLogin(e);
+            return;
+          }
           String message =
               Optional.ofNullable(ex.getCause()).map(Throwable::getMessage).orElse(ex.getMessage());
           swingUI.showMessage(message, "AI Circuit Analyzer", ISwingUI.ERROR_MESSAGE);
@@ -98,6 +109,17 @@ public class AiAnalyzeAction extends AbstractAction {
 
     if (!worker.isDone()) {
       worker.cancel(true);
+    }
+  }
+
+  private void offerLogin(ActionEvent e) {
+    int choice = swingUI.showConfirmDialog(
+        LangUtil.translate(
+            "AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?"),
+        LangUtil.translate("AI Circuit Analyzer"), ISwingUI.YES_NO_OPTION,
+        ISwingUI.QUESTION_MESSAGE);
+    if (choice == ISwingUI.YES_OPTION && LoginAction.logIn(plugInPort, swingUI)) {
+      actionPerformed(e);
     }
   }
 }

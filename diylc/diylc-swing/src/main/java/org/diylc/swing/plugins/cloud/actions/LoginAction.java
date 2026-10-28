@@ -23,6 +23,7 @@ package org.diylc.swing.plugins.cloud.actions;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.core.IView;
 import org.diylc.plugins.cloud.service.CloudException;
@@ -46,27 +47,30 @@ public class LoginAction extends AbstractAction {
 
   @Override
   public void actionPerformed(ActionEvent e) {
+    if (logIn(cloudPlugIn.getPlugInPort(), cloudPlugIn.getSwingUI())) {
+      cloudPlugIn.loggedIn();
+    }
+  }
+
+  public static boolean logIn(IPlugInPort plugInPort, ISwingUI swingUI) {
     LoginDialog dialog = DialogFactory.getInstance().createLoginDialog();
     do {
       dialog.setVisible(true);
       if (ButtonDialog.OK.equals(dialog.getSelectedButtonCaption())) {
         try {
-          if (cloudPlugIn.getPlugInPort().getCloudService().logIn(dialog.getUserName(), dialog.getPassword())) {
-            cloudPlugIn.getSwingUI().showMessage(
-                "You have successfully logged into the system. You will remain logged in from this machine until logged out.",
-                "Login Successful", IView.INFORMATION_MESSAGE);
-            cloudPlugIn.loggedIn();
-            break;
+          if (plugInPort.getCloudService().logIn(dialog.getUserName(), dialog.getPassword())) {
+            return true;
           } else {
-            cloudPlugIn.getSwingUI().showMessage(
+            swingUI.showMessage(
                 "Could not login. Possible reasons are wrong credentials or lack of internet connection.",
                 "Login Error", IView.ERROR_MESSAGE);
           }
         } catch (CloudException e1) {
-          cloudPlugIn.getSwingUI().showMessage("Could not login. Error: " + e1.getMessage(), "Login Error", IView.ERROR_MESSAGE);
+          swingUI.showMessage("Could not login. Error: " + e1.getMessage(), "Login Error", IView.ERROR_MESSAGE);
         }
-      } else
-        break;
+      } else {
+        return false;
+      }
     } while (true);
   }
-} 
+}

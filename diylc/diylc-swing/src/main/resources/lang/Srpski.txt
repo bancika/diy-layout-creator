@@ -705,3 +705,4 @@ Replace %s with %s|Zameni %s sa %s
 Reconnect %s to %s|Ponovo poveži %s sa %s
 Editing your circuit:|Izmenama vašeg kola:
 Generating new layouts:|Generisanju novih rasporeda:
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|AI Analizator Kola zahteva DIYLC Cloud nalog. Da li želite da se prijavite sada?

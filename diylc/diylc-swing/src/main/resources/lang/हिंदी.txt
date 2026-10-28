@@ -707,3 +707,4 @@ Replace %s with %s|%s को %s से बदलें
 Reconnect %s to %s|%s को %s से फिर से जोड़ें
 Editing your circuit:|आपके सर्किट को संपादित करना:
 Generating new layouts:|नए लेआउट बनाना:
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|AI सर्किट विश्लेषक के लिए DIYLC Cloud खाते की आवश्यकता है। क्या आप अभी लॉग इन करना चाहेंगे?

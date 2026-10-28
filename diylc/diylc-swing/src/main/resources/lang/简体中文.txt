@@ -707,3 +707,4 @@ Replace %s with %s|将 %s 替换为 %s
 Reconnect %s to %s|将 %s 重新连接到 %s
 Editing your circuit:|编辑您的电路：
 Generating new layouts:|生成新的布局：
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|AI电路分析器需要 DIYLC Cloud 账户。是否立即登录？
