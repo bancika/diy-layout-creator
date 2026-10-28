@@ -130,8 +130,15 @@ public class AiEditScriptEditor implements IProjectEditor {
   }
 
   private void apply(AiEditOperation op, IAiEditHandler handler, AiEditContext context) {
-    // an action this version does not know is skipped, as it always has been
+    // the service may be newer than this build and propose actions it does not know yet; those
+    // are skipped so that the rest of the script still applies
     if (handler == null) {
+      if (op.getAction() != null) {
+        warnings.add("Operation '" + op.getAction() + "'"
+            + (op.getComponentName() != null ? " on " + op.getComponentName() : "")
+            + " is not supported by this version of DIYLC and was skipped."
+            + " Please upgrade to the latest version.");
+      }
       return;
     }
     try {

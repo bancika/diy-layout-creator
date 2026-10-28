@@ -670,6 +670,10 @@
 					<description>AI Assistant can actively participate in circuit design, make changes to the project and designs circuits from scratch</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 6PDT and 6PDT On/Off/On toggle switch types</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Rotating and mirroring the selection with 'Sticky Points' enabled now keeps the circuit connected, the same way moving it does - wires and leads stuck to the selection stay attached to their pins, and other rigid components stuck to it are rotated or mirrored along with it</description>
 				</org.diylc.appframework.update.Change>
