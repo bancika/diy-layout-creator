@@ -56,6 +56,13 @@ public class NetlistBuilder {
   @SuppressWarnings("unchecked")
   public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
       List<ContinuityArea> continuityAreas) throws NetlistException {
+    return extractNetlists(includeSwitches, false, project, continuityAreas);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static List<Netlist> extractNetlists(boolean includeSwitches,
+      boolean respectSelectedPositions, Project project,
+      List<ContinuityArea> continuityAreas) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
@@ -104,15 +111,46 @@ public class NetlistBuilder {
     if (switches.isEmpty())
       switches.add(new TrivialSwitch());
 
-    // construct all possible combinations
+    // Determine the allowed position range for each switch.
+    int[] firstPositions = new int[switches.size()];
+    int[] lastPositions = new int[switches.size()];
     int[] positions = new int[switches.size()];
-    for (int i = 0; i < switches.size(); i++)
-      positions[i] = 0;
+
+    // construct all possible combinations
+    for (int j = 0; j < switches.size(); j++) {
+      ISwitch theSwitch = switches.get(j);
+      Integer selected = respectSelectedPositions
+              ? theSwitch.getSelectedPosition()
+              : null;
+
+      if (selected != null
+              && (selected < 0 || selected >= theSwitch.getPositionCount())) {
+        String name = theSwitch instanceof IDIYComponent<?>
+                ? ((IDIYComponent<?>) theSwitch).getName()
+                : theSwitch.getClass().getSimpleName();
+
+        throw new NetlistException(
+                "Invalid selected position for switch '" + name
+                        + "'. Set Selected Position to None and try again.");
+      }
+
+      firstPositions[j] = selected == null ? 0 : selected;
+      lastPositions[j] = selected == null
+              ? theSwitch.getPositionCount() - 1
+              : selected;
+      positions[j] = firstPositions[j];
+    }
 
     int i = switches.size() - 1;
 
-    int totalSwitchCombinations =
-        switches.stream().map(sw -> sw.getPositionCount()).reduce(1, (a, b) -> a * b);
+    long totalSwitchCombinations = 1;
+    for (int j = 0; j < switches.size(); j++) {
+      int allowedPositions = lastPositions[j] - firstPositions[j] + 1;
+      totalSwitchCombinations =
+              totalSwitchCombinations > Long.MAX_VALUE / allowedPositions
+                      ? Long.MAX_VALUE
+                      : totalSwitchCombinations * allowedPositions;
+    }
     
     int maxSwitch = MAX_SWITCH_COMBINATIONS;
     String maxSwitchStr = System.getProperty("org.diylc.maxSwitchCombinations");
@@ -126,7 +164,7 @@ public class NetlistBuilder {
 
     if (totalSwitchCombinations > maxSwitch) {
       throw new NetlistException(String.format(MAX_SWITCH_COMBINATIONS_ERROR,
-          MAX_SWITCH_COMBINATIONS, totalSwitchCombinations));
+              maxSwitch, totalSwitchCombinations));
     }
 
     while (i >= 0) {
@@ -150,16 +188,19 @@ public class NetlistBuilder {
         result.put(netlist, netlist);
       }
 
-      // find the next combination if possible
-      if (positions[i] < switches.get(i).getPositionCount() - 1) {
+      // Find the next combination within the allowed position ranges.
+      if (positions[i] < lastPositions[i]) {
         positions[i]++;
       } else {
-        while (i >= 0 && positions[i] == switches.get(i).getPositionCount() - 1)
+        while (i >= 0 && positions[i] == lastPositions[i]) {
           i--;
+        }
+
         if (i >= 0) {
           positions[i]++;
-          for (int j = i + 1; j < positions.length; j++)
-            positions[j] = 0;
+          for (int j = i + 1; j < positions.length; j++) {
+            positions[j] = firstPositions[j];
+          }
           i = switches.size() - 1;
         }
       }

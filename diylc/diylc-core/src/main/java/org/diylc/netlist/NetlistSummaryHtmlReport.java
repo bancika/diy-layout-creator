@@ -23,6 +23,11 @@ import java.util.List;
 public class NetlistSummaryHtmlReport {
 
     public static String generateHtml(List<Summary> summaries, String fontName) {
+        return generateHtml(summaries, fontName, List.of());
+    }
+
+    public static String generateHtml(List<Summary> summaries, String fontName,
+                                      List<Position> fixedPositions) {
         if (summaries == null || summaries.isEmpty()) {
             return "";
         }
@@ -35,10 +40,30 @@ public class NetlistSummaryHtmlReport {
         sb.append("hr { margin-top: 10px; margin-bottom: 0; }");
         sb.append("</style></head><body>");
 
+        if (!fixedPositions.isEmpty()) {
+            sb.append("<p><b>Some switches are held at their selected positions.</b> ")
+                    .append("Only the positions listed below were analyzed for these switches. ")
+                    .append("To analyze all positions, set each switch's ")
+                    .append("<b>Selected Position</b> to <b>None</b> in Edit Selection ")
+                    .append("and run the analysis again.</p><ul>");
+
+            fixedPositions.stream()
+                    .map(Position::toString)
+                    .sorted(String.CASE_INSENSITIVE_ORDER)
+                    .forEach(label -> sb.append("<li>")
+                            .append(label.replace("&", "&amp;")
+                                    .replace("<", "&lt;")
+                                    .replace(">", "&gt;"))
+                            .append("</li>"));
+
+            sb.append("</ul><hr>");
+        }
+
         for (Summary summary : summaries) {
             if (summaries.size() > 1) {
-                sb.append("<h2>Switch configuration: ").append(summary.getNetlist().getSwitchSetupString())
-                    .append("</h2>");
+                sb.append("<h2>Switch configuration: ")
+                        .append(formatSwitchSetup(summary.getNetlist(), fixedPositions))
+                        .append("</h2>");
             }
 
             sb.append(summary.getSummaryHtml());
@@ -50,5 +75,27 @@ public class NetlistSummaryHtmlReport {
         sb.append("</body></html>");
 
         return sb.toString();
+    }
+
+    private static String formatSwitchSetup(Netlist netlist,
+                                            List<Position> fixedPositions) {
+        List<String> descriptions = netlist.getSwitchSetup().stream()
+                .sorted()
+                .map(setup -> String.join(":",
+                        setup.getPositions().stream()
+                                .filter(position -> fixedPositions.stream().noneMatch(
+                                        fixed -> fixed.getSwitch().equals(position.getSwitch())))
+                                .map(Position::toString)
+                                .toList()))
+                .distinct()
+                .toList();
+
+        if (descriptions.isEmpty() || descriptions.contains("")) {
+            return fixedPositions.isEmpty()
+                    ? "[ ALL ]"
+                    : "[ ALL remaining switch positions ]";
+        }
+
+        return "[ " + String.join(", ", descriptions) + " ]";
     }
 }
