@@ -56,6 +56,13 @@ public class NetlistBuilder {
   @SuppressWarnings("unchecked")
   public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
       List<ContinuityArea> continuityAreas) throws NetlistException {
+    return extractNetlists(includeSwitches, false, project, continuityAreas);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static List<Netlist> extractNetlists(boolean includeSwitches,
+      boolean respectSelectedPositions, Project project,
+      List<ContinuityArea> continuityAreas) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
@@ -112,7 +119,9 @@ public class NetlistBuilder {
     // construct all possible combinations
     for (int j = 0; j < switches.size(); j++) {
       ISwitch theSwitch = switches.get(j);
-      Integer selected = theSwitch.getSelectedPosition();
+      Integer selected = respectSelectedPositions
+              ? theSwitch.getSelectedPosition()
+              : null;
 
       if (selected != null
               && (selected < 0 || selected >= theSwitch.getPositionCount())) {

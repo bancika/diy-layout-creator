@@ -37,6 +37,7 @@ import org.diylc.netlist.Netlist;
 import org.diylc.netlist.Position;
 import org.diylc.netlist.Summary;
 import org.diylc.netlist.NetlistSummaryHtmlReport;
+import org.diylc.netlist.IGuitarDiagramAnalyzer;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
 
@@ -69,11 +70,14 @@ public class SummarizeNetlistAction extends AbstractAction {
   @Override
   public void actionPerformed(ActionEvent e) {
 
+    boolean respectSelectedPositions =
+        includeSwitches && summarizer instanceof IGuitarDiagramAnalyzer;
+
     swingUI.executeBackgroundTask(new ITask<List<Summary>>() {
 
       @Override
       public List<Summary> doInBackground() throws Exception {
-        List<Netlist> netlists = plugInPort.extractNetlists(includeSwitches);
+        List<Netlist> netlists = plugInPort.extractNetlists(includeSwitches, respectSelectedPositions);
         if (netlists == null || netlists.isEmpty()) {
           throw new Exception("The generated netlist is empty, nothing to show.");
         }
@@ -96,7 +100,7 @@ public class SummarizeNetlistAction extends AbstractAction {
 
         List<Position> fixedPositions = new ArrayList<>();
 
-        if (includeSwitches && !res.isEmpty()) {
+        if (respectSelectedPositions && !res.isEmpty()) {
           for (var component : res.get(0).getNetlist().getComponents()) {
             if (component instanceof ISwitch theSwitch) {
               Integer selected = theSwitch.getSelectedPosition();

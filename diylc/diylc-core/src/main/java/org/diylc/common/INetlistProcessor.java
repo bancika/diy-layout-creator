@@ -42,7 +42,17 @@ public interface INetlistProcessor {
    * @throws NetlistException 
    */
   List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException;
-  
+
+  /**
+   * Extracts netlists, optionally restricting switches to their selected positions.
+   */
+  default List<Netlist> extractNetlists(boolean includeSwitches,
+      boolean respectSelectedPositions) throws NetlistException {
+    if (respectSelectedPositions)
+      throw new NetlistException("Selected-position filtering is not supported by this netlist processor.");
+    return extractNetlists(includeSwitches);
+  }
+
   /**
    * Finds all available {@link INetlistAnalyzer} implementations.
    * 
