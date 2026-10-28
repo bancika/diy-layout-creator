@@ -699,6 +699,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
+					<description>Improved quality of output from the 'AI Circuit Analyzer'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
 					<description>'AI Circuit Analyzer' offers to log in instead of just showing the error</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
