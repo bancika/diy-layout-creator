@@ -49,6 +49,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.List;
 
@@ -117,29 +120,60 @@ public class ChatbotService {
     return service;
   }
 
-  public String promptChatbot(String prompt) throws NotLoggedInException, CloudException {
+  public ChatbotResponse promptChatbot(String prompt) throws NotLoggedInException, CloudException {
     if (!plugInPort.getCloudService().isLoggedIn())
       throw new NotLoggedInException();
 
-    LOG.info("Prompting chatbot: " + prompt);
+    // TODO: comment out before the release, prompts are logged for testing only
+    LOG.debug("Prompting chatbot: " + prompt);
 
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    File aiProjectFile = getAiProjectFile();
+    AiProject aiProject = extractAiProject();
+    File circuitFile = getCircuitFile(aiProject);
+    File clientAnalysisFile = getClientAnalysisFile(aiProject);
 
     try {
-      String response = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
+      String rawResponse = getService().promptChatbot(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile, prompt);
-      return Optional.ofNullable(response).orElse(SERVER_ERROR_PLEASE_TRY_AGAIN);
+          plugInPort.getCloudService().getMachineId(), fileName, circuitFile, clientAnalysisFile, prompt);
+      
+      // TODO: comment out before the release, responses are logged for testing only
+      LOG.debug("Raw chatbot response: " + rawResponse);
+      
+      if (rawResponse == null || rawResponse.isBlank()) {
+          throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
+      }
+      
+      // Try to parse as ChatbotResponse (covers both standard chat and interactive edit)
+      ChatbotResponse response = new ChatbotResponse();
+      String trimmed = rawResponse.trim();
+      if (trimmed.startsWith("{")) {
+        try {
+          ObjectMapper mapper = new ObjectMapper();
+          response = mapper.readValue(trimmed, ChatbotResponse.class);
+        } catch (Exception parseEx) {
+          LOG.warn("Could not parse response as structured JSON, treating as plain text: " + parseEx.getMessage());
+          response.setString(rawResponse);
+        }
+      } else {
+        response.setString(rawResponse);
+      }
+      response.setProjectFingerprint(fingerprint(aiProject));
+
+      return response;
+    } catch (CloudException ce) {
+      throw ce;
     } catch (Exception e) {
       LOG.error("Chatbot error", e);
       throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
-      // Clean up the temp file immediately after use
-      if (aiProjectFile != null && aiProjectFile.exists()) {
-        aiProjectFile.delete();
+      if (circuitFile != null && circuitFile.exists()) {
+        circuitFile.delete();
+      }
+      if (clientAnalysisFile != null && clientAnalysisFile.exists()) {
+        clientAnalysisFile.delete();
       }
     }
   }
@@ -153,12 +187,14 @@ public class ChatbotService {
     String currentFile = plugInPort.getCurrentFileName();
     String fileName = extractFileName(currentFile);
 
-    File aiProjectFile = getAiProjectFile();
+    AiProject aiProject = extractAiProject();
+    File circuitFile = getCircuitFile(aiProject);
+    File clientAnalysisFile = getClientAnalysisFile(aiProject);
 
     try {
       String jsonResult = getService().analyzeCircuit(plugInPort.getCloudService().getCurrentUsername(),
           plugInPort.getCloudService().getCurrentToken(),
-          plugInPort.getCloudService().getMachineId(), fileName, aiProjectFile);
+          plugInPort.getCloudService().getMachineId(), fileName, circuitFile, clientAnalysisFile);
 
       if (jsonResult == null || jsonResult.trim().isEmpty()) {
         throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
@@ -169,77 +205,104 @@ public class ChatbotService {
       LOG.error("AI Analyzer error", e);
       throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);
     } finally {
-      // Clean up the temp file immediately after use
-      if (aiProjectFile != null && aiProjectFile.exists()) {
-        aiProjectFile.delete();
+      if (circuitFile != null && circuitFile.exists()) {
+        circuitFile.delete();
+      }
+      if (clientAnalysisFile != null && clientAnalysisFile.exists()) {
+        clientAnalysisFile.delete();
       }
     }
   }
 
-  private File getAiProjectFile() {
-    File aiProjectFile = null;
-    AiProject aiProject = extractAiProject();
+  private File getCircuitFile(AiProject aiProject) {
     if (aiProject == null) {
       return null;
     }
     try {
-      String aiProjectStr = null;
-      try {
-        aiProjectStr = MAPPER.writeValueAsString(aiProject);
-      } catch (JsonProcessingException e) {
-        LOG.error("Could not serialize aiProject to JSON", e);
+      String aiProjectStr = MAPPER.writeValueAsString(aiProject);
+      File circuitFile = File.createTempFile("diylc_circuit_", ".txt");
+      try (FileWriter writer = new FileWriter(circuitFile, StandardCharsets.UTF_8)) {
+        writer.write(aiProjectStr);
       }
-      if (aiProjectStr != null) {
-        aiProjectFile = File.createTempFile("diylc_netlist_", ".txt");
-        try (FileWriter writer = new FileWriter(aiProjectFile)) {
-          writer.write("""
-              Take these notes into account when analyzing the circuit
-              - Coordinates are represented in pixels assuming 200px/in resolution.
-              - Each component will either have a set of terminals that are connectable to other components or one or two points defining its position.
-              - Netlists of connected terminals are defined in the 'nets' structure.
-              - Connective components (wires, jumpers, traces, etc) are not part of the netlist, they are there to understand physical diagram but their conductive properties are already taken into account when constructing the netlist
-              - Analyze labels - they could provide clues about nearby terminals and what they represent.
-              """);
-          if (aiProject.switches() != null && !aiProject.switches().isEmpty()) {
-            writer.write("""
-              - Switches are defined in the 'switches' structure. Each switch will have a list of available position and the collection of internal terminals that are connected in each of the positions. Take the switching matrix into consideration when analyzing the circuit operation.
-              """);
-          }
-          if (aiProject.tags().contains("guitar")) {
-            IGuitarDiagramAnalyzer guitarDiagramAnalyzer =
-                ReflectionUtils.getGuitarDiagramAnalyzer();
-            if (guitarDiagramAnalyzer != null) {
-              try {
-                List<Netlist> netlists = plugInPort.extractNetlists(true);
-                writer.write("""
-                    - The circuit represents a guitar wiring diagram and below are some of the known characteristics in each combination of switch positions:
-                    """);
-                netlists.forEach(netlist -> {
-                  List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
-                  try {
-                    writer.write(netlist.getSwitchSetupString() + ": \n");
-                    for (String note : notes) {
-                      writer.write("  - " + note + "\n");
-                    }
-                  } catch (IOException ex) {
-                    LOG.warn("Could not write guitar diagram notes", ex);
-                  }
-                });
-              } catch (NetlistException | IOException ex) {
-                LOG.warn("Could not extract guitar diagram netlist", ex);
-              }
-            }
-          }
-          writer.write("\nBelow is the JSON describing the circuit in detail.\n");
-          writer.write(aiProjectStr);
-        }
-        // Make sure the temp file is deleted when the JVM exits
-        aiProjectFile.deleteOnExit();
-      }
+      circuitFile.deleteOnExit();
+      return circuitFile;
     } catch (Exception e) {
-      LOG.error("Error extracting or saving netlist", e);
+      LOG.error("Error saving circuit file", e);
+      return null;
     }
-    return aiProjectFile;
+  }
+
+  private File getClientAnalysisFile(AiProject aiProject) {
+    if (aiProject == null || !aiProject.tags().contains("guitar")) {
+      return null;
+    }
+    IGuitarDiagramAnalyzer guitarDiagramAnalyzer = null;
+    try {
+      guitarDiagramAnalyzer = ReflectionUtils.getGuitarDiagramAnalyzer();
+    } catch (Exception e) {
+      LOG.error("Could not get guitar diagram analyzer", e);
+      return null;
+    }
+    if (guitarDiagramAnalyzer == null) {
+      return null;
+    }
+    try {
+      List<Netlist> netlists = plugInPort.extractNetlists(true);
+      Map<String, List<String>> analysis = new LinkedHashMap<>();
+      for (Netlist netlist : netlists) {
+        List<String> notes = guitarDiagramAnalyzer.collectNotes(netlist);
+        if (notes != null && !notes.isEmpty()) {
+          analysis.put(netlist.getSwitchSetupString(), notes);
+        }
+      }
+      if (analysis.isEmpty()) {
+        return null;
+      }
+      String analysisStr = MAPPER.writeValueAsString(analysis);
+      File analysisFile = File.createTempFile("diylc_client_analysis_", ".txt");
+      try (FileWriter writer = new FileWriter(analysisFile, StandardCharsets.UTF_8)) {
+        writer.write(analysisStr);
+      }
+      analysisFile.deleteOnExit();
+      return analysisFile;
+    } catch (Exception e) {
+      LOG.error("Could not extract guitar diagram notes", e);
+      return null;
+    }
+  }
+
+  /**
+   * @return a fingerprint of the current project, comparable with
+   *         {@link ChatbotResponse#getProjectFingerprint()} to tell whether the project still looks
+   *         the way it did when the response was produced
+   */
+  public String getProjectFingerprint() {
+    return fingerprint(extractAiProject());
+  }
+
+  /**
+   * Hashes the part of the project description that an edit script depends on: the components,
+   * their terminals and z-order, and how the terminals are connected. Net names and the order in
+   * which nets and their members are listed are left out, because the netlist does not promise to
+   * produce them in the same order twice.
+   */
+  static String fingerprint(AiProject aiProject) {
+    if (aiProject == null) {
+      return "";
+    }
+    List<List<String>> nets = new ArrayList<>();
+    for (Set<String> net : aiProject.nets().values()) {
+      nets.add(net.stream().sorted().toList());
+    }
+    nets.sort(Comparator.comparing(net -> String.join(",", net)));
+    try {
+      byte[] canonical =
+          MAPPER.writeValueAsString(List.of(aiProject.components(), nets)).getBytes(
+              StandardCharsets.UTF_8);
+      return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(canonical));
+    } catch (JsonProcessingException | NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Could not fingerprint the project", e);
+    }
   }
 
   private AiProject extractAiProject() {
@@ -361,5 +424,61 @@ public class ChatbotService {
       "How do I determine if my soldering joints are causing reliability issues?",
       "What steps can I take if my microcontroller circuit isn't functioning as intended?",
       "How do I troubleshoot a noisy or unstable sensor reading?"
+  };
+  public static final String[] editQuestions = {
+      "Can you move the volume and tone pots so they line up evenly along the front panel?",
+      "Can you replace the 1N4148 clipping diodes with red LEDs?",
+      "Can you swap the ceramic disc capacitors in the signal path for film capacitors?",
+      "Can you change all the 10k resistors in this layout to 4.7k?",
+      "Can you move the input and output jacks to opposite sides of the enclosure?",
+      "Can you replace the toggle switch with a 3PDT footswitch for true bypass?",
+      "Can you shift the whole circuit a few holes to the left to make room for a power filter?",
+      "Can you add a 100uF filter capacitor across the 9V supply?",
+      "Can you remove the unused jumpers and trace cuts from the stripboard?",
+      "Can you reconnect the input jack ground wire to the star ground point instead?",
+      "Can you rewire the pickup selector so the middle pickup is out of phase?",
+      "Can you bring the hookup wires in front of the board so they're easier to follow?",
+      "Can you send the chassis panel behind all the other components?",
+      "Can you recolor the wiring so ground wires are black and power wires are red?",
+      "Can you replace the linear volume pot with an audio taper one?",
+      "Can you move the cathode resistors and bypass caps closer to their tube sockets?",
+      "Can you add a 1M pulldown resistor to the input jack?",
+      "Can you double the value of the output coupling capacitor for a little more bass?",
+      "Can you spread out the components on this perfboard so they're easier to solder?",
+      "Can you swap the positions of the two transistors?",
+      "Can you replace the BC549 transistors with 2N5088s and set the correct pinout?",
+      "Can you tidy up the wiring so the wires don't cross over the pots?",
+      "Can you move the LED and its current limiting resistor to the top edge of the board?",
+      "Can you remove the tone control and wire the volume pot straight to the output jack?",
+      "Can you replace the carbon comp resistors in the preamp with metal film ones?",
+      "Can you turn the IC around so pin 1 points toward the input side of the board?",
+      "Can you rename the components so they're numbered from the input to the output?"
+  };
+  public static final String[] generationQuestions = {
+      "Can you lay out an empty pedal enclosure with input, output and DC jacks, a footswitch and an LED?",
+      "Can you generate a stripboard layout for a Fuzz Face?",
+      "Can you design a PCB for a simple single-transistor treble booster?",
+      "Can you build a turret board layout for a tweed Deluxe style amp?",
+      "Can you lay out an eyelet board for a tweed Champ style amp?",
+      "Can you create an amp chassis with the transformers, tube sockets, pots and jacks in place?",
+      "Can you generate Strat wiring with a five-way switch, one volume and two tones?",
+      "Can you generate Telecaster wiring with a four-way switch?",
+      "Can you create a Les Paul wiring harness with 50s style wiring?",
+      "Can you lay out Jazz Bass wiring with two volumes and a master tone?",
+      "Can you design a perfboard layout for an LM386 practice amplifier?",
+      "Can you design a PCB for an op amp clean boost built around a TL072?",
+      "Can you generate a stripboard layout for a Tube Screamer style overdrive?",
+      "Can you lay out a passive Fender style tone stack on a small turret board?",
+      "Can you generate a tube amp power supply with a bridge rectifier and filter capacitors?",
+      "Can you design a 9V power filter with reverse polarity protection on a small piece of perfboard?",
+      "Can you lay out a buffer on stripboard that fits next to my existing board?",
+      "Can you add a series effects loop with send and return jacks to my amp?",
+      "Can you generate a tremolo section and place it next to my existing amp layout?",
+      "Can you lay out the front panel of a two-channel preamp with all its pots, jacks and switches?",
+      "Can you lay out a top-mounted jack arrangement for a 1590B enclosure?",
+      "Can you generate a breadboard layout for a 555 LED flasher so I can test it first?",
+      "Can you wire up the offboard components for this pedal: jacks, footswitch, LED and pots?",
+      "Can you build a tag strip layout for the input stage of a tube amp?",
+      "Can you lay out an Arduino Nano on a breadboard with an OLED display and a push button?"
   };
 }

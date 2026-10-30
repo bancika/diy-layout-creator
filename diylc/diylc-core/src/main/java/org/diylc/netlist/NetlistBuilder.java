@@ -53,9 +53,19 @@ public class NetlistBuilder {
   
   private static final Logger LOG = Logger.getLogger(NetlistBuilder.class);
 
-  @SuppressWarnings("unchecked")
   public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
       List<ContinuityArea> continuityAreas) throws NetlistException {
+    return extractNetlists(includeSwitches, project, continuityAreas, List.of());
+  }
+
+  /**
+   * @param extraNodes points to place in the groups they touch on top of the component terminals,
+   *        such as wire ends, so a caller can tell which net a wire is on. They only join existing
+   *        connectivity and never connect anything themselves.
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Netlist> extractNetlists(boolean includeSwitches, Project project,
+      List<ContinuityArea> continuityAreas, Collection<Node> extraNodes) throws NetlistException {
     Map<Netlist, Netlist> result = new HashMap<Netlist, Netlist>();
     List<Node> nodes = new ArrayList<Node>();
 
@@ -94,6 +104,12 @@ public class NetlistBuilder {
       // extract switches
       if (includeSwitches && ISwitch.class.isAssignableFrom(type.getInstanceClass()))
         switches.add((ISwitch) c);
+    }
+
+    for (Node extra : extraNodes) {
+      if (!nodes.contains(extra)) {
+        nodes.add(extra);
+      }
     }
 
     // save us the trouble
@@ -137,7 +153,7 @@ public class NetlistBuilder {
         switchPositions.put(switches.get(j), positions[j]);
         posList.add(new Position(switches.get(j), positions[j]));
       }
-      List<Connection> connections = getConnections(project, switchPositions);
+      List<Connection> connections = getConnections(includeSwitches, project, switchPositions);
 
       Netlist netlist =
           NetlistBuilder.buildNetlist(project.getComponents(), nodes, continuityAreas, connections);
@@ -529,7 +545,7 @@ public class NetlistBuilder {
   }
 
   @SuppressWarnings({"unchecked", "unlikely-arg-type"})
-  private static List<Connection> getConnections(Project project,
+  private static List<Connection> getConnections(boolean includeSwitches, Project project,
       Map<ISwitch, Integer> switchPositions) {
     Set<Connection> connections = new TreeSet<Connection>();
 
@@ -540,12 +556,9 @@ public class NetlistBuilder {
       IDIYComponent<?> c = project.getComponents().get(z);
       ComponentType type = ComponentProcessor.getInstance()
           .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-      // handle direct connections or connections through a switch
-      // when not using "includeSwitches" flag
-      if (c instanceof IContinuity &&
-          // ugly way to check if running in "exclude switches" mode.
-          (!(c instanceof ISwitch) || (switchPositions.size() == 1 &&
-              switchPositions.keySet().stream().findFirst().get() instanceof TrivialSwitch))) {
+      // handle direct connections, and switches in their selected position when switch positions
+      // are not being enumerated
+      if (c instanceof IContinuity && (!(c instanceof ISwitch) || !includeSwitches)) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
             if (((IContinuity) c).arePointsConnected(i, j))
@@ -654,6 +667,11 @@ public class NetlistBuilder {
     @Override
     public boolean arePointsConnected(int index1, int index2, int position) {
       return false;
+    }
+
+    @Override
+    public void setSelectedPosition(Integer selectedPosition) {
+      // a placeholder switch has a single position that is always current
     }
   }
 }

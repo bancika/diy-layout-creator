@@ -31,19 +31,24 @@ import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.utils.Constants;
 
+@AiNote(value = "Use for insulated wiring on or off the board, such as runs to pots, jacks and switches; for a bare link between two holes use Jumper, and for each conductor of a twisted pair in a circuit that must be analyzable use one Hookup Wire, since Twisted Leads is a single conductor drawn for looks", scope = Scope.SELECTION)
+@AiNote("Only the first and last control points are wire ends; the points between them are curve handles the wire does not necessarily pass through")
 @ComponentDescriptor(name = "Hookup Wire", author = "Branislav Stojkovic", category = "Connectivity",
-    instanceNamePrefix = "W", description = "Flexible wire with two control points", zOrder = IDIYComponent.WIRING,
+    instanceNamePrefix = "W", description = "Insulated flexible wire, straight or curved", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW, creationMethod = CreationMethod.POINT_BY_POINT,
     transformer = SimpleComponentTransformer.class, enableCache = true)
-public class HookupWire extends AbstractCurvedComponent<AWG> implements IContinuity {
+public class HookupWire extends AbstractCurvedComponent<AWG> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 

@@ -33,6 +33,8 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -40,6 +42,7 @@ import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote(value = "A junction marker for schematics and wiring diagrams; it is drawing only and connects nothing, since ends that meet at the same point are already connected. For a pad on a board use Solder Pad", scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Connector dot", instanceNamePrefix = "Dot", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)

@@ -38,6 +38,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -45,6 +46,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Place the control point on a hole centre. By default the copper around that hole is removed, cutting the strip there and leaving the hole itself connected to nothing")
+@AiNote("With 'Cut Between Holes' the cut runs between that hole and the one to its left ('Cut Orientation' VERTICAL) or above it (HORIZONTAL), and both holes stay on their part of the strip. 'Cut Orientation' is the direction of the cut, so a Vero Board with HORIZONTAL strips needs VERTICAL cuts")
 @ComponentDescriptor(name = "Trace Cut", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Designates the place where a trace on the vero board needs to be cut", instanceNamePrefix = "Cut",
     zOrder = IDIYComponent.BOARD + 1, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false,

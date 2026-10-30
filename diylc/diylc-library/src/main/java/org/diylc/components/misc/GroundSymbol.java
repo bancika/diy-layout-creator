@@ -35,6 +35,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -42,6 +43,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Every Ground Symbol is the same GND node, so give each ground point its own nearby symbol rather than wiring the grounds together")
 @ComponentDescriptor(name = "Ground", author = "Branislav Stojkovic", category = "Schematic Symbols",
     instanceNamePrefix = "GND", description = "Ground schematic symbol",
     zOrder = IDIYComponent.COMPONENT, bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false)

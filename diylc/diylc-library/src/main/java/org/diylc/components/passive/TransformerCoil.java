@@ -38,6 +38,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -46,6 +47,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The two control points are the ends of the winding, 'Size' apart: in 'Orientation' DEFAULT the second is below the first and the winding is drawn to the right of them, and _90, _180 and _270 turn this clockwise, putting the second point to the left of, above and to the right of the first")
 @ComponentDescriptor(name = "Transformer Coil", author = "Branislav Stojkovic", category = "Schematic Symbols", instanceNamePrefix = "L",
     description = "Transformer coil symbol. Use multiple instances together with \"Transformer Core Symbol\"<br>to draw transformer schematics.",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_TAG,

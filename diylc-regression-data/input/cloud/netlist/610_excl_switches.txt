@@ -1,0 +1,4 @@
+Switch setup: [ ALL ]
+
+	PKP2.North Finish <-> SW2.4
+

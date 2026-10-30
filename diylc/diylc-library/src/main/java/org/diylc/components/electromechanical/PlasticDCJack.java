@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -51,6 +52,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The Switch lug is 0.1in to the right of and 0.1in below the Sleeve lug, and the Center lug 0.1in to the left of and 0.2in below it; the round body is centred 0.1in below the Sleeve lug")
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, enableCache = true)
@@ -227,6 +229,19 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> implements
   public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     this.body = null;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "Sleeve";
+      case 1:
+        return "Switch";
+      case 2:
+        return "Center";
+    }
+    return null;
   }
 
   @Override

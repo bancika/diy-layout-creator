@@ -45,6 +45,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -52,6 +53,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The four control points form a row 0.1in apart along the bottom edge of the pickup in 'Orientation' DEFAULT, centred under it, and turn with the pickup, so they stay along that edge in every orientation; a single coil uses only the middle two as terminals")
 @ComponentDescriptor(name = "Single Coil Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Single coil guitar pickup, both Strat and Tele style",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",

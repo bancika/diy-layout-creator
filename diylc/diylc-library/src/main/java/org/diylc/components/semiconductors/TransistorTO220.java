@@ -44,6 +44,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -51,6 +52,9 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 0.1in apart, and the other orientations rotate this around the anchor")
+@AiNote("Seen from above, the metal tab is on the right of the pin row in DEFAULT orientation and the printed front faces left; 'Folded' lays the body flat on the right of the pin row, 'Lead Length' away from it, with the tab and its mounting hole at the far end")
+@AiNote("'Pinout' values list the pins as a datasheet does, facing the printed front with the legs down, left to right; pick the value that matches the part's datasheet as written")
 @ComponentDescriptor(name = "Transistor (TO-220)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class,

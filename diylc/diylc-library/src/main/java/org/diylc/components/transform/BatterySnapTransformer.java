@@ -96,7 +96,7 @@ public class BatterySnapTransformer implements IComponentTransformer {
       snap.setOrientation(o);
     } else {
       double dx = 0;
-      double dy = 2 * (center.getY() - snap.getControlPoint(1).getY());
+      double dy = 2 * (center.getY() - snap.getControlPoint(0).getY());
       Orientation o = snap.getOrientation();
       switch (o) {
         case DEFAULT:          

@@ -37,12 +37,13 @@ import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TagStripTransformer;
 import org.diylc.core.ComponentState;
-import org.diylc.core.IContinuity;
+import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -51,10 +52,11 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Each terminal is an independent connection point; the mounting lugs are not connection points")
 @ComponentDescriptor(name = "Tag Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction",
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = TagStripTransformer.class)
-public class TagStrip extends AbstractTransparentComponent<String> implements IContinuity {
+public class TagStrip extends AbstractTransparentComponent<String> implements IConnective {
 
   private static final long serialVersionUID = 1L;
 
@@ -376,11 +378,6 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
     this.boardColor = bodyColor;
   }
   
-  @Override
-  public String getControlPointNodeName(int index) {
-    return "TerminalStrip" + index;
-  }
-  
   @EditableProperty(name = "Mounting Lugs")
   public TagStripMount getMount() {
     return mount;
@@ -394,8 +391,8 @@ public class TagStrip extends AbstractTransparentComponent<String> implements IC
   }
 
   @Override
-  public boolean arePointsConnected(int index1, int index2) {
-    return false;
+  public String getControlPointNodeName(int index) {
+    return null;
   }
   
   @Override
