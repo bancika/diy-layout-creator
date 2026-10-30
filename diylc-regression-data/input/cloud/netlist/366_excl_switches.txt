@@ -1,5 +1,0 @@
-Switch setup: [ ALL ]
-
-	.1 <-> .2
-	.1 <-> .K
-

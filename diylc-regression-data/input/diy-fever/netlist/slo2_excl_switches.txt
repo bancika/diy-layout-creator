@@ -29,8 +29,8 @@ Switch setup: [ ALL ]
 	C7.2 <-> R8.2 <-> V1.8
 	C8.2 <-> R10.2 <-> V2.8
 	C9.2 <-> R13.2 <-> V3.8
-	D1.A <-> RY1.5
-	D1.K <-> J18.Tip <-> Q1.2 <-> R34.2 <-> RY1.1
+	D1.A <-> RY1.Coil2
+	D1.K <-> J18.Tip <-> Q1.2 <-> R34.2 <-> RY1.Coil1
 	D2.A <-> R33.1
 	D2.K <-> R34.1
 	J16.Sleeve <-> R32.2

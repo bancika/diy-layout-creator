@@ -1,0 +1,10 @@
+Switch setup: [ ALL ]
+
+	+ VDC <-> R5.1
+	- VDC <-> R8.1
+	BTR2.+ <-> Probe2.Tip <-> Probe3.Tip <-> Q1.S <-> R1.2 <-> R4.2 <-> VR1.3
+	GND <-> R7.2
+	Probe1.Tip <-> Q1.D <-> R2.2
+	Probe4.Tip <-> Q1.G <-> R1.1 <-> R4.1 <-> VR1.2
+	R3.2 <-> VR1.1
+

@@ -1,8 +1,0 @@
-Switch setup: [ ALL ]
-
-	Bass.1 <-> C3.2 <-> Mid.2 <-> Mid.3
-	Bass.2 <-> Bass.3 <-> C1.1 <-> Treb.1
-	C1.2 <-> C3.1 <-> R1.1
-	C2.1 <-> Treb.3
-	C2.2 <-> R1.2
-

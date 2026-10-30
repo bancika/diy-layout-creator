@@ -1,0 +1,33 @@
+Switch setup: [ ALL ]
+
+	Bias B25k.1 <-> Bias B25k.2 <-> C1.2 <-> R3.1
+	Bias B25k.3 <-> R5.2
+	C1.1 <-> Level A500k.3
+	C2.1 <-> Filter 1mW.1
+	C2.2 <-> C3.2 <-> L1.2
+	C3.1 <-> C5.2 <-> Fdbk.1 <-> Filter 1mW.2 <-> SW1.5
+	C4.1 <-> C5.1 <-> Fdbk.2 <-> Fdbk.3 <-> Fuzz A1k.3 <-> Q2.E <-> Q4.E
+	C6.+ <-> C8.1 <-> D1.K <-> R2.1 <-> R4.1 <-> R5.1
+	C6.- <-> C7.- <-> C8.2 <-> Fuzz A1k.1 <-> GND <-> Input.Sleeve <-> L2.1 <-> L3.1 <-> Level A500k.1 <-> Output.Sleeve <-> Power Jack.Center <-> R1.1 <-> SW3.2
+	C7.+ <-> Fuzz A1k.2
+	D1.A <-> Power Jack.Sleeve
+	Input.Tip <-> SW3.5
+	L1.1 <-> R1.2 <-> SW3.6
+	L2.2 <-> Q1.E
+	L3.2 <-> Q3.E
+	LED.A <-> R4.2
+	LED.K <-> SW3.3
+	Level A500k.2 <-> SW3.9
+	Output.Tip <-> SW3.8
+	Q1.B <-> SW1.6
+	Q1.C <-> SW1.3
+	Q2.B <-> SW2.6
+	Q2.C <-> SW2.3
+	Q3.B <-> SW1.4
+	Q3.C <-> SW1.1
+	Q4.B <-> SW2.4
+	Q4.C <-> SW2.1
+	R2.2 <-> SW1.2 <-> SW2.5
+	R3.2 <-> SW2.2
+	SW3.4 <-> SW3.7
+

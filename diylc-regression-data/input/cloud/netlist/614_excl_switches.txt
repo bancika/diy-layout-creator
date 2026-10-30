@@ -1,0 +1,6 @@
+Switch setup: [ ALL ]
+
+	D1.A <-> GND <-> V1.-
+	D1.K <-> R2.1
+	R2.2 <-> V1.+
+

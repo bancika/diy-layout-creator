@@ -1,0 +1,12 @@
+Switch setup: [ ALL ]
+
+	Bridge Pickup.South Finish <-> C1.2 <-> J1.Tip <-> Neck Pickup.North Finish <-> S-1.10 <-> S-1.9 <-> VR1.1
+	Bridge Pickup.South Start <-> S-1.6
+	C1.1 <-> VR2.2
+	C2.1 <-> R1.1 <-> R2.1
+	C2.2 <-> J1.Sleeve <-> R1.2 <-> VR1.2
+	Neck Pickup.North Start <-> S-1.3
+	R2.2 <-> S-1.2 <-> S-1.4 <-> SW3.3 <-> SW3.4 <-> SW3.5 <-> SW3.6 <-> SW3.7 <-> VR1.3 <-> VR2.1
+	S-1.5 <-> S-1.8
+	S-1.7 <-> SW3.2 <-> SW3.8
+

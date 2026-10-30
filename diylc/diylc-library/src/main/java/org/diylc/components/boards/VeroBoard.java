@@ -34,11 +34,14 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.utils.Constants;
 
+@AiNote("Hole centers follow 'Spacing' like Perf Board: the first row and column sit one 'Spacing' in from the top and left edges")
+@AiNote("With 'Orientation' HORIZONTAL every row of holes is one continuous copper strip, with VERTICAL every column; break a strip with a 'Trace Cut'")
 @ComponentDescriptor(name = "Vero Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting all holes in a row",

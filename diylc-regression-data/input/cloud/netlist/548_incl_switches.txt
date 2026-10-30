@@ -1,0 +1,40 @@
+Switch setup: [ SW1.1 ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.North Start <-> Volume Pot.3
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Volume Pot.2
+
+Switch setup: [ SW1.2 ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.North Start <-> NECK PU.North Start <-> Volume Pot.3 <-> VR1.2
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Volume Pot.2
+
+Switch setup: [ SW1.3 ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Volume Pot.2
+	NECK PU.North Start <-> Volume Pot.3
+
+Switch setup: [ SW1.4 ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Volume Pot.2
+	Middle Pickup.North Start <-> NECK PU.North Start <-> Volume Pot.3
+
+Switch setup: [ SW1.5 ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Volume Pot.2
+	Middle Pickup.North Start <-> Volume Pot.3
+

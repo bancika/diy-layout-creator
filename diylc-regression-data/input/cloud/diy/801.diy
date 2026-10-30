@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>4</major>
+    <minor>20</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>AA1164 Princeton Reverb Layout</title>
+  <author>RobRobinette.com</author>
+  <description>1964 blackface Fender Princeton Reverb Guitar Tube Amp</description>
+  <width value="11.0" unit="in"/>
+  <height value="4.0" unit="in"/>
+  <gridSpacing value="0.05" unit="in"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.boards.BlankBoard>
+      <name>CircuitBoard</name>
+      <alpha>127</alpha>
+      <value></value>
+      <controlPoints>
+        <point x="0.05" y="0.05000000000000057"/>
+        <point x="10.55" y="3.1750000000000007"/>
+      </controlPoints>
+      <firstPoint x="0.05" y="0.05000000000000057"/>
+      <secondPoint x="10.55" y="3.1750000000000007"/>
+      <boardColor hex="cccccc"/>
+      <borderColor hex="ada47d"/>
+      <coordinateColor hex="b6b6b6"/>
+      <drawCoordinates>true</drawCoordinates>
+      <coordinateOrigin>Top_Left</coordinateOrigin>
+      <length value="10.5" unit="in"/>
+      <width value="3.125" unit="in"/>
+      <mode>TwoPoints</mode>
+      <type>SQUARE</type>
+    </diylc.boards.BlankBoard>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="1.32" y="2.625"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet4</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="1.7" y="1.84"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet6</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="2.07" y="2.625"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet22</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="4.54" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet23</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="5.52" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet24</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.07" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet25</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.57" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet31</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.975" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet32</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="7.700000000000002" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet33</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="8.51" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet34</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="7.72" y="1.785"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet35</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="7.33" y="1.78"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet37</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="8.095" y="0.87"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet38</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="8.520000000000003" y="0.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet46</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.999999999999997" y="1.565"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet47</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.999999999999997" y="1.015"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="6.32" y="0.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet53</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="5.05" y="1.8"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet54</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="4.55" y="1.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet60</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="2.61" y="0.6250000000000006"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet64</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="1.835" y="1.055"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet66</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="2.07" y="0.6250000000000006"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet67</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="1.695" y="1.36"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet68</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="1.32" y="0.6250000000000006"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet71</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="9.7" y="1.53"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet72</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="9.7" y="2.78"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet73</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="10.25" y="2.63"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet74</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="10.25" y="0.48"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet72</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="9.7" y="0.48"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet30</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="8.999999999999998" y="2.575"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet20</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="3.34" y="2.625"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet56</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="3.09" y="0.65"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet25</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="3.97" y="2.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="3.97" y="0.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet55</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="4.51" y="1.29"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="5.57" y="0.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="5.12" y="0.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet57</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="2.600000000000001" y="1.75"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet57</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="2.600000000000001" y="2.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="0.35" y="2.65"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="0.35" y="0.44999999999999946"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet3</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="0.37" y="1.55"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet39</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="8.999999999999998" y="0.6"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="5.52" y="1.35"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.Eyelet>
+      <name>Eyelet49</name>
+      <size value="0.2" unit="in"/>
+      <holeSize value="0.1" unit="in"/>
+      <color hex="ffcc00"/>
+      <point x="3.62" y="1.2"/>
+      <value>Hoffman Eyelet</value>
+    </diylc.connectivity.Eyelet>
+    <diylc.connectivity.CutLine>
+      <name>CL1</name>
+      <alpha>127</alpha>
+      <width value="0.125" unit="in"/>
+      <length value="3.125" unit="in"/>
+      <color hex="0033cc"/>
+      <point x="9.35" y="0.05"/>
+      <orientation>VERTICAL</orientation>
+    </diylc.connectivity.CutLine>
+    <diylc.misc.Label>
+      <name>L2</name>
+      <point x="2.85" y="3.4"/>
+      <text>AA1164 PRINCETON REVERB - Tremolo Deleted</text>
+      <font name="Tahoma" size="50" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+    <diylc.misc.Label>
+      <name>L1</name>
+      <point x="9.45" y="3.45"/>
+      <text>Cut Line</text>
+      <font name="Tahoma" size="50" style="0"/>
+      <color hex="000000"/>
+      <center>false</center>
+      <horizontalAlignment>CENTER</horizontalAlignment>
+      <verticalAlignment>CENTER</verticalAlignment>
+      <orientation>DEFAULT</orientation>
+    </diylc.misc.Label>
+  </components>
+  <groups>
+    <set/>
+  </groups>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Tahoma" size="14" style="0"/>
+</project>

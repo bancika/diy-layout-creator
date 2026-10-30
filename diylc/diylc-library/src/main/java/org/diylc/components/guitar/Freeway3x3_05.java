@@ -29,6 +29,7 @@ import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.Freeway3x3_03Transformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -49,6 +50,7 @@ import java.util.Random;
 
 import static org.diylc.core.measures.SizeUnit.px;
 
+@AiNote("The first control point is pad 1B, the pad just left of the top of the round switch. The 28 pads sit on a circle of 15.3mm radius around the switch centre, which is 15.2mm below and 1.7mm right of 1B, and continue counterclockwise from it, so the first 14 (the B pads) form the left half and the rest (the A pads) the right half. 'Orientation' rotates the switch clockwise around 1B")
 @ComponentDescriptor(name = "Freeway 3X3-05 (Ultra) Switch", category = "Guitar",
     author = "Martin Morrell", description = "Freeway 3X3-05 (Ultra) Toggle Switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",

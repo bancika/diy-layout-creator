@@ -49,12 +49,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the Tip lug; with 'Angle' 0 the jack's centre is 0.5in below it and the other lugs sit around that centre: Sleeve to the upper right and, for STEREO, Ring to the lower right; for SWITCHED, Sleeve to the lower left and Shunt to the upper left. 'Angle' rotates the whole jack clockwise around the Tip lug, in degrees")
 @ComponentDescriptor(name = "Open 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Switchcraft-style open panel mount 1/4\" phono jack, stereo and mono",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = OpenJackTransformer.class, enableCache = true)

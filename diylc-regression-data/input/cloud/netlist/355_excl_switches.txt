@@ -1,5 +1,0 @@
-Switch setup: [ ALL ]
-
-	.1 <-> GND <-> J1.Sleeve <-> PKP1.North Start <-> PKP3.North Start <-> SW1.3 <-> SW2.3 <-> SW4.3
-	.2 <-> J1.Tip
-

@@ -21,7 +21,6 @@
 */
 package org.diylc.components.electromechanical;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.FontMetrics;
@@ -44,6 +43,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -53,8 +53,10 @@ import org.diylc.core.measures.Voltage;
 import org.diylc.core.measures.VoltageUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the first column of pins runs down from it, the second column sits to the right and the indent is at the anchor's end. The other orientations rotate this around the anchor")
+@AiNote("Pin offsets down each column from the anchor: Miniature DPDT 0, 0.3, 0.5 and 0.7in, SPDT 0, 0.5 and 0.7in, columns 0.3in apart; Ultra_miniature DPDT 0, 0.2, 0.3 and 0.4in, SPDT 0, 0.3 and 0.4in, columns 0.2in apart")
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
-    instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1 or G5V-2",
+    instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1/G5V-2 or Fujitsu FTR-B3",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)
 public class MiniRelay extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
 
@@ -82,6 +84,12 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
   public static Size ULTRA_WIDTH = new Size(12.2d, SizeUnit.mm);
   public static Size ULTRA_HEIGHT = new Size(7.2d, SizeUnit.mm);
   public static Size ULTRA_GAP = new Size(0.1d, SizeUnit.in);
+
+  // each DPDT column follows the Omron G5V-2 order: coil, COM, NC, NO. The SPDT version has one
+  // pole: each column runs COM, coil, then NC on the first column and NO on the second
+  private static final String[] SPDT_PIN_NAMES = {"COM1", "Coil1", "NC", "COM2", "Coil2", "NO"};
+  private static final String[] DPDT_PIN_NAMES =
+      {"Coil1", "COM1", "NC1", "NO1", "Coil2", "COM2", "NC2", "NO2"};
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
@@ -155,6 +163,12 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
   public void setControlPoint(Point2D point, int index) {
     controlPoints[index].setLocation(point);
     body = null;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    String[] names = getType() == RelayType.SPDT ? SPDT_PIN_NAMES : DPDT_PIN_NAMES;
+    return index < names.length ? names[index] : null;
   }
 
   private void updateControlPoints() {

@@ -73,9 +73,7 @@ public interface ISwitch extends IContinuity {
     return null;
   }
 
-  default Boolean getHighlightConnectedTerminals() {
-    return false;
-  }
+  void setSelectedPosition(Integer selectedPosition);
 
   default boolean arePointsConnected(int index1, int index2) {
     if (getSelectedPosition() == null) {

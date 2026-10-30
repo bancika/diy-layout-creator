@@ -48,6 +48,7 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -78,6 +79,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
 
   private RotarySwitchSealedType configuration = RotarySwitchSealedType._4P3T;
+  private Integer selectedPosition;
   private Color color = BODY_COLOR;
   private Mount mount = Mount.CHASSIS;
   private SwitchTiming timing;
@@ -404,5 +406,17 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     
     int pole = index2 - 13;
     return index1 == 1 + pole * 12 / configuration.getPoleCount() + position;
+  }
+
+  @DynamicEditableProperty(source = RotarySwitchSealedPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

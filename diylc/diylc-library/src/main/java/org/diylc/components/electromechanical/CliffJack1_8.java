@@ -372,6 +372,25 @@ public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> implement
   }
 
   @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "Tip Switch";
+      case 1:
+        return "Tip";
+      case 2:
+        return "Sleeve Switch";
+      case 3:
+        return "Sleeve";
+      case 4:
+        return "Ring Switch";
+      case 5:
+        return "Ring";
+    }
+    return null;
+  }
+
+  @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
   }
