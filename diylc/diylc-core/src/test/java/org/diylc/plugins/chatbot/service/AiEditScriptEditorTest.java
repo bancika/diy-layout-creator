@@ -27,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -160,6 +161,35 @@ public class AiEditScriptEditorTest {
 
         assertTrue(project.getComponents().isEmpty());
         assertTrue(editor.getWarnings().isEmpty());
+    }
+
+    @Test
+    public void testUnsupportedOperationIsSkippedWithWarning() {
+        DummyComponent comp = new DummyComponent();
+        comp.setName("R1");
+        project.getComponents().add(comp);
+
+        AiEditOperation unsupported = new AiEditOperation();
+        unsupported.setAction("teleport");
+        unsupported.setComponentName("R1");
+
+        AiEditOperation remove = new AiEditOperation();
+        remove.setAction("remove");
+        remove.setComponentName("R1");
+
+        AiEditScript script = new AiEditScript();
+        script.setExplanation("Teleport and remove R1");
+        script.setOperations(Arrays.asList(unsupported, remove));
+
+        AiEditScriptEditor editor = new AiEditScriptEditor(script);
+        editor.edit(project, new HashSet<>());
+
+        assertTrue(project.getComponents().isEmpty());
+        assertEquals(1, editor.getWarnings().size());
+        String warning = editor.getWarnings().get(0);
+        assertTrue(warning.contains("'teleport' on R1"));
+        assertTrue(warning.contains("not supported"));
+        assertTrue(warning.contains("upgrade"));
     }
 
     @Test

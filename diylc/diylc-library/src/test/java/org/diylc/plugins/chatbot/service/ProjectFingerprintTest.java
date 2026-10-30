@@ -126,10 +126,11 @@ public class ProjectFingerprintTest {
   }
 
   private static String fingerprint(Project project) {
-    return ChatbotService.fingerprint(AiProjectBuilder.build(project, new ArrayList<>()));
+    return ChatbotService.fingerprint(
+        AiProjectBuilder.build(project, new ArrayList<>(), c -> null, List.of()));
   }
 
   private static AiProject aiProject(Map<String, Set<String>> nets) {
-    return new AiProject(Map.of(), List.of(), List.of(), nets, List.of());
+    return new AiProject(Map.of(), List.of(), null, List.of(), nets, List.of());
   }
 }

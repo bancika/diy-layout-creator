@@ -27,9 +27,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -37,18 +40,27 @@ import java.util.UUID;
 import org.junit.Test;
 
 import org.diylc.common.Orientation;
+import org.diylc.components.boards.PerfBoard;
 import org.diylc.components.boards.TagStrip;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.connectivity.SolderLug;
 import org.diylc.components.connectivity.SolderPad;
+import org.diylc.components.guitar.LPSwitch;
 import org.diylc.components.guitar.SingleCoilPickup;
 import org.diylc.components.passive.Resistor;
+import org.diylc.components.semiconductors.TransistorTO92;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
+import org.diylc.core.measures.Resistance;
+import org.diylc.core.measures.ResistanceUnit;
+import org.diylc.core.measures.Size;
+import org.diylc.core.measures.SizeUnit;
+import org.diylc.plugins.chatbot.model.AiBounds;
 import org.diylc.plugins.chatbot.model.AiComponent;
 import org.diylc.plugins.chatbot.model.AiEditOperation;
 import org.diylc.plugins.chatbot.model.AiEditScript;
 import org.diylc.plugins.chatbot.model.AiProject;
+import org.diylc.plugins.chatbot.model.AiSwitch;
 import org.diylc.plugins.chatbot.model.AiTerminal;
 
 /**
@@ -241,6 +253,86 @@ public class AiProjectBuilderTest {
   }
 
   @Test
+  public void measuresUseADecimalPointInAnyLocale() {
+    Locale locale = Locale.getDefault();
+    Locale.setDefault(Locale.GERMANY);
+    try {
+      Resistor resistor = resistor();
+      resistor.setValue(new Resistance(4.7d, ResistanceUnit.K));
+      PerfBoard board = new PerfBoard();
+      board.setName("Board1");
+      board.setSpacing(new Size(0.15d, SizeUnit.in));
+
+      AiProject export = export(resistor, board);
+
+      assertEquals("4.7K", component(export, "R1").value());
+      assertEquals("0.15in", component(export, "Board1").properties().get("Spacing"));
+      assertEquals("0.1in", export.metadata().get("gridSpacing"));
+    } finally {
+      Locale.setDefault(locale);
+    }
+  }
+
+  @Test
+  public void emptyValueIsLeftOut() {
+    TransistorTO92 transistor = new TransistorTO92();
+    transistor.setName("Q1");
+
+    assertNull(component(export(transistor), "Q1").value());
+  }
+
+  @Test
+  public void drawnBoundsAreExportedInGridUnits() {
+    PerfBoard board = new PerfBoard();
+    board.setName("Board1");
+    Project project = project(board);
+    double grid = project.getGridSpacing().convertToPixels();
+    Rectangle2D drawn = new Rectangle2D.Double(2 * grid, 3 * grid, 10 * grid, 5.5 * grid);
+
+    AiProject export = AiProjectBuilder.build(project, new ArrayList<>(),
+        c -> c == board ? drawn : null, List.of());
+
+    assertEquals(new AiBounds(new BigDecimal("2.00"), new BigDecimal("3.00"),
+        new BigDecimal("10.00"), new BigDecimal("5.50")), component(export, "Board1").bounds());
+  }
+
+  @Test
+  public void undrawnComponentIsBoundedByItsControlPoints() {
+    Project project = project(resistor());
+    double grid = project.getGridSpacing().convertToPixels();
+
+    AiBounds bounds = component(export(resistor()), "R1").bounds();
+
+    assertEquals(FIRST_LEAD.getX() / grid, bounds.gridX().doubleValue(), 0.01);
+    assertEquals((SECOND_LEAD.getX() - FIRST_LEAD.getX()) / grid,
+        bounds.gridWidth().doubleValue(), 0.01);
+    assertEquals(0, bounds.gridHeight().doubleValue(), 0.01);
+  }
+
+  @Test
+  public void selectionListsTheIdsOfSelectedComponents() {
+    HookupWire wire = wire("W1", SECOND_LEAD, LOOSE_END);
+    Project project = project(resistor(), wire);
+
+    assertEquals(List.of("W1"), AiProjectBuilder.build(project, new ArrayList<>(), c -> null,
+        List.of(wire)).selection());
+    assertNull(export(resistor()).selection());
+  }
+
+  @Test
+  public void switchTerminalsTiedTogetherFormOneGroup() {
+    LPSwitch lpSwitch = new LPSwitch();
+    lpSwitch.setName("SW1");
+
+    AiSwitch exported = export(lpSwitch).switches().get(0);
+
+    assertEquals(List.of(Set.of(1, 2)), exported.positions().get(0).connectedTerminalGroups());
+    assertEquals(List.of(Set.of(1, 2, 3)),
+        exported.positions().get(1).connectedTerminalGroups());
+    assertEquals(List.of(Set.of(2, 3)), exported.positions().get(2).connectedTerminalGroups());
+  }
+
+  @Test
   public void identityAndCosmeticPropertiesAreLeftOut() {
     Map<String, String> properties = component(export(resistor()), "R1").properties();
 
@@ -267,7 +359,7 @@ public class AiProjectBuilderTest {
   }
 
   private static AiProject export(IDIYComponent<?>... components) {
-    return AiProjectBuilder.build(project(components), new ArrayList<>());
+    return AiProjectBuilder.build(project(components), new ArrayList<>(), c -> null, List.of());
   }
 
   private static Project project(IDIYComponent<?>... components) {

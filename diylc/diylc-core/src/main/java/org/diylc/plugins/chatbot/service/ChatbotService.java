@@ -40,8 +40,10 @@ import org.diylc.plugins.chatbot.model.*;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.service.CloudException;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
+import org.diylc.presenter.ComponentArea;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.ContinuityArea;
+import org.diylc.presenter.DrawingManager;
 import org.diylc.utils.FileUtils;
 import org.diylc.utils.ReflectionUtils;
 
@@ -309,8 +311,12 @@ public class ChatbotService {
     if (plugInPort.getCurrentProject().getComponents().isEmpty()) {
       return null;
     }
-    List<ContinuityArea> continuityAreas = plugInPort.getDrawingManager().getContinuityAreas();
-    return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas);
+    DrawingManager drawingManager = plugInPort.getDrawingManager();
+    List<ContinuityArea> continuityAreas = drawingManager.getContinuityAreas();
+    return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas, component -> {
+      ComponentArea area = drawingManager.getComponentArea(component);
+      return area == null ? null : area.getOutlineBounds();
+    }, plugInPort.getSelectedComponents());
   }
 
   public SubscriptionEntity getSubscriptionInfo() throws NotLoggedInException {

@@ -666,48 +666,16 @@
 			<name></name>
 			<changes>
 				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Rotating and mirroring the selection with 'Sticky Points' enabled now keeps the circuit connected, the same way moving it does - wires and leads stuck to the selection stay attached to their pins, and other rigid components stuck to it are rotated or mirrored along with it</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Improved sorting of switching combinations in 'Analyze Guitar Diagrams' tool</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed Guitar Analyzer logic that merges switching configuration that produce the same outcome; in some cases it would remove switches from the list when it shouldn't</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Gerber export on computers set to a language that uses a decimal comma (e.g. German, French, Serbian) produced files in which drill holes, pads and traces had the wrong size - a 0.8mm hole came out as 0mm and traces and the board outline had no width, so the files could not be used for fabrication</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed a bug that makes it impossible to clear a property with dynamic values, e.g. 'Selected Position' of a switch</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>BUG_FIX</changeType>
-					<description>Fixed a bug that makes 'Selected Position' list sometimes shows wrong values</description>
-				</org.diylc.appframework.update.Change>
-			</changes>
-			<url>https://github.com/bancika/diy-layout-creator/releases</url>
-		</org.diylc.appframework.update.Version>
-		<org.diylc.appframework.update.Version>
-			<versionNumber>
-				<major>6</major>
-				<minor>10</minor>
-				<build>0</build>
-			</versionNumber>
-			<releaseDate>2026-10-19 00:00:00.000 CET</releaseDate>
-			<name></name>
-			<changes>
-				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>AI Assistant can actively participate in circuit design, make changes to the project and designs circuits from scratch</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 6PDT and 6PDT On/Off/On toggle switch types</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Rotating and mirroring the selection with 'Sticky Points' enabled now keeps the circuit connected, the same way moving it does - wires and leads stuck to the selection stay attached to their pins, and other rigid components stuck to it are rotated or mirrored along with it</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -730,12 +698,48 @@
 					<description>'IEC Socket', 'Plastic DC Jack', 'Multi-Section Capacitor' and 'Mini Relay' terminals are now labeled by function (Earth, Line, Neutral; Sleeve, Switch, Center; the shared negative and each section's positive; coil, COM, NC and NO) instead of plain numbers, so netlists show what each terminal does</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved quality of output from the 'AI Circuit Analyzer'</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'AI Circuit Analyzer' offers to log in instead of just showing the error</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'AI Assistant' is now aware of what is selected so natural language prompts can refer to selected components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Improved sorting of switching combinations in 'Analyze Guitar Diagrams' tool</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Single coil pickups rotated by 90 or 270 degrees had their start and finish lugs swapped relative to the pickup body</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Analyze Guitar Diagrams' ignored 'Stingray Bass Pickup', so a diagram built around it was reported as having no pickups connected to the output jack, and its coils were left out of the hum-cancelling and phase checks</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed 'Analyze Guitar Diagrams' logic that merges switching configuration that produce the same outcome; in some cases it would remove switches from the list when it shouldn't</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Gerber export on computers set to a language that uses a decimal comma (e.g. German, French, Serbian) produced files in which drill holes, pads and traces had the wrong size - a 0.8mm hole came out as 0mm and traces and the board outline had no width, so the files could not be used for fabrication</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Zooming out until the drawing is smaller than the window made the toolbar above the canvas grow taller and squeeze the canvas; the toolbar now keeps its height at every zoom level</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed a bug that makes it impossible to clear a property with dynamic values, e.g. 'Selected Position' of a switch</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Fixed a bug that makes 'Selected Position' list sometimes shows wrong values</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

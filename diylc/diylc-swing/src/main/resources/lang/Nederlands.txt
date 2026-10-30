@@ -714,3 +714,4 @@ Replace %s with %s|%s vervangen door %s
 Reconnect %s to %s|%s opnieuw verbinden met %s
 Editing your circuit:|Uw schakeling bewerken:
 Generating new layouts:|Nieuwe layouts genereren:
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|De AI Circuit Analysator vereist een DIYLC Cloud-account. Wilt u nu inloggen?

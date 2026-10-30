@@ -706,3 +706,4 @@ Replace %s with %s
 Reconnect %s to %s
 Editing your circuit:
 Generating new layouts:
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?

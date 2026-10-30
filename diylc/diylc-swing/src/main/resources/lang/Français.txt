@@ -708,3 +708,4 @@ Replace %s with %s|Remplacer %s par %s
 Reconnect %s to %s|Reconnecter %s à %s
 Editing your circuit:|La modification de votre circuit :
 Generating new layouts:|La génération de nouvelles implantations :
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|L'analyseur de circuit IA nécessite un compte DIYLC Cloud. Voulez-vous vous connecter maintenant ?

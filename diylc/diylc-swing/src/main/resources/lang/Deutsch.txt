@@ -713,3 +713,4 @@ Replace %s with %s|%s durch %s ersetzen
 Reconnect %s to %s|%s mit %s neu verbinden
 Editing your circuit:|Der Bearbeitung Ihrer Schaltung:
 Generating new layouts:|Der Erstellung neuer Layouts:
+AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|Der KI-Schaltungsanalysator erfordert ein DIYLC-Cloud-Konto. Möchten Sie sich jetzt anmelden?

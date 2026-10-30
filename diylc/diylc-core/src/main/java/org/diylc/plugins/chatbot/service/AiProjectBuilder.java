@@ -23,10 +23,12 @@ package org.diylc.plugins.chatbot.service;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -37,6 +39,7 @@ import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
+import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.netlist.Group;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistBuilder;
@@ -52,7 +55,14 @@ public class AiProjectBuilder {
   public static final String ID_SEPARATOR = "#";
   private static final int MIN_ID_SUFFIX_LENGTH = 4;
 
-  public static AiProject build(Project project, List<ContinuityArea> continuityAreas) {
+  /**
+   * @param drawnBounds the outline each component was last drawn with, or null for one that has not
+   *        been drawn
+   * @param selection components the user has selected
+   */
+  public static AiProject build(Project project, List<ContinuityArea> continuityAreas,
+      Function<IDIYComponent<?>, Rectangle2D> drawnBounds,
+      Collection<IDIYComponent<?>> selection) {
 
     Map<String, String> metadata = getMetadata(project);
     List<String> tags = getTags(project);
@@ -67,7 +77,14 @@ public class AiProjectBuilder {
 
     double gridSpacingPx = project.getGridSpacing().convertToPixels();
     List<AiComponent> components = project.getComponents().stream()
-        .map(c -> mapComponent(c, ids.get(c), gridSpacingPx, contacts, wireEndNets))
+        .map(c -> mapComponent(c, ids.get(c), gridSpacingPx, contacts, wireEndNets,
+            drawnBounds.apply(c)))
+        .toList();
+
+    Set<IDIYComponent<?>> selected = new HashSet<>(selection);
+    List<String> selectedIds = project.getComponents().stream()
+        .filter(selected::contains)
+        .map(ids::get)
         .toList();
 
     List<AiSwitch> switches =
@@ -76,7 +93,8 @@ public class AiProjectBuilder {
             .map(x -> (ISwitch) x)
             .map(sw -> mapSwitch(sw, ids)).toList();
 
-    return new AiProject(metadata, tags, components, nets, switches);
+    return new AiProject(metadata, tags, selectedIds.isEmpty() ? null : selectedIds, components,
+        nets, switches);
   }
 
   /**
@@ -134,9 +152,9 @@ public class AiProjectBuilder {
     if (project.getTitle() != null) metadata.put("title", project.getTitle());
     if (project.getAuthor() != null) metadata.put("author", project.getAuthor());
     if (project.getDescription() != null) metadata.put("description", project.getDescription());
-    metadata.put("gridSpacing", project.getGridSpacing().toString());
-    metadata.put("width", project.getWidth().toString());
-    metadata.put("height", project.getHeight().toString());
+    metadata.put("gridSpacing", ComponentCatalogGenerator.formatMeasure(project.getGridSpacing()));
+    metadata.put("width", ComponentCatalogGenerator.formatMeasure(project.getWidth()));
+    metadata.put("height", ComponentCatalogGenerator.formatMeasure(project.getHeight()));
     return metadata;
   }
 
@@ -313,21 +331,52 @@ public class AiProjectBuilder {
     List<AiSwitchPosition> positions = new ArrayList<>();
     IDIYComponent<?> c = (IDIYComponent<?>) sw;
     for (int p = 0; p < sw.getPositionCount(); p++) {
-      List<Set<Integer>> connections = new ArrayList<>();
-      for (int i = 0; i < c.getControlPointCount() - 1; i++) {
-        for (int j = i + 1; j < c.getControlPointCount(); j++) {
-          if (sw.arePointsConnected(i, j, p)) {
-            connections.add(Set.of(i, j));
-          }
-        }
-      }
-      positions.add(new AiSwitchPosition(sw.getPositionName(p), connections));
+      positions.add(new AiSwitchPosition(sw.getPositionName(p),
+          getConnectedGroups(sw, c.getControlPointCount(), p)));
     }
     return new AiSwitch(ids.get(c), positions);
   }
 
+  /**
+   * Terminals that are connected in the given position, gathered into groups rather than listed in
+   * pairs, which grow with the square of the terminals that a pole ties together.
+   */
+  private static List<Set<Integer>> getConnectedGroups(ISwitch sw, int pointCount, int position) {
+    List<Set<Integer>> groups = new ArrayList<>();
+    Set<Integer> grouped = new HashSet<>();
+    for (int i = 0; i < pointCount; i++) {
+      if (grouped.contains(i)) {
+        continue;
+      }
+      Set<Integer> group = new TreeSet<>();
+      Deque<Integer> pending = new ArrayDeque<>();
+      pending.push(i);
+      while (!pending.isEmpty()) {
+        int point = pending.pop();
+        if (!group.add(point)) {
+          continue;
+        }
+        for (int j = 0; j < pointCount; j++) {
+          if (!group.contains(j)
+              && sw.arePointsConnected(Math.min(point, j), Math.max(point, j), position)) {
+            pending.push(j);
+          }
+        }
+      }
+      grouped.addAll(group);
+      if (group.size() > 1) {
+        groups.add(group);
+      }
+    }
+    return groups;
+  }
+
+  /**
+   * @param drawnBounds the outline the component was last drawn with, or null when it has not been
+   *        drawn
+   */
   static AiComponent mapComponent(IDIYComponent<?> component, String id, double gridSpacingPx,
-      Map<Node, List<String>> contacts, Map<Node, String> wireEndNets) {
+      Map<Node, List<String>> contacts, Map<Node, String> wireEndNets, Rectangle2D drawnBounds) {
 
     boolean connectivity = isConnectivity(component);
     List<AiTerminal> terminals = new ArrayList<>();
@@ -347,10 +396,15 @@ public class AiProjectBuilder {
     }
 
     String compType = component.getClass().getCanonicalName().replace("org.diylc.components.", "");
+    Object rawValue = component.getValue();
+    String value = rawValue instanceof AbstractMeasure<?> measure
+        ? ComponentCatalogGenerator.formatMeasure(measure)
+        : rawValue == null ? null : rawValue.toString();
     Map<String, String> properties = getProperties(component);
     return new AiComponent(id, compType,
-        component.getValue() == null ? null : component.getValue().toString(),
+        value == null || value.isEmpty() ? null : value,
         properties.isEmpty() ? null : properties,
+        createAiBounds(component, drawnBounds, gridSpacingPx),
         terminals.isEmpty() ? null : terminals);
   }
 
@@ -379,11 +433,38 @@ public class AiProjectBuilder {
     return result;
   }
 
-  private static AiPoint createAiPoint(Point2D controlPoint, double gridSpacingPx) {
+  /**
+   * Bounds from the last repaint, which cover everything the component draws, such as a body that
+   * reaches past its leads or the text of a label, where its control points alone do not. A
+   * component that has not been drawn yet falls back to the rectangle around its control points.
+   */
+  private static AiBounds createAiBounds(IDIYComponent<?> component, Rectangle2D drawnBounds,
+      double gridSpacingPx) {
+    Rectangle2D bounds = drawnBounds;
+    if (bounds == null) {
+      for (int i = 0; i < component.getControlPointCount(); i++) {
+        Point2D point = component.getControlPoint(i);
+        if (bounds == null) {
+          bounds = new Rectangle2D.Double(point.getX(), point.getY(), 0, 0);
+        } else {
+          bounds.add(point);
+        }
+      }
+    }
+    if (bounds == null) {
+      return null;
+    }
+    return new AiBounds(toGrid(bounds.getX(), gridSpacingPx), toGrid(bounds.getY(), gridSpacingPx),
+        toGrid(bounds.getWidth(), gridSpacingPx), toGrid(bounds.getHeight(), gridSpacingPx));
+  }
 
-    BigDecimal gridX = BigDecimal.valueOf(controlPoint.getX() / gridSpacingPx).setScale(2, RoundingMode.HALF_UP);
-    BigDecimal gridY = BigDecimal.valueOf(controlPoint.getY() / gridSpacingPx).setScale(2, RoundingMode.HALF_UP);
-    return new AiPoint(gridX, gridY);
+  private static AiPoint createAiPoint(Point2D controlPoint, double gridSpacingPx) {
+    return new AiPoint(toGrid(controlPoint.getX(), gridSpacingPx),
+        toGrid(controlPoint.getY(), gridSpacingPx));
+  }
+
+  private static BigDecimal toGrid(double px, double gridSpacingPx) {
+    return BigDecimal.valueOf(px / gridSpacingPx).setScale(2, RoundingMode.HALF_UP);
   }
 
   static String mapTerminal(Node terminalRef, Map<IDIYComponent<?>, String> ids) {
