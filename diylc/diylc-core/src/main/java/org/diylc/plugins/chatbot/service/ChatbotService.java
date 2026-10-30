@@ -142,7 +142,7 @@ public class ChatbotService {
           plugInPort.getCloudService().getMachineId(), fileName, circuitFile, clientAnalysisFile, prompt);
       
       // TODO: comment out before the release, responses are logged for testing only
-      LOG.debug("Raw chatbot response: " + rawResponse);
+//      LOG.debug("Raw chatbot response: " + rawResponse);
       
       if (rawResponse == null || rawResponse.isBlank()) {
           throw new CloudException(SERVER_ERROR_PLEASE_TRY_AGAIN);

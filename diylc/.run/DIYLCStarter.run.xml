@@ -11,6 +11,9 @@
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
+    <RunnerSettings RunnerId="Profile ">
+      <option name="yk-options-v2" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;!DOCTYPE properties SYSTEM &quot;http://java.sun.com/dtd/properties.dtd&quot;&gt;&#10;&lt;properties&gt;&#10;&lt;entry key=&quot;advanced-options&quot;&gt;on_exit=snapshot&lt;/entry&gt;&#10;&lt;entry key=&quot;jfr&quot;&gt;Off&lt;/entry&gt;&#10;&lt;entry key=&quot;cpu&quot;&gt;Sampling&lt;/entry&gt;&#10;&lt;entry key=&quot;monitor&quot;&gt;Off&lt;/entry&gt;&#10;&lt;entry key=&quot;telemetry&quot;&gt;On&lt;/entry&gt;&#10;&lt;entry key=&quot;thread&quot;&gt;States and stacks&lt;/entry&gt;&#10;&lt;entry key=&quot;time&quot;&gt;Wall time&lt;/entry&gt;&#10;&lt;entry key=&quot;alloc&quot;&gt;Off&lt;/entry&gt;&#10;&lt;entry key=&quot;launch-ui&quot;&gt;true&lt;/entry&gt;&#10;&lt;entry key=&quot;exceptions&quot;&gt;On&lt;/entry&gt;&#10;&lt;/properties&gt;&#10;" />
+    </RunnerSettings>
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
