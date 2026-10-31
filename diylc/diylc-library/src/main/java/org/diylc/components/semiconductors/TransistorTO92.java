@@ -34,6 +34,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.TransistorSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -56,7 +57,8 @@ import org.diylc.utils.Constants;
 @AiNote("Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead")
 @AiNote("'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written")
 @AiNote("On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board")
-@ComponentDescriptor(name = "Transistor (TO-92)", author = "Branislav Stojkovic", category = "Semiconductors",
+@ComponentDescriptor(schematicFactory = TransistorSchematicFactory.class,
+    name = "Transistor (TO-92)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class,
     enableCache = true)

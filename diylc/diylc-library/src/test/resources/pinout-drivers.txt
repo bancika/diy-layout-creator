@@ -133,6 +133,7 @@ passive.ToroidalInductor = fixed
 passive.TransformerCoil = fixed
 passive.TransformerCore = none
 passive.TrimmerPotentiometer = fixed
+schematic.SchematicBox = fixed
 semiconductors.BJTSymbol = fixed
 semiconductors.BridgeRectifier = fixed
 semiconductors.DIL_IC = Display Pin #s, Pins

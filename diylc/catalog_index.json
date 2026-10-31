@@ -390,6 +390,9 @@
       "name" : "Battery (Schematic)",
       "className" : "misc.BatterySymbol"
     }, {
+      "name" : "Box (Schematic)",
+      "className" : "schematic.SchematicBox"
+    }, {
       "name" : "Bulb (Schematic)",
       "className" : "misc.BulbSchematicSymbol"
     }, {

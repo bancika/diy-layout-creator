@@ -30,6 +30,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.PotentiometerSchematicFactory;
 
 import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
@@ -50,7 +51,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the third lug is 0.2in below it (0.4in for FLAT_XLARGE) and the wiper sits halfway between them, offset to the right by 0.2in for FLAT_SMALL and FLAT_XSMALL, 0.4in for FLAT_SMALL2 and FLAT_LARGE, 0.5in for FLAT_XLARGE, 0.1in for VERTICAL_OFFSET, 0.2in for VERTICAL_OFFSET_BIG_GAP and not at all for VERTICAL_INLINE. The other orientations rotate this around the anchor")
-@ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = PotentiometerSchematicFactory.class,
+    name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT,
     transformer = TrimmerTransformer.class)

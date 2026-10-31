@@ -34,6 +34,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.TransistorSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -54,7 +55,8 @@ import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor")
 @AiNote("On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes")
-@ComponentDescriptor(name = "Transistor (TO-1)", author = "Branislav Stojkovic", category = "Semiconductors",
+@ComponentDescriptor(schematicFactory = TransistorSchematicFactory.class,
+    name = "Transistor (TO-1)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small metal body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO1Transformer.class,
     enableCache = true)

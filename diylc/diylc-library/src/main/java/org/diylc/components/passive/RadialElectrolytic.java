@@ -29,6 +29,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.CapacitorSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -48,7 +49,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("'Diameter' is the can as seen from above; 'Height' is drawn only when 'Folded' lays the can on its side")
-@ComponentDescriptor(name = "Electrolytic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Electrolytic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Vertically mounted electrolytic capacitor, polarized or bipolar", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true, datasheetCreationStepCount = 3)

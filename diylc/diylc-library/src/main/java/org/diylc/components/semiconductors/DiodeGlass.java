@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.DiodeSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.components.AbstractLeadedComponent;
@@ -43,7 +44,8 @@ import org.diylc.utils.Constants;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("If the control points are closer together than 'Length' (0.2in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'")
-@ComponentDescriptor(name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
+@ComponentDescriptor(schematicFactory = DiodeSchematicFactory.class,
+    name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableCache = true)

@@ -26,6 +26,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
+import org.diylc.schematic.CapacitorSchematicFactory;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -38,7 +39,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.Voltage;
 
-@ComponentDescriptor(name = "Mica Capacitor (Radial)", author = "Branislav Stojkovic",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Mica Capacitor (Radial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Standard radial mica capacitor", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,

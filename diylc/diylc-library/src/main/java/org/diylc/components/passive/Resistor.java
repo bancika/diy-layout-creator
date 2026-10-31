@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.schematic.ResistorSchematicFactory;
 import org.diylc.common.ResistorColorCode;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
@@ -48,7 +49,8 @@ import org.diylc.core.measures.SizeUnit;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'")
-@ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = ResistorSchematicFactory.class,
+    name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true)
 public class Resistor extends AbstractLeadedComponent<Resistance> implements IGerberComponentSimple {

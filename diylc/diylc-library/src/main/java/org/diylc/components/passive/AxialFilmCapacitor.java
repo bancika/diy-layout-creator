@@ -24,6 +24,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
+import org.diylc.schematic.CapacitorSchematicFactory;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
@@ -34,7 +35,8 @@ import org.diylc.core.annotations.EditableProperty;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'")
-@ComponentDescriptor(name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Film Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial film capacitor, similar to Mallory 150s", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,

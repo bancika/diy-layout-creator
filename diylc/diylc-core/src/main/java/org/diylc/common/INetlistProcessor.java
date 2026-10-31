@@ -26,6 +26,7 @@ import java.util.List;
 import org.diylc.netlist.INetlistParser;
 import org.diylc.netlist.Netlist;
 import org.diylc.netlist.NetlistException;
+import org.diylc.presenter.ContinuityArea;
 
 /**
  * Interface for {@link Netlist} related operations.
@@ -42,7 +43,14 @@ public interface INetlistProcessor {
    * @throws NetlistException 
    */
   List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException;
-  
+
+  /**
+   * @return the current continuity areas as computed by the drawing manager. Needed to build a
+   *         netlist outside of the presenter, e.g. for schematic generation.
+   */
+  List<ContinuityArea> getContinuityAreas();
+
+
   /**
    * Finds all available {@link INetlistAnalyzer} implementations.
    * 

@@ -26,6 +26,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.CapacitorSchematicFactory;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
@@ -48,7 +49,8 @@ import org.diylc.utils.Constants;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("It has no standing mode: keep the control points at least 'Length' apart, or the body is drawn past the holes")
-@ComponentDescriptor(name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic",
+@ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
+    name = "Electrolytic Capacitor (Axial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,

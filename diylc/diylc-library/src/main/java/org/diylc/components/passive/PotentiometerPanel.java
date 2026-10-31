@@ -33,6 +33,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.schematic.PotentiometerSchematicFactory;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
@@ -59,7 +60,8 @@ import org.diylc.utils.Constants;
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the other two lugs run to the right of it 'Spacing' apart, and the other orientations rotate this around the anchor")
 @AiNote("Orient the pot so its lugs face the rest of the circuit: they face down in DEFAULT, left in _90, up in _180 and right in _270")
 @AiNote("Unless told otherwise, use one of two standard sizes, picked by the type of circuit and the space available: the 25mm pot, which the defaults already describe ('Diameter' 1in, 'Spacing' 0.3in), or the 16mm pot ('Diameter' 16mm, 'Spacing' 0.2in)")
-@ComponentDescriptor(name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
+@ComponentDescriptor(schematicFactory = PotentiometerSchematicFactory.class,
+    name = "Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Metal body panel mount potentiometer with solder lugs or PCB terminals (Alpha, CTS, Bourns)", zOrder = IDIYComponent.COMPONENT,
     transformer = PotentiometerTransformer.class, enableCache = true)
