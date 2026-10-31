@@ -37,8 +37,10 @@ public enum ToggleSwitchType {
   _4PDT_ononon_1("4PDT (On/On/On Type 1)", 3),
   _4PDT_ononon_2("4PDT (On/On/On Type 2)", 3),
   _5PDT("5PDT", 2),
-  _5PDT_off("5PDT (On/Off/On)", 3);
-  
+  _5PDT_off("5PDT (On/Off/On)", 3),
+  _6PDT("6PDT", 2),
+  _6PDT_off("6PDT (On/Off/On)", 3);
+
   private String label;
   private final int positionCount;
 

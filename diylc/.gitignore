@@ -159,3 +159,6 @@ deploy/
 # Cloud sync job: credentials and downloaded files
 cloud-sync/cloud-sync.json
 cloud-sync/storage/
+
+# Classpath dumps from mvn dependency:build-classpath, full of local paths
+cp.txt

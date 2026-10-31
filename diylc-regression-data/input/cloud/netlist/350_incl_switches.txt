@@ -1,5 +1,0 @@
-Switch setup: [ ALL ]
-
-	C1.2 <-> C4.- <-> D1.A <-> D2.K <-> GND <-> R4.2 <-> VR2.3
-	C6.2 <-> D1.K
-

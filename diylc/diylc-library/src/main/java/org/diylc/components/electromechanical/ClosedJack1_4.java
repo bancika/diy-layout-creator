@@ -50,6 +50,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -57,6 +58,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the Tip lug; with 'Orientation' DEFAULT the Sleeve lug is 0.8in to the right of it, near the far end of the body, and for STEREO the Ring lug is 0.2in below the Tip lug. The body runs to the right from the Tip lug with the threaded bushing beyond it, and the other orientations rotate all of this around the Tip lug")
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", transformer = ClosedJackTransformer.class, enableCache = true)

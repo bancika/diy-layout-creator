@@ -37,6 +37,7 @@ import org.diylc.schematic.InductorSchematicFactory;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Inductance;
@@ -45,6 +46,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("'Diameter' is the body as seen from above; 'Height' is drawn only when 'Folded' lays the part on its side")
 @ComponentDescriptor(schematicFactory = InductorSchematicFactory.class,
     name = "Inductor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",

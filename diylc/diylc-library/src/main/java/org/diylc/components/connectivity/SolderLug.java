@@ -36,6 +36,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -50,7 +51,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Solder Lug", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Locking terminal lug commonly used for chassis ground connections",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SL", enableCache = true)
-public class SolderLug extends AbstractMultiPartComponent<String> {
+public class SolderLug extends AbstractMultiPartComponent<String> implements IConnective {
 
   private static final long serialVersionUID = 1L;
 
@@ -244,7 +245,7 @@ public class SolderLug extends AbstractMultiPartComponent<String> {
 
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + (index == 0 ? "Tip" : "Sleeve");
+    return null;
   }
 
   @Override

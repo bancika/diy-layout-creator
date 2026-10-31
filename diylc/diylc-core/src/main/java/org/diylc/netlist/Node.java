@@ -128,9 +128,11 @@ public class Node implements Comparable<Node> {
     if (component instanceof ICommonNode) {
       return ((ICommonNode)component).getCommonNodeLabel();
     }
-    if (component.getControlPointCount() == 1)
+    String displayName = getDisplayName();
+    if (displayName == null) {
       return component.getName();
-    return component.getName() + "." + getDisplayName() /*+ " @ (" + component.getControlPoint(pointIndex).getX() + ":" + component.getControlPoint(pointIndex).getY() + ")"*/;
+    }
+    return component.getName() + "." + displayName;
   }
 
   @Override

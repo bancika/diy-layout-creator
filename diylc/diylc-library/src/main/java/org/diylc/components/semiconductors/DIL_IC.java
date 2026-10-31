@@ -44,6 +44,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -53,6 +54,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor")
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,

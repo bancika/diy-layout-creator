@@ -32,12 +32,15 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("Each instance is one side of the chassis: an exploded view of a whole chassis takes five panels, while the top, front and back alone take three, which is typical for pedals and amplifiers. The top panel goes in the centre with the front panel against its upper edge and the back panel against its lower edge; in the five-panel view the left side panel goes against its left edge and the right side panel against its right edge")
+@AiNote("The panel is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly")
 @ComponentDescriptor(name = "Chassis Panel", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "CP", description = "One side of a chassis, with or withouth rounded edges",
     zOrder = IDIYComponent.CHASSIS, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,

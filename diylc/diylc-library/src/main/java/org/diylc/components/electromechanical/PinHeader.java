@@ -43,12 +43,15 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is pin 1; with 'Orientation' DEFAULT 'Columns' sets how many pins run straight down from it and 'Rows' how many such lines sit side by side to the right, all 'Spacing' apart, so the default 2 'Rows' x 5 'Columns' is two vertical lines of five pins. The other orientations rotate this around pin 1")
+@AiNote("Pins are numbered down the first line and then down the next, so in the default header pin 6 is beside pin 1; 'Node Names' is a comma-separated list in that order, and a blank entry keeps the pin's number")
 @ComponentDescriptor(name = "Pin Header", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "PH", description = "PCB mount male pin header with editable number or pins and pin spacing",
     zOrder = IDIYComponent.COMPONENT, enableCache = true, transformer = PinHeaderTransformer.class)

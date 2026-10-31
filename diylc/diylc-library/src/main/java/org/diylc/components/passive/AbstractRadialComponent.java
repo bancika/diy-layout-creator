@@ -24,6 +24,7 @@ package org.diylc.components.passive;
 import java.awt.Rectangle;
 
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Size;
@@ -37,6 +38,7 @@ import org.diylc.core.measures.SizeUnit;
  * 
  * @param <T>
  */
+@AiNote("The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads")
 public abstract class AbstractRadialComponent<T> extends AbstractLeadedComponent<T> implements IGerberComponentSimple {
 
   private static final long serialVersionUID = 1L;

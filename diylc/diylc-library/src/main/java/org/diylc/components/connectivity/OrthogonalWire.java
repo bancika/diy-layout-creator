@@ -35,6 +35,7 @@ import org.diylc.components.AbstractOrthogonalComponent;
 import org.diylc.components.transform.OrthogonalComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -47,7 +48,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "W", description = "Wire that runs horizontally and vertically and turns at right angles",
     zOrder = IDIYComponent.WIRING, flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
     transformer = OrthogonalComponentTransformer.class, enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)
-public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements IContinuity {
+public class OrthogonalWire extends AbstractOrthogonalComponent<AWG> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 

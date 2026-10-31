@@ -27,7 +27,7 @@ Switch setup: [ ALL ]
 	Backup Diode.A <-> Backup Diode.K
 	Coupling.2 <-> Grid Leak.2
 	Grid Leak.1 <-> Grid Leak.1
-	J1.4 <-> J2.3
+	J1.Sleeve <-> J2.Sleeve Switch
 	L1.1 <-> L1.2
 	L2.2 <-> L68.1
 

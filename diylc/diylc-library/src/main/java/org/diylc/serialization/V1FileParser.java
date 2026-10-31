@@ -204,7 +204,9 @@ public class V1FileParser implements IOldFileParser {
         } else if (nodeName.equalsIgnoreCase("wire")) {
           LOG.debug("Recognized " + nodeName);
           HookupWire wire = new HookupWire();
-          long seed = Long.parseLong(node.getAttributes().getNamedItem("Seed").getNodeValue());
+          // some files carry no seed; a fixed one keeps the wire shape the same on every load
+          Node seedNode = node.getAttributes().getNamedItem("Seed");
+          long seed = seedNode == null ? 0 : Long.parseLong(seedNode.getNodeValue());
           Random r = new Random(seed);
           randSeed = seed;
           int d = (int) Math.round(Math.sqrt(Math.pow(point1.getX() - point2.getX(), 2) + Math.pow(point1.getY() - point2.getY(), 2)) / 2);

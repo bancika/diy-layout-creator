@@ -1,0 +1,12 @@
+Switch setup: [ ALL ]
+
+	Bridge Pickup Humbucker.North Finish <-> Bridge Pickup Humbucker.South Finish
+	Bridge Pickup Humbucker.North Start <-> SW1.3
+	Bridge Pickup Humbucker.South Start <-> C1.1 <-> J1.Sleeve <-> Middle Pickup.North Finish <-> NECK PU.North Finish <-> Volume Pot.1
+	C1.2 <-> VR1.1
+	J1.Tip <-> Mini-Toggle Volume Boost.1 <-> Mini-Toggle Volume Boost.2 <-> Mini-Toggle Volume Boost.3 <-> Volume Pot.2
+	Middle Pickup.North Start <-> Mini-Toggle Volume Boost.6 <-> SW1.2 <-> SW1.4 <-> SW1.5 <-> Volume Pot.3
+	Mini-Toggle Volume Boost.4 <-> Mini-Toggle Volume Boost.5 <-> SW1.6 <-> SW1.8
+	NECK PU.North Start <-> SW1.1
+	SW1.7 <-> VR1.2
+

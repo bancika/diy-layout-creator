@@ -43,6 +43,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -52,6 +53,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the pins run straight down from it 'Pin Spacing' apart and the indent is at the anchor's end of the body. The other orientations rotate this around the anchor")
 @ComponentDescriptor(name = "SIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Single-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = SIL_ICTransformer.class,

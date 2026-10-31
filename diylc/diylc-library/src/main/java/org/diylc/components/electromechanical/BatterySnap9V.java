@@ -34,9 +34,12 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.BatterySnapTransformer;
 import org.diylc.core.ComponentState;
@@ -45,12 +48,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the + terminal, at the middle of the snap's flat end where the leads come out; the - terminal is 0.1in below it in DEFAULT 'Orientation', the body extends to the right and the other orientations rotate this around the + terminal")
 @ComponentDescriptor(name = "9V Battery Snap", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "BTR",
     transformer = BatterySnapTransformer.class)
@@ -64,12 +69,24 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
   private static Size TERMINAL_DIAMETER = new Size(0.3d, SizeUnit.in);
   private static Size TERMINAL_SPACING = new Size(0.5d, SizeUnit.in);
   private static Size TERMINAL_BORDER = new Size(0.7d, SizeUnit.mm);
+  private static Size LEAD_SPACING = new Size(0.1d, SizeUnit.in);
+  private static Size LEAD_POINT_SIZE = new Size(1.5d, SizeUnit.mm);
+  private static final int LEAD_FONT_SIZE = 12;
+  private static Color LEAD_LABEL_COLOR = Color.white;
 
   private String value = "";
   private Point2D controlPoint = new Point2D.Double(0, 0);
+  // controlPoints[0] is kept the same object as controlPoint, so files saved with the lead
+  // terminals still place the snap correctly in versions that only read controlPoint
+  private Point2D[] controlPoints = new Point2D[] {controlPoint, new Point2D.Double(0, 0)};
   transient Shape[] body;
   private Orientation orientation = Orientation.DEFAULT;
   private Color color = BODY_COLOR;
+
+  public BatterySnap9V() {
+    super();
+    updateControlPoints();
+  }
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -108,6 +125,28 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
     g2d.draw(body[1]);
     g2d.setColor(METAL_COLOR.darker());
     g2d.draw(body[2]);
+
+    Point2D[] points = getControlPoints();
+    g2d.setColor(Constants.TRANSPARENT_COLOR);
+    int pointSize = getClosestOdd(LEAD_POINT_SIZE.convertToPixels());
+    drawingObserver.startTrackingContinuityArea(true);
+    for (Point2D p : points) {
+      g2d.fill(new Ellipse2D.Double(p.getX() - pointSize / 2, p.getY() - pointSize / 2, pointSize, pointSize));
+    }
+    drawingObserver.stopTrackingContinuityArea();
+
+    // labels go on the body next to each terminal, since the wires soldered to the terminals would
+    // cover anything drawn outside the flat end
+    double theta = orientation.toRadians();
+    double labelOffset = LEAD_FONT_SIZE * 0.8;
+    double dx = Math.cos(theta) * labelOffset;
+    double dy = Math.sin(theta) * labelOffset;
+    g2d.setColor(outlineMode ? finalBorderColor : LEAD_LABEL_COLOR);
+    g2d.setFont(project.getFont().deriveFont(LEAD_FONT_SIZE * 1f));
+    for (int i = 0; i < points.length; i++) {
+      StringUtils.drawCenteredText(g2d, getControlPointNodeName(i), points[i].getX() + dx, points[i].getY() + dy,
+          HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+    }
   }
 
   @SuppressWarnings("incomplete-switch")
@@ -115,8 +154,8 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
     if (body == null) {
       body = new Shape[3];
 
-      double x = controlPoint.getX();
-      double y = controlPoint.getY();
+      double x = getControlPoint(0).getX();
+      double y = getControlPoint(0).getY();
       int width = (int) WIDTH.convertToPixels();
       int length = (int) LENGTH.convertToPixels();
       int totalLength = length + width / 2;
@@ -213,14 +252,35 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
     g2d.drawPolygon(terminalX, terminalY, 6);
   }
 
+  private Point2D[] getControlPoints() {
+    // files saved before the lead terminals existed carry only controlPoint
+    if (controlPoints == null) {
+      controlPoints = new Point2D[] {controlPoint, new Point2D.Double(0, 0)};
+      updateControlPoints();
+    }
+    // points are serialized by value, so a loaded file brings two separate copies of the anchor
+    if (controlPoint != controlPoints[0]) {
+      controlPoint = controlPoints[0];
+    }
+    return controlPoints;
+  }
+
+  private void updateControlPoints() {
+    Point2D[] points = getControlPoints();
+    double theta = orientation.toRadians();
+    double spacing = LEAD_SPACING.convertToPixels();
+    points[1].setLocation(points[0].getX() - Math.sin(theta) * spacing,
+        points[0].getY() + Math.cos(theta) * spacing);
+  }
+
   @Override
   public int getControlPointCount() {
-    return 1;
+    return getControlPoints().length;
   }
 
   @Override
   public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
-    return VisibilityPolicy.WHEN_SELECTED;
+    return VisibilityPolicy.ALWAYS;
   }
 
   @Override
@@ -229,15 +289,25 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
   }
 
   @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
+
+  @Override
   public Point2D getControlPoint(int index) {
-    return controlPoint;
+    return getControlPoints()[index];
   }
 
   @Override
   public void setControlPoint(Point2D point, int index) {
-    this.controlPoint.setLocation(point);
+    getControlPoints()[index].setLocation(point);
     // Invalidate the body
     body = null;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    return index == 0 ? "+" : "-";
   }
 
   @Override
@@ -257,6 +327,7 @@ public class BatterySnap9V extends AbstractTransparentComponent<String> {
 
   public void setOrientation(Orientation orientation) {
     this.orientation = orientation;
+    updateControlPoints();
     // Invalidate the body
     body = null;
   }

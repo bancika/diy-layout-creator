@@ -21,8 +21,12 @@
  */
 package org.diylc.netlist;
 
+import java.awt.geom.Point2D;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import org.diylc.testcomponents.OnePointTestComponent;
 
 public class NodeNameTest {
 
@@ -84,5 +88,21 @@ public class NodeNameTest {
     Assert.assertNull(Node.railName("NC_1"));
     Assert.assertNull(Node.railName("RSV_2"));
     Assert.assertNull(Node.railName(null));
+  }
+
+  @Test
+  public void singlePointTerminalIsShownWithItsNodeName() {
+    Assert.assertEquals("Eyelet1.IN", singlePoint("Eyelet1", "IN"));
+    Assert.assertEquals("Eyelet1.3.3V", singlePoint("Eyelet1", "3.3V"));
+    Assert.assertEquals("Eyelet1.1", singlePoint("Eyelet1", "1"));
+    // the annotation is stripped like on any other pin
+    Assert.assertEquals("Eyelet1.IN", singlePoint("Eyelet1", "IN (from jack)"));
+    // a point without a name is identified by the component alone
+    Assert.assertEquals("Eyelet1", singlePoint("Eyelet1", null));
+  }
+
+  private static String singlePoint(String name, String nodeName) {
+    return new Node(new OnePointTestComponent(name, nodeName, new Point2D.Double(0, 0)), 0)
+        .toString();
   }
 }

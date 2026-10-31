@@ -28,6 +28,7 @@ import org.diylc.common.Orientation;
 import org.diylc.common.OrientationHV;
 import org.diylc.components.transform.GuitarPickupTransformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -38,6 +39,8 @@ import org.diylc.utils.Constants;
 import java.awt.*;
 import java.awt.geom.*;
 
+@AiNote("The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation")
+@AiNote("The wiring analysis takes the coils as in phase when the North coil has its Start and the South coil its Finish on the side of the output jack's Tip: the series humbucker takes North Start to hot, joins North Finish to South Finish and takes South Start to ground; in parallel, North Start and South Finish go to hot and North Finish and South Start to ground")
 @ComponentDescriptor(name = "Stingray Bass Pickup", category = "Guitar", author = "JD",
     description = "Humbucker Bass Pickup for Musicman Stingray and similar guitars",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",
@@ -312,6 +315,35 @@ import java.awt.geom.*;
   @Override
   public boolean isHumbucker() {
     return true;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "North Start";
+      case 1:
+        return "North Finish";
+      case 2:
+        return "South Finish";
+      case 3:
+        return "South Start";
+    }
+    return null;
+  }
+
+  @Override
+  public String getInternalLinkName(int index1, int index2) {
+    if (index1 == 0 && index2 == 1) {
+      return Polarity.North.name() + "->";
+    } else if (index1 == 2 && index2 == 3) {
+      return Polarity.South.name() + "->";
+    } else if (index1 == 1 && index2 == 0) {
+      return Polarity.North.name() + "<-";
+    } else if (index1 == 3 && index2 == 2) {
+      return Polarity.South.name() + "<-";
+    }
+    return null;
   }
 
   @Override

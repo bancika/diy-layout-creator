@@ -43,6 +43,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -50,6 +51,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The four control points run down the top-right edge of the pickup 0.1in apart in 'Orientation' DEFAULT, starting at the first one, and turn with the pickup, so they stay at the same corner of the body in every orientation; as a single coil it uses only the middle two as terminals")
 @ComponentDescriptor(name = "P- Bass Pickup", category = "Guitar", author = "Branislav Stojkovic",
     description = "Split-coil pickup for P-Bass and similar guitars", 
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "PKP",

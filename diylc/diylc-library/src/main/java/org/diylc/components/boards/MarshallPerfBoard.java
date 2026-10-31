@@ -21,7 +21,6 @@
 */
 package org.diylc.components.boards;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -32,6 +31,8 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.AiNote;
+import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -41,6 +42,10 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote(value = "Use this type of board only when explicitly asked to", scope = Scope.SELECTION)
+@AiNote("This board comes with pre-drilled holes spaced apart equally")
+@AiNote("'Spacing' sets the center-to-center pitch of the hole grid; the first row and column of hole centers sit one 'Spacing' in from the top and left edges")
+@AiNote("There are no conductive surfaces on this board; place eyelets or turrets exactly on the holes to create connection points")
 @ComponentDescriptor(name = "Marshall Style Perf Board", category = "Boards", author = "Branislav Stojkovic",
     zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board",
     description = "Perforated board as found on some Marshall and Trainwreck amps",

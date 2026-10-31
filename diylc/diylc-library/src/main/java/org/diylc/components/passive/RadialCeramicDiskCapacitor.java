@@ -30,6 +30,7 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.schematic.CapacitorSchematicFactory;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
@@ -37,6 +38,7 @@ import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("'Length' and 'Width' are the disc as seen from above: 'Length' is its diameter and 'Width' its thickness")
 @ComponentDescriptor(schematicFactory = CapacitorSchematicFactory.class,
     name = "Ceramic Capacitor (Radial)", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",

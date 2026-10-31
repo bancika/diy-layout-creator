@@ -1,0 +1,32 @@
+Switch setup: [ S-1.Down ]
+
+	Bridge Pickup.South Finish <-> Bridge Pickup.South Start <-> C1.2 <-> J1.Tip <-> Neck Pickup.North Finish <-> VR1.1
+	C1.1 <-> VR2.2
+	C2.1 <-> R1.1 <-> R2.1
+	C2.2 <-> J1.Sleeve <-> R1.2 <-> VR1.2
+	Neck Pickup.North Start <-> R2.2 <-> VR1.3 <-> VR2.1
+
+Switch setup: [ S-1.Up:SW3.1 ]
+
+	Bridge Pickup.South Finish <-> C1.2 <-> J1.Tip <-> Neck Pickup.North Finish <-> VR1.1
+	Bridge Pickup.South Start <-> R2.2 <-> VR1.3 <-> VR2.1
+	C1.1 <-> VR2.2
+	C2.1 <-> R1.1 <-> R2.1
+	C2.2 <-> J1.Sleeve <-> R1.2 <-> VR1.2
+
+Switch setup: [ S-1.Up:SW3.2 ]
+
+	Bridge Pickup.South Finish <-> C1.2 <-> J1.Tip <-> Neck Pickup.North Finish <-> VR1.1
+	Bridge Pickup.South Start <-> Neck Pickup.North Start <-> R2.2 <-> VR1.3 <-> VR2.1
+	C1.1 <-> VR2.2
+	C2.1 <-> R1.1 <-> R2.1
+	C2.2 <-> J1.Sleeve <-> R1.2 <-> VR1.2
+
+Switch setup: [ S-1.Up:SW3.3 ]
+
+	Bridge Pickup.South Finish <-> C1.2 <-> J1.Tip <-> Neck Pickup.North Finish <-> VR1.1
+	C1.1 <-> VR2.2
+	C2.1 <-> R1.1 <-> R2.1
+	C2.2 <-> J1.Sleeve <-> R1.2 <-> VR1.2
+	Neck Pickup.North Start <-> R2.2 <-> VR1.3 <-> VR2.1
+

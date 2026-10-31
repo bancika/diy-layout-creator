@@ -1,0 +1,7 @@
+Switch setup: [ ALL ]
+
+	.North Finish <-> PKP1.North Finish <-> PKP1.North Start <-> PKP1.South Finish <-> PKP1.South Start <-> VR2.2
+	.North Start <-> Blend.2
+	Blend.1 <-> VR2.3
+	Blend.3 <-> VR2.1
+

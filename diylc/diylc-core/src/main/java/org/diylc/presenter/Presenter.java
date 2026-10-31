@@ -23,10 +23,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -114,8 +114,7 @@ public class Presenter implements IPlugInPort {
   public static final Double[] ZOOM_LEVELS =
       {0.25d, 0.3333d, 0.5d, 0.6667d, 0.75d, 1d, 1.25d, 1.5d, 2d, 2.5d, 3d};
 
-  public static VersionNumber CURRENT_VERSION = null;
-  private static List<Version> RECENT_VERSIONS = null;
+  private static VersionNumber CURRENT_VERSION = null;
 
   public static final String DEFAULTS_KEY_PREFIX = "default.";
 
@@ -407,7 +406,7 @@ public class Presenter implements IPlugInPort {
   public void saveProjectToFile(String fileName, boolean isBackup) {
     LOG.info(String.format("saveProjectToFile(%s)", fileName));
     try {
-      currentProject.setFileVersion(CURRENT_VERSION);
+      currentProject.setFileVersion(getCurrentVersion());
       projectFileManager.serializeProjectToFile(currentProject, fileName, isBackup);
       if (!isBackup)
         addToRecentFiles(fileName);
@@ -846,20 +845,27 @@ public class Presenter implements IPlugInPort {
     boolean snapToGrid = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_GRID);
     boolean snapToObjects = snapTo.equalsIgnoreCase(IPlugInPort.SNAP_TO_COMPONENTS);
 
+    boolean sticky = configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
+    if (ctrlDown) {
+      sticky = !sticky;
+    }
+
     if (altDown) {
       Project oldProject = null;
       if (key == IKeyProcessor.VK_RIGHT) {
         oldProject = currentProject.clone();
-        rotateComponents(this.selectedComponents, 1, snapToGrid);
+        rotateComponents(this.selectedComponents, 1, snapToGrid, sticky);
       } else if (key == IKeyProcessor.VK_LEFT) {
         oldProject = currentProject.clone();
-        rotateComponents(this.selectedComponents, -1, snapToGrid);
+        rotateComponents(this.selectedComponents, -1, snapToGrid, sticky);
       } else if (key == IKeyProcessor.VK_H) {
         oldProject = currentProject.clone();
-        mirrorComponents(this.selectedComponents, IComponentTransformer.HORIZONTAL, snapToGrid);
+        mirrorComponents(this.selectedComponents, IComponentTransformer.HORIZONTAL, snapToGrid,
+            sticky);
       } else if (key == IKeyProcessor.VK_V) {
         oldProject = currentProject.clone();
-        mirrorComponents(this.selectedComponents, IComponentTransformer.VERTICAL, snapToGrid);
+        mirrorComponents(this.selectedComponents, IComponentTransformer.VERTICAL, snapToGrid,
+            sticky);
       } else
         return false;
       
@@ -869,11 +875,6 @@ public class Presenter implements IPlugInPort {
     }
 
     // Expand control points to include all stuck components.
-    boolean sticky = configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true);
-    if (ctrlDown) {
-      sticky = !sticky;
-    }
-
     if (sticky) {
       includeStuckComponents(controlPointMap);
     }
@@ -1302,11 +1303,12 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public VersionNumber getCurrentVersionNumber() {
+    return getCurrentVersion();
+  }
+
+  public static VersionNumber getCurrentVersion() {
     if (CURRENT_VERSION == null) {
-      List<Version> recentUpdates = getRecentUpdates();
-      CURRENT_VERSION = recentUpdates.stream()
-          .findFirst().map(v -> v.getVersionNumber())
-          .orElse(new VersionNumber(5, 0, 0));
+      CURRENT_VERSION = ReleaseHistory.getCurrentVersion();
       LOG.info("Current DIYLC version: " + CURRENT_VERSION);
     }
     return CURRENT_VERSION;
@@ -1314,28 +1316,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<Version> getRecentUpdates() {
-    return getRecentVersions();
-  }
-
-  private static List<Version> getRecentVersions() {
-    if (RECENT_VERSIONS == null) {
-      try {
-        BufferedInputStream in =
-            new BufferedInputStream(Presenter.class.getResourceAsStream("/update.xml"));
-        XStream xStream = new XStream(new DomDriver());
-        xStream.addPermission(AnyTypePermission.ANY);
-        @SuppressWarnings("unchecked")
-        List<Version> allVersions = (List<Version>) xStream.fromXML(in);
-        RECENT_VERSIONS = allVersions.stream()
-            .sorted(Comparator.comparing(x -> ((Version) x).getVersionNumber()).reversed())
-            .limit(10).collect(Collectors.toList());
-        in.close();
-      } catch (Exception e) {
-        LOG.error("Could not load recent versions", e);
-        RECENT_VERSIONS = new ArrayList<>();
-      }
-    }
-    return RECENT_VERSIONS;
+    return ReleaseHistory.getRecentVersions();
   }
 
   @Override
@@ -1442,7 +1423,9 @@ public class Presenter implements IPlugInPort {
 
   private void includeStuckComponents(Map<IDIYComponent<?>, Set<Integer>> controlPointMap,
       Set<IDIYComponent<?>> excludedComponents) {
-    int oldSize = controlPointMap.size();
+    // counted in points rather than components, a component that already had a free point in the
+    // map and now gains its rigid ones exposes new points for the next iteration to match
+    int oldSize = countControlPoints(controlPointMap);
     LOG.trace("Expanding selected component map");
     for (IDIYComponent<?> component : currentProject.getComponents()) {
       // Check if there's a control point in the current selection
@@ -1460,15 +1443,9 @@ public class Presenter implements IPlugInPort {
                 break;
               }
               for (Integer j : entry.getValue()) {
-                Point2D firstPoint = component.getControlPoint(i);
-                if (entry.getKey().isControlPointSticky(j)) {
-                  Point2D secondPoint = entry.getKey().getControlPoint(j);
-                  // If they are close enough we can consider
-                  // them matched.
-                  if (firstPoint.distance(secondPoint) < DrawingManager.CONTROL_POINT_SIZE) {
-                    componentMatches = true;
-                    break;
-                  }
+                if (CalcUtils.areControlPointsStuck(component, i, entry.getKey(), j)) {
+                  componentMatches = true;
+                  break;
                 }
               }
             }
@@ -1496,13 +1473,13 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
-    int newSize = controlPointMap.size();
-    // As long as we're adding new components, do another iteration.
+    int newSize = countControlPoints(controlPointMap);
+    // As long as we're adding new points, do another iteration.
     if (newSize > oldSize) {
-      LOG.trace("Component count changed, trying one more time.");
+      LOG.trace("Point count changed, trying one more time.");
       includeStuckComponents(controlPointMap, excludedComponents);
     } else {
-      LOG.trace("Component count didn't change, done with expanding.");
+      LOG.trace("Point count didn't change, done with expanding.");
       for (Map.Entry<IDIYComponent<?>, Set<Integer>> entry : controlPointMap.entrySet()) {
         IDIYComponent<?> component = entry.getKey();
         Set<Integer> selectedPoints = entry.getValue();
@@ -1526,6 +1503,14 @@ public class Presenter implements IPlugInPort {
         }
       }
     }
+  }
+
+  private static int countControlPoints(Map<IDIYComponent<?>, Set<Integer>> controlPointMap) {
+    int count = 0;
+    for (Set<Integer> indices : controlPointMap.values()) {
+      count += indices.size();
+    }
+    return count;
   }
 
   /**
@@ -1829,7 +1814,8 @@ public class Presenter implements IPlugInPort {
     if (!selectedComponents.isEmpty()) {
       LOG.trace("Rotating selected components");
       Project oldProject = currentProject.clone();
-      rotateComponents(this.selectedComponents, direction, isSnapToGrid());
+      rotateComponents(this.selectedComponents, direction, isSnapToGrid(),
+          configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true));
       
       notifyProjectModifiedIfNeeded(oldProject,  "Rotate Selection", true, true);
     }
@@ -1840,11 +1826,13 @@ public class Presenter implements IPlugInPort {
    * @param direction 1 for clockwise, -1 for counter-clockwise
    */
   @SuppressWarnings("unchecked")
-  private void rotateComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
+  private void rotateComponents(Collection<IDIYComponent<?>> components, int direction,
+      boolean snapToGrid, boolean sticky) {
     Point2D center = getCenterOf(components, snapToGrid);
+    StuckPointFollower follower = createStuckPointFollower(components, sticky);
 
     boolean canRotate = true;
-    for (IDIYComponent<?> component : selectedComponents) {
+    for (IDIYComponent<?> component : follower.getTransformedComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
@@ -1859,7 +1847,7 @@ public class Presenter implements IPlugInPort {
           ROTATE_SELECTION, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
-    for (IDIYComponent<?> component : selectedComponents) {
+    for (IDIYComponent<?> component : follower.getTransformedComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
@@ -1867,6 +1855,8 @@ public class Presenter implements IPlugInPort {
         type.getTransformer().rotate(component, center, direction);
       }
     }
+    follower.follow(AffineTransform.getRotateInstance(Math.PI / 2 * direction, center.getX(),
+        center.getY()));
     
     // Remove from area map.    
     drawingManager.clearComponentAreaMap();
@@ -1879,19 +1869,22 @@ public class Presenter implements IPlugInPort {
       LOG.trace("Mirroring selected components");
       Project oldProject = currentProject.clone();
 
-      mirrorComponents(selectedComponents, direction, isSnapToGrid());
+      mirrorComponents(selectedComponents, direction, isSnapToGrid(),
+          configManager.readBoolean(IPlugInPort.STICKY_POINTS_KEY, true));
 
       notifyProjectModifiedIfNeeded(oldProject, "Mirror Selection", true, true);
     }
   }
 
   @SuppressWarnings("unchecked")
-  private void mirrorComponents(Collection<IDIYComponent<?>> components, int direction, boolean snapToGrid) {
+  private void mirrorComponents(Collection<IDIYComponent<?>> components, int direction,
+      boolean snapToGrid, boolean sticky) {
     Point2D center = getCenterOf(components, snapToGrid);
+    StuckPointFollower follower = createStuckPointFollower(components, sticky);
 
     boolean canMirror = true;
     boolean changesCircuit = false;
-    for (IDIYComponent<?> component : components) {
+    for (IDIYComponent<?> component : follower.getTransformedComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
@@ -1913,7 +1906,7 @@ public class Presenter implements IPlugInPort {
           MIRROR_SELECTION, IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) != IView.YES_OPTION)
         return;
 
-    for (IDIYComponent<?> component : components) {
+    for (IDIYComponent<?> component : follower.getTransformedComponents()) {
       ComponentType type =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());      
@@ -1921,10 +1914,32 @@ public class Presenter implements IPlugInPort {
         type.getTransformer().mirror(component, center, direction);
       }
     }
+    if (direction == IComponentTransformer.HORIZONTAL) {
+      follower.follow(new AffineTransform(-1, 0, 0, 1, 2 * center.getX(), 0));
+    } else {
+      follower.follow(new AffineTransform(1, 0, 0, -1, 0, 2 * center.getY()));
+    }
     
     // Remove from area map.    
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
+  }
+
+  private StuckPointFollower createStuckPointFollower(Collection<IDIYComponent<?>> components,
+      boolean sticky) {
+    Map<IDIYComponent<?>, Set<Integer>> controlPointMap =
+        new HashMap<IDIYComponent<?>, Set<Integer>>();
+    for (IDIYComponent<?> component : components) {
+      Set<Integer> indices = new HashSet<Integer>();
+      for (int i = 0; i < component.getControlPointCount(); i++) {
+        indices.add(i);
+      }
+      controlPointMap.put(component, indices);
+    }
+    if (sticky) {
+      includeStuckComponents(controlPointMap);
+    }
+    return new StuckPointFollower(controlPointMap, DrawingManager.CONTROL_POINT_SIZE);
   }
 
   private Point2D getCenterOf(Collection<IDIYComponent<?>> components, boolean snapToGrid) {

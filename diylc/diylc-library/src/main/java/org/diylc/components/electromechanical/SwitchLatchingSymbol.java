@@ -36,6 +36,7 @@ import org.diylc.core.ISwitch;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
+import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
@@ -61,6 +62,7 @@ public class SwitchLatchingSymbol
   private Orientation orientation = Orientation.DEFAULT;
   private SwitchConfiguration configuration = SwitchConfiguration._2x2;
   private PoleCount poleCount = PoleCount.ONE;
+  private Integer selectedPosition;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
 
@@ -344,5 +346,17 @@ public class SwitchLatchingSymbol
     public String toString() {
       return name().substring(0, 1) + name().substring(1).toLowerCase();
     }
+  }
+
+  @DynamicEditableProperty(source = SwitchLatchingSymbolPositionPropertyValueSource.class)
+  @EditableProperty(name = "Selected Position")
+  @Override
+  public Integer getSelectedPosition() {
+    return selectedPosition;
+  }
+
+  @Override
+  public void setSelectedPosition(Integer selectedPosition) {
+    this.selectedPosition = selectedPosition;
   }
 }

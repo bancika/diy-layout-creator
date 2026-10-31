@@ -1,0 +1,74 @@
+Switch setup: [ 3-Way-Switch.Middle:Push Pull.ON1:Rhythm Circuit.ON1 ]
+
+	Bridge.South Finish <-> Lead Tone.1 <-> Lead Volume.3 <-> Neck.North Finish
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Volume.2 <-> Output.Tip
+	RC Tone Cap.2 <-> RC Tone.2
+	RC Tone.1 <-> RC Volume.3
+
+Switch setup: [ 3-Way-Switch.Middle:Push Pull.ON1:Rhythm Circuit.ON2 ]
+
+	Bridge.South Finish <-> Neck.North Finish <-> RC Tone.1 <-> RC Volume.3
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3
+	Output.Tip <-> RC Volume.2
+	RC Tone Cap.2 <-> RC Tone.2
+
+Switch setup: [ 3-Way-Switch.Rhythm:Push Pull.ON1:Rhythm Circuit.ON1 ]
+
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3 <-> Neck.North Finish
+	Lead Volume.2 <-> Output.Tip
+	RC Tone Cap.2 <-> RC Tone.2
+	RC Tone.1 <-> RC Volume.3
+
+Switch setup: [ 3-Way-Switch.Rhythm:Push Pull.ON1:Rhythm Circuit.ON2 ]
+
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3
+	Neck.North Finish <-> RC Tone.1 <-> RC Volume.3
+	Output.Tip <-> RC Volume.2
+	RC Tone Cap.2 <-> RC Tone.2
+
+Switch setup: [ 3-Way-Switch.Treble:Push Pull.ON1:Rhythm Circuit.ON1 ]
+
+	Bridge.South Finish <-> Lead Tone.1 <-> Lead Volume.3
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Volume.2 <-> Output.Tip
+	RC Tone Cap.2 <-> RC Tone.2
+	RC Tone.1 <-> RC Volume.3
+
+Switch setup: [ 3-Way-Switch.Treble:Push Pull.ON1:Rhythm Circuit.ON2 ]
+
+	Bridge.South Finish <-> RC Tone.1 <-> RC Volume.3
+	Bridge.South Start <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3
+	Output.Tip <-> RC Volume.2
+	RC Tone Cap.2 <-> RC Tone.2
+
+Switch setup: [ Push Pull.ON2:Rhythm Circuit.ON1 ]
+
+	Bridge.South Finish <-> Lead Tone.1 <-> Lead Volume.3
+	Bridge.South Start <-> Neck.North Finish
+	GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Volume.2 <-> Output.Tip
+	RC Tone Cap.2 <-> RC Tone.2
+	RC Tone.1 <-> RC Volume.3
+
+Switch setup: [ Push Pull.ON2:Rhythm Circuit.ON2 ]
+
+	Bridge.South Finish <-> RC Tone.1 <-> RC Volume.3
+	Bridge.South Start <-> Neck.North Finish
+	GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> RC Tone Cap.1 <-> RC Volume.1
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3
+	Output.Tip <-> RC Volume.2
+	RC Tone Cap.2 <-> RC Tone.2
+
