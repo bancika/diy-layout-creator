@@ -93,6 +93,9 @@ public class FactoryVariantsTest {
 
       for (Template variant : entry.getValue()) {
         String where = type.getSimpleName() + " / " + variant.getName();
+        if (variant.getDeletedOn() != null) {
+          continue;
+        }
         if (variant.getValues() == null || variant.getValues().isEmpty()) {
           problems.add(where + ": sets nothing");
           continue;

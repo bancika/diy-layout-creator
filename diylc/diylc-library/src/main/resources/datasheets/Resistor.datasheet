@@ -1,0 +1,22 @@
+Carbon Comp,0.25 W,0.3 in,0.1 in,Tubular,5 band,#8A5E20,#735832
+Carbon Comp,0.5 W,0.41 in,0.15 in,Tubular,5 band,#8A5E20,#735832
+Carbon Film,0.25 W,7,2.5,Standard,5 band,#E0C68B,#A59268
+Carbon Film,0.5 W,9,3.2,Standard,5 band,#E0C68B,#A59268
+Metal Film,0.25 W,7,2.5,Standard,5 band,#82CFFD,#5B90B1
+Metal Film,0.5 W,9,3.2,Standard,5 band,#82CFFD,#5B90B1
+Metal Oxide,1 W,9,3,Standard,5 band,#D2D7DB,#B2B7BB
+Metal Oxide,2 W,12,4,Standard,5 band,#D2D7DB,#B2B7BB
+Metal Oxide,3 W,16,6,Standard,5 band,#D2D7DB,#B2B7BB
+Ceramic,2 W,18,7,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,3 W,22,8,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,5 W,22,9.5,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,7 W,35,9.5,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,10 W,48,9.5,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,15 W,48,13,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,20 W,63,13,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,30 W,75,19,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,50 W,90,19,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,80 W,109,19,Tubular,None,#F6F5F5,#CCCCCC
+Ceramic,100 W,135,22,Tubular,None,#F6F5F5,#CCCCCC
+Dale CMF55,0.5 W,6.22,2.29,Tubular Beveled,5 band,#D37D5B,#A04C2B
+Dale CMF60,1 W,8.75,3.53,Tubular Beveled,5 band,#D37D5B,#A04C2B

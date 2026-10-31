@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Template {
 
@@ -35,6 +36,8 @@ public class Template {
   @Deprecated
   private boolean defaultFlag;
   private LocalDateTime createdOn;
+  // set only on a factory variant that has been withdrawn, which then carries nothing but its name
+  private LocalDateTime deletedOn;
   
   public Template() {    
   }
@@ -82,11 +85,20 @@ public class Template {
     this.createdOn = createdOn;
   }
 
+  public LocalDateTime getDeletedOn() {
+    return deletedOn;
+  }
+
+  public void setDeletedOn(LocalDateTime deletedOn) {
+    this.deletedOn = deletedOn;
+  }
+
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
     result = prime * result + ((createdOn == null) ? 0 : createdOn.hashCode());
+    result = prime * result + ((deletedOn == null) ? 0 : deletedOn.hashCode());
     result = prime * result + ((name == null) ? 0 : name.hashCode());
     result = prime * result + ((points == null) ? 0 : points.hashCode());
     result = prime * result + ((values == null) ? 0 : values.hashCode());
@@ -107,6 +119,9 @@ public class Template {
         return false;
     } else if (!createdOn.equals(other.createdOn))
       return false;
+    if (!Objects.equals(deletedOn, other.deletedOn)) {
+      return false;
+    }
     if (name == null) {
       if (other.name != null)
         return false;

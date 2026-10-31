@@ -175,6 +175,16 @@ public class ComponentCatalogGenerator {
       comp.put("notes", notes);
     }
 
+    // a datasheet lists one row per part, so the model names are its distinct first column
+    List<String[]> datasheet = ct.getDatasheet();
+    if (datasheet != null) {
+      List<String> models = datasheet.stream()
+          .map(row -> row[0].trim())
+          .distinct()
+          .collect(Collectors.toList());
+      comp.put("datasheetModels", models);
+    }
+
     // Extract editable properties
     try {
       List<PropertyWrapper> properties = processor.extractProperties(ct.getInstanceClass());

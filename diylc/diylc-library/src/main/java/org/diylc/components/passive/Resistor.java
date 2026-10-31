@@ -37,6 +37,7 @@ import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -48,10 +49,13 @@ import org.diylc.core.measures.SizeUnit;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'")
+@AiNote("A datasheet model sets the body size, shape and colors of a resistor family at one power rating but never the resistance; set 'Power Rating' together with the model to pick the matching size")
 @ComponentDescriptor(name = "Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "R", description = "Resistor layout symbol",
-    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true)
-public class Resistor extends AbstractLeadedComponent<Resistance> implements IGerberComponentSimple {
+    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true,
+    enableDatasheet = true, datasheetCreationStepCount = 2)
+public class Resistor extends AbstractLeadedComponent<Resistance>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -73,6 +77,41 @@ public class Resistor extends AbstractLeadedComponent<Resistance> implements IGe
     super();
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
+  }
+
+  public Resistor(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: family, power, body length, body width, shape, color code, body color, border color;
+  // the resistance is not part of a row because the body size depends only on family and power
+  @Override
+  public void applyModel(String[] model) {
+    setPowerNew(org.diylc.core.measures.Power.parseCapacitance(model[1]));
+    setLength(parseDatasheetSize(model[2]));
+    setWidth(parseDatasheetSize(model[3]));
+    setShape(parseDatasheetEnum(ResistorShape.values(), model[4]));
+    setColorCode(parseDatasheetEnum(ResistorColorCode.values(), model[5]));
+    setBodyColor(Color.decode(model[6]));
+    setBorderColor(Color.decode(model[7]));
+  }
+
+  // sizes are in mm unless a unit follows the number, as some families are specified in inches
+  private static Size parseDatasheetSize(String value) {
+    String[] parts = value.split(" ");
+    SizeUnit unit = parts.length > 1 ? SizeUnit.valueOf(parts[1]) : SizeUnit.mm;
+    return new Size(Double.parseDouble(parts[0]), unit);
+  }
+
+  private static <E extends Enum<E>> E parseDatasheetEnum(E[] values, String name) {
+    for (E value : values) {
+      if (value.toString().equalsIgnoreCase(name)) {
+        return value;
+      }
+    }
+    throw new IllegalArgumentException("Unknown datasheet value: " + name);
   }
 
   @Override

@@ -12229,6 +12229,7 @@
     "description" : "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "It has no standing mode: keep the control points at least 'Length' apart, or the body is drawn past the holes" ],
+    "datasheetModels" : [ "F&T Typ A", "Illinois TTA", "JJ ANH", "Sprague TVA Atom" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12343,6 +12344,7 @@
     "description" : "Vertically mounted electrolytic capacitor, polarized or bipolar",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Diameter' is the can as seen from above; 'Height' is drawn only when 'Folded' lays the can on its side" ],
+    "datasheetModels" : [ "Elna Silmic II", "Nichicon FG", "Nichicon FW", "Nichicon KZ", "Panasonic FC", "Panasonic FM", "Panasonic NHG" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12467,6 +12469,7 @@
     "description" : "Axial film capacitor, similar to Mallory 150s",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'" ],
+    "datasheetModels" : [ "Mallory 150", "Solen Fast" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12563,6 +12566,7 @@
     "description" : "Radial film capacitor, similar to Sprague Orange Drop",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads", "'Length' and 'Width' are the body as seen from above: 'Length' runs along the line between the leads and 'Width' across it, i.e. the datasheet width and thickness; body height is not drawn" ],
+    "datasheetModels" : [ "Epcos MKT (5mm)", "Epcos MKT (7.5mm)", "Epcos MKT (10mm)", "Orange Drop 225P", "Orange Drop 715P", "Orange Drop 716P", "WIMA FKP-02 (2.5mm)", "WIMA FKP-2 (5mm)", "WIMA FKS-2 (5mm)", "WIMA MKP-2 (5mm)", "WIMA MKP-4", "WIMA MKS-02 (2.5mm)", "WIMA MKS-2 (5mm)", "WIMA MKS-4" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -12965,6 +12969,7 @@
     "description" : "Standard radial mica capacitor",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads" ],
+    "datasheetModels" : [ "Cornell Dubilier CD10 (3.6mm)", "Cornell Dubilier CD15 (5.9mm)", "Cornell Dubilier CD19 (8.7mm)", "Cornell Dubilier CDV19 (8.7mm)", "Cornell Dubilier CD30 (11.1mm)", "Cornell Dubilier CDV30 (11.1mm)", "Cornell Dubilier CD42 (27mm)" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -13496,7 +13501,8 @@
     "namePrefix" : "R",
     "description" : "Resistor layout symbol",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'" ],
+    "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.5in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'", "A datasheet model sets the body size, shape and colors of a resistor family at one power rating but never the resistance; set 'Power Rating' together with the model to pick the matching size" ],
+    "datasheetModels" : [ "Carbon Comp", "Carbon Film", "Metal Film", "Metal Oxide", "Ceramic", "Dale CMF55", "Dale CMF60" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",

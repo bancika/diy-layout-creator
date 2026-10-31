@@ -65,6 +65,7 @@ public class VariantManager {
         .readObject(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY, LocalDateTime.MIN);
     
     int importCount = 0;
+    int deleteCount = 0;
 
     try {
       InputStream inputStream = Presenter.class.getResourceAsStream("/" + VARIANTS_FILE_NAME);
@@ -89,7 +90,20 @@ public class VariantManager {
           .collect(Collectors.toSet());
 
         for (Template variant : entry.getValue()) {
-          if ((variant.getCreatedOn() == null || importDate.compareTo(variant.getCreatedOn()) < 0)
+          // a deletion stub keeps nothing but its name, so a missing createdOn only means an old
+          // entry when the variant has not been deleted
+          boolean created = variant.getCreatedOn() == null ? variant.getDeletedOn() == null
+              : importDate.compareTo(variant.getCreatedOn()) < 0;
+          boolean deleted =
+              variant.getDeletedOn() != null && importDate.compareTo(variant.getDeletedOn()) < 0;
+          // a variant created and deleted since the last import never reached the user, and a
+          // deletion older than the last import was applied then, so a variant the user has since
+          // created under the same name stays
+          if (deleted && !created) {
+            if (existingVariants.removeIf(x -> variant.getName().equals(x.getName()))) {
+              deleteCount++;
+            }
+          } else if (created && variant.getDeletedOn() == null
               && !existingNames.contains(variant.getName())) {
             existingVariants.add(variant);
             importCount++;
@@ -103,6 +117,9 @@ public class VariantManager {
       configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
       if (importCount > 0) {
         LOG.info(String.format("Imported default %d variants", importCount));
+      }
+      if (deleteCount > 0) {
+        LOG.info(String.format("Deleted %d withdrawn default variants", deleteCount));
       }
     } catch (Exception e) {
       LOG.error("Could not load default variants", e);
