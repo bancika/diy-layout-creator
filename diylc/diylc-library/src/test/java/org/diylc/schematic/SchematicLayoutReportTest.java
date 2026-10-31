@@ -233,7 +233,7 @@ public class SchematicLayoutReportTest {
           new DrawingManager(null, InMemoryConfigurationManager.getInstance());
       manager.drawProject(g2d, project, DRAW_OPTIONS, null, null,
           new HashSet<IDIYComponent<?>>(), new HashSet<IDIYComponent<?>>(),
-          new HashSet<IDIYComponent<?>>(), null, null, false, null, null, null);
+          new HashSet<IDIYComponent<?>>(), null, null, false, null, null, null, null);
       return manager.getContinuityAreas();
     } finally {
       g2d.dispose();
