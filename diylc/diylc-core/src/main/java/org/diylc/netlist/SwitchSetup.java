@@ -21,6 +21,7 @@
 */
 package org.diylc.netlist;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,6 +83,47 @@ public class SwitchSetup implements Comparable<SwitchSetup> {
 
   @Override
   public int compareTo(SwitchSetup o) {
+    List<Position> left = new ArrayList<>(positions);
+    List<Position> right = new ArrayList<>(o.positions);
+    Collections.sort(left);
+    Collections.sort(right);
+
+    int i = 0;
+    int j = 0;
+
+    while (i < left.size() || j < right.size()) {
+      int comparison;
+
+      if (i == left.size()) {
+        // This setup omits the next switch: use its lowest position.
+        comparison = Integer.compare(0, right.get(j++).getPosition());
+      } else if (j == right.size()) {
+        comparison = Integer.compare(left.get(i++).getPosition(), 0);
+      } else {
+        Position a = left.get(i);
+        Position b = right.get(j);
+        int nameComparison =
+                a.getSwitchName().compareToIgnoreCase(b.getSwitchName());
+
+        if (nameComparison < 0) {
+          comparison = Integer.compare(a.getPosition(), 0);
+          i++;
+        } else if (nameComparison > 0) {
+          comparison = Integer.compare(0, b.getPosition());
+          j++;
+        } else {
+          comparison = Integer.compare(a.getPosition(), b.getPosition());
+          i++;
+          j++;
+        }
+      }
+
+      if (comparison != 0) {
+        return comparison;
+      }
+    }
+
+    // Same earliest full configuration: use the description as a tie-breaker.
     return toString().compareToIgnoreCase(o.toString());
   }
 }

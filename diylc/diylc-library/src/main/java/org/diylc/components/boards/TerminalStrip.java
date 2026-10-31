@@ -34,12 +34,14 @@ import org.diylc.common.Orientation;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.TerminalStripTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -48,11 +50,12 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("Each terminal is one node made of its A and B holes, plus C when 'Center Terminal' is on; separate terminals are not connected")
 @ComponentDescriptor(name = "Terminal Strip", author = "Branislav Stojkovic", category = "Boards",
     instanceNamePrefix = "TS", description = "Row of terminals for point-to-point construction",
     zOrder = IDIYComponent.BOARD, keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME,
     transformer = TerminalStripTransformer.class)
-public class TerminalStrip extends AbstractTransparentComponent<String> implements IContinuity {
+public class TerminalStrip extends AbstractTransparentComponent<String> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 
@@ -459,7 +462,11 @@ public class TerminalStrip extends AbstractTransparentComponent<String> implemen
 
   @Override
   public String getControlPointNodeName(int index) {
-    return "TerminalStrip" + index;
+    // points are laid out row by row: the front row first, then the back row it is bonded to,
+    // then the optional center row
+    int terminal = index % getTerminalCount() + 1;
+    char row = (char) ('A' + index / getTerminalCount());
+    return row + Integer.toString(terminal);
   }
 
   @Override

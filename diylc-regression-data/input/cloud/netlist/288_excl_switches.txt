@@ -1,4 +1,0 @@
-Switch setup: [ ALL ]
-
-	SW1.2 <-> SW2.2 <-> SW3.2
-

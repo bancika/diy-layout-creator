@@ -1,4 +1,0 @@
-Switch setup: [ ALL ]
-
-	C4.1 <-> R2.1
-

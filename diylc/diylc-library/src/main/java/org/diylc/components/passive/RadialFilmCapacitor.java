@@ -30,11 +30,14 @@ import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("The two control points are the holes; the body's own leads are 'Lead Spacing' apart and centred between them, with lead wire drawn out to each hole. Place the points exactly 'Lead Spacing' apart for straight leads")
+@AiNote("'Length' and 'Width' are the body as seen from above: 'Length' runs along the line between the leads and 'Width' across it, i.e. the datasheet width and thickness; body height is not drawn")
 @ComponentDescriptor(name = "Film Capacitor (Radial)", author = "Branislav Stojkovic",
     category = "Passive", creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "C",
     description = "Radial film capacitor, similar to Sprague Orange Drop",

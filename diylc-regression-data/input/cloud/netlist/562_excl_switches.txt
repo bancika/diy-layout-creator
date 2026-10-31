@@ -1,0 +1,16 @@
+Switch setup: [ ALL ]
+
+	3-Way-Switch.1 <-> GND <-> Lead Tone Cap.2 <-> Lead Volume.1 <-> Neck.North Start <-> Output.Sleeve <-> Push Pull.1 <-> RC Tone Cap.1 <-> RC Volume.1
+	3-Way-Switch.2 <-> Bridge.South Finish <-> Push Pull.6
+	3-Way-Switch.3 <-> Rhythm Circuit.2
+	3-Way-Switch.4 <-> Push Pull.5
+	Bridge.South Start <-> Push Pull.2
+	Lead Tone Cap.1 <-> Lead Tone.2
+	Lead Tone.1 <-> Lead Volume.3 <-> Rhythm Circuit.1
+	Lead Volume.2 <-> Rhythm Circuit.4
+	Neck.North Finish <-> Push Pull.3 <-> Push Pull.4
+	Output.Tip <-> Rhythm Circuit.5
+	RC Tone Cap.2 <-> RC Tone.2
+	RC Tone.1 <-> RC Volume.3 <-> Rhythm Circuit.3
+	RC Volume.2 <-> Rhythm Circuit.6
+

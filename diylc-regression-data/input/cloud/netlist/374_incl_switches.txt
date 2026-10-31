@@ -1,8 +1,8 @@
 Switch setup: [ ALL ]
 
-	C1.+ <-> D1.K <-> LED.A <-> Q1.E <-> RY1.1
+	C1.+ <-> D1.K <-> LED.A <-> Q1.E <-> RY1.Coil1
 	C1.- <-> Q1.B
-	D1.A <-> R1.2 <-> RY1.5
+	D1.A <-> R1.2 <-> RY1.Coil2
 	LED.K <-> R1.1
-	RY1.2 <-> RY1.6
+	RY1.COM1 <-> RY1.COM2
 

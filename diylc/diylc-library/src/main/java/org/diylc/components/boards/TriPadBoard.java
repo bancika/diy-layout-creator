@@ -34,11 +34,14 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.utils.Constants;
 
+@AiNote("Hole centers follow 'Spacing' like Perf Board: the first row and column sit one 'Spacing' in from the top and left edges")
+@AiNote("Copper strips run along 'Orientation' and join 'Holes Per Strip' consecutive holes, counted from the left edge (HORIZONTAL) or top edge (VERTICAL); neighbouring strips are not connected")
 @ComponentDescriptor(name = "TriPad Board", category = "Boards", author = "Hauke Juhls", zOrder = IDIYComponent.BOARD,
     instanceNamePrefix = "Board",
     description = "Perforated FR4 board with copper strips connecting 3 holes in a row (aka TriPad Board)",

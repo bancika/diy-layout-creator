@@ -44,6 +44,7 @@ import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -53,6 +54,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
+@AiNote("The first control point is the first terminal; with 'Angle' 0 the terminals run down from it 0.1in apart (0.15in for DP3T_5pos_Import and DP3T_5pos_2502N), every second one offset 0.1in to the right on the zig-zag types. 'Angle' rotates the switch clockwise in degrees")
 @ComponentDescriptor(name = "Lever Switch", category = "Guitar", author = "Branislav Stojkovic",
     description = "Strat-style lever switch", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "SW", keywordPolicy = KeywordPolicy.SHOW_TAG,

@@ -50,6 +50,7 @@ import org.diylc.common.*;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.Freeway3x3_03Transformer;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.DynamicEditableProperty;
 import org.diylc.core.annotations.EditableProperty;
@@ -59,6 +60,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 import org.diylc.utils.SwitchUtils;
 
+@AiNote("The first control point is pad CA at the top of the board. With 'Orientation' DEFAULT, CB is 6mm to its right, the B pads run down a column 12mm to its right and the A pads up a column 6mm to its left, 4.5mm apart from 2mm to 24.5mm below CA, and GND is 27mm below CA and 3mm to the right. The other orientations rotate this clockwise around CA")
 @ComponentDescriptor(name = "Freeway 3X3-03 Switch", category = "Guitar",
     author = "Branislav Stojkovic", description = "Freeway 3X3-03 (Standard) Toggle Switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
@@ -82,7 +84,7 @@ public class Freeway3x3_03 extends AbstractTransparentComponent<Void> implements
       new double[] {3, 3, 5, 9.5, 14, 18.5, 23, 27.5, 30, 27.5, 23, 18.5, 14, 9.5, 5};
 
   private static final String[] PAD_NAMES = new String[] {"CA", "CB", "B-B1", "B-B2", "B-M1",
-      "B-M2", "B-N2", "B-N1", "GND", "A-12", "A-N2", "A-M2", "A-M1", "A-B2", "A-B1"};
+      "B-M2", "B-N2", "B-N1", "GND", "A-N1", "A-N2", "A-M2", "A-M1", "A-B2", "A-B1"};
 
   private static final AffineTransform SCALE_TX = AffineTransform.getScaleInstance(0.615d, 0.615d);
 

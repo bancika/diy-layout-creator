@@ -37,7 +37,7 @@ public class NetlistSummaryHtmlReport {
 
         for (Summary summary : summaries) {
             if (summaries.size() > 1) {
-                sb.append("<h2>Switch configuration: ").append(summary.getNetlist().getSwitchSetup())
+                sb.append("<h2>Switch configuration: ").append(summary.getNetlist().getSwitchSetupString())
                     .append("</h2>");
             }
 

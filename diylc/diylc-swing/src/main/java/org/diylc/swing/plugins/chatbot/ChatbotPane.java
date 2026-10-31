@@ -1,3 +1,24 @@
+/*
+
+    DIY Layout Creator (DIYLC).
+    Copyright (c) 2009-2025 held jointly by the individual authors.
+
+    This file is part of DIYLC.
+
+    DIYLC is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    DIYLC is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with DIYLC.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 package org.diylc.swing.plugins.chatbot;
 
 import org.apache.log4j.Logger;
@@ -6,8 +27,13 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ITask;
 import org.diylc.lang.LangUtil;
 import org.diylc.plugins.chatbot.model.ChatMessageEntity;
+import org.diylc.plugins.chatbot.model.ChatbotResponse;
+import org.diylc.plugins.chatbot.model.AiEditScript;
+import org.diylc.plugins.chatbot.model.AiEditOperation;
+import org.diylc.plugins.chatbot.service.AiEditScriptEditor;
 import org.diylc.plugins.chatbot.model.SubscriptionEntity;
 import org.diylc.plugins.chatbot.service.ChatbotService;
+import org.diylc.plugins.chatbot.service.JsonToHtmlConverter;
 import org.diylc.plugins.cloud.service.NotLoggedInException;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.DialogFactory;
@@ -25,9 +51,18 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static org.diylc.plugins.chatbot.service.JsonToHtmlConverter.escapeHtml;
 
 public class ChatbotPane extends JPanel {
 
@@ -38,6 +73,41 @@ public class ChatbotPane extends JPanel {
   public static final String AI_ASSISTANT = LangUtil.translate("AI Assistant") + ": ";
   public static final String FREE_TIER = "Free";
   public static final String GET_PREMIUM_URL = "www.diy-fever.com/get-premium";
+  private static final String APPLY_PROPOSAL_LINK = "diy://applyEditScript/";
+  private static final String ASK_AGAIN_LINK = "diy://askAgain/";
+  
+  private static final String[] WAITING_MESSAGES = {
+      "Consulting the digital oracle...",
+      "Firing up the neural networks...",
+      "Translating human intent into robot action...",
+      "Asking the AI brain...",
+      "Crunching some ones and zeros...",
+      "The AI is thinking... smoke may appear!",
+      "Our robot overlords are considering your prompt...",
+      "The AI is processing your request. Give it a moment...",
+      "Synthesizing a response for you...",
+      "Waking up the AI hamster...",
+      "Hold tight! Generating a response...",
+      "The AI is formulating a plan...",
+      "Bleep bloop... processing...",
+      "Reticulating splines...",
+      "Applying machine learning magic...",
+      "Calculating the meaning of life, the universe, and everything...",
+      "Polishing the silicon chips...",
+      "Downloading more RAM...",
+      "Training a tiny neural net just for this...",
+      "Beep boop beep... generating...",
+      "Asking ChatGPT's older, wiser cousin...",
+      "Navigating the quantum realm...",
+      "Spinning up the GPU fans...",
+      "Aligning the data crystals...",
+      "Pondering the digital orb...",
+      "Feeding your prompt to the algorithmic beast...",
+      "Engaging the flux capacitor...",
+      "Warming up the AI's logic circuits...",
+      "Transmitting your request into the cyber-ether...",
+      "The AI is busy reading a textbook to answer this..."
+  };
 
   public static Font DEFAULT_FONT = new Font("Square721 BT", Font.PLAIN, 12);
   private static final Font MONOSPACED_FONT = new Font("Monospaced", Font.PLAIN, 12);
@@ -68,7 +138,9 @@ public class ChatbotPane extends JPanel {
   private JButton askButton;
   private JButton clearButton;
   private JButton exportButton;
-  private JButton premiumButton;
+  
+  private final Map<String, Proposal> proposals = new HashMap<>();
+  private int proposalCount = 0;
 
   private boolean loggedIn = false;
   private String projectFileName = null;
@@ -143,30 +215,23 @@ public class ChatbotPane extends JPanel {
     add(promptScrollPane, gbc);
 
     // Button panel for Clear, Premium, and Ask buttons
-    JPanel buttonPanel = new JPanel(new BorderLayout(10, 0));  // 10px horizontal gap between components
+    JPanel buttonPanel = new JPanel(new BorderLayout());
     buttonPanel.setBackground(TERMINAL_BG);
     
-    // Left panel for Clear and Export (10px only between them; Clear flush left)
+    // Left panel for secondary actions
     JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
     leftPanel.setBackground(TERMINAL_BG);
     leftPanel.add(getClearButton());
     leftPanel.add(Box.createHorizontalStrut(10));
     leftPanel.add(getExportButton());
     
-    // Center panel for Premium button
-    JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-    centerPanel.setBackground(TERMINAL_BG);
-    centerPanel.add(getPremiumButton());
-    
-    // Right panel for Premium and Ask buttons
+    // Right panel for primary action
     JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
     rightPanel.setBackground(TERMINAL_BG);
-    rightPanel.add(getPremiumButton());
     rightPanel.add(getAskButton());
     
-    // Add all panels to the main button panel
+    // Add panels to the main button panel
     buttonPanel.add(leftPanel, BorderLayout.WEST);
-    buttonPanel.add(centerPanel, BorderLayout.CENTER);
     buttonPanel.add(rightPanel, BorderLayout.EAST);
 
     gbc.gridx = 0;  // Start from first column
@@ -283,7 +348,6 @@ public class ChatbotPane extends JPanel {
           LangUtil.translate("Please log into your cloud account to use the AI assistant"));
       getAskButton().setEnabled(false);
       getClearButton().setEnabled(false);
-      getPremiumButton().setVisible(false);
     } else {
       swingUI.executeBackgroundTask(new ITask<Void>() {
         @Override
@@ -299,7 +363,6 @@ public class ChatbotPane extends JPanel {
         @Override
         public void complete(Void result) {
           if (ChatbotPane.this.subscriptionInfo != null) {
-            getPremiumButton().setVisible(FREE_TIER.equals(ChatbotPane.this.subscriptionInfo.getTier()));
             String subscriptionInfoText = String.format(LangUtil.translate(
                     "You are currently subscribed to the '%s' tier, expiring on %s, with %s credits remaining."),
                 ChatbotPane.this.subscriptionInfo.getTier(),
@@ -352,7 +415,7 @@ public class ChatbotPane extends JPanel {
     try {
       List<ChatMessageEntity> chatHistory = plugInPort.getChatbotService().getChatHistory();
       chatHistory.forEach(message -> {
-        appendSection(ChatbotService.USER, ME + message.getPrompt());
+        appendSection(ChatbotService.USER, ME + escapeHtml(message.getPrompt()));
         appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + message.getResponse());
       });
     } catch (NotLoggedInException e) {
@@ -377,12 +440,23 @@ public class ChatbotPane extends JPanel {
         @Override
         public void hyperlinkUpdate(HyperlinkEvent hle) {
           if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
-            System.out.println(hle.getURL());
-            Desktop desktop = Desktop.getDesktop();
             try {
-              desktop.browse(hle.getURL().toURI());
+              String urlStr = hle.getURL() != null ? hle.getURL().toString() : hle.getDescription();
+              if (urlStr != null && urlStr.startsWith(APPLY_PROPOSAL_LINK)) {
+                applyProposal(urlStr.substring(APPLY_PROPOSAL_LINK.length()));
+                return;
+              }
+              if (urlStr != null && urlStr.startsWith(ASK_AGAIN_LINK)) {
+                askAgain(urlStr.substring(ASK_AGAIN_LINK.length()));
+                return;
+              }
+              
+              if (hle.getURL() != null) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(hle.getURL().toURI());
+              }
             } catch (Exception ex) {
-              LOG.error("Could not open link: " + hle.getURL(), ex);
+              LOG.error("Could not process link click", ex);
             }
           }
         }
@@ -395,6 +469,7 @@ public class ChatbotPane extends JPanel {
 
   private void clearChat() {
     String sampleChat = getInitialChatContents();
+    proposals.clear();
 
     chatEditorPane.setContentType("text/html");
     chatEditorPane.setText(HTML_STYLE + "<body>" + sampleChat + "</body>");
@@ -413,6 +488,8 @@ public class ChatbotPane extends JPanel {
             ChatbotService.electronicsQuestions.length)] + "</span>'<br>\n" +
             "- <b>" + LangUtil.translate("DIYLC features and usage:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.diylcQuestions[r.nextInt(ChatbotService.diylcQuestions.length)] + "</span>'<br>\n" +
             "- <b>" + LangUtil.translate("Your current circuit project:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.circuitQuestions[r.nextInt(ChatbotService.circuitQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("Editing your circuit:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.editQuestions[r.nextInt(ChatbotService.editQuestions.length)] + "</span>'<br>\n" +
+            "- <b>" + LangUtil.translate("Generating new layouts:") + "</b> <i>" + example + "</i> '<span class='user'>" + ChatbotService.generationQuestions[r.nextInt(ChatbotService.generationQuestions.length)] + "</span>'<br>\n" +
             //            "</ul><br>\n" +
             "<br>\n" +
             "<div class='assistant'>" + LangUtil.translate("Feel free to ask your own question or use one of these examples to get started!") + "</div><br>\n";
@@ -426,44 +503,229 @@ public class ChatbotPane extends JPanel {
       styleButton(askButton);
       askButton.addActionListener(e -> {
         String prompt = getPromptArea().getText();
-        appendSection(ChatbotService.USER, ME + prompt);
-
-        String lang = ConfigurationManager.getInstance()
-            .readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
-        if (!IPlugInPort.LANGUAGE_DEFAULT.equals(lang)) {
-          prompt += ". Respond in " + lang + " language.";
-        }
-        String finalPrompt = prompt;
-        appendSection(ChatbotService.TEMPORARY, LangUtil.translate("Waiting for the response..."));
         getPromptArea().setText(null);
-
-
-        getAskButton().setEnabled(false);
-        getClearButton().setEnabled(false);
-        swingUI.executeBackgroundTask(new ITask<String>() {
-
-          @Override
-          public String doInBackground() throws Exception {
-            return chatbotService.promptChatbot(finalPrompt);
-          }
-
-          @Override
-          public void failed(Exception e) {
-            appendSection(ChatbotService.SYSTEM,
-                LangUtil.translate("Failed to retrieve the response from the server."));
-            LOG.error("Failed to retrieve the response from the server", e);
-            getClearButton().setEnabled(true);
-          }
-
-          @Override
-          public void complete(String result) {
-            appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + result);
-            getClearButton().setEnabled(true);
-          }
-        }, false);
+        ask(prompt);
       });
     }
     return askButton;
+  }
+
+  private void ask(String prompt) {
+    appendSection(ChatbotService.USER, ME + escapeHtml(prompt));
+
+    String finalPrompt = prompt;
+    String lang = ConfigurationManager.getInstance()
+        .readString(IPlugInPort.LANGUAGE, IPlugInPort.LANGUAGE_DEFAULT);
+    if (!IPlugInPort.LANGUAGE_DEFAULT.equals(lang)) {
+      finalPrompt += ". Respond in " + lang + " language.";
+    }
+    String requestPrompt = finalPrompt;
+    String waitingMessage = LangUtil.translate(
+        WAITING_MESSAGES[new Random().nextInt(WAITING_MESSAGES.length)]);
+    appendSection(ChatbotService.TEMPORARY, waitingMessage);
+
+    getAskButton().setEnabled(false);
+    getClearButton().setEnabled(false);
+    swingUI.executeBackgroundTask(new ITask<ChatbotResponse>() {
+
+      @Override
+      public ChatbotResponse doInBackground() throws Exception {
+        return chatbotService.promptChatbot(requestPrompt);
+      }
+
+      @Override
+      public void failed(Exception e) {
+        appendSection(ChatbotService.SYSTEM,
+            LangUtil.translate("Failed to retrieve the response from the server."));
+        LOG.error("Failed to retrieve the response from the server", e);
+        getClearButton().setEnabled(true);
+      }
+
+      @Override
+      public void complete(ChatbotResponse result) {
+        AiEditScript editScript = result.getEditScript();
+        if (editScript != null && editScript.getOperations() != null
+            && !editScript.getOperations().isEmpty()) {
+          String id = Integer.toString(++proposalCount);
+          proposals.put(id, new Proposal(editScript, result.getProjectFingerprint(), prompt));
+          appendSection(ChatbotService.ASSISTANT,
+              renderProposal(id, result.getString(), editScript));
+        } else if (result.getString() != null) {
+          appendSection(ChatbotService.ASSISTANT, AI_ASSISTANT + result.getString());
+        } else if (editScript != null && editScript.getExplanation() != null) {
+          // an edit script with nothing to do is the model declining, and its explanation is
+          // the only account of why
+          appendSection(ChatbotService.ASSISTANT,
+              AI_ASSISTANT + escapeHtml(editScript.getExplanation()));
+        } else {
+          appendSection(ChatbotService.SYSTEM,
+              LangUtil.translate("Failed to retrieve the response from the server."));
+        }
+        getClearButton().setEnabled(true);
+      }
+    }, false);
+  }
+
+  /**
+   * The edit script comes from the model, including component names it echoes back from the
+   * project, so all of it is escaped before it goes into the chat pane. The message is the
+   * server's own formatted answer and is shown the way a plain answer would be.
+   */
+  private String renderProposal(String id, String message, AiEditScript editScript) {
+    StringBuilder html = new StringBuilder();
+    html.append(AI_ASSISTANT);
+    if (message != null && !message.isBlank()) {
+      // the server formats its message the same way as a plain answer, so it goes in as is
+      html.append(message).append("<br><br>");
+    }
+    html.append("<b>" + LangUtil.translate("Proposed Changes:") + "</b><br>");
+    if (editScript.getExplanation() != null) {
+      html.append(escapeHtml(editScript.getExplanation())).append("<br><br>");
+    }
+
+    if (editScript.getOperations() != null) {
+      Map<String, List<String>> groupedOps = new LinkedHashMap<>();
+      // a z-order change names two components, a replace names a component and its new type and
+      // a reconnect names a wire end and its new terminal, so each one gets a line of its own
+      // instead of being folded into a list
+      List<String> separateLines = new ArrayList<>();
+      for (AiEditOperation op : editScript.getOperations()) {
+        String action = op.getAction() != null ? op.getAction().toLowerCase() : "";
+        String compStr = escapeHtml(op.getComponentName());
+        switch (action) {
+          case "add":
+            if (op.getProperties() != null && op.getProperties().containsKey("Value")) {
+              compStr += " (" + escapeHtml(op.getProperties().get("Value")) + ")";
+            }
+            break;
+          case "modify":
+            if (op.getProperties() != null) {
+              compStr += " (" + String.join(", ", op.getProperties().entrySet().stream()
+                  .map(e -> escapeHtml(e.getKey()) + "=" + escapeHtml(e.getValue()))
+                  .toArray(String[]::new)) + ")";
+            }
+            break;
+          case "replace":
+            separateLines.add("\u21C4 " + String.format(LangUtil.translate("Replace %s with %s"),
+                compStr, escapeHtml(op.getComponentType())));
+            continue;
+          case "reconnect":
+            separateLines.add("\u21AA " + String.format(LangUtil.translate("Reconnect %s to %s"),
+                escapeHtml(op.getComponentName() + "." + op.getTerminal()),
+                escapeHtml(op.getToTerminal())));
+            continue;
+          case "send_behind":
+            separateLines.add("\u2B07\uFE0F " + String.format(
+                LangUtil.translate("Send %s behind %s"), compStr,
+                escapeHtml(op.getReferenceComponent())));
+            continue;
+          case "bring_in_front":
+            separateLines.add("\u2B06\uFE0F " + String.format(
+                LangUtil.translate("Bring %s in front of %s"), compStr,
+                escapeHtml(op.getReferenceComponent())));
+            continue;
+        }
+        groupedOps.computeIfAbsent(action, k -> new ArrayList<>()).add(compStr);
+      }
+
+      for (Map.Entry<String, List<String>> entry : groupedOps.entrySet()) {
+        String action = entry.getKey();
+        String compsStr = String.join(", ", entry.getValue());
+        switch (action) {
+          case "add":
+            html.append("\u2795 ").append(String.format(LangUtil.translate("Add %s"), compsStr));
+            break;
+          case "modify":
+            html.append("\u270E ").append(String.format(LangUtil.translate("Modify %s"), compsStr));
+            break;
+          case "remove":
+            html.append("\u274C ").append(String.format(LangUtil.translate("Remove %s"), compsStr));
+            break;
+          default:
+            html.append("\u2022 ").append(escapeHtml(action)).append(" ").append(compsStr);
+        }
+        html.append("<br>");
+      }
+      for (String line : separateLines) {
+        html.append(line).append("<br>");
+      }
+      html.append("<br>");
+    }
+
+    html.append("<a href='" + APPLY_PROPOSAL_LINK + id + "'><b>[ "
+        + LangUtil.translate("Apply Changes") + " ]</b></a>");
+    return html.toString();
+  }
+
+  /**
+   * An edit script refers to components by name and places new ones by position, so it is only
+   * safe to run against the project exactly as the model saw it. Anything that happened since,
+   * whether a manual edit, another proposal being applied or a different project being opened,
+   * shows up as a different fingerprint.
+   */
+  private void applyProposal(String id) {
+    Proposal proposal = proposals.remove(id);
+    if (proposal == null) {
+      return;
+    }
+    swingUI.executeBackgroundTask(new ITask<String>() {
+
+      @Override
+      public String doInBackground() throws Exception {
+        return chatbotService.getProjectFingerprint();
+      }
+
+      @Override
+      public void failed(Exception e) {
+        LOG.error("Could not check the project before applying the proposed changes", e);
+        proposals.put(id, proposal);
+      }
+
+      @Override
+      public void complete(String fingerprint) {
+        if (!fingerprint.equals(proposal.projectFingerprint())) {
+          proposals.put(id, proposal);
+          replaceLink(APPLY_PROPOSAL_LINK + id, "<font color='orange'>" + LangUtil.translate(
+              "The project has changed since these changes were proposed, so they can no longer be applied.")
+              + "</font> <a href='" + ASK_AGAIN_LINK + id + "'>"
+              + LangUtil.translate("Ask again") + "</a>");
+          return;
+        }
+
+        AiEditScriptEditor editor = new AiEditScriptEditor(proposal.editScript());
+        plugInPort.applyEditor(editor);
+
+        String replacementText;
+        if (!editor.getWarnings().isEmpty()) {
+          String warningMsg = editor.getWarnings().stream()
+              .map(JsonToHtmlConverter::escapeHtml)
+              .collect(Collectors.joining("<br>"));
+          replacementText = "<font color='orange'><b>\u26A0 "
+              + LangUtil.translate("Warnings during apply:") + "</b><br>" + warningMsg + "</font>";
+        } else {
+          replacementText = "<b>\u2705 " + LangUtil.translate("Changes applied") + "</b>";
+        }
+        replaceLink(APPLY_PROPOSAL_LINK + id, replacementText);
+      }
+    }, false);
+  }
+
+  private void askAgain(String id) {
+    Proposal proposal = proposals.remove(id);
+    if (proposal == null) {
+      return;
+    }
+    replaceLink(ASK_AGAIN_LINK + id, "");
+    ask(proposal.prompt());
+  }
+
+  private void replaceLink(String href, String replacement) {
+    // matched loosely because JEditorPane rewrites the markup it is given, quotes included
+    String chatText = getChatEditorPane().getText();
+    chatText = chatText.replaceAll(
+        "(?is)<a\\s+href=['\"]" + Pattern.quote(href) + "['\"][^>]*>.*?</a>",
+        Matcher.quoteReplacement(replacement));
+    getChatEditorPane().setText(chatText);
   }
 
   private void appendSection(String style, String insertText) {
@@ -547,26 +809,6 @@ public class ChatbotPane extends JPanel {
     return exportButton;
   }
 
-  public JButton getPremiumButton() {
-    if (premiumButton == null) {
-      premiumButton = new JButton(LangUtil.translate("Get Premium"));
-      styleButton(premiumButton);
-      premiumButton.setVisible(false);
-      premiumButton.addActionListener(e -> {
-        try {
-          java.awt.Desktop.getDesktop().browse(new java.net.URI("http://diy-fever.com/get-premium"));
-        } catch (Exception ex) {
-          LOG.error("Failed to open premium subscription page", ex);
-          swingUI.showMessage(String.format(LangUtil.translate(
-                  "Failed to open premium subscription page. Please visit %s manually."),
-                  "http://diy-fever.com/get-premium"),
-              LangUtil.translate("Error"), ISwingUI.ERROR_MESSAGE);
-        }
-      });
-    }
-    return premiumButton;
-  }
-
   private void styleButton(JButton button) {
     button.setBackground(BUTTON_BG);
     button.setForeground(BUTTON_FG);
@@ -597,14 +839,11 @@ public class ChatbotPane extends JPanel {
     });
     
     // Set minimum and preferred size based on button type
-    if (button == premiumButton) {
-      // Wider size for Premium button
-      button.setMinimumSize(new Dimension(120, 25));
-      button.setPreferredSize(new Dimension(120, 25));
-    } else {
-      // Standard size for other buttons
-      button.setMinimumSize(new Dimension(80, 25));
-      button.setPreferredSize(new Dimension(80, 25));
-    }
+    button.setMinimumSize(new Dimension(80, 25));
+    button.setPreferredSize(new Dimension(80, 25));
+  }
+
+  /** An edit script waiting to be applied, with the prompt that produced it, to ask again. */
+  private record Proposal(AiEditScript editScript, String projectFingerprint, String prompt) {
   }
 }

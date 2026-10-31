@@ -45,12 +45,14 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the Tip contact at the centre of the jack; the Sleeve lug is 0.5in below it in DEFAULT 'Orientation', and the other orientations rotate it around the centre")
 @ComponentDescriptor(name = "RCA Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount RCA phono jack socket", zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J",
     enableCache = true)

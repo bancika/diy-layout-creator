@@ -49,6 +49,7 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
@@ -56,6 +57,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is a corner lug; with 'Orientation' DEFAULT the lugs sit on the corners of a 0.6in square to the right of and below it, Tip Switch and Tip down the left side and Sleeve Switch and Sleeve down the right, and STEREO adds Ring Switch and Ring midway along the top and bottom edges. The body is centred on the square with its threaded nose pointing right, and the other orientations rotate all of this clockwise around the first lug")
 @ComponentDescriptor(name = "Cliff 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Cliff-style closed panel mount 1/4\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = CliffJackTransformer.class,
@@ -347,7 +349,26 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implement
     this.orientation = orientation;
     updateControlPoints();
   }
-  
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    switch (index) {
+      case 0:
+        return "Tip Switch";
+      case 1:
+        return "Tip";
+      case 2:
+        return "Sleeve Switch";
+      case 3:
+        return "Sleeve";
+      case 4:
+        return "Ring Switch";
+      case 5:
+        return "Ring";
+    }
+    return null;
+  }
+
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;

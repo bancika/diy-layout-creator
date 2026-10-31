@@ -1,0 +1,11 @@
+Switch setup: [ ALL ]
+
+	Bridge.North Finish <-> Bridge.South Finish <-> SW1.2 <-> SW1.9
+	Bridge.North Start <-> C2.1 <-> R1.2 <-> SW1.A <-> Tone.2 <-> VR1.3
+	Bridge.South Start <-> SW1.10 <-> SW1.7 <-> SW1.8
+	C1.1 <-> GND <-> J1.Sleeve <-> Neck.South Start <-> SW1.C <-> VR1.1
+	C1.2 <-> Tone.1
+	C2.2 <-> J1.Tip <-> R1.1 <-> VR1.2
+	Neck.North Finish <-> Neck.South Finish <-> SW1.3 <-> SW1.6
+	Neck.North Start <-> SW1.1 <-> SW1.5
+

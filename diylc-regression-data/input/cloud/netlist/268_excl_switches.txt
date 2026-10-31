@@ -1,6 +1,0 @@
-Switch setup: [ ALL ]
-
-	2N2.2 <-> R1.2
-	2N2.3 <-> IR+.A
-	IR+.K <-> R2.2
-

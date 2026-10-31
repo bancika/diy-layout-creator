@@ -42,12 +42,14 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the third lug is 0.2in below it (0.4in for FLAT_XLARGE) and the wiper sits halfway between them, offset to the right by 0.2in for FLAT_SMALL and FLAT_XSMALL, 0.4in for FLAT_SMALL2 and FLAT_LARGE, 0.5in for FLAT_XLARGE, 0.1in for VERTICAL_OFFSET, 0.2in for VERTICAL_OFFSET_BIG_GAP and not at all for VERTICAL_INLINE. The other orientations rotate this around the anchor")
 @ComponentDescriptor(name = "Trimmer Potentiometer", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "VR",
     description = "Various types of board mounted trimmer potentiometers", zOrder = IDIYComponent.COMPONENT,

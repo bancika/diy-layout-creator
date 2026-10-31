@@ -64,8 +64,8 @@ public class BatteryHolder18650 extends AbstractTransparentComponent<String> {
   private static final long serialVersionUID = 1L;
 
   public enum CellCount {
-    _1S("1S (3.7V) — Single Cell", 1, 77.0, 21.0),
-    _2S("2S (7.4V) — Two Cells", 2, 77.0, 42.0);
+    _1S("1S (3.7V) \u2014 Single Cell", 1, 77.0, 21.0),
+    _2S("2S (7.4V) \u2014 Two Cells", 2, 77.0, 42.0);
 
     private final String label;
     private final int cells;

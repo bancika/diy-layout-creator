@@ -134,6 +134,6 @@ public class BatterySymbol extends AbstractSchematicLeadedSymbol<String> {
   
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + "." + (index == 0 ? "+" : "-");
+    return index == 0 ? "+" : "-";
   }
 }

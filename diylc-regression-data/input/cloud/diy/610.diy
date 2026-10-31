@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project>
+  <fileVersion>
+    <major>6</major>
+    <minor>1</minor>
+    <build>0</build>
+  </fileVersion>
+  <title>New Project</title>
+  <author>kelly</author>
+  <width value="29.0" unit="cm"/>
+  <height value="21.0" unit="cm"/>
+  <gridSpacing value="0.1" unit="in"/>
+  <dotSpacing>1</dotSpacing>
+  <components>
+    <diylc.passive.PotentiometerPanel>
+      <id>a01e4732-2764-4c8a-9bfa-12dbb5568bb5</id>
+      <name>VR1</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints>
+        <point x="1.4" y="5.4"/>
+        <point x="1.7" y="5.4"/>
+        <point x="2.0" y="5.4"/>
+      </controlPoints>
+      <resistance value="500.0" unit="K"/>
+      <orientation>DEFAULT</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+      <showMarkers>false</showMarkers>
+      <markerColor hex="808080"/>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.passive.PotentiometerPanel>
+      <id>f7acf88e-ca14-41e2-963a-515aed5bd554</id>
+      <name>VR2</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints>
+        <point x="2.0" y="6.9"/>
+        <point x="1.7" y="6.9"/>
+        <point x="1.4" y="6.9"/>
+      </controlPoints>
+      <orientation>_180</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+      <showMarkers>false</showMarkers>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.passive.PotentiometerPanel>
+      <id>e0011fe4-e88b-4d18-adca-dcf395410801</id>
+      <name>VR3</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints>
+        <point x="5.0" y="6.7"/>
+        <point x="4.7" y="6.7"/>
+        <point x="4.4" y="6.7"/>
+      </controlPoints>
+      <orientation>_180</orientation>
+      <taper>LIN</taper>
+      <bodyDiameter value="1.0" unit="in"/>
+      <spacing value="0.3" unit="in"/>
+      <lugDiameter value="0.15" unit="in"/>
+      <bodyColor hex="c0c0c0"/>
+      <borderColor hex="808080"/>
+      <nutColor hex="cbd5db"/>
+      <waferColor hex="cd8500"/>
+      <type>ThroughHole</type>
+      <showShaft>false</showShaft>
+      <view>ShaftDown</view>
+      <showMarkers>false</showMarkers>
+    </diylc.passive.PotentiometerPanel>
+    <diylc.electromechanical.RotarySwitchOpen>
+      <id>9eabeb2a-cb98-4eb4-8fde-a1f4008c8a2c</id>
+      <name>SW2</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <angle>0</angle>
+      <configuration>_4P5T</configuration>
+      <color hex="cd8500"/>
+      <labelColor hex="ffffff"/>
+      <pinColor hex="759daf"/>
+      <showMarkers>true</showMarkers>
+      <angleOffset>
+        <value>345</value>
+      </angleOffset>
+      <controlPoints>
+        <point x="4.3" y="5.5"/>
+        <point x="4.67912589" y="5.39841352"/>
+        <point x="4.57753941" y="5.22246059"/>
+        <point x="4.40158648" y="5.12087411"/>
+        <point x="4.19841352" y="5.12087411"/>
+        <point x="4.02246059" y="5.22246059"/>
+        <point x="3.92087411" y="5.60158648"/>
+        <point x="4.02246059" y="5.77753941"/>
+        <point x="4.19841352" y="5.87912589"/>
+        <point x="4.40158648" y="5.87912589"/>
+        <point x="4.57753941" y="5.77753941"/>
+        <point x="4.3" y="5.2825"/>
+        <point x="4.3" y="5.7175"/>
+        <point x="4.71896077" y="5.08103923"/>
+        <point x="4.45335028" y="4.92768895"/>
+        <point x="4.14664972" y="4.92768895"/>
+        <point x="3.88103923" y="5.08103923"/>
+        <point x="3.72768895" y="5.34664972"/>
+        <point x="3.72768895" y="5.65335028"/>
+        <point x="3.88103923" y="5.91896077"/>
+        <point x="4.14664972" y="6.07231105"/>
+        <point x="4.45335028" y="6.07231105"/>
+        <point x="4.71896077" y="5.91896077"/>
+        <point x="4.3" y="4.8725"/>
+        <point x="4.3" y="6.1275"/>
+      </controlPoints>
+      <pointAngles>
+        <double>0.0</double>
+        <double>6.021385919380437</double>
+        <double>5.497787143782138</double>
+        <double>4.974188368183839</double>
+        <double>4.45058959258554</double>
+        <double>3.926990816987241</double>
+        <double>2.879793265790644</double>
+        <double>2.3561944901923453</double>
+        <double>1.8325957145940466</double>
+        <double>1.3089969389957479</double>
+        <double>0.7853981633974491</double>
+        <double>-1.5707963267948966</double>
+        <double>-4.71238898038469</double>
+        <double>5.497787143782138</double>
+        <double>4.974188368183839</double>
+        <double>4.45058959258554</double>
+        <double>3.926990816987241</double>
+        <double>3.4033920413889422</double>
+        <double>2.879793265790644</double>
+        <double>2.3561944901923453</double>
+        <double>1.8325957145940466</double>
+        <double>1.3089969389957479</double>
+        <double>0.7853981633974491</double>
+        <double>-1.5707963267948966</double>
+        <double>-4.71238898038469</double>
+      </pointAngles>
+    </diylc.electromechanical.RotarySwitchOpen>
+    <diylc.guitar.HumbuckerPickup>
+      <id>ac7f3554-e84b-4734-b29b-d9854ffe907a</id>
+      <name>PKP1</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <value></value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="0.0" y="0.0"/>
+      <controlPoints>
+        <point x="9.1" y="0.5"/>
+        <point x="9.1" y="0.6"/>
+        <point x="9.1" y="0.7"/>
+        <point x="9.1" y="0.8"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="c0c0c0"/>
+      <poleColor hex="759daf"/>
+      <type>PAF</type>
+      <cover>false</cover>
+      <legs>true</legs>
+      <bobinColor1 hex="eae3c6"/>
+      <bobinColor2 hex="000000"/>
+    </diylc.guitar.HumbuckerPickup>
+    <diylc.guitar.SingleCoilPickup>
+      <id>9d5b619a-8fa5-4fe1-8078-3786d10a15e1</id>
+      <name>PKP2</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <value></value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="0.0" y="0.0"/>
+      <controlPoints>
+        <point x="7.7" y="3.0"/>
+        <point x="7.8" y="3.0"/>
+        <point x="7.9" y="3.0"/>
+        <point x="8.0" y="3.0"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="ffffff"/>
+      <poleColor hex="759daf"/>
+      <baseColor hex="808080"/>
+      <type>Stratocaster</type>
+      <polePieceType>Rods</polePieceType>
+      <lugColor hex="e0c04c"/>
+    </diylc.guitar.SingleCoilPickup>
+    <diylc.connectivity.HookupWire>
+      <id>9d7c278d-67ff-4ec6-b269-9f8b1e20d46e</id>
+      <name></name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints2>
+        <point x="7.9" y="3.0"/>
+        <point x="4.4" y="3.1"/>
+        <point x="4.4" y="4.1"/>
+        <point x="4.4" y="5.1"/>
+      </controlPoints2>
+      <color hex="00ff00"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_24</gauge>
+      <striped>false</striped>
+      <stripeColor hex="ffff00"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.connectivity.HookupWire>
+      <id>748774be-4f7e-49c3-bcd5-d90d8d262bf0</id>
+      <name></name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints2>
+        <point x="7.8" y="3.0"/>
+        <point x="7.7" y="4.2"/>
+        <point x="7.7" y="5.2"/>
+        <point x="1.8" y="4.7"/>
+      </controlPoints2>
+      <color hex="000000"/>
+      <pointCount>FOUR</pointCount>
+      <style>SOLID</style>
+      <smooth>true</smooth>
+      <lastUpdatePointIndex>-1</lastUpdatePointIndex>
+      <gauge>_24</gauge>
+      <striped>false</striped>
+      <stripeColor hex="000000"/>
+    </diylc.connectivity.HookupWire>
+    <diylc.guitar.HumbuckerPickup>
+      <id>336ad3cf-7ee8-4538-81a5-55a2c79e2743</id>
+      <name>PKP3</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <value></value>
+      <orientation>DEFAULT</orientation>
+      <controlPoint x="0.0" y="0.0"/>
+      <controlPoints>
+        <point x="9.2" y="3.9"/>
+        <point x="9.2" y="4.0"/>
+        <point x="9.2" y="4.1"/>
+        <point x="9.2" y="4.2"/>
+      </controlPoints>
+      <polarity>North</polarity>
+      <labelColor hex="000000"/>
+      <color hex="c0c0c0"/>
+      <poleColor hex="759daf"/>
+      <type>PAF</type>
+      <cover>false</cover>
+      <legs>true</legs>
+      <bobinColor1 hex="eae3c6"/>
+      <bobinColor2 hex="000000"/>
+    </diylc.guitar.HumbuckerPickup>
+    <diylc.electromechanical.MiniToggleSwitch>
+      <id>7e2ddd58-159d-4455-b67d-fca5a6ca6826</id>
+      <name defined-in="diylc.AbstractComponent">SW1</name>
+      <alphaPercent>
+        <value>100</value>
+      </alphaPercent>
+      <controlPoints>
+        <point x="10.9" y="1.6"/>
+        <point x="10.9" y="1.8"/>
+        <point x="10.9" y="2.0"/>
+      </controlPoints>
+      <switchType>SPDT</switchType>
+      <orientation>VERTICAL</orientation>
+      <spacing value="0.2" unit="in"/>
+      <bodyColor hex="3299cc"/>
+      <borderColor hex="236b8e"/>
+      <terminalPadColor hex="287ba4"/>
+      <terminalColor hex="eeeeee"/>
+      <showMarkers>false</showMarkers>
+    </diylc.electromechanical.MiniToggleSwitch>
+  </components>
+  <groups/>
+  <groupsEx/>
+  <lockedLayers/>
+  <lockedComponents/>
+  <hiddenLayers/>
+  <font name="Dialog.plain" size="14" style="0"/>
+</project>

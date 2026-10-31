@@ -36,11 +36,13 @@ import org.diylc.common.OrientationHV;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.*;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("With 'Orientation' DEFAULT the coils lie horizontally, the pickup's length running left to right; the other orientations rotate the pickup clockwise")
 public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<String> {
 
   private static final long serialVersionUID = 1L;
@@ -251,7 +253,7 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
       switch (orientation) {
         case _90:
           dx = getControlPointDirection() == OrientationHV.HORIZONTAL ? 0 : -1;
-          dy = getControlPointDirection() == OrientationHV.HORIZONTAL ? -1 : 0;
+          dy = getControlPointDirection() == OrientationHV.HORIZONTAL ? 1 : 0;
           break;
         case _180:
           dx = getControlPointDirection() == OrientationHV.HORIZONTAL ? -1 : 0;
@@ -259,7 +261,7 @@ public abstract class AbstractGuitarPickup extends AbstractLabeledComponent<Stri
           break;
         case _270:
           dx = getControlPointDirection() == OrientationHV.HORIZONTAL ? 0 : 1;
-          dy = getControlPointDirection() == OrientationHV.HORIZONTAL ? 1 : 0;
+          dy = getControlPointDirection() == OrientationHV.HORIZONTAL ? -1 : 0;
           break;
       }
     }

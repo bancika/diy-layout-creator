@@ -146,7 +146,15 @@ public class PhonoJackSymbol extends Abstract3LegSymbol {
 
   @Override
   public String getControlPointNodeName(int index) {
-    return getName() + "." + index;
+    switch (index) {
+      case 0:
+        return "Tip";
+      case 1:
+        return "Sleeve";
+      case 2:
+        return getType() == PhonoJackType.STEREO ? "Ring" : null;
+    }
+    return null;
   }
   
   @Override

@@ -1,5 +1,0 @@
-Switch setup: [ ALL ]
-
-	C1.2 <-> TL071.7 <-> VR1.1 <-> VR1.2
-	TL071.2 <-> VR1.3
-

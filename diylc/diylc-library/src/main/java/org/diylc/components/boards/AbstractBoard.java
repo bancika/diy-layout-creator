@@ -21,7 +21,6 @@
 */
 package org.diylc.components.boards;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -41,10 +40,13 @@ import org.diylc.core.IBoard;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("Use 'Explicit' value for 'Dimension Mode' when placing a new board. The single control point places the top-left corner and 'Explicit Length' and 'Explicit Width' properties determine the dimensions")
+@AiNote("Set 'Underside Display' only if explicitly asked to. The values other than 'NONE' render the mirror image of the board in the provided direction with the offset controlled by 'Underside Offset'")
 public abstract class AbstractBoard extends AbstractTransparentComponent<String> implements IBoard {
 
   private static final long serialVersionUID = 1L;
@@ -67,7 +69,6 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Color boardColor = PHENOLIC_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Color coordinateColor = COORDINATE_COLOR;
-  protected Boolean drawCoordinates = null;
   protected CoordinateType xType = CoordinateType.Numbers;
   protected CoordinateOrigin coordinateOrigin = CoordinateOrigin.Top_Left;
   protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
@@ -328,13 +329,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   public void setLength(Size length) {
-    if (getMode() == BoardSizingMode.Explicit && length != null && width != null) {
-      setControlPoint(firstPoint, 0);
-      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(),
-              firstPoint.getY() + width.convertToPixels());
-      setControlPoint(second, 1);
-    }
     this.length = length;
+    applyExplicitSize();
   }
 
   @EditableProperty(name = "Explicit Width", validatorClass = BoardModeValidator.class)
@@ -347,12 +343,8 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   }
 
   public void setWidth(Size width) {
-    if (getMode() == BoardSizingMode.Explicit && length != null && width != null) {
-      setControlPoint(firstPoint, 0);
-      Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(), firstPoint.getY() + width.convertToPixels());
-      setControlPoint(second, 1);
-    }
     this.width = width;
+    applyExplicitSize();
   }
 
   @EditableProperty(name = "Dimension Mode")
@@ -364,6 +356,22 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
 
   public void setMode(BoardSizingMode mode) {
     this.mode = mode;
+    // the dimensions may already be set, as they are when an edit script lists them before the
+    // mode, and would otherwise not move the second point until one of them is set again
+    applyExplicitSize();
+  }
+
+  private void applyExplicitSize() {
+    // a zero dimension is what a board reports before its points were first set, not a size
+    // anyone asked for, so it must not collapse the board
+    if (getMode() != BoardSizingMode.Explicit || length == null || width == null
+        || length.convertToPixels() <= 0 || width.convertToPixels() <= 0) {
+      return;
+    }
+    setControlPoint(firstPoint, 0);
+    Point2D second = new Point2D.Double(firstPoint.getX() + length.convertToPixels(),
+        firstPoint.getY() + width.convertToPixels());
+    setControlPoint(second, 1);
   }
 
   @EditableProperty(name = "Underside Display")

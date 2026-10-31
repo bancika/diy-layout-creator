@@ -86,8 +86,10 @@ public class Netlist implements Comparable<Netlist> {
   }
 
   public String getSwitchSetupString() {
-    return getSwitchSetup().isEmpty() ? "[ ALL ]" : "[ " +
-        getSwitchSetup().stream().map(x -> x.toString()).collect(Collectors.joining(",")) + " ]";
+    return switchSetup.isEmpty() ? "[ ALL ]" : "[ " +
+            getSortedSwitchSetup().stream()
+                    .map(SwitchSetup::toString)
+                    .collect(Collectors.joining(", ")) + " ]";
   }
 
   @Override
@@ -103,6 +105,21 @@ public class Netlist implements Comparable<Netlist> {
 
   @Override
   public int compareTo(Netlist o) {
-    return switchSetup.toString().compareToIgnoreCase(o.switchSetup.toString());
+    List<SwitchSetup> left = getSortedSwitchSetup();
+    List<SwitchSetup> right = o.getSortedSwitchSetup();
+
+    SwitchSetup unrestricted =
+            new SwitchSetup(new ArrayList<Position>());
+
+    SwitchSetup firstLeft = left.isEmpty() ? unrestricted : left.get(0);
+    SwitchSetup firstRight = right.isEmpty() ? unrestricted : right.get(0);
+
+    return firstLeft.compareTo(firstRight);
+  }
+
+  private List<SwitchSetup> getSortedSwitchSetup() {
+    List<SwitchSetup> result = new ArrayList<>(switchSetup);
+    Collections.sort(result);
+    return result;
   }
 }

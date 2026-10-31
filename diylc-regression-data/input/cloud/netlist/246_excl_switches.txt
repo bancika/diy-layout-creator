@@ -1,8 +1,0 @@
-Switch setup: [ ALL ]
-
-	C1.1 <-> SW1.3 <-> Volume.3
-	C1.2 <-> R1.2
-	J1.Sleeve <-> SW1.4 <-> SW2.3 <-> SW2.5 <-> SW2.6 <-> Volume.1
-	J1.Tip <-> R1.1 <-> Volume.2
-	SW1.2 <-> SW2.2
-

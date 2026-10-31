@@ -38,22 +38,27 @@ import org.diylc.components.AbstractCurvedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IConnective;
 import org.diylc.core.IContinuity;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.annotations.AiNote.Scope;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.presenter.AreaUtils;
 import org.diylc.utils.Constants;
 
+@AiNote(value = "Electrically a single conductor between its two ends, exactly like Hookup Wire, even though two twisted leads are drawn; use it only for the look of a twisted pair, and where the circuit must be electrically correct and analyzable, draw each conductor as its own Hookup Wire or Right Angle Wire instead", scope = Scope.SELECTION)
+@AiNote("The points between the first and last are curve handles the leads do not necessarily pass through")
 @ComponentDescriptor(name = "Twisted Leads", author = "Branislav Stojkovic",
     category = "Connectivity", instanceNamePrefix = "W",
     description = "A pair of flexible leads twisted tightly together", zOrder = IDIYComponent.WIRING,
     flexibleZOrder = true, bomPolicy = BomPolicy.NEVER_SHOW,
     transformer = SimpleComponentTransformer.class, enableCache = true,
     creationMethod = CreationMethod.POINT_BY_POINT)
-public class TwistedWire extends AbstractCurvedComponent<Void> implements IContinuity {
+public class TwistedWire extends AbstractCurvedComponent<Void> implements IConnective, IContinuity {
 
   private static final long serialVersionUID = 1L;
 

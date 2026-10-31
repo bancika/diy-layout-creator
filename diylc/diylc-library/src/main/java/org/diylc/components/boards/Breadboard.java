@@ -41,6 +41,7 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -48,6 +49,9 @@ import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote("The control point is the top-left corner of the body and 'Orientation' rotates the board around it. The body is 2.3in wide and 3.1in (Half) or 6.4in (Full) long")
+@AiNote("With 'Orientation' DEFAULT, terminal row n is n x 0.1in below the control point; columns a-e are 0.6-1.0in and f-j 1.3-1.7in to the right of it. Holes a-e of a row are connected, as are f-j; DIP ICs straddle the gap between e and f")
+@AiNote("Each side has two power rail columns connected along their full length: '+' at 0.2in and '-' at 0.3in on the left, '+' at 2.0in and '-' at 2.1in on the right. Rail holes come in groups of five")
 @ComponentDescriptor(name = "Breadboard", category = "Boards", author = "Branislav Stojkovic",
     description = "Prototyping solderless breadboard", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
