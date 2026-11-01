@@ -79,23 +79,24 @@ enough for names to reach all of them.
 
 ## 4. Datasheet inventory
 
-`DIL_IC.datasheet` holds 68 parts:
+`DIL_IC.datasheet` holds 92 parts:
 
 | Group | Parts |
 |---|---|
-| Op-Amp (Single) | TL061, TL071, TL081, LM741, LF356, OPA134, NE5534 |
-| Op-Amp (Dual) | TL062, TL072, TL082, NE5532, JRC4558, RC4580, OPA2134, OPA2604, LM4562, LM358 |
-| Op-Amp (Quad) | TL074, TL084, OPA4134, LM324 |
-| Timer | NE555, ICM7555, TLC555, NE556, ICM7556 |
-| OTA / VCA | LM13700, CA3080, SSM2164, V2164 |
+| Op-Amp (Single) | TL061, TL071, TL081, LM741, LF356, OPA134, NE5534, LF351, UA741, OP07, LM308 |
+| Op-Amp (Dual) | TL062, TL072, TL082, NE5532, JRC4558, RC4580, OPA2134, OPA2604, LM4562, LM358, LF353, MC1458, RC4558, LM833, TL022, OP275, LME49720, OPA2132, OPA2227 |
+| Op-Amp (Quad) | TL074, TL084, OPA4134, LM324, TL064 |
+| Comparator | LM393 |
+| Timer | NE555, ICM7555, TLC555, NE556, ICM7556, LM555 |
+| OTA / VCA | LM13700, CA3080, SSM2164, V2164, LM13600, AS3080, AS2164 |
 | Power Amp | LM386, LM380 (14-pin LM380N), TDA7052, TDA2822 |
 | BBD | MN3007, MN3207, BL3207, BL3208A, V3207, MN3008, MN3005, BL3208B |
 | BBD Clock | MN3101, MN3102, V3102 |
 | Delay / Compander | PT2399, NE570, NE571, SA571 |
 | Charge Pump | ICL7660, TC1044, MAX1044, LT1054 |
-| CMOS Logic / Switch | CD4049, CD4069, CD40106, CD4011, CD4013, CD4017, CD4066, CD4051, CD4053 |
-| Optocoupler | PC817, 4N35, 6N138, H11L1 |
-| MCU | ATtiny85, ATmega328P |
+| CMOS Logic / Switch | CD4049, CD4069, CD40106, CD4011, CD4013, CD4017, CD4066, CD4051, CD4053, CD4016, 74HC14, 74HC4051 |
+| Optocoupler | PC817, 4N35, 6N138, H11L1, 6N139 |
+| MCU | ATtiny85, ATmega328P, ATtiny13A |
 
 Rules for every row: names as in D5; a repeated net only through the `_n` suffix and only where the
 pins are joined inside the package (otherwise distinct names, e.g. `AGND` and `DGND` on the
@@ -108,8 +109,9 @@ Sourcing and modelling notes that are not obvious from the rows:
   The weakest are the TDA7052 (pin 7 NC from one indexed copy), the CD4017 output order (one site),
   MN3101 (manufacturer scan only), and the ATmega328P grounds, named `GND_1`/`GND_2` as
   one net although the datasheet only says both must be connected.
-- The 24 phase 2 rows other than NE5534 and OPA134 are well-established pinouts not yet read one by
-  one against a datasheet.
+- The 24 phase 2 rows other than NE5534 and OPA134, and the 24 rows added from the candidate list
+  (LF351 ... ATtiny13A, all sharing a pinout already in the file), are well-established pinouts not
+  yet read one by one against a datasheet; of the latter only TL022 was read from its datasheet.
 - MN3005, MN3008 and BL3208B have 8 leads in a 14-pin body (leads at positions 1, 2, 6, 7, 8, 9, 13,
   14), so they are modelled as 14-pin parts with `NC` at the empty positions. The position mapping
   was derived from the package drawing, not from a datasheet table.
@@ -118,6 +120,28 @@ Sourcing and modelling notes that are not obvious from the rows:
 - The TDA7052 row is the plain part; the TDA7052A/B have a volume-control pin 4 and differ.
 - Pin names drawn on a 0.3 in body are dropped where they collide (D6), so long names such as
   `1RECTCAP` or `COMP/BAL` often show only in tooltips and the netlist.
+
+### Candidates for further growth
+
+Ranked from two sources: the ICs used in 784 user projects (Nov 2026 sample: 232 identifiable IC
+instances, about 74% covered by the library) and a survey of guitar, synth, hi-fi and radio/ham
+DIY communities. Each part still needs its pin table read before it is added.
+
+- **Next, for coverage of the user sample (about 86% now, about 94% with these eight):** LM3915,
+  74HC595, LM723, CD4046, CD4081, CD4510, INA128, INA217.
+- **New pinouts with community demand:** LM3914/LM3915/LM3916 (one pinout),
+  74HC595, AS3340, AS3320, CD4052, CD4007, CD4046, CD4093, CD4024, CD4040, THAT340, CA3046,
+  CA3094, MCP4822, LM339, NE602/SA602/SA612, MC1496, LM567, CD4060, uPC1237 (SIP-8), INA217,
+  INA128, PGA2311, TDA1543, LM723, CD4081, CD4510.
+- **Multiwatt, existing package:** TDA7297, TDA7377 (Multiwatt 15), TDA2005, TDA2009A
+  (Multiwatt 11), LM3875 (TO-220-11).
+- **Pentawatt / TO-220-5, needs the package back:** LM1875, TDA2030A, TDA2050, TDA2003, LM2576,
+  LM2596 - the most requested missing package across guitar, hi-fi and power supplies. LM4766
+  (TO-220-15) needs its lead spacing compared with Multiwatt 15 first.
+- **Niche:** MC1350, MC3361, TDA7000, CD2003, TA7358, PIC12F675, PIC16F628A, Electric Druid chips,
+  XR2206, ICL8038, AD633, DG411, AS3310, AS3394, KA2281, KA2284, LM1036, TDA1541A, MAX7219.
+- **Out of scope:** SMD-only parts (SSI2130/2140, OPA1612, FV-1, PCM179x, Si5351, AD9850), TO-92
+  parts and modules.
 
 ### SIP and Multiwatt packages
 
