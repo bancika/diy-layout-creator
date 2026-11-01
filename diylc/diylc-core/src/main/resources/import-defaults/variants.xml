@@ -594,8 +594,8 @@
               <awt-color hex="595959"/>
             </entry>
             <entry>
-              <string>Display Pin #s</string>
-              <diylc.semiconductors.DIL__IC_-DisplayNumbers>NO</diylc.semiconductors.DIL__IC_-DisplayNumbers>
+              <string>Pin Labels</string>
+              <diylc.semiconductors.DIL__IC_-DisplayNumbers>NAMES</diylc.semiconductors.DIL__IC_-DisplayNumbers>
             </entry>
             <entry>
               <string>Pin Spacing</string>
@@ -655,8 +655,8 @@
               <awt-color hex="595959"/>
             </entry>
             <entry>
-              <string>Display Pin #s</string>
-              <diylc.semiconductors.DIL__IC_-DisplayNumbers>NO</diylc.semiconductors.DIL__IC_-DisplayNumbers>
+              <string>Pin Labels</string>
+              <diylc.semiconductors.DIL__IC_-DisplayNumbers>NAMES</diylc.semiconductors.DIL__IC_-DisplayNumbers>
             </entry>
             <entry>
               <string>Pin Spacing</string>

@@ -30,16 +30,20 @@ import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.*;
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -48,11 +52,16 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The leads are staggered in two rows and numbered alternately along the package: pin 1 is the first control point, pins 1, 3, 5, ... form the row bent forward in front of the body, away from the heatsink tab, and pins 2, 4, ... the row that leaves the body from underneath. 'Type' picks the package: Multiwatt 11 for LM3886 or TDA7265, Multiwatt 15 for TDA7293 or TDA7294")
+@AiNote("'Pin Names' is a comma-separated list of pin names in pin-number order; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package")
+@AiNote("A datasheet model is a part number such as LM3886 and sets 'Type', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model")
 @ComponentDescriptor(name = "Multiwatt IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Multiwatt package IC typically used for audio amplifiers of high power applications",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
-    enableCache = true)
-public class MultiwattIC extends AbstractTransparentComponent<String> implements IGerberComponentSimple {
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
+public class MultiwattIC extends AbstractTransparentComponent<String>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -67,12 +76,11 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
   public static Size PIN_SIZE = new Size(0.7d, SizeUnit.mm);
   public static Size THICKNESS = new Size(5d, SizeUnit.mm);
   public static Size TAB_THICKNESS = new Size(1.6d, SizeUnit.mm);
-  // Multiwatt packages use 0.1 inch (2.54mm) spacing between pins in the same row
-  public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);
+  // from the back of the tab to the lead row that leaves the body from underneath; the other row is
+  // bent forward clear of the body
+  public static Size BACK_TO_NEAR_ROW = new Size(4.55d, SizeUnit.mm);
   // Multiwatt packages have staggered pins with 0.2 inch (5.08mm) row spacing
   public static Size ROW_SPACING = new Size(0.2d, SizeUnit.in);
-  // Lead offset due to bent leads
-  public static Size LEAD_OFFSET = new Size(4d, SizeUnit.mm);
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
@@ -84,12 +92,36 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
   private Color labelColor = LABEL_COLOR;
   private Color tabColor = TAB_COLOR;
   private Color tabBorderColor = TAB_BORDER_COLOR;
+  private String pinNames = null;
+  private PinLabels pinLabels = null;
   transient private Area[] body;
+  transient private String[] parsedPinNames;
 
   public MultiwattIC() {
     super();
     updateControlPoints();
     this.alphaPercent = new Percentage(100);
+  }
+
+  public MultiwattIC(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, part number, then one name per pin in pin-number order; the pin count picks
+  // the package type
+  @Override
+  public void applyModel(String[] model) {
+    int pinCount = model.length - 2;
+    MultiwattType modelType = Arrays.stream(MultiwattType.values())
+        .filter(t -> t.getPinCount() == pinCount)
+        .findFirst()
+        .orElseThrow(() -> new IllegalArgumentException("No Multiwatt package with " + pinCount
+            + " pins"));
+    setValue(model[1]);
+    setType(modelType);
+    setPinNames(String.join(",", Arrays.copyOfRange(model, 2, model.length)));
   }
 
   @EditableProperty
@@ -175,7 +207,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     int pinsRight = type.getPinsRight();
     controlPoints = new Point2D.Double[pinCount];
     controlPoints[0] = firstPoint;
-    double pinSpacing = PIN_SPACING.convertToPixels();
+    double pinSpacing = type.getRowPitch().convertToPixels();
     double rowSpacing = ROW_SPACING.convertToPixels();
     // Update control points for staggered layout
     double dx1, dy1, dx2, dy2;
@@ -234,89 +266,66 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
   public Area[] getBody() {
     if (body == null) {
       body = new Area[2];
-      double x = controlPoints[0].getX();
-      double y = controlPoints[0].getY();
-      double pinSize = PIN_SIZE.convertToPixels();
-      double pinSpacing = PIN_SPACING.convertToPixels();
-      double rowSpacing = ROW_SPACING.convertToPixels();
-      double tabThickness = TAB_THICKNESS.convertToPixels();
-      double leadOffset = LEAD_OFFSET.convertToPixels();
+      double pinSpacing = type.getRowPitch().convertToPixels();
       int pinsLeft = type.getPinsLeft();
       int pinsRight = type.getPinsRight();
       // Calculate height accounting for staggered pins (right row offset by half spacing)
       double leftRowHeight = (pinsLeft - 1) * pinSpacing;
-      double rightRowHeight = (pinsRight - 1 + 0.5) * pinSpacing; // Account for half-spacing offset
-      double maxHeight = Math.max(leftRowHeight, rightRowHeight) + pinSpacing; // Add spacing for last pin
-      double bodyX, bodyY, bodyWidth, bodyHeight;
-      double tabX, tabY, tabWidth, tabHeight;
-      
-      switch (orientation) {
-        case DEFAULT:
-          bodyWidth = rowSpacing - pinSize;
-          bodyHeight = maxHeight;
-          // Offset body to the left by lead offset (bent leads)
-          bodyX = x + pinSize / 2 - leadOffset;
-          bodyY = y - pinSpacing / 2;
-          // Tab on the left side (where there are more pins) inside the body bounds
-          tabX = bodyX;
-          tabY = bodyY;
-          tabWidth = tabThickness;
-          tabHeight = bodyHeight;
-          break;
-        case _90:
-          bodyWidth = maxHeight;
-          bodyHeight = rowSpacing - pinSize;
-          // Body positioned between the two pin rows
-          // Left pins extend to negative X, body starts from leftmost pin
-          // For _90: left pins go left (negative X), so leftmost is at x - (pinsLeft-1)*pinSpacing
-          // Offset body upward by lead offset (bent leads)
-          bodyX = x - (pinsLeft - 1) * pinSpacing - pinSpacing / 2;
-          bodyY = y + pinSize / 2 - leadOffset;
-          // Tab on the top side (where there are more pins - left row at y) inside the body bounds
-          tabX = bodyX;
-          tabY = bodyY;
-          tabWidth = bodyWidth;
-          tabHeight = tabThickness;
-          break;
-        case _180:
-          bodyWidth = rowSpacing - pinSize;
-          bodyHeight = maxHeight;
-          // Body positioned between the two pin rows
-          // For _180: left pins go up (negative Y), right pins at x - rowSpacing
-          // Left row is at x, right row is at x - rowSpacing
-          // Pins extend upward from y, so body should start from top of pin array
-          // Offset body to the right by lead offset (bent leads)
-          bodyX = x - rowSpacing + pinSize / 2 + leadOffset;
-          bodyY = y - (pinsLeft - 1) * pinSpacing - pinSpacing / 2;
-          // Tab on the right side (where there are more pins - left row at x) inside the body bounds
-          tabX = bodyX + bodyWidth - tabThickness;
-          tabY = bodyY;
-          tabWidth = tabThickness;
-          tabHeight = bodyHeight;
-          break;
-        case _270:
-          bodyWidth = maxHeight;
-          bodyHeight = rowSpacing - pinSize;
-          // Body positioned between the two pin rows
-          // For _270: left pins go right (positive X), so leftmost is at x
-          // Left row is at y, right row is at y - rowSpacing
-          // Similar to _90 but mirrored
-          // Offset body downward by lead offset (bent leads)
-          bodyX = x - pinSpacing / 2;
-          bodyY = y - rowSpacing + pinSize / 2 + leadOffset;
-          // Tab on the bottom side (where there are more pins - left row at y) inside the body bounds
-          tabX = bodyX;
-          tabY = bodyY + bodyHeight - tabThickness;
-          tabWidth = bodyWidth;
-          tabHeight = tabThickness;
-          break;
-        default:
-          throw new RuntimeException("Unexpected orientation: " + orientation);
-      }
-      body[0] = new Area(new Rectangle2D.Double(bodyX, bodyY, bodyWidth, bodyHeight));
-      body[1] = new Area(new Rectangle2D.Double(tabX, tabY, tabWidth, tabHeight));
+      double rightRowHeight = (pinsRight - 1 + 0.5) * pinSpacing;
+      double length = Math.max(leftRowHeight, rightRowHeight) + pinSpacing;
+      double start = -pinSpacing / 2;
+      double back = ROW_SPACING.convertToPixels() + BACK_TO_NEAR_ROW.convertToPixels();
+      body[0] = new Area(
+          toDrawing(start, start + length, back - THICKNESS.convertToPixels(), back));
+      body[1] = new Area(
+          toDrawing(start, start + length, back - TAB_THICKNESS.convertToPixels(), back));
     }
     return body;
+  }
+
+  // The rectangle spanning the given distances along the rows and across them, measured from the
+  // first pin with the second row on the positive side, turned to the orientation.
+  private Rectangle2D toDrawing(double alongFrom, double alongTo, double acrossFrom,
+      double acrossTo) {
+    double alongX;
+    double alongY;
+    double acrossX;
+    double acrossY;
+    switch (orientation) {
+      case DEFAULT:
+        alongX = 0;
+        alongY = 1;
+        acrossX = 1;
+        acrossY = 0;
+        break;
+      case _90:
+        alongX = -1;
+        alongY = 0;
+        acrossX = 0;
+        acrossY = 1;
+        break;
+      case _180:
+        alongX = 0;
+        alongY = -1;
+        acrossX = -1;
+        acrossY = 0;
+        break;
+      case _270:
+        alongX = 1;
+        alongY = 0;
+        acrossX = 0;
+        acrossY = -1;
+        break;
+      default:
+        throw new RuntimeException("Unexpected orientation: " + orientation);
+    }
+    Point2D first = controlPoints[0];
+    double x1 = first.getX() + alongX * alongFrom + acrossX * acrossFrom;
+    double y1 = first.getY() + alongY * alongFrom + acrossY * acrossFrom;
+    double x2 = first.getX() + alongX * alongTo + acrossX * acrossTo;
+    double y2 = first.getY() + alongY * alongTo + acrossY * acrossTo;
+    return new Rectangle2D.Double(Math.min(x1, x2), Math.min(y1, y2), Math.abs(x2 - x1),
+        Math.abs(y2 - y1));
   }
 
   @Override
@@ -337,20 +346,8 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
         double pinX = point.getX();
         double pinY = point.getY();
         
-        // Check if pin is inside the body
-        boolean insideBody = mainArea.contains(pinX, pinY);
-        
-        if (insideBody) {
-          // Draw pin as square inside body
-          Rectangle2D rect = new Rectangle2D.Double(pinX - pinSize / 2,
-              pinY - pinSize / 2, pinSize, pinSize);
-          g2d.setColor(PIN_COLOR);
-          drawingObserver.startTracking();
-          g2d.fill(rect);
-          drawingObserver.stopTracking();
-          g2d.setColor(PIN_BORDER_COLOR);
-          g2d.draw(rect);
-        } else {
+        // pins under the body are drawn on top of it further down
+        if (!mainArea.contains(pinX, pinY)) {
           // Draw rectangular lead from body edge to pin position
           double bodyX = bodyBounds.getX();
           double bodyY = bodyBounds.getY();
@@ -460,6 +457,25 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
+
+    // the near row leaves through the bottom of the body, so its pins are drawn over the body to
+    // stay visible whatever its alpha
+    if (!outlineMode) {
+      int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+      for (Point2D point : controlPoints) {
+        if (mainArea.contains(point.getX(), point.getY())) {
+          Rectangle2D rect = new Rectangle2D.Double(point.getX() - pinSize / 2,
+              point.getY() - pinSize / 2, pinSize, pinSize);
+          g2d.setColor(PIN_COLOR);
+          drawingObserver.startTracking();
+          g2d.fill(rect);
+          drawingObserver.stopTracking();
+          g2d.setColor(PIN_BORDER_COLOR);
+          g2d.draw(rect);
+        }
+      }
+    }
+
     // Draw label.
     g2d.setFont(project.getFont());
     Color finalLabelColor;
@@ -492,6 +508,44 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
     int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
     g2d.drawString(label, x, y);
+
+    if (getPinLabels() != PinLabels.NONE) {
+      g2d.setColor(finalBorderColor);
+      drawPinLabels(g2d, mainArea.getBounds2D());
+    }
+  }
+
+  // Labels read forward, square to the rows, away from the tab. A pin under the body is labelled
+  // from the front edge of the body, in the gap between the two forward leads either side of it;
+  // a forward pin past the end of its lead. The stagger keeps the two sets apart.
+  private void drawPinLabels(Graphics2D g2d, Rectangle2D bodyBounds) {
+    g2d.setFont(ICPinNames.PIN_NAME_FONT);
+    int pinsLeft = type.getPinsLeft();
+    double acrossX = controlPoints[pinsLeft].getX() - controlPoints[0].getX();
+    double acrossY = controlPoints[pinsLeft].getY() - controlPoints[0].getY();
+    // the stagger adds half a pitch along the row, so the row offset is the larger component
+    if (Math.abs(acrossX) > Math.abs(acrossY)) {
+      acrossX = Math.signum(acrossX);
+      acrossY = 0;
+    } else {
+      acrossX = 0;
+      acrossY = Math.signum(acrossY);
+    }
+    double pinRadius = PIN_SIZE.convertToPixels() / 2;
+    for (int i = 0; i < controlPoints.length; i++) {
+      String label;
+      if (getPinLabels() == PinLabels.NUMBERS) {
+        label = Integer.toString(getPinNumber(i));
+      } else {
+        String name = getPinName(getPinNumber(i));
+        if (name == null) {
+          continue;
+        }
+        label = AbstractMakerBoard.getDisplayPinLabel(name);
+      }
+      ICPinNames.drawOutside(g2d, label, controlPoints[i], -acrossX, -acrossY, bodyBounds,
+          pinRadius);
+    }
   }
 
   @Override
@@ -500,7 +554,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     int pinSize = 2 * width / 32;
     int leftPinX = width / 6 + 9; // Move left pins 9px to the right (4px + 3px + 2px)
     int rightPinX = 5 * width / 6;
-    int leadOffset = (int) (LEAD_OFFSET.convertToPixels() * width / 100); // Scale lead offset for icon
+    int leadOffset = (int) (BACK_TO_NEAR_ROW.convertToPixels() * width / 100); // Scale lead offset for icon
     int bodyX = leftPinX + pinSize - leadOffset + 2; // Offset body to the left, then move 2px to the right
     int bodyWidth = (rightPinX - bodyX - pinSize) / 2 + 2; // Thinner body, make 2px thicker
     int bodyHeight = height - 2 * margin;
@@ -508,13 +562,13 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     
     // Calculate pin spacing to use all vertical space
     // Use same spacing for both rows, with front row offset by half spacing
-    int backPins = 4;
-    int frontPins = 3;
-    // Use the spacing that fits the back row (more pins)
-    int pinSpacing = (bodyHeight - pinSize) / (backPins - 1);
-    int backStartY = margin + pinSize / 2 + 1; // Move pins 1px down
-    // Front pins start with half spacing offset for staggered effect
-    int frontStartY = margin + pinSize / 2 + pinSpacing / 2 + 1; // Move pins 1px down
+    // the forward row, bent clear of the body, is the one with more pins
+    int backPins = 3;
+    int frontPins = 4;
+    int pinSpacing = (bodyHeight - pinSize) / (frontPins - 1);
+    int frontStartY = margin + pinSize / 2 + 1; // Move pins 1px down
+    // Back pins start with half spacing offset for staggered effect
+    int backStartY = margin + pinSize / 2 + pinSpacing / 2 + 1; // Move pins 1px down
     
     // Draw thin body between pin rows
     g2d.setColor(BODY_COLOR);
@@ -522,14 +576,14 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     g2d.setColor(BORDER_COLOR);
     g2d.drawRect(bodyX, bodyY, bodyWidth, bodyHeight);
     
-    // Draw heat sink tab on left side (where there are more pins)
+    // Draw heat sink tab on left side, away from the forward row
     int tabWidth = pinSize * 2;
     g2d.setColor(TAB_COLOR);
     g2d.fillRect(bodyX, bodyY, tabWidth, bodyHeight);
     g2d.setColor(TAB_BORDER_COLOR);
     g2d.drawRect(bodyX, bodyY, tabWidth, bodyHeight);
     
-    // Draw 4 pins in the back (left row, more pins) as squares - inside body
+    // Draw 3 pins in the back as squares - inside body
     g2d.setColor(PIN_COLOR);
     for (int i = 0; i < backPins; i++) {
       int pinY = backStartY + i * pinSpacing - pinSize / 2;
@@ -539,7 +593,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
       g2d.setColor(PIN_COLOR);
     }
     
-    // Draw 3 pins in the front (right row, fewer pins) with leads going left to body
+    // Draw 4 pins in the front with leads going left to body
     // Use same spacing as back row, just offset by half spacing
     g2d.setColor(PIN_COLOR);
     for (int i = 0; i < frontPins; i++) {
@@ -628,6 +682,49 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
     this.tabBorderColor = tabBorderColor;
   }
   
+  @EditableProperty(name = "Pin Names")
+  public String getPinNames() {
+    return pinNames;
+  }
+
+  public void setPinNames(String pinNames) {
+    this.pinNames = pinNames;
+    parsedPinNames = null;
+  }
+
+  @EditableProperty(name = "Pin Labels")
+  public PinLabels getPinLabels() {
+    if (pinLabels == null) {
+      pinLabels = PinLabels.NAMES;
+    }
+    return pinLabels;
+  }
+
+  public void setPinLabels(PinLabels pinLabels) {
+    this.pinLabels = pinLabels;
+  }
+
+  // the leads alternate between the rows along the package, so the forward row holds the odd pin
+  // numbers and the row under the body the even ones
+  private int getPinNumber(int index) {
+    int pinsLeft = type.getPinsLeft();
+    return index < pinsLeft ? 2 * index + 1 : 2 * (index - pinsLeft) + 2;
+  }
+
+  private String getPinName(int pinNumber) {
+    if (parsedPinNames == null) {
+      parsedPinNames = ICPinNames.parse(getPinNames());
+    }
+    return ICPinNames.get(parsedPinNames, pinNumber);
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    int pinNumber = getPinNumber(index);
+    String name = getPinName(pinNumber);
+    return name == null ? Integer.toString(pinNumber) : name;
+  }
+
   @Override
   public Rectangle2D getCachingBounds() {
     double minX = Integer.MAX_VALUE;
@@ -652,18 +749,28 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
 
   public static enum MultiwattType {
     // Multiwatt-11: 6 pins on left, 5 pins on right (staggered)
-    MULTIWATT_11(11, 6, 5),
+    MULTIWATT_11(11, 6, 5, new Size(1.7d, SizeUnit.mm), "Multiwatt 11"),
     // Multiwatt-15: 8 pins on left, 7 pins on right (staggered)
-    MULTIWATT_15(15, 8, 7);
+    MULTIWATT_15(15, 8, 7, new Size(1.27d, SizeUnit.mm), "Multiwatt 15");
 
     private final int pinCount;
     private final int pinsLeft;
     private final int pinsRight;
+    // distance between consecutive leads along the package, i.e. from one row to the other
+    private final Size leadPitch;
+    private final String title;
 
-    MultiwattType(int pinCount, int pinsLeft, int pinsRight) {
+    MultiwattType(int pinCount, int pinsLeft, int pinsRight, Size leadPitch, String title) {
       this.pinCount = pinCount;
       this.pinsLeft = pinsLeft;
       this.pinsRight = pinsRight;
+      this.leadPitch = leadPitch;
+      this.title = title;
+    }
+
+    // neighbouring leads of the same row are two lead pitches apart
+    public Size getRowPitch() {
+      return leadPitch.scale(2);
     }
 
     public int getPinCount() {
@@ -680,7 +787,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String> implements
 
     @Override
     public String toString() {
-      return "Multiwatt " + pinCount;
+      return title;
     }
   }
 }

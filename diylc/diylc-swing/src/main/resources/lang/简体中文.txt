@@ -117,7 +117,6 @@ Diameter|直径
 Directional|定向
 Directly heated|直接加热
 Display|显示
-Display Pin #s|显示引脚编号
 Dog Ear|狗耳
 Dot Spacing|点间距
 Donate|捐赠
@@ -708,3 +707,6 @@ Reconnect %s to %s|将 %s 重新连接到 %s
 Editing your circuit:|编辑您的电路：
 Generating new layouts:|生成新的布局：
 AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|AI电路分析器需要 DIYLC Cloud 账户。是否立即登录？
+Pin Names|引脚名称
+Pin Labels|引脚标签
+Names|名称

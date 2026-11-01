@@ -114,7 +114,6 @@ Diameter|Diâmetro
 Directional|Direcional
 Directly heated|Aquecido diretamente
 Display|Mostrar
-Display Pin #s|Mostrar Numeracão dos Pinos
 Dog Ear|Dog Ear
 Dot Spacing|Espaçamento de Pontos
 Dotted|Pontilhado
@@ -710,3 +709,6 @@ Reconnect %s to %s|Reconectar %s a %s
 Editing your circuit:|Edição do seu circuito:
 Generating new layouts:|Geração de novos layouts:
 AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|O Analisador de Circuito IA requer uma conta DIYLC Cloud. Deseja entrar agora?
+Pin Names|Nomes dos Pinos
+Pin Labels|Rótulos dos Pinos
+Names|Nomes

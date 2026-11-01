@@ -114,7 +114,6 @@ Diameter|Diamètre
 Directional|Directionnel
 Directly heated|Directement chauffé
 Display|Affichage
-Display Pin #s|Afficher broche #s
 Dog Ear|Dog Ear
 Dot Spacing|Espacement des points
 Dotted|Pointillé (tiret)
@@ -709,3 +708,6 @@ Reconnect %s to %s|Reconnecter %s à %s
 Editing your circuit:|La modification de votre circuit :
 Generating new layouts:|La génération de nouvelles implantations :
 AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|L'analyseur de circuit IA nécessite un compte DIYLC Cloud. Voulez-vous vous connecter maintenant ?
+Pin Names|Noms des broches
+Pin Labels|Étiquettes des broches
+Names|Noms

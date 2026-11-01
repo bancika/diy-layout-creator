@@ -117,7 +117,6 @@ Diameter
 Directional
 Directly heated
 Display
-Display Pin #s
 Dog Ear
 Dot Spacing
 Donate
@@ -707,3 +706,6 @@ Reconnect %s to %s
 Editing your circuit:
 Generating new layouts:
 AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?
+Pin Names
+Pin Labels
+Names

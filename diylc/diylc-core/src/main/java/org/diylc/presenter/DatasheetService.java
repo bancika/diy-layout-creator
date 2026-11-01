@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.measures.AbstractMeasure;
 import org.diylc.core.measures.Unit;
 
@@ -129,6 +130,16 @@ public class DatasheetService {
   }
 
   /**
+   * @param clazz
+   * @return the datasheet column that names the model a row describes, see
+   *         {@link ComponentDescriptor#datasheetModelColumn()}.
+   */
+  public int getModelColumn(Class<?> clazz) {
+    ComponentDescriptor descriptor = clazz.getAnnotation(ComponentDescriptor.class);
+    return descriptor == null ? 0 : descriptor.datasheetModelColumn();
+  }
+
+  /**
    * Finds the rows of a datasheet series by its name, ignoring case. When no series has exactly
    * that name, every series whose name contains it is returned instead.
    *
@@ -141,14 +152,16 @@ public class DatasheetService {
     if (datasheet == null || series == null || series.isBlank()) {
       return new ArrayList<String[]>();
     }
+    int column = getModelColumn(clazz);
     String name = series.trim();
     List<String[]> rows = datasheet.stream()
-        .filter(row -> row.length > 0 && row[0].trim().equalsIgnoreCase(name))
+        .filter(row -> row.length > column && row[column].trim().equalsIgnoreCase(name))
         .collect(Collectors.toList());
     if (rows.isEmpty()) {
       String lowerName = name.toLowerCase();
       rows = datasheet.stream()
-          .filter(row -> row.length > 0 && row[0].trim().toLowerCase().contains(lowerName))
+          .filter(row -> row.length > column
+              && row[column].trim().toLowerCase().contains(lowerName))
           .collect(Collectors.toList());
     }
     return rows;
@@ -170,7 +183,7 @@ public class DatasheetService {
       return null;
     }
     Object value = component.getValue();
-    if (value == null) {
+    if (value == null || (value instanceof String text && text.isBlank())) {
       // nothing to preserve, but nothing to choose by either
       return rows.size() == 1 ? rows.get(0) : null;
     }

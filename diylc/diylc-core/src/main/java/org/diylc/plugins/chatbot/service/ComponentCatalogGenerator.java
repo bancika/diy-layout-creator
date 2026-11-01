@@ -52,6 +52,7 @@ import org.diylc.plugins.chatbot.model.AiCatalogIndexEntry;
 import org.diylc.plugins.chatbot.model.pinout.AiPinout;
 import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.DatasheetService;
 import org.diylc.presenter.ReleaseHistory;
 
 /**
@@ -175,11 +176,13 @@ public class ComponentCatalogGenerator {
       comp.put("notes", notes);
     }
 
-    // a datasheet lists one row per part, so the model names are its distinct first column
+    // a datasheet lists one row per part, so the model names are the distinct values of its model
+    // column
     List<String[]> datasheet = ct.getDatasheet();
     if (datasheet != null) {
+      int column = DatasheetService.getInstance().getModelColumn(ct.getInstanceClass());
       List<String> models = datasheet.stream()
-          .map(row -> row[0].trim())
+          .map(row -> row[column].trim())
           .distinct()
           .collect(Collectors.toList());
       comp.put("datasheetModels", models);

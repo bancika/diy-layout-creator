@@ -130,6 +130,14 @@ public @interface ComponentDescriptor {
   int datasheetCreationStepCount() default 0;
 
   /**
+   * If datasheet is enabled, the column that names the part a row describes. It is what the AI
+   * refers to a model by, while the columns before it only group rows in the toolbox.
+   *
+   * @return index of the model name column
+   */
+  int datasheetModelColumn() default 0;
+
+  /**
    * @return true if the component type should not be listed in the palette (toolbox and
    *         component tree), while still being resolvable via
    *         {@code ComponentProcessor.extractComponentTypeFrom} for netlist, BOM and name

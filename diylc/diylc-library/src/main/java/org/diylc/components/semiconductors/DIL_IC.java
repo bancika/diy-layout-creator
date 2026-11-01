@@ -30,16 +30,22 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -55,11 +61,15 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor")
+@AiNote("'Pin Names' is a comma-separated list of pin names in pin-number order, starting with pin 1 next to the notch; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package, e.g. GND_1 and GND_2, while 1IN- and 2IN- are inputs of two separate sections")
+@AiNote("A datasheet model is a part number such as TL072 or NE555 and sets 'Pins', 'Row Spacing', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model")
 @ComponentDescriptor(name = "DIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Dual-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
-    transformer = DIL_ICTransformer.class, enableCache = true)
-public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
+    transformer = DIL_ICTransformer.class, enableCache = true, enableDatasheet = true,
+    datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class DIL_IC extends AbstractLabeledComponent<String>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,7 +82,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
   public static int EDGE_RADIUS = 6;
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size INDENT_SIZE = new Size(0.07d, SizeUnit.in);
-  public static DisplayNumbers DISPLAY_NUMBERS = DisplayNumbers.NO;
+  public static DisplayNumbers DISPLAY_NUMBERS = DisplayNumbers.NAMES;
+  // the smaller font lets names sit closer to their pins than on a maker board
+  public static Size PIN_NAME_OFFSET = new Size(1.35d, SizeUnit.mm);
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
@@ -86,6 +98,7 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
   private Color labelColor = LABEL_COLOR;
   private Color indentColor = INDENT_COLOR;
   private DisplayNumbers displayNumbers = DISPLAY_NUMBERS;
+  private String pinNames = null;
   // new Point(0, pinSpacing.convertToPixels()),
   // new Point(0, 2 * pinSpacing.convertToPixels()),
   // new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -97,10 +110,27 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
   // new Point(3 * pinSpacing.convertToPixels(), 3 *
   // pinSpacing.convertToPixels()) };
   transient private Area[] body;
+  transient private String[] parsedPinNames;
 
   public DIL_IC() {
     super();
     updateControlPoints();
+  }
+
+  public DIL_IC(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, part number, row spacing, then one name per pin in pin-number order, so the
+  // pin count is the number of names
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setRowSpacing(Size.parseSize(model[2]));
+    setPinCount(PinCount.valueOf("_" + (model.length - 3)));
+    setPinNames(String.join(",", Arrays.copyOfRange(model, 3, model.length)));
   }
 
   @EditableProperty
@@ -425,9 +455,14 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
       }
     }
 
+    if (getDisplayNumbers() == DisplayNumbers.NAMES) {
+      drawPinNames(g2d);
+    }
+
     // draw pin numbers
-    if (getDisplayNumbers() != DisplayNumbers.NO) {
+    if (getDisplayNumbers() != DisplayNumbers.NO && getDisplayNumbers() != DisplayNumbers.NAMES) {
       int pinSize = (int) PIN_SIZE.convertToPixels();
+      g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.66)));
 
       for (int i = 0; i < controlPoints.length; i++) {
         Point2D point = controlPoints[i];
@@ -454,13 +489,65 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
           textY2 = textY2 - pinSize;
         }
 
-        g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.66)));
+        String pinNumber = Integer.toString(getPinNumber(i));
         if (i >= pinCount.getValue() / 2) {
-          g2d.drawString(getControlPointNodeName(i), textX1, textY1);
+          g2d.drawString(pinNumber, textX1, textY1);
         } else {
-          g2d.drawString(getControlPointNodeName(i), textX2, textY2);
+          g2d.drawString(pinNumber, textX2, textY2);
         }
       }
+    }
+  }
+
+  // Names are printed the way maker boards print theirs: centred just inside the body from their
+  // pin and running along the row, which leaves the middle of even a 0.3 in body to the name/value
+  // label. Each name has one pin pitch along the row, so a name that would touch the previous one
+  // in its row or run past the end of the body is left out rather than overprinted.
+  private void drawPinNames(Graphics2D g2d) {
+    g2d.setFont(ICPinNames.PIN_NAME_FONT);
+    FontMetrics fontMetrics = g2d.getFontMetrics(ICPinNames.PIN_NAME_FONT);
+    double labelOffset = PIN_NAME_OFFSET.convertToPixels();
+    double pitch = pinSpacing.convertToPixels();
+    int half = pinCount.getValue() / 2;
+    Point2D firstRow = controlPoints[0];
+    Point2D secondRow = controlPoints[half];
+    double rowDistance = firstRow.distance(secondRow);
+    double acrossX = (secondRow.getX() - firstRow.getX()) / rowDistance;
+    double acrossY = (secondRow.getY() - firstRow.getY()) / rowDistance;
+    boolean rowsVertical = Math.abs(acrossX) > Math.abs(acrossY);
+    // along the row the body reaches half a pitch past the first and the last pin
+    double bodyStart = -pitch / 2 + 1;
+    double bodyEnd = (half - 0.5) * pitch - 1;
+    double previousEnd = bodyStart - ICPinNames.PIN_NAME_GAP;
+
+    for (int i = 0; i < controlPoints.length; i++) {
+      if (i == half) {
+        previousEnd = bodyStart - ICPinNames.PIN_NAME_GAP;
+      }
+      String name = getPinName(getPinNumber(i));
+      if (name == null) {
+        continue;
+      }
+      String label = AbstractMakerBoard.getDisplayPinLabel(name);
+      double alongRow = (i % half) * pitch;
+      double halfWidth = fontMetrics.stringWidth(label) / 2d;
+      if (alongRow - halfWidth < previousEnd + ICPinNames.PIN_NAME_GAP || alongRow + halfWidth > bodyEnd) {
+        continue;
+      }
+      previousEnd = alongRow + halfWidth;
+      double dirX = i < half ? acrossX : -acrossX;
+      double dirY = i < half ? acrossY : -acrossY;
+      double x = controlPoints[i].getX() + dirX * labelOffset;
+      double y = controlPoints[i].getY() + dirY * labelOffset;
+      AffineTransform oldTransform = g2d.getTransform();
+      // the two rows are mirrored so each name reads away from its pin, as on a maker board; rows
+      // that run horizontally keep their names level so that neither reads upside down
+      if (rowsVertical) {
+        g2d.rotate(dirX > 0 ? Math.PI / 2 : -Math.PI / 2, x, y);
+      }
+      StringUtils.drawCenteredText(g2d, label, x, y, HorizontalAlignment.CENTER,
+          VerticalAlignment.CENTER);
+      g2d.setTransform(oldTransform);
     }
   }
 
@@ -527,7 +614,7 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
     this.indentColor = indentColor;
   }
 
-  @EditableProperty(name = "Display Pin #s")
+  @EditableProperty(name = "Pin Labels")
   public DisplayNumbers getDisplayNumbers() {
     if (displayNumbers == null) {
       displayNumbers = DisplayNumbers.NO;
@@ -537,6 +624,42 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
 
   public void setDisplayNumbers(DisplayNumbers numbers) {
     this.displayNumbers = numbers;
+  }
+
+  @EditableProperty(name = "Pin Names")
+  public String getPinNames() {
+    return pinNames;
+  }
+
+  public void setPinNames(String pinNames) {
+    this.pinNames = pinNames;
+    parsedPinNames = null;
+  }
+
+  // the physical pin number of a control point; control points run down the first row and then
+  // down the second, whereas DIP numbering comes back up the second row
+  private int getPinNumber(int index) {
+    int pinCount = this.pinCount.getValue();
+    int half = pinCount / 2;
+    int position = index + 1;
+    boolean secondRow = position > half;
+    switch (getDisplayNumbers()) {
+      case CONNECTOR:
+        return secondRow ? 2 * (position - half) : 2 * position - 1;
+      case DIP_MIRROR:
+        return secondRow ? position - half : pinCount - position + 1;
+      case CONNECTOR_MIRROR:
+        return secondRow ? 2 * (position - half) - 1 : 2 * position;
+      default:
+        return secondRow ? pinCount + half - position + 1 : position;
+    }
+  }
+
+  private String getPinName(int pinNumber) {
+    if (parsedPinNames == null) {
+      parsedPinNames = ICPinNames.parse(getPinNames());
+    }
+    return ICPinNames.get(parsedPinNames, pinNumber);
   }
 
   @Override
@@ -569,35 +692,9 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
 
   @Override
   public String getControlPointNodeName(int index) {
-    index++;       
-    
-    if (displayNumbers == DisplayNumbers.DIP) {
-      if (index > pinCount.getValue() / 2) {
-        return Integer.toString(pinCount.getValue() * 3 / 2 - index + 1);
-      } else {
-        return Integer.toString(index);
-      }
-    } else if (displayNumbers == DisplayNumbers.CONNECTOR) {
-      if (index > pinCount.getValue() / 2) {
-        return Integer.toString(index - pinCount.getValue() + index);
-      } else {
-        return Integer.toString(index * 2 - 1);
-      }
-    } else if (displayNumbers == DisplayNumbers.DIP_MIRROR) {
-      if (index > pinCount.getValue() / 2) {
-        return Integer.toString((index - pinCount.getValue() / 2));
-      } else {
-        return Integer.toString(pinCount.getValue() - index + 1);
-      }
-    } else if (displayNumbers == DisplayNumbers.CONNECTOR_MIRROR) {
-      if (index > pinCount.getValue() / 2) {
-        return Integer.toString(index - pinCount.getValue() + index - 1);
-      } else {
-        return Integer.toString(2 * index);
-      }
-    }
-    
-    return Integer.toString(index);
+    int pinNumber = getPinNumber(index);
+    String name = getPinName(pinNumber);
+    return name == null ? Integer.toString(pinNumber) : name;
   }
 
   public static enum PinCount {
@@ -616,8 +713,8 @@ public class DIL_IC extends AbstractLabeledComponent<String> implements IGerberC
 
   public enum DisplayNumbers {
 
-    NO("No"), DIP("DIP"), CONNECTOR("Connector"), DIP_MIRROR("DIP (Mirrored)"), CONNECTOR_MIRROR(
-        "Connector (Mirrored)");
+    NO("None"), NAMES("Names"), DIP("DIP"), CONNECTOR("Connector"), DIP_MIRROR("DIP (Mirrored)"),
+    CONNECTOR_MIRROR("Connector (Mirrored)");
 
     private String label;
 

@@ -32,13 +32,16 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.*;
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SIL_ICTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -54,11 +57,15 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the pins run straight down from it 'Pin Spacing' apart and the indent is at the anchor's end of the body. The other orientations rotate this around the anchor")
+@AiNote("The first control point is pin 1. 'Pin Names' is a comma-separated list of pin names in pin-number order; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package, while 1IN and 2IN are separate channels")
+@AiNote("A datasheet model is a part number such as LA4440 and sets 'Pins', 'Pin Spacing', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model")
 @ComponentDescriptor(name = "SIP IC", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "IC", description = "Single-in-line package IC",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = SIL_ICTransformer.class,
-    enableCache = true)
-public class SIL_IC extends AbstractTransparentComponent<String> implements IGerberComponentSimple {
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
+public class SIL_IC extends AbstractTransparentComponent<String>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -83,6 +90,8 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
   private Color indentColor = INDENT_COLOR;
+  private String pinNames = null;
+  private PinLabels pinLabels = null;
   // new Point(0, pinSpacing.convertToPixels()),
   // new Point(0, 2 * pinSpacing.convertToPixels()),
   // new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -94,11 +103,28 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
   // new Point(3 * pinSpacing.convertToPixels(), 3 *
   // pinSpacing.convertToPixels()) };
   transient private Area[] body;
+  transient private String[] parsedPinNames;
 
   public SIL_IC() {
     super();
     updateControlPoints();
     this.alphaPercent = new Percentage(100);
+  }
+
+  public SIL_IC(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, part number, pin spacing, then one name per pin in pin-number order, so the
+  // pin count is the number of names
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setPinSpacing(Size.parseSize(model[2]));
+    setPinCount(PinCount.valueOf("_" + (model.length - 3)));
+    setPinNames(String.join(",", Arrays.copyOfRange(model, 3, model.length)));
   }
 
   @EditableProperty
@@ -230,7 +256,7 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
       int thickness = getClosestOdd(THICKNESS.convertToPixels());
       double width;
       double height;
-      double pinSpacing = (int) this.pinSpacing.convertToPixels();
+      double pinSpacing = this.pinSpacing.convertToPixels();
       Area indentation = null;
       int indentationSize = getClosestOdd(INDENT_SIZE.convertToPixels());
       switch (orientation) {
@@ -364,6 +390,40 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
     int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
     int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
     g2d.drawString(label, x, y);
+
+    if (getPinLabels() != PinLabels.NONE) {
+      g2d.setColor(finalBorderColor);
+      drawPinLabels(g2d, mainArea.getBounds2D());
+    }
+  }
+
+  // Labels sit beside the body, square to the row and reading away from it, on the side the row
+  // turns to clockwise: right of a row running down, below one running left.
+  private void drawPinLabels(Graphics2D g2d, Rectangle2D bodyBounds) {
+    if (controlPoints.length < 2) {
+      return;
+    }
+    g2d.setFont(ICPinNames.PIN_NAME_FONT);
+    if (g2d.getFontMetrics().getAscent() > pinSpacing.convertToPixels()) {
+      return;
+    }
+    double rowDistance = controlPoints[0].distance(controlPoints[1]);
+    double alongX = (controlPoints[1].getX() - controlPoints[0].getX()) / rowDistance;
+    double alongY = (controlPoints[1].getY() - controlPoints[0].getY()) / rowDistance;
+    double pinRadius = PIN_SIZE.convertToPixels() / 2;
+    for (int i = 0; i < controlPoints.length; i++) {
+      String label;
+      if (getPinLabels() == PinLabels.NUMBERS) {
+        label = Integer.toString(i + 1);
+      } else {
+        String name = getPinName(i + 1);
+        if (name == null) {
+          continue;
+        }
+        label = AbstractMakerBoard.getDisplayPinLabel(name);
+      }
+      ICPinNames.drawOutside(g2d, label, controlPoints[i], alongY, -alongX, bodyBounds, pinRadius);
+    }
   }
 
   @Override
@@ -428,6 +488,41 @@ public class SIL_IC extends AbstractTransparentComponent<String> implements IGer
 
   public void setIndentColor(Color indentColor) {
     this.indentColor = indentColor;
+  }
+
+  @EditableProperty(name = "Pin Names")
+  public String getPinNames() {
+    return pinNames;
+  }
+
+  public void setPinNames(String pinNames) {
+    this.pinNames = pinNames;
+    parsedPinNames = null;
+  }
+
+  @EditableProperty(name = "Pin Labels")
+  public PinLabels getPinLabels() {
+    if (pinLabels == null) {
+      pinLabels = PinLabels.NAMES;
+    }
+    return pinLabels;
+  }
+
+  public void setPinLabels(PinLabels pinLabels) {
+    this.pinLabels = pinLabels;
+  }
+
+  private String getPinName(int pinNumber) {
+    if (parsedPinNames == null) {
+      parsedPinNames = ICPinNames.parse(getPinNames());
+    }
+    return ICPinNames.get(parsedPinNames, pinNumber);
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    String name = getPinName(index + 1);
+    return name == null ? Integer.toString(index + 1) : name;
   }
   
   @Override

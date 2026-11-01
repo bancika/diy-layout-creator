@@ -16548,7 +16548,8 @@
     "namePrefix" : "IC",
     "description" : "Dual-in-line package IC",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor" ],
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor", "'Pin Names' is a comma-separated list of pin names in pin-number order, starting with pin 1 next to the notch; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package, e.g. GND_1 and GND_2, while 1IN- and 2IN- are inputs of two separate sections", "A datasheet model is a part number such as TL072 or NE555 and sets 'Pins', 'Row Spacing', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model" ],
+    "datasheetModels" : [ "TL061", "TL071", "TL081", "LM741", "LF356", "OPA134", "NE5534", "TL062", "TL072", "TL082", "NE5532", "JRC4558", "RC4580", "OPA2134", "OPA2604", "LM4562", "LM358", "TL074", "TL084", "OPA4134", "LM324", "NE555", "ICM7555", "TLC555", "NE556", "ICM7556", "LM13700", "CA3080", "SSM2164", "V2164", "LM386", "LM380", "TDA7052", "TDA2822", "MN3007", "MN3207", "BL3207", "BL3208A", "V3207", "MN3008", "MN3005", "BL3208B", "MN3101", "MN3102", "V3102", "PT2399", "NE570", "NE571", "SA571", "ICL7660", "TC1044", "MAX1044", "LT1054", "CD4049", "CD4069", "CD40106", "CD4011", "CD4013", "CD4017", "CD4066", "CD4051", "CD4053", "PC817", "4N35", "6N138", "H11L1", "ATtiny85", "ATmega328P" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16569,11 +16570,6 @@
       "type" : "Display",
       "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
       "defaultValue" : "BOTH"
-    }, {
-      "name" : "Display Pin #s",
-      "type" : "DisplayNumbers",
-      "possibleValues" : [ "NO", "DIP", "CONNECTOR", "DIP_MIRROR", "CONNECTOR_MIRROR" ],
-      "defaultValue" : "NO"
     }, {
       "name" : "Font Size Override",
       "type" : "Integer"
@@ -16596,6 +16592,14 @@
       "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
       "defaultValue" : "DEFAULT"
     }, {
+      "name" : "Pin Labels",
+      "type" : "DisplayNumbers",
+      "possibleValues" : [ "NO", "NAMES", "DIP", "CONNECTOR", "DIP_MIRROR", "CONNECTOR_MIRROR" ],
+      "defaultValue" : "NAMES"
+    }, {
+      "name" : "Pin Names",
+      "type" : "String"
+    }, {
       "name" : "Pin Spacing",
       "type" : "Size",
       "format" : "(value)(unit)",
@@ -16617,22 +16621,10 @@
       "type" : "String"
     } ],
     "pinout" : {
-      "drivers" : [ "Display Pin #s", "Pins" ],
+      "drivers" : [ "Pin Labels", "Pins" ],
       "variants" : [ {
         "when" : {
-          "Display Pin #s" : "NO"
-        },
-        "pinCountExpression" : "Pins",
-        "labels" : "sequential",
-        "pinCountSamples" : {
-          "_4" : 4,
-          "_16" : 16,
-          "_28" : 28,
-          "_40" : 40
-        }
-      }, {
-        "when" : {
-          "Display Pin #s" : "DIP"
+          "Pin Labels" : "NO"
         },
         "pinCountExpression" : "Pins",
         "labels" : "custom",
@@ -16662,7 +16654,67 @@
         }
       }, {
         "when" : {
-          "Display Pin #s" : "CONNECTOR"
+          "Pin Labels" : "NAMES"
+        },
+        "pinCountExpression" : "Pins",
+        "labels" : "custom",
+        "pinCountSamples" : {
+          "_4" : 4,
+          "_16" : 16,
+          "_28" : 28,
+          "_40" : 40
+        },
+        "example" : {
+          "when" : {
+            "Pins" : "_4"
+          },
+          "pins" : [ {
+            "i" : 0,
+            "label" : "1"
+          }, {
+            "i" : 1,
+            "label" : "2"
+          }, {
+            "i" : 2,
+            "label" : "4"
+          }, {
+            "i" : 3,
+            "label" : "3"
+          } ]
+        }
+      }, {
+        "when" : {
+          "Pin Labels" : "DIP"
+        },
+        "pinCountExpression" : "Pins",
+        "labels" : "custom",
+        "pinCountSamples" : {
+          "_4" : 4,
+          "_16" : 16,
+          "_28" : 28,
+          "_40" : 40
+        },
+        "example" : {
+          "when" : {
+            "Pins" : "_4"
+          },
+          "pins" : [ {
+            "i" : 0,
+            "label" : "1"
+          }, {
+            "i" : 1,
+            "label" : "2"
+          }, {
+            "i" : 2,
+            "label" : "4"
+          }, {
+            "i" : 3,
+            "label" : "3"
+          } ]
+        }
+      }, {
+        "when" : {
+          "Pin Labels" : "CONNECTOR"
         },
         "pinCountExpression" : "Pins",
         "labels" : "custom",
@@ -16692,7 +16744,7 @@
         }
       }, {
         "when" : {
-          "Display Pin #s" : "DIP_MIRROR"
+          "Pin Labels" : "DIP_MIRROR"
         },
         "pinCountExpression" : "Pins",
         "labels" : "custom",
@@ -16722,7 +16774,7 @@
         }
       }, {
         "when" : {
-          "Display Pin #s" : "CONNECTOR_MIRROR"
+          "Pin Labels" : "CONNECTOR_MIRROR"
         },
         "pinCountExpression" : "Pins",
         "labels" : "custom",
@@ -17022,6 +17074,8 @@
     "namePrefix" : "IC",
     "description" : "Multiwatt package IC typically used for audio amplifiers of high power applications",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The leads are staggered in two rows and numbered alternately along the package: pin 1 is the first control point, pins 1, 3, 5, ... form the row bent forward in front of the body, away from the heatsink tab, and pins 2, 4, ... the row that leaves the body from underneath. 'Type' picks the package: Multiwatt 11 for LM3886 or TDA7265, Multiwatt 15 for TDA7293 or TDA7294", "'Pin Names' is a comma-separated list of pin names in pin-number order; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package", "A datasheet model is a part number such as LM3886 and sets 'Type', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model" ],
+    "datasheetModels" : [ "LM3886", "TDA7265", "TDA7293", "TDA7294" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17056,6 +17110,14 @@
       "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
       "defaultValue" : "DEFAULT"
     }, {
+      "name" : "Pin Labels",
+      "type" : "PinLabels",
+      "possibleValues" : [ "NONE", "NAMES", "NUMBERS" ],
+      "defaultValue" : "NAMES"
+    }, {
+      "name" : "Pin Names",
+      "type" : "String"
+    }, {
       "name" : "Tab",
       "type" : "Color",
       "format" : "hex",
@@ -17080,14 +17142,90 @@
         "when" : {
           "Type" : "MULTIWATT_11"
         },
-        "pinCount" : 11,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 1,
+          "label" : "3"
+        }, {
+          "i" : 2,
+          "label" : "5"
+        }, {
+          "i" : 3,
+          "label" : "7"
+        }, {
+          "i" : 4,
+          "label" : "9"
+        }, {
+          "i" : 5,
+          "label" : "11"
+        }, {
+          "i" : 6,
+          "label" : "2"
+        }, {
+          "i" : 7,
+          "label" : "4"
+        }, {
+          "i" : 8,
+          "label" : "6"
+        }, {
+          "i" : 9,
+          "label" : "8"
+        }, {
+          "i" : 10,
+          "label" : "10"
+        } ]
       }, {
         "when" : {
           "Type" : "MULTIWATT_15"
         },
-        "pinCount" : 15,
-        "labels" : "sequential"
+        "pins" : [ {
+          "i" : 0,
+          "label" : "1"
+        }, {
+          "i" : 1,
+          "label" : "3"
+        }, {
+          "i" : 2,
+          "label" : "5"
+        }, {
+          "i" : 3,
+          "label" : "7"
+        }, {
+          "i" : 4,
+          "label" : "9"
+        }, {
+          "i" : 5,
+          "label" : "11"
+        }, {
+          "i" : 6,
+          "label" : "13"
+        }, {
+          "i" : 7,
+          "label" : "15"
+        }, {
+          "i" : 8,
+          "label" : "2"
+        }, {
+          "i" : 9,
+          "label" : "4"
+        }, {
+          "i" : 10,
+          "label" : "6"
+        }, {
+          "i" : 11,
+          "label" : "8"
+        }, {
+          "i" : 12,
+          "label" : "10"
+        }, {
+          "i" : 13,
+          "label" : "12"
+        }, {
+          "i" : 14,
+          "label" : "14"
+        } ]
       } ]
     }
   }, {
@@ -17097,7 +17235,8 @@
     "namePrefix" : "IC",
     "description" : "Single-in-line package IC",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the pins run straight down from it 'Pin Spacing' apart and the indent is at the anchor's end of the body. The other orientations rotate this around the anchor" ],
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the pins run straight down from it 'Pin Spacing' apart and the indent is at the anchor's end of the body. The other orientations rotate this around the anchor", "The first control point is pin 1. 'Pin Names' is a comma-separated list of pin names in pin-number order; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package, while 1IN and 2IN are separate channels", "A datasheet model is a part number such as LA4440 and sets 'Pins', 'Pin Spacing', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model" ],
+    "datasheetModels" : [ "LA4440", "LA4485", "LA4425A", "TA7205AP", "TDA1013B", "TDA1010A", "TDA1521A", "TDA7056", "TDA7056A", "BA5406", "BA5417", "BA3121N" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17136,6 +17275,14 @@
       "type" : "Orientation",
       "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
       "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Pin Labels",
+      "type" : "PinLabels",
+      "possibleValues" : [ "NONE", "NAMES", "NUMBERS" ],
+      "defaultValue" : "NAMES"
+    }, {
+      "name" : "Pin Names",
+      "type" : "String"
     }, {
       "name" : "Pin Spacing",
       "type" : "Size",

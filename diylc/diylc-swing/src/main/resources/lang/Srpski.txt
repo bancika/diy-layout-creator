@@ -114,7 +114,6 @@ Diameter|Prečnik
 Directional|Usmereni
 Directly heated|Direktno grejanje
 Display|Prikaz
-Display Pin #s|Prikaz Brojeva Pinova
 Dog Ear
 Dot Spacing|Razmak Između Tačaka
 Dotted|Tačkasta
@@ -706,3 +705,6 @@ Reconnect %s to %s|Ponovo poveži %s sa %s
 Editing your circuit:|Izmenama vašeg kola:
 Generating new layouts:|Generisanju novih rasporeda:
 AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now?|AI Analizator Kola zahteva DIYLC Cloud nalog. Da li želite da se prijavite sada?
+Pin Names|Nazivi Pinova
+Pin Labels|Oznake Pinova
+Names|Nazivi
