@@ -54,6 +54,8 @@ enough for names to reach all of them.
 - `DatasheetService.findSeries`: match on the model column of the class's descriptor.
 - `DatasheetService.findModel`: a blank `String` value counts as no value.
 - `ComponentCatalogGenerator`: distinct values of the model column become `datasheetModels`.
+- `import-defaults/variants.xml`: the DIP8 and DIP16 factory variants of `DIL_IC` are retired
+  (`deletedOn` 2026-11-01T21:00) in favour of the datasheet models, as the Resistor variants were.
 
 ### diylc-library
 
