@@ -1,6 +1,7 @@
 package org.diylc;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,10 +15,13 @@ import org.junit.Test;
 
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.components.chassis.ChassisPanel;
+import org.diylc.components.composite.CompositeComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.presenter.Presenter;
@@ -43,6 +47,24 @@ public class PresenterTests extends TestBase {
   public void testOneClickAdd() {
     instantiateOneClick("Connectivity", "Solder Pad", new Point(1000, 1000));
     Assert.assertEquals(1, presenter.getCurrentProject().getComponents().size());
+  }
+
+  @Test
+  public void testChassisCompositeIsPlacedUnderExistingComponents() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+
+    CompositeComponent chassis = new CompositeComponent();
+    chassis.initBlockName("Chassis");
+    chassis.getChildComponents().add(new ChassisPanel());
+    chassis.getChildComponents().add(new ChassisPanel());
+    List<IDIYComponent<?>> clipboard = new ArrayList<IDIYComponent<?>>();
+    clipboard.add(chassis);
+    presenter.pasteComponents(new ComponentTransferable(clipboard, "Chassis"), false, true);
+    presenter.mouseClicked(new Point(500, 500), MouseEvent.BUTTON1, false, false, false, 1);
+
+    List<IDIYComponent<?>> components = presenter.getCurrentProject().getComponents();
+    Assert.assertEquals(2, components.size());
+    Assert.assertTrue(components.get(0) instanceof CompositeComponent);
   }
 
   @Test

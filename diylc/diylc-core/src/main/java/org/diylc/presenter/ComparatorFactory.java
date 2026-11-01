@@ -118,16 +118,10 @@ public class ComparatorFactory {
     if (componentZOrderComparator == null) {
       componentZOrderComparator = new Comparator<IDIYComponent<?>>() {
 
-        @SuppressWarnings("unchecked")
         @Override
         public int compare(IDIYComponent<?> o1, IDIYComponent<?> o2) {
-          ComponentType type1 =
-              ComponentProcessor.getInstance().extractComponentTypeFrom(
-                  (Class<? extends IDIYComponent<?>>) o1.getClass());
-          ComponentType type2 =
-              ComponentProcessor.getInstance().extractComponentTypeFrom(
-                  (Class<? extends IDIYComponent<?>>) o2.getClass());
-          return Double.valueOf(type1.getZOrder()).compareTo(type2.getZOrder());
+          return Double.compare(ComponentProcessor.getInstance().getZOrder(o1),
+              ComponentProcessor.getInstance().getZOrder(o2));
         }
       };
     }

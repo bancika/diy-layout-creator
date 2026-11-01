@@ -409,6 +409,31 @@ public class ComponentProcessor {
     return type.getName();
   }
 
+  /**
+   * @return the z-order (layer) of the component. A {@link CompositeComponent} sits on the lowest
+   *         layer among its children rather than the one its class declares: it is drawn as a
+   *         single unit, so it takes one place in the stack, and that place has to be under
+   *         whatever is later put on top of it. A block of chassis panels therefore stays on the
+   *         chassis layer, and a block built from a board, pads and silkscreen text on the board
+   *         layer.
+   */
+  @SuppressWarnings("unchecked")
+  public double getZOrder(IDIYComponent<?> component) {
+    if (component instanceof CompositeComponent) {
+      double zOrder = Double.MAX_VALUE;
+      for (IDIYComponent<?> child : ((CompositeComponent) component).getChildComponents()) {
+        zOrder = Math.min(zOrder, getZOrder(child));
+      }
+      if (zOrder < Double.MAX_VALUE) {
+        return zOrder;
+      }
+    }
+    ComponentType type =
+        extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
+    // internal types without a descriptor do not take part in layering
+    return type == null ? Double.MAX_VALUE : type.getZOrder();
+  }
+
   public static boolean hasStickyPoint(IDIYComponent<?> c) {
     for (int i = 0; i < c.getControlPointCount(); i++)
       if (c.isControlPointSticky(0))

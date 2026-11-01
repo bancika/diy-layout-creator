@@ -37,11 +37,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.diylc.common.ComponentType;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.ComponentGroup;
 import org.diylc.core.IDIYComponent;
 import org.diylc.lang.LangUtil;
+import org.diylc.presenter.ComponentProcessor;
 import org.diylc.swing.ISwingUI;
 import org.diylc.swing.gui.ComponentPopupMenu;
 import org.diylc.swing.gui.DragDropList;
@@ -257,7 +257,7 @@ public class ExplorerPane extends JPanel {
               0, false, false)
           .getPreferredSize().height);
       componentList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-      componentList.setCellRenderer(new ComponentListCellRenderer(plugInPort.getComponentTypes()));
+      componentList.setCellRenderer(new ComponentListCellRenderer());
       selectionListener = new ListSelectionListener() {
 
         @Override
@@ -586,13 +586,6 @@ public class ExplorerPane extends JPanel {
 
     protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
-    private Map<String, ComponentType> componentTypes;
-
-    public ComponentListCellRenderer(Map<String, List<ComponentType>> componentTypeMap) {
-      this.componentTypes = componentTypeMap.values().stream().flatMap(x -> x.stream())
-          .collect(Collectors.toMap(x -> x.getInstanceClass().getCanonicalName(), x -> x));
-    }
-
     @Override
     public Component getListCellRendererComponent(JList<? extends ComponentGroupItem> list,
         ComponentGroupItem value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -605,14 +598,15 @@ public class ExplorerPane extends JPanel {
       if (groupItem.getComponentCount() == 1) {
         // Render as individual component (ungrouped)
         IDIYComponent<?> component = groupItem.getGroup().iterator().next();
-        ComponentType componentType = componentTypes.get(component.getClass().getCanonicalName());
-        
-        if (componentType == null) {
+        double zOrder = ComponentProcessor.getInstance().getZOrder(component);
+
+        // internal types without a descriptor have no layer
+        if (zOrder == Double.MAX_VALUE) {
           renderer.setText(component.toString());
           return renderer;
         }
 
-        int layerId = (int) Math.round(componentType.getZOrder());
+        int layerId = (int) Math.round(zOrder);
 
         String valueForDisplay = component.getValueForDisplay();
         if (isSelected) {
@@ -637,9 +631,9 @@ public class ExplorerPane extends JPanel {
         // Calculate maximum layer from components in the group
         int maxLayerId = 0;
         for (IDIYComponent<?> component : groupItem.getGroup()) {
-          ComponentType componentType = componentTypes.get(component.getClass().getCanonicalName());
-          if (componentType != null) {
-            int layerId = (int) Math.round(componentType.getZOrder());
+          double zOrder = ComponentProcessor.getInstance().getZOrder(component);
+          if (zOrder != Double.MAX_VALUE) {
+            int layerId = (int) Math.round(zOrder);
             if (layerId > maxLayerId) {
               maxLayerId = layerId;
             }

@@ -518,6 +518,10 @@
 					<description>Re-modeled factory variants of Resistor component type as datasheet in order to make them available to the AI; this will produce more accurate AI-driven edits</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Derive the z-order of a building blocks placed as a single component based on its child components</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Added datasheets to 'DIP IC', 'SIP IC' and 'Multiwatt IC' - pick a part by its number from the component's submenu to set its pin count, spacing and pin names at once; the AI Assistant can place these parts by part number too</description>
 				</org.diylc.appframework.update.Change>

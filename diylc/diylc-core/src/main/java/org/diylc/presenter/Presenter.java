@@ -494,7 +494,8 @@ public class Presenter implements IPlugInPort {
     // for internal types
     if (componentType == null)
       return true;
-    return !currentProject.getHiddenLayers().contains((int) Math.round(componentType.getZOrder()));
+    return !currentProject.getHiddenLayers()
+        .contains((int) Math.round(ComponentProcessor.getInstance().getZOrder(component)));
   }
 
   @Override
@@ -1076,10 +1077,9 @@ public class Presenter implements IPlugInPort {
       Iterator<IDIYComponent<?>> i = newSelection.iterator();
       while (i.hasNext()) {
         IDIYComponent<?> c = i.next();
-        ComponentType type =
-            ComponentProcessor.getInstance().extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) c.getClass());
-        if ((int) type.getZOrder() != layer)
+        if ((int) ComponentProcessor.getInstance().getZOrder(c) != layer) {
           i.remove();
+        }
       }
     }
     updateSelection(newSelection);
@@ -2229,6 +2229,7 @@ public class Presenter implements IPlugInPort {
       ComponentType componentType =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
+      long layer = Math.round(ComponentProcessor.getInstance().getZOrder(component));
       int index = currentProject.getComponents().indexOf(component);
       if (index < 0) {
         LOG.warn("Component not found in the project: " + component.getName());
@@ -2236,11 +2237,8 @@ public class Presenter implements IPlugInPort {
         while (index > 0) {
           IDIYComponent<?> componentBefore = currentProject.getComponents().get(index - 1);
           if (!selectedComponents.contains(componentBefore)) {
-            ComponentType componentBeforeType =
-                ComponentProcessor.getInstance().extractComponentTypeFrom(
-                    (Class<? extends IDIYComponent<?>>) componentBefore.getClass());
             if (!componentType.isFlexibleZOrder()
-                && Math.round(componentBeforeType.getZOrder()) < Math.round(componentType.getZOrder())
+                && Math.round(ComponentProcessor.getInstance().getZOrder(componentBefore)) < layer
                 && forceConfirmation != IView.YES_OPTION
                 && (forceConfirmation =
                     this.view
@@ -2278,6 +2276,7 @@ public class Presenter implements IPlugInPort {
       ComponentType componentType =
           ComponentProcessor.getInstance().extractComponentTypeFrom(
               (Class<? extends IDIYComponent<?>>) component.getClass());
+      long layer = Math.round(ComponentProcessor.getInstance().getZOrder(component));
       int index = currentProject.getComponents().indexOf(component);
       if (index < 0) {
         LOG.warn("Component not found in the project: " + component.getName());
@@ -2285,11 +2284,8 @@ public class Presenter implements IPlugInPort {
         while (index < currentProject.getComponents().size() - 1) {
           IDIYComponent<?> componentAfter = currentProject.getComponents().get(index + 1);
           if (!selectedComponents.contains(componentAfter)) {
-            ComponentType componentAfterType =
-                ComponentProcessor.getInstance().extractComponentTypeFrom(
-                    (Class<? extends IDIYComponent<?>>) componentAfter.getClass());
             if (!componentType.isFlexibleZOrder()
-                && Math.round(componentAfterType.getZOrder()) > Math.round(componentType.getZOrder())
+                && Math.round(ComponentProcessor.getInstance().getZOrder(componentAfter)) > layer
                 && forceConfirmation != IView.YES_OPTION
                 && (forceConfirmation =
                     this.view
@@ -2684,13 +2680,9 @@ public class Presenter implements IPlugInPort {
   @SuppressWarnings("unchecked")
   private void addComponent(IDIYComponent<?> component, boolean allowAutoCreate) {
     int index = currentProject.getComponents().size();
-    while (index > 0
-        && ComponentProcessor.getInstance()
-            .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass()).getZOrder() < ComponentProcessor
-            .getInstance()
-            .extractComponentTypeFrom(
-                (Class<? extends IDIYComponent<?>>) currentProject.getComponents().get(index - 1).getClass())
-            .getZOrder()) {
+    double zOrder = ComponentProcessor.getInstance().getZOrder(component);
+    while (index > 0 && zOrder < ComponentProcessor.getInstance()
+        .getZOrder(currentProject.getComponents().get(index - 1))) {
       index--;
     }
     if (index < currentProject.getComponents().size()) {
@@ -2724,12 +2716,9 @@ public class Presenter implements IPlugInPort {
     int maxIndex = 0;
     for (IDIYComponent<?> component : components) {
       int index = currentProject.getComponents().size();
-      while (index > maxIndex && ComponentProcessor.getInstance()
-          .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass())
-          .getZOrder() < ComponentProcessor.getInstance()
-              .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) currentProject
-                  .getComponents().get(index - 1).getClass())
-              .getZOrder()) {
+      double zOrder = ComponentProcessor.getInstance().getZOrder(component);
+      while (index > maxIndex && zOrder < ComponentProcessor.getInstance()
+          .getZOrder(currentProject.getComponents().get(index - 1))) {
         index--;
       }
       
@@ -3132,12 +3121,9 @@ public class Presenter implements IPlugInPort {
     return GroupAndLockIndex.isLocked(currentProject, component);
   }
   
-  @SuppressWarnings("unchecked")
   private boolean isComponentLayerLocked(IDIYComponent<?> component) {
-    ComponentType componentType =
-        ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) component.getClass());
-    return currentProject.getLockedLayers().contains((int) Math.round(componentType.getZOrder()));
+    return currentProject.getLockedLayers()
+        .contains((int) Math.round(ComponentProcessor.getInstance().getZOrder(component)));
   }
 
   /**

@@ -35,7 +35,12 @@ import java.util.UUID;
 
 import org.diylc.common.Percentage;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.Project;
+import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.netlist.Node;
+import org.diylc.presenter.ComparatorFactory;
+import org.diylc.presenter.ComponentProcessor;
+import org.diylc.presenter.GroupAndLockIndex;
 import org.diylc.serialization.ProjectFileManager;
 import org.diylc.testcomponents.OnePointTestComponent;
 import org.diylc.testcomponents.TwoPointTestComponent;
@@ -325,5 +330,78 @@ public class CompositeComponentTest {
     // no exception means components list (empty) was never dereferenced as if populated
     assertNotNull(blank.getChildComponents());
     assertTrue(blank.getChildComponents().isEmpty());
+  }
+
+  @Test
+  public void layerOfAChassisOnlyCompositeIsTheChassisLayer() {
+    CompositeComponent composite = customBoard(new ChassisTestComponent(),
+        new ChassisTestComponent());
+
+    assertEquals(IDIYComponent.CHASSIS, ComponentProcessor.getInstance().getZOrder(composite), 0);
+  }
+
+  @Test
+  public void layerOfAMixedCompositeIsItsLowestChildLayer() {
+    CompositeComponent composite = customBoard(new TextTestComponent(), twoPoint("R1"),
+        new BoardTestComponent());
+
+    assertEquals(IDIYComponent.BOARD, ComponentProcessor.getInstance().getZOrder(composite), 0);
+  }
+
+  @Test
+  public void layerOfANestedCompositeLooksThroughTheInnerComposite() {
+    CompositeComponent inner = customBoard(new ChassisTestComponent());
+    CompositeComponent outer = customBoard(twoPoint("R1"), inner);
+
+    assertEquals(IDIYComponent.CHASSIS, ComponentProcessor.getInstance().getZOrder(outer), 0);
+  }
+
+  @Test
+  public void layerOfAChildlessCompositeIsTheDeclaredOne() {
+    assertEquals(IDIYComponent.COMPONENT,
+        ComponentProcessor.getInstance().getZOrder(new CompositeComponent()), 0);
+  }
+
+  @Test
+  public void lockingTheChildLayerLocksTheComposite() {
+    Project project = new Project();
+    CompositeComponent chassis = customBoard(new ChassisTestComponent());
+    project.getComponents().add(chassis);
+
+    project.getLockedLayers().add(IDIYComponent.COMPONENT);
+    assertFalse(GroupAndLockIndex.isLocked(project, chassis));
+
+    project.getLockedLayers().add(IDIYComponent.CHASSIS);
+    assertTrue(GroupAndLockIndex.isLocked(project, chassis));
+  }
+
+  @Test
+  public void compositeSortsByItsChildLayer() {
+    CompositeComponent chassis = customBoard(new ChassisTestComponent());
+    BoardTestComponent board = new BoardTestComponent();
+
+    assertTrue(ComparatorFactory.getInstance().getComponentZOrderComparator().compare(chassis,
+        board) < 0);
+  }
+
+  @ComponentDescriptor(name = "Chassis Test", category = "Test", author = "Test",
+      description = "test", instanceNamePrefix = "CT", zOrder = IDIYComponent.CHASSIS)
+  public static class ChassisTestComponent extends TwoPointTestComponent {
+
+    private static final long serialVersionUID = 1L;
+  }
+
+  @ComponentDescriptor(name = "Board Test", category = "Test", author = "Test",
+      description = "test", instanceNamePrefix = "BT", zOrder = IDIYComponent.BOARD)
+  public static class BoardTestComponent extends TwoPointTestComponent {
+
+    private static final long serialVersionUID = 1L;
+  }
+
+  @ComponentDescriptor(name = "Text Test", category = "Test", author = "Test",
+      description = "test", instanceNamePrefix = "TT", zOrder = IDIYComponent.TEXT)
+  public static class TextTestComponent extends TwoPointTestComponent {
+
+    private static final long serialVersionUID = 1L;
   }
 }
