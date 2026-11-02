@@ -1902,111 +1902,19 @@
       <list>
         <org.diylc.core.Template>
           <name>125B</name>
-          <values>
-            <entry>
-              <string>Radius</string>
-              <org.diylc.core.measures.Size value="5.0" unit="mm"/>
-            </entry>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="eeeeee"/>
-            </entry>
-            <entry>
-              <string>Border</string>
-              <awt-color hex="a6a6a6"/>
-            </entry>
-            <entry>
-              <string>Border Thickness</string>
-              <org.diylc.core.measures.Size value="0.2" unit="mm"/>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="4.815" y="2.64"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-01T23:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>A</name>
-          <values>
-            <entry>
-              <string>Radius</string>
-              <org.diylc.core.measures.Size value="5.0" unit="mm"/>
-            </entry>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="eeeeee"/>
-            </entry>
-            <entry>
-              <string>Border</string>
-              <awt-color hex="a6a6a6"/>
-            </entry>
-            <entry>
-              <string>Border Thickness</string>
-              <org.diylc.core.measures.Size value="0.2" unit="mm"/>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="3.545" y="1.525"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-01T23:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>B</name>
-          <values>
-            <entry>
-              <string>Radius</string>
-              <org.diylc.core.measures.Size value="5.0" unit="mm"/>
-            </entry>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="eeeeee"/>
-            </entry>
-            <entry>
-              <string>Border</string>
-              <awt-color hex="a6a6a6"/>
-            </entry>
-            <entry>
-              <string>Border Thickness</string>
-              <org.diylc.core.measures.Size value="0.2" unit="mm"/>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="4.41" y="2.36"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-01T23:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>BB</name>
-          <values>
-            <entry>
-              <string>Radius</string>
-              <org.diylc.core.measures.Size value="5.0" unit="mm"/>
-            </entry>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="eeeeee"/>
-            </entry>
-            <entry>
-              <string>Border</string>
-              <awt-color hex="a6a6a6"/>
-            </entry>
-            <entry>
-              <string>Border Thickness</string>
-              <org.diylc.core.measures.Size value="0.2" unit="mm"/>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="4.695" y="3.69"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-01T23:00:00</deletedOn>
         </org.diylc.core.Template>
       </list>
     </entry>

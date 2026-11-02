@@ -42,7 +42,7 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@ComponentDescriptor(name = "Dial Scale", author = "Branislav Stojkovic", category = "Misc",
+@ComponentDescriptor(name = "Dial Scale", author = "Branislav Stojkovic", category = "Hardware",
     instanceNamePrefix = "DS", description = "Control panel dial scale", zOrder = IDIYComponent.CHASSIS + 0.1,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class DialScale extends AbstractComponent<String> {

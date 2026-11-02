@@ -709,3 +709,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names
 Pin Labels
 Names
+Hardware
+Sides
+All
+Front and Back

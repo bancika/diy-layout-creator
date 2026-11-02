@@ -175,9 +175,6 @@
       "name" : "9V Battery Snap",
       "className" : "electromechanical.BatterySnap9V"
     }, {
-      "name" : "Chassis Panel",
-      "className" : "chassis.ChassisPanel"
-    }, {
       "name" : "Cliff 1/4\" Jack",
       "className" : "electromechanical.CliffJack1_4"
     }, {
@@ -189,12 +186,6 @@
     }, {
       "name" : "DIP Switch",
       "className" : "electromechanical.DIPSwitch"
-    }, {
-      "name" : "Drill Hole",
-      "className" : "electromechanical.DrillHole"
-    }, {
-      "name" : "Elliptical Cutout",
-      "className" : "chassis.EllipticalCutout"
     }, {
       "name" : "Fuse Holder (Panel)",
       "className" : "electromechanical.FuseHolderPanel"
@@ -226,14 +217,8 @@
       "name" : "Plastic DC Jack",
       "className" : "electromechanical.PlasticDCJack"
     }, {
-      "name" : "Polygonal Cutout",
-      "className" : "chassis.PolygonalCutout"
-    }, {
       "name" : "RCA Jack",
       "className" : "electromechanical.RCAJack"
-    }, {
-      "name" : "Rectangular Cutout",
-      "className" : "chassis.RectangularCutout"
     }, {
       "name" : "Rotary Selector Switch",
       "className" : "electromechanical.RotarySelectorSwitch"
@@ -293,6 +278,25 @@
       "name" : "Stingray Bass Pickup",
       "className" : "guitar.StingrayBassPickup"
     } ],
+    "Hardware" : [ {
+      "name" : "Dial Scale",
+      "className" : "chassis.DialScale"
+    }, {
+      "name" : "Drill Hole",
+      "className" : "electromechanical.DrillHole"
+    }, {
+      "name" : "Elliptical Cutout",
+      "className" : "chassis.EllipticalCutout"
+    }, {
+      "name" : "Enclosure",
+      "className" : "chassis.ChassisPanel"
+    }, {
+      "name" : "Polygonal Cutout",
+      "className" : "chassis.PolygonalCutout"
+    }, {
+      "name" : "Rectangular Cutout",
+      "className" : "chassis.RectangularCutout"
+    } ],
     "Misc" : [ {
       "name" : "Auto-Wrap Label",
       "className" : "misc.WrapLabel"
@@ -302,9 +306,6 @@
     }, {
       "name" : "Common Node",
       "className" : "misc.CommonNode"
-    }, {
-      "name" : "Dial Scale",
-      "className" : "chassis.DialScale"
     }, {
       "name" : "Image",
       "className" : "misc.Image"

@@ -526,6 +526,18 @@
 					<description>Added datasheets to 'DIP IC', 'SIP IC' and 'Multiwatt IC' - pick a part by its number from the component's submenu to set its pin count, spacing and pin names at once; the AI Assistant can place these parts by part number too</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>'Chassis Panel' is now 'Enclosure' and can draw an exploded view of the whole box; set 'Height' and choose which 'Sides' to unfold</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added a datasheet to 'Enclosure' with Hammond 1590, 1550, 1441 and 1444 enclosures and the 125B size</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Moved 'Enclosure', cutouts, 'Drill Hole' and 'Dial Scale' to the new 'Hardware' category</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'DIP IC' with 'Display Pin #s' set to 'No' numbered its pins in the wrong order in netlists and AI analysis, e.g. pin 8 of an 8-pin IC was reported as pin 5</description>
 				</org.diylc.appframework.update.Change>

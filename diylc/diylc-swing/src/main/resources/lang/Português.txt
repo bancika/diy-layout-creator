@@ -712,3 +712,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names|Nomes dos Pinos
 Pin Labels|Rótulos dos Pinos
 Names|Nomes
+Hardware|Ferragens
+Sides|Lados
+All|Todos
+Front and Back|Frente e traseira

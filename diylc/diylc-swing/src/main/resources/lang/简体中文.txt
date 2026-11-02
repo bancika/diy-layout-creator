@@ -710,3 +710,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names|引脚名称
 Pin Labels|引脚标签
 Names|名称
+Hardware|五金件
+Sides|侧面
+All|全部
+Front and Back|前后

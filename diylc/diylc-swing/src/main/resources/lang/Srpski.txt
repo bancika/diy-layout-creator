@@ -708,3 +708,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names|Nazivi Pinova
 Pin Labels|Oznake Pinova
 Names|Nazivi
+Hardware|Mehanički delovi
+Sides|Strane
+All|Sve
+Front and Back|Prednja i zadnja

@@ -21,15 +21,17 @@
 */
 package org.diylc.components.chassis;
 
-import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
 import org.diylc.components.shapes.AbstractShape;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.AiNote;
@@ -39,21 +41,83 @@ import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
-@AiNote("Each instance is one side of the chassis: an exploded view of a whole chassis takes five panels, while the top, front and back alone take three, which is typical for pedals and amplifiers. The top panel goes in the centre with the front panel against its upper edge and the back panel against its lower edge; in the five-panel view the left side panel goes against its left edge and the right side panel against its right edge")
-@AiNote("The panel is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly")
-@ComponentDescriptor(name = "Chassis Panel", author = "Branislav Stojkovic", category = "Electro-Mechanical",
-    instanceNamePrefix = "CP", description = "One side of a chassis, with or withouth rounded edges",
+@AiNote("The two control points are opposite corners of the enclosure's top panel. With 'Height' above zero the sides are unfolded around it as an exploded view, each as tall as 'Height' and set 'Spacing' apart from it: the front against the top panel's upper edge, the back against its lower edge and, when 'Sides' is All, the left and right sides against its left and right edges. The bottom is never drawn. With 'Sides' set to None, or 'Height' at zero, it is a single flat panel of any size, such as one side of a chassis drawn on its own")
+@AiNote("The enclosure is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly")
+@AiNote("A datasheet model is a Hammond enclosure part number such as 1590BB, 1550B or 1444-32, or a generic size such as 125B, and is stored as 'Value'; it sets the top panel to the enclosure's length and width, upright for pedal-sized die-cast boxes up to 125 mm long and horizontal for bigger boxes and amplifier chassis and 'Height' to its wall height. 125B is a generic size sold by several makers; its Hammond equivalent is 1590N1")
+@ComponentDescriptor(name = "Enclosure", author = "Branislav Stojkovic", category = "Hardware",
+    instanceNamePrefix = "ENC",
+    description = "Top panel of an enclosure or chassis, optionally with its sides unfolded",
     zOrder = IDIYComponent.CHASSIS, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
-    transformer = SimpleComponentTransformer.class)
-public class ChassisPanel extends AbstractShape {
+    transformer = SimpleComponentTransformer.class, enableDatasheet = true,
+    datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
-  protected Size edgeRadius = new Size(0d, SizeUnit.mm);
-  
+  // a new enclosure is a 125B, the most common pedal enclosure, upright as in its datasheet row
+  public static String DEFAULT_MODEL = "125B";
+  public static Size DEFAULT_TOP_WIDTH = new Size(66d, SizeUnit.mm);
+  public static Size DEFAULT_TOP_LENGTH = new Size(122d, SizeUnit.mm);
+  public static Size DEFAULT_WALL_HEIGHT = new Size(36d, SizeUnit.mm);
+  public static Size DEFAULT_RADIUS = new Size(0d, SizeUnit.mm);
+  public static Size DEFAULT_SPACING = new Size(0d, SizeUnit.mm);
+
+  protected Size edgeRadius = DEFAULT_RADIUS;
+  private Size height = DEFAULT_WALL_HEIGHT;
+  private Sides sides = Sides.ALL;
+  private Size spacing = DEFAULT_SPACING;
+
   public ChassisPanel() {
     this.color = LIGHT_METAL_COLOR;
     this.borderColor = LIGHT_METAL_COLOR.darker();
+    this.value = DEFAULT_MODEL;
+    setControlPoint(new Point2D.Double(DEFAULT_TOP_WIDTH.convertToPixels(),
+        DEFAULT_TOP_LENGTH.convertToPixels()), 1);
+  }
+
+  public ChassisPanel(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, model, top panel size along x and along y, wall height. The wall height leaves out the lid, which is the bottom left out of the view. Pedal-sized boxes
+  // are listed upright, as pedals use them, and the bigger ones horizontal
+  @Override
+  public void applyModel(String[] model) {
+    setModel(model[1]);
+    setHeight(Size.parseSize(model[4]));
+    // the first control point stays put and the top panel keeps the direction it is drawn in
+    Point2D first = controlPoints[0];
+    Point2D second = controlPoints[1];
+    double x = Size.parseSize(model[2]).convertToPixels();
+    double y = Size.parseSize(model[3]).convertToPixels();
+    setControlPoint(new Point2D.Double(first.getX() + (second.getX() < first.getX() ? -x : x),
+        first.getY() + (second.getY() < first.getY() ? -y : y)), 1);
+  }
+
+  /**
+   * @return the side panels of the exploded view, folded out from the edges of the top panel:
+   *         front, back and then, when all sides are shown, left and right. Empty when no sides are
+   *         shown or the enclosure has no height.
+   */
+  Rectangle2D[] getSidePanels() {
+    double h = getHeight() == null ? 0 : getHeight().convertToPixels();
+    if (h <= 0 || getSides() == Sides.NONE) {
+      return new Rectangle2D[0];
+    }
+    double s = getSpacing() == null ? 0 : getSpacing().convertToPixels();
+    double x = firstPoint.getX();
+    double y = firstPoint.getY();
+    double w = secondPoint.getX() - x;
+    double d = secondPoint.getY() - y;
+    Rectangle2D front = new Rectangle2D.Double(x, y - s - h, w, h);
+    Rectangle2D back = new Rectangle2D.Double(x, y + d + s, w, h);
+    if (getSides() == Sides.FRONT_AND_BACK) {
+      return new Rectangle2D[] {front, back};
+    }
+    return new Rectangle2D[] {front, back, new Rectangle2D.Double(x - s - h, y, h, d),
+        new Rectangle2D.Double(x + w + s, y, h, d)};
   }
 
   @Override
@@ -61,6 +125,7 @@ public class ChassisPanel extends AbstractShape {
       IDrawingObserver drawingObserver) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((int) borderThickness.convertToPixels()));
     int radius = (int) edgeRadius.convertToPixels();
+    Rectangle2D[] sidePanels = getSidePanels();
     if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(color);
@@ -72,6 +137,9 @@ public class ChassisPanel extends AbstractShape {
         g2d.fillRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
             (int) (secondPoint.getX() - firstPoint.getX()),
             (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
+      }
+      for (Rectangle2D panel : sidePanels) {
+        g2d.fill(panel);
       }
       g2d.setComposite(oldComposite);
       drawingObserver.stopTracking();
@@ -89,6 +157,9 @@ public class ChassisPanel extends AbstractShape {
           (int) (secondPoint.getX() - firstPoint.getX()),
           (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
     }
+    for (Rectangle2D panel : sidePanels) {
+      g2d.draw(panel);
+    }
   }
 
   @EditableProperty(name = "Radius")
@@ -100,12 +171,84 @@ public class ChassisPanel extends AbstractShape {
     this.edgeRadius = edgeRadius;
   }
 
+  @EditableProperty(name = "Value")
+  public String getModel() {
+    return value;
+  }
+
+  public void setModel(String model) {
+    this.value = model;
+  }
+
+  @EditableProperty
+  public Size getHeight() {
+    return height;
+  }
+
+  public void setHeight(Size height) {
+    this.height = height;
+  }
+
+  @EditableProperty
+  public Sides getSides() {
+    if (sides == null) {
+      sides = Sides.ALL;
+    }
+    return sides;
+  }
+
+  public void setSides(Sides sides) {
+    this.sides = sides;
+  }
+
+  @EditableProperty
+  public Size getSpacing() {
+    if (spacing == null) {
+      spacing = DEFAULT_SPACING;
+    }
+    return spacing;
+  }
+
+  public void setSpacing(Size spacing) {
+    this.spacing = spacing;
+  }
+
+  @Override
+  public String getValueForDisplay() {
+    return value == null ? "" : value;
+  }
+
   @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int factor = 32 / width;
-    g2d.setColor(LIGHT_METAL_COLOR);
-    g2d.fillRect(2 / factor, 4 / factor, width - 4 / factor, height - 8 / factor);
-    g2d.setColor(LIGHT_METAL_COLOR.darker());
-    g2d.drawRect(2 / factor, 4 / factor, width - 4 / factor, height - 8 / factor);
+    int flap = 6 / factor;
+    int left = 2 / factor + flap;
+    int top = 2 / factor + flap;
+    int topWidth = width - 2 * left;
+    int topHeight = height - 2 * top;
+    int[][] panels = {{left, top, topWidth, topHeight}, {left, top - flap, topWidth, flap},
+        {left, top + topHeight, topWidth, flap}, {left - flap, top, flap, topHeight},
+        {left + topWidth, top, flap, topHeight}};
+    for (int[] panel : panels) {
+      g2d.setColor(LIGHT_METAL_COLOR);
+      g2d.fillRect(panel[0], panel[1], panel[2], panel[3]);
+      g2d.setColor(LIGHT_METAL_COLOR.darker());
+      g2d.drawRect(panel[0], panel[1], panel[2], panel[3]);
+    }
+  }
+
+  public enum Sides {
+    ALL("All"), FRONT_AND_BACK("Front and Back"), NONE("None");
+
+    private final String label;
+
+    Sides(String label) {
+      this.label = label;
+    }
+
+    @Override
+    public String toString() {
+      return label;
+    }
   }
 }

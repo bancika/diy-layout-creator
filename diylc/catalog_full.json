@@ -7143,45 +7143,6 @@
       } ]
     }
   }, {
-    "name" : "Chassis Panel",
-    "className" : "chassis.ChassisPanel",
-    "category" : "Electro-Mechanical",
-    "namePrefix" : "CP",
-    "description" : "One side of a chassis, with or withouth rounded edges",
-    "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Each instance is one side of the chassis: an exploded view of a whole chassis takes five panels, while the top, front and back alone take three, which is typical for pedals and amplifiers. The top panel goes in the centre with the front panel against its upper edge and the back panel against its lower edge; in the five-panel view the left side panel goes against its left edge and the right side panel against its right edge", "The panel is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly" ],
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#A6A6A6"
-    }, {
-      "name" : "Border Thickness",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
-    }, {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#EEEEEE"
-    }, {
-      "name" : "Name",
-      "type" : "String"
-    }, {
-      "name" : "Radius",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0mm"
-    } ]
-  }, {
     "name" : "Cliff 1/4\" Jack",
     "className" : "electromechanical.CliffJack1_4",
     "category" : "Electro-Mechanical",
@@ -7672,66 +7633,6 @@
         }
       } ]
     }
-  }, {
-    "name" : "Drill Hole",
-    "className" : "electromechanical.DrillHole",
-    "category" : "Electro-Mechanical",
-    "namePrefix" : "Hole",
-    "description" : "Drill hole marker for PCB, chassis or faceplate",
-    "creationMethod" : "SINGLE_CLICK",
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#000000"
-    }, {
-      "name" : "Diameter",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "3mm"
-    } ],
-    "pinout" : {
-      "pinCount" : 1,
-      "labels" : "none"
-    }
-  }, {
-    "name" : "Elliptical Cutout",
-    "className" : "chassis.EllipticalCutout",
-    "category" : "Electro-Mechanical",
-    "namePrefix" : "ELC",
-    "description" : "Elliptical chassis cutout",
-    "creationMethod" : "SINGLE_CLICK",
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#A6A6A6"
-    }, {
-      "name" : "Border Thickness",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
-    }, {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#FFFFFF"
-    }, {
-      "name" : "Name",
-      "type" : "String"
-    } ]
   }, {
     "name" : "Fuse Holder (Panel)",
     "className" : "electromechanical.FuseHolderPanel",
@@ -8633,43 +8534,6 @@
       } ]
     }
   }, {
-    "name" : "Polygonal Cutout",
-    "className" : "chassis.PolygonalCutout",
-    "category" : "Electro-Mechanical",
-    "namePrefix" : "POLYC",
-    "description" : "Polygonal chassis cutout",
-    "creationMethod" : "SINGLE_CLICK",
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#A6A6A6"
-    }, {
-      "name" : "Border Thickness",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
-    }, {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#FFFFFF"
-    }, {
-      "name" : "Edges",
-      "type" : "PointCount",
-      "possibleValues" : [ "_3", "_4", "_5", "_6", "_7", "_8" ],
-      "defaultValue" : "_4"
-    }, {
-      "name" : "Name",
-      "type" : "String"
-    } ]
-  }, {
     "name" : "RCA Jack",
     "className" : "electromechanical.RCAJack",
     "category" : "Electro-Mechanical",
@@ -8700,44 +8564,6 @@
         "label" : "Sleeve"
       } ]
     }
-  }, {
-    "name" : "Rectangular Cutout",
-    "className" : "chassis.RectangularCutout",
-    "category" : "Electro-Mechanical",
-    "namePrefix" : "RECTC",
-    "description" : "Rectangular chassis cutout, with or without rounded edges",
-    "creationMethod" : "SINGLE_CLICK",
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#A6A6A6"
-    }, {
-      "name" : "Border Thickness",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
-    }, {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#FFFFFF"
-    }, {
-      "name" : "Name",
-      "type" : "String"
-    }, {
-      "name" : "Radius",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0mm"
-    } ]
   }, {
     "name" : "Rotary Selector Switch",
     "className" : "electromechanical.RotarySelectorSwitch",
@@ -11588,6 +11414,248 @@
       } ]
     }
   }, {
+    "name" : "Dial Scale",
+    "className" : "chassis.DialScale",
+    "category" : "Hardware",
+    "namePrefix" : "DS",
+    "description" : "Control panel dial scale",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "1in"
+    }, {
+      "name" : "Font",
+      "type" : "Font"
+    }, {
+      "name" : "Marker Size",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.1in"
+    }, {
+      "name" : "Tick Width",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.5mm"
+    }, {
+      "name" : "Type",
+      "type" : "DialScaleType",
+      "possibleValues" : [ "Ticks_Mixed", "Ticks", "Ticks_0_5_5_11", "Dots", "Dots_Gradual", "Numeric_0_10", "Numeric_1_11", "Numeric_1_10", "Numeric_1_12", "Numeric_Even", "Numeric_Even_Ticks" ],
+      "defaultValue" : "Ticks"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    } ],
+    "pinout" : {
+      "pinCount" : 1,
+      "labels" : "none"
+    }
+  }, {
+    "name" : "Drill Hole",
+    "className" : "electromechanical.DrillHole",
+    "category" : "Hardware",
+    "namePrefix" : "Hole",
+    "description" : "Drill hole marker for PCB, chassis or faceplate",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Diameter",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "3mm"
+    } ],
+    "pinout" : {
+      "pinCount" : 1,
+      "labels" : "none"
+    }
+  }, {
+    "name" : "Elliptical Cutout",
+    "className" : "chassis.EllipticalCutout",
+    "category" : "Hardware",
+    "namePrefix" : "ELC",
+    "description" : "Elliptical chassis cutout",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#A6A6A6"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#FFFFFF"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Enclosure",
+    "className" : "chassis.ChassisPanel",
+    "category" : "Hardware",
+    "namePrefix" : "ENC",
+    "description" : "Top panel of an enclosure or chassis, optionally with its sides unfolded",
+    "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The two control points are opposite corners of the enclosure's top panel. With 'Height' above zero the sides are unfolded around it as an exploded view, each as tall as 'Height' and set 'Spacing' apart from it: the front against the top panel's upper edge, the back against its lower edge and, when 'Sides' is All, the left and right sides against its left and right edges. The bottom is never drawn. With 'Sides' set to None, or 'Height' at zero, it is a single flat panel of any size, such as one side of a chassis drawn on its own", "The enclosure is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly", "A datasheet model is a Hammond enclosure part number such as 1590BB, 1550B or 1444-32, or a generic size such as 125B, and is stored as 'Value'; it sets the top panel to the enclosure's length and width, upright for pedal-sized die-cast boxes up to 125 mm long and horizontal for bigger boxes and amplifier chassis and 'Height' to its wall height. 125B is a generic size sold by several makers; its Hammond equivalent is 1590N1" ],
+    "datasheetModels" : [ "1590LLB", "1590LB", "1590H", "1590Y", "1590A", "1590G", "1590G2", "1590S", "1590B", "1590B2", "1590BS", "1590B3", "1590BB", "1590BB2", "1590BBS", "1590Q", "1590U", "1590V", "1590C", "1590T", "1590CE", "1590N1", "1590KK", "1590K", "1590J", "1590XX", "1590X", "1590P1", "1590D", "1590DD", "1590E", "1590F", "1590R1", "1590DE", "1590EE", "1590BX2", "1590BX", "1550Q", "1550P", "1550A", "1550B", "1550D", "1550C", "1550M", "1550K", "1550L", "1550E", "1550F", "1550G", "1550H", "1550N", "1550J", "125B", "1441-9", "1441-15", "1441-6", "1441-8", "1441-12", "1441-10", "1441-14", "1441-16", "1441-22", "1441-29", "1441-18", "1441-26", "1441-30", "1441-34", "1441-24", "1441-28", "1441-20", "1441-32", "1441-36", "1441-38", "1441-33", "1441-40", "1441-42", "1444-45351", "1444-9", "1444-15", "1444-6415", "1444-84515", "1444-6", "1444-542", "1444-8", "1444-12", "1444-772", "1444-10", "1444-862", "1444-14", "1444-972", "1444-9552", "1444-16", "1444-1172", "1444-22", "1444-29", "1444-1372", "1444-18", "1444-26", "1444-30", "1444-17132", "1444-95525", "1444-10825", "1444-12825", "1444-643", "1444-753", "1444-9553", "1444-1053", "1444-1273", "1444-24", "1444-12103", "1444-12123", "1444-1463", "1444-14103", "1444-1573", "1444-1593", "1444-28", "1444-20", "1444-1763", "1444-1773", "1444-1783", "1444-32", "1444-17123", "1444-17133", "1444-17143", "1444-17173", "1444-33", "1444-17134", "1444-17154", "1444-17174", "1444-17105", "1444-17135", "1444-17156" ],
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#A6A6A6"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#EEEEEE"
+    }, {
+      "name" : "Height",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "36mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Radius",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0mm"
+    }, {
+      "name" : "Sides",
+      "type" : "Sides",
+      "possibleValues" : [ "ALL", "FRONT_AND_BACK", "NONE" ],
+      "defaultValue" : "ALL"
+    }, {
+      "name" : "Spacing",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0mm"
+    }, {
+      "name" : "Value",
+      "type" : "String",
+      "defaultValue" : "125B"
+    } ]
+  }, {
+    "name" : "Polygonal Cutout",
+    "className" : "chassis.PolygonalCutout",
+    "category" : "Hardware",
+    "namePrefix" : "POLYC",
+    "description" : "Polygonal chassis cutout",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#A6A6A6"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#FFFFFF"
+    }, {
+      "name" : "Edges",
+      "type" : "PointCount",
+      "possibleValues" : [ "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "defaultValue" : "_4"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    } ]
+  }, {
+    "name" : "Rectangular Cutout",
+    "className" : "chassis.RectangularCutout",
+    "category" : "Hardware",
+    "namePrefix" : "RECTC",
+    "description" : "Rectangular chassis cutout, with or without rounded edges",
+    "creationMethod" : "SINGLE_CLICK",
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#A6A6A6"
+    }, {
+      "name" : "Border Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.2mm"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#FFFFFF"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Radius",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0mm"
+    } ]
+  }, {
     "name" : "Auto-Wrap Label",
     "className" : "misc.WrapLabel",
     "category" : "Misc",
@@ -11688,52 +11756,6 @@
       "type" : "String",
       "defaultValue" : "X"
     } ]
-  }, {
-    "name" : "Dial Scale",
-    "className" : "chassis.DialScale",
-    "category" : "Misc",
-    "namePrefix" : "DS",
-    "description" : "Control panel dial scale",
-    "creationMethod" : "SINGLE_CLICK",
-    "properties" : [ {
-      "name" : "Color",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#000000"
-    }, {
-      "name" : "Diameter",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "1in"
-    }, {
-      "name" : "Font",
-      "type" : "Font"
-    }, {
-      "name" : "Marker Size",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.1in"
-    }, {
-      "name" : "Tick Width",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.5mm"
-    }, {
-      "name" : "Type",
-      "type" : "DialScaleType",
-      "possibleValues" : [ "Ticks_Mixed", "Ticks", "Ticks_0_5_5_11", "Dots", "Dots_Gradual", "Numeric_0_10", "Numeric_1_11", "Numeric_1_10", "Numeric_1_12", "Numeric_Even", "Numeric_Even_Ticks" ],
-      "defaultValue" : "Ticks"
-    }, {
-      "name" : "Value",
-      "type" : "String"
-    } ],
-    "pinout" : {
-      "pinCount" : 1,
-      "labels" : "none"
-    }
   }, {
     "name" : "Image",
     "className" : "misc.Image",

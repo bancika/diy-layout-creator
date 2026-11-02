@@ -717,3 +717,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names|Pinnamen
 Pin Labels|Pinlabels
 Names|Namen
+Hardware|Hardware
+Sides|Zijden
+All|Alle
+Front and Back|Voor- en achterkant

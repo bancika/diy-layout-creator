@@ -711,3 +711,7 @@ AI Circuit Analyzer requires a DIYLC Cloud account. Would you like to log in now
 Pin Names|Noms des broches
 Pin Labels|Étiquettes des broches
 Names|Noms
+Hardware|Quincaillerie
+Sides|Côtés
+All|Tous
+Front and Back|Avant et arrière
