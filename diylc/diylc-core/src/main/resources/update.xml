@@ -531,6 +531,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added datasheets to 'Diode (plastic)' and 'Diode (glass)' - pick a part by its number from the component's submenu to draw it at its real package size and colours - more than 270 rectifiers, Schottky, signal, germanium and zener diodes; the AI Assistant can place these parts by part number too</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>'Chassis Panel' is now 'Enclosure' and can draw an exploded view of the whole box; set 'Height' and choose which 'Sides' to unfold</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

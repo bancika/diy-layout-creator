@@ -31,6 +31,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.AiNote;
@@ -43,11 +44,14 @@ import org.diylc.utils.Constants;
 
 @AiNote("The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing")
 @AiNote("If the control points are closer together than 'Length' (0.2in by default) the part is drawn standing, its body over the first point, or over the second with 'Reverse (standing)'; to keep it lying on a tighter footprint, reduce 'Length'")
+@AiNote("A datasheet model is a part number such as 1N4148, BAT46 or 1N34A and sets 'Value', 'Length', 'Width' and the body colours to match its package; set 'Value' to the same part number together with the model")
 @ComponentDescriptor(name = "Diode (glass)", author = "Branislav Stojkovic", category = "Semiconductors",
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "D",
     description = "Glass diode, like most small signal diodes.", zOrder = IDIYComponent.COMPONENT,
-    transformer = SimpleComponentTransformer.class, enableCache = true)
-public class DiodeGlass extends AbstractLeadedComponent<String> implements IGerberComponentSimple {
+    transformer = SimpleComponentTransformer.class, enableCache = true, enableDatasheet = true,
+    datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class DiodeGlass extends AbstractLeadedComponent<String>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -69,6 +73,24 @@ public class DiodeGlass extends AbstractLeadedComponent<String> implements IGerb
     this.labelColor = LABEL_COLOR;
     this.bodyColor = BODY_COLOR;
     this.borderColor = BORDER_COLOR;
+  }
+
+  public DiodeGlass(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, part number, package, body length, body diameter, body colour, cathode band
+  // colour, die colour
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setLength(Size.parseSize(model[3]));
+    setWidth(Size.parseSize(model[4]));
+    setBodyColor(Color.decode(model[5]));
+    setMarkerColor(Color.decode(model[6]));
+    setInsideColor(Color.decode(model[7]));
   }
 
   @Override
