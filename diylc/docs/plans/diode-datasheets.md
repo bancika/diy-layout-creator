@@ -74,15 +74,16 @@ Package sizes, nominal (mid-range) body length x diameter from the outline drawi
 | Fast Rectifier | DO-201AD | UF5400-UF5408, MUR460, BY399 |
 | Schottky | DO-41 / DO-201AD | 1N5817-1N5819, SB140, SB160, SR160, 11DQ04 / 1N5820-1N5822, SB560 |
 
-`DiodeGlass.datasheet`, 200 parts:
+`DiodeGlass.datasheet`, 239 parts:
 
 | Group | Package | Parts |
 |---|---|---|
-| Signal | DO-35 | 1N4148, 1N914, 1N4448, 1N916, 1N4151, BAV21, 1N3600, BA221 |
+| Signal | DO-35 | 1N4148, 1N914, 1N4448, 1N916, 1N4151, BAV21, 1N3600, BA221, 1S1588, 1S2473, MA150 |
+| Signal | DO-34 | 1SS133, MA856 |
 | Schottky | DO-35 / DO-34 | BAT41, BAT42, BAT43, BAT46, BAT48, BAT85, 1N5711 / BAT86 |
 | Germanium | DO-7 / DO-35 | 1N34A, 1N270, OA90, OA91, OA95, OA47, AA119, AA143 / 1N60, 1N60P |
 | Fast Rectifier | SOD-57 | BYV26C, BYV26E |
-| Zener (1N47xx) | DO-41 | 1N4728A-1N4764A |
+| Zener (1N47xx), (BZX85) | DO-41 | 1N4728A-1N4764A, BZX85C3V3-C75 |
 | Zener (1N52xx), (1N7xx), (BZX55), (BZX79) | DO-35 | 1N5221B-1N5267B, 1N746A-1N759A, BZX55C and BZX79C 2V4-75 |
 
 Sourcing notes:
@@ -97,8 +98,15 @@ Sourcing notes:
 - 1N60 / 1N60P are sold as germanium but current Asian production is often a silicon Schottky.
 - Left out: BAT54 (SMD), 1N695 (secondary sources only), Soviet D9/D18 (own glass cases, not JEDEC),
   DO-15 parts (none needed once 1N539x went to DO-41).
-- Popular additions not yet sourced: 1S1588, 1SS133, MA150/MA856 (Japanese pedal clippers), BZX85C
-  (1.3 W zeners), SF14/SF18, MBR160, SB5100, 1N4150, 1N456/1N457, BY228/BYW96 (SOD-64).
+- Japanese clippers, kept only with a pedal schematic behind them: 1S1588 (Boss SD-1, King of
+  Tone), 1S2473 (Boss HM-2, early DS-1/SD-1), MA150 (TS808, TS9), 1SS133 (Boss BD-2), MA856 (King
+  of Tone); all from Toshiba, Rohm and Panasonic sheets and all obsolete. Their cathode bands follow
+  the maker (yellow on Rohm and MA856, white on MA150), so band colour varies per row while size
+  stays per package. Dropped for lack of pedal evidence: 1S2076A, 1SS270A, 1S953, 1S1555, 1SS176,
+  MA165, 1SS53.
+- BZX85C follows Vishay's current range (3V3-75, glass DO-41); older makers went to 2V7 and up to
+  200 V. Nexperia's 1.3 W equivalent is BZV85, Diotec's ZPY.
+- Popular additions not yet sourced: SF14/SF18, MBR160, SB5100, 1N4150, 1N456/1N457, BY228/BYW96 (SOD-64).
 
 Rules for every row: a part's package is read from its manufacturer data sheet (or two independent
 sources); where makers ship the same number in different envelopes (1N47xx in glass or plastic
@@ -123,7 +131,7 @@ other is noted.
 1. **Plan**: this document.
 2. **Code**: done - D3, D4, `DiodeDatasheetTest`, `@AiNote` on both classes. The test fails until
    the datasheets exist.
-3. **Library**: done - 277 parts in two datasheets, all five `DiodeDatasheetTest` cases pass, whole
+3. **Library**: done - 316 parts in two datasheets, all five `DiodeDatasheetTest` cases pass, whole
    reactor passes (core 227, library 513, swing 29), parts rendered per package; `catalog_full.json`
    regenerated; release note in 6.10.
 4. **Later**: bridge rectifiers; LEDs (3 mm / 5 mm / 10 mm bodies) if wanted.

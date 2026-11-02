@@ -41,6 +41,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.semiconductors.PinLabels;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDatasheetSupport;
@@ -59,8 +60,8 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the socket centre, not a pin. Pins sit on a circle and are numbered clockwise, starting after the gap (B9A, B7G, B12C) or the key (OCTAL), which points right at 'Angle' 0; 'Angle' rotates the socket clockwise in degrees. This is the bottom view used for wiring")
-@AiNote("'Electrode Labels' is a comma-separated list of electrode names in pin order starting at pin 1: P plate, G triode grid, G1/G2/G3 control, screen and suppressor grids, K cathode, BP beam plates, IS internal shield, HCT heater centre tap. Sections of a multi-section tube are numbered first (1P, 1G, 2P); heater ends are named after their pin (H4, H5) because they are separate nets; pins joined inside the tube end in _1, _2; NC and IC pins are never connected")
-@AiNote("A datasheet model is a tube type such as 12AX7 or EL34 and sets 'Base', 'Electrode Labels' and 'Designation'. Set 'Designation' to the same tube type together with the model")
+@AiNote("'Pin Names' is a comma-separated list of electrode names in pin order starting at pin 1: P plate, G triode grid, G1/G2/G3 control, screen and suppressor grids, K cathode, BP beam plates, IS internal shield, HCT heater centre tap. Sections of a multi-section tube are numbered first (1P, 1G, 2P); heater ends are named after their pin (H4, H5) because they are separate nets; pins joined inside the tube end in _1, _2; NC and IC pins are never connected. 'Pin Labels' draws the names (default), the pin numbers or nothing")
+@AiNote("A datasheet model is a tube type such as 12AX7 or EL34 and sets 'Base', 'Pin Names' and 'Designation'. Set 'Designation' to the same tube type together with the model")
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
@@ -103,6 +104,7 @@ public class TubeSocket extends AbstractAngledComponent<String>
   private String electrodeLabels = null; 
   private Mount mount = Mount.CHASSIS;
   private Color labelColor = LABEL_COLOR;
+  private PinLabels pinLabels = null;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
 
@@ -239,22 +241,29 @@ public class TubeSocket extends AbstractAngledComponent<String>
         bodyArea.subtract(new Area(new Ellipse2D.Double(centerX - tickSize / 2, centerY - tickSize / 2, tickSize,
             tickSize)));        
       } else if (base == Base.B9A && getMount() == Mount.CHASSIS) {
-        double cutoutDiameter = getClosestOdd(B9A_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(getMountingCutouts(B9A_CUTOUT_DIAMETER, bodyDiameter));
       } else if (base == Base.B7G && getMount() == Mount.CHASSIS) {
-        double cutoutDiameter = getClosestOdd(B7G_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+        bodyArea.subtract(getMountingCutouts(B7G_CUTOUT_DIAMETER, bodyDiameter));
       } else if (base == Base.B12C && getMount() == Mount.CHASSIS) {
-        double cutoutDiameter = getClosestOdd(B12C_CUTOUT_DIAMETER.convertToPixels());
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter)));
-        bodyArea.subtract(new Area(new Ellipse2D.Double(controlPoints[0].getX() - cutoutDiameter / 2, controlPoints[0].getY() + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
-      }    
+        bodyArea.subtract(getMountingCutouts(B12C_CUTOUT_DIAMETER, bodyDiameter));
+      }
       
       body = new Shape[] { bodyArea };
     }
     return body;
+  }
+
+  // the two mounting notches sit square to the pin gap, so they turn with the socket
+  private Area getMountingCutouts(Size cutoutSize, int bodyDiameter) {
+    double cutoutDiameter = getClosestOdd(cutoutSize.convertToPixels());
+    double x = controlPoints[0].getX();
+    double y = controlPoints[0].getY();
+    Area cutouts = new Area(new Ellipse2D.Double(x - cutoutDiameter / 2,
+        y - bodyDiameter / 2 - cutoutDiameter * 3 / 4, cutoutDiameter, cutoutDiameter));
+    cutouts.add(new Area(new Ellipse2D.Double(x - cutoutDiameter / 2,
+        y + bodyDiameter / 2 - cutoutDiameter / 4, cutoutDiameter, cutoutDiameter)));
+    cutouts.transform(AffineTransform.getRotateInstance(getAngle().getValueRad(), x, y));
+    return cutouts;
   }
 
   @Override
@@ -319,15 +328,15 @@ public class TubeSocket extends AbstractAngledComponent<String>
       }
     }
     
-    // draw electrode labels
-    if (getElectrodeLabels() != null) {
+    if (getPinLabels() != PinLabels.NONE) {
       g2d.setColor(getLabelColor());
       g2d.setFont(project.getFont().deriveFont((float) (project.getFont().getSize2D() * 0.8)));
       String[] labels = getElectrodeLabels().split(",");
       double electrodeLabelOffset = project.getFont().getSize2D() * (getBase() == Base.B9A && getMount() == Mount.PCB ? 1.5 : 1);
-      for (int i = 0; i < labels.length; i++) {
-        if (i < controlPoints.length - 1) {
-          String label = AbstractMakerBoard.getDisplayPinLabel(labels[i]);
+      for (int i = 0; i < controlPoints.length - 1; i++) {
+        if (getPinLabels() == PinLabels.NUMBERS || i < labels.length) {
+          String label = getPinLabels() == PinLabels.NUMBERS ? Integer.toString(i + 1)
+              : AbstractMakerBoard.getDisplayPinLabel(labels[i]);
           double theta = Math.atan2(controlPoints[i + 1].getY() - controlPoints[0].getY(), controlPoints[i + 1].getX() - controlPoints[0].getX());
           double x = controlPoints[i + 1].getX() - Math.cos(theta) * electrodeLabelOffset;
           double y = controlPoints[i + 1].getY() - Math.sin(theta) * electrodeLabelOffset;
@@ -401,7 +410,7 @@ public class TubeSocket extends AbstractAngledComponent<String>
     return false;
   }
   
-  @EditableProperty(name = "Electrode Labels")
+  @EditableProperty(name = "Pin Names")
   public String getElectrodeLabels() {
     if (electrodeLabels == null)
       electrodeLabels = "1,2,3,4,5,6,7,8,9,10,11,12";
@@ -412,6 +421,18 @@ public class TubeSocket extends AbstractAngledComponent<String>
     this.electrodeLabels = electrodeLabels;
   }
   
+  @EditableProperty(name = "Pin Labels")
+  public PinLabels getPinLabels() {
+    if (pinLabels == null) {
+      pinLabels = PinLabels.NAMES;
+    }
+    return pinLabels;
+  }
+
+  public void setPinLabels(PinLabels pinLabels) {
+    this.pinLabels = pinLabels;
+  }
+
   @EditableProperty(name = "Label")
   public Color getLabelColor() {
     if (labelColor == null)

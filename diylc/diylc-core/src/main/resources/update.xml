@@ -531,7 +531,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added datasheets to 'Diode (plastic)' and 'Diode (glass)' - pick a part by its number from the component's submenu to draw it at its real package size and colours - more than 270 rectifiers, Schottky, signal, germanium and zener diodes; the AI Assistant can place these parts by part number too</description>
+					<description>Added datasheets to 'Diode (plastic)' and 'Diode (glass)' - pick a part by its number from the component's submenu to draw it at its real package size and colours - more than 300 rectifiers, Schottky, signal, germanium and zener diodes, including the Japanese clippers of classic overdrive pedals; the AI Assistant can place these parts by part number too</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -556,6 +556,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Transistor pins are now drawn on top of the body in the same color on every package, so they stay visible whatever the body transparency</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Electrode Labels' of 'Tube Socket' is now called 'Pin Names', as on ICs, and the new 'Pin Labels' property shows pin names, pin numbers or nothing</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -584,6 +588,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Tube Socket' variants with electrode labels connected pins that share a label in netlists and AI analysis, e.g. both anodes of a 12AX7 or both heater ends; these variants are replaced by the datasheet</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Tube Socket' with a Noval, 7-pin or Duodecar base on a chassis mount did not rotate its mounting notches with the pins when 'Angle' was changed</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

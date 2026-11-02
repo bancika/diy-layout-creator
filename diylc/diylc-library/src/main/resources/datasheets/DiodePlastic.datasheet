@@ -1,3 +1,44 @@
+Fast Rectifier,1N4933,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,1N4934,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,1N4935,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,1N4936,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,1N4937,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,BA157,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,BA158,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,BA159,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,BY399,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR101,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR102,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR103,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR104,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR105,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR106,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,FR107,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER101,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER102,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER103,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER104,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER105,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER106,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER107,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,HER108,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,MUR120,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,MUR160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,MUR460,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4001,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4002,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4003,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4004,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4005,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4006,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF4007,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5400,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5401,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5402,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5404,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5406,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5407,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Fast Rectifier,UF5408,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Rectifier,1N4001,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Rectifier,1N4002,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Rectifier,1N4003,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
@@ -21,57 +62,16 @@ Rectifier,1N5404,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Rectifier,1N5406,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Rectifier,1N5407,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Rectifier,1N5408,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Rectifier,BY255,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Rectifier,6A10,R-6,8.85 mm,8.85 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4001,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4002,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4003,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4004,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4005,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4006,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF4007,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,1N4933,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,1N4934,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,1N4935,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,1N4936,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,1N4937,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR101,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR102,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR103,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR104,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR105,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR106,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,FR107,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER101,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER102,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER103,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER104,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER105,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER106,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER107,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,HER108,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,MUR120,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,MUR160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,BA157,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,BA158,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,BA159,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5400,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5401,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5402,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5404,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5406,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5407,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,UF5408,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,MUR460,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
-Fast Rectifier,BY399,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Rectifier,BY255,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Schottky,1N5817,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Schottky,1N5818,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Schottky,1N5819,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Schottky,SB140,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Schottky,SB160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Schottky,SR160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
-Schottky,11DQ04,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Schottky,1N5820,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Schottky,1N5821,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
 Schottky,1N5822,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Schottky,11DQ04,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Schottky,SB140,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
+Schottky,SB160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD
 Schottky,SB560,DO-201AD,8.5 mm,5.1 mm,#1E1E1E,#BDBDBD
+Schottky,SR160,DO-41,4.6 mm,2.4 mm,#1E1E1E,#BDBDBD

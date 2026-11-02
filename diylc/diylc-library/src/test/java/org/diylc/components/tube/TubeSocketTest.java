@@ -21,6 +21,9 @@
 */
 package org.diylc.components.tube;
 
+import java.lang.reflect.Field;
+
+import org.diylc.components.semiconductors.PinLabels;
 import org.diylc.components.tube.TubeSocket.Base;
 import org.diylc.components.tube.TubeSocket.Mount;
 import org.diylc.core.Angle;
@@ -45,5 +48,15 @@ public class TubeSocketTest {
     // control point 0 is the socket centre, so pin 1 is control point 1
     Assert.assertEquals("H2", socket.getControlPointNodeName(2));
     Assert.assertEquals("K", socket.getControlPointNodeName(8));
+  }
+
+  /** Files saved before the option existed always drew the names, and still do. */
+  @Test
+  public void socketWithoutTheOptionShowsNames() throws Exception {
+    TubeSocket socket = new TubeSocket();
+    Field field = TubeSocket.class.getDeclaredField("pinLabels");
+    field.setAccessible(true);
+    field.set(socket, null);
+    Assert.assertEquals(PinLabels.NAMES, socket.getPinLabels());
   }
 }
