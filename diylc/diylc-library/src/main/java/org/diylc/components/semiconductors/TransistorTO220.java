@@ -58,7 +58,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Transistor (TO-220)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistors with metal tab for heat sink mounting",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO220Transformer.class,
-    enableCache = true)
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
 public class TransistorTO220 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
@@ -91,6 +92,12 @@ public class TransistorTO220 extends AbstractTransistorPackage {
     this.alphaPercent = new Percentage(100);
     bodyColor = BODY_COLOR;
     borderColor = BORDER_COLOR;
+  }
+
+  public TransistorTO220(String[] model) {
+    this();
+
+    applyModel(model);
   }
 
   @Override
@@ -234,8 +241,8 @@ public class TransistorTO220 extends AbstractTransistorPackage {
               componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
                   : theme.getOutlineColor();
         } else {
-          finalPinColor = METAL_COLOR;
-          finalPinBorderColor = METAL_COLOR.darker();
+          finalPinColor = PIN_COLOR;
+          finalPinBorderColor = PIN_BORDER_COLOR;
         }
         Line2D line;
         for (Point2D point : controlPoints) {
@@ -287,17 +294,6 @@ public class TransistorTO220 extends AbstractTransistorPackage {
           }
         }
       }
-    } else {
-      if (!outlineMode) {
-        for (Point2D point : controlPoints) {
-
-          g2d.setColor(PIN_COLOR);
-          Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
-          g2d.fill(pin);
-          g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-          g2d.draw(pin);
-        }
-      }
     }
 
     
@@ -338,6 +334,9 @@ public class TransistorTO220 extends AbstractTransistorPackage {
     if (folded) {
       g2d.draw(tabArea);
     }
+
+    drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
+        outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
 
     // Draw label.
     g2d.setFont(project.getFont());

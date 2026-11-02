@@ -36,26 +36,35 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.awt.TwoCircleTangent;
 import org.diylc.common.*;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.components.semiconductors.AbstractTransistorPackage.TransistorDisplay;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
+import org.diylc.netlist.ISpiceMapper;
 import org.diylc.utils.Constants;
 
+@AiNote("The first control point is pin 1; with 'Orientation' DEFAULT pin 2 is 10.9mm below it and the mounting holes lie left and right of the pins, which sit 1.8mm left of the case centre. The third control point is the case, at the centre of the left mounting hole: connect a wire or solder lug there to reach the collector")
+@AiNote("'Pinout' values list pin 1, pin 2, then the case, e.g. B-E-C for a 2N3055 whose case is the collector")
 @ComponentDescriptor(name = "Transistor (TO-3)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with large metal body",
-    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class TransistorTO3 extends AbstractLabeledComponent<String> {
+    zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
+    enableDatasheet = true, datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class TransistorTO3 extends AbstractLabeledComponent<String>
+    implements ISpiceMapper, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -76,17 +85,35 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
 
   private String value = "";
   private Orientation orientation = Orientation.DEFAULT;
-  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
+  // pin 1, pin 2 and the case, reached through the mounting hole on the side of the pins
+  private Point2D[] controlPoints =
+      new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(0, 0), new Point2D.Double(0, 0)};
   transient private Area[] body;
   private Color bodyColor = BODY_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
+  @Deprecated
   protected Display display = Display.NAME;
+  private TransistorDisplay transistorDisplay = TransistorDisplay.NAME;
+  private TransistorPinout pinout;
 
   public TransistorTO3() {
     super();
     updateControlPoints();
     this.alphaPercent = new Percentage(100);
+  }
+
+  public TransistorTO3(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, part number, pinout of pin 1, pin 2 and the case
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setPinout(TransistorPinout.valueOf(model[2]));
   }
 
   @EditableProperty
@@ -110,14 +137,67 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     body = null;
   }
 
+  @EditableProperty
+  public TransistorPinout getPinout() {
+    return pinout;
+  }
+
+  public void setPinout(TransistorPinout pinout) {
+    this.pinout = pinout;
+  }
+
   @Override
   public int getControlPointCount() {
-    return controlPoints.length;
+    return getControlPoints().length;
   }
 
   @Override
   public Point2D getControlPoint(int index) {
-    return controlPoints[index];
+    return getControlPoints()[index];
+  }
+
+  // files saved before the case point existed hold only the two pins
+  private Point2D[] getControlPoints() {
+    if (controlPoints.length < 3) {
+      controlPoints = new Point2D[] {controlPoints[0], controlPoints[1], new Point2D.Double(0, 0)};
+      updateCasePoint();
+    }
+    return controlPoints;
+  }
+
+  @Override
+  public boolean canPointMoveFreely(int pointIndex) {
+    return false;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    if (getPinout() != null) {
+      return getPinout().toPinout().substring(index, index + 1);
+    }
+    return super.getControlPointNodeName(index);
+  }
+
+  @Override
+  public int mapToSpiceNode(int index) {
+    if (getPinout() == null) {
+      return index;
+    }
+    return getPinout().mapToSpiceNode(index);
+  }
+
+  @Override
+  public String getComment() {
+    return getPinout() == null ? "Pinout not configured, validate this line"
+        : (getPinout().toString() + " pinout");
+  }
+
+  @Override
+  public String getPrefix() {
+    if (getPinout() == null) {
+      return null;
+    }
+    return getPinout().name().substring(0, 1);
   }
 
   @Override
@@ -132,11 +212,12 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
 
   @Override
   public void setControlPoint(Point2D point, int index) {
-    controlPoints[index].setLocation(point);
+    getControlPoints()[index].setLocation(point);
     body = null;
   }
 
   private void updateControlPoints() {
+    Point2D[] controlPoints = getControlPoints();
     int pinSpacing = (int) PIN_SPACING.convertToPixels();
     // Update control points.
     double x = controlPoints[0].getX();
@@ -157,10 +238,37 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
       default:
         throw new RuntimeException("Unexpected orientation: " + orientation);
     }
+    updateCasePoint();
+  }
+
+  // the centre of the mounting hole on the side the pins are offset towards, rounded as getBody()
+  // rounds it
+  private void updateCasePoint() {
+    int pinOffset = (int) PIN_OFFSET.convertToPixels();
+    int holeDistance = getClosestOdd(HOLE_DISTANCE.convertToPixels());
+    double x = (controlPoints[0].getX() + controlPoints[1].getX()) / 2;
+    double y = (controlPoints[0].getY() + controlPoints[1].getY()) / 2;
+    switch (orientation) {
+      case DEFAULT:
+        controlPoints[2].setLocation(x + pinOffset - holeDistance / 2, y);
+        break;
+      case _90:
+        controlPoints[2].setLocation(x, y + pinOffset - holeDistance / 2);
+        break;
+      case _180:
+        controlPoints[2].setLocation(x - pinOffset + holeDistance / 2, y);
+        break;
+      case _270:
+        controlPoints[2].setLocation(x, y - pinOffset + holeDistance / 2);
+        break;
+      default:
+        throw new RuntimeException("Unexpected orientation: " + orientation);
+    }
   }
 
   public Area[] getBody() {
     if (body == null) {
+      Point2D[] controlPoints = getControlPoints();
       body = new Area[2];
       int pinOffset = (int) PIN_OFFSET.convertToPixels();
       double x = (controlPoints[0].getX() + controlPoints[1].getX()) / 2;
@@ -233,15 +341,6 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     
-    for (Point2D point : controlPoints) {
-      if (!outlineMode) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
-      }
-      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);      
-      g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
-    }
-    
     Area mainArea = getBody()[0];
     Area innerArea = getBody()[1];
     Composite oldComposite = applyAlpha(g2d, componentState);
@@ -264,7 +363,21 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
-    g2d.draw(innerArea);   
+    g2d.draw(innerArea);
+
+    // the pins leave through the bottom of the case, so they are drawn over it to stay visible
+    // whatever its alpha
+    for (int i = 0; i < 2; i++) {
+      Point2D point = getControlPoint(i);
+      if (!outlineMode) {
+        g2d.setColor(PIN_COLOR);
+        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2),
+            (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
+      }
+      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
+      g2d.drawOval((int) Math.round(point.getX() - pinSize / 2),
+          (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
+    }
 
     // Draw label.
     g2d.setFont(project.getFont());
@@ -284,12 +397,16 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
               : getLabelColor();
     }
     g2d.setColor(finalLabelColor);
+    if (getTransistorDisplay() == TransistorDisplay.PINOUT) {
+      drawPinout(g2d);
+      return;
+    }
     String label = "";
-    label = (getDisplay() == Display.NAME) ? getName() : getValue();
-    if (getDisplay() == Display.NONE) {
+    label = (getTransistorDisplay() == TransistorDisplay.NAME) ? getName() : getValue();
+    if (getTransistorDisplay() == TransistorDisplay.NONE) {
       label = "";
     }
-    if (getDisplay() == Display.BOTH) {
+    if (getTransistorDisplay() == TransistorDisplay.BOTH) {
       label = getName() + "  " + (getValue() == null ? "" : getValue().toString());
     }
     FontMetrics fontMetrics = g2d.getFontMetrics(g2d.getFont());
@@ -301,6 +418,47 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     int x = (int) (bounds.getX() + (bounds.width - textWidth) / 2);
     int y = (int) (bounds.getY() + (bounds.height - textHeight) / 2 + fontMetrics.getAscent());
     g2d.drawString(label, x, y);
+  }
+
+  // each letter sits beside its pin or hole on the side of the body centre
+  private void drawPinout(Graphics2D g2d) {
+    if (getPinout() == null) {
+      return;
+    }
+    g2d.setFont(g2d.getFont().deriveFont((float) (g2d.getFont().getSize() * 0.7)));
+    String pinout = getPinout().toPinout();
+    int pinD = (int) PIN_DIAMETER.convertToPixels();
+    int holeD = (int) HOLE_SIZE.convertToPixels();
+    for (int i = 0; i < pinout.length(); i++) {
+      Point2D point = getControlPoint(i);
+      int d = (i < 2 ? pinD : holeD) / 2 + 2;
+      int dx = 0;
+      int dy = 0;
+      HorizontalAlignment ha = HorizontalAlignment.CENTER;
+      VerticalAlignment va = VerticalAlignment.CENTER;
+      switch (getOrientation()) {
+        case DEFAULT:
+          dx = d;
+          ha = HorizontalAlignment.LEFT;
+          break;
+        case _90:
+          dy = d;
+          va = VerticalAlignment.BOTTOM;
+          break;
+        case _180:
+          dx = -d;
+          ha = HorizontalAlignment.RIGHT;
+          break;
+        case _270:
+          dy = -d;
+          va = VerticalAlignment.TOP;
+          break;
+        default:
+          throw new RuntimeException("Unexpected orientation: " + orientation);
+      }
+      StringUtils.drawCenteredText(g2d, pinout.substring(i, i + 1), point.getX() + dx,
+          point.getY() + dy, ha, va);
+    }
   }
 
   @Override
@@ -351,7 +509,7 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     this.labelColor = labelColor;
   }
 
-  @EditableProperty
+  @Deprecated
   public Display getDisplay() {
     if (display == null) {
       display = Display.NAME;
@@ -359,8 +517,21 @@ public class TransistorTO3 extends AbstractLabeledComponent<String> {
     return display;
   }
 
+  @Deprecated
   public void setDisplay(Display display) {
     this.display = display;
+  }
+
+  @EditableProperty(name = "Display")
+  public TransistorDisplay getTransistorDisplay() {
+    if (transistorDisplay == null) {
+      transistorDisplay = TransistorDisplay.valueOf(getDisplay().name());
+    }
+    return transistorDisplay;
+  }
+
+  public void setTransistorDisplay(TransistorDisplay transistorDisplay) {
+    this.transistorDisplay = transistorDisplay;
   }
   
   @Override

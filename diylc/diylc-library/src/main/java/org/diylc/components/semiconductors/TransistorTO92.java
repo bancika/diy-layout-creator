@@ -28,7 +28,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -59,7 +58,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Transistor (TO-92)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small plastic or epoxy body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class,
-    enableCache = true)
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
 public class TransistorTO92 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
@@ -81,6 +81,12 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     this.alphaPercent = new Percentage(100);
     bodyColor = BODY_COLOR;
     borderColor = BORDER_COLOR;
+  }
+
+  public TransistorTO92(String[] model) {
+    this();
+
+    applyModel(model);
   }
 
   @EditableProperty(name = "Pin spacing")
@@ -195,18 +201,9 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     }
     drawingObserver.stopTracking();
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-    
-    if (!outlineMode) {
-      for (Point2D point : controlPoints) {
-        Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(pin);
-        g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.draw(pin);
-      }
-    }
-    
+    Theme theme =
+        (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
+
     Area mainArea = getBody()[0];
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
@@ -216,8 +213,6 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     g2d.setComposite(oldComposite);
     Color finalBorderColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
               : theme.getOutlineColor();
@@ -230,6 +225,9 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
 
+    drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
+        outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
+
     // Draw label.
     g2d.setFont(project.getFont());
     
@@ -239,8 +237,6 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     
     Color finalLabelColor;
     if (outlineMode) {
-      Theme theme =
-          (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
       finalLabelColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? LABEL_COLOR_SELECTED
               : theme.getOutlineColor();

@@ -1,5 +1,5 @@
 {
-  "version" : "6.9.0",
+  "version" : "6.10.0",
   "components" : [ {
     "name" : "Blank Board",
     "className" : "boards.BlankBoard",
@@ -17332,7 +17332,8 @@
     "namePrefix" : "Q",
     "description" : "Transistor with small metal body",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes" ],
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes", "'Pinout' values list pins 1, 2, 3 in control point order. Seen from above, a metal can's leads run counter-clockwise from the tab, which sits beside pin 1; most parts, silicon TO-18/TO-39 and germanium alike, are E-B-C" ],
+    "datasheetModels" : [ "BC107", "BC108", "BC109", "2N2222A", "2N2369A", "2N2219A", "2N1613", "2N1711", "2N3053", "2N3866", "BFY51", "BC177", "BC178", "BC179", "2N2907A", "2N2905A", "AC127", "AC176", "AC187", "2N1308", "AC126", "AC128", "AC188", "OC44", "OC45", "OC71", "OC75", "OC76", "OC81", "2N404", "2N1305" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17382,7 +17383,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -17441,6 +17442,34 @@
         }, {
           "i" : 1,
           "label" : "C"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_BEC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CEB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "E"
         }, {
           "i" : 2,
           "label" : "B"
@@ -17514,6 +17543,20 @@
         }, {
           "i" : 2,
           "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SDG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "G"
         } ]
       }, {
         "when" : {
@@ -17643,6 +17686,48 @@
         } ]
       }, {
         "when" : {
+          "Pinout" : "REGULATOR_AIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "A"
+        } ]
+      }, {
+        "when" : {
           "Pinout" : "REGULATOR_GIO"
         },
         "pins" : [ {
@@ -17664,6 +17749,8 @@
     "namePrefix" : "Q",
     "description" : "Transistors with a hole for heat sink mounting",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor and pin 1; with 'Orientation' DEFAULT the three pins run straight down from it 0.1in apart, and the other orientations rotate this around the anchor", "'Pinout' values list the pins as a datasheet does, facing the printed front with the metal back away and the legs down, left to right; BD139-style parts are E-C-B" ],
+    "datasheetModels" : [ "BD135", "BD137", "BD139", "BD237", "MJE340", "MJE180", "2SC3423", "KSC3503", "2SD669A", "BF469", "BD136", "BD138", "BD140", "BD238", "MJE350", "MJE170", "2SA1360", "KSA1381", "2SB649A", "BF470", "BD681", "BD682" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17713,7 +17800,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -17772,6 +17859,34 @@
         }, {
           "i" : 1,
           "label" : "C"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_BEC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CEB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "E"
         }, {
           "i" : 2,
           "label" : "B"
@@ -17845,6 +17960,20 @@
         }, {
           "i" : 2,
           "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SDG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "G"
         } ]
       }, {
         "when" : {
@@ -17971,6 +18100,48 @@
         }, {
           "i" : 2,
           "label" : "I"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_AIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "A"
         } ]
       }, {
         "when" : {
@@ -17996,6 +18167,7 @@
     "description" : "Transistors with metal tab for heat sink mounting",
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 0.1in apart, and the other orientations rotate this around the anchor", "Seen from above, the metal tab is on the right of the pin row in DEFAULT orientation and the printed front faces left; 'Folded' lays the body flat on the right of the pin row, 'Lead Length' away from it, with the tab and its mounting hole at the far end", "'Pinout' values list the pins as a datasheet does, facing the printed front with the legs down, left to right; pick the value that matches the part's datasheet as written" ],
+    "datasheetModels" : [ "TIP29C", "TIP31C", "TIP41C", "MJE3055T", "MJE15028", "MJE15030", "MJE15032", "BD243C", "BD911", "TIP30C", "TIP32C", "TIP42C", "MJE2955T", "MJE15029", "MJE15031", "MJE15033", "BD244C", "BD912", "TIP120", "TIP121", "TIP122", "TIP125", "TIP126", "TIP127", "IRF510", "IRF520", "IRF530", "IRF540N", "IRF610", "IRF640", "IRF840", "IRFZ44N", "IRLZ44N", "IRF3205", "FQP30N06L", "IRF9530", "IRF9540N", "IRF9610", "IRF9640", "7805", "7806", "7808", "7809", "7812", "7815", "7818", "7824", "LM317T", "LM338T", "LM350T", "LM1084-ADJ", "LM1085-ADJ", "LM1086-ADJ", "LM1086-3.3", "LM1086-5.0", "LM1117T-ADJ", "LM1117T-3.3", "LM1117T-5.0", "LD1117V", "LD1117V33", "LD1117V50", "LM2940CT-5.0", "LM2940CT-12", "7905", "7912", "7915", "LM337T" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18045,7 +18217,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
     }, {
       "name" : "Tab",
       "type" : "Color",
@@ -18120,6 +18292,34 @@
         } ]
       }, {
         "when" : {
+          "Pinout" : "BJT_BEC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CEB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
           "Pinout" : "JFET_DSG"
         },
         "pins" : [ {
@@ -18187,6 +18387,20 @@
         }, {
           "i" : 2,
           "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SDG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "G"
         } ]
       }, {
         "when" : {
@@ -18316,6 +18530,48 @@
         } ]
       }, {
         "when" : {
+          "Pinout" : "REGULATOR_AIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "A"
+        } ]
+      }, {
+        "when" : {
           "Pinout" : "REGULATOR_GIO"
         },
         "pins" : [ {
@@ -18337,6 +18593,8 @@
     "namePrefix" : "Q",
     "description" : "Transistor with large metal body",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is pin 1; with 'Orientation' DEFAULT pin 2 is 10.9mm below it and the mounting holes lie left and right of the pins, which sit 1.8mm left of the case centre. The third control point is the case, at the centre of the left mounting hole: connect a wire or solder lug there to reach the collector", "'Pinout' values list pin 1, pin 2, then the case, e.g. B-E-C for a 2N3055 whose case is the collector" ],
+    "datasheetModels" : [ "2N3055", "2N3442", "2N3773", "MJ15003", "MJ15015", "MJ15022", "MJ15024", "MJ2955", "2N6609", "MJ15004", "MJ15016", "MJ15023", "MJ15025", "MJ11016", "MJ11032", "MJ11015", "MJ11033", "IRF150", "LM317K", "LM338K", "LM350K", "LM309K", "LM323K", "LM340K-5.0", "LM340K-12", "LM340K-15", "LM337K" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18354,66 +18612,10 @@
       "defaultValue" : "#868686"
     }, {
       "name" : "Display",
-      "type" : "Display",
-      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
-      "defaultValue" : "NAME"
-    }, {
-      "name" : "Font Size Override",
-      "type" : "Integer"
-    }, {
-      "name" : "Label",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#000000"
-    }, {
-      "name" : "Name",
-      "type" : "String"
-    }, {
-      "name" : "Orientation",
-      "type" : "Orientation",
-      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
-      "defaultValue" : "DEFAULT"
-    }, {
-      "name" : "Value",
-      "type" : "String"
-    } ],
-    "pinout" : {
-      "pinCount" : 2,
-      "labels" : "sequential"
-    }
-  }, {
-    "name" : "Transistor (TO-92)",
-    "className" : "semiconductors.TransistorTO92",
-    "category" : "Semiconductors",
-    "namePrefix" : "Q",
-    "description" : "Transistor with small plastic or epoxy body",
-    "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
-    "properties" : [ {
-      "name" : "Alpha",
-      "type" : "Percentage",
-      "format" : "number without the % sign, e.g. 100",
-      "defaultValue" : "100"
-    }, {
-      "name" : "Body",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#808080"
-    }, {
-      "name" : "Border",
-      "type" : "Color",
-      "format" : "hex",
-      "defaultValue" : "#595959"
-    }, {
-      "name" : "Display",
       "type" : "TransistorDisplay",
       "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH", "PINOUT" ],
       "defaultValue" : "NAME"
     }, {
-      "name" : "Folded",
-      "type" : "Boolean",
-      "defaultValue" : "false"
-    }, {
       "name" : "Font Size Override",
       "type" : "Integer"
     }, {
@@ -18430,15 +18632,9 @@
       "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
       "defaultValue" : "DEFAULT"
     }, {
-      "name" : "Pin spacing",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.05in"
-    }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -18503,6 +18699,34 @@
         } ]
       }, {
         "when" : {
+          "Pinout" : "BJT_BEC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CEB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
           "Pinout" : "JFET_DSG"
         },
         "pins" : [ {
@@ -18570,6 +18794,20 @@
         }, {
           "i" : 2,
           "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SDG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "G"
         } ]
       }, {
         "when" : {
@@ -18696,6 +18934,465 @@
         }, {
           "i" : 2,
           "label" : "I"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_AIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "A"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_GIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      } ]
+    }
+  }, {
+    "name" : "Transistor (TO-92)",
+    "className" : "semiconductors.TransistorTO92",
+    "category" : "Semiconductors",
+    "namePrefix" : "Q",
+    "description" : "Transistor with small plastic or epoxy body",
+    "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
+    "datasheetModels" : [ "2N3904", "2N4401", "PN2222A", "2N4124", "2N5088", "2N5089", "2N5210", "2N5551", "MPSA06", "MPSA18", "MPSA42", "MPS5179", "S8050", "S9013", "S9014", "S9018", "BC546", "BC547", "BC548", "BC549", "BC550", "BC337", "BC182", "BC184", "BC239", "P2N2222A", "BC639", "BC182L", "BC184L", "2SC1815", "2SC945", "2SC2240", "2SC1845", "KSC1845", "2SC2458", "BF199", "BF494", "MPSH10", "2N3906", "2N4403", "PN2907A", "2N4126", "2N5087", "2N5401", "MPSA56", "MPSA92", "S8550", "S9012", "S9015", "KSP2907A", "BC556", "BC557", "BC558", "BC559", "BC560", "BC327", "BC212", "BC214", "BC640", "2SA1015", "2SA970", "2SA992", "KSA992", "KSP2907AC", "MPSA13", "MPSA14", "MPSA63", "MPSA64", "J201", "J202", "J111", "J112", "J113", "J310", "2N5457", "2N5458", "2N5459", "2N5484", "2N5485", "2N5486", "PN4416", "MPF102", "BF245A", "BF245B", "BF245C", "2N3819", "BF256B", "2SK170", "LSK170", "J174", "J175", "J176", "2N3820", "2N5460", "2N7000", "LND150", "BS170", "78L05", "78L09", "78L12", "78L15", "LP2950-5.0", "LM2936Z-5.0", "LM317LZ", "LR8", "79L05", "79L12", "79L15", "LM337LZ" ],
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Body",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#808080"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#595959"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH", "PINOUT" ],
+      "defaultValue" : "NAME"
+    }, {
+      "name" : "Folded",
+      "type" : "Boolean",
+      "defaultValue" : "false"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Label",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Pin spacing",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Pinout",
+      "type" : "TransistorPinout",
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Pinout" ],
+      "variants" : [ {
+        "when" : {
+          "Pinout" : "BJT_EBC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "B"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CBE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "B"
+        }, {
+          "i" : 2,
+          "label" : "E"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_BCE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "C"
+        }, {
+          "i" : 2,
+          "label" : "E"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_ECB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "E"
+        }, {
+          "i" : 1,
+          "label" : "C"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_BEC"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "C"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "BJT_CEB"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "C"
+        }, {
+          "i" : 1,
+          "label" : "E"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_DSG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D"
+        }, {
+          "i" : 1,
+          "label" : "S"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_GSD"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "S"
+        }, {
+          "i" : 2,
+          "label" : "D"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_DGS"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SGD"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "D"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_GDS"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "JFET_SDG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "MOSFET_DSG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D"
+        }, {
+          "i" : 1,
+          "label" : "S"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "MOSFET_GSD"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "S"
+        }, {
+          "i" : 2,
+          "label" : "D"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "MOSFET_DGS"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "D"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "MOSFET_SGD"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "S"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "D"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "MOSFET_GDS"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "D"
+        }, {
+          "i" : 2,
+          "label" : "S"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IGO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_OGI"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "O"
+        }, {
+          "i" : 1,
+          "label" : "G"
+        }, {
+          "i" : 2,
+          "label" : "I"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_GOI"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "I"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_AOI"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "I"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_AIO"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "A"
+        }, {
+          "i" : 1,
+          "label" : "I"
+        }, {
+          "i" : 2,
+          "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOG"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REGULATOR_IOA"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "I"
+        }, {
+          "i" : 1,
+          "label" : "O"
+        }, {
+          "i" : 2,
+          "label" : "A"
         } ]
       }, {
         "when" : {

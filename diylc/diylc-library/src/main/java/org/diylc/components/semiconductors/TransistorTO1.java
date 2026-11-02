@@ -27,7 +27,6 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -54,10 +53,12 @@ import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor")
 @AiNote("On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes")
+@AiNote("'Pinout' values list pins 1, 2, 3 in control point order. Seen from above, a metal can's leads run counter-clockwise from the tab, which sits beside pin 1; most parts, silicon TO-18/TO-39 and germanium alike, are E-B-C")
 @ComponentDescriptor(name = "Transistor (TO-1)", author = "Branislav Stojkovic", category = "Semiconductors",
     instanceNamePrefix = "Q", description = "Transistor with small metal body",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO1Transformer.class,
-    enableCache = true)
+    enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
 public class TransistorTO1 extends AbstractTransistorPackage {
 
   private static final long serialVersionUID = 1L;
@@ -81,6 +82,12 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     this.alphaPercent = new Percentage(100);
     bodyColor = BODY_COLOR;
     borderColor = BORDER_COLOR;
+  }
+
+  public TransistorTO1(String[] model) {
+    this();
+
+    applyModel(model);
   }
 
   @Override
@@ -172,18 +179,8 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     }
     int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
     Theme theme = (Theme) ConfigurationManager.getInstance().readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME);
-    
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-    for (Point2D point : controlPoints) {
-      Shape shape = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2, pinSize, pinSize);
-      if (!outlineMode) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fill(shape);
-      }
-      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);      
-      g2d.draw(shape);
-    }
-    
+
+
     Area mainArea = getBody()[0];
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
@@ -204,7 +201,10 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     }
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
-    g2d.draw(mainArea);    
+    g2d.draw(mainArea);
+
+    drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
+        outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
 
     // Draw label.
     g2d.setFont(project.getFont());

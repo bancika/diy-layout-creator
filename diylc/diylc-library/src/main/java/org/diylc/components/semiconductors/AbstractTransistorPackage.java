@@ -24,21 +24,26 @@ package org.diylc.components.semiconductors;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
+import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.netlist.ISpiceMapper;
 
-public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper, IGerberComponentSimple {
+public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper, IGerberComponentSimple,
+    IDatasheetSupport {
   
   private static final long serialVersionUID = 1L;
   
@@ -58,59 +63,23 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
   public AbstractTransistorPackage() {
   }
   
+  // columns: group, part number, pinout
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setPinout(TransistorPinout.valueOf(model[2]));
+  }
+
   protected abstract void updateControlPoints();
   
   public abstract Area[] getBody();
   
   @Override
   public int mapToSpiceNode(int index) {
-    if (getPinout() == null)
+    if (getPinout() == null) {
       return index;
-    
-    switch (getPinout()) {
-      case BJT_CBE:
-        return index;
-      case BJT_EBC:
-        return 2 - index;
-      case JFET_DGS:
-      case MOSFET_DGS:
-        return index;
-      case JFET_DSG:
-      case MOSFET_DSG:
-        switch (index) {
-          case 0: return 0;
-          case 1: return 2;
-          case 2: return 1;
-        }        
-      case JFET_GSD:
-      case MOSFET_GSD:
-        switch (index) {
-          case 0: return 1;
-          case 1: return 2;
-          case 2: return 0;
-        }
-      case JFET_GDS:
-      case MOSFET_GDS:
-        switch (index) {
-          case 0: return 1;
-          case 1: return 0;
-          case 2: return 2;
-        }
-      case JFET_SGD:
-      case MOSFET_SGD:
-        return 2 - index;
-      case BJT_BCE:
-        switch (index) {
-          case 0: return 1;
-          case 1: return 0;
-          case 2: return 2;
-        }   
-        break;
-      default:
-        break;
     }
-    
-    return index;
+    return getPinout().mapToSpiceNode(index);
   }
   
   @Override
@@ -282,6 +251,22 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
+  // drawn after the body so that pins stay visible whatever its alpha; a null pinColor draws only
+  // the outline
+  protected void drawPins(Graphics2D g2d, int pinSize, Color pinColor, Color pinBorderColor) {
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
+    for (Point2D point : controlPoints) {
+      Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
+          pinSize, pinSize);
+      if (pinColor != null) {
+        g2d.setColor(pinColor);
+        g2d.fill(pin);
+      }
+      g2d.setColor(pinBorderColor);
+      g2d.draw(pin);
+    }
+  }
+
   protected boolean flipPinoutLabel() {
     return false;
   }
