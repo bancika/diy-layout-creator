@@ -48,7 +48,7 @@ public abstract class AbstractShape extends AbstractTransparentComponent<Void> {
 
   protected Color color = COLOR;
   protected Color borderColor = BORDER_COLOR;
-  protected Size borderThickness = new Size(0.2d, SizeUnit.mm);
+  protected Size borderThickness = new Size(1.0, SizeUnit.px);
 
   @EditableProperty(name = "Color")
   public Color getColor() {
