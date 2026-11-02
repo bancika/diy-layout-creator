@@ -59,7 +59,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@AiNote("The first control point is the socket centre, not a pin. Pins sit on a circle and are numbered clockwise, starting after the gap (B9A, B7G, B12C) or the key (OCTAL), which points right at 'Angle' 0; 'Angle' rotates the socket clockwise in degrees. This is the bottom view used for wiring")
+@AiNote("The first control point is the socket centre, not a pin. Pins sit on a circle and are numbered clockwise, starting after the gap (B9A, B7G, B12C), the key (OCTAL) or the pair of thick filament pins (UX4), which points right at 'Angle' 0; 'Angle' rotates the socket clockwise in degrees. This is the bottom view used for wiring")
 @AiNote("'Pin Names' is a comma-separated list of electrode names in pin order starting at pin 1: P plate, G triode grid, G1/G2/G3 control, screen and suppressor grids, K cathode, BP beam plates, IS internal shield, HCT heater centre tap. Sections of a multi-section tube are numbered first (1P, 1G, 2P); heater ends are named after their pin (H4, H5) because they are separate nets; pins joined inside the tube end in _1, _2; NC and IC pins are never connected. 'Pin Labels' draws the names (default), the pin numbers or nothing")
 @AiNote("A datasheet model is a tube type such as 12AX7 or EL34 and sets 'Base', 'Pin Names' and 'Designation'. Set 'Designation' to the same tube type together with the model")
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
@@ -80,11 +80,13 @@ public class TubeSocket extends AbstractAngledComponent<String>
   private static final Size B12C_CUTOUT_DIAMETER = new Size(5.5d, SizeUnit.mm);
   private static final Size B12C_PIN_SPACING_PCB = new Size(25d, SizeUnit.mm);
   private static final Size B12C_PIN_SPACING_CHASSIS = new Size(22d, SizeUnit.mm);
+  private static final Size UX4_PIN_SPACING = new Size(16.3d, SizeUnit.mm);
 
   private static final Size OCTAL_DIAMETER = new Size(25d, SizeUnit.mm);
   private static final Size B9A_DIAMETER = new Size(3 / 4d, SizeUnit.in);
   private static final Size B7G_DIAMETER = new Size(17d, SizeUnit.mm);
   private static final Size B12C_DIAMETER = new Size(30d, SizeUnit.mm);
+  private static final Size UX4_DIAMETER = new Size(30d, SizeUnit.mm);
 
   private static final long serialVersionUID = 1L;
 
@@ -188,6 +190,11 @@ public class TubeSocket extends AbstractAngledComponent<String>
         pinSpacing = getClosestOdd(getMount() == Mount.PCB ? B12C_PIN_SPACING_PCB.convertToPixels() : B12C_PIN_SPACING_CHASSIS.convertToPixels());
         hasEmptySpace = true;
         break;
+      case UX4:
+        pinCount = 4;
+        pinSpacing = getClosestOdd(UX4_PIN_SPACING.convertToPixels());
+        hasEmptySpace = false;
+        break;
       default:
         throw new RuntimeException("Unexpected base: " + base);
     }
@@ -220,6 +227,9 @@ public class TubeSocket extends AbstractAngledComponent<String>
           break;
         case B12C:
           bodyDiameter = getClosestOdd(B12C_DIAMETER.convertToPixels());
+          break;
+        case UX4:
+          bodyDiameter = getClosestOdd(UX4_DIAMETER.convertToPixels());
           break;
         default:
           throw new RuntimeException("Unexpected base: " + base);
@@ -473,7 +483,7 @@ public class TubeSocket extends AbstractAngledComponent<String>
   }
 
   public static enum Base {
-    B9A("Noval B9A"), OCTAL("Octal"), B7G("Small-button B7G"), B12C("Duodecar B12C");
+    B9A("Noval B9A"), OCTAL("Octal"), B7G("Small-button B7G"), B12C("Duodecar B12C"), UX4("UX4");
 
     String name;
 

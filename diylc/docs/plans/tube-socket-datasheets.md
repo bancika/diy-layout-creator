@@ -51,8 +51,8 @@ joined against 9, and that choice is made by the wiring, not the tube.
 
 ### Explicitly out of scope
 
-- `Jumbo4PinTubeSocket` (fixed `G,F1,P,F2` for 211/805/845) and the UX4 base of 300B, 2A3 and 45:
-  a 4-pin base is not a `TubeSocket.Base`. Candidate for a second phase.
+- `Jumbo4PinTubeSocket` (fixed `G,F1,P,F2` for 211/805/845): a separate class with its own
+  ceramic body and terminals. The UX4 base of 300B and 2A3 was added later (§7, phase 5).
 - Magnoval (B9D: EL509, PL519), loctal and the B12C compactrons: no datasheet rows until a user
   asks; B12C exists as a base but few DIY tubes use it.
 - `SubminiTube` and the tube schematic symbols.
@@ -213,4 +213,11 @@ where the basing is confirmed identical (the 6L6 family is not uniformly 7AC, an
    (datasheet, and the shorted-variant fix).
 4. **Pin labels**: done - V13 ("Pin Names"), V14 ("Pin Labels"), factory presets re-keyed,
    `TubeSocketTest` covers the old-file default; rendered in all three modes.
-5. **Later, on request**: the UX4/jumbo 4-pin bases (300B, 2A3, 211, 845), magnoval.
+5. **UX4**: done - `Base.UX4`, four pins 90 degrees apart on a 16.3 mm pin circle (Radiomuseum base
+   table; pins 1 and 4 are 4.0 mm, 2 and 3 are 3.2 mm), drawn on a 30 mm body like the octal. Pin 1
+   follows the convention of the other bases: the gap between the thick filament pins 1 and 4
+   points right at 'Angle' 0, numbered clockwise in the bottom view. Rows for 2A3 and 45 (RCA,
+   basing 4D), 6A3 (Tung-Sol, 4D) and 300B (JJ; same layout as 4D), named `F1,P,G,F4` per V6, and
+   the 5Z3 rectifier (RCA 4C: plate 2 on pin 2, plate 1 on pin 3; Tung-Sol agrees but does not
+   number the plates), `F1,2P,1P,F4`. The 50 and 80 are also UX4 and left out until a sheet is read.
+6. **Later, on request**: the jumbo 4-pin base (211, 845) in the datasheet, magnoval.

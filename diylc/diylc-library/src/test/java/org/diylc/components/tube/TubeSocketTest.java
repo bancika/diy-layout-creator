@@ -50,6 +50,20 @@ public class TubeSocketTest {
     Assert.assertEquals("K", socket.getControlPointNodeName(8));
   }
 
+  /** The thick filament pins 1 and 4 straddle the direction the other bases put their key. */
+  @Test
+  public void ux4FilamentPinsFaceTheKeyDirection() {
+    TubeSocket socket = new TubeSocket();
+    socket.setBase(Base.UX4);
+
+    Assert.assertEquals(5, socket.getControlPointCount());
+    double centerX = socket.getControlPoint(0).getX();
+    Assert.assertTrue(socket.getControlPoint(1).getX() > centerX);
+    Assert.assertTrue(socket.getControlPoint(2).getX() < centerX);
+    Assert.assertTrue(socket.getControlPoint(3).getX() < centerX);
+    Assert.assertTrue(socket.getControlPoint(4).getX() > centerX);
+  }
+
   /** Files saved before the option existed always drew the names, and still do. */
   @Test
   public void socketWithoutTheOptionShowsNames() throws Exception {
