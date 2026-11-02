@@ -1,0 +1,35 @@
+Diode,6D6A,Inline,no,7.2 mm,7.2 mm,36 mm,P,H2,H3,K
+Dual Triode,6N16B,Circular,no,10.2 mm,10.2 mm,36 mm,2P,1K,1G,H4,1P,2K,2G,H8
+Dual Triode,6N17B,Circular,no,10.2 mm,10.2 mm,36 mm,2P,1K,1G,H4,1P,2K,2G,H8
+Dual Triode,6N21B,Circular,no,10.2 mm,10.2 mm,40 mm,1K,IS,1G,1P,H5,2K,NC,2G,2P,H10
+Dual Triode,6021,Circular,no,0.4 in,0.4 in,1.375 in,2P,2G,H3,2K,1K,H6,1G,1P
+Dual Triode,6111,Circular,no,0.4 in,0.4 in,1.375 in,2P,2G,H3,2K,1K,H6,1G,1P
+Dual Triode,6112,Circular,no,0.4 in,0.4 in,1.375 in,2P,2G,H3,2K,1K,H6,1G,1P
+Duo-Diode,5896,Circular,no,0.4 in,0.4 in,1.375 in,2P,2K,H3,IS,1P,H6,1K,NC
+Pentode,1Zh18B,Circular,yes,8.5 mm,8.5 mm,42 mm,F1,F2,NC,NC,G2,G1,P
+Pentode,1Zh24B,Circular,yes,8.5 mm,8.5 mm,42 mm,F1,F2,IS,G3,G2,G1,P
+Pentode,1Zh29B,Circular,yes,8.5 mm,8.5 mm,40 mm,HCT,G3,G2,F4,IS,F6,G1,P
+Pentode,5886,Inline,no,0.4 in,0.285 in,1.5 in,P,G2,F3,F4,NC,NC,G1
+Pentode (RF/IF),6Zh1B,Inline,no,10.2 mm,10.2 mm,36 mm,P,G2,H3,H4,G3,K,G1
+Pentode (RF/IF),6Zh2B,Inline,no,10.2 mm,10.2 mm,38 mm,P,G3,G2,H4,H5,K,G1
+Pentode (RF/IF),5636,Circular,no,0.4 in,0.4 in,1.375 in,G1,K_1,H3,G3,P,H6,G2,K_2
+Pentode (RF/IF),5678,Inline,no,0.4 in,0.285 in,1.5 in,P,G2,F3,G1,F5
+Pentode (RF/IF),5840,Circular,no,0.4 in,0.4 in,1.375 in,G1,K_1,H3,K_2,P,H6,G2,K_3
+Pentode (RF/IF),5899,Circular,no,0.4 in,0.4 in,1.375 in,G1,K_1,H3,K_2,P,H6,G2,K_3
+Pentode (RF/IF),6205,Circular,no,0.4 in,0.4 in,1.375 in,G1,K_1,H3,G3,P,H6,G2,K_2
+Pentode (RF/IF),6206,Circular,no,0.4 in,0.4 in,1.375 in,G1,K_1,H3,K_2,P,H6,G2,K_3
+Power Pentode,1P24B,Circular,yes,10.5 mm,10.5 mm,45 mm,HCT,F2,G2,IS,NC,F6,G3,NC,G1,P
+Power Pentode,6P30B,Circular,no,10.8 mm,10.8 mm,48 mm,K,H2,G2,P,NC,H6,G1,G3
+Power Pentode,5672,Inline,no,0.385 in,0.285 in,1.5 in,P,G2,F3,G1,F5
+Power Pentode,5902,Circular,no,0.4 in,0.4 in,1.75 in,G1,K_1,H3,K_2,P,H6,G2,K_3
+Power Pentode,6088,Inline,no,0.385 in,0.285 in,1.5 in,P,G2,F3,G1,F5
+Triode,6S6B,Inline,no,10.2 mm,10.2 mm,36 mm,P,H2,H3,G,K
+Triode,6S7B,Inline,no,10.2 mm,10.2 mm,36 mm,P,H2,H3,G,K
+Triode,6S31B,Circular,no,10.2 mm,10.2 mm,39 mm,K,H2,NC,NC,P,NC,H7,G,NC,NC
+Triode,6S32B,Circular,no,10.2 mm,10.2 mm,30 mm,K,NC,G,NC,H5,NC,P,NC,NC,H10
+Triode,5703,Inline,no,0.4 in,0.4 in,1.5 in,P,NC,H3,H4,G,K
+Triode,5718,Circular,no,0.4 in,0.4 in,1.375 in,G,NC,H3,NC,K,H6,NC,P
+Triode,5719,Circular,no,0.4 in,0.4 in,1.375 in,G,NC,H3,NC,K,H6,NC,P
+Triode,5744,Inline,no,0.4 in,0.4 in,1.5 in,P,H2,H3,G,K
+Triode,5977,Circular,no,0.4 in,0.4 in,1.375 in,G,NC,H3,NC,K,H6,NC,P
+Triode,6814,Circular,no,0.4 in,0.4 in,1.375 in,G,NC,H3,NC,K,H6,NC,P

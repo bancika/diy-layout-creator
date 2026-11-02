@@ -30,20 +30,29 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
+import org.diylc.awt.StringUtils;
 import org.diylc.common.Display;
+import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.components.AbstractMakerBoard;
+import org.diylc.components.semiconductors.ICPinNames;
+import org.diylc.components.semiconductors.PinLabels;
 import org.diylc.components.transform.TO220Transformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.KeywordPolicy;
@@ -51,11 +60,15 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
+@AiNote("The tube is drawn as seen from above, from the component side of the board. Leads are numbered as in the data book, lead 1 first. In the circular arrangement standing upright, the first control point is the body centre and the leads follow it counter-clockwise from the gap in the circle - the mirror of the data book's bottom view; there the top lead, if any, is the centre point. In-line and folded tubes have lead 1 at the first control point, and the top lead is the last control point")
+@AiNote("'Pin Names' is a comma-separated list of lead names in lead order with the top lead last: P plate, G triode grid, G1/G2/G3 grids, K cathode, IS internal shield, F or H plus the lead number for filament or heater ends; sections of a multi-section tube are numbered first (1P, 2G); leads joined inside end in _1, _2; NC and IC leads are never connected. 'Pin Labels' draws the names (default), the lead numbers or nothing")
+@AiNote("A datasheet model is a tube type such as 6021 or 6N16B and sets 'Pin Arrangement', 'Top Lead', 'Lead Count', 'Diameter', 'Thickness', 'Length', 'Pin Names' and 'Value'; 'Diameter' is the broad side of a flat bulb, the width seen when the tube lies folded. Set 'Value' to the same tube type together with the model")
 @ComponentDescriptor(name = "Sub-Mini Tube", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Sub-miniature (pencil) vacuum tube",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE,
-    transformer = TO220Transformer.class)
-public class SubminiTube extends AbstractLabeledComponent<String> {
+    transformer = TO220Transformer.class, enableDatasheet = true, datasheetCreationStepCount = 2,
+    datasheetModelColumn = 1)
+public class SubminiTube extends AbstractLabeledComponent<String> implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -86,14 +99,39 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
   private PinArrangement leadArrangement = PinArrangement.Circular;
   private boolean topLead = false;
   private Size diameter = DIAMETER;
+  private Size thickness = null;
   private Size length = LENGTH;
   private PinCount pinCount = PinCount._8;
   private Size leadSpacing = LEAD_SPACING;
   private Color labelColor = LABEL_COLOR;
+  private String pinNames = null;
+  private PinLabels pinLabels = null;
+  transient private String[] parsedPinNames;
 
   public SubminiTube() {
     super();
     updateControlPoints();
+  }
+
+  public SubminiTube(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, tube type, pin arrangement, top lead (yes/no), bulb width, bulb thickness,
+  // bulb length, then one name per lead in lead order with the top lead last
+  @Override
+  public void applyModel(String[] model) {
+    boolean topLead = "yes".equalsIgnoreCase(model[3]);
+    setValue(model[1]);
+    setPinArrangement(PinArrangement.valueOf(model[2]));
+    setTopLead(topLead);
+    setDiameter(Size.parseSize(model[4]));
+    setThickness(Size.parseSize(model[5]));
+    setLength(Size.parseSize(model[6]));
+    setPinCount(PinCount.valueOf("_" + (model.length - 7 - (topLead ? 1 : 0))));
+    setPinNames(String.join(",", Arrays.copyOfRange(model, 7, model.length)));
   }
 
   @EditableProperty
@@ -226,17 +264,18 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
       Point2D firstPoint = controlPoints[0];
 
       double angleIncrement = Math.PI * 2 / (pinCount + 1);
-      double initialAngleOffset = angleIncrement;
 
       double r = (pinCount + 1) * leadSpacing / (2 * Math.PI);
 
       controlPoints = new Point2D[pinCount + 1];
-      double theta = initialAngleOffset + getOrientation().toRadians();
+      // seen from above the leads run counter-clockwise from the gap, the mirror of the data book's
+      // bottom view; with y pointing down that is a decreasing angle
+      double theta = getOrientation().toRadians() - angleIncrement;
       controlPoints[0] = firstPoint;
       for (int i = 0; i < pinCount; i++) {
         controlPoints[i + 1] = new Point2D.Double((int) (firstPoint.getX() + Math.cos(theta) * r),
             (int) (firstPoint.getY() + Math.sin(theta) * r));
-        theta += angleIncrement;
+        theta -= angleIncrement;
       }
     }
   }
@@ -290,9 +329,16 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
           default:
             throw new RuntimeException("Unexpected orientation: " + orientation);
         }
-      } else {
+      } else if (getPinArrangement() == PinArrangement.Circular) {
         body[0] = new Area(new Ellipse2D.Double(centerX - diameter / 2, centerY - diameter / 2, diameter,
             diameter));
+      } else {
+        // a flat bulb stands with its broad side along the lead row
+        double thickness = getThickness().convertToPixels();
+        boolean rowAlongY = orientation == Orientation.DEFAULT || orientation == Orientation._180;
+        double w = rowAlongY ? thickness : diameter;
+        double h = rowAlongY ? diameter : thickness;
+        body[0] = new Area(new Ellipse2D.Double(centerX - w / 2, centerY - h / 2, w, h));
       }
     }
     return body;
@@ -473,6 +519,67 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
     }
 
     g2d.drawString(label, (int)(x + dx), (int)(y + dy));
+
+    if (getPinLabels() != PinLabels.NONE) {
+      drawLeadLabels(g2d, mainArea.getBounds2D());
+    }
+  }
+
+  // In a row the labels sit square to it on the side away from the body; on a standing circular
+  // tube they point outwards from the centre, past the edge of the bulb. The top lead leaves the far
+  // end of the bulb, away from the row, and is left unlabelled.
+  private void drawLeadLabels(Graphics2D g2d, Rectangle2D bodyBounds) {
+    g2d.setFont(ICPinNames.PIN_NAME_FONT);
+    double pinRadius = LEAD_THICKNESS.convertToPixels() / 2;
+    boolean circular = getPinArrangement() == PinArrangement.Circular && !folded;
+    int rowCount = controlPoints.length - (getTopLead() && !circular ? 1 : 0);
+    double alongX = 0;
+    double alongY = 0;
+    double awayX = 0;
+    double awayY = 0;
+    if (!circular && rowCount > 1) {
+      double rowDistance = controlPoints[0].distance(controlPoints[1]);
+      alongX = (controlPoints[1].getX() - controlPoints[0].getX()) / rowDistance;
+      alongY = (controlPoints[1].getY() - controlPoints[0].getY()) / rowDistance;
+      awayX = alongY;
+      awayY = -alongX;
+      double rowCenterX = (controlPoints[0].getX() + controlPoints[rowCount - 1].getX()) / 2;
+      double rowCenterY = (controlPoints[0].getY() + controlPoints[rowCount - 1].getY()) / 2;
+      if ((bodyBounds.getCenterX() - rowCenterX) * awayX
+          + (bodyBounds.getCenterY() - rowCenterY) * awayY > 1) {
+        awayX = -awayX;
+        awayY = -awayY;
+      }
+    }
+    for (int i = 0; i < controlPoints.length; i++) {
+      int lead = getLeadNumber(i);
+      if (lead == 0 || (circular && i == 0)) {
+        continue;
+      }
+      String label;
+      if (getPinLabels() == PinLabels.NUMBERS) {
+        label = Integer.toString(lead);
+      } else {
+        String name = ICPinNames.get(getParsedPinNames(), lead);
+        if (name == null) {
+          continue;
+        }
+        label = AbstractMakerBoard.getDisplayPinLabel(name);
+      }
+      Point2D point = controlPoints[i];
+      if (circular) {
+        double dx = point.getX() - controlPoints[0].getX();
+        double dy = point.getY() - controlPoints[0].getY();
+        double r = Math.sqrt(dx * dx + dy * dy);
+        double reach = Math.max(r + pinRadius, bodyBounds.getWidth() / 2) + ICPinNames.PIN_NAME_GAP
+            + g2d.getFontMetrics().stringWidth(label) / 2d;
+        StringUtils.drawCenteredText(g2d, label, controlPoints[0].getX() + dx / r * reach,
+            controlPoints[0].getY() + dy / r * reach, HorizontalAlignment.CENTER,
+            VerticalAlignment.CENTER);
+      } else if (i < rowCount) {
+        ICPinNames.drawOutside(g2d, label, point, awayX, awayY, bodyBounds, pinRadius);
+      }
+    }
   }
 
   @Override
@@ -581,6 +688,19 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
   public void setDiameter(Size diameter) {
     this.diameter = diameter;
     updateControlPoints();
+    body = null;
+  }
+
+  // the narrow side of a flat bulb; a round bulb, and every file saved before the property
+  // existed, has none and is as thick as it is wide
+  @EditableProperty
+  public Size getThickness() {
+    return thickness == null ? getDiameter() : thickness;
+  }
+
+  public void setThickness(Size thickness) {
+    this.thickness = thickness;
+    body = null;
   }
 
   @EditableProperty
@@ -590,6 +710,7 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
 
   public void setLength(Size length) {
     this.length = length;
+    body = null;
   }
 
   @EditableProperty(name = "Lead Count")
@@ -628,6 +749,57 @@ public class SubminiTube extends AbstractLabeledComponent<String> {
   @Override
   public boolean canPointMoveFreely(int pointIndex) {    
     return false;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    int lead = getLeadNumber(index);
+    if (lead == 0) {
+      return null;
+    }
+    String name = ICPinNames.get(getParsedPinNames(), lead);
+    return name == null ? Integer.toString(lead) : name;
+  }
+
+  // the data book's lead number of a control point, 0 for the centre of a standing circular tube
+  // without a top lead; the top lead is numbered after the last regular lead
+  private int getLeadNumber(int index) {
+    if (getPinArrangement() == PinArrangement.Circular && !folded) {
+      if (index == 0) {
+        return getTopLead() ? getPinCount().getValue() + 1 : 0;
+      }
+      return index;
+    }
+    return index + 1;
+  }
+
+  private String[] getParsedPinNames() {
+    if (parsedPinNames == null) {
+      parsedPinNames = ICPinNames.parse(getPinNames());
+    }
+    return parsedPinNames;
+  }
+
+  @EditableProperty(name = "Pin Names")
+  public String getPinNames() {
+    return pinNames;
+  }
+
+  public void setPinNames(String pinNames) {
+    this.pinNames = pinNames;
+    this.parsedPinNames = null;
+  }
+
+  @EditableProperty(name = "Pin Labels")
+  public PinLabels getPinLabels() {
+    if (pinLabels == null) {
+      pinLabels = PinLabels.NAMES;
+    }
+    return pinLabels;
+  }
+
+  public void setPinLabels(PinLabels pinLabels) {
+    this.pinLabels = pinLabels;
   }
 
   public static enum PinArrangement {

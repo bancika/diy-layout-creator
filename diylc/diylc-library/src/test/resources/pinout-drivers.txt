@@ -165,6 +165,6 @@ tube.DiodeSymbol = Directly heated, Heaters
 tube.DuoDiodeSymbol = Directly heated, Heaters
 tube.Jumbo4PinTubeSocket = fixed
 tube.PentodeSymbol = Heaters, Suppressor grid
-tube.SubminiTube = Folded, Lead Count, Pin Arrangement
+tube.SubminiTube = Folded, Lead Count, Pin Arrangement, Top Lead
 tube.TriodeSymbol = Directly heated, Heaters
 tube.TubeSocket = Base

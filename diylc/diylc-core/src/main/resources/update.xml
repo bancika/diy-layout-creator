@@ -535,6 +535,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Pin Names', 'Pin Labels' and 'Thickness' to 'Sub-Mini Tube' to name each lead and draw flat bulbs, and a datasheet with popular Western and Soviet sub-miniature tubes such as 6021, 6111, 5840, 5672, 6N16B and 6N17B that sets leads, bulb size and lead names at once</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>'Chassis Panel' is now 'Enclosure' and can draw an exploded view of the whole box; set 'Height' and choose which 'Sides' to unfold</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -592,6 +596,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'Tube Socket' with a Noval, 7-pin or Duodecar base on a chassis mount did not rotate its mounting notches with the pins when 'Angle' was changed</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Sub-Mini Tube' with circular leads numbered the body centre as lead 1 in netlists and AI analysis, so every real lead was reported one number too high</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

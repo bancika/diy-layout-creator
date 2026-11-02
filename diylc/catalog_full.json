@@ -19662,6 +19662,8 @@
     "namePrefix" : "V",
     "description" : "Sub-miniature (pencil) vacuum tube",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "The tube is drawn as seen from above, from the component side of the board. Leads are numbered as in the data book, lead 1 first. In the circular arrangement standing upright, the first control point is the body centre and the leads follow it counter-clockwise from the gap in the circle - the mirror of the data book's bottom view; there the top lead, if any, is the centre point. In-line and folded tubes have lead 1 at the first control point, and the top lead is the last control point", "'Pin Names' is a comma-separated list of lead names in lead order with the top lead last: P plate, G triode grid, G1/G2/G3 grids, K cathode, IS internal shield, F or H plus the lead number for filament or heater ends; sections of a multi-section tube are numbered first (1P, 2G); leads joined inside end in _1, _2; NC and IC leads are never connected. 'Pin Labels' draws the names (default), the lead numbers or nothing", "A datasheet model is a tube type such as 6021 or 6N16B and sets 'Pin Arrangement', 'Top Lead', 'Lead Count', 'Diameter', 'Thickness', 'Length', 'Pin Names' and 'Value'; 'Diameter' is the broad side of a flat bulb, the width seen when the tube lies folded. Set 'Value' to the same tube type together with the model" ],
+    "datasheetModels" : [ "6D6A", "6N16B", "6N17B", "6N21B", "6021", "6111", "6112", "5896", "1Zh18B", "1Zh24B", "1Zh29B", "5886", "6Zh1B", "6Zh2B", "5636", "5678", "5840", "5899", "6205", "6206", "1P24B", "6P30B", "5672", "5902", "6088", "6S6B", "6S7B", "6S31B", "6S32B", "5703", "5718", "5719", "5744", "5977", "6814" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -19737,6 +19739,20 @@
       "possibleValues" : [ "Inline", "Circular" ],
       "defaultValue" : "Circular"
     }, {
+      "name" : "Pin Labels",
+      "type" : "PinLabels",
+      "possibleValues" : [ "NONE", "NAMES", "NUMBERS" ],
+      "defaultValue" : "NAMES"
+    }, {
+      "name" : "Pin Names",
+      "type" : "String"
+    }, {
+      "name" : "Thickness",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.4in"
+    }, {
       "name" : "Top Lead",
       "type" : "Boolean",
       "defaultValue" : "false"
@@ -19745,11 +19761,12 @@
       "type" : "String"
     } ],
     "pinout" : {
-      "drivers" : [ "Folded", "Lead Count", "Pin Arrangement" ],
+      "drivers" : [ "Folded", "Lead Count", "Pin Arrangement", "Top Lead" ],
       "variants" : [ {
         "when" : {
           "Folded" : "false",
-          "Pin Arrangement" : "Inline"
+          "Pin Arrangement" : "Inline",
+          "Top Lead" : "false"
         },
         "pinCountExpression" : "Lead Count",
         "labels" : "sequential",
@@ -19762,7 +19779,100 @@
       }, {
         "when" : {
           "Folded" : "false",
-          "Pin Arrangement" : "Circular"
+          "Pin Arrangement" : "Inline",
+          "Top Lead" : "true"
+        },
+        "pinCountExpression" : "Lead Count + 1",
+        "labels" : "sequential",
+        "pinCountSamples" : {
+          "_3" : 4,
+          "_5" : 6,
+          "_7" : 8,
+          "_9" : 10
+        }
+      }, {
+        "when" : {
+          "Folded" : "false",
+          "Pin Arrangement" : "Circular",
+          "Top Lead" : "false"
+        },
+        "pinCountExpression" : "Lead Count + 1",
+        "labels" : "custom",
+        "pinCountSamples" : {
+          "_3" : 4,
+          "_5" : 6,
+          "_7" : 8,
+          "_9" : 10
+        },
+        "example" : {
+          "when" : {
+            "Lead Count" : "_3"
+          },
+          "pins" : [ {
+            "i" : 0,
+            "label" : null
+          }, {
+            "i" : 1,
+            "label" : "1"
+          }, {
+            "i" : 2,
+            "label" : "2"
+          }, {
+            "i" : 3,
+            "label" : "3"
+          } ]
+        }
+      }, {
+        "when" : {
+          "Folded" : "false",
+          "Pin Arrangement" : "Circular",
+          "Top Lead" : "true"
+        },
+        "pinCountExpression" : "Lead Count + 1",
+        "labels" : "custom",
+        "pinCountSamples" : {
+          "_3" : 4,
+          "_5" : 6,
+          "_7" : 8,
+          "_9" : 10
+        },
+        "example" : {
+          "when" : {
+            "Lead Count" : "_3"
+          },
+          "pins" : [ {
+            "i" : 0,
+            "label" : "4"
+          }, {
+            "i" : 1,
+            "label" : "1"
+          }, {
+            "i" : 2,
+            "label" : "2"
+          }, {
+            "i" : 3,
+            "label" : "3"
+          } ]
+        }
+      }, {
+        "when" : {
+          "Folded" : "true",
+          "Pin Arrangement" : "Inline",
+          "Top Lead" : "false"
+        },
+        "pinCountExpression" : "Lead Count",
+        "labels" : "sequential",
+        "pinCountSamples" : {
+          "_3" : 3,
+          "_5" : 5,
+          "_7" : 7,
+          "_9" : 9
+        }
+      }, {
+        "when" : {
+          "Folded" : "true",
+          "Pin Arrangement" : "Inline",
+          "Top Lead" : "true"
         },
         "pinCountExpression" : "Lead Count + 1",
         "labels" : "sequential",
@@ -19775,7 +19885,8 @@
       }, {
         "when" : {
           "Folded" : "true",
-          "Pin Arrangement" : "Inline"
+          "Pin Arrangement" : "Circular",
+          "Top Lead" : "false"
         },
         "pinCountExpression" : "Lead Count",
         "labels" : "sequential",
@@ -19788,15 +19899,16 @@
       }, {
         "when" : {
           "Folded" : "true",
-          "Pin Arrangement" : "Circular"
+          "Pin Arrangement" : "Circular",
+          "Top Lead" : "true"
         },
-        "pinCountExpression" : "Lead Count",
+        "pinCountExpression" : "Lead Count + 1",
         "labels" : "sequential",
         "pinCountSamples" : {
-          "_3" : 3,
-          "_5" : 5,
-          "_7" : 7,
-          "_9" : 9
+          "_3" : 4,
+          "_5" : 6,
+          "_7" : 8,
+          "_9" : 10
         }
       } ]
     }
