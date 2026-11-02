@@ -30,6 +30,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
+
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.awt.StringUtils;
@@ -38,8 +40,10 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
+import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -55,11 +59,15 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("The first control point is the socket centre, not a pin. Pins sit on a circle and are numbered clockwise, starting after the gap (B9A, B7G, B12C) or the key (OCTAL), which points right at 'Angle' 0; 'Angle' rotates the socket clockwise in degrees. This is the bottom view used for wiring")
+@AiNote("'Electrode Labels' is a comma-separated list of electrode names in pin order starting at pin 1: P plate, G triode grid, G1/G2/G3 control, screen and suppressor grids, K cathode, BP beam plates, IS internal shield, HCT heater centre tap. Sections of a multi-section tube are numbered first (1P, 1G, 2P); heater ends are named after their pin (H4, H5) because they are separate nets; pins joined inside the tube end in _1, _2; NC and IC pins are never connected")
+@AiNote("A datasheet model is a tube type such as 12AX7 or EL34 and sets 'Base', 'Electrode Labels' and 'Designation'. Set 'Designation' to the same tube type together with the model")
 @ComponentDescriptor(name = "Tube Socket", author = "Branislav Stojkovic", category = "Tubes",
     instanceNamePrefix = "V", description = "Various types of tube/valve sockets",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
-    transformer = AngledComponentTransformer.class)
-public class TubeSocket extends AbstractAngledComponent<String> implements IGerberComponentSimple {
+    transformer = AngledComponentTransformer.class, enableDatasheet = true,
+    datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class TubeSocket extends AbstractAngledComponent<String>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
   private static final Size B9A_PIN_SPACING_PCB = new Size(21d, SizeUnit.mm);
@@ -101,6 +109,21 @@ public class TubeSocket extends AbstractAngledComponent<String> implements IGerb
   public TubeSocket() {
     super();
     updateControlPoints();
+  }
+
+  public TubeSocket(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: group, tube type, base, RETMA basing code, then one electrode name per pin in pin
+  // order
+  @Override
+  public void applyModel(String[] model) {
+    setValue(model[1]);
+    setBase(Base.valueOf(model[2]));
+    setElectrodeLabels(String.join(",", Arrays.copyOfRange(model, 4, model.length)));
   }
 
   @EditableProperty
@@ -304,7 +327,7 @@ public class TubeSocket extends AbstractAngledComponent<String> implements IGerb
       double electrodeLabelOffset = project.getFont().getSize2D() * (getBase() == Base.B9A && getMount() == Mount.PCB ? 1.5 : 1);
       for (int i = 0; i < labels.length; i++) {
         if (i < controlPoints.length - 1) {
-          String label = labels[i];
+          String label = AbstractMakerBoard.getDisplayPinLabel(labels[i]);
           double theta = Math.atan2(controlPoints[i + 1].getY() - controlPoints[0].getY(), controlPoints[i + 1].getX() - controlPoints[0].getX());
           double x = controlPoints[i + 1].getX() - Math.cos(theta) * electrodeLabelOffset;
           double y = controlPoints[i + 1].getY() - Math.sin(theta) * electrodeLabelOffset;

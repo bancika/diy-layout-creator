@@ -87,6 +87,8 @@ public class NodeNameTest {
   public void railNameRejectsPinsThatNameNoNet() {
     Assert.assertNull(Node.railName("NC_1"));
     Assert.assertNull(Node.railName("RSV_2"));
+    // a tube pin marked "internal connection" must not be used as a tie point
+    Assert.assertNull(Node.railName("IC"));
     Assert.assertNull(Node.railName(null));
   }
 

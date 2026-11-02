@@ -527,6 +527,10 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added a datasheet to 'Tube Socket' - pick a tube by its type from the component's submenu to set its base and electrode labels at once - more than 180 preamp, power, rectifier, radio, space-charge and Soviet tubes; the AI Assistant can place these tubes by type too</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>'Chassis Panel' is now 'Enclosure' and can draw an exploded view of the whole box; set 'Height' and choose which 'Sides' to unfold</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
@@ -572,6 +576,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>SPICE netlists listed the pins of transistors with E-C-B pinout in the wrong order</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Tube Socket' variants with electrode labels connected pins that share a label in netlists and AI analysis, e.g. both anodes of a 12AX7 or both heater ends; these variants are replaced by the datasheet</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>

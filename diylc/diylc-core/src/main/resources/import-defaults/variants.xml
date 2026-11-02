@@ -948,232 +948,27 @@
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis Noval 9A (12A?7)</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>A,G,C,H,H,A,G,C,CT</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>B9A</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.2" y="0.145"/>
-            <point x="0.075" y="0.235"/>
-            <point x="-0.08" y="0.235"/>
-            <point x="-0.205" y="0.145"/>
-            <point x="-0.25" y="0.0"/>
-            <point x="-0.205" y="-0.15"/>
-            <point x="-0.08" y="-0.24"/>
-            <point x="0.075" y="-0.24"/>
-            <point x="0.2" y="-0.15"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis Noval 9CV (EL84)</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>n/c,G,C,H,H,n/c,P,n/c,S</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>B9A</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.2" y="0.145"/>
-            <point x="0.075" y="0.235"/>
-            <point x="-0.08" y="0.235"/>
-            <point x="-0.205" y="0.145"/>
-            <point x="-0.25" y="0.0"/>
-            <point x="-0.205" y="-0.15"/>
-            <point x="-0.08" y="-0.24"/>
-            <point x="0.075" y="-0.24"/>
-            <point x="0.2" y="-0.15"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis Octal 5T</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>n/c,H,n/c,P,n/c,P,n/c,H</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>OCTAL</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.315" y="0.13"/>
-            <point x="0.13" y="0.315"/>
-            <point x="-0.13" y="0.315"/>
-            <point x="-0.315" y="0.13"/>
-            <point x="-0.315" y="-0.13"/>
-            <point x="-0.13" y="-0.315"/>
-            <point x="0.13" y="-0.315"/>
-            <point x="0.315" y="-0.13"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis Octal 7AC (6?6)</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>n/c,H,P,S,G,n/c,H,C</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>OCTAL</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.315" y="0.13"/>
-            <point x="0.13" y="0.315"/>
-            <point x="-0.13" y="0.315"/>
-            <point x="-0.315" y="0.13"/>
-            <point x="-0.315" y="-0.13"/>
-            <point x="-0.13" y="-0.315"/>
-            <point x="0.13" y="-0.315"/>
-            <point x="0.315" y="-0.13"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis 7-pin 7BK</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>G,IS,H,H,P,S,C</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>B7G</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.165" y="0.165"/>
-            <point x="0.0" y="0.235"/>
-            <point x="-0.17" y="0.165"/>
-            <point x="-0.24" y="0.0"/>
-            <point x="-0.17" y="-0.17"/>
-            <point x="0.0" y="-0.24"/>
-            <point x="0.165" y="-0.17"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
         <org.diylc.core.Template>
           <name>Chassis Octal 8ET (EL34)</name>
-          <values>
-            <entry>
-              <string>Color</string>
-              <awt-color hex="f7f7ef"/>
-            </entry>
-            <entry>
-              <string>Mount</string>
-              <diylc.tube.TubeSocket_-Mount>CHASSIS</diylc.tube.TubeSocket_-Mount>
-            </entry>
-            <entry>
-              <string>Label</string>
-              <awt-color hex="acaca7"/>
-            </entry>
-            <entry>
-              <string>Electrode Labels</string>
-              <string>IS,H,P,S,G,n/c,H,C</string>
-            </entry>
-            <entry>
-              <string>Base</string>
-              <diylc.tube.TubeSocket_-Base>OCTAL</diylc.tube.TubeSocket_-Base>
-            </entry>
-          </values>
-          <points>
-            <point x="0.0" y="0.0"/>
-            <point x="0.315" y="0.13"/>
-            <point x="0.13" y="0.315"/>
-            <point x="-0.13" y="0.315"/>
-            <point x="-0.315" y="0.13"/>
-            <point x="-0.315" y="-0.13"/>
-            <point x="-0.13" y="-0.315"/>
-            <point x="0.13" y="-0.315"/>
-            <point x="0.315" y="-0.13"/>
-          </points>
-          <defaultFlag>false</defaultFlag>
-          <createdOn>2022-10-30T13:25:15.3894874</createdOn>
+          <deletedOn>2026-11-02T14:00:00</deletedOn>
         </org.diylc.core.Template>
       </list>
     </entry>

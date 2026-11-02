@@ -39,7 +39,7 @@ public class Node implements Comparable<Node> {
 
   /** Pin names that mark an absent connection, so repeats of them are not one net. */
   private static final Set<String> NON_NET_NAMES =
-      new HashSet<String>(Arrays.asList("NC", "RSV"));
+      new HashSet<String>(Arrays.asList("NC", "RSV", "IC"));
 
   private IDIYComponent<?> component;
   private int pointIndex;
