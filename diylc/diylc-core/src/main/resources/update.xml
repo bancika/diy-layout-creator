@@ -523,7 +523,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added datasheets to 'DIP IC', 'SIP IC' and 'Multiwatt IC' - pick a part by its number from the component's submenu to set its pin count, spacing and pin names at once; the AI Assistant can place these parts by part number too</description>
+					<description>Added datasheets to 'DIP IC', 'SIP IC' and 'Multiwatt IC' - pick a part by its number from the component's submenu to set its pin count, spacing and pin names at once - more than 100 chips in total; the AI Assistant can place these parts by part number too</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
