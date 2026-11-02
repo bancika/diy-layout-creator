@@ -9,7 +9,8 @@ component that draws either one panel or an exploded view of the whole box.
   new **Hardware** category, with instance prefix `ENC`. The class name is unchanged, so files,
   favourites, recent components and variants, all keyed by class, are unaffected. The three
   cutouts, Drill Hole and Dial Scale moved to Hardware with it.
-- It is a two-point `AbstractShape` on the `CHASSIS` layer. The control points are the top panel.
+- It is a two-point `AbstractTransparentComponent<String>` (no longer an `AbstractShape`) on the
+  `CHASSIS` layer. The control points are the top panel.
   With `Height` > 0 the sides are unfolded around it (front above, back below, left and right to
   the sides; never the bottom), per `Sides`: `All`, `Front and Back` or `None`, set `Spacing`
   (default 0, edge to edge) apart from the top.
@@ -30,7 +31,7 @@ component that draws either one panel or an exploded view of the whole box.
 |---|---|---|
 | D1 | One component draws the whole enclosure; no per-side panels and no exploded building blocks | Every datasheet model is an exploded enclosure in one click, the BOM gets one line per box, stretching the top drags the sides along, rotation needs no special code, and the component sits on the Chassis layer natively. Building blocks would have needed import tracking, a flat toolbar of ~10 buttons, and a per-panel BOM workaround. |
 | D2 | Row format `Group,Model,X,Y,Height`: the top panel's size as placed, then the wall height, every size with its unit (`119.5 mm`, `17 in`), parsed with `Size.parseSize` like `DIL_IC` | Pedal drawings are metric, Hammond chassis are nominal inches; writing each in its native unit keeps the file checkable against the drawings. |
-| D3 | `Value` is backed by `AbstractShape.value` through `getModel()` with `@EditableProperty(name = "Value")`; `height` and `sides` are new fields | `value` is a `String` every shape already serializes and nothing read, and `AbstractShape.getValue()` is typed `Void`. New fields read `null` from old files: `getHeight()` null means no sides, `getSides()` defaults to `All`. |
+| D3 | `ChassisPanel` no longer extends `AbstractShape`; it is an `AbstractTransparentComponent<String>` whose value is the model. It keeps every field name it inherited (`value`, `controlPoints`, `firstPoint`, `secondPoint`, `color`, `borderColor`), and `borderThickness` stays as a `@Deprecated` unused field; `edgeRadius`, `height`, `sides` and `spacing` read `null` from old files and default in their getters | XStream fails on unknown fields, so a name an old file stores must stay. The border is a fixed 1 px line; old panels drawn with a thicker border now draw with 1 px. |
 | D4 | Die-cast boxes up to 125 mm long (1590, 1550, 125B) are listed upright, with Hammond's length along Y; longer boxes and all 1441/1444 chassis horizontal. A new enclosure is an upright 125B. `applyModel` sets `Value`, `Height` and the top panel size, keeping the first control point and the direction the panel is drawn in | Pedals use the small boxes upright, with the jacks and DC socket on the short ends, which the front and back panels then show; bigger boxes and amp chassis are used lying down. |
 | D5 | The datasheet carries no corner radius; `Radius` defaults to 0 and only the top panel uses it, the sides are drawn square | Hammond does not publish the die-cast corner radius (§5), so rounded corners are set by hand when wanted. |
 | D6 | Length/Width are Hammond's outside dimensions; Height is the drillable wall: box height without the lid for die-cast boxes, outside height for 1441/1444 | The lid of a 1590 is the pedal's bottom, which the exploded view leaves out. |

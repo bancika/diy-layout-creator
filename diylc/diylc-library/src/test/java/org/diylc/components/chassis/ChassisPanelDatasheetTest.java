@@ -65,7 +65,7 @@ public class ChassisPanelDatasheetTest {
     for (String[] row : datasheet) {
       Assert.assertEquals(String.join(",", row), 5, row.length);
       ChassisPanel enclosure = new ChassisPanel(row);
-      Assert.assertEquals(row[1], enclosure.getModel());
+      Assert.assertEquals(row[1], enclosure.getValue());
       Assert.assertEquals(row[1], Size.parseSize(row[4]), enclosure.getHeight());
       Point2D first = enclosure.getControlPoint(0);
       Point2D second = enclosure.getControlPoint(1);
@@ -81,7 +81,7 @@ public class ChassisPanelDatasheetTest {
     ChassisPanel enclosure = new ChassisPanel();
     ChassisPanel fromDatasheet = new ChassisPanel(row("125B"));
 
-    Assert.assertEquals(fromDatasheet.getModel(), enclosure.getModel());
+    Assert.assertEquals(fromDatasheet.getValue(), enclosure.getValue());
     Assert.assertEquals(fromDatasheet.getHeight(), enclosure.getHeight());
     Assert.assertEquals(fromDatasheet.getEdgeRadius(), enclosure.getEdgeRadius());
     Assert.assertEquals(fromDatasheet.getControlPoint(1), enclosure.getControlPoint(1));
@@ -202,7 +202,7 @@ public class ChassisPanelDatasheetTest {
   public void panelFromAnOldFileIsASinglePanel() {
     // a panel from before the datasheet: no model, a radius of 0 and a free-form size
     ChassisPanel original = new ChassisPanel();
-    original.setModel("");
+    original.setValue("");
     original.setEdgeRadius(new Size(0d, SizeUnit.mm));
     original.setControlPoint(new Point2D.Double(20, 30), 1);
     String xml = ProjectFileManager.xStreamSerializer.toXML(original)

@@ -21,19 +21,21 @@
 */
 package org.diylc.components.chassis;
 
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.diylc.common.ObjectCache;
-import org.diylc.components.shapes.AbstractShape;
+import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
+import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -50,10 +52,13 @@ import org.diylc.core.measures.SizeUnit;
     zOrder = IDIYComponent.CHASSIS, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     transformer = SimpleComponentTransformer.class, enableDatasheet = true,
     datasheetCreationStepCount = 2, datasheetModelColumn = 1)
-public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
+public class ChassisPanel extends AbstractTransparentComponent<String>
+    implements IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
+  public static Color COLOR = LIGHT_METAL_COLOR;
+  public static Color BORDER_COLOR = LIGHT_METAL_COLOR.darker();
   // a new enclosure is a 125B, the most common pedal enclosure, upright as in its datasheet row
   public static String DEFAULT_MODEL = "125B";
   public static Size DEFAULT_TOP_WIDTH = new Size(66d, SizeUnit.mm);
@@ -62,17 +67,25 @@ public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
   public static Size DEFAULT_RADIUS = new Size(0d, SizeUnit.mm);
   public static Size DEFAULT_SPACING = new Size(0d, SizeUnit.mm);
 
+  // the fields below up to borderThickness carry the names they had when this class extended
+  // AbstractShape, because old files store them under those names
+  private String value = DEFAULT_MODEL;
+  private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0), new Point2D.Double(
+      DEFAULT_TOP_WIDTH.convertToPixels(), DEFAULT_TOP_LENGTH.convertToPixels())};
+  private Point2D.Double firstPoint = new Point2D.Double();
+  private Point2D.Double secondPoint = new Point2D.Double();
+  private Color color = COLOR;
+  private Color borderColor = BORDER_COLOR;
+  // no longer used; kept so that old files that store it still load
+  @Deprecated
+  private Size borderThickness;
   protected Size edgeRadius = DEFAULT_RADIUS;
   private Size height = DEFAULT_WALL_HEIGHT;
   private Sides sides = Sides.ALL;
   private Size spacing = DEFAULT_SPACING;
 
   public ChassisPanel() {
-    this.color = LIGHT_METAL_COLOR;
-    this.borderColor = LIGHT_METAL_COLOR.darker();
-    this.value = DEFAULT_MODEL;
-    setControlPoint(new Point2D.Double(DEFAULT_TOP_WIDTH.convertToPixels(),
-        DEFAULT_TOP_LENGTH.convertToPixels()), 1);
+    updateCorners();
   }
 
   public ChassisPanel(String[] model) {
@@ -81,11 +94,12 @@ public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
     applyModel(model);
   }
 
-  // columns: group, model, top panel size along x and along y, wall height. The wall height leaves out the lid, which is the bottom left out of the view. Pedal-sized boxes
-  // are listed upright, as pedals use them, and the bigger ones horizontal
+  // columns: group, model, top panel size along x and along y, wall height. The wall height leaves
+  // out the lid, which is the bottom left out of the view. Pedal-sized boxes are listed upright,
+  // as pedals use them, and the bigger ones horizontal
   @Override
   public void applyModel(String[] model) {
-    setModel(model[1]);
+    setValue(model[1]);
     setHeight(Size.parseSize(model[4]));
     // the first control point stays put and the top panel keeps the direction it is drawn in
     Point2D first = controlPoints[0];
@@ -94,6 +108,13 @@ public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
     double y = Size.parseSize(model[3]).convertToPixels();
     setControlPoint(new Point2D.Double(first.getX() + (second.getX() < first.getX() ? -x : x),
         first.getY() + (second.getY() < first.getY() ? -y : y)), 1);
+  }
+
+  private void updateCorners() {
+    firstPoint.setLocation(Math.min(controlPoints[0].getX(), controlPoints[1].getX()),
+        Math.min(controlPoints[0].getY(), controlPoints[1].getY()));
+    secondPoint.setLocation(Math.max(controlPoints[0].getX(), controlPoints[1].getX()),
+        Math.max(controlPoints[0].getY(), controlPoints[1].getY()));
   }
 
   /**
@@ -121,63 +142,112 @@ public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
   }
 
   @Override
-  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
-      IDrawingObserver drawingObserver) {
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke((int) borderThickness.convertToPixels()));
-    int radius = (int) edgeRadius.convertToPixels();
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
+    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    int x = (int) Math.round(firstPoint.getX());
+    int y = (int) Math.round(firstPoint.getY());
+    int width = (int) (secondPoint.getX() - firstPoint.getX());
+    int length = (int) (secondPoint.getY() - firstPoint.getY());
+    int radius = (int) getEdgeRadius().convertToPixels();
     Rectangle2D[] sidePanels = getSidePanels();
     if (componentState != ComponentState.DRAGGING) {
       Composite oldComposite = applyAlpha(g2d, componentState);
       g2d.setColor(color);
       if (radius == 0) {
-        g2d.fillRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
-            (int) (secondPoint.getX() - firstPoint.getX()),
-            (int) (secondPoint.getY() - firstPoint.getY()));
+        g2d.fillRect(x, y, width, length);
       } else {
-        g2d.fillRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
-            (int) (secondPoint.getX() - firstPoint.getX()),
-            (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
+        g2d.fillRoundRect(x, y, width, length, radius, radius);
       }
       for (Rectangle2D panel : sidePanels) {
         g2d.fill(panel);
       }
       g2d.setComposite(oldComposite);
+      // the panels drawn so far are the whole area of the enclosure
       drawingObserver.stopTracking();
     }
-    // Do not track any changes that follow because the whole rect has been
-    // tracked so far.
-    g2d.setColor(componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-        : borderColor);
+    g2d.setColor(componentState == ComponentState.SELECTED
+        || componentState == ComponentState.DRAGGING ? SELECTION_COLOR : borderColor);
     if (radius == 0) {
-      g2d.drawRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
-          (int) (secondPoint.getX() - firstPoint.getX()),
-          (int) (secondPoint.getY() - firstPoint.getY()));
+      g2d.drawRect(x, y, width, length);
     } else {
-      g2d.drawRoundRect((int) Math.round(firstPoint.getX()), (int) Math.round(firstPoint.getY()),
-          (int) (secondPoint.getX() - firstPoint.getX()),
-          (int) (secondPoint.getY() - firstPoint.getY()), radius, radius);
+      g2d.drawRoundRect(x, y, width, length, radius, radius);
     }
     for (Rectangle2D panel : sidePanels) {
       g2d.draw(panel);
     }
   }
 
+  @Override
+  public int getControlPointCount() {
+    return controlPoints.length;
+  }
+
+  @Override
+  public Point2D getControlPoint(int index) {
+    return controlPoints[index];
+  }
+
+  @Override
+  public void setControlPoint(Point2D point, int index) {
+    controlPoints[index].setLocation(point);
+    updateCorners();
+  }
+
+  @Override
+  public boolean isControlPointSticky(int index) {
+    return false;
+  }
+
+  @Override
+  public VisibilityPolicy getControlPointVisibilityPolicy(int index) {
+    return VisibilityPolicy.WHEN_SELECTED;
+  }
+
+  @Override
+  public String getControlPointNodeName(int index) {
+    return null;
+  }
+
+  @EditableProperty
+  @Override
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  @EditableProperty(name = "Color")
+  public Color getColor() {
+    return color;
+  }
+
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  @EditableProperty(name = "Border")
+  public Color getBorderColor() {
+    return borderColor;
+  }
+
+  public void setBorderColor(Color borderColor) {
+    this.borderColor = borderColor;
+  }
+
   @EditableProperty(name = "Radius")
   public Size getEdgeRadius() {
+    if (edgeRadius == null) {
+      edgeRadius = DEFAULT_RADIUS;
+    }
     return edgeRadius;
   }
 
   public void setEdgeRadius(Size edgeRadius) {
     this.edgeRadius = edgeRadius;
-  }
-
-  @EditableProperty(name = "Value")
-  public String getModel() {
-    return value;
-  }
-
-  public void setModel(String model) {
-    this.value = model;
   }
 
   @EditableProperty
@@ -211,11 +281,6 @@ public class ChassisPanel extends AbstractShape implements IDatasheetSupport {
 
   public void setSpacing(Size spacing) {
     this.spacing = spacing;
-  }
-
-  @Override
-  public String getValueForDisplay() {
-    return value == null ? "" : value;
   }
 
   @Override

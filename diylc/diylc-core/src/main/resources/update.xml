@@ -531,7 +531,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added a datasheet to 'Enclosure' with Hammond 1590, 1550, 1441 and 1444 enclosures and the 125B size</description>
+					<description>Added a datasheet to 'Enclosure' with Hammond 1590, 1550, 1441 and 1444 enclosures and the 125B size - more than 130 variations</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

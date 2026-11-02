@@ -11509,7 +11509,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -11538,12 +11538,6 @@
       "type" : "Color",
       "format" : "hex",
       "defaultValue" : "#A6A6A6"
-    }, {
-      "name" : "Border Thickness",
-      "type" : "Size",
-      "format" : "(value)(unit)",
-      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -11602,7 +11596,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -11639,7 +11633,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -18741,7 +18735,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -18842,7 +18836,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -18879,7 +18873,7 @@
       "type" : "Size",
       "format" : "(value)(unit)",
       "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
-      "defaultValue" : "0.2mm"
+      "defaultValue" : "1px"
     }, {
       "name" : "Color",
       "type" : "Color",
