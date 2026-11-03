@@ -715,3 +715,10 @@ All
 Front and Back
 Click to choose from %s variants
 Flange
+Set default variant
+Remove default variant
+Delete variant
+Are you sure you want to delete variant "%s"?
+Delete
+Set default model
+Remove default model

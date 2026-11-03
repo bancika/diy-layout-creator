@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -46,6 +47,9 @@ import org.diylc.serialization.ProjectFileManager;
 public class VariantManager {
 
   private static final String VARIANTS_FILE_NAME = "import-defaults/variants.xml";
+  // marks a default that names a datasheet model rather than a variant; older versions find no
+  // variant by that name and simply place the component without a default
+  private static final String DATASHEET_MODEL_PREFIX = "datasheet:";
 
   private static final Logger LOG = Logger.getLogger(VariantManager.class);
 
@@ -261,6 +265,67 @@ public class VariantManager {
     return defaultTemplateMap.get(key2);
   }
 
+  /**
+   * Makes the variant the default of its type, replacing whatever variant or model was the
+   * default before, or clears the default if the variant already is it.
+   */
+  @SuppressWarnings("unchecked")
+  public void setDefaultVariant(ComponentType type, String variantName) {
+    Map<String, String> defaultTemplateMap =
+        (Map<String, String>) configManager.readObject(IPlugInPort.DEFAULT_TEMPLATES_KEY, null);
+    if (defaultTemplateMap == null) {
+      defaultTemplateMap = new HashMap<String, String>();
+    }
+
+    // try by class name and then by old category.type format
+    String key1 = type.getInstanceClass().getCanonicalName();
+    String key2 = type.getCategory() + "." + type.getName();
+
+    if (variantName.equals(defaultTemplateMap.get(key1))
+        || variantName.equals(defaultTemplateMap.get(key2))) {
+      defaultTemplateMap.remove(key1);
+      defaultTemplateMap.remove(key2);
+      LOG.info(String.format("Cleared default of %s, was %s", type.getName(), variantName));
+    } else {
+      // get rid of legacy key
+      defaultTemplateMap.remove(key2);
+      defaultTemplateMap.put(key1, variantName);
+      LOG.info(String.format("Set default of %s to %s", type.getName(), variantName));
+    }
+    configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
+  }
+
+  /**
+   * Same as {@link #setDefaultVariant(ComponentType, String)} for a datasheet model, sharing the
+   * single default slot of the type.
+   */
+  public void setDefaultModel(ComponentType type, String[] model) {
+    setDefaultVariant(type, encodeModel(type, model));
+  }
+
+  public boolean isDefaultModel(ComponentType type, String[] model) {
+    return encodeModel(type, model).equals(getDefaultVariant(type));
+  }
+
+  /**
+   * @return the datasheet row pinned as the default of the type, or null when the default is a
+   *         variant, nothing is pinned, or the pinned model is no longer in the datasheet.
+   */
+  public String[] getDefaultModel(ComponentType type) {
+    String defaultVariant = getDefaultVariant(type);
+    List<String[]> datasheet = type.getDatasheet();
+    if (defaultVariant == null || !defaultVariant.startsWith(DATASHEET_MODEL_PREFIX)
+        || datasheet == null) {
+      return null;
+    }
+    for (String[] row : datasheet) {
+      if (defaultVariant.equals(encodeModel(type, row))) {
+        return row;
+      }
+    }
+    return null;
+  }
+
   @SuppressWarnings("unchecked")
   public void deleteVariant(ComponentType type, String templateName) {
     LOG.debug(String.format("deleteTemplate(%s, %s)", type, templateName));
@@ -293,5 +358,12 @@ public class VariantManager {
       }
     }
     configManager.writeValue(IPlugInPort.TEMPLATES_KEY, templateMap);
+  }
+
+  // a model is identified by its path through the datasheet submenus, the same columns the
+  // toolbox matches when a model is clicked
+  private String encodeModel(ComponentType type, String[] model) {
+    int depth = Math.min(type.getDatasheetCreationStepCount(), model.length);
+    return DATASHEET_MODEL_PREFIX + String.join("|", Arrays.copyOf(model, depth));
   }
 }

@@ -714,3 +714,10 @@ All|Sve
 Front and Back|Prednja i zadnja
 Click to choose from %s variants|Kliknite da izaberete jednu od %s varijanti
 Flange|Obod
+Set default variant|Postavi kao podrazumevanu varijantu
+Remove default variant|Ukloni podrazumevanu varijantu
+Delete variant|Obriši varijantu
+Are you sure you want to delete variant "%s"?|Da li ste sigurni da želite da obrišete varijantu "%s"?
+Delete|Obriši
+Set default model|Postavi kao podrazumevani model
+Remove default model|Ukloni podrazumevani model

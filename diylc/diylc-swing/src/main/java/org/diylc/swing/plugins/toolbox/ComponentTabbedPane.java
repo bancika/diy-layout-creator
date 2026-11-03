@@ -508,7 +508,7 @@ class ComponentTabbedPane extends JTabbedPane {
           variantPopup.add(new JSeparator());
           
           if (componentType.getDatasheet() != null && !componentType.getDatasheet().isEmpty()) {
-            List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
+            List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), true, model -> {
               LOG.info("Creating datasheet model " + String.join(", ", model));
               plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
             });

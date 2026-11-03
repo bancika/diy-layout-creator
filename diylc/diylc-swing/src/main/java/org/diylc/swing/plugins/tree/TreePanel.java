@@ -610,7 +610,7 @@ public class TreePanel extends JPanel {
       boolean showEmpty) {
     if (componentType.getDatasheet() != null) {
       List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort,
-          componentType, new ArrayList<String>(), model -> {
+          componentType, new ArrayList<String>(), true, model -> {
             LOG.info("Creating datasheet model " + String.join(", ", model));
             plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
           });

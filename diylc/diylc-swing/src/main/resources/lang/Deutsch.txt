@@ -722,3 +722,10 @@ All|Alle
 Front and Back|Vorne und hinten
 Click to choose from %s variants|Klicken, um aus %s Varianten zu wählen
 Flange|Flansch
+Set default variant|Als Standardvariante festlegen
+Remove default variant|Standardvariante entfernen
+Delete variant|Variante löschen
+Are you sure you want to delete variant "%s"?|Möchten Sie die Variante "%s" wirklich löschen?
+Delete|Löschen
+Set default model|Als Standardmodell festlegen
+Remove default model|Standardmodell entfernen

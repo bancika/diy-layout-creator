@@ -43,6 +43,10 @@ public interface IVariantProcessor {
   void deleteVariant(ComponentType type, String variantName);
 
   void setDefaultVariant(ComponentType type, String variantName);
+
+  void setDefaultModel(ComponentType type, String[] model);
+
+  boolean isDefaultModel(ComponentType type, String[] model);
   
   int importVariants(String fileName) throws IOException;
   

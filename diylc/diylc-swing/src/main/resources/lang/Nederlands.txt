@@ -723,3 +723,10 @@ All|Alle
 Front and Back|Voor- en achterkant
 Click to choose from %s variants|Klik om te kiezen uit %s varianten
 Flange|Flens
+Set default variant|Instellen als standaardvariant
+Remove default variant|Standaardvariant verwijderen
+Delete variant|Variant verwijderen
+Are you sure you want to delete variant "%s"?|Weet u zeker dat u variant "%s" wilt verwijderen?
+Delete|Verwijderen
+Set default model|Instellen als standaardmodel
+Remove default model|Standaardmodel verwijderen

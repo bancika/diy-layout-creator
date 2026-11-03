@@ -351,7 +351,7 @@ public class ComponentPopupMenu extends TranslatedPopupMenu implements Clipboard
     }
     
     applyMenu.setEnabled(true);
-    List<Component> datasheetItems = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
+    List<Component> datasheetItems = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), false, model -> {
       LOG.info("Applying datasheet model " + String.join(", ", model));      
       plugInPort.applyModelToSelection(model);
     });

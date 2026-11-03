@@ -2868,17 +2868,21 @@ public class Presenter implements IPlugInPort {
       controlPointMap.clear();
     }
 
-    // try to find a default template if none is provided
-    if (componentType != null && template == null) {
-      String defaultTemplate = getDefaultVariant(componentType);
-      List<Template> templates = getVariantsFor(componentType);
-      if (templates != null && defaultTemplate != null)
-        for (Template t : templates) {
-          if (t.getName().equals(defaultTemplate)) {
-            template = t;
-            break;
+    // try to find a default model or template if none is provided
+    if (componentType != null && template == null && model == null) {
+      model = variantManager.getDefaultModel(componentType);
+      if (model == null) {
+        String defaultTemplate = getDefaultVariant(componentType);
+        List<Template> templates = getVariantsFor(componentType);
+        if (templates != null && defaultTemplate != null) {
+          for (Template t : templates) {
+            if (t.getName().equals(defaultTemplate)) {
+              template = t;
+              break;
+            }
           }
         }
+      }
     }
 
     try {
@@ -3064,28 +3068,19 @@ public class Presenter implements IPlugInPort {
     variantManager.deleteVariant(type, templateName);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void setDefaultVariant(ComponentType type, String templateName) {
-    LOG.debug(String.format("setTemplateDefault(%s, %s)", type, templateName));
-    Map<String, String> defaultTemplateMap =
-        (Map<String, String>) configManager.readObject(DEFAULT_TEMPLATES_KEY, null);
-    if (defaultTemplateMap == null)
-      defaultTemplateMap = new HashMap<String, String>();
+    variantManager.setDefaultVariant(type, templateName);
+  }
 
-    // try by class name and then by old category.type format
-    String key1 = type.getInstanceClass().getCanonicalName();
-    String key2 = type.getCategory() + "." + type.getName();
+  @Override
+  public void setDefaultModel(ComponentType type, String[] model) {
+    variantManager.setDefaultModel(type, model);
+  }
 
-    if (templateName.equals(defaultTemplateMap.get(key1)) || templateName.equals(defaultTemplateMap.get(key2))) {
-      defaultTemplateMap.remove(key1);
-      defaultTemplateMap.remove(key2);
-    } else {
-      // get rid of legacy key
-      defaultTemplateMap.remove(key2);
-      defaultTemplateMap.put(key1, templateName);
-    }
-    configManager.writeValue(DEFAULT_TEMPLATES_KEY, defaultTemplateMap);
+  @Override
+  public boolean isDefaultModel(ComponentType type, String[] model) {
+    return variantManager.isDefaultModel(type, model);
   }
 
   @Override

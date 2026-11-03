@@ -550,6 +550,10 @@
 					<description>Added a datasheet to 'Enclosure' with Hammond 1590, 1550, 1441 and 1444 enclosures and the 125B size - more than 130 variations</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Datasheet models in a component's drop-down menu now have the same pin as saved variants, so a model such as a 2N3904 can be made the default that is placed when the component is clicked; a component has one default, so pinning a model replaces a pinned variant and the other way round</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Re-modeled factory variants of Resistor component type as datasheet in order to make them available to the AI; this will produce more accurate AI-driven edits</description>
 				</org.diylc.appframework.update.Change>

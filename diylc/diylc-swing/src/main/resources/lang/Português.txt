@@ -718,3 +718,10 @@ All|Todos
 Front and Back|Frente e traseira
 Click to choose from %s variants|Clique para escolher entre %s variantes
 Flange|Flange
+Set default variant|Definir como variante padrão
+Remove default variant|Remover variante padrão
+Delete variant|Excluir variante
+Are you sure you want to delete variant "%s"?|Tem certeza de que deseja excluir a variante "%s"?
+Delete|Excluir
+Set default model|Definir como modelo padrão
+Remove default model|Remover modelo padrão

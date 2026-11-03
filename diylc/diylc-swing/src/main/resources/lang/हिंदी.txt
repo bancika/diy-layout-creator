@@ -716,3 +716,10 @@ All|सभी
 Front and Back|आगे और पीछे
 Click to choose from %s variants|%s वेरिएंट में से चुनने के लिए क्लिक करें
 Flange|फ़्लैंज
+Set default variant|डिफ़ॉल्ट वेरिएंट सेट करें
+Remove default variant|डिफ़ॉल्ट वेरिएंट हटाएँ
+Delete variant|वेरिएंट हटाएँ
+Are you sure you want to delete variant "%s"?|क्या आप वाकई वेरिएंट "%s" हटाना चाहते हैं?
+Delete|हटाएँ
+Set default model|डिफ़ॉल्ट मॉडल सेट करें
+Remove default model|डिफ़ॉल्ट मॉडल हटाएँ

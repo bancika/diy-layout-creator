@@ -42,9 +42,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuSelectionManager;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
@@ -59,6 +59,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.IBlockProcessor.InvalidBlockException;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
+import org.diylc.lang.LangUtil;
 import org.diylc.utils.IconLoader;
 
 /**
@@ -170,34 +171,14 @@ public class ComponentButtonFactory {
       }
     });
 
-    String defaultVariant = plugInPort.getDefaultVariant(componentType);
-
-    JLabel label =
-        new JLabel(variant.getName().equals(defaultVariant) ? IconLoader.PinGreen.getIcon()
-            : IconLoader.PinGrey.getIcon());
-    label.setToolTipText(variant.getName().equals(defaultVariant) ? "Remove default variant"
-        : "Set default variant");
-    label.addMouseListener(new MouseAdapter() {
-
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        // Hide the menu
-        Container c = item.getParent();
-        if (c != null && c instanceof JPopupMenu) {
-          JPopupMenu m = (JPopupMenu) c;
-          m.setVisible(false);
-        }
-        plugInPort.setDefaultVariant(componentType, variant.getName());
-        e.consume();
-      }
-    });
-    Border margin = new EmptyBorder(4, 0, 0, 0);
-    label.setBorder(margin);
+    boolean isDefault = variant.getName().equals(plugInPort.getDefaultVariant(componentType));
     item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-    item.add(label);
+    item.add(createDefaultPin(isDefault,
+        isDefault ? "Remove default variant" : "Set default variant",
+        () -> plugInPort.setDefaultVariant(componentType, variant.getName())));
 
-    label = new JLabel(IconLoader.Garbage.getIcon());
-    label.setToolTipText("Delete variant");
+    JLabel label = new JLabel(IconLoader.Garbage.getIcon());
+    label.setToolTipText(LangUtil.translate("Delete variant"));
     label.addMouseListener(new MouseAdapter() {
 
       @Override
@@ -209,8 +190,10 @@ public class ComponentButtonFactory {
           m.setVisible(false);
         }
         int result = JOptionPane.showConfirmDialog(SwingUtilities.getRoot(item),
-            "Are you sure you want to delete variant \"" + variant.getName() + "\"", "Delete",
-            JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            String.format(LangUtil.translate("Are you sure you want to delete variant \"%s\"?"),
+                variant.getName()),
+            LangUtil.translate("Delete"), JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
         if (result != JOptionPane.YES_OPTION) {
           return;
         }
@@ -218,15 +201,18 @@ public class ComponentButtonFactory {
         e.consume();
       }
     });
-    margin = new EmptyBorder(4, 2, 0, 0);
-    label.setBorder(margin);
-    item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+    label.setBorder(new EmptyBorder(4, 2, 0, 0));
     item.add(label);
     return item;
   }
 
+  /**
+   * @param showDefaultPin whether model items get the pin that makes a model the default of the
+   *        type; only meaningful where the items place a new component
+   */
   public static List<Component> createDatasheetItems(final IPlugInPort plugInPort,
-      final ComponentType componentType, List<String> path, Consumer<String[]> modelConsumer) {
+      final ComponentType componentType, List<String> path, boolean showDefaultPin,
+      Consumer<String[]> modelConsumer) {
     int depth = path.size();
     List<String[]> datasheet = componentType.getDatasheet();
     if (datasheet == null) {
@@ -253,7 +239,8 @@ public class ComponentButtonFactory {
             submenu.removeAll();
             List<String> newPath = new ArrayList<String>(path);
             newPath.add(value);
-            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath, modelConsumer);
+            List<Component> childItems = createDatasheetItems(plugInPort, componentType, newPath,
+                showDefaultPin, modelConsumer);
             if (childItems.size() > MAX_MENU_ITEMS) {
               List<List<Component>> partitions = Lists.partition(childItems, MAX_MENU_ITEMS);
               for (List<Component> partition : partitions) {
@@ -293,15 +280,24 @@ public class ComponentButtonFactory {
         return (Component) submenu;
       }
 
-      JMenuItem item = new JMenuItem(value);
+      Optional<String[]> findFirst =
+          filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();
+
+      final JMenuItem item = new JMenuItem(value) {
+
+        private static final long serialVersionUID = 1L;
+
+        // Customize item size to fit the pin
+        public java.awt.Dimension getPreferredSize() {
+          Dimension d = super.getPreferredSize();
+          return new Dimension(d.width + (showDefaultPin ? 16 : 0), d.height);
+        }
+      };
 
       item.addActionListener(new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          Optional<String[]> findFirst =
-              filteredDatasheet.stream().filter(line -> line[depth].equals(value)).findFirst();
-
           if (findFirst.isPresent()) {
             modelConsumer.accept(findFirst.get());            
           } else {
@@ -309,6 +305,15 @@ public class ComponentButtonFactory {
           }
         }
       });
+
+      if (showDefaultPin && findFirst.isPresent()) {
+        String[] model = findFirst.get();
+        boolean isDefault = plugInPort.isDefaultModel(componentType, model);
+        item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        item.add(createDefaultPin(isDefault,
+            isDefault ? "Remove default model" : "Set default model",
+            () -> plugInPort.setDefaultModel(componentType, model)));
+      }
 
       return (Component) item;
     }).collect(Collectors.toList());
@@ -346,5 +351,29 @@ public class ComponentButtonFactory {
       }
     });
     return button;
+  }
+
+  private static JLabel createDefaultPin(boolean isDefault, String tooltip,
+      final Runnable toggle) {
+    JLabel label = new JLabel(
+        isDefault ? IconLoader.PinGreen.getIcon() : IconLoader.PinGrey.getIcon());
+    label.setToolTipText(LangUtil.translate(tooltip));
+    label.addMouseListener(new MouseAdapter() {
+
+      // a click is not reported when the pointer moves between press and release, which happens
+      // easily on a 16px icon, so react to the release instead, as menu items themselves do
+      @Override
+      public void mouseReleased(MouseEvent e) {
+        if (!label.contains(e.getPoint())) {
+          return;
+        }
+        // closes the whole cascade, not just the submenu that holds a datasheet model
+        MenuSelectionManager.defaultManager().clearSelectedPath();
+        toggle.run();
+        e.consume();
+      }
+    });
+    label.setBorder(new EmptyBorder(4, 0, 0, 0));
+    return label;
   }
 }

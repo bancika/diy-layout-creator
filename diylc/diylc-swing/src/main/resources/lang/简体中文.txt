@@ -716,3 +716,10 @@ All|全部
 Front and Back|前后
 Click to choose from %s variants|点击从 %s 个变体中选择
 Flange|法兰
+Set default variant|设为默认变体
+Remove default variant|取消默认变体
+Delete variant|删除变体
+Are you sure you want to delete variant "%s"?|确定要删除变体“%s”吗？
+Delete|删除
+Set default model|设为默认型号
+Remove default model|取消默认型号

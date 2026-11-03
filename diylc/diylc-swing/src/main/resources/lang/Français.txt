@@ -717,3 +717,10 @@ All|Tous
 Front and Back|Avant et arrière
 Click to choose from %s variants|Cliquez pour choisir parmi %s variantes
 Flange|Collerette
+Set default variant|Définir comme variante par défaut
+Remove default variant|Retirer la variante par défaut
+Delete variant|Supprimer la variante
+Are you sure you want to delete variant "%s"?|Voulez-vous vraiment supprimer la variante "%s" ?
+Delete|Supprimer
+Set default model|Définir comme modèle par défaut
+Remove default model|Retirer le modèle par défaut

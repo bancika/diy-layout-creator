@@ -719,3 +719,10 @@ All|Tutti
 Front and Back|Fronte e retro
 Click to choose from %s variants|Fai clic per scegliere tra %s varianti
 Flange|Flangia
+Set default variant|Imposta come variante predefinita
+Remove default variant|Rimuovi variante predefinita
+Delete variant|Elimina variante
+Are you sure you want to delete variant "%s"?|Eliminare davvero la variante "%s"?
+Delete|Elimina
+Set default model|Imposta come modello predefinito
+Remove default model|Rimuovi modello predefinito
