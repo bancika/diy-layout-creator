@@ -71,8 +71,6 @@ public class TrimmerPotentiometer extends AbstractPotentiometer {
   private static Color BORDER_COLOR = Color.decode("#8E8E38");
   private static Color SHAFT_COLOR = Color.decode("#FFFFE0");
   private static Color SHAFT_BORDER_COLOR = Color.decode("#8E8E38");
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
   protected static Display DISPLAY = Display.NAME;
 

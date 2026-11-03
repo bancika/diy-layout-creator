@@ -57,8 +57,6 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
   private static final Color BODY_COLOR = Color.lightGray;
   private static final Color BORDER_COLOR = Color.gray.darker();
-  private static final Color PIN_COLOR = METAL_COLOR;
-  private static final Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   private static final Color INDENT_COLOR = Color.gray.darker();
   private static final Color LABEL_COLOR = Color.white;
   private static final Size PIN_SIZE = new Size(0.04d, SizeUnit.in);

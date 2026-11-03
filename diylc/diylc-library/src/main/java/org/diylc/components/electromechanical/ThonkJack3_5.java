@@ -56,8 +56,6 @@ public class ThonkJack3_5 extends AbstractTransparentComponent<String> {
   private static Color SHAFT_COLOR = Color.lightGray;
   private static Color SHAFT_BORDER_COLOR = SHAFT_COLOR.darker();
   private static Color HOLE_COLOR = Color.decode("#111111");
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
   protected static Display DISPLAY = Display.NAME;
 

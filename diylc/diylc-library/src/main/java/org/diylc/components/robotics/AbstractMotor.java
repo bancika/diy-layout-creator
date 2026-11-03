@@ -55,8 +55,6 @@ public abstract class AbstractMotor extends AbstractTransparentComponent<Void> {
   public static Color SHAFT_BORDER_COLOR = Color.decode("#A0A0A0");
   public static Color METAL_BODY_COLOR = Color.decode("#8899A6");
   public static Color BRASS_COLOR = Color.decode("#D4AF37");
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
 
   public static Size PIN_SIZE = new Size(0.04d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.1d, SizeUnit.in);

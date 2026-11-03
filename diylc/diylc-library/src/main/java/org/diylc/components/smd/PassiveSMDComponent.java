@@ -53,8 +53,8 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
 
   private static final long serialVersionUID = 1L;
 
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+  public static Color END_CAP_COLOR = METAL_COLOR;
+  public static Color END_CAP_BORDER_COLOR = END_CAP_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 4;
   public static Size PIN_SIZE = new Size(0.8d, SizeUnit.mm);
@@ -265,7 +265,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
     // draw contact area
     Area contactArea = getBody()[1];
     if (!outlineMode) {
-      g2d.setColor(PIN_COLOR);
+      g2d.setColor(END_CAP_COLOR);
       applyAlpha(g2d, componentState);
       g2d.fill(contactArea);
       g2d.setComposite(oldComposite);
@@ -280,7 +280,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
     } else {
       finalBorderColor =
           componentState == ComponentState.SELECTED || componentState == ComponentState.DRAGGING ? SELECTION_COLOR
-              : PIN_BORDER_COLOR;
+              : END_CAP_BORDER_COLOR;
     }
     g2d.setColor(finalBorderColor);
     g2d.draw(contactArea);
@@ -374,7 +374,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
     contactArea.add(new Area(new Rectangle2D.Double((width - thickness) / 2, height - 8 * width / 32, thickness,
         contactSize)));
     contactArea.intersect(new Area(rect));
-    g2d.setColor(PIN_COLOR);
+    g2d.setColor(END_CAP_COLOR);
     g2d.fill(contactArea);
   }
   

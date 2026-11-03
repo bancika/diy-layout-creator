@@ -70,8 +70,7 @@ public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[
   public static Color BODY_COLOR = Color.decode("#6B6DCE");
   public static Color BASE_COLOR = Color.decode("#333333");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = METAL_COLOR;// Color.decode("#00B2EE");
-//  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+  public static Color TERMINAL_COLOR = METAL_COLOR;
   public static Color LABEL_COLOR = Color.white;
   public static Size PIN_SIZE = new Size(0.08d, SizeUnit.in);
 //  public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);
@@ -89,7 +88,7 @@ public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[
   private Color baseColor = BASE_COLOR;
   private Color borderColor = BORDER_COLOR;
   private Color labelColor = LABEL_COLOR;
-  private Color pinColor = PIN_COLOR;  
+  private Color pinColor = TERMINAL_COLOR;  
   protected Display display = Display.NAME;
 //  private Size pinSpacing = PIN_SPACING;
   private Size diameter = BODY_DIAMETER;
@@ -455,7 +454,7 @@ public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[
     margin = 6 * width / 32;
     area = new Area(new Ellipse2D.Double(margin, margin, width - 2 * margin + 1, width - 2 * margin + 1));
     g2d.fill(area);
-    g2d.setColor(PIN_COLOR);
+    g2d.setColor(TERMINAL_COLOR);
     int pinSize = 2 * width / 32;
     for (int i = 0; i < 3; i++) {
       g2d.fillOval((i == 1 ? width * 3 / 8 : width / 2) - pinSize / 2, height / 2 + (i - 1) * (height / 5), pinSize, pinSize);

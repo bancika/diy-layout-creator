@@ -86,8 +86,6 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
 
   public static Color BODY_COLOR = Color.gray;
   public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 6;
   public static Size SQUARE_PIN_SIZE = new Size(0.04d, SizeUnit.in);
@@ -361,21 +359,6 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
         : SQUARE_PIN_SIZE.convertToPixels()) / 2 * 2;
 
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-    if (!outlineMode) {
-      for (Point2D point : controlPoints) {
-        g2d.setColor(PIN_COLOR);
-        Shape shape;
-        if (pinShape == PinShape.Round)
-          shape = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
-              pinSize, pinSize);
-        else
-          shape = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
-              pinSize, pinSize);
-        g2d.fill(shape);
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.draw(shape);
-      }
-    }
 
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
@@ -400,7 +383,9 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     if (outlineMode) {
       Area area = new Area(mainArea);
-      area.subtract(getBody()[1]);
+      if (getBody()[1] != null) {
+        area.subtract(getBody()[1]);
+      }
       g2d.draw(area);
     } else {
       g2d.draw(mainArea);
@@ -408,6 +393,28 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
       // g2d.setColor(getIndentColor());
       // g2d.fill(getBody()[1]);
       // }
+    }
+
+    // round, in-line and BR-3 packages have their pins under the body, so pins are drawn over it
+    // to stay visible whatever its alpha
+    Color pinBorderColor = outlineMode ? ((Theme) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME)).getOutlineColor()
+        : PIN_BORDER_COLOR;
+    for (Point2D point : controlPoints) {
+      Shape shape;
+      if (pinShape == PinShape.Round) {
+        shape = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
+            pinSize, pinSize);
+      } else {
+        shape = new Rectangle2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
+            pinSize, pinSize);
+      }
+      if (!outlineMode) {
+        g2d.setColor(PIN_COLOR);
+        g2d.fill(shape);
+      }
+      g2d.setColor(pinBorderColor);
+      g2d.draw(shape);
     }
 
     drawingObserver.stopTracking();

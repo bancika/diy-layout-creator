@@ -70,8 +70,6 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
   public static Color CORE_BORDER_COLOR = CORE_COLOR.darker();
   public static Color COIL_COLOR = Color.decode("#DDDDDD");
   public static Color COIL_BORDER_COLOR = COIL_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 6;
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);

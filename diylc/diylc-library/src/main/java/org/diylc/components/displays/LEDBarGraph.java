@@ -74,8 +74,6 @@ public class LEDBarGraph extends AbstractLabeledComponent<String> {
 
   public static Color BODY_COLOR = Color.decode("#2B2B2B");
   public static Color BORDER_COLOR = Color.decode("#1A1A1A");
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   // A bar graph is a scale, not a lamp: green most of the way up, yellow for the last two and
   // red for the topmost, as on a level or VU meter.
   public static Color SEGMENT_GREEN = Color.decode("#43A047");

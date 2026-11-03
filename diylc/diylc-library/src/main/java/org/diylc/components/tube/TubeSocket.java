@@ -92,8 +92,8 @@ public class TubeSocket extends AbstractAngledComponent<String>
 
   private static Color BODY_COLOR = Color.decode("#F7F7EF");
   private static Color LABEL_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
+  public static Color LUG_COLOR = METAL_COLOR;
+  public static Color LUG_BORDER_COLOR = LUG_COLOR.darker();
   public static Size PIN_DIAMETER = new Size(1d, SizeUnit.mm);
   private static Size PIN_WIDTH = new Size(0.08d, SizeUnit.in);
   private static Size PIN_THICKNESS = new Size(0.02d, SizeUnit.in);
@@ -327,13 +327,15 @@ public class TubeSocket extends AbstractAngledComponent<String>
             controlPoints[i].getY()));
         pinShape = rotatedPin;
       }
-      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : PIN_COLOR);
+      // chassis sockets show their metal solder lugs; PCB pins are drawn like the pins of ICs
+      boolean pcb = getMount() == Mount.PCB;
+      g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : pcb ? PIN_COLOR : LUG_COLOR);
       if (getMount() == Mount.CHASSIS)
         drawingObserver.startTrackingContinuityArea(true);
       g2d.fill(pinShape);
       drawingObserver.stopTrackingContinuityArea();
       if (!outlineMode) {
-        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.setColor(pcb ? PIN_BORDER_COLOR : LUG_BORDER_COLOR);
         g2d.draw(pinShape);
       }
     }
@@ -370,9 +372,9 @@ public class TubeSocket extends AbstractAngledComponent<String>
     for (int i = 0; i < 8; i++) {
       int x = (int) (center + Math.cos(i * Math.PI / 4) * radius);
       int y = (int) (center + Math.sin(i * Math.PI / 4) * radius);
-      g2d.setColor(PIN_COLOR);
+      g2d.setColor(LUG_COLOR);
       g2d.fillOval(x - 1, y - 1, 3, 3);
-      g2d.setColor(PIN_BORDER_COLOR);
+      g2d.setColor(LUG_BORDER_COLOR);
       g2d.drawOval(x - 1, y - 1, 3, 3);
     }
   }

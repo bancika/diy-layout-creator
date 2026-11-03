@@ -59,7 +59,6 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
   public static Size BODY_LENGTH = new Size(0.375d, SizeUnit.in); // 9.53mm from datasheet
   public static Color BODY_COLOR = Color.decode("#4477BB");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
   public static Color SCREW_COLOR = BRASS_COLOR;
   protected String name;
   private Resistance value = new Resistance(10d, ResistanceUnit.K);
@@ -245,7 +244,7 @@ public class BoxTrimmer extends AbstractTransparentComponent<Resistance> {
     g2d.drawLine(bodyX + 2 + screwSize / 2 - slotLen / 2, bodyY,
         bodyX + 2 + screwSize / 2 + slotLen / 2, bodyY);
 
-    // Draw three pins at bottom (light gray)
+    // Draw three pins at bottom
     g2d.setColor(PIN_COLOR);
     int pinSpacing = bodyWidth / 4;
     for (int i = 0; i < 3; i++) {

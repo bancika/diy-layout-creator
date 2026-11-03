@@ -67,8 +67,6 @@ public class MultiwattIC extends AbstractTransparentComponent<String>
 
   public static Color BODY_COLOR = Color.gray;
   public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.white;
   public static Color TAB_COLOR = Color.lightGray;
   public static Color TAB_BORDER_COLOR = TAB_COLOR.darker();

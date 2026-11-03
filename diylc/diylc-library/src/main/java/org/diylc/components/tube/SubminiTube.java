@@ -74,8 +74,6 @@ public class SubminiTube extends AbstractLabeledComponent<String> implements IDa
 
   public static Color BODY_COLOR = Color.decode("#DDDDDD");
   public static Color BORDER_COLOR = Color.gray;
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.black;
   public static Size LEAD_SPACING = new Size(0.1d, SizeUnit.in);
   public static Size BODY_WIDTH = new Size(0.4d, SizeUnit.in);

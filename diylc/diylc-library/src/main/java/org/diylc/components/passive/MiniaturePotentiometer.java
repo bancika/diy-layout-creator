@@ -59,8 +59,6 @@ public class MiniaturePotentiometer extends AbstractPotentiometer {
   private static Color BORDER_COLOR = BODY_COLOR.darker();
   private static Color SHAFT_COLOR = Color.lightGray;
   private static Color SHAFT_BORDER_COLOR = SHAFT_COLOR.darker();
-  public static Color PIN_COLOR = METAL_COLOR;
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
   protected static Display DISPLAY = Display.NAME;
 
@@ -319,9 +317,9 @@ public class MiniaturePotentiometer extends AbstractPotentiometer {
         
         if (!outlineMode) {
           if (bracket != null) {
-            g2d.setColor(PIN_COLOR);
+            g2d.setColor(METAL_COLOR);
             g2d.fill(bracket);
-            g2d.setColor(PIN_BORDER_COLOR);
+            g2d.setColor(METAL_COLOR.darker());
             g2d.draw(bracket);
           }
           if (rivet1 != null) {

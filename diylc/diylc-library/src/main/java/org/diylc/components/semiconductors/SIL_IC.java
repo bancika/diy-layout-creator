@@ -71,8 +71,6 @@ public class SIL_IC extends AbstractTransparentComponent<String>
 
   public static Color BODY_COLOR = Color.gray;
   public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 6;
@@ -315,18 +313,7 @@ public class SIL_IC extends AbstractTransparentComponent<String>
       return;
     }
     Area mainArea = getBody()[0];
-    
-    g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
-    if (!outlineMode) {
-      int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point2D point : controlPoints) {
-        g2d.setColor(PIN_COLOR);
-        g2d.fillOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
-        g2d.setColor(PIN_BORDER_COLOR);        
-        g2d.drawOval((int) Math.round(point.getX() - pinSize / 2), (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
-      }
-    }
-    
+
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
@@ -358,6 +345,25 @@ public class SIL_IC extends AbstractTransparentComponent<String>
         g2d.fill(getBody()[1]);
       }
     }
+
+    // the pins sit under the body, so they are drawn over it to stay visible whatever its alpha
+    int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+    Color pinBorderColor = outlineMode ? ((Theme) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME)).getOutlineColor()
+        : PIN_BORDER_COLOR;
+    for (Point2D point : controlPoints) {
+      int pinX = (int) Math.round(point.getX() - pinSize / 2);
+      int pinY = (int) Math.round(point.getY() - pinSize / 2);
+      if (!outlineMode) {
+        g2d.setColor(PIN_COLOR);
+        drawingObserver.startTracking();
+        g2d.fillOval(pinX, pinY, pinSize, pinSize);
+        drawingObserver.stopTracking();
+      }
+      g2d.setColor(pinBorderColor);
+      g2d.drawOval(pinX, pinY, pinSize, pinSize);
+    }
+
     // Draw label.
     g2d.setFont(project.getFont());
     Color finalLabelColor;

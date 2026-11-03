@@ -64,8 +64,6 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
 
   public static Color BODY_COLOR = Color.gray;
   public static Color BORDER_COLOR = Color.gray.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 6;

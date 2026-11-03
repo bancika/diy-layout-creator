@@ -60,8 +60,6 @@ public class PinHeader extends AbstractTransparentComponent<Void> {
   private static final long serialVersionUID = 1L;
 
   public static Color BODY_COLOR = Color.gray;
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color INDENT_COLOR = Color.gray.darker();
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
   public static Size INDENT_SIZE = new Size(0.1d, SizeUnit.in); 

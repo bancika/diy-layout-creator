@@ -563,7 +563,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Transistor pins are now drawn on top of the body in the same color on every package, so they stay visible whatever the body transparency</description>
+					<description>Pins of transistors, 'SIP IC', 'DIP Switch' and 'Bridge Rectifier' are now drawn on top of the body, so they stay visible whatever the body transparency, and pins are drawn in the same color on every component, including 'DIP IC', 'Bridge Rectifier', 'LED Bar Graph', trimmers and PCB-mounted 'Tube Socket'</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>

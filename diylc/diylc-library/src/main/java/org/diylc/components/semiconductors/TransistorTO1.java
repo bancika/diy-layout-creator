@@ -65,8 +65,6 @@ public class TransistorTO1 extends AbstractTransistorPackage {
 
   public static Color BODY_COLOR = Color.lightGray;
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.black;
   public static Size PIN_SIZE = new Size(0.03d, SizeUnit.in);
   public static Size PIN_SPACING = new Size(0.05d, SizeUnit.in);

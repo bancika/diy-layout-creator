@@ -59,8 +59,6 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
 
   public static Color BODY_COLOR = Color.decode("#E84E46");
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color TICK_COLOR = Color.white;
   public static Color LABEL_COLOR = Color.white;
   public static int EDGE_RADIUS = 2;
@@ -330,23 +328,6 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
     }
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     Area mainArea = getBody()[0];
-    if (!outlineMode) {
-      int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
-      for (Point2D point : controlPoints) {
-        g2d.setColor(PIN_COLOR);
-        int pinWidth = getClosestOdd(pinSize
-            / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 2f
-                : 1f));
-        int pinHeight = getClosestOdd(pinSize
-            / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 1f
-                : 2f));
-        g2d.fillRect((int) Math.round(point.getX() - pinWidth / 2), (int) Math.round(point.getY() - pinHeight / 2),
-            pinWidth, pinHeight);
-        g2d.setColor(PIN_BORDER_COLOR);
-        g2d.drawRect((int) Math.round(point.getX() - pinWidth / 2), (int) Math.round(point.getY() - pinHeight / 2),
-            pinWidth, pinHeight);
-      }
-    }
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : getBodyColor());
     g2d.fill(mainArea);
@@ -388,6 +369,30 @@ public class DIPSwitch extends AbstractTransparentComponent<String> implements I
         g2d.setColor(getTickColor());
         g2d.fill(getBody()[2]);
       }
+    }
+
+    // the pins sit under the body, so they are drawn over it to stay visible whatever its alpha
+    int pinSize = (int) PIN_SIZE.convertToPixels() / 2 * 2;
+    int pinWidth = getClosestOdd(pinSize
+        / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 2f
+            : 1f));
+    int pinHeight = getClosestOdd(pinSize
+        / (getOrientation() == Orientation.DEFAULT || getOrientation() == Orientation._180 ? 1f
+            : 2f));
+    Color pinBorderColor = outlineMode ? ((Theme) ConfigurationManager.getInstance()
+        .readObject(IPlugInPort.THEME_KEY, Constants.DEFAULT_THEME)).getOutlineColor()
+        : PIN_BORDER_COLOR;
+    for (Point2D point : controlPoints) {
+      int pinX = (int) Math.round(point.getX() - pinWidth / 2);
+      int pinY = (int) Math.round(point.getY() - pinHeight / 2);
+      if (!outlineMode) {
+        g2d.setColor(PIN_COLOR);
+        drawingObserver.startTracking();
+        g2d.fillRect(pinX, pinY, pinWidth, pinHeight);
+        drawingObserver.stopTracking();
+      }
+      g2d.setColor(pinBorderColor);
+      g2d.drawRect(pinX, pinY, pinWidth, pinHeight);
     }
 
     // Draw label.

@@ -64,8 +64,6 @@ public abstract class AbstractMakerBoard extends AbstractTransparentComponent<Vo
   public static final Color ESP_BLACK = Color.decode("#3E3E3E");
   public static final Color WEMOS_BLUE = Color.decode("#006699");
 
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color HEADER_BODY_COLOR = Color.decode("#222222");
   public static Color HEADER_BORDER_COLOR = Color.decode("#111111");
   public static Color MOUNTING_HOLE_COLOR = Color.decode("#B8860B");

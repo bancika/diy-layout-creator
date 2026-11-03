@@ -70,8 +70,6 @@ public class TransistorTO3 extends AbstractLabeledComponent<String>
 
   public static Color BODY_COLOR = Color.lightGray;
   public static Color BORDER_COLOR = BODY_COLOR.darker();
-  public static Color PIN_COLOR = Color.decode("#00B2EE");
-  public static Color PIN_BORDER_COLOR = PIN_COLOR.darker();
   public static Color LABEL_COLOR = Color.black;
 
   public static Size LARGE_DIAMETER = new Size(26.2d, SizeUnit.mm);
