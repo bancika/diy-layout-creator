@@ -45,6 +45,7 @@ public class TransistorPinoutTest {
   @Test
   public void regulatorPinsKeepTheirOrder() {
     assertSpiceNodes(TransistorPinout.REGULATOR_IGO, 0, 1, 2);
+    assertSpiceNodes(TransistorPinout.REFERENCE_RAK, 0, 1, 2);
   }
 
   /** Every value names three distinct pins with letters its type knows. */
@@ -55,7 +56,8 @@ public class TransistorPinoutTest {
       Assert.assertEquals(pinout.name(), 3, pins.length());
       Assert.assertEquals(pinout.name(), 3, pins.chars().distinct().count());
       String roles = pinout.name().startsWith("BJT") ? "BCE"
-          : pinout.name().startsWith("REGULATOR") ? "IOGA" : "DGS";
+          : pinout.name().startsWith("REGULATOR") ? "IOGA"
+          : pinout.name().startsWith("REFERENCE") ? "RAK" : "DGS";
       for (char c : pins.toCharArray()) {
         Assert.assertTrue(pinout.name(), roles.indexOf(c) >= 0);
       }

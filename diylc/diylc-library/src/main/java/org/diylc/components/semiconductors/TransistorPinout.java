@@ -2,7 +2,7 @@ package org.diylc.components.semiconductors;
 
 public enum TransistorPinout {
 
-  BJT_EBC, BJT_CBE, BJT_BCE, BJT_ECB, BJT_BEC, BJT_CEB, JFET_DSG, JFET_GSD, JFET_DGS, JFET_SGD, JFET_GDS, JFET_SDG, MOSFET_DSG, MOSFET_GSD, MOSFET_DGS, MOSFET_SGD, MOSFET_GDS, REGULATOR_IGO, REGULATOR_OGI, REGULATOR_GOI, REGULATOR_AOI, REGULATOR_AIO, REGULATOR_IOG, REGULATOR_IOA, REGULATOR_GIO;
+  BJT_EBC, BJT_CBE, BJT_BCE, BJT_ECB, BJT_BEC, BJT_CEB, JFET_DSG, JFET_GSD, JFET_DGS, JFET_SGD, JFET_GDS, JFET_SDG, MOSFET_DSG, MOSFET_GSD, MOSFET_DGS, MOSFET_SGD, MOSFET_GDS, REGULATOR_IGO, REGULATOR_OGI, REGULATOR_GOI, REGULATOR_AOI, REGULATOR_AIO, REGULATOR_IOG, REGULATOR_IOA, REGULATOR_GIO, REFERENCE_RAK;
   
   @Override
   public String toString() {
@@ -24,13 +24,13 @@ public enum TransistorPinout {
 
   /**
    * Position of the pin at {@code index} in SPICE node order: C B E for a BJT, D G S for a FET.
-   * Regulators have no SPICE element, so their pins keep their own order.
+   * Regulators and shunt references have no SPICE element, so their pins keep their own order.
    */
   public int mapToSpiceNode(int index) {
     String spiceOrder;
     if (name().startsWith("BJT")) {
       spiceOrder = "CBE";
-    } else if (name().startsWith("REGULATOR")) {
+    } else if (name().startsWith("REGULATOR") || name().startsWith("REFERENCE")) {
       return index;
     } else {
       spiceOrder = "DGS";
