@@ -27,6 +27,7 @@ import java.awt.Composite;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -71,8 +72,11 @@ public class TransistorTO1 extends AbstractTransistorPackage {
   public static Size BODY_DIAMETER = new Size(0.24d, SizeUnit.in);
   public static Size BODY_LENGTH = new Size(0.4d, SizeUnit.in);
   public static Size EDGE_RADIUS = new Size(2d, SizeUnit.mm);
+  public static Size TAB_WIDTH = new Size(0.04d, SizeUnit.in);
+  public static Size TAB_LENGTH = new Size(0.03d, SizeUnit.in);
   
   private Size pinSpacing = PIN_SPACING;
+  private Boolean flange = true;
 
   public TransistorTO1() {
     super();
@@ -162,9 +166,30 @@ public class TransistorTO1 extends AbstractTransistorPackage {
         newBody = new Area(new Ellipse2D.Double(x - bodyDiameter / 2, y - bodyDiameter / 2, bodyDiameter, bodyDiameter));
       }
 
-      body = new Area[] { newBody };
+      body = new Area[] { newBody,
+          getFlange() ? createTab(x, y, bodyDiameter, newBody) : null };
     }
     return body;
+  }
+
+  private Area createTab(double x, double y, int bodyDiameter, Area can) {
+    double tabWidth = TAB_WIDTH.convertToPixels();
+    double tabLength = TAB_LENGTH.convertToPixels();
+    Area tab;
+    if (folded) {
+      // the tab is on the flange at the lead end of the can, so it sticks out beside pin 1
+      tab = new Area(
+          new Rectangle2D.Double(x, y - bodyDiameter / 2 - tabLength, tabWidth, tabLength));
+    } else {
+      // seen from above the tab sits 45 degrees past pin 1, on the side away from pin 2
+      tab = new Area(
+          new Rectangle2D.Double(x, y - tabWidth / 2, bodyDiameter / 2 + tabLength, tabWidth));
+      tab.transform(AffineTransform.getRotateInstance(-Math.atan(0.5), x, y));
+      tab.subtract(can);
+    }
+    // both shapes above are laid out for the default orientation
+    tab.transform(AffineTransform.getRotateInstance(orientation.ordinal() * Math.PI / 2, x, y));
+    return tab;
   }
 
   @Override
@@ -180,9 +205,13 @@ public class TransistorTO1 extends AbstractTransistorPackage {
 
 
     Area mainArea = getBody()[0];
+    Area tabArea = getBody()[1];
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.setColor(outlineMode ? Constants.TRANSPARENT_COLOR : bodyColor);
     drawingObserver.startTracking();
+    if (tabArea != null) {
+      g2d.fill(tabArea);
+    }
     g2d.fill(mainArea);
     drawingObserver.stopTracking();
     g2d.setComposite(oldComposite);
@@ -199,6 +228,9 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     }
     g2d.setColor(finalBorderColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
+    if (tabArea != null) {
+      g2d.draw(tabArea);
+    }
     g2d.draw(mainArea);
 
     drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
@@ -249,6 +281,14 @@ public class TransistorTO1 extends AbstractTransistorPackage {
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int margin = (int) (2f * width / 32);
     Area area = new Area(new Ellipse2D.Double(margin / 2, margin, width - 2 * margin, width - 2 * margin));
+    double centerX = width / 2d - margin / 2;
+    double centerY = width / 2d;
+    int tabWidth = 4 * width / 32;
+    Area tab = new Area(new Rectangle2D.Double(centerX, centerY - tabWidth / 2d,
+        (width - 2 * margin) / 2d + 3 * width / 32, tabWidth));
+    tab.transform(AffineTransform.getRotateInstance(-Math.atan(0.5), centerX, centerY));
+    tab.subtract(area);
+    area.add(tab);
     g2d.setColor(BODY_COLOR);
     g2d.fill(area);
     g2d.setColor(BORDER_COLOR);
@@ -272,6 +312,19 @@ public class TransistorTO1 extends AbstractTransistorPackage {
     body = null;
   }
   
+  @EditableProperty(name = "Flange")
+  public Boolean getFlange() {
+    if (flange == null) {
+      flange = true;
+    }
+    return flange;
+  }
+
+  public void setFlange(Boolean flange) {
+    this.flange = flange;
+    body = null;
+  }
+
   @Override
   protected boolean flipPinoutLabel() {    
     return true;

@@ -715,3 +715,4 @@ Sides|侧面
 All|全部
 Front and Back|前后
 Click to choose from %s variants|点击从 %s 个变体中选择
+Flange|法兰

@@ -722,3 +722,4 @@ Sides|Zijden
 All|Alle
 Front and Back|Voor- en achterkant
 Click to choose from %s variants|Klik om te kiezen uit %s varianten
+Flange|Flens

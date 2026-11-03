@@ -578,6 +578,10 @@
 					<description>The '+N' variant count next to a component in the component tree is now a button - click it to pick one of the component's variants or datasheet parts from a drop-down menu, without having to right-click the component</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'Transistor (TO-1)' now shows the tab on the rim of the metal can next to pin 1, as on the real part, so the orientation is easy to tell at a glance; turn it off with the new 'Flange' property</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'DIP IC' with 'Display Pin #s' set to 'No' numbered its pins in the wrong order in netlists and AI analysis, e.g. pin 8 of an 8-pin IC was reported as pin 5</description>
 				</org.diylc.appframework.update.Change>

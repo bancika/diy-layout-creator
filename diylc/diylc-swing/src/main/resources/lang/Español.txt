@@ -717,3 +717,4 @@ Sides|Lados
 All|Todos
 Front and Back|Frente y parte trasera
 Click to choose from %s variants|Haga clic para elegir entre %s variantes
+Flange|Brida
