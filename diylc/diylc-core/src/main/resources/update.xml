@@ -574,6 +574,10 @@
 					<description>Added B-E-C, C-E-B and S-D-G transistor pinouts and ADJ-IN-OUT, IN-OUT-GND and IN-OUT-ADJ regulator pinouts</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>The '+N' variant count next to a component in the component tree is now a button - click it to pick one of the component's variants or datasheet parts from a drop-down menu, without having to right-click the component</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>'DIP IC' with 'Display Pin #s' set to 'No' numbered its pins in the wrong order in netlists and AI analysis, e.g. pin 8 of an 8-pin IC was reported as pin 5</description>
 				</org.diylc.appframework.update.Change>

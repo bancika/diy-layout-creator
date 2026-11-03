@@ -720,3 +720,4 @@ Hardware|Hardware
 Sides|Seiten
 All|Alle
 Front and Back|Vorne und hinten
+Click to choose from %s variants|Klicken, um aus %s Varianten zu wählen

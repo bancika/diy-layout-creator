@@ -713,3 +713,4 @@ Hardware
 Sides
 All
 Front and Back
+Click to choose from %s variants

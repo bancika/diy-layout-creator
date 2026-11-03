@@ -715,3 +715,4 @@ Hardware|Quincaillerie
 Sides|Côtés
 All|Tous
 Front and Back|Avant et arrière
+Click to choose from %s variants|Cliquez pour choisir parmi %s variantes

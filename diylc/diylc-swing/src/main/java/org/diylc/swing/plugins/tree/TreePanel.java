@@ -17,10 +17,18 @@
  */
 package org.diylc.swing.plugins.tree;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
@@ -28,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,11 +44,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -53,6 +64,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import org.apache.log4j.Logger;
@@ -106,6 +118,9 @@ public class TreePanel extends JPanel {
    */
   private TreePath suppressLeafActivationForPath;
 
+  private int hoveredVariantsButtonRow = -1;
+  private boolean variantsButtonPressed;
+
   @SuppressWarnings("unchecked")
   public TreePanel(IPlugInPort plugInPort, ISwingUI swingUI) {
     this.plugInPort = plugInPort;
@@ -135,7 +150,7 @@ public class TreePanel extends JPanel {
 
     add(getTreeScroll(), gbc);
 
-    setPreferredSize(new Dimension(260, 200));
+    setPreferredSize(new Dimension(290, 200));
    
     ConfigurationManager.getInstance().addConfigListener(IPlugInPort.FAVORITES_KEY,
         new IConfigListener() {
@@ -211,7 +226,34 @@ public class TreePanel extends JPanel {
 
   public JTree getTree() {
     if (tree == null) {
-      tree = new JTree(getTreeModel());
+      tree = new JTree(getTreeModel()) {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected void processMouseEvent(MouseEvent e) {
+          if (!processVariantsButtonEvent(e)) {
+            super.processMouseEvent(e);
+          }
+        }
+
+        @Override
+        protected void processMouseMotionEvent(MouseEvent e) {
+          if (!processVariantsButtonEvent(e)) {
+            super.processMouseMotionEvent(e);
+          }
+        }
+
+        @Override
+        public String getToolTipText(MouseEvent e) {
+          TreePath path = getVariantsButtonPathAt(e.getX(), e.getY());
+          if (path != null) {
+            return String.format(LangUtil.translate("Click to choose from %s variants"),
+                countVariants(((TreeNode) path.getLastPathComponent()).getComponentType()));
+          }
+          return super.getToolTipText(e);
+        }
+      };
       tree.setRootVisible(false);
       tree.setCellRenderer(new ComponentCellRenderer());
       tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -255,6 +297,11 @@ public class TreePanel extends JPanel {
           getPopup().show(e.getComponent(), e.getX(), e.getY());
         }
 
+        @Override
+        public void mouseExited(MouseEvent e) {
+          updateVariantsButtonHover(-1, -1);
+        }
+
         /**
          * Prefer release over click: {@code mouseClicked} is not posted if the cursor moves
          * between press and release (common with DnD or hand jitter), while selection may still
@@ -290,6 +337,14 @@ public class TreePanel extends JPanel {
               payload.getClickListener().mouseClicked(e);
             }
           }
+        }
+      });
+
+      tree.addMouseMotionListener(new MouseMotionAdapter() {
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+          updateVariantsButtonHover(e.getX(), e.getY());
         }
       });
     }
@@ -411,30 +466,8 @@ public class TreePanel extends JPanel {
             
             popup.add(shortcutSubmenu);
             popup.add(new JSeparator());
-            
-            if (componentType.getDatasheet() != null) {
-              List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort, componentType, new ArrayList<String>(), model -> {
-                LOG.info("Creating datasheet model " + String.join(", ", model));
-                plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
-              });
-              for (Component item : items) {
-                popup.add(item);
-              }
-              popup.add(new JSeparator());
-            }
 
-            List<Template> templates = plugInPort.getVariantsFor(componentType);
-            if (templates == null || templates.isEmpty()) {
-              JMenuItem item = new JMenuItem("<no variants>");
-              item.setEnabled(false);
-              popup.add(item);
-            } else {
-              for (Template template : templates) {
-                JMenuItem item =
-                    ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
-                popup.add(item);
-              }
-            }
+            addVariantItems(popup, componentType, true);
           } else if (getTreeModel().isLeaf(selectedNode)) {
             popup.add(new InsertBlockAsGroupAction(plugInPort, payload.toString()));
             popup.add(shortcutSubmenu);
@@ -462,13 +495,168 @@ public class TreePanel extends JPanel {
     return searchField;
   }
 
-  public class ComponentCellRenderer extends DefaultTreeCellRenderer {
+  private int countVariants(ComponentType componentType) {
+    int count = 0;
+    if (componentType.getDatasheet() != null) {
+      count += componentType.getDatasheet().size();
+    }
+    List<Template> variants = plugInPort.getVariantsFor(componentType);
+    if (variants != null) {
+      count += variants.size();
+    }
+    return count;
+  }
+
+  /**
+   * Returns the on-screen bounds of the variants button drawn in the row under {@code path}, in
+   * tree coordinates, or null when that row has no button. The renderer is a rubber stamp, so it
+   * is configured and laid out for the row on demand to find where the button lands.
+   */
+  private Rectangle getVariantsButtonBounds(TreePath path) {
+    Object node = path.getLastPathComponent();
+    if (!(node instanceof TreeNode) || ((TreeNode) node).getComponentType() == null) {
+      return null;
+    }
+    int row = tree.getRowForPath(path);
+    Rectangle rowBounds = tree.getPathBounds(path);
+    if (rowBounds == null) {
+      return null;
+    }
+    ComponentCellRenderer renderer = (ComponentCellRenderer) tree.getCellRenderer();
+    renderer.getTreeCellRendererComponent(tree, node, tree.isRowSelected(row),
+        tree.isExpanded(row), getTreeModel().isLeaf(node), row, false);
+    if (!renderer.variantsButton.isVisible()) {
+      return null;
+    }
+    renderer.setBounds(rowBounds);
+    renderer.doLayout();
+    Rectangle bounds = renderer.variantsButton.getButtonBounds();
+    bounds.translate(rowBounds.x + renderer.variantsButton.getX(),
+        rowBounds.y + renderer.variantsButton.getY());
+    return bounds;
+  }
+
+  private TreePath getVariantsButtonPathAt(int x, int y) {
+    TreePath path = tree.getPathForLocation(x, y);
+    if (path == null) {
+      return null;
+    }
+    Rectangle bounds = getVariantsButtonBounds(path);
+    return bounds != null && bounds.contains(x, y) ? path : null;
+  }
+
+  /**
+   * A left press on the variants button opens the variants menu and is kept away from the tree
+   * UI and the drag recognizer, so it neither selects the row (which would instantiate the
+   * component) nor starts a drag. Returns true when the event was handled here.
+   */
+  private boolean processVariantsButtonEvent(MouseEvent e) {
+    if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+      variantsButtonPressed = false;
+      if (!SwingUtilities.isLeftMouseButton(e) || e.isPopupTrigger()) {
+        return false;
+      }
+      TreePath path = getVariantsButtonPathAt(e.getX(), e.getY());
+      if (path == null) {
+        return false;
+      }
+      variantsButtonPressed = true;
+      Rectangle bounds = getVariantsButtonBounds(path);
+      ComponentType componentType = ((TreeNode) path.getLastPathComponent()).getComponentType();
+      JPopupMenu variantsPopup = new JPopupMenu();
+      addVariantItems(variantsPopup, componentType, false);
+      variantsPopup.show(tree, bounds.x, bounds.y + bounds.height);
+      return true;
+    }
+    if (variantsButtonPressed && (e.getID() == MouseEvent.MOUSE_RELEASED
+        || e.getID() == MouseEvent.MOUSE_CLICKED || e.getID() == MouseEvent.MOUSE_DRAGGED)) {
+      return true;
+    }
+    return false;
+  }
+
+  private void updateVariantsButtonHover(int x, int y) {
+    int row = -1;
+    if (x >= 0 && y >= 0) {
+      TreePath path = getVariantsButtonPathAt(x, y);
+      if (path != null) {
+        row = tree.getRowForPath(path);
+      }
+    }
+    if (row == hoveredVariantsButtonRow) {
+      return;
+    }
+    repaintRow(hoveredVariantsButtonRow);
+    hoveredVariantsButtonRow = row;
+    repaintRow(row);
+    tree.setCursor(row >= 0 ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : null);
+  }
+
+  private void repaintRow(int row) {
+    if (row < 0) {
+      return;
+    }
+    Rectangle bounds = tree.getRowBounds(row);
+    if (bounds != null) {
+      tree.repaint(bounds);
+    }
+  }
+
+  /**
+   * Datasheet models first, then saved variants - the same items that the count on the variants
+   * button adds up.
+   */
+  private void addVariantItems(JPopupMenu menu, final ComponentType componentType,
+      boolean showEmpty) {
+    if (componentType.getDatasheet() != null) {
+      List<Component> items = ComponentButtonFactory.createDatasheetItems(plugInPort,
+          componentType, new ArrayList<String>(), model -> {
+            LOG.info("Creating datasheet model " + String.join(", ", model));
+            plugInPort.setNewComponentTypeSlot(componentType, null, model, false);
+          });
+      for (Component item : items) {
+        menu.add(item);
+      }
+    }
+
+    List<Template> templates = plugInPort.getVariantsFor(componentType);
+    if (templates == null || templates.isEmpty()) {
+      if (showEmpty) {
+        if (componentType.getDatasheet() != null) {
+          menu.add(new JSeparator());
+        }
+        JMenuItem item = new JMenuItem("<no variants>");
+        item.setEnabled(false);
+        menu.add(item);
+      }
+    } else {
+      if (componentType.getDatasheet() != null) {
+        menu.add(new JSeparator());
+      }
+      for (Template template : templates) {
+        JMenuItem item =
+            ComponentButtonFactory.createVariantItem(plugInPort, template, componentType);
+        menu.add(item);
+      }
+    }
+  }
+
+  public class ComponentCellRenderer extends JPanel implements TreeCellRenderer {
 
     private static final long serialVersionUID = 1L;
 
+    private DefaultTreeCellRenderer label;
+    private VariantsButton variantsButton;
+
     public ComponentCellRenderer() {
-      setVerticalAlignment(SwingConstants.CENTER);
-      setVerticalTextPosition(SwingConstants.CENTER);
+      super(new BorderLayout());
+      setOpaque(false);
+      label = new DefaultTreeCellRenderer();
+      label.setVerticalAlignment(SwingConstants.CENTER);
+      label.setVerticalTextPosition(SwingConstants.CENTER);
+      variantsButton = new VariantsButton();
+      add(label, BorderLayout.CENTER);
+      add(variantsButton, BorderLayout.EAST);
     }
 
     @Override
@@ -486,26 +674,27 @@ public class TreePanel extends JPanel {
         final boolean selected, final boolean expanded, final boolean leaf, final int row,
         final boolean hasFocus) {
 
-      super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      label.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+      variantsButton.setVisible(false);
+      setToolTipText(null);
 
       Object obj = value;
       if (obj != null && obj.getClass().equals(TreeNode.class)) {
         TreeNode payload = (TreeNode) obj;
-        setPreferredSize(null);
+        label.setPreferredSize(null);
         if (payload.getComponentType() == null) {
-          setToolTipText(null);
-          if (leaf)
-            setIcon(IconLoader.Component.getIcon());
+          if (leaf) {
+            label.setIcon(IconLoader.Component.getIcon());
+          }
         } else {
           setToolTipText("<html><b>" + payload.getComponentType().getName() + "</b><br>"
               + payload.getComponentType().getDescription() + "<br>Author: "
               + payload.getComponentType().getAuthor() + "<br><br>" + CLICK_TO_INSTANTIATE
               + "</html>");
-          setIcon(payload.getComponentType().getIcon());
+          label.setIcon(payload.getComponentType().getIcon());
         }
 
         String shortCutHtml = "";
-        String variantsHtml = "";
 
         HashMap<String, String> shortcutMap = (HashMap<String, String>) ConfigurationManager
             .getInstance().readObject(TreePanel.COMPONENT_SHORTCUT_KEY, null);
@@ -523,18 +712,12 @@ public class TreePanel extends JPanel {
         }
 
         if (payload.getComponentType() != null) {
-          List<Template> variants = plugInPort.getVariantsFor(payload.getComponentType());
-          int count = 0;
-          if (payload.getComponentType().getDatasheet() != null) {
-            count += payload.getComponentType().getDatasheet().size();
-          }
-          if (variants != null && !variants.isEmpty()) {
-            count += variants.size();
-          }
+          int count = countVariants(payload.getComponentType());
           if (count > 0) {
-            variantsHtml =
-                " <a style=\"text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; background-color: #D7FFC6; color: #666666;\">[+"
-                    + count + "]</a>";
+            variantsButton.setFont(tree.getFont());
+            variantsButton.setCount(count);
+            variantsButton.setHovered(row == hoveredVariantsButtonRow);
+            variantsButton.setVisible(true);
           }
         }
 
@@ -548,17 +731,32 @@ public class TreePanel extends JPanel {
         if (viewportWidth <= 0) {
           viewportWidth = 240;
         }
+        // the tree caches row sizes and does not re-measure them when the vertical scroll bar
+        // appears, so its width is reserved up front to keep it off the variants button
+        JScrollBar scrollBar = getTreeScroll().getVerticalScrollBar();
+        if (!scrollBar.isVisible()) {
+          viewportWidth -= scrollBar.getPreferredSize().width;
+        }
 
         int overhead = (payload.getComponentType() != null) ? 95 : 45;
+        // the button sits beside the text rather than inside it, so it takes its width out of
+        // the wrap width to keep the row as wide as before
+        if (variantsButton.isVisible()) {
+          overhead += variantsButton.getPreferredSize().width;
+        }
         int wrapWidth = Math.max(100, viewportWidth - overhead);
 
         // translate categories
-        setText("<html><div style=\"width: " + wrapWidth + "px;\">"
+        label.setText("<html><div style=\"width: " + wrapWidth + "px;\">"
             + (payload.getComponentType() == null ? LangUtil.translate(payload.forDisplay())
                 : payload.forDisplay())
-            + shortCutHtml + variantsHtml + "</div></html>");
+            + shortCutHtml + "</div></html>");
       }
 
+      // consecutive rows are often stamped at the same size, which CellRendererPane takes as
+      // still valid; without this the label would keep the width it had next to the previous
+      // row's button
+      invalidate();
       return this;
     }
   }
@@ -649,6 +847,77 @@ public class TreePanel extends JPanel {
           "Are you sure you want to delete building block \"" + blockName + "\"?",
           "Delete Building Block", IView.YES_NO_OPTION, IView.QUESTION_MESSAGE) == IView.YES_OPTION)
         plugInPort.deleteBlock(blockName);
+    }
+  }
+
+  /**
+   * Pill-shaped "+N" drop-down button painted at the end of a component row. It is only ever
+   * painted through the cell renderer, so the clicks it appears to take are hit-tested and
+   * handled by the tree in {@link TreePanel#processVariantsButtonEvent(MouseEvent)}.
+   */
+  private static class VariantsButton extends JComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final Color FILL_COLOR = new Color(0xD7FFC6);
+    private static final Color HOVER_FILL_COLOR = new Color(0xB8F0A0);
+    private static final Color BORDER_COLOR = new Color(0x7DBA63);
+    private static final Color TEXT_COLOR = new Color(0x3F6B2C);
+
+    private static final int LEFT_MARGIN = 4;
+    private static final int RIGHT_MARGIN = 6;
+    private static final int PADDING = 5;
+    private static final int ARROW_GAP = 4;
+    private static final int ARROW_WIDTH = 7;
+    private static final int BUTTON_HEIGHT = 16;
+
+    private String text = "";
+    private boolean hovered;
+
+    public void setCount(int count) {
+      this.text = "+" + count;
+    }
+
+    public void setHovered(boolean hovered) {
+      this.hovered = hovered;
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+      int textWidth = getFontMetrics(getFont()).stringWidth(text);
+      return new Dimension(LEFT_MARGIN + PADDING + textWidth + ARROW_GAP + ARROW_WIDTH + PADDING
+          + RIGHT_MARGIN, BUTTON_HEIGHT);
+    }
+
+    public Rectangle getButtonBounds() {
+      return new Rectangle(LEFT_MARGIN, (getHeight() - BUTTON_HEIGHT) / 2,
+          getWidth() - LEFT_MARGIN - RIGHT_MARGIN, BUTTON_HEIGHT);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+      Graphics2D g2d = (Graphics2D) g.create();
+      g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+      Rectangle b = getButtonBounds();
+      g2d.setColor(hovered ? HOVER_FILL_COLOR : FILL_COLOR);
+      g2d.fillRoundRect(b.x, b.y, b.width - 1, b.height - 1, b.height, b.height);
+      g2d.setColor(BORDER_COLOR);
+      g2d.drawRoundRect(b.x, b.y, b.width - 1, b.height - 1, b.height, b.height);
+
+      g2d.setFont(getFont());
+      FontMetrics fm = g2d.getFontMetrics();
+      int textX = b.x + PADDING;
+      int textY = b.y + (b.height - fm.getHeight()) / 2 + fm.getAscent();
+      g2d.setColor(TEXT_COLOR);
+      g2d.drawString(text, textX, textY);
+
+      int arrowX = textX + fm.stringWidth(text) + ARROW_GAP;
+      int arrowY = b.y + b.height / 2 - 1;
+      g2d.fillPolygon(new int[] {arrowX, arrowX + ARROW_WIDTH, arrowX + ARROW_WIDTH / 2},
+          new int[] {arrowY - 1, arrowY - 1, arrowY + 3}, 3);
+      g2d.dispose();
     }
   }
 }

@@ -712,3 +712,4 @@ Hardware|Mehanički delovi
 Sides|Strane
 All|Sve
 Front and Back|Prednja i zadnja
+Click to choose from %s variants|Kliknite da izaberete jednu od %s varijanti

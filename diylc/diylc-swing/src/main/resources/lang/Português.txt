@@ -716,3 +716,4 @@ Hardware|Ferragens
 Sides|Lados
 All|Todos
 Front and Back|Frente e traseira
+Click to choose from %s variants|Clique para escolher entre %s variantes

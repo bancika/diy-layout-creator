@@ -714,3 +714,4 @@ Hardware|हार्डवेयर
 Sides|भुजाएं
 All|सभी
 Front and Back|आगे और पीछे
+Click to choose from %s variants|%s वेरिएंट में से चुनने के लिए क्लिक करें
