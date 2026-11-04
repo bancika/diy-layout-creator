@@ -530,7 +530,7 @@
 					<description>Added a datasheet to 'Tube Socket' - pick a tube by its type from the component's submenu to set its base and electrode labels at once - more than 180 preamp, power, rectifier, radio, space-charge and Soviet tubes; the AI Assistant can place these tubes by type too</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Added the UX4 base to 'Tube Socket', with the 300B, 2A3, 6A3 and 45 triodes and the 5Z3 rectifier in its datasheet</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
