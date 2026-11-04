@@ -12685,6 +12685,8 @@
     "namePrefix" : "R",
     "description" : "Power resistor with heatsink; similar to Arcol HS series",
     "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "A datasheet model is an Arcol HS part such as HS25 or HS100 and sets 'Power Rating' and the whole housing - body size, lips, mounting holes, lead length and diameter - but never the resistance; set 'Value' separately" ],
+    "datasheetModels" : [ "HS10", "HS15", "HS25", "HS50", "HS75", "HS100", "HS150", "HS200", "HS250", "HS300" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16565,7 +16567,7 @@
     "description" : "Dual-in-line package IC",
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the first row of pins runs down from it 'Pin Spacing' apart, the second row sits 'Row Spacing' to the right and the notch is at the anchor's end. The other orientations rotate this around the anchor", "'Pin Names' is a comma-separated list of pin names in pin-number order, starting with pin 1 next to the notch; a pin without a name is called by its number. Pins named alike up to a trailing '_1', '_2' are one net inside the package, e.g. GND_1 and GND_2, while 1IN- and 2IN- are inputs of two separate sections", "A datasheet model is a part number such as TL072 or NE555 and sets 'Pins', 'Row Spacing', 'Pin Names' and 'Value'. Set 'Value' to the same part number together with the model" ],
-    "datasheetModels" : [ "BL3207", "BL3208A", "BL3208B", "MN3005", "MN3007", "MN3008", "MN3207", "V3207", "MN3101", "MN3102", "V3102", "74HC14", "74HC4051", "CD40106", "CD4011", "CD4013", "CD4016", "CD4017", "CD4049", "CD4051", "CD4053", "CD4066", "CD4069", "ICL7660", "LT1054", "MAX1044", "TC1044", "LM393", "NE570", "NE571", "PT2399", "SA571", "ATmega328P", "ATtiny13A", "ATtiny85", "AS2164", "AS3080", "CA3080", "LM13600", "LM13700", "SSM2164", "V2164", "JRC4558", "LF353", "LM358", "LM4562", "LM833", "LME49720", "MC1458", "NE5532", "OP275", "OPA2132", "OPA2134", "OPA2227", "OPA2604", "RC4558", "RC4580", "TL022", "TL062", "TL072", "TL082", "LM324", "OPA4134", "TL064", "TL074", "TL084", "LF351", "LF356", "LM308", "LM741", "NE5534", "OP07", "OPA134", "TL061", "TL071", "TL081", "UA741", "4N35", "6N138", "6N139", "H11L1", "PC817", "LM380", "LM386", "TDA2822", "TDA7052", "ICM7555", "ICM7556", "LM555", "NE555", "NE556", "TLC555" ],
+    "datasheetModels" : [ "BL3207", "BL3208A", "BL3208B", "MN3005", "MN3007", "MN3008", "MN3205", "MN3207", "MN3208", "V3207", "MN3101", "MN3102", "V3102", "74HC14", "74HC4051", "74HC4052", "74HC4053", "CD4001", "CD40106", "CD4011", "CD4013", "CD4016", "CD4017", "CD4040", "CD4046", "CD4049", "CD4051", "CD4052", "CD4053", "CD4060", "CD4066", "CD4069", "CD4093", "ICL7660", "LT1054", "MAX1044", "TC1044", "LM311", "LM339", "LM393", "NE570", "NE571", "PT2399", "SA571", "ATmega328P", "ATtiny13A", "ATtiny85", "AS2164", "AS3080", "CA3080", "LM13600", "LM13700", "SSM2164", "V2164", "JRC4558", "LF353", "LM358", "LM4562", "LM833", "LME49720", "MC1458", "NE5532", "OP275", "OPA2132", "OPA2134", "OPA2227", "OPA2604", "RC4558", "RC4580", "TL022", "TL062", "TL072", "TL082", "LF347", "LM324", "OPA4132", "OPA4134", "TL064", "TL074", "TL084", "CA3140", "LF351", "LF356", "LM308", "LM741", "NE5534", "OP07", "OPA132", "OPA134", "TL061", "TL071", "TL081", "UA741", "4N25", "4N35", "6N137", "6N138", "6N139", "H11L1", "PC817", "LM380", "LM386", "TDA2822", "TDA7052", "ICM7555", "ICM7556", "LM555", "NE555", "NE556", "TLC555", "TLC556" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -16921,7 +16923,7 @@
     "description" : "Plastic diode, like most rectifier, zener, schottky, etc.",
     "creationMethod" : "POINT_BY_POINT",
     "notes" : [ "The two control points are the holes the leads go into and the body is centred between them; 'Length' is the body length, not the hole spacing", "If the control points are closer together than 'Length' (0.25in by default) the part is drawn standing, its body over the first point; to keep it lying on a tighter footprint, reduce 'Length'", "A datasheet model is a part number such as 1N4007, 1N5819 or UF4007 and sets 'Value', 'Length', 'Width' and the body colours to match its package; set 'Value' to the same part number together with the model" ],
-    "datasheetModels" : [ "1N4933", "1N4934", "1N4935", "1N4936", "1N4937", "BA157", "BA158", "BA159", "BY399", "FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "HER101", "HER102", "HER103", "HER104", "HER105", "HER106", "HER107", "HER108", "MUR120", "MUR160", "MUR460", "UF4001", "UF4002", "UF4003", "UF4004", "UF4005", "UF4006", "UF4007", "UF5400", "UF5401", "UF5402", "UF5404", "UF5406", "UF5407", "UF5408", "1N4001", "1N4002", "1N4003", "1N4004", "1N4005", "1N4006", "1N4007", "1N5391", "1N5392", "1N5393", "1N5394", "1N5395", "1N5396", "1N5397", "1N5398", "1N5399", "1N5400", "1N5401", "1N5402", "1N5404", "1N5406", "1N5407", "1N5408", "6A10", "BY255", "11DQ04", "1N5817", "1N5818", "1N5819", "1N5820", "1N5821", "1N5822", "SB140", "SB160", "SB560", "SR160" ],
+    "datasheetModels" : [ "1N4933", "1N4934", "1N4935", "1N4936", "1N4937", "BA157", "BA158", "BA159", "BY399", "FR101", "FR102", "FR103", "FR104", "FR105", "FR106", "FR107", "HER101", "HER102", "HER103", "HER104", "HER105", "HER106", "HER107", "HER108", "MUR120", "MUR140", "MUR160", "MUR460", "UF4001", "UF4002", "UF4003", "UF4004", "UF4005", "UF4006", "UF4007", "UF5400", "UF5401", "UF5402", "UF5404", "UF5406", "UF5407", "UF5408", "1N4001", "1N4002", "1N4003", "1N4004", "1N4005", "1N4006", "1N4007", "1N5391", "1N5392", "1N5393", "1N5394", "1N5395", "1N5396", "1N5397", "1N5398", "1N5399", "1N5400", "1N5401", "1N5402", "1N5404", "1N5406", "1N5407", "1N5408", "6A10", "BY255", "11DQ04", "1N5817", "1N5818", "1N5819", "1N5820", "1N5821", "1N5822", "SB120", "SB130", "SB140", "SB150", "SB160", "SB560", "SR160" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17335,7 +17337,7 @@
     "description" : "Transistor with small metal body",
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the third pin is 2 x 'Pin spacing' below it and the middle pin 'Pin spacing' below and 'Pin spacing' to the left, a triangle under the round can. 'Folded' puts the three pins in a straight line down from the anchor and lays the body flat on the right of them. The other orientations rotate this around the anchor", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in to land all three pins on holes", "'Pinout' values list pins 1, 2, 3 in control point order. Seen from above, a metal can's leads run counter-clockwise from the tab, which sits beside pin 1; most parts, silicon TO-18/TO-39 and germanium alike, are E-B-C" ],
-    "datasheetModels" : [ "2N1613", "2N1711", "2N2219A", "2N2222A", "2N2369A", "2N3053", "2N3866", "BC107", "BC108", "BC109", "BFY51", "2N2905A", "2N2907A", "BC177", "BC178", "BC179", "2N1308", "AC127", "AC176", "AC187", "2N1305", "2N404", "AC126", "AC128", "AC188", "OC44", "OC45", "OC71", "OC75", "OC76", "OC81" ],
+    "datasheetModels" : [ "2N1613", "2N1711", "2N2219A", "2N2222A", "2N2369A", "2N3053", "2N3866", "BC107", "BC108", "BC109", "BFY51", "2N2905A", "2N2907A", "BC177", "BC178", "BC179", "2N1306", "2N1308", "AC127", "AC176", "AC187", "2N1305", "2N1307", "2N404", "AC125", "AC126", "AC128", "AC188", "NKT275", "OC44", "OC45", "OC71", "OC75", "OC76", "OC81" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17356,6 +17358,10 @@
       "type" : "TransistorDisplay",
       "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH", "PINOUT" ],
       "defaultValue" : "NAME"
+    }, {
+      "name" : "Flange",
+      "type" : "Boolean",
+      "defaultValue" : "true"
     }, {
       "name" : "Folded",
       "type" : "Boolean",
@@ -17385,7 +17391,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO", "REFERENCE_RAK" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -17741,6 +17747,20 @@
         }, {
           "i" : 2,
           "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REFERENCE_RAK"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "K"
         } ]
       } ]
     }
@@ -17802,7 +17822,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO", "REFERENCE_RAK" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -18159,6 +18179,20 @@
           "i" : 2,
           "label" : "O"
         } ]
+      }, {
+        "when" : {
+          "Pinout" : "REFERENCE_RAK"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "K"
+        } ]
       } ]
     }
   }, {
@@ -18169,7 +18203,7 @@
     "description" : "Transistors with metal tab for heat sink mounting",
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 0.1in apart, and the other orientations rotate this around the anchor", "Seen from above, the metal tab is on the right of the pin row in DEFAULT orientation and the printed front faces left; 'Folded' lays the body flat on the right of the pin row, 'Lead Length' away from it, with the tab and its mounting hole at the far end", "'Pinout' values list the pins as a datasheet does, facing the printed front with the legs down, left to right; pick the value that matches the part's datasheet as written" ],
-    "datasheetModels" : [ "BD243C", "BD911", "MJE15028", "MJE15030", "MJE15032", "MJE3055T", "TIP29C", "TIP31C", "TIP41C", "BD244C", "BD912", "MJE15029", "MJE15031", "MJE15033", "MJE2955T", "TIP30C", "TIP32C", "TIP42C", "TIP120", "TIP121", "TIP122", "TIP125", "TIP126", "TIP127", "FQP30N06L", "IRF3205", "IRF510", "IRF520", "IRF530", "IRF540N", "IRF610", "IRF640", "IRF840", "IRFZ44N", "IRLZ44N", "IRF9530", "IRF9540N", "IRF9610", "IRF9640", "7805", "7806", "7808", "7809", "7812", "7815", "7818", "7824", "LD1117V", "LD1117V33", "LD1117V50", "LM1084-ADJ", "LM1085-ADJ", "LM1086-3.3", "LM1086-5.0", "LM1086-ADJ", "LM1117T-3.3", "LM1117T-5.0", "LM1117T-ADJ", "LM2940CT-12", "LM2940CT-5.0", "LM317T", "LM338T", "LM350T", "7905", "7912", "7915", "LM337T" ],
+    "datasheetModels" : [ "BD243C", "BD911", "MJE15028", "MJE15030", "MJE15032", "MJE3055T", "TIP29C", "TIP31C", "TIP41C", "BD244C", "BD912", "MJE15029", "MJE15031", "MJE15033", "MJE2955T", "TIP30C", "TIP32C", "TIP42C", "TIP120", "TIP121", "TIP122", "TIP125", "TIP126", "TIP127", "FQP30N06L", "IRF3205", "IRF510", "IRF520", "IRF530", "IRF540N", "IRF610", "IRF640", "IRF840", "IRFZ44N", "IRLZ44N", "IRF9510", "IRF9520", "IRF9530", "IRF9540N", "IRF9610", "IRF9640", "7805", "7806", "7808", "7809", "7812", "7815", "7818", "7824", "LD1117V", "LD1117V33", "LD1117V50", "LM1084-ADJ", "LM1085-ADJ", "LM1086-3.3", "LM1086-5.0", "LM1086-ADJ", "LM1117T-3.3", "LM1117T-5.0", "LM1117T-ADJ", "LM2940CT-12", "LM2940CT-5.0", "LM317T", "LM338T", "LM350T", "7905", "7906", "7908", "7909", "7912", "7915", "7918", "7924", "LM337T" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -18219,7 +18253,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO", "REFERENCE_RAK" ]
     }, {
       "name" : "Tab",
       "type" : "Color",
@@ -18586,6 +18620,20 @@
           "i" : 2,
           "label" : "O"
         } ]
+      }, {
+        "when" : {
+          "Pinout" : "REFERENCE_RAK"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "K"
+        } ]
       } ]
     }
   }, {
@@ -18636,7 +18684,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO", "REFERENCE_RAK" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -18993,6 +19041,20 @@
           "i" : 2,
           "label" : "O"
         } ]
+      }, {
+        "when" : {
+          "Pinout" : "REFERENCE_RAK"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "K"
+        } ]
       } ]
     }
   }, {
@@ -19003,7 +19065,7 @@
     "description" : "Transistor with small plastic or epoxy body",
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "The first control point is the anchor; with 'Orientation' DEFAULT the three pins run straight down from it 'Pin spacing' apart, and the other orientations rotate this around the anchor", "Seen from above, the flat face is on the left of the pin row in DEFAULT orientation; 'Folded' lays the body flat on the right of the pin row instead", "'Pinout' values list the pins as a datasheet does, facing the flat side with the legs down, left to right; pick the value that matches the part's datasheet as written", "On a 0.1in grid board the default 0.05in 'Pin spacing' puts the middle pin between holes: set 'Pin spacing' to 0.1in, or use two or three jumpers acting as flexible leads and connecting TO-92 terminals to the holes on the board" ],
-    "datasheetModels" : [ "2N3904", "2N4124", "2N4401", "2N5088", "2N5089", "2N5210", "2N5551", "2SC1815", "2SC1845", "2SC2240", "2SC2458", "2SC945", "BC182", "BC182L", "BC184", "BC184L", "BC239", "BC337", "BC546", "BC547", "BC548", "BC549", "BC550", "BC639", "BF199", "BF494", "KSC1845", "MPS5179", "MPSA06", "MPSA18", "MPSA42", "MPSH10", "P2N2222A", "PN2222A", "S8050", "S9013", "S9014", "S9018", "2N3906", "2N4126", "2N4403", "2N5087", "2N5401", "2SA1015", "2SA970", "2SA992", "BC212", "BC214", "BC327", "BC556", "BC557", "BC558", "BC559", "BC560", "BC640", "KSA992", "KSP2907A", "KSP2907AC", "MPSA56", "MPSA92", "PN2907A", "S8550", "S9012", "S9015", "MPSA13", "MPSA14", "MPSA63", "MPSA64", "2N3819", "2N5457", "2N5458", "2N5459", "2N5484", "2N5485", "2N5486", "2SK170", "BF245A", "BF245B", "BF245C", "BF256B", "J111", "J112", "J113", "J201", "J202", "J310", "LSK170", "MPF102", "PN4416", "2N3820", "2N5460", "J174", "J175", "J176", "2N7000", "BS170", "LND150", "78L05", "78L09", "78L12", "78L15", "LM2936Z-5.0", "LM317LZ", "LP2950-5.0", "LR8", "79L05", "79L12", "79L15", "LM337LZ" ],
+    "datasheetModels" : [ "2N3904", "2N4124", "2N4401", "2N5088", "2N5089", "2N5210", "2N5551", "2SC1815", "2SC1845", "2SC2240", "2SC2458", "2SC945", "BC182", "BC182L", "BC183", "BC184", "BC184L", "BC237", "BC238", "BC239", "BC337", "BC338", "BC546", "BC547", "BC548", "BC549", "BC550", "BC639", "BF199", "BF494", "KSC1845", "MPS5179", "MPSA06", "MPSA18", "MPSA42", "MPSH10", "P2N2222A", "PN2222A", "S8050", "S9013", "S9014", "S9018", "2N3906", "2N4126", "2N4403", "2N5087", "2N5401", "2SA1015", "2SA1048", "2SA733", "2SA970", "2SA992", "BC212", "BC212L", "BC213", "BC214", "BC214L", "BC327", "BC328", "BC556", "BC557", "BC558", "BC559", "BC560", "BC640", "KSA992", "KSP2907A", "KSP2907AC", "MPSA56", "MPSA92", "PN2907A", "S8550", "S9012", "S9015", "MPSA13", "MPSA14", "MPSA63", "MPSA64", "2N3819", "2N5457", "2N5458", "2N5459", "2N5484", "2N5485", "2N5486", "2SK170", "BF245A", "BF245B", "BF245C", "BF256A", "BF256B", "BF256C", "J111", "J112", "J113", "J201", "J202", "J310", "LSK170", "MPF102", "PN4416", "2N3820", "2N5460", "2N5461", "2N5462", "2SJ74", "J174", "J175", "J176", "J177", "LSJ74", "2N7000", "BS170", "LND150", "BS250", "78L05", "78L06", "78L08", "78L09", "78L12", "78L15", "LM2936Z-5.0", "LM317LZ", "LP2950-5.0", "LR8", "79L05", "79L06", "79L08", "79L09", "79L12", "79L15", "LM337LZ", "TL431" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -19053,7 +19115,7 @@
     }, {
       "name" : "Pinout",
       "type" : "TransistorPinout",
-      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO" ]
+      "possibleValues" : [ "BJT_EBC", "BJT_CBE", "BJT_BCE", "BJT_ECB", "BJT_BEC", "BJT_CEB", "JFET_DSG", "JFET_GSD", "JFET_DGS", "JFET_SGD", "JFET_GDS", "JFET_SDG", "MOSFET_DSG", "MOSFET_GSD", "MOSFET_DGS", "MOSFET_SGD", "MOSFET_GDS", "REGULATOR_IGO", "REGULATOR_OGI", "REGULATOR_GOI", "REGULATOR_AOI", "REGULATOR_AIO", "REGULATOR_IOG", "REGULATOR_IOA", "REGULATOR_GIO", "REFERENCE_RAK" ]
     }, {
       "name" : "Value",
       "type" : "String"
@@ -19409,6 +19471,20 @@
         }, {
           "i" : 2,
           "label" : "O"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "REFERENCE_RAK"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "K"
         } ]
       } ]
     }

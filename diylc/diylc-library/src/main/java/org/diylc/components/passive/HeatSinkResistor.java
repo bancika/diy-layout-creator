@@ -40,6 +40,8 @@ import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDatasheetSupport;
+import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
@@ -54,11 +56,14 @@ import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.utils.Constants;
 
+@AiNote("A datasheet model is an Arcol HS part such as HS25 or HS100 and sets 'Power Rating' and the whole housing - body size, lips, mounting holes, lead length and diameter - but never the resistance; set 'Value' separately")
 @ComponentDescriptor(name = "Heat Sink Resistor", author = "Branislav Stojkovic", category = "Passive",
     creationMethod = CreationMethod.SINGLE_CLICK, instanceNamePrefix = "R",
     description = "Power resistor with heatsink; similar to Arcol HS series",
-    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true)
-public class HeatSinkResistor extends AbstractLeadedComponent<Resistance> implements IGerberComponentSimple {
+    zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true,
+    enableDatasheet = true, datasheetCreationStepCount = 2, datasheetModelColumn = 1)
+public class HeatSinkResistor extends AbstractLeadedComponent<Resistance>
+    implements IGerberComponentSimple, IDatasheetSupport {
 
   private static final long serialVersionUID = 1L;
 
@@ -105,6 +110,37 @@ public class HeatSinkResistor extends AbstractLeadedComponent<Resistance> implem
     length = DEFAULT_LENGTH;
     width = DEFAULT_WIDTH;
     leadLength = DEFAULT_LEAD_LENGTH;
+  }
+
+  public HeatSinkResistor(String[] model) {
+    this();
+
+    applyModel(model);
+  }
+
+  // columns: series, part, power, body length, total width, lead length, lip width, mounting holes,
+  // hole spacing, hole diameter, lead diameter; the resistance is not part of a row because the
+  // housing depends only on the part
+  @Override
+  public void applyModel(String[] model) {
+    setPower(Power.parseCapacitance(model[2]));
+    setLength(Size.parseSize(model[3]));
+    setWidth(Size.parseSize(model[4]));
+    setLeadLength(Size.parseSize(model[5]));
+    setLipSize(Size.parseSize(model[6]));
+    setMountingHoles(parseMountingHoles(model[7]));
+    setHorizontalHoleSpacing(Size.parseSize(model[8]));
+    setMountingHoleDiameter(Size.parseSize(model[9]));
+    setTerminalLeadDiameter(Size.parseSize(model[10]));
+  }
+
+  private static MountingHoleCount parseMountingHoles(String label) {
+    for (MountingHoleCount value : MountingHoleCount.values()) {
+      if (value.toString().equalsIgnoreCase(label)) {
+        return value;
+      }
+    }
+    throw new IllegalArgumentException("Unknown mounting holes: " + label);
   }
 
   private MountingHoleCount holeCount() {
