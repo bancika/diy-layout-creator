@@ -26,7 +26,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.maker.MakerBoardTestSupport;
 import org.junit.Assert;
@@ -45,10 +45,7 @@ public class WS2812BBreakoutTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static double mm(double px) {

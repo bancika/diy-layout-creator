@@ -19,7 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.update.VersionNumber;
 import org.diylc.swingframework.export.DrawingExporter;
@@ -52,7 +51,7 @@ public class RegressionTestRunner {
     // System.err.println("Could not initialize log4j configuration: " + e.getMessage());
     // }
 
-    ConfigurationManager.getInstance().initialize("diylc-test");
+    TestConfiguration.initialize();
 
     String basePath = args[0];
     String command = args[1];

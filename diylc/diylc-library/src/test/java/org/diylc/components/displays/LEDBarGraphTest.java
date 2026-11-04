@@ -24,7 +24,7 @@ package org.diylc.components.displays;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.IComponentTransformer;
 import org.diylc.common.Orientation;
 import org.diylc.components.displays.LEDBarGraph.BarColor;
@@ -43,10 +43,7 @@ public class LEDBarGraphTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   /** Each segment has its own anode and cathode, so the package grows with the count. */

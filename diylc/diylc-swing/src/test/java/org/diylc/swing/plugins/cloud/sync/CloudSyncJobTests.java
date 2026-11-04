@@ -39,8 +39,8 @@ import org.junit.rules.TemporaryFolder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.DummyView;
 import org.diylc.plugins.cloud.model.IServiceAPI;
 import org.diylc.plugins.cloud.model.ProjectEntity;
@@ -196,7 +196,7 @@ public class CloudSyncJobTests {
   }
 
   private byte[] emptyProject() throws IOException {
-    ConfigurationManager.getInstance().initialize("diylc-test");
+    TestConfiguration.initialize();
     File file = folder.newFile("empty.diy");
     new Presenter(new DummyView(), InMemoryConfigurationManager.getInstance())
         .saveProjectToFile(file.getAbsolutePath(), false);

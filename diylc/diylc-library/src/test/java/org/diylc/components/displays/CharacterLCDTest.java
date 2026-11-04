@@ -23,7 +23,7 @@ package org.diylc.components.displays;
 
 import java.awt.Color;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.Display;
 import org.diylc.components.displays.CharacterLCD.LCDInterface;
 import org.diylc.components.displays.CharacterLCD.LCDSize;
@@ -40,10 +40,7 @@ public class CharacterLCDTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static CharacterLCD of(LCDSize lcdSize, LCDInterface lcdInterface) {

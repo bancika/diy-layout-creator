@@ -41,7 +41,7 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.Orientation;
 import org.diylc.components.connectivity.HookupWire;
 import org.diylc.components.electromechanical.ClosedJack1_4;
@@ -81,10 +81,7 @@ public class AiEditScriptEditorTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   @Test

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
@@ -54,10 +54,7 @@ public class FactoryVariantsTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   @SuppressWarnings("unchecked")

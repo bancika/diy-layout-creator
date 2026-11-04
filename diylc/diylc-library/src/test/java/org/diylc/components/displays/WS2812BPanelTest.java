@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.displays.WS2812BPanel.Silk;
 import org.diylc.components.maker.MakerBoardTestSupport;
@@ -49,10 +49,7 @@ public class WS2812BPanelTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static double px(double millimetres) {

@@ -25,7 +25,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.core.IDIYComponent;
 import org.diylc.netlist.Node;
 import org.diylc.components.displays.WS2812BStrip;
@@ -51,10 +51,7 @@ public class BoardRailTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   @Test

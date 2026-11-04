@@ -27,7 +27,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.components.AbstractMakerBoard.LedType;
 import org.diylc.components.displays.WS2812BRing.RingSize;
 import org.diylc.components.maker.MakerBoardTestSupport;
@@ -46,10 +46,7 @@ public class WS2812BRingTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static double mm(double px) {

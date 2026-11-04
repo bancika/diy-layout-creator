@@ -35,7 +35,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.ComponentType;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.core.ComponentState;
@@ -92,10 +92,7 @@ public class MakerVariantSweepTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   /** Problems are collected so that a run reports every bad variant rather than just the first. */

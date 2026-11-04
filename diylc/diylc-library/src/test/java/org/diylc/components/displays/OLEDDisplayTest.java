@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.common.Display;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.displays.OLEDDisplay.Layout;
@@ -50,10 +50,7 @@ public class OLEDDisplayTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static double mm(double px) {

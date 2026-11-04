@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.diylc.TestConfiguration;
 import org.diylc.common.ComponentType;
 import org.diylc.common.DefaultComponentTransformer;
 import org.diylc.common.Orientation;
@@ -48,16 +49,12 @@ import org.diylc.presenter.ComponentProcessor;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 
 public class MakerComponentsTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private final List<Class<? extends IDIYComponent<?>>> releasedMakerComponentClasses = Arrays.<Class<? extends IDIYComponent<?>>>asList(

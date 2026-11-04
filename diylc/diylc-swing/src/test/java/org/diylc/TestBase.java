@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.log4j.PropertyConfigurator;
-import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 
 import org.diylc.common.ComponentType;
@@ -30,7 +29,7 @@ public class TestBase {
         System.err.println("Could not initialize log4j configuration: " + e.getMessage());
     }
     
-    ConfigurationManager.getInstance().initialize("diylc-test");
+    TestConfiguration.initialize();
     view = new MockView();
     presenter = new Presenter(view, InMemoryConfigurationManager.getInstance());
   }

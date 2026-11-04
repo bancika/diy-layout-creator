@@ -25,7 +25,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.diylc.appframework.miscutils.ConfigurationManager;
+import org.diylc.TestConfiguration;
 import org.diylc.components.displays.SevenSegmentDisplay.Common;
 import org.diylc.components.displays.SevenSegmentDisplay.DisplayType;
 import org.diylc.components.displays.SevenSegmentDisplay.Punctuation;
@@ -44,10 +44,7 @@ public class SevenSegmentDisplayTest {
 
   @BeforeClass
   public static void setUp() {
-    try {
-      ConfigurationManager.getInstance().initialize("diylc");
-    } catch (Exception ignored) {
-    }
+    TestConfiguration.initialize();
   }
 
   private static double mm(double px) {
