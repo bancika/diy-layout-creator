@@ -37,12 +37,17 @@ import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote;
+import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote(value = "One Enclosure draws a whole box, so use one per box rather than one per side. "
+    + "Also select Drill Hole for the round holes of its jacks, pots, switches and LEDs, and the "
+    + "Rectangular, Elliptical or Polygonal Cutout for any other openings", scope = Scope.SELECTION)
+@AiNote("Draw each hole and cutout on the panel it goes through, inside that panel's outline")
 @AiNote("The two control points are opposite corners of the enclosure's top panel. With 'Height' above zero the sides are unfolded around it as an exploded view, each as tall as 'Height' and set 'Spacing' apart from it: the front against the top panel's upper edge, the back against its lower edge and, when 'Sides' is All, the left and right sides against its left and right edges. The bottom is never drawn. With 'Sides' set to None, or 'Height' at zero, it is a single flat panel of any size, such as one side of a chassis drawn on its own")
 @AiNote("The enclosure is not conductive in the netlist: jacks, pots and lugs drawn on it are not joined through it, so chassis ground points must be connected explicitly")
 @AiNote("A datasheet model is a Hammond enclosure part number such as 1590BB, 1550B or 1444-32, or a generic size such as 125B, and is stored as 'Value'; it sets the top panel to the enclosure's length and width, upright for pedal-sized die-cast boxes up to 125 mm long and horizontal for bigger boxes and amplifier chassis and 'Height' to its wall height. 125B is a generic size sold by several makers; its Hammond equivalent is 1590N1")

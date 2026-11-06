@@ -4,7 +4,7 @@
     "Boards" : [ {
       "name" : "Blank Board",
       "className" : "boards.BlankBoard",
-      "notes" : [ "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise" ]
+      "notes" : [ "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise", "When the board needs mounting holes, because the request asks for them or the board goes into an enclosure, also select Drill Hole and use one Drill Hole per hole" ]
     }, {
       "name" : "Breadboard",
       "className" : "boards.Breadboard"
@@ -283,13 +283,15 @@
       "className" : "chassis.DialScale"
     }, {
       "name" : "Drill Hole",
-      "className" : "electromechanical.DrillHole"
+      "className" : "electromechanical.DrillHole",
+      "notes" : [ "Use for round holes: the mounting holes of a Blank Board, and the holes for jacks, pots, switches and LEDs in an Enclosure; for other openings in an Enclosure use the Rectangular, Elliptical or Polygonal Cutout" ]
     }, {
       "name" : "Elliptical Cutout",
       "className" : "chassis.EllipticalCutout"
     }, {
       "name" : "Enclosure",
-      "className" : "chassis.ChassisPanel"
+      "className" : "chassis.ChassisPanel",
+      "notes" : [ "One Enclosure draws a whole box, so use one per box rather than one per side. Also select Drill Hole for the round holes of its jacks, pots, switches and LEDs, and the Rectangular, Elliptical or Polygonal Cutout for any other openings" ]
     }, {
       "name" : "Polygonal Cutout",
       "className" : "chassis.PolygonalCutout"

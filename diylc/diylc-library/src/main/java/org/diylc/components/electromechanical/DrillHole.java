@@ -32,6 +32,8 @@ import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
+import org.diylc.core.annotations.AiNote;
+import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.BomPolicy;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -43,6 +45,14 @@ import org.diylc.core.gerber.IGerberDrawingObserver;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 
+@AiNote(value = "Use for round holes: the mounting holes of a Blank Board, and the holes for jacks, "
+    + "pots, switches and LEDs in an Enclosure; for other openings in an Enclosure use the "
+    + "Rectangular, Elliptical or Polygonal Cutout", scope = Scope.SELECTION)
+@AiNote("The single control point is the centre of the hole and 'Diameter' is the drilled size, "
+    + "e.g. 3.2mm for an M3 mounting screw. Place mounting holes inside the board, typically one "
+    + "near each corner and clear of the components and traces")
+@AiNote("A hole is not conductive and has no terminals, so nothing connects to it; on a PCB it is "
+    + "exported as a non-plated drill")
 @ComponentDescriptor(name = "Drill Hole", category = "Hardware", author = "Branislav Stojkovic",
     description = "Drill hole marker for PCB, chassis or faceplate", instanceNamePrefix = "Hole",
     zOrder = IDIYComponent.BOARD + 0.1, bomPolicy = BomPolicy.NEVER_SHOW,

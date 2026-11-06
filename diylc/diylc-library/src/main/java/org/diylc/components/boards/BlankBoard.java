@@ -41,6 +41,9 @@ import org.diylc.core.annotations.EditableProperty;
 
 @AiNote(value = "Use this board as a base of PCB, eyelet and turret boards unless asked otherwise",
     scope = Scope.SELECTION)
+@AiNote(value = "When the board needs mounting holes, because the request asks for them or the "
+    + "board goes into an enclosure, also select Drill Hole and use one Drill Hole per hole",
+    scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Blank Board", category = "Boards", author = "Branislav Stojkovic",
         zOrder = IDIYComponent.BOARD, instanceNamePrefix = "Board", description = "Blank circuit board",
         bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, transformer = SimpleComponentTransformer.class)
