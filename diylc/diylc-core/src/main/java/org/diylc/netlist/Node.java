@@ -23,6 +23,7 @@ package org.diylc.netlist;
 
 import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -40,6 +41,13 @@ public class Node implements Comparable<Node> {
   /** Pin names that mark an absent connection, so repeats of them are not one net. */
   private static final Set<String> NON_NET_NAMES =
       new HashSet<String>(Arrays.asList("NC", "RSV", "IC"));
+
+  /**
+   * Orders points top to bottom, then left to right. Breaks ties between parts that share a name:
+   * where a part sits is the same in every run, unlike the order a hash set yields it in.
+   */
+  static final Comparator<Point2D> LOCATION_ORDER = Comparator.nullsLast(
+      Comparator.comparingDouble(Point2D::getY).thenComparingDouble(Point2D::getX));
 
   private IDIYComponent<?> component;
   private int pointIndex;
@@ -137,6 +145,15 @@ public class Node implements Comparable<Node> {
 
   @Override
   public int compareTo(Node o) {
-    return toString().compareToIgnoreCase(o.toString());
+    String name = toString();
+    String otherName = o.toString();
+    int comparison = name.compareToIgnoreCase(otherName);
+    if (comparison == 0) {
+      comparison = name.compareTo(otherName);
+    }
+    if (comparison == 0) {
+      comparison = LOCATION_ORDER.compare(getPoint2D(), o.getPoint2D());
+    }
+    return comparison != 0 ? comparison : Integer.compare(pointIndex, o.pointIndex);
   }
 }

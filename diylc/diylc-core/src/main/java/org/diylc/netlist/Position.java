@@ -21,6 +21,8 @@
 */
 package org.diylc.netlist;
 
+import java.awt.geom.Point2D;
+
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.ISwitch;
 
@@ -84,9 +86,20 @@ public class Position implements Comparable<Position> {
   @Override
   public int compareTo(Position o) {
     int comparison = getSwitchName().compareToIgnoreCase(o.getSwitchName());
-    return comparison != 0
-            ? comparison
-            : Integer.compare(position, o.position);
+    if (comparison == 0) {
+      comparison = getSwitchName().compareTo(o.getSwitchName());
+    }
+    // switches that share a name keep apart by location, so a setup reads the same in every run
+    if (comparison == 0) {
+      comparison = Node.LOCATION_ORDER.compare(getSwitchLocation(), o.getSwitchLocation());
+    }
+    return comparison != 0 ? comparison : Integer.compare(position, o.position);
+  }
+
+  private Point2D getSwitchLocation() {
+    return theSwitch instanceof IDIYComponent<?> component && component.getControlPointCount() > 0
+        ? component.getControlPoint(0)
+        : null;
   }
 
   String getSwitchName() {

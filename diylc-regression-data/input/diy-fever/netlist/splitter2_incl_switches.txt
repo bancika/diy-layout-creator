@@ -1,7 +1,7 @@
 Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
@@ -16,7 +16,54 @@ Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1 ]
 Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Sleeve <-> L4.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+
+Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	Impedance.2 <-> J2.Tip
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.3
+
+Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	Impedance.2 <-> J2.Sleeve
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.3
+
+Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
@@ -27,281 +74,256 @@ Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2 ]
 	J2.Tip <-> L4.2
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
 
-Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.2
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-
-Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.2
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-
-Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
-	J2.Tip <-> L7.2
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-
 Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
-	J2.Tip <-> L7.2
+	J2.Sleeve <-> L4.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
 
 Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Tip <-> L7.2
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-
-Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON2 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Tip <-> L7.2
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-
-Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
 	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L4.2
+	Impedance.2 <-> J2.Tip
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.3
+
+Switch setup: [ SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON2 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	Impedance.2 <-> J2.Sleeve
 	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.3
+
+Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Tip <-> L4.2
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 
 Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L4.2
 	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 
 Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	Impedance.2 <-> J2.Tip
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.3
 
 Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L4.2 <-> Level.3
+
+Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Tip <-> L4.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
 	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-
-Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L7.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-
-Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Sleeve <-> L7.2
 	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
 
 Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	Impedance.2 <-> J2.Tip
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.3
 
 Switch setup: [ SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
 	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L4.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
 	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
+	J2.Tip <-> L7.2
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L4.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
-	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L4.2 <-> Level.3
+	J2.Sleeve <-> L7.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
 	Impedance.2 <-> J2.Tip
+	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L4.2 <-> Level.3
+	L7.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> L4.1 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L4.2 <-> Level.3
+	Impedance.2 <-> J2.Sleeve
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
+	L7.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
 	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
 	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L7.2 <-> Level.3
+	J2.Tip <-> L7.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Sleeve <-> L7.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
@@ -311,132 +333,70 @@ Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON1:SW1.ON2 ]
 	Impedance.2 <-> J2.Tip
 	J2.Sleeve <-> L4.1 <-> L7.1 <-> Level.1
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L7.2 <-> Level.3
-
-Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 	L7.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Tip
+	Impedance.2 <-> J2.Sleeve
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
 	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
 	L7.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Sleeve
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J2.Tip <-> L7.2
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L4.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Sleeve
 	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L4.2 <-> Level.3
+	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 
 Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON1 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
 	C1.2 <-> TL072.1 <-> TL072.2
 	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
 	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	Impedance.2 <-> J2.Tip
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L4.2 <-> Level.3
+	L7.2 <-> Level.3
 
 Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> Impedance.2 <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L3.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L4.2 <-> Level.3
-
-Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> J4.Tip
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Sleeve
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
-	L7.2 <-> Level.3
-
-Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
-	C1.1 <-> R1.1 <-> R1.1
-	C1.1 <-> R1.1 <-> TL072.3
-	C1.2 <-> TL072.1 <-> TL072.2
-	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
-	C2.- <-> C2.- <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> R1.1 <-> R1.2 <-> TL072.4
-	Impedance.1 <-> Level.2
-	Impedance.2 <-> J2.Sleeve
-	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
-	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
-	L7.2 <-> Level.3
-
-Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1 ]
-
-	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> J4.Tip
@@ -448,10 +408,50 @@ Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1 ]
 	J5.Tip <-> L3.1 <-> L6.1 <-> R1.2
 	L7.2 <-> Level.3
 
+Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Tip <-> L7.2
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1:SW1.ON2 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L6.2 <-> L7.2 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	J2.Tip <-> L4.1 <-> L7.1 <-> Level.1
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+
+Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON1 ]
+
+	4001.A <-> C2.+ <-> J6.Sleeve
+	4001.K <-> R1.1 <-> TL072.8
+	C1.1 <-> R1.1 <-> R1.1
+	C1.1 <-> R1.1 <-> TL072.3
+	C1.2 <-> TL072.1 <-> TL072.2
+	C2.+ <-> R1.2 <-> R1.2 <-> R1.2
+	C2.- <-> C2.- <-> J2.Sleeve <-> J4.Sleeve <-> J5.Sleeve <-> J6.Center <-> L4.1 <-> L6.2 <-> L7.1 <-> Level.1 <-> R1.1 <-> R1.2 <-> TL072.4
+	Impedance.1 <-> Level.2
+	Impedance.2 <-> J2.Tip
+	J4.Tip <-> J5.Tip <-> L3.1 <-> L6.1
+	L7.2 <-> Level.3
+
 Switch setup: [ SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2:SW1.ON2 ]
 
 	4001.A <-> C2.+ <-> J6.Sleeve
-	4001.K <-> R1.1 <-> TL072.5
+	4001.K <-> R1.1 <-> TL072.8
 	C1.1 <-> R1.1 <-> R1.1
 	C1.1 <-> R1.1 <-> TL072.3
 	C1.2 <-> TL072.1 <-> TL072.2

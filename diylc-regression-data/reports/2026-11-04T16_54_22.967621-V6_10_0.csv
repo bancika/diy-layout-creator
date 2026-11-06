@@ -1,0 +1,102 @@
+OK,Failed,Total Time,Avg Time
+38,59,278979,2876
+
+
+File,Status,Message,Time
+12v_supply.diy,OK,,3351
+211.diy,FAILED,Images do not match!,1890
+255.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,3323
+2555X BOARD LAYOUT RESaddTSRELAYnew.diy,FAILED,Images do not match!;Netlists do not match with switches,18596
+259.diy,FAILED,Images do not match!,3580
+291.diy,OK,,998
+315.diy,OK,,4401
+331.diy,FAILED,Images do not match!,1607
+360.diy,OK,,498
+367.diy,FAILED,Images do not match!,3097
+374.diy,FAILED,Images do not match!,2103
+414.diy,OK,,490
+419.diy,FAILED,Images do not match!,2224
+448.diy,OK,,1509
+451.diy,FAILED,Images do not match!,5089
+480.diy,OK,,893
+523.diy,OK,,1088
+537.diy,FAILED,Images do not match!,1706
+543.diy,FAILED,Images do not match!,1238
+546.diy,OK,,283
+548.diy,OK,,1104
+560.diy,OK,,1155
+562.diy,FAILED,Netlists do not match with switches,2258
+565.diy,OK,,1002
+578.diy,FAILED,Images do not match!,3484
+580.diy,FAILED,Images do not match!,3701
+581.diy,FAILED,Images do not match!,10362
+606.diy,FAILED,Images do not match!,2130
+610.diy,OK,,1311
+614.diy,OK,,982
+6Y6 Express 2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,2895
+801.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,450
+9V_supply_regulated.diy,FAILED,Images do not match!,2301
+ALU board with interface.diy,OK,,1149
+AllTube Schem.diy,OK,,4021
+Blue 7.diy,OK,,257
+BrownfaceReverb Schematic 2.diy,OK,,1449
+Bus decoder board (RL,Z2,Z1,Z0).diy,FAILED,Images do not match!,4038
+DR18Tagstrip.diy,FAILED,Images do not match!,7686
+Deluxe_Micro_EF80_Layout.diy,FAILED,Images do not match!,4101
+Fender_Bassman_5F6_5F6A.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,544
+IIc+.diy,FAILED,Images do not match!,2567
+Ibanez Balance-Master Mod.diy,OK,,991
+LM386 Voltage Converter.diy,FAILED,Images do not match!,1709
+LargeBandMaster.diy,FAILED,Images do not match!,50814
+Lectrolab schematic.diy,OK,,2194
+PCF DI Cable Diagram.diy,OK,,1320
+ProTremoVerb Schematic.diy,OK,,2041
+RAM board 2.diy,FAILED,Images do not match!,6668
+RR2104_Master_Volume_6V6_Schematic.diy,OK,,878
+Radio Amp Noval.diy,FAILED,Images do not match!,2495
+Register board (LSB).diy,FAILED,Images do not match!,3256
+Rix 18 watt.diy,OK,,247
+Rix AC15 Xlite.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,202
+Rix Baby Blue.diy,OK,,256
+Rix Bassman.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,1838
+Rix JD stout.diy,FAILED,Netlists do not match with switches;Netlists do not match without switches,210
+Rix Junior AB763.diy,OK,,696
+Rix Junior.diy,OK,,242
+Rix Plexi 6V6.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,368
+Rix Pro Jr.diy,OK,,235
+Silvertone 1484 v6f.diy,FAILED,Images do not match!,16076
+Stack Pointer board.diy,FAILED,Images do not match!,3606
+Synth Oscllator_v1.diy,FAILED,Images do not match!,3241
+Thunderbolt Mk3.diy,OK,,233
+antiquity_fuzz.diy,FAILED,Images do not match!,1833
+b_blender.diy,FAILED,Images do not match!,1749
+bixonix_expandora.diy,FAILED,Images do not match!,2173
+dallas_rangemaster_pcb.diy,FAILED,Images do not match!,2082
+deacy.diy,FAILED,Images do not match!,527
+dist_layout.diy,FAILED,Images do not match!,2051
+dyna_comp_perf.diy,FAILED,Images do not match!,2149
+eh_octave_multiplexer.diy,FAILED,Images do not match!,1875
+fetzer_ruby.diy,FAILED,Images do not match!,1795
+fetzer_valve.diy,FAILED,Images do not match!,1934
+fetzer_valve_deluxe_2.diy,FAILED,Images do not match!,4194
+fetzer_valve_deluxe_perf.diy,FAILED,Images do not match!,2301
+flexi_clip.diy,FAILED,Images do not match!,2916
+ga5t_preamp.diy,FAILED,Images do not match!,2591
+jfet boost.diy,OK,,56
+lp switch + pots.diy,FAILED,Netlists do not match with switches,1232
+lxh2_marshall_amp_sim.diy,FAILED,Images do not match!,2460
+orange_treble_bass_booster_2.diy,FAILED,Images do not match!,2055
+puzzle87_comp.diy,FAILED,Images do not match!,2224
+rangemaster.diy,FAILED,Images do not match!,344
+roger_mayer_octavia_vero.diy,FAILED,Images do not match!,1839
+ruby.diy,FAILED,Images do not match!,360
+shaka_hv.diy,FAILED,Images do not match!,2100
+signal_gen.diy,FAILED,Images do not match!,1743
+slo2.diy,FAILED,Images do not match!,5183
+soapdodger2.diy,FAILED,Images do not match!,3172
+splitter2.diy,FAILED,Images do not match!;Netlists do not match with switches;Netlists do not match without switches,2225
+standard strat.diy,OK,,1619
+tda1521a-2.diy,FAILED,Images do not match!,879
+timmy7.diy,FAILED,Images do not match!,1942
+travelcaster3 (new format).diy,FAILED,Netlists do not match with switches,392
+wah2.diy,FAILED,Images do not match!,2257

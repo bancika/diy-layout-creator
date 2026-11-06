@@ -124,6 +124,7 @@ public class SwitchSetup implements Comparable<SwitchSetup> {
     }
 
     // Same earliest full configuration: use the description as a tie-breaker.
-    return toString().compareToIgnoreCase(o.toString());
+    int comparison = toString().compareToIgnoreCase(o.toString());
+    return comparison != 0 ? comparison : toString().compareTo(o.toString());
   }
 }

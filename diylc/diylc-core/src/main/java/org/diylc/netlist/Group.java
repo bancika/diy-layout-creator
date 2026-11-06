@@ -106,7 +106,10 @@ public class Group implements Comparable<Group> {
 
   @Override
   public int compareTo(Group o) {
-    return toString().compareToIgnoreCase(o.toString());
+    String text = toString();
+    String otherText = o.toString();
+    int comparison = text.compareToIgnoreCase(otherText);
+    return comparison != 0 ? comparison : text.compareTo(otherText);
   }
   
   @Override

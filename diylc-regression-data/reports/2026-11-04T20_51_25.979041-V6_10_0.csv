@@ -1,0 +1,102 @@
+OK,Failed,Total Time,Avg Time
+97,0,166731,1718
+
+
+File,Status,Message,Time
+12v_supply.diy,OK,,3536
+211.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,1793
+255.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,4205
+2555X BOARD LAYOUT RESaddTSRELAYnew.diy,OK,,6859
+259.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,2890
+291.diy,OK,,1282
+315.diy,OK,,4164
+331.diy,OK,,896
+360.diy,OK,,668
+367.diy,OK,,1104
+374.diy,OK,,1980
+414.diy,OK,,486
+419.diy,OK,,1433
+448.diy,OK,,3171
+451.diy,OK,,2006
+480.diy,OK,,994
+523.diy,OK,,960
+537.diy,OK,,963
+543.diy,OK,,892
+546.diy,OK,,338
+548.diy,OK,,1017
+560.diy,OK,,1216
+562.diy,OK,,1746
+565.diy,OK,,1049
+578.diy,OK,,2598
+580.diy,OK,,1719
+581.diy,OK,,4322
+606.diy,OK,,1386
+610.diy,OK,,1561
+614.diy,OK,,1179
+6Y6 Express 2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,3103
+801.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,678
+9V_supply_regulated.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Transformer<br></html,2332
+ALU board with interface.diy,OK,,1288
+AllTube Schem.diy,OK,,2148
+Blue 7.diy,OK,,202
+BrownfaceReverb Schematic 2.diy,OK,,1385
+Bus decoder board (RL,Z2,Z1,Z0).diy,OK,,1452
+DR18Tagstrip.diy,OK,,2783
+Deluxe_Micro_EF80_Layout.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,1274
+Fender_Bassman_5F6_5F6A.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,588
+IIc+.diy,OK,,1639
+Ibanez Balance-Master Mod.diy,OK,,1395
+LM386 Voltage Converter.diy,OK,,888
+LargeBandMaster.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,14763
+Lectrolab schematic.diy,OK,,1388
+PCF DI Cable Diagram.diy,OK,,895
+ProTremoVerb Schematic.diy,OK,,2463
+RAM board 2.diy,OK,,3320
+RR2104_Master_Volume_6V6_Schematic.diy,OK,,1574
+Radio Amp Noval.diy,OK,,1871
+Register board (LSB).diy,OK,,1097
+Rix 18 watt.diy,OK,,273
+Rix AC15 Xlite.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,383
+Rix Baby Blue.diy,OK,,266
+Rix Bassman.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,889
+Rix JD stout.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,249
+Rix Junior AB763.diy,OK,,295
+Rix Junior.diy,OK,,301
+Rix Plexi 6V6.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,459
+Rix Pro Jr.diy,OK,,475
+Silvertone 1484 v6f.diy,OK,,5147
+Stack Pointer board.diy,OK,,1385
+Synth Oscllator_v1.diy,OK,,4212
+Thunderbolt Mk3.diy,OK,,289
+antiquity_fuzz.diy,OK,,1113
+b_blender.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Jack<br></html,1346
+bixonix_expandora.diy,OK,,1136
+dallas_rangemaster_pcb.diy,OK,,1415
+deacy.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,445
+dist_layout.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,1192
+dyna_comp_perf.diy,OK,,1117
+eh_octave_multiplexer.diy,OK,,1344
+fetzer_ruby.diy,OK,,1757
+fetzer_valve.diy,OK,,1914
+fetzer_valve_deluxe_2.diy,OK,,1194
+fetzer_valve_deluxe_perf.diy,OK,,1290
+flexi_clip.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Unsupported toggle switch dimensions<br></html,1714
+ga5t_preamp.diy,OK,,1100
+jfet boost.diy,OK,,59
+lp switch + pots.diy,OK,,2001
+lxh2_marshall_amp_sim.diy,OK,,1296
+orange_treble_bass_booster_2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Jack<br></html,1646
+puzzle87_comp.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Jack<br></html,1186
+rangemaster.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,134
+roger_mayer_octavia_vero.diy,OK,,1024
+ruby.diy,OK,,267
+shaka_hv.diy,OK,,1461
+signal_gen.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Jack<br></html,1151
+slo2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,3912
+soapdodger2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>Could not recognize component type Jack<br></html,3460
+splitter2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,2201
+standard strat.diy,OK,,3600
+tda1521a-2.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,629
+timmy7.diy,OK,<html>File was opened, but there were some issues with it:<br><br>The project references unknown component properties, most likely because it was created with a newer version of DIYLC.<br></html,1049
+travelcaster3 (new format).diy,OK,,632
+wah2.diy,OK,,1384
