@@ -209,7 +209,7 @@ Two cautions, both learned from §6.5:
 - **The column format is positional and unforgiving.** `CapacitorDatasheetService` reads
   `model[1].split(" ")[0..1]` for voltage and `model[2].split(" ")[0..1]` for value, so a cell
   must be `"<number> <unit>"` with exactly one space. `4.7uF` throws
-  `ArrayIndexOutOfBoundsException`; there is no validation anywhere.
+  `ArrayIndexOutOfBoundsException`; `DatasheetRowsTest` catches it.
 - **`DatasheetService` reads with `new InputStreamReader(in)` and no charset**, so files are decoded
   with the platform default. Keep datasheet files ASCII — write `uF`, never `µF`. Per JEP 400 the
   default is UTF-8 on the supported JVM, so a latin-1 byte becomes U+FFFD rather than failing loudly.
@@ -282,7 +282,7 @@ block for the unreleased version. `NEW_FEATURE` for components and variants, `BU
 Enum constants, catalogue data, building blocks and uncommenting. Cheapest fidelity per hour in
 the roadmap, and where D6 and D7 send most of the work.
 
-§6.1 and §6.5 are correctness fixes and should go first regardless of the rest.
+§6.1 is a correctness fix and should go first regardless of the rest.
 
 ### 6.1 Restore the `ElectrolyticCanCapacitor` alias — **bug, not a gap**
 
@@ -385,36 +385,12 @@ value `"<number> <unit>"`.
 
 **~6-10 h each, `RadialCeramicDiskCapacitor` first.**
 
-### 6.5 Fix six malformed datasheet rows — **bug**
+### 6.5 Fix six malformed datasheet rows — **done**
 
-Six of the 3,539 rows have a value cell the parser cannot read. Found by validating every row
-against `parseCapacitorDatasheet`'s own logic:
-
-| File | Rows | Cell | Failure |
-|---|---|---|---|
-| `RadialElectrolytic.datasheet` | 4 (Elna Silmic II 4.7 uF at 25/35/50/63 V) | `4.7uF` | no space, so `split(" ")` yields one element and `capacitanceParts[1]` throws `ArrayIndexOutOfBoundsException` |
-| `RadialFilmCapacitor.datasheet` | 2 (WIMA MKS-4 400 V) | `0.01µF A`, `0.01µF B` | latin-1 `0xb5` in a file read with the platform charset (§5.3), no space, plus an ` A`/` B` suffix no other row has; `parseCapacitance` throws `IllegalArgumentException` |
-
-User-visible effect: picking any of those six models from *Apply Model* throws instead of applying.
-
-Latent effect: the same cells break `DatasheetService.lookup`, whose `Double.parseDouble` runs over
-every row in a `model|voltage` bucket. Three of the five affected buckets have the bad row first, so
-the whole bucket would throw — **80 rows across 5 buckets, including all 41 WIMA MKS-4 400 V rows**.
-That path has no production caller today (§5.3), so this is a trap set for whoever wires up
-value-based auto-sizing, not a live fault.
-
-1. Rewrite the four `4.7uF` cells as `4.7 uF`.
-2. Replace the two `0.01µF A` / `0.01µF B` cells with ASCII. The ` A`/` B` suffix looks like an attempt
-   to give one value two body sizes (10x3 at 7.5 mm pitch, 13x4 at 10 mm pitch) — a real need the
-   positional format cannot express, since model and voltage are the whole lookup key. **Recommend
-   splitting them into two models**, `WIMA MKS-4` and `WIMA MKS-4 (10mm)`, matching how
-   `Epcos MKT (5mm)` / `(7.5mm)` / `(10mm)` and the WIMA 2.5 mm/5 mm entries already encode pitch in
-   the model name.
-3. Add this row validation as a test beside `FactoryVariantsTest` — same shape, same
-   collect-all-problems-then-assert style — so the next malformed cell fails the build. **This is
-   the part that matters**; the six fixes are typos, the missing validation is why they survived.
-
-**~3 h including the test.**
+The four Elna Silmic II `4.7uF` cells and the two WIMA MKS-4 `0.01µF A`/`B` cells now read `4.7 uF`
+and `0.01 uF A`/`B`. The ` A`/` B` suffix stays: it is how the other WIMA rows give one value two
+case sizes, and only the value before it is applied. `DatasheetRowsTest` applies every row of every
+datasheet and rejects non-ASCII bytes, so the next malformed cell fails the build.
 
 ### 6.6 Make factory building blocks reach existing users — **done**
 
@@ -570,20 +546,19 @@ joins the §6.7 list rather than this one once someone asks for it.
 
 | Step | Items | Rough effort |
 |---|---|---|
-| 1 | §6.5 six malformed datasheet rows, plus the validation test | 3 h |
-| 2 | §6.1 alias fix, verified by regression run | 2 h |
-| 3 | §6.7 push-pull pot block, as the D7 worked example | 3 h |
-| 4 | §6.2 revive three, decide on the fourth | 3 h |
-| 5 | §6.3 UX4, then UX5 / B8G / B9D | 6-8 h |
-| 6 | §6.4 datasheets, `RadialCeramicDiskCapacitor` first | 6-10 h each |
-| 7 | §6.7 remaining blocks: transformer symbol, treble bleed, tube gain stage, harnesses | 2-3 h each |
-| 8 | §7.1 `Transformer`, with §7.3 Choke as its third type | 20-24 h |
-| 9 | §7.2 Speaker, physical plus symbol | 10-12 h |
-| 10 | §7.4 Footswitch | 10-12 h |
-| 11 | §7.5 `Photoresistor`, then the Vactrol block | 6 h |
+| 1 | §6.1 alias fix, verified by regression run | 2 h |
+| 2 | §6.7 push-pull pot block, as the D7 worked example | 3 h |
+| 3 | §6.2 revive three, decide on the fourth | 3 h |
+| 4 | §6.3 UX4, then UX5 / B8G / B9D | 6-8 h |
+| 5 | §6.4 datasheets, `RadialCeramicDiskCapacitor` first | 6-10 h each |
+| 6 | §6.7 remaining blocks: transformer symbol, treble bleed, tube gain stage, harnesses | 2-3 h each |
+| 7 | §7.1 `Transformer`, with §7.3 Choke as its third type | 20-24 h |
+| 8 | §7.2 Speaker, physical plus symbol | 10-12 h |
+| 9 | §7.4 Footswitch | 10-12 h |
+| 10 | §7.5 `Photoresistor`, then the Vactrol block | 6 h |
 
-Steps 1-4 are about a day and a half: both known bugs cleared and the highest-demand composable
-shipped as data rather than as a class. Step 8 is the one that matters most.
+Steps 1-3 are about a day: the alias bug cleared and the highest-demand composable shipped as data
+rather than as a class. Step 7 is the one that matters most.
 
 Three items that looked like components when this roadmap started are now data (§6.7, §7.6, §8.9),
 and one is split into a primitive plus a block (§7.5). That is D7 working as intended; expect the
