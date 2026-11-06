@@ -25,7 +25,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.IComponentTransformer;
-import org.diylc.common.OrientationHV;
+import org.diylc.components.electromechanical.MiniToggleSwitchOrientation;
 import org.diylc.components.electromechanical.MiniToggleSwitch;
 import org.diylc.components.electromechanical.ToggleSwitchType;
 import org.diylc.core.IDIYComponent;
@@ -69,15 +69,13 @@ public class MiniToggleSwitchTransformer implements IComponentTransformer {
     rotate.transform(controlCenter, targetCenter);
     
     // Update orientation first - this will rotate points around first point
-    OrientationHV o = sw.getOrientation();
-    int oValue = o.ordinal();
-    oValue += direction;
-    if (oValue < 0)
-      oValue = OrientationHV.values().length - 1;
-    if (oValue >= OrientationHV.values().length)
-      oValue = 0;
-    o = OrientationHV.values()[oValue];
-    sw.setOrientation(o);
+    MiniToggleSwitchOrientation rotated = switch (sw.getOrientation()) {
+      case VERTICAL -> MiniToggleSwitchOrientation.HORIZONTAL;
+      case HORIZONTAL -> MiniToggleSwitchOrientation.VERTICAL;
+      case STACKED_VERTICAL -> MiniToggleSwitchOrientation.STACKED_HORIZONTAL;
+      case STACKED_HORIZONTAL -> MiniToggleSwitchOrientation.STACKED_VERTICAL;
+    };
+    sw.setOrientation(rotated);
     
     // Recalculate current control center after orientation change
     sumX = 0;
