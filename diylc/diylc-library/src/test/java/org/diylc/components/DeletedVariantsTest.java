@@ -43,7 +43,7 @@ import org.junit.Test;
 /**
  * Checks that a factory variant marked {@code deletedOn} in {@code import-defaults/variants.xml} is
  * taken out of the user's configuration only when the last import predates the deletion, and is
- * never imported.
+ * never imported, and that the recorded import date comes from the file rather than the clock.
  */
 public class DeletedVariantsTest {
 
@@ -138,6 +138,39 @@ public class DeletedVariantsTest {
         importInto(configWith(new ArrayList<Template>(), LocalDateTime.MIN));
 
     Assert.assertTrue(remaining.stream().noneMatch(t -> t.getDeletedOn() != null));
+  }
+
+  @Test
+  public void importDateIsTheLatestDateInTheFile() {
+    LocalDateTime latest = LocalDateTime.MIN;
+    for (List<Template> variants : loadVariants().values()) {
+      for (Template variant : variants) {
+        if (variant.getCreatedOn() != null && variant.getCreatedOn().isAfter(latest)) {
+          latest = variant.getCreatedOn();
+        }
+        if (variant.getDeletedOn() != null && variant.getDeletedOn().isAfter(latest)) {
+          latest = variant.getDeletedOn();
+        }
+      }
+    }
+    InMemoryConfigurationManager config =
+        configWith(new ArrayList<Template>(), LocalDateTime.MIN);
+
+    importInto(config);
+
+    Assert.assertEquals(latest,
+        config.readObject(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY, null));
+  }
+
+  @Test
+  public void importDateNeverMovesBackwards() {
+    LocalDateTime later = LocalDateTime.of(2999, 1, 1, 0, 0);
+    InMemoryConfigurationManager config = configWith(new ArrayList<Template>(), later);
+
+    importInto(config);
+
+    Assert.assertEquals(later,
+        config.readObject(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY, null));
   }
 
   private static class InMemoryConfigurationManager implements IConfigurationManager<Object> {

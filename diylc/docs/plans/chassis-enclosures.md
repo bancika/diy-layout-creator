@@ -119,10 +119,6 @@ top by about 22 mm).
 - HWCHAS walnut-frame chassis (HWCHAS1310 / 1710; aluminium top 298.45 x 222.25 / 400.05 x
   222.25 mm on a 19.05 mm walnut frame): a different construction from the folded sheet metal.
 - Hammond rack cases (RM, RMCS) and the 1458 instrument enclosure.
-- Factory building blocks are still imported once, behind the boolean
-  `DEFAULT_BLOCKS_IMPORTED_KEY`, so a block added to `blocks.xml` later never reaches existing
-  users. Fix by giving factory blocks `createdOn`/`deletedOn` and an import date, as `VariantManager`
-  does, when a new factory block is next needed.
 - Configs older than class-keyed variants store keys like `Electro-Mechanical.Chassis Panel`;
   `VariantManager`'s upgrade maps them by the current category and name, so such variants would
   not carry over. Map the legacy name if it turns out to matter.

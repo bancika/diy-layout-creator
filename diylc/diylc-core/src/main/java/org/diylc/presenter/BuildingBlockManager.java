@@ -18,6 +18,7 @@
 package org.diylc.presenter;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.apache.log4j.Logger;
@@ -28,6 +29,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import org.diylc.common.BlockInstantiationMode;
+import org.diylc.common.BuildingBlock;
 import org.diylc.common.BuildingBlockPackage;
 import org.diylc.common.ComponentType;
 import org.diylc.common.IBlockProcessor;
@@ -42,7 +44,7 @@ public class BuildingBlockManager {
 
   private static final String BLOCKS_FILE_NAME = "import-defaults/blocks.xml";
 
-  private static final Logger LOG = Logger.getLogger(VariantManager.class);
+  private static final Logger LOG = Logger.getLogger(BuildingBlockManager.class);
 
   private IConfigurationManager<?> configManager;
   private XStream xStream;
@@ -58,44 +60,80 @@ public class BuildingBlockManager {
 
   @SuppressWarnings("unchecked")
   public void importDefaultBlocks() {
-    // import default templates from variants.xml file only if we didn't do it already
-    if (!configManager.readBoolean(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
-      try {
-        InputStream inputStream = Presenter.class.getResourceAsStream("/" + BLOCKS_FILE_NAME);
-        if (inputStream == null) {
-          return;
-        }
-        BufferedInputStream in = new BufferedInputStream(inputStream);
-          Map<String, List<IDIYComponent<?>>> defaults =
-              (Map<String, List<IDIYComponent<?>>>) ProjectFileManager.xStreamSerializer
-                  .fromXML(in);
-          in.close();
-
-          Map<String, List<IDIYComponent<?>>> blocksMap =
-              (Map<String, List<IDIYComponent<?>>>) configManager.readObject(IPlugInPort.BLOCKS_KEY,
-                  null);
-          if (blocksMap == null)
-            blocksMap = new HashMap<String, List<IDIYComponent<?>>>();
-
-          // merge default blocks with user's
-          for (Map.Entry<String, List<IDIYComponent<?>>> entry : defaults.entrySet()) {
-            if (!blocksMap.containsKey(entry.getKey()))
-              blocksMap.put(entry.getKey(), entry.getValue());
-          }
-
-          // update templates and a flag marking that we imported them
-          configManager.writeValue(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, true);
-          configManager.writeValue(IPlugInPort.BLOCKS_KEY, blocksMap);
-          int importCount = defaults.size();
-          if (importCount > 0) {
-            LOG.info(String.format("Imported %d default building blocks", importCount));
-          }
-      } catch (Exception e) {
-        LOG.error("Could not load default blocks", e);
+    try {
+      InputStream inputStream = Presenter.class.getResourceAsStream("/" + BLOCKS_FILE_NAME);
+      if (inputStream == null) {
+        return;
       }
+      BufferedInputStream in = new BufferedInputStream(inputStream);
+      List<BuildingBlock> defaults =
+          (List<BuildingBlock>) ProjectFileManager.xStreamSerializer.fromXML(in);
+      in.close();
+      importDefaultBlocks(defaults);
+    } catch (Exception e) {
+      LOG.error("Could not load default blocks", e);
     }
   }
-  
+
+  @SuppressWarnings("unchecked")
+  void importDefaultBlocks(List<BuildingBlock> defaults) {
+    LocalDateTime importDate = (LocalDateTime) configManager
+        .readObject(IPlugInPort.DEFAULT_BLOCKS_IMPORT_DATE_KEY, LocalDateTime.MIN);
+
+    Map<String, List<IDIYComponent<?>>> blocksMap =
+        (Map<String, List<IDIYComponent<?>>>) configManager.readObject(IPlugInPort.BLOCKS_KEY,
+            null);
+    if (blocksMap == null) {
+      blocksMap = new HashMap<String, List<IDIYComponent<?>>>();
+    }
+
+    // as with variants, the import date is the latest date in the bundled file rather than the
+    // clock, and never moves backwards
+    LocalDateTime newImportDate = importDate;
+    List<String> deletedNames = new ArrayList<String>();
+    int importCount = 0;
+
+    for (BuildingBlock block : defaults) {
+      if (block.getCreatedOn() != null && block.getCreatedOn().isAfter(newImportDate)) {
+        newImportDate = block.getCreatedOn();
+      }
+      if (block.getDeletedOn() != null && block.getDeletedOn().isAfter(newImportDate)) {
+        newImportDate = block.getDeletedOn();
+      }
+      // a deletion stub keeps nothing but its name, so a missing createdOn only means an old
+      // entry when the block has not been deleted
+      boolean created = block.getCreatedOn() == null ? block.getDeletedOn() == null
+          : importDate.compareTo(block.getCreatedOn()) < 0;
+      boolean deleted =
+          block.getDeletedOn() != null && importDate.compareTo(block.getDeletedOn()) < 0;
+      if (deleted && !created) {
+        if (blocksMap.remove(block.getName()) != null) {
+          deletedNames.add(block.getName());
+        }
+      } else if (created && block.getDeletedOn() == null
+          && !blocksMap.containsKey(block.getName())) {
+        // a user who had the block before the import date existed keeps their copy, edited or
+        // not, and one who deleted it gets it back once
+        blocksMap.put(block.getName(), new ArrayList<IDIYComponent<?>>(block.getComponents()));
+        importCount++;
+      }
+    }
+
+    // the flag stays so that older versions, which know nothing else, do not import again
+    configManager.writeValue(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, true);
+    configManager.writeValue(IPlugInPort.DEFAULT_BLOCKS_IMPORT_DATE_KEY, newImportDate);
+    configManager.writeValue(IPlugInPort.BLOCKS_KEY, blocksMap);
+    for (String name : deletedNames) {
+      removeFromRecent(name);
+    }
+    if (importCount > 0) {
+      LOG.info(String.format("Imported %d default building blocks", importCount));
+    }
+    if (!deletedNames.isEmpty()) {
+      LOG.info(String.format("Deleted %d withdrawn default building blocks", deletedNames.size()));
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public int importBlocks(String fileName) throws IOException {
     LOG.debug(String.format("importBlocks(%s)", fileName));
@@ -221,14 +259,15 @@ public class BuildingBlockManager {
     blocks.put(blockName, blockComponents);
 
     if (System.getProperty("org.diylc.WriteStaticBlocks", "false").equalsIgnoreCase("true")) {
-      Map<String, List<IDIYComponent<?>>> defaultBlockMap =
-          new HashMap<String, List<IDIYComponent<?>>>();
-      defaultBlockMap.put(blockName, blockComponents);
+      BuildingBlock defaultBlock = new BuildingBlock(blockName, blockComponents);
+      defaultBlock.setCreatedOn(LocalDateTime.now().withNano(0));
+      List<BuildingBlock> defaultBlocks = new ArrayList<BuildingBlock>();
+      defaultBlocks.add(defaultBlock);
       try {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(BLOCKS_FILE_NAME));
         XStream xStream = new XStream(new DomDriver());
         xStream.addPermission(AnyTypePermission.ANY);
-        xStream.toXML(defaultBlockMap, out);
+        xStream.toXML(defaultBlocks, out);
         out.close();
         LOG.info("Saved default blocks");
       } catch (IOException e) {
@@ -248,11 +287,16 @@ public class BuildingBlockManager {
       blocks.remove(blockName);
       configManager.writeValue(IBlockProcessor.BLOCKS_KEY, blocks);
     }
+    removeFromRecent(blockName);
+  }
 
-    // drop the block from the recently used list too, so it doesn't linger as a dead entry
+  // drop the block from the recently used list too, so it doesn't linger as a dead entry
+  @SuppressWarnings("unchecked")
+  private void removeFromRecent(String blockName) {
     List<String> recent =
         (List<String>) configManager.readObject(IPlugInPort.RECENT_COMPONENTS_KEY, null);
-    if (recent != null && recent.remove(IBlockProcessor.BLOCK_PREFIX + blockName))
+    if (recent != null && recent.remove(IBlockProcessor.BLOCK_PREFIX + blockName)) {
       configManager.writeValue(IPlugInPort.RECENT_COMPONENTS_KEY, recent);
+    }
   }
 }

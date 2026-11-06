@@ -27,6 +27,7 @@ public interface IBlockProcessor {
 
   public static final String BLOCKS_KEY = "buildingBlocks";
   public static final String DEFAULT_BLOCKS_IMPORTED_KEY = "defaultBlocksImported";
+  public static final String DEFAULT_BLOCKS_IMPORT_DATE_KEY = "defaultBlocksImportDate";
 
   /**
    * Prefix that marks a string as a reference to a building block rather than a component class

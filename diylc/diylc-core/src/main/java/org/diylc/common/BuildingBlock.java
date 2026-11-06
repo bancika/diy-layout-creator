@@ -21,6 +21,7 @@
 */
 package org.diylc.common;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import org.diylc.core.IDIYComponent;
@@ -29,6 +30,10 @@ public class BuildingBlock {
 
   private String name;
   private Collection<IDIYComponent<?>> components;
+  // the dates are set only on factory blocks in import-defaults/blocks.xml, and a withdrawn
+  // factory block carries nothing but its name and deletedOn
+  private LocalDateTime createdOn;
+  private LocalDateTime deletedOn;
 
   public BuildingBlock(String name, Collection<IDIYComponent<?>> components) {
     super();
@@ -50,6 +55,22 @@ public class BuildingBlock {
 
   public void setComponents(Collection<IDIYComponent<?>> components) {
     this.components = components;
+  }
+
+  public LocalDateTime getCreatedOn() {
+    return createdOn;
+  }
+
+  public void setCreatedOn(LocalDateTime createdOn) {
+    this.createdOn = createdOn;
+  }
+
+  public LocalDateTime getDeletedOn() {
+    return deletedOn;
+  }
+
+  public void setDeletedOn(LocalDateTime deletedOn) {
+    this.deletedOn = deletedOn;
   }
 
   @Override

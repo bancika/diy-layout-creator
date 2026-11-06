@@ -1,7 +1,8 @@
-<map>
-    <entry>
-      <string>TO-92 w/ 3 Leads</string>
-      <list>
+<list>
+    <org.diylc.common.BuildingBlock>
+      <name>TO-92 w/ 3 Leads</name>
+      <createdOn>2026-01-01T00:00:00</createdOn>
+      <components class="list">
         <diylc.connectivity.Jumper>
           <name>J1</name>
           <alpha>127</alpha>
@@ -73,11 +74,12 @@
           <folded>false</folded>
           <pinSpacing value="0.05" unit="in"/>
         </diylc.semiconductors.TransistorTO92>
-      </list>
-    </entry>
-    <entry>
-      <string>TO-92 w/ 2 Leads</string>
-      <list>
+      </components>
+    </org.diylc.common.BuildingBlock>
+    <org.diylc.common.BuildingBlock>
+      <name>TO-92 w/ 2 Leads</name>
+      <createdOn>2026-01-01T00:00:00</createdOn>
+      <components class="list">
         <diylc.connectivity.Jumper>
           <name>J1</name>
           <alpha>127</alpha>
@@ -131,11 +133,12 @@
           <folded>false</folded>
           <pinSpacing value="0.05" unit="in"/>
         </diylc.semiconductors.TransistorTO92>
-      </list>
-    </entry>
-    <entry>
-    <string>Title Block</string>
-    <list>
+      </components>
+    </org.diylc.common.BuildingBlock>
+    <org.diylc.common.BuildingBlock>
+    <name>Title Block</name>
+    <createdOn>2026-01-01T00:00:00</createdOn>
+    <components class="list">
       <org.diylc.components.shapes.Rectangle>
         <name>RECT1</name>
         <alpha>127</alpha>
@@ -735,6 +738,6 @@
         <verticalAlignment>CENTER</verticalAlignment>
         <orientation>DEFAULT</orientation>
       </org.diylc.components.misc.Label>
-    </list>
-  </entry>
-  </map>
+    </components>
+  </org.diylc.common.BuildingBlock>
+  </list>

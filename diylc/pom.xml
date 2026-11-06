@@ -140,8 +140,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.2.5</version>
                     <configuration>
-                        <!-- XStream reflects into JDK collections when reading update.xml; mirrors the run configuration -->
-                        <argLine>--add-opens java.base/java.util=ALL-UNNAMED</argLine>
+                        <!-- XStream reflects into JDK collections when reading update.xml, and into fonts when reading
+                             import-defaults/blocks.xml; mirrors the run configuration -->
+                        <argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED</argLine>
                     </configuration>
                 </plugin>
             </plugins>

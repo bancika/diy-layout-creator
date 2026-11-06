@@ -86,6 +86,11 @@ public class VariantManager {
       if (variantMap == null)
         variantMap = new HashMap<String, List<Template>>();
 
+      // the import date records how far the bundled file reaches, not when it was read, so that
+      // running an older build first does not mark the variants of a newer build as already seen;
+      // it never moves backwards, so running an older build after a newer one changes nothing
+      LocalDateTime newImportDate = importDate;
+
       // merge default variants with user's
       for (Map.Entry<String, List<Template>> entry : defaults.entrySet()) {
         List<Template> existingVariants = variantMap.computeIfAbsent(entry.getKey(), key -> new ArrayList<Template>());
@@ -94,6 +99,12 @@ public class VariantManager {
           .collect(Collectors.toSet());
 
         for (Template variant : entry.getValue()) {
+          if (variant.getCreatedOn() != null && variant.getCreatedOn().isAfter(newImportDate)) {
+            newImportDate = variant.getCreatedOn();
+          }
+          if (variant.getDeletedOn() != null && variant.getDeletedOn().isAfter(newImportDate)) {
+            newImportDate = variant.getDeletedOn();
+          }
           // a deletion stub keeps nothing but its name, so a missing createdOn only means an old
           // entry when the variant has not been deleted
           boolean created = variant.getCreatedOn() == null ? variant.getDeletedOn() == null
@@ -116,8 +127,7 @@ public class VariantManager {
       }
 
       // update templates and a flag marking that we imported them
-      configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY,
-          LocalDateTime.now());
+      configManager.writeValue(IPlugInPort.DEFAULT_TEMPLATES_IMPORT_DATE_KEY, newImportDate);
       configManager.writeValue(IPlugInPort.TEMPLATES_KEY, variantMap);
       if (importCount > 0) {
         LOG.info(String.format("Imported default %d variants", importCount));

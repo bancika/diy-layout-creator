@@ -223,30 +223,31 @@ for auto-sizing a component from its value. **It has no production caller** — 
 
 Building blocks are named groups of components, saved from a selection and re-placed as a unit.
 `BuildingBlockManager.importDefaultBlocks()` ships a default set in
-`diylc-core/src/main/resources/import-defaults/blocks.xml`, stored as a
-`Map<String, List<IDIYComponent<?>>>` using the `diylc` package alias
-(`aliasPackage("diylc", "org.diylc.components")`), and merges it into the user's own blocks by name.
+`diylc-core/src/main/resources/import-defaults/blocks.xml`, stored as a `List<BuildingBlock>`, each
+with its `name`, `components` (`class="list"`) and `createdOn`, using the `diylc` package alias
+(`aliasPackage("diylc", "org.diylc.components")`) for the components. It is merged into the user's
+own blocks (the unchanged `Map<String, List<IDIYComponent<?>>>` under `buildingBlocks`) by name.
 
-Three ship today: `TO-92 w/ 3 Leads`, `TO-92 w/ 2 Leads`, `Title Block`.
+Three ship today, all `createdOn` 2026-01-01: `TO-92 w/ 3 Leads`, `TO-92 w/ 2 Leads`, `Title Block`.
 
 Authoring one is a UI job, not a code job: place the components, select them, *Save as Building
-Block*, then lift the entry out of the user config into `blocks.xml`. Per D7 this is the default
-route for anything composable.
+Block*, then lift the entry out of the user config into `blocks.xml`. Running with
+`-Dorg.diylc.WriteStaticBlocks=true` writes the saved block in the bundled shape, dated now. Per D7
+this is the default route for anything composable.
 
-**The blocker (fixed in §6.6).** `importDefaultBlocks()` is wrapped in a one-shot flag:
+The import runs on every start and mirrors `VariantManager.importDefaultVariants()`:
 
-```java
-if (!configManager.readBoolean(IPlugInPort.DEFAULT_BLOCKS_IMPORTED_KEY, false)) {
-```
+- A block is imported when its `createdOn` is after the `defaultBlocksImportDate` watermark
+  (`LocalDateTime.MIN` when absent) and the user has no block of that name. A same-named user block
+  is never overwritten or duplicated.
+- A withdrawn block is a stub with only `name` and `deletedOn`; it is removed from the user's blocks
+  and recently used list when `deletedOn` is after the watermark.
+- The watermark becomes the latest `createdOn`/`deletedOn` in the file, never the clock, and never
+  moves backwards, so the order in which versions are launched does not matter.
+- `defaultBlocksImported` is still written so that versions before the watermark do not import.
 
-Once `defaultBlocksImported` is true it never runs again, so **a factory block added to `blocks.xml`
-reaches new installs only** — never anyone who has already launched the app. Any plan that
-distributes composites this way needs §6.6 first.
-
-`VariantManager.importDefaultVariants()` does not have this problem, and the asymmetry is worth
-knowing: it keeps a `defaultTemplatesImportDate` watermark, re-reads `variants.xml` on every start,
-and imports any variant whose `Template.createdOn` is newer than the watermark and whose name the
-user does not already have. New factory *variants* do reach existing users today.
+Because configs from those versions have no watermark, the first start of this version offers every
+factory block once, and a user who deleted one gets it back once.
 
 ### 5.5 Tests
 
@@ -281,8 +282,7 @@ block for the unreleased version. `NEW_FEATURE` for components and variants, `BU
 Enum constants, catalogue data, building blocks and uncommenting. Cheapest fidelity per hour in
 the roadmap, and where D6 and D7 send most of the work.
 
-§6.1, §6.5 and §6.6 are correctness fixes and should go first regardless of the rest; §6.6 also
-gates §6.7, which is the channel the composable parts travel through.
+§6.1 and §6.5 are correctness fixes and should go first regardless of the rest.
 
 ### 6.1 Restore the `ElectrolyticCanCapacitor` alias — **bug, not a gap**
 
@@ -416,38 +416,14 @@ value-based auto-sizing, not a live fault.
 
 **~3 h including the test.**
 
-### 6.6 Make factory building blocks reach existing users — **bug, and a prerequisite**
+### 6.6 Make factory building blocks reach existing users — **done**
 
-Per §5.4, `importDefaultBlocks()` runs once per installation and never again, so every factory
-building block this roadmap proposes would land only on fresh installs. D7 routes most composable
-parts through that mechanism, so this is a prerequisite for §6.7, §7.5 and §8.9, not a nicety.
-
-Two ways to fix it, in `BuildingBlockManager`:
-
-**Recommended — drop the guard.** Delete the `DEFAULT_BLOCKS_IMPORTED_KEY` check and let the
-existing merge run on every start. The merge body already skips any name the user has
-(`if (!blocksMap.containsKey(entry.getKey()))`), so user blocks and user edits survive untouched and
-new factory names simply appear. Leave the flag being written so a downgrade still sees it.
-
-One behavioural cost, which should be a deliberate choice rather than a surprise: a user who
-*deletes* a factory block gets it back on the next launch. Mitigate by recording deleted factory
-names in config if that turns out to annoy anyone — not before.
-
-**Thorough — mirror the variant watermark.** Copy `VariantManager.importDefaultVariants()`: a
-`defaultBlocksImportDate` watermark plus a per-block `createdOn`. The obstacle is that `blocks.xml`
-is a `Map<String, List<IDIYComponent<?>>>` and `BuildingBlock` — which *does* have a name field but
-is not used in the stored format at all — carries no timestamp. Adding one means changing the shape
-of the `BLOCKS_KEY` config value, which also holds the user's own blocks. That is a config-format
-migration for a gain the simpler option already delivers.
-
-Take the recommended option. Extend `BuildingBlockManagerTest` (8 tests, `diylc-core`) with a case
-asserting that a second `importDefaultBlocks()` on a config that already has the flag set still
-picks up a newly added default name. **~3 h.**
+Factory blocks carry `createdOn`/`deletedOn` behind a `defaultBlocksImportDate` watermark; see §5.4.
 
 ### 6.7 Ship the first factory building blocks
 
 Data, not code, and per D7 this is where composable parts go. Each is authored in the app and lifted
-into `blocks.xml`. Gated on §6.6.
+into `blocks.xml`; each gets a `createdOn` later than the newest one already in the file.
 
 | Block | Built from | Why |
 |---|---|---|
@@ -458,7 +434,7 @@ into `blocks.xml`. Gated on §6.6.
 | Strat / Tele / LP harness | `guitar` pickups + pots + switch + jack | `guitar` components appear in only 8 of 425 files, which may be discoverability as much as demand |
 
 Author the push-pull pot first: it is the one with measured demand, and it is the worked example that
-proves D7 before the rest follow. **~2-3 h each once §6.6 lands.**
+proves D7 before the rest follow. **~2-3 h each.**
 
 ---
 
@@ -596,20 +572,18 @@ joins the §6.7 list rather than this one once someone asks for it.
 |---|---|---|
 | 1 | §6.5 six malformed datasheet rows, plus the validation test | 3 h |
 | 2 | §6.1 alias fix, verified by regression run | 2 h |
-| 3 | §6.6 factory building block import guard | 3 h |
-| 4 | §6.7 push-pull pot block, as the D7 worked example | 3 h |
-| 5 | §6.2 revive three, decide on the fourth | 3 h |
-| 6 | §6.3 UX4, then UX5 / B8G / B9D | 6-8 h |
-| 7 | §6.4 datasheets, `RadialCeramicDiskCapacitor` first | 6-10 h each |
-| 8 | §6.7 remaining blocks: transformer symbol, treble bleed, tube gain stage, harnesses | 2-3 h each |
-| 9 | §7.1 `Transformer`, with §7.3 Choke as its third type | 20-24 h |
-| 10 | §7.2 Speaker, physical plus symbol | 10-12 h |
-| 11 | §7.4 Footswitch | 10-12 h |
-| 12 | §7.5 `Photoresistor`, then the Vactrol block | 6 h |
+| 3 | §6.7 push-pull pot block, as the D7 worked example | 3 h |
+| 4 | §6.2 revive three, decide on the fourth | 3 h |
+| 5 | §6.3 UX4, then UX5 / B8G / B9D | 6-8 h |
+| 6 | §6.4 datasheets, `RadialCeramicDiskCapacitor` first | 6-10 h each |
+| 7 | §6.7 remaining blocks: transformer symbol, treble bleed, tube gain stage, harnesses | 2-3 h each |
+| 8 | §7.1 `Transformer`, with §7.3 Choke as its third type | 20-24 h |
+| 9 | §7.2 Speaker, physical plus symbol | 10-12 h |
+| 10 | §7.4 Footswitch | 10-12 h |
+| 11 | §7.5 `Photoresistor`, then the Vactrol block | 6 h |
 
-Steps 1-4 are about a day and a half: both known bugs cleared, the building block channel unblocked,
-and the highest-demand composable shipped as data rather than as a class. Step 9 is the one that
-matters most.
+Steps 1-4 are about a day and a half: both known bugs cleared and the highest-demand composable
+shipped as data rather than as a class. Step 8 is the one that matters most.
 
 Three items that looked like components when this roadmap started are now data (§6.7, §7.6, §8.9),
 and one is split into a primitive plus a block (§7.5). That is D7 working as intended; expect the
