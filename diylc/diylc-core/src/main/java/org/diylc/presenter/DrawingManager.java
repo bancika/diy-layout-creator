@@ -424,20 +424,21 @@ public class DrawingManager {
 
     // Draw component slot in a separate composite.
     if (componentSlot != null) {
-      g2dWrapper.startedDrawingComponent(project.getComponents().size());
-      g2dWrapper.setComposite(slotComposite);
       for (IDIYComponent<?> component : componentSlot) {
+        // each component gets its own start/finish pair so that a transform, stroke or font it
+        // leaves behind (e.g. a rotated Label) is reverted before the next one is drawn
+        g2dWrapper.startedDrawingComponent(project.getComponents().size());
+        g2dWrapper.setComposite(slotComposite);
         try {
-
           component.draw(g2dWrapper, ComponentState.NORMAL,
               drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
-
         } catch (Exception e) {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
+        } finally {
+          g2dWrapper.finishedDrawingComponent();
         }
       }
-      g2dWrapper.finishedDrawingComponent();
     }
 
     // Draw control points of the component in the slot.
