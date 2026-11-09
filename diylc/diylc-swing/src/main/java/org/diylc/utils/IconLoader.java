@@ -51,8 +51,8 @@ public enum IconLoader {
       "coffeebean_edit.png"), Component("component.png"), ComponentAdd(
       "component_add.png"), ComponentLarge("component_large.png"), ComponentPreferences(
       "component_preferences.png"), ComponentReplace("component_replace.png"), Copy(
-      "copy.png"), Cut("cut.png"), Dashboard("dashboard.png"), DataFind("data_find.png"), Delete(
-      "delete.png"), DiskBlue("disk_blue.png"), DistributeCentersHorizontal(
+      "copy.png"), Cut("cut.png"), Dashboard("dashboard.png"), DataFind("data_find.png"), Decimal(
+      "decimal.png"), Delete("delete.png"), DiskBlue("disk_blue.png"), DistributeCentersHorizontal(
       "distribute_centers_horizontal.png"), DistributeCentersVertical(
       "distribute_centers_vertical.png"), DistributeSpacingHorizontal(
       "distribute_spacing_horizontal.png"), DistributeSpacingVertical(

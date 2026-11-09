@@ -722,3 +722,6 @@ Are you sure you want to delete variant "%s"?
 Delete
 Set default model
 Remove default model
+Value Notation
+Decimal (4.7K, 0.22uF)
+RKM (4K7, 0u22)

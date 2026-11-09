@@ -725,3 +725,6 @@ Are you sure you want to delete variant "%s"?|¿Seguro que desea eliminar la var
 Delete|Eliminar
 Set default model|Establecer como modelo predeterminado
 Remove default model|Quitar modelo predeterminado
+Value Notation|Notación de valores
+Decimal (4.7K, 0.22uF)|Decimal (4.7K, 0.22uF)
+RKM (4K7, 0u22)|RKM (4K7, 0u22)

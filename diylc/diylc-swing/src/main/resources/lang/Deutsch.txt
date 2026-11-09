@@ -729,3 +729,6 @@ Are you sure you want to delete variant "%s"?|Möchten Sie die Variante "%s" wir
 Delete|Löschen
 Set default model|Als Standardmodell festlegen
 Remove default model|Standardmodell entfernen
+Value Notation|Wertnotation
+Decimal (4.7K, 0.22uF)|Dezimal (4.7K, 0.22uF)
+RKM (4K7, 0u22)|RKM (4K7, 0u22)

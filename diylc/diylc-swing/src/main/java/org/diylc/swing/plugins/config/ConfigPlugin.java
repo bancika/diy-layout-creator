@@ -40,6 +40,7 @@ import org.diylc.core.Theme;
 import org.diylc.utils.FlagLoader;
 import org.diylc.lang.LangUtil;
 import org.diylc.lang.Language;
+import org.diylc.presenter.ValueNotationBinder;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.ISwingUI;
 import org.diylc.utils.IconLoader;
@@ -58,6 +59,7 @@ public class ConfigPlugin implements IPlugIn {
   private static final String THEME_MENU = "Theme";
   private static final String RULER_MENU = "Ruler Inch Subdivision...";
   private static final String SNAP_MENU = "Snap To";
+  private static final String VALUE_NOTATION_MENU = "Value Notation";
   private static final String CATEGORIES_MENU = "Component Categories";
   private static final String COMPONENT_BROWSER_MENU = "Toolbox";
   public static final String COMPONENT_BROWSER = "componentBrowser";
@@ -195,6 +197,17 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance()
             .createConfigAction(plugInPort, "Sticky Points", IPlugInPort.STICKY_POINTS_KEY, true), CONFIG_MENU);      
+
+    swingUI.injectSubmenu(VALUE_NOTATION_MENU, IconLoader.Decimal.getIcon(), CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createToggleAction(IPlugInPort.VALUE_NOTATION_DECIMAL,
+            IPlugInPort.VALUE_NOTATION_KEY, VALUE_NOTATION_MENU, IPlugInPort.VALUE_NOTATION_DEFAULT),
+        VALUE_NOTATION_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createToggleAction(IPlugInPort.VALUE_NOTATION_RKM,
+            IPlugInPort.VALUE_NOTATION_KEY, VALUE_NOTATION_MENU, IPlugInPort.VALUE_NOTATION_DEFAULT),
+        VALUE_NOTATION_MENU);
+    ValueNotationBinder.bind(ConfigurationManager.getInstance(), plugInPort::refresh);
 
     Map<String, String> themeContents = ResourceUtils.getResourceContents(THEMES_DIR);
     if (!themeContents.isEmpty()) {

@@ -90,6 +90,7 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String FONT_SCALE_FACTOR_KEY = "fontScaleFactor";
   public static final String SHOW_RESIZE_DIMENSIONS_TOOLTIP_KEY = "showResizeDimensionsTooltip";
   public static final String AUTO_UNIT_CONVERSION_KEY = "autoUnitConversion";
+  public static final String VALUE_NOTATION_KEY = "valueNotation";
 
 
   public static final String RULER_IN_SUBDIVISION_2 = "base of 2";
@@ -100,6 +101,10 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   public static final String SNAP_TO_GRID = "Grid";
   public static final String SNAP_TO_COMPONENTS = "Components";
   public static final String SNAP_TO_DEFAULT = SNAP_TO_GRID;
+
+  public static final String VALUE_NOTATION_DECIMAL = "Decimal (4.7K, 0.22uF)";
+  public static final String VALUE_NOTATION_RKM = "RKM (4K7, 0u22)";
+  public static final String VALUE_NOTATION_DEFAULT = VALUE_NOTATION_DECIMAL;
 
   public static final String SHOW_NODE_NAME_TOOLTIPS_KEY = "showNodeNameTooltips";
 

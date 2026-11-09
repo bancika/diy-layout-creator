@@ -730,3 +730,6 @@ Are you sure you want to delete variant "%s"?|Weet u zeker dat u variant "%s" wi
 Delete|Verwijderen
 Set default model|Instellen als standaardmodel
 Remove default model|Standaardmodel verwijderen
+Value Notation|Waardenotatie
+Decimal (4.7K, 0.22uF)|Decimaal (4.7K, 0.22uF)
+RKM (4K7, 0u22)|RKM (4K7, 0u22)

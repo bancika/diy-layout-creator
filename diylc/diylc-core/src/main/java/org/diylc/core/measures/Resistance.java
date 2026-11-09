@@ -109,19 +109,29 @@ public class Resistance extends AbstractMeasure<ResistanceUnit> {
   }
 
   public static Resistance parseResistance(String value) {
-    value = value.replace("*", "").replace("R", "\u2126");
-    for (ResistanceUnit unit : ResistanceUnit.values()) {
-      if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length()).trim();
-        return new Resistance(parse(value), unit);
-      }
+    ValueNotation.ParsedMeasure<ResistanceUnit> parsed;
+    try {
+      parsed = ValueNotation.parse(value, ResistanceUnit::fromSymbol);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Could not parse resistance: " + value, e);
     }
-    throw new IllegalArgumentException("Could not parse resistance: " + value);
+    if (parsed.unit() == null) {
+      throw new IllegalArgumentException("Could not parse resistance: " + value);
+    }
+    return new Resistance(parsed.value(), parsed.unit());
   }
 
   public Double getNormalizedValue() {
     if (value == null || unit == null)
       return null;
     return value * unit.getFactor(); 
+  }
+
+  @Override
+  public String toString() {
+    if (ValueNotation.getCurrent() == ValueNotation.RKM && value != null && unit != null) {
+      return ValueNotation.formatRkm(value, unit.getRkmSymbol());
+    }
+    return super.toString();
   }
 }

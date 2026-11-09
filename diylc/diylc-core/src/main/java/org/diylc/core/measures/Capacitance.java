@@ -41,19 +41,29 @@ public class Capacitance extends AbstractMeasure<CapacitanceUnit> {
   }
 
   public static Capacitance parseCapacitance(String value) {
-    value = value.replace("*", "");
-    for (CapacitanceUnit unit : CapacitanceUnit.values()) {
-      if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length()).trim();
-        return new Capacitance(parse(value), unit);
-      }
+    ValueNotation.ParsedMeasure<CapacitanceUnit> parsed;
+    try {
+      parsed = ValueNotation.parse(value, CapacitanceUnit::fromSymbol);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Could not parse capacitance: " + value, e);
     }
-    throw new IllegalArgumentException("Could not parse capacitance: " + value);
+    if (parsed.unit() == null) {
+      throw new IllegalArgumentException("Could not parse capacitance: " + value);
+    }
+    return new Capacitance(parsed.value(), parsed.unit());
   }
   
   public Double getNormalizedValue() {
     if (value == null || unit == null)
       return null;
     return value * unit.getFactor(); 
+  }
+
+  @Override
+  public String toString() {
+    if (ValueNotation.getCurrent() == ValueNotation.RKM && value != null && unit != null) {
+      return ValueNotation.formatRkm(value, unit.getRkmSymbol());
+    }
+    return super.toString();
   }
 }

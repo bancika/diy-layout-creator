@@ -23,14 +23,16 @@ package org.diylc.core.measures;
 
 public enum ResistanceUnit implements Unit {
 
-  R(1, "\u03A9"), K(1e3, "K"), M(1e6, "M");
+  R(1, "\u03A9", "R"), K(1e3, "K", "K"), M(1e6, "M", "M");
 
   double factor;
   String display;
+  String rkmSymbol;
 
-  private ResistanceUnit(double factor, String display) {
+  private ResistanceUnit(double factor, String display, String rkmSymbol) {
     this.factor = factor;
     this.display = display;
+    this.rkmSymbol = rkmSymbol;
   }
 
   @Override
@@ -39,8 +41,45 @@ public enum ResistanceUnit implements Unit {
     
   }
 
+  public String getRkmSymbol() {
+    return rkmSymbol;
+  }
+
   @Override
   public String toString() {
     return display;
+  }
+
+  /**
+   * Resolves the unit written after a resistance value, e.g. "K", "kohm", "R", "\u03A9" or "Meg".
+   * A lower-case "m" means mega, because there is no milliohm unit and parts lists commonly write
+   * "1m" for one megohm.
+   * 
+   * @param symbol unit text with no surrounding whitespace
+   * @return the unit, or null when the text is not a resistance unit
+   */
+  public static ResistanceUnit fromSymbol(String symbol) {
+    String prefix = symbol;
+    String lower = symbol.toLowerCase();
+    for (String ohm : new String[] {"ohms", "ohm", "\u03A9", "\u2126"}) {
+      if (lower.endsWith(ohm.toLowerCase())) {
+        prefix = symbol.substring(0, symbol.length() - ohm.length());
+        if (prefix.isEmpty()) {
+          return R;
+        }
+        break;
+      }
+    }
+    switch (prefix.toLowerCase()) {
+      case "r":
+        return R;
+      case "k":
+        return K;
+      case "m":
+      case "meg":
+        return M;
+      default:
+        return null;
+    }
   }
 }

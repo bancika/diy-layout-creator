@@ -721,3 +721,6 @@ Are you sure you want to delete variant "%s"?|Da li ste sigurni da želite da ob
 Delete|Obriši
 Set default model|Postavi kao podrazumevani model
 Remove default model|Ukloni podrazumevani model
+Value Notation|Zapis vrednosti
+Decimal (4.7K, 0.22uF)|Decimalni (4.7K, 0.22uF)
+RKM (4K7, 0u22)|RKM (4K7, 0u22)
