@@ -45,7 +45,7 @@ import org.diylc.common.ObjectCache;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.core.*;
 import org.diylc.core.annotations.EditableProperty;
-import org.diylc.core.annotations.PositiveNonZeroMeasureValidator;
+import org.diylc.core.annotations.RequiredPositiveNonZeroMeasureValidator;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.presenter.CalcUtils;
@@ -637,8 +637,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     this.borderColor = borderColor;
   }
 
-  @EditableProperty(name = "Length", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class, sortOrder = 101)
+  @EditableProperty(name = "Length", defaultable = true, validatorClass = RequiredPositiveNonZeroMeasureValidator.class, sortOrder = 101)
   public Size getLength() {
+    // from 5.13 until this value became required, the property editor could clear it and files store null
+    if (length == null && getDefaultLength() != null) {
+      length = new Size(getDefaultLength().getValue(), getDefaultLength().getUnit());
+    }
     return length;
   }
 
@@ -672,8 +676,12 @@ public abstract class AbstractLeadedComponent<T> extends AbstractLabeledComponen
     }
   }
 
-  @EditableProperty(name = "Width", defaultable = true, validatorClass = PositiveNonZeroMeasureValidator.class, sortOrder = 102)
+  @EditableProperty(name = "Width", defaultable = true, validatorClass = RequiredPositiveNonZeroMeasureValidator.class, sortOrder = 102)
   public Size getWidth() {
+    // from 5.13 until this value became required, the property editor could clear it and files store null
+    if (width == null && getDefaultWidth() != null) {
+      width = new Size(getDefaultWidth().getValue(), getDefaultWidth().getUnit());
+    }
     return width;
   }
 
