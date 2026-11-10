@@ -17,6 +17,7 @@
  */
 package org.diylc.presenter;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
@@ -60,6 +61,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.diylc.common.DrawOption;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.ZoomableStroke;
 import org.diylc.core.IDrawingObserver;
 
@@ -118,6 +120,17 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   private MirrorDirection mirrorDirection = MirrorDirection.NONE;
 
+  private PCBLayer viewedSide = PCBLayer._2;
+  // the side assumed for paint a component does not bracket with startDrawingSide
+  private PCBLayer undeclaredSide = PCBLayer._2;
+  private PCBLayer paintedSide = PCBLayer._2;
+  private boolean fadeFarSide;
+  // the composite the component asked for, held while far-side paint is drawn faded on top of it
+  private Composite unfadedComposite;
+  // boards switch sides once per strip or pad, so the last faded composite is reused
+  private Composite lastFadeInput;
+  private Composite lastFadeOutput;
+
   private double zoom;
   private int zOrder;  
 
@@ -131,6 +144,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     super();
     this.canvasGraphics = canvasGraphics;
     this.drawOptions = drawOptions;
+    this.fadeFarSide = drawOptions.contains(DrawOption.FADE_FAR_SIDE);
     String debugAreaPerformanceStr = System.getProperty(DEBUG_AREA_PERFORMANCE);
     debugAreaPerformance = "true".equalsIgnoreCase(debugAreaPerformanceStr);
     this.zoom = zoom;
@@ -155,6 +169,31 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   }
 
   /**
+   * Sets the side of the board the viewer is looking at and whether paint on the other side is
+   * drawn faded. The main view looks at the top side; the underside mirror looks at the bottom.
+   * 
+   * @param viewedSide
+   * @param fadeFarSide
+   * @param undeclaredSide the side assumed for paint that is not bracketed with
+   *        {@link #startDrawingSide(PCBLayer)}; a board body is seen from both sides, so the mirror
+   *        draws it as the viewed side
+   */
+  public void setViewedSide(PCBLayer viewedSide, boolean fadeFarSide, PCBLayer undeclaredSide) {
+    this.viewedSide = viewedSide;
+    this.fadeFarSide = fadeFarSide;
+    this.undeclaredSide = undeclaredSide;
+    this.paintedSide = undeclaredSide;
+    updateFarSideFade();
+  }
+
+  /**
+   * Returns to the top-side view, fading the bottom side only if the draw options ask for it.
+   */
+  public void resetViewedSide() {
+    setViewedSide(PCBLayer._2, drawOptions.contains(DrawOption.FADE_FAR_SIDE), PCBLayer._2);
+  }
+
+  /**
    * Clears out the current area and caches canvas settings.
    * 
    * @param zOrder
@@ -168,6 +207,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
     this.debugOutline = new Area();
 //    trackingStacks.clear();
     this.continuityMarker = null;
+    this.paintedSide = undeclaredSide;
+    updateFarSideFade();
     this.originalStroke = canvasGraphics.getStroke();
     this.originalColor = canvasGraphics.getColor();
     this.originalTx = canvasGraphics.getTransform();
@@ -189,6 +230,8 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public ComponentArea finishedDrawingComponent() {
     drawingComponent = false;
     recordingDrawnBounds = false;
+    paintedSide = undeclaredSide;
+    unfadedComposite = null;
     canvasGraphics.setStroke(originalStroke);
     canvasGraphics.setColor(originalColor);
     canvasGraphics.setTransform(originalTx);
@@ -279,6 +322,54 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   public void setContinuityMarker(String marker) {
     continuityMarker = marker;    
   }    
+
+  @Override
+  public void startDrawingSide(PCBLayer side) {
+    this.paintedSide = side == null ? undeclaredSide : side;
+    updateFarSideFade();
+  }
+
+  @Override
+  public void startDrawingBothSides() {
+    this.paintedSide = viewedSide;
+    updateFarSideFade();
+  }
+
+  @Override
+  public void stopDrawingSide() {
+    this.paintedSide = undeclaredSide;
+    updateFarSideFade();
+  }
+
+  private void updateFarSideFade() {
+    boolean fade = fadeFarSide && !drawOptions.contains(DrawOption.OUTLINE_MODE)
+        && isBottom(paintedSide) != isBottom(viewedSide);
+    if (fade && unfadedComposite == null) {
+      unfadedComposite = canvasGraphics.getComposite();
+      canvasGraphics.setComposite(fade(unfadedComposite));
+    } else if (!fade && unfadedComposite != null) {
+      canvasGraphics.setComposite(unfadedComposite);
+      unfadedComposite = null;
+    }
+  }
+
+  private static boolean isBottom(PCBLayer layer) {
+    return layer != PCBLayer._2;
+  }
+
+  // the stronger of the two fades wins rather than multiplying, so that copper on a locked board,
+  // already drawn at the locked alpha, does not all but disappear
+  private Composite fade(Composite composite) {
+    if (composite != lastFadeInput || lastFadeOutput == null) {
+      float alpha = (float) (DrawingManager.FAR_SIDE_ALPHA.getValue().doubleValue() / 100d);
+      if (composite instanceof AlphaComposite ac && ac.getRule() == AlphaComposite.SRC_OVER) {
+        alpha = Math.min(alpha, ac.getAlpha());
+      }
+      lastFadeInput = composite;
+      lastFadeOutput = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+    }
+    return lastFadeOutput;
+  }
 
   /**
    * Appends shape interior to the current component area.
@@ -669,7 +760,7 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public Composite getComposite() {
-    return canvasGraphics.getComposite();
+    return unfadedComposite != null ? unfadedComposite : canvasGraphics.getComposite();
   }
 
   @Override
@@ -738,7 +829,13 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
 
   @Override
   public void setComposite(Composite comp) {
-    if (!drawOptions.contains(DrawOption.OUTLINE_MODE)) {
+    if (drawOptions.contains(DrawOption.OUTLINE_MODE)) {
+      return;
+    }
+    if (unfadedComposite != null) {
+      unfadedComposite = comp;
+      canvasGraphics.setComposite(fade(comp));
+    } else {
       canvasGraphics.setComposite(comp);
     }
     // FIXME: check this.

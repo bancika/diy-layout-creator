@@ -28,6 +28,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.OrientationHV;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -74,12 +75,14 @@ public class VeroBoard extends AbstractVeroBoard implements ILayeredComponent {
         while (y < finalSecondPoint.getY() - spacing - stripSize / 2) {
           x = firstPoint.getX();
           y += spacing;
+          drawingObserver.startDrawingSide(PCBLayer._1);
           g2d.setColor(stripColor);
           drawingObserver.startTrackingContinuityArea(true);          
           g2d.fillRect((int)(x + spacing / 2), (int)(y - stripSize / 2), (int) Math.round(finalSecondPoint.getX() - spacing - x), stripSize);
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
           g2d.drawRect((int)(x + spacing / 2), (int)(y - stripSize / 2), (int) Math.round(finalSecondPoint.getX() - spacing - x), stripSize);
+          drawingObserver.stopDrawingSide();
           while (x < finalSecondPoint.getX() - spacing - holeSize) {
             x += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);
@@ -92,12 +95,14 @@ public class VeroBoard extends AbstractVeroBoard implements ILayeredComponent {
         while (x < finalSecondPoint.getX() - spacing) {
           x += spacing;
           y = firstPoint.getY();
+          drawingObserver.startDrawingSide(PCBLayer._1);
           g2d.setColor(stripColor);
           drawingObserver.startTrackingContinuityArea(true);
           g2d.fillRect((int)(x - stripSize / 2), (int)(y + spacing / 2), stripSize, (int) Math.round(finalSecondPoint.getY() - spacing - y));
           drawingObserver.stopTrackingContinuityArea();
           g2d.setColor(stripColor.darker());
           g2d.drawRect((int)(x - stripSize / 2), (int)(y + spacing / 2), stripSize, (int) Math.round(finalSecondPoint.getY() - spacing - y));
+          drawingObserver.stopDrawingSide();
           while (y < finalSecondPoint.getY() - spacing - holeSize) {
             y += spacing;
             g2d.setColor(Constants.CANVAS_COLOR);

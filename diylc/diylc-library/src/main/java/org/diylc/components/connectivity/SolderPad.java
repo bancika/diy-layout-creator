@@ -97,6 +97,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
       gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
     }
     Composite oldComposite = applyAlpha(g2d, componentState);
+    drawingObserver.startDrawingSide(getLayer());
 
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
@@ -111,6 +112,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
       g2d.fill(new Rectangle2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
           diameter, diameter));
     }
+    drawingObserver.stopDrawingSide();
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
     if (gerberDrawingObserver != null)
@@ -121,9 +123,11 @@ public class SolderPad extends AbstractTransparentComponent<Void>
         GerberLayer holeLayer = HoleType.PTH.equals(getHoleType()) ? GerberLayer.DrillPlated : GerberLayer.DrillNonPlated;
         gerberDrawingObserver.startGerberOutput(holeLayer, GerberFunctions.COMPONENT_DRILL, false);
       }
+      drawingObserver.startDrawingBothSides();
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,
           point.getY() - holeDiameter / 2, holeDiameter, holeDiameter));
+      drawingObserver.stopDrawingSide();
     }
     g2d.setComposite(oldComposite);
     if (gerberDrawingObserver != null)

@@ -110,6 +110,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   public static final String LOCKED_ALPHA = "lockedAlpha";
 
+  public static final String FADE_FAR_SIDE_KEY = "fadeFarSide";
+
   public static final String LANGUAGE = "language";
   public static final String LANGUAGE_DEFAULT = "English";
 

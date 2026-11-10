@@ -34,7 +34,9 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
 import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.AiNote;
@@ -70,6 +72,14 @@ public class CopperTrace extends AbstractLeadedComponent<Void> implements IConne
   public CopperTrace() {
     super();
     this.leadColor = COLOR;
+  }
+
+  @Override
+  public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+      Project project, IDrawingObserver drawingObserver) {
+    drawingObserver.startDrawingSide(getLayer());
+    super.draw(g2d, componentState, outlineMode, project, drawingObserver);
+    drawingObserver.stopDrawingSide();
   }
 
   @Override

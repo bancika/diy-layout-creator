@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.transform.ProtoBoardTransformer;
 import org.diylc.core.ComponentState;
@@ -151,14 +152,17 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
       g2d.setColor(traceColor);
       int padX = (int) Math.round(point.getX() + width / 2 - 7 * spacing + i * spacing);
+      drawingObserver.startDrawingSide(PCBLayer._1);
       drawingObserver.startTrackingContinuityArea(true);
       g2d.drawLine(padX, (int) Math.round(point.getY() + offsetY), padX,
           (int) Math.round(point.getY() + spacing + offsetY));
       drawingObserver.stopTrackingContinuityArea();
+      drawingObserver.stopDrawingSide();
 
       for (int j = 0; j < 2; j++) {
         int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
+        drawingObserver.startDrawingSide(PCBLayer._1);
         g2d.setColor(padColor);
 
         drawingObserver.startTrackingContinuityArea(true);
@@ -171,6 +175,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
         g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
+        drawingObserver.stopDrawingSide();
 
         g2d.setColor(HOLE_COLOR);
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
@@ -196,6 +201,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     offsetY = spacing * 5.5;
 
     // draw 3-pad traces and vertical traces
+    drawingObserver.startDrawingSide(PCBLayer._1);
     drawingObserver.startTrackingContinuityArea(true);
     g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
@@ -239,6 +245,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       }
     }
     drawingObserver.stopTrackingContinuityArea();
+    drawingObserver.stopDrawingSide();
 
     // draw main pads
     for (int i = 0; i < 25; i++) {
@@ -254,6 +261,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       for (int j = 0; j < 30; j++) {
         int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
+        drawingObserver.startDrawingSide(PCBLayer._1);
         g2d.setColor(padColor);
 
         drawingObserver.startTrackingContinuityArea(true);
@@ -266,6 +274,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
         g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
+        drawingObserver.stopDrawingSide();
 
         g2d.setColor(HOLE_COLOR);
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);

@@ -25,7 +25,11 @@ import org.diylc.core.gerber.GerberLayer;
 
 public enum PCBLayer {
 
-  _1("Bottom"), _2("Top"), _3("Inner 1"), _4("Inner 2"), _5("Inner 3"), _6("Inner 4"), _7("Inner 5"), _8("Inner 6");
+  _1("Bottom"), _2("Top"),
+  // DIYLC models two-sided boards only. The inner layers are kept, in order, so that files using
+  // them still load with the same layer ids; the editor hides them and Gerber export rejects them.
+  @Deprecated _3("Inner 1"), @Deprecated _4("Inner 2"), @Deprecated _5("Inner 3"),
+  @Deprecated _6("Inner 4"), @Deprecated _7("Inner 5"), @Deprecated _8("Inner 6");
   
   private String label;
   

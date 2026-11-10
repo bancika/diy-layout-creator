@@ -729,3 +729,4 @@ Remove default model|Rimuovi modello predefinito
 Value Notation|Notazione dei valori
 Decimal (4.7K, 0.22uF, 6.3V)|Decimale (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
+Fade Copper Under Board|Attenua il rame sotto la scheda

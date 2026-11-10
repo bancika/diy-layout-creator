@@ -83,11 +83,13 @@ public class GroundFill extends AbstractTransparentComponent<Void>
       xPoints[i] = (int)controlPoints[i].getX();
       yPoints[i] = (int)controlPoints[i].getY();
     }
+    drawingObserver.startDrawingSide(getLayer());
     drawingObserver.startTrackingContinuityArea(true);
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
     g2d.setComposite(oldComposite);
     drawingObserver.stopTrackingContinuityArea();
+    drawingObserver.stopDrawingSide();
     // Do not track any changes that follow because the whole board has been
     // tracked so far.
     drawingObserver.stopTracking();

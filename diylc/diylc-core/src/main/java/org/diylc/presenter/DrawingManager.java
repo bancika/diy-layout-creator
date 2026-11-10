@@ -65,7 +65,7 @@ import org.diylc.utils.Constants;
 public class DrawingManager {
 
   private static final Logger LOG = Logger.getLogger(DrawingManager.class);
-  public static final Percentage MIRROR_ALPHA = new Percentage(50);
+  public static Percentage FAR_SIDE_ALPHA = new Percentage(55);
 
   public static int CONTROL_POINT_SIZE = 7;
   public static double EXTRA_SPACE = 0.25;
@@ -536,13 +536,58 @@ public class DrawingManager {
 
   private static void drawMirroredComponent(Project project, IBoard board, IDIYComponent<?> component,
                                             G2DWrapper g2dWrapper, ComponentState state, boolean outlineMode) {
-    if (board.getUndersideDisplay() == null || board.getUndersideDisplay() == BoardUndersideDisplay.NONE) {
+    AffineTransform mirrorTx = createMirrorTransform(board);
+    if (mirrorTx == null) {
       return;
+    }
+
+    G2DWrapper.MirrorDirection mirrorDirection;
+    switch (board.getUndersideDisplay()) {
+      case ABOVE:
+      case BELOW:
+        mirrorDirection = G2DWrapper.MirrorDirection.VERTICAL;
+        break;
+      case LEFT:
+      case RIGHT:
+        mirrorDirection = G2DWrapper.MirrorDirection.HORIZONTAL;
+        break;
+      default:
+        mirrorDirection = G2DWrapper.MirrorDirection.NONE;
+        break;
+    }
+
+    AffineTransform oldTx = g2dWrapper.getTransform();
+    Composite oldComposite = g2dWrapper.getComposite();
+    g2dWrapper.setMirrorDirection(mirrorDirection);
+    try {
+      g2dWrapper.transform(mirrorTx);
+      // the mirror is the copper side, so copper is drawn solid and the component side faded
+      g2dWrapper.setViewedSide(PCBLayer._1, Boolean.TRUE.equals(board.getUndersideTransparency()),
+          component instanceof IBoard ? PCBLayer._1 : PCBLayer._2);
+      component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
+    } catch (Exception e) {
+      LOG.error("Error drawing mirrored " + component.getName(), e);
+    } finally {
+      g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
+      g2dWrapper.setTransform(oldTx);
+      g2dWrapper.stopDrawingSide();
+      g2dWrapper.resetViewedSide();
+      g2dWrapper.setComposite(oldComposite);
+    }
+  }
+
+  /**
+   * Returns the reflection that maps the board onto its underside mirror, or null when the board
+   * has no underside display.
+   */
+  private static AffineTransform createMirrorTransform(IBoard board) {
+    if (board.getUndersideDisplay() == null || board.getUndersideDisplay() == BoardUndersideDisplay.NONE) {
+      return null;
     }
     double offset = board.getUndersideOffset() == null ? 0 : board.getUndersideOffset().convertToPixels();
     Rectangle2D boardRectangle = board.getBoardRectangle();
     if (boardRectangle == null) {
-      return;
+      return null;
     }
 
     double minX = Math.min(boardRectangle.getMinX(), boardRectangle.getMaxX());
@@ -581,40 +626,9 @@ public class DrawingManager {
         break;
       }
       default:
-        return;
+        return null;
     }
-
-    G2DWrapper.MirrorDirection mirrorDirection;
-    switch (board.getUndersideDisplay()) {
-      case ABOVE:
-      case BELOW:
-        mirrorDirection = G2DWrapper.MirrorDirection.VERTICAL;
-        break;
-      case LEFT:
-      case RIGHT:
-        mirrorDirection = G2DWrapper.MirrorDirection.HORIZONTAL;
-        break;
-      default:
-        mirrorDirection = G2DWrapper.MirrorDirection.NONE;
-        break;
-    }
-
-    AffineTransform oldTx = g2dWrapper.getTransform();
-    Composite oldComposite = g2dWrapper.getComposite();
-    g2dWrapper.setMirrorDirection(mirrorDirection);
-    try {
-      g2dWrapper.transform(mirrorTx);
-      if (Boolean.TRUE.equals(board.getUndersideTransparency())) {
-        g2dWrapper.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(MIRROR_ALPHA.getValue().doubleValue() / 100d)));
-      }
-      component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
-    } catch (Exception e) {
-      LOG.error("Error drawing mirrored " + component.getName(), e);
-    } finally {
-      g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
-      g2dWrapper.setTransform(oldTx);
-      g2dWrapper.setComposite(oldComposite);
-    }
+    return mirrorTx;
   }
 
   private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,

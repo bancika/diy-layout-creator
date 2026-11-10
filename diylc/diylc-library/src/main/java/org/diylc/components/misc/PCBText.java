@@ -156,7 +156,9 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    drawingObserver.startDrawingSide(getLayer());
     this.draw(g2d, componentState, outlineMode, project, drawingObserver, null);
+    drawingObserver.stopDrawingSide();
   }
 
   @Override
