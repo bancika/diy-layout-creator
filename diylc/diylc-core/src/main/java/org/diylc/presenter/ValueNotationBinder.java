@@ -37,8 +37,17 @@ import org.diylc.core.measures.ValueNotation;
 public class ValueNotationBinder {
 
   public static void bind(IConfigurationManager<?> configManager, Runnable refresh) {
-    apply(configManager.readString(IPlugInPort.VALUE_NOTATION_KEY,
-        IPlugInPort.VALUE_NOTATION_DEFAULT));
+    String stored = configManager.readString(IPlugInPort.VALUE_NOTATION_KEY,
+        IPlugInPort.VALUE_NOTATION_DEFAULT);
+    // a value that matches neither menu item, e.g. a label saved by an earlier build, would leave
+    // the Value Notation menu with nothing checked; this runs before the listener is added, so
+    // only the menu items hear about it
+    if (!IPlugInPort.VALUE_NOTATION_DECIMAL.equalsIgnoreCase(stored)
+        && !IPlugInPort.VALUE_NOTATION_RKM.equalsIgnoreCase(stored)) {
+      stored = IPlugInPort.VALUE_NOTATION_DEFAULT;
+      configManager.writeValue(IPlugInPort.VALUE_NOTATION_KEY, stored);
+    }
+    apply(stored);
     configManager.addConfigListener(IPlugInPort.VALUE_NOTATION_KEY, (key, value) -> {
       apply(value == null ? null : value.toString());
       // cached component images still carry the labels drawn in the previous notation
