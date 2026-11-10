@@ -45,12 +45,16 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.measures.Capacitance;
 import org.diylc.core.measures.CapacitanceUnit;
+import org.diylc.core.measures.Inductance;
+import org.diylc.core.measures.InductanceUnit;
 import org.diylc.core.measures.Resistance;
 import org.diylc.core.measures.ResistanceUnit;
 import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.core.measures.ValueNotation;
 import org.diylc.core.measures.ValueNotation.ParsedMeasure;
+import org.diylc.core.measures.Voltage;
+import org.diylc.core.measures.VoltageUnit;
 import org.diylc.swingframework.DoubleTextField;
 
 import org.diylc.common.PropertyWrapper;
@@ -183,6 +187,12 @@ public class MeasureEditor extends Container {
     }
     if (Capacitance.class.equals(measureType)) {
       return CapacitanceUnit::fromSymbol;
+    }
+    if (Inductance.class.equals(measureType)) {
+      return InductanceUnit::fromSymbol;
+    }
+    if (Voltage.class.equals(measureType)) {
+      return VoltageUnit::fromSymbol;
     }
     return null;
   }

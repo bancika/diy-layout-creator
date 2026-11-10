@@ -1,185 +1,104 @@
-# RKM Value Notation for Resistance and Capacitance
+# RKM Value Notation
 
-Let users read and type resistor and capacitor values in RKM (IEC 60062) notation, where the unit
-letter replaces the decimal point (`4K7`, `0R22`, `2n2`, `0u22`), as well as in today's decimal
-form (`4.7K`, `0.22uF`). Typing a value with a unit letter in it, in either notation, also sets the
-unit, so `4K7` typed into a field whose unit is `Ω` becomes 4.7 K.
+Resistance, capacitance, inductance and voltage values can be shown in RKM notation, where the unit
+letter replaces the decimal point (`4K7`, `0R22`, `2n2`, `4u7`, `6V3`), instead of decimal (`4.7K`,
+`0.22uF`, `6.3V`). Either notation can always be typed, and typing the unit together with the
+value (`4K7`, `2.2nF`) also sets the unit.
+
+IEC 60062 defines RKM for resistance and capacitance only. Inductance (`4u7`, `2n2`) and voltage
+(`3V3`, `6V3`, zener `5V1`) follow common practice. Power, current and frequency are left out:
+`0W25`, `1A6` or `4M43` are rare in practice.
 
 ## 1. User-facing behaviour
 
 ### Config menu
 
-One radio submenu in `ConfigPlugin` covering both resistance and capacitance, built the same way
-as `Snap To` and `Ruler Inch Subdivision...` (`ToggleAction`, string config key, title stored as
-the value):
-
 ```
 Config
   ...
-  Value Notation >            (after Sticky Points, alphabetical like the rest)
-      (o) Decimal (4.7K, 0.22uF)
-      ( ) RKM (4K7, 0u22)
-  ...
+  Value Notation >            (after Sticky Points; icon IconLoader.Decimal)
+      (o) Decimal (4.7K, 0.22uF, 6.3V)
+      ( ) RKM (4K7, 0u22, 6V3)
 ```
 
-- Key `IPlugInPort.VALUE_NOTATION_KEY = "valueNotation"`, values `VALUE_NOTATION_DECIMAL` /
-  `VALUE_NOTATION_RKM`, default decimal.
-- Switching notation repaints the canvas immediately, so labels on the board change at once.
+One setting for all four measures: key `IPlugInPort.VALUE_NOTATION_KEY = "valueNotation"`, values
+`VALUE_NOTATION_DECIMAL` / `VALUE_NOTATION_RKM` (the English menu titles, since `ToggleAction`
+stores its title), default decimal. Switching clears the drawing cache and repaints.
 
-### What the notation controls (display)
+### Display
 
-The notation governs `Resistance.toString()` and `Capacitance.toString()` and therefore everything
-built on them: labels drawn on the canvas, `getValueForDisplay()` (search, BOM, netlist text,
-project explorer, AI assistant context). The edit dialog's value field is the exception: it always
-shows the bare decimal number, because the unit box beside it already carries the unit and an RKM
-code there would repeat it.
+The notation governs `toString()` of `Resistance`, `Capacitance`, `Inductance` and `Voltage`, and
+so canvas labels, `getValueForDisplay()`, search, BOM, netlist text and AI assistant context.
+The edit dialog's value field is the exception: it always shows the bare decimal number, because
+the unit box beside it already shows the unit.
 
-| Value | Decimal (unchanged) | RKM |
+| Value | Decimal | RKM |
 | --- | --- | --- |
-| 4.7 Ω | `4.7Ω` | `4R7` |
-| 0.22 Ω | `0.22Ω` | `0R22` |
-| 100 Ω | `100Ω` | `100R` |
-| 4.7 K | `4.7K` | `4K7` |
-| 47 K | `47K` | `47K` |
-| 1 M | `1M` | `1M` |
-| 0.22 uF | `0.22uF` | `0u22` |
-| 2.2 nF | `2.2nF` | `2n2` |
-| 100 nF | `100nF` | `100n` |
-| 4.7 pF | `4.7pF` | `4p7` |
-| 1000 uF | `1000uF` | `1000u` |
+| 4.7 Ω / 0.22 Ω / 100 Ω | `4.7Ω` `0.22Ω` `100Ω` | `4R7` `0R22` `100R` |
+| 4.7 K / 1 M | `4.7K` `1M` | `4K7` `1M` |
+| 0.22 uF / 2.2 nF / 100 nF | `0.22uF` `2.2nF` `100nF` | `0u22` `2n2` `100n` |
+| 4.7 uH / 10 mH | `4.7uH` `10mH` | `4u7` `10m` |
+| 6.3 V / 400 V | `6.3V` `400V` | `6V3` `400V` |
+| 500 mV / 1.5 KV | `500mV` `1.5KV` | unchanged: `500mV` `1.5KV` |
 
-Rules: RKM keeps the stored unit (it never renormalises 4700 Ω to 4K7), uses `R` for ohms, drops
-the trailing `F` on capacitance, puts the unit letter where the decimal point was, and writes it
-as a suffix for whole numbers. The digits after the letter are rounded the same way as today's
-`0.####` decimal format.
+Rules: the value stays in its stored unit (4700 Ω is `4700R`, never `4K7`); `R` stands for ohms;
+capacitance drops `F` and inductance drops `H`; whole numbers take the letter as a suffix; digits
+are rounded like the `0.####` decimal format. Only volts have an RKM form, since `1m5` or `1k5`
+would not say the value is a voltage.
 
-### What the user can type (input)
+### Input
 
-The value field accepts, in **both** notations:
+Accepted in either notation: a bare number (keeps the current unit), a decimal with a unit
+(`4.7k`, `220 nF`, `4.7ohm`, `1.5kV`), or an RKM code (`4K7`, `R22`, `2n2F`, `4µ7`, `6V3`, `1k5V`).
+Unit text per measure:
 
-- a bare number (`4.7`, `0,22`) — the unit is unchanged, as today;
-- a decimal number with a unit (`4.7k`, `0.22uF`, `220 nF`, `4.7ohm`, `4.7Ω`);
-- an RKM code (`4K7`, `4k7`, `0R22`, `R22`, `2n2`, `0u22`, `4µ7`, `1M`, `100R`).
+- Resistance: `R`, `Ω`, `ohm(s)` → Ω; `K` → K; `M`, `Meg`, and lower-case `m` → M (there is no
+  milliohm unit).
+- Capacitance / inductance: `p`, `n`, `u`/`µ`, `m`, optionally followed by `F` / `H`; `F` / `H`
+  alone. Case-insensitive with the trailing letter; without it, `M` is rejected so it is never
+  read as mega.
+- Inductance does **not** accept `R`: maker codes print `4R7` for 4.7 µH, which RKM would read as
+  4.7 H.
+- Voltage: `V`, `mV`, `kV`, case-insensitive.
 
-When the text carries a unit, the unit combo switches to it and the property gets the new value
-and unit together. Accepted unit letters, case-insensitive except where noted:
-
-- Resistance: `R`, `Ω`, `ohm`/`ohms` → Ω; `K`/`k` → K; `M`/`m`/`Meg` → M (there is no milliohm
-  unit, so a lower-case `m` on a resistor means mega, as it does on many parts lists).
-- Capacitance: `p` → pF; `n` → nF; `u`/`µ` → uF; `m` → mF (**case-sensitive**: `M` is not
-  accepted, to avoid reading "mega"); `F` alone → F. A trailing `F` after any of these is
-  optional (`4u7F`, `2.2nF`).
-
-A unit letter that does not belong to the measure (`4u7` on a resistor) shows the existing warning
-icon, as any unparseable text does today.
-
-**Commit behaviour.** The property is updated on every keystroke, as today — the edit dialog's
-Enter key commits straight away, so it cannot wait for focus loss. When the field loses focus,
-the text is rewritten as the bare decimal number (`4K7` typed → `4.7` with the combo showing `K`),
-whichever notation is selected. The text is not reformatted while the user is typing, so the
-caret never jumps.
+The property updates on every keystroke (Enter in the dialog commits at once); on focus loss the
+text is rewritten as the bare decimal number. Unparseable text shows the warning icon.
 
 ## 2. Design
 
-### Core (`diylc-core`, `org.diylc.core.measures`)
+- **`org.diylc.core.measures.ValueNotation`** — enum `DECIMAL, RKM` with the global
+  `getCurrent()` / `setCurrent()` (a volatile static, read by `toString()` on every repaint),
+  `formatRkm(value, symbol)` and `parse(text, unitResolver)` returning a `ParsedMeasure(value,
+  unit)` record (unit `null` for a bare number).
+- **Unit enums** — `ResistanceUnit`, `CapacitanceUnit`, `InductanceUnit` and `VoltageUnit` carry an
+  `rkmSymbol` (`null` for mV and KV) and a static `fromSymbol(String)` resolver. Constant names and
+  `toString()` are unchanged, so `.diy` files are unaffected.
+- **Measures** — `toString()` returns RKM when selected and the unit has a symbol, else
+  `super.toString()`. `parseResistance`, `parseCapacitance`, `Inductance.parseCapacitance`
+  (historical name) and `parseVoltage` delegate to `ValueNotation.parse`, so the AI assistant,
+  `V1FileParser`, `TangoNetlistParser` and `CapacitorDatasheetService` read RKM too.
+  `parseVoltage` used to reject `1KV`; it now parses it.
+- **`org.diylc.presenter.ValueNotationBinder`** — applies the config value and listens for changes.
+  Bound from `ConfigPlugin.connect()` rather than the `Presenter` constructor, because the
+  secondary presenters (previews, thumbnails, batch converter, regression runner) run on in-memory
+  configurations and would reset the global notation to decimal.
+- **Swing** — `MeasureTextField` (in DIYLC, not `bancika-gui-framework`, whose
+  `lib/swing-framework-1.1.jar` would need re-vendoring) parses without rewriting the text while
+  typing. `MeasureEditor.getUnitResolver` picks it for the four measures; `DoubleTextField` serves
+  the rest. A typed unit switches the unit box behind a guard flag. `MeasureArrayEditor`
+  (`MultiSectionCapacitor`) parses `/`-separated sections, each with an optional unit; the box
+  shows the first section's unit and a section in another unit is written with it (`47 / 100nF`).
+- **Localization** — `Value Notation`, `Decimal (4.7K, 0.22uF, 6.3V)` and `RKM (4K7, 0u22, 6V3)`
+  in every file in `lang/`.
 
-- **`ValueNotation`** — new enum `DECIMAL, RKM` holding the formatting and parsing logic, so the
-  two measure classes stay thin:
-  - `String format(double value, Unit unit, String rkmSymbol)` — decimal falls through to the
-    existing `0.####` + `unit.toString()`; RKM implements the rules in §1.
-  - `static ParsedMeasure parse(String text, ...)` — returns value + unit (unit `null` for a bare
-    number), or throws `IllegalArgumentException`. One small record `ParsedMeasure<U>` at the
-    bottom of the file.
-- **Current notation.** One `private static volatile ValueNotation current` on `ValueNotation`
-  with static `getCurrent()` / `setCurrent()`, shared by `Resistance` and `Capacitance`.
-  `toString()` reads the field, never
-  `ConfigurationManager`: it runs from `draw()` on every repaint. Default `DECIMAL`, so headless
-  rendering, the regression suite and unit tests are unchanged unless they opt in.
-- **Unit display symbol for RKM.** `ResistanceUnit` and `CapacitanceUnit` get an `rkmSymbol`
-  constructor argument (`R`/`K`/`M`, `p`/`n`/`u`/`m`/`F`). Enum constant names and `toString()`
-  are untouched — XStream stores the constant name, so files are unaffected.
-- **Parsing.** `Resistance.parseResistance` / `Capacitance.parseCapacitance` delegate to
-  `ValueNotation.parse`, so RKM is accepted everywhere a string is turned into a value: the
-  editor, `V1FileParser`, `TangoNetlistParser`, `CapacitorDatasheetService` and — important once
-  `toString()` can emit `4K7` — the AI assistant, which receives values as text and writes them
-  back through these parsers. Existing accepted inputs must keep parsing identically.
-- `Inductance` and `Power` are out of scope; their names are left as they are.
+## 3. Status and next steps
 
-### Wiring the setting
+Implemented; `mvn -q test` passes, including `ValueNotationTest` (formatting, parsing, rejection
+and round trips for all four measures). With the default decimal notation every string the app
+produces is unchanged.
 
-`org.diylc.presenter.ValueNotationBinder.bind(configManager, refresh)` reads the key once,
-pushes it into `ValueNotation.setCurrent()`, and on change updates the static, calls
-`DrawingCache.Instance.clear()` (cached component images contain the old labels) and refreshes
-the canvas. It is called from `ConfigPlugin.connect()`, not from the `Presenter` constructor:
-the notation is global, and the many secondary presenters (project preview, cloud thumbnails,
-batch converter, regression runner) are built on in-memory configurations and would reset it to
-decimal.
-
-### Swing (`diylc-swing`)
-
-- **`MeasureTextField`** — new field in `org.diylc.swing.gui.editor`, beside `MeasureEditor`.
-  Same look as `DoubleTextField` (warning icon on the right) but it parses through
-  `ValueNotation.parse` for the measure type and fires a `MEASURE_PROPERTY` change carrying
-  value + optional unit; on `focusLost` it reformats its text. It is generic over the unit enum
-  so it can serve `Inductance` later without changes.
-
-  Recommendation: keep it in DIYLC rather than extending `DoubleTextField` in
-  `bancika-gui-framework`. The framework is consumed as the vendored
-  `lib/swing-framework-1.1.jar`, so a change there means rebuilding and re-vendoring the jar for a
-  widget whose parsing rules are DIYLC domain knowledge. `DoubleTextField` keeps serving
-  `PercentageEditor`, `LoadlineEditorFrame` and every other plain-number measure.
-
-  One `DoubleTextField` bug is worth fixing in the framework separately, and the new field must
-  not copy it: `DecimalFormat.parseObject(String)` accepts a valid prefix, so `4R7` silently
-  parses as `4` today, with no warning.
-- **`MeasureEditor`** — uses `MeasureTextField` when the property type is `Resistance` or
-  `Capacitance`, `DoubleTextField` otherwise. On a value + unit event it sets the combo's
-  selected unit behind a guard flag, so the combo's own `ActionListener` does not fire a second
-  `setValue`. Read-only properties keep today's behaviour (disabled field, combo converts).
-- **`MeasureArrayEditor`** (`MultiSectionCapacitor`) — each section value is parsed with the same
-  rules. Units travel per section in the text (`47u / 22u / 10u`) and a section without a unit
-  takes the combo's unit, as today. The combo shows the first section's unit; in decimal notation a
-  section in a different unit is written with its unit (`47 / 100nF`). Changing the combo applies
-  its unit to every section, as before.
-- **`ConfigPlugin`** — the `Value Notation` submenu (`IconLoader.Decimal`), and the call to
-  `ValueNotationBinder.bind`.
-
-### Localization
-
-New keys in `English.txt` and every other file in `lang/`: `Value Notation`,
-`Decimal (4.7K, 0.22uF)`, `RKM (4K7, 0u22)`.
-Because `ToggleAction` stores its title as the config value, the stored values are the English
-titles and `MainFrame` translates only what is shown.
-
-## 3. Compatibility
-
-- `.diy` files store `value` and the unit enum name; neither changes. No serialization impact.
-- With the default (decimal) every string the app produces is byte-identical to today, so
-  regression references do not move. A regression run is still worth doing after implementation,
-  since `parseResistance` / `parseCapacitance` change.
-- A user who switches to RKM gets RKM in BOM and netlist exports as well. That is the intended
-  "everywhere" behaviour; anything that re-imports those files goes through the RKM-aware
-  parsers.
-
-## 4. Tests (`diylc-core`, JUnit 4)
-
-`ValueNotationTest`:
-
-- formatting: every row of the §1 table, both notations; zero, null, values ≥ 1000 in their unit,
-  rounding at the fourth decimal;
-- parsing: every input form in §1, per measure; case rules (`m` vs `M` for capacitance); comma as
-  decimal separator; rejects `4u7` on a resistor, `4K7K`, `K`, empty text;
-- round trip: `parse(format(x))` returns `x` for both notations;
-- regression guard: every string currently accepted by `parseResistance` / `parseCapacitance`
-  (the inputs in `V1FileParser`, `TangoNetlistParser` and `CapacitorDatasheetService` tests and
-  `AiEditScriptEditorTest`) still parses to the same value.
-
-## 5. Status and next steps
-
-Implemented as described; `mvn -q test` passes, including `ValueNotationTest`.
-
-1. Try it in the running app: the edit dialog (single value and `MultiSectionCapacitor`), canvas
-   labels after switching notation, BOM export.
+1. Try it in the running app: the edit dialog (single value and `MultiSectionCapacitor`),
+   inductor and capacitor voltage properties, canvas labels after switching, BOM export.
 2. Run the regression suite to confirm decimal output is unchanged.
-3. Optional, in `bancika-gui-framework`: stop `DoubleTextField` / `DoubleArrayTextField`
-   accepting a valid prefix (`4R7` read as `4`).
+3. Optional, in `bancika-gui-framework`: stop `DoubleTextField` / `DoubleArrayTextField` accepting
+   a valid prefix (`4R7` read as `4`).

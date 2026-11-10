@@ -727,5 +727,5 @@ Delete|Elimina
 Set default model|Imposta come modello predefinito
 Remove default model|Rimuovi modello predefinito
 Value Notation|Notazione dei valori
-Decimal (4.7K, 0.22uF)|Decimale (4.7K, 0.22uF)
-RKM (4K7, 0u22)|RKM (4K7, 0u22)
+Decimal (4.7K, 0.22uF, 6.3V)|Decimale (4.7K, 0.22uF, 6.3V)
+RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)

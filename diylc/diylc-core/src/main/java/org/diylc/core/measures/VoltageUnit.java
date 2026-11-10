@@ -23,14 +23,17 @@ package org.diylc.core.measures;
 
 public enum VoltageUnit implements Unit {
 
-  MV(1e-3, "mV"), V(1, "V"), KV(1e3, "KV");
+  // only volts have an RKM form (6V3, 3V3); 1m5 or 1k5 would not say that the value is a voltage
+  MV(1e-3, "mV", null), V(1, "V", "V"), KV(1e3, "KV", null);
 
   double factor;
   String display;
+  String rkmSymbol;
 
-  private VoltageUnit(double factor, String display) {
+  private VoltageUnit(double factor, String display, String rkmSymbol) {
     this.factor = factor;
     this.display = display;
+    this.rkmSymbol = rkmSymbol;
   }
 
   @Override
@@ -38,8 +41,31 @@ public enum VoltageUnit implements Unit {
     return factor;
   }
 
+  public String getRkmSymbol() {
+    return rkmSymbol;
+  }
+
   @Override
   public String toString() {
     return display;
+  }
+
+  /**
+   * Resolves the unit written after a voltage value: "V", "mV" or "kV", case-insensitive.
+   * 
+   * @param symbol unit text with no surrounding whitespace
+   * @return the unit, or null when the text is not a voltage unit
+   */
+  public static VoltageUnit fromSymbol(String symbol) {
+    switch (symbol.toLowerCase()) {
+      case "v":
+        return V;
+      case "mv":
+        return MV;
+      case "kv":
+        return KV;
+      default:
+        return null;
+    }
   }
 }

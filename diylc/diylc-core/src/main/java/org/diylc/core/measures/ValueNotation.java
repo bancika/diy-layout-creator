@@ -29,9 +29,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Notation used to write resistance and capacitance values: plain decimal ("4.7K", "0.22uF") or
- * RKM as defined by IEC 60062, where the unit symbol takes the place of the decimal point ("4K7",
- * "0u22"). Parsing accepts both regardless of the selected notation.
+ * Notation used to write resistance, capacitance, inductance and voltage values: plain decimal
+ * ("4.7K", "0.22uF", "6.3V") or RKM, where the unit symbol takes the place of the decimal point
+ * ("4K7", "0u22", "6V3"). IEC 60062 defines it for resistance and capacitance; inductance and
+ * voltage follow common practice. Parsing accepts both regardless of the selected notation.
  *
  * @author Branislav Stojkovic
  */

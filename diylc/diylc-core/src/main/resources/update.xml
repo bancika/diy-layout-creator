@@ -631,7 +631,7 @@
 			<changes>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Value Notation' to the Config menu to show resistance and capacitance values in RKM notation, e.g. 4K7, 0R22, 2n2 or 0u22, instead of decimal; values can be typed in either notation, and typing the unit together with the value, e.g. 4K7 or 2.2nF, sets the unit at the same time</description>
+					<description>Added 'Value Notation' to the Config menu to show resistance, capacitance, inductance and voltage values in RKM notation, e.g. 4K7, 0R22, 2n2, 4u7 or 6V3, instead of decimal; values can be typed in either notation, and typing the unit together with the value, e.g. 4K7 or 2.2nF, sets the unit at the same time</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

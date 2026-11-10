@@ -722,5 +722,5 @@ Delete|Obriši
 Set default model|Postavi kao podrazumevani model
 Remove default model|Ukloni podrazumevani model
 Value Notation|Zapis vrednosti
-Decimal (4.7K, 0.22uF)|Decimalni (4.7K, 0.22uF)
-RKM (4K7, 0u22)|RKM (4K7, 0u22)
+Decimal (4.7K, 0.22uF, 6.3V)|Decimalni (4.7K, 0.22uF, 6.3V)
+RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)

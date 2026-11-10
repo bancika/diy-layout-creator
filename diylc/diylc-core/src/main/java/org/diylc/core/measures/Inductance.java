@@ -41,13 +41,24 @@ public class Inductance extends AbstractMeasure<InductanceUnit> {
   }
 
   public static Inductance parseCapacitance(String value) {
-    value = value.replace("*", "");
-    for (InductanceUnit unit : InductanceUnit.values()) {
-      if (value.toLowerCase().endsWith(unit.toString().toLowerCase())) {
-        value = value.substring(0, value.length() - unit.toString().length()).trim();
-        return new Inductance(parse(value), unit);
-      }
+    ValueNotation.ParsedMeasure<InductanceUnit> parsed;
+    try {
+      parsed = ValueNotation.parse(value, InductanceUnit::fromSymbol);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Could not parse inductance: " + value, e);
     }
-    throw new IllegalArgumentException("Could not parse inductance: " + value);
+    if (parsed.unit() == null) {
+      throw new IllegalArgumentException("Could not parse inductance: " + value);
+    }
+    return new Inductance(parsed.value(), parsed.unit());
+  }
+
+  @Override
+  public String toString() {
+    if (ValueNotation.getCurrent() == ValueNotation.RKM && value != null && unit != null
+        && unit.getRkmSymbol() != null) {
+      return ValueNotation.formatRkm(value, unit.getRkmSymbol());
+    }
+    return super.toString();
   }
 }

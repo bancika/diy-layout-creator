@@ -724,5 +724,5 @@ Delete|删除
 Set default model|设为默认型号
 Remove default model|取消默认型号
 Value Notation|数值表示法
-Decimal (4.7K, 0.22uF)|小数 (4.7K, 0.22uF)
-RKM (4K7, 0u22)|RKM (4K7, 0u22)
+Decimal (4.7K, 0.22uF, 6.3V)|小数 (4.7K, 0.22uF, 6.3V)
+RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)

@@ -139,6 +139,62 @@ public class ValueNotationTest {
   }
 
   @Test
+  public void rkmInductance() {
+    ValueNotation.setCurrent(ValueNotation.RKM);
+    assertEquals("4u7", new Inductance(4.7, InductanceUnit.uH).toString());
+    assertEquals("2n2", new Inductance(2.2, InductanceUnit.nH).toString());
+    assertEquals("10m", new Inductance(10d, InductanceUnit.mH).toString());
+    assertEquals("1H", new Inductance(1d, InductanceUnit.H).toString());
+  }
+
+  @Test
+  public void rkmVoltage() {
+    ValueNotation.setCurrent(ValueNotation.RKM);
+    assertEquals("6V3", new Voltage(6.3, VoltageUnit.V).toString());
+    assertEquals("3V3", new Voltage(3.3, VoltageUnit.V).toString());
+    assertEquals("400V", new Voltage(400d, VoltageUnit.V).toString());
+    assertEquals("500mV", new Voltage(500d, VoltageUnit.MV).toString());
+    assertEquals("1.5KV", new Voltage(1.5, VoltageUnit.KV).toString());
+  }
+
+  @Test
+  public void parsesInductance() {
+    assertInductance(4.7, InductanceUnit.uH, "4.7uH");
+    assertInductance(4.7, InductanceUnit.uH, "4u7");
+    assertInductance(4.7, InductanceUnit.uH, "4u7H");
+    assertInductance(4.7, InductanceUnit.uH, "4\u00B57");
+    assertInductance(2.2, InductanceUnit.nH, "2n2");
+    assertInductance(10, InductanceUnit.mH, "10mH");
+    assertInductance(10, InductanceUnit.mH, "10MH");
+    assertInductance(10, InductanceUnit.mH, "10m");
+    assertInductance(1, InductanceUnit.H, "1H");
+    assertInductance(100, InductanceUnit.pH, "100pH");
+  }
+
+  @Test
+  public void parsesVoltage() {
+    assertVoltage(6.3, VoltageUnit.V, "6.3V");
+    assertVoltage(6.3, VoltageUnit.V, "6V3");
+    assertVoltage(3.3, VoltageUnit.V, "3v3");
+    assertVoltage(0.8, VoltageUnit.V, "0V8");
+    assertVoltage(400, VoltageUnit.V, "400 V");
+    assertVoltage(500, VoltageUnit.MV, "500mV");
+    assertVoltage(1.5, VoltageUnit.KV, "1.5KV");
+    assertVoltage(1.5, VoltageUnit.KV, "1.5kV");
+    assertVoltage(1.5, VoltageUnit.KV, "1k5V");
+  }
+
+  @Test
+  public void rejectsInvalidInductanceAndVoltage() {
+    assertInductanceRejected("4R7");
+    assertInductanceRejected("4M7");
+    assertInductanceRejected("10");
+    assertVoltageRejected("4K7");
+    assertVoltageRejected("1k5");
+    assertVoltageRejected("16");
+  }
+
+  @Test
   public void bareNumberHasNoUnit() {
     ValueNotation.ParsedMeasure<ResistanceUnit> parsed =
         ValueNotation.parse("4.7", ResistanceUnit::fromSymbol);
@@ -172,6 +228,14 @@ public class ValueNotationTest {
           Capacitance capacitance = new Capacitance(value, unit);
           assertEquals(capacitance, Capacitance.parseCapacitance(capacitance.toString()));
         }
+        for (InductanceUnit unit : InductanceUnit.values()) {
+          Inductance inductance = new Inductance(value, unit);
+          assertEquals(inductance, Inductance.parseCapacitance(inductance.toString()));
+        }
+        for (VoltageUnit unit : VoltageUnit.values()) {
+          Voltage voltage = new Voltage(value, unit);
+          assertEquals(voltage, Voltage.parseVoltage(voltage.toString()));
+        }
       }
     }
   }
@@ -186,6 +250,36 @@ public class ValueNotationTest {
     Capacitance parsed = Capacitance.parseCapacitance(text);
     assertEquals(text, value, parsed.getValue(), DELTA);
     assertEquals(text, unit, parsed.getUnit());
+  }
+
+  private static void assertInductance(double value, InductanceUnit unit, String text) {
+    Inductance parsed = Inductance.parseCapacitance(text);
+    assertEquals(text, value, parsed.getValue(), DELTA);
+    assertEquals(text, unit, parsed.getUnit());
+  }
+
+  private static void assertVoltage(double value, VoltageUnit unit, String text) {
+    Voltage parsed = Voltage.parseVoltage(text);
+    assertEquals(text, value, parsed.getValue(), DELTA);
+    assertEquals(text, unit, parsed.getUnit());
+  }
+
+  private static void assertInductanceRejected(String text) {
+    try {
+      Inductance.parseCapacitance(text);
+      fail("Expected " + text + " to be rejected");
+    } catch (IllegalArgumentException e) {
+      // expected
+    }
+  }
+
+  private static void assertVoltageRejected(String text) {
+    try {
+      Voltage.parseVoltage(text);
+      fail("Expected " + text + " to be rejected");
+    } catch (IllegalArgumentException e) {
+      // expected
+    }
   }
 
   private static void assertRejected(String text, Class<?> unitType) {
