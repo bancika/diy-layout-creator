@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.presenter.DrawingManagerTest.MountedComponent;
 import org.diylc.testcomponents.MockDIYComponent;
 import org.junit.Test;
@@ -46,16 +47,18 @@ public class MirrorPlacementTest {
     assertEquals(PCBLayer._1, copper.getLayer());
   }
 
-  public static class LayeredComponent extends MockDIYComponent {
+  public static class LayeredComponent extends MockDIYComponent implements IPCBLayerComponent {
 
     private static final long serialVersionUID = 1L;
 
     private PCBLayer layer = PCBLayer._2;
 
+    @Override
     public PCBLayer getLayer() {
       return layer;
     }
 
+    @Override
     public void setLayer(PCBLayer layer) {
       this.layer = layer;
     }

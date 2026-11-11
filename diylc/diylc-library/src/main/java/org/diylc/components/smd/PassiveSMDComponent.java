@@ -51,7 +51,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T> implements IGerberComponentSimple, IBoardSideComponent {
+public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

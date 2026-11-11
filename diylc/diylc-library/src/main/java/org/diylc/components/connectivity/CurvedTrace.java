@@ -38,6 +38,7 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.annotations.AiNote.Scope;
 import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.BomPolicy;
@@ -58,7 +59,8 @@ import org.diylc.core.measures.SizeUnit;
     zOrder = IDIYComponent.TRACE, bomPolicy = BomPolicy.NEVER_SHOW,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB", transformer = SimpleComponentTransformer.class, 
     enableCache = true, creationMethod = CreationMethod.POINT_BY_POINT)
-public class CurvedTrace extends AbstractCurvedComponent<Void> implements IConnective, ILayeredComponent, IGerberComponentSimple {
+public class CurvedTrace extends AbstractCurvedComponent<Void>
+    implements IConnective, ILayeredComponent, IGerberComponentSimple, IPCBLayerComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -104,6 +106,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements IConne
   }
 
   @EditableProperty
+  @Override
   public PCBLayer getLayer() {
     if (layer == null) {
       layer = PCBLayer._1;
@@ -111,6 +114,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void> implements IConne
     return layer;
   }
 
+  @Override
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
   }

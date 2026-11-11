@@ -161,16 +161,26 @@ public class UndersideMirror {
   }
 
   /**
-   * @return the boards whose mirror contains the point, in z-order
+   * @return the boards whose mirror contains the point, the topmost first, which is the one drawn
+   *         over the others where mirrors overlap
    */
   public static List<IBoard> findBoardsMirroredAt(Project project, Point2D point) {
     List<IBoard> boards = new ArrayList<IBoard>();
     for (IBoard board : getMirroringBoards(project)) {
       if (getMirrorRegion(board).contains(point)) {
-        boards.add(board);
+        boards.add(0, board);
       }
     }
     return boards;
+  }
+
+  /**
+   * @return the point reflected through the board's mirror, or the point itself when the board is
+   *         null or shows no mirror
+   */
+  public static Point2D reflect(IBoard board, Point2D point) {
+    AffineTransform mirrorTx = board == null ? null : createTransform(board);
+    return mirrorTx == null || point == null ? point : mirrorTx.transform(point, null);
   }
 
   // the board rectangle may be stored with its corners in either order

@@ -71,7 +71,8 @@ public class UndersideMirrorTest {
   public void testMirrorRegionFollowsOffset() {
     MockBoard board = board(BoardUndersideDisplay.BELOW);
     board.setUndersideOffset(new Size(60.0, SizeUnit.px));
-    assertEquals(new Rectangle2D.Double(100, 460, 200, 300), UndersideMirror.getMirrorRegion(board));
+    assertEquals(new Rectangle2D.Double(100, 460, 200, 300),
+        UndersideMirror.getMirrorRegion(board));
   }
 
   @Test
@@ -111,7 +112,8 @@ public class UndersideMirrorTest {
 
     assertEquals(Collections.singletonList(below),
         UndersideMirror.findBoardsMirroredAt(project, new Point2D.Double(150, 500)));
-    assertTrue(UndersideMirror.findBoardsMirroredAt(project, new Point2D.Double(150, 300)).isEmpty());
+    assertTrue(
+        UndersideMirror.findBoardsMirroredAt(project, new Point2D.Double(150, 300)).isEmpty());
   }
 
   private static MockBoard board(BoardUndersideDisplay display) {

@@ -162,8 +162,7 @@ public class GerberExporter {
       IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
       GerberLayer layer = gerberComponentSimple.getGerberLayer();
       // components emit their top-side layer; a part mounted underneath goes to the bottom one
-      boolean bottomSide = c instanceof IBoardSideComponent
-          && ((IBoardSideComponent) c).getBoardSide() == PCBLayer._1;
+      boolean bottomSide = IBoardSideComponent.sideOf(c) == PCBLayer._1;
       if (bottomSide) {
         layer = layer.flip();
       }

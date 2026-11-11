@@ -58,7 +58,8 @@ import org.diylc.utils.Constants;
     author = "Branislav Stojkovic", description = "Cliff-style closed 1/8\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J",
     transformer = CliffJackTransformer.class, enableCache = true)
-public class CliffJack1_8 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple, IBoardSideComponent {
+public class CliffJack1_8 extends AbstractMultiPartComponent<JackType>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

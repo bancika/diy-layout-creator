@@ -172,11 +172,12 @@ public class Presenter implements IPlugInPort {
   private Point2D dragStartPoint = null;
   private boolean dragShiftDown = false;
   private AxisLock lockedAxis = null;
-  // The reflection of the Underside Display mirror a drag started in. Every point of that drag goes
-  // through it, so the drag acts on the components themselves; null for a drag in the main view.
-  private AffineTransform dragMirrorTx = null;
-  // the reflection of the mirror that the control points in controlPointMap were found through
-  private AffineTransform hoverMirrorTx = null;
+  // The board whose Underside Display mirror a drag started in. Every point of that drag is
+  // reflected through it, so the drag acts on the components themselves; null for a drag in the
+  // main view.
+  private IBoard dragMirrorBoard = null;
+  // the board whose mirror the control points in controlPointMap were found through
+  private IBoard hoverMirrorBoard = null;
   // the board whose Underside Display mirror the component in the slot is being placed through;
   // null when it is placed in the main view
   private IBoard placementMirrorBoard = null;
@@ -310,6 +311,7 @@ public class Presenter implements IPlugInPort {
   public void loadProject(Project project, boolean freshStart, String filename) {
     LOG.info(String.format("loadProject(%s, %s)", project.getTitle(), freshStart));
     this.currentProject = project;
+    placementMirrorBoard = null;
     groupAndLockIndex.invalidate();
     drawingManager.clearComponentAreaMap();
     drawingManager.clearContinuityArea();
@@ -632,7 +634,7 @@ public class Presenter implements IPlugInPort {
           return;
         }
         updatePlacementMirror(scaledPoint);
-        scaledPoint = toPlacementSpace(scaledPoint);
+        scaledPoint = UndersideMirror.reflect(placementMirrorBoard, scaledPoint);
         // Keep the reference to component type for later.
         ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
         Template template = instantiationManager.getTemplate();
@@ -965,7 +967,8 @@ public class Presenter implements IPlugInPort {
    * specified point, one per component. When the point was reflected out of the underside mirror of
    * a board, only the components that mirror shows are considered.
    */
-  private Map<IDIYComponent<?>, Set<Integer>> findControlPointsAt(Point2D point, IBoard mirrorBoard) {
+  private Map<IDIYComponent<?>, Set<Integer>> findControlPointsAt(Point2D point,
+      IBoard mirrorBoard) {
     Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
     // Go backwards so we take the highest z-order components first.
     for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
@@ -988,7 +991,8 @@ public class Presenter implements IPlugInPort {
               break;
             }
           } catch (Exception e) {
-            LOG.warn("Error reading control point for component of type: " + component.getClass().getName());
+            LOG.warn("Error reading control point for component of type: "
+                + component.getClass().getName());
           }
         }
       }
@@ -1023,11 +1027,12 @@ public class Presenter implements IPlugInPort {
       IBoard oldPlacementMirrorBoard = placementMirrorBoard;
       updatePlacementMirror(previousScaledPoint);
       // reflected before snapping, so that a component placed through a mirror lands on the grid
-      Point2D placementPoint = toPlacementSpace(previousScaledPoint);
+      Point2D placementPoint = UndersideMirror.reflect(placementMirrorBoard, previousScaledPoint);
       if (isSnapToGrid()) {
         CalcUtils.snapPointToGrid(placementPoint, currentProject.getGridSpacing());
       } else if (isSnapToObjects()) {
-        CalcUtils.snapPointToObjects(placementPoint, currentProject.getGridSpacing(), null, currentProject.getComponents());
+        CalcUtils.snapPointToObjects(placementPoint, currentProject.getGridSpacing(), null,
+            currentProject.getComponents());
       }
       // What the cursor does is decided by how the slot was armed rather than by the creation
       // method: a slot instantiated up front carries a whole component that follows the cursor,
@@ -1040,22 +1045,24 @@ public class Presenter implements IPlugInPort {
                 currentProject.getGridSpacing());
       } else {
         refresh = instantiationManager.updatePointByPoint(
-            constrainToAxis(instantiationManager.getFirstControlPoint(), placementPoint, shiftDown));
+            constrainToAxis(instantiationManager.getFirstControlPoint(), placementPoint,
+                shiftDown));
       }
       if (refresh || placementMirrorBoard != oldPlacementMirrorBoard) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       }
     } else {
       components = findControlPointsAt(previousScaledPoint, null);
-      hoverMirrorTx = null;
-      for (IBoard board : UndersideMirror.findBoardsMirroredAt(currentProject, previousScaledPoint)) {
+      hoverMirrorBoard = null;
+      for (IBoard board :
+          UndersideMirror.findBoardsMirroredAt(currentProject, previousScaledPoint)) {
         if (!components.isEmpty()) {
           break;
         }
-        AffineTransform mirrorTx = UndersideMirror.createTransform(board);
-        components = findControlPointsAt(mirrorTx.transform(previousScaledPoint, null), board);
+        components =
+            findControlPointsAt(UndersideMirror.reflect(board, previousScaledPoint), board);
         if (!components.isEmpty()) {
-          hoverMirrorTx = mirrorTx;
+          hoverMirrorBoard = board;
         }
       }
     }
@@ -1404,20 +1411,26 @@ public class Presenter implements IPlugInPort {
     this.dragAction = dragAction;
     this.preDragProject = currentProject.clone();
     Point2D scaledPoint = scalePoint(point);
+    List<IDIYComponent<?>> components =
+        forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false, false);
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
-      this.dragMirrorTx = hoverMirrorTx;
-    } else if (forceSelectionRect || !findComponentsAtScaled(scaledPoint, false, false).isEmpty()) {
-      this.dragMirrorTx = null;
+      this.dragMirrorBoard = hoverMirrorBoard;
+    } else if (components == null || !components.isEmpty()) {
+      this.dragMirrorBoard = null;
     } else {
-      this.dragMirrorTx = findMirrorWithComponentAt(scaledPoint);
+      // the parts a click there would select, not whatever covers the reflected point
+      this.dragMirrorBoard = findMirrorBoardWithComponentAt(scaledPoint);
+      if (dragMirrorBoard != null) {
+        components =
+            drawingManager.findMirroredComponentsAt(scaledPoint, currentProject, dragMirrorBoard);
+        removeUnselectable(components, false);
+      }
     }
-    scaledPoint = toDragSpace(scaledPoint);
+    scaledPoint = UndersideMirror.reflect(dragMirrorBoard, scaledPoint);
     this.previousDragPoint = scaledPoint;
     this.dragStartPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
     this.dragShiftDown = shiftDown;
     this.lockedAxis = null;
-    List<IDIYComponent<?>> components =
-        forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
       updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
@@ -1634,7 +1647,7 @@ public class Presenter implements IPlugInPort {
 
     boolean resizeInProgress = false;
 
-    Point2D scaledPoint = toDragSpace(scalePoint(point));
+    Point2D scaledPoint = UndersideMirror.reflect(dragMirrorBoard, scalePoint(point));
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
       Point2D targetPoint = constrainToAxis(dragStartPoint, scaledPoint, dragShiftDown);
@@ -1671,7 +1684,8 @@ public class Presenter implements IPlugInPort {
       // a component dragged in from the component tree or the toolbox
       this.previousScaledPoint = scalePoint(point);
       updatePlacementMirror(previousScaledPoint);
-      instantiationManager.updateSingleClick(toPlacementSpace(previousScaledPoint), isSnapToGrid(),
+      instantiationManager.updateSingleClick(
+          UndersideMirror.reflect(placementMirrorBoard, previousScaledPoint), isSnapToGrid(),
           currentProject.getGridSpacing());
     }
 
@@ -2055,7 +2069,7 @@ public class Presenter implements IPlugInPort {
       test.addStep(DIYTest.DRAG_END, params);
     }
 
-    Point2D scaledPoint = toDragSpace(scalePoint(point));
+    Point2D scaledPoint = UndersideMirror.reflect(dragMirrorBoard, scalePoint(point));
 
     if (!dragInProgress && instantiationManager.getComponentSlot() == null) {
       return;
@@ -2110,7 +2124,7 @@ public class Presenter implements IPlugInPort {
     dragStartPoint = null;
     dragShiftDown = false;
     lockedAxis = null;
-    dragMirrorTx = null;
+    dragMirrorBoard = null;
   }
 
   @Override
@@ -3210,11 +3224,6 @@ public class Presenter implements IPlugInPort {
     return p;
   }
 
-  private Point2D toDragSpace(Point2D scaledPoint) {
-    return dragMirrorTx == null || scaledPoint == null ? scaledPoint
-        : dragMirrorTx.transform(scaledPoint, null);
-  }
-
   // a component placed point by point stays in the mirror its first point went into
   private void updatePlacementMirror(Point2D scaledPoint) {
     if (instantiationManager.getFirstControlPoint() != null) {
@@ -3224,24 +3233,17 @@ public class Presenter implements IPlugInPort {
     placementMirrorBoard = boards.isEmpty() ? null : boards.get(0);
   }
 
-  private Point2D toPlacementSpace(Point2D scaledPoint) {
-    AffineTransform mirrorTx =
-        placementMirrorBoard == null ? null : UndersideMirror.createTransform(placementMirrorBoard);
-    return mirrorTx == null || scaledPoint == null ? scaledPoint
-        : mirrorTx.transform(scaledPoint, null);
-  }
-
   /**
-   * @return the reflection of the first underside mirror that shows a selectable component at the
-   *         specified point, or null
+   * @return the topmost board whose underside mirror shows a selectable component at the specified
+   *         point, or null
    */
-  private AffineTransform findMirrorWithComponentAt(Point2D scaledPoint) {
+  private IBoard findMirrorBoardWithComponentAt(Point2D scaledPoint) {
     for (IBoard board : UndersideMirror.findBoardsMirroredAt(currentProject, scaledPoint)) {
       List<IDIYComponent<?>> components =
           drawingManager.findMirroredComponentsAt(scaledPoint, currentProject, board);
       removeUnselectable(components, false);
       if (!components.isEmpty()) {
-        return UndersideMirror.createTransform(board);
+        return board;
       }
     }
     return null;

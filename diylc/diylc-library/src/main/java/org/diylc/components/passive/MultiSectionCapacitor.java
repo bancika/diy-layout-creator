@@ -65,7 +65,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]> implements IGerberComponentSimple, IBoardSideComponent {
+public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

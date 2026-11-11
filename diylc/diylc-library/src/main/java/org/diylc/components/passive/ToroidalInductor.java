@@ -47,7 +47,8 @@ import org.diylc.core.measures.SizeUnit;
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
     description = "Ferrite core toroidal inductor mounted vertically", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
-public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implements IGerberComponentSimple, IBoardSideComponent {
+public class ToroidalInductor extends AbstractLeadedComponent<Inductance>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

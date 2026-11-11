@@ -37,6 +37,7 @@ import org.diylc.common.ComponentType;
 import org.diylc.common.DrawOption;
 import org.diylc.core.ComponentForRender;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Project;
 import org.diylc.core.annotations.ComponentDescriptor;
@@ -351,7 +352,7 @@ public class DrawingCache {
 
       // initialize wrapper
       wrapper.startedDrawingComponent(zOrder);
-      wrapper.setUndeclaredSide(DrawingManager.getMountedSide(component));
+      wrapper.setUndeclaredSide(IBoardSideComponent.sideOf(component));
       
       long componentStart = System.nanoTime();
 

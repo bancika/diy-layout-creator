@@ -58,7 +58,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Plastic DC Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Panel mount plastic DC jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", autoEdit = false, enableCache = true)
-public class PlasticDCJack extends AbstractMultiPartComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
+public class PlasticDCJack extends AbstractMultiPartComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

@@ -55,7 +55,8 @@ import org.diylc.utils.Constants;
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 3)
-public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> implements IDatasheetSupport, IGerberComponentSimple, IBoardSideComponent {
+public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance>
+    implements IDatasheetSupport, IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

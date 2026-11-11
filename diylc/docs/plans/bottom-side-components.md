@@ -24,6 +24,11 @@ projects; the open questions below remain.
   default (resistors, film and radial capacitors, diodes, LEDs, transistor packages, DIL/SIL ICs,
   SMD passives, switches, jacks, relays, transformers, tube sockets, ...). None of them emit copper.
   Their pads are separate `SolderPad` components, which already have a layer.
+- `IBoardSideComponent.sideOf(component)` is the one place that answers which side a component is
+  on (Top for components without a side); drawing, the Gerber export and the silkscreen filter all
+  use it. Copper that sits on a layer - `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad` and
+  `PCBText` - implements `IPCBLayerComponent` (`getLayer`/`setLayer`), which `PCBLayerFilter`, the
+  trace-mask print-out and `MirrorPlacement` use instead of looking the methods up by name.
 - One method decides the layer for a simple component: `GerberExporter.drawComponent`. It is
   package-private so that `GerberExporterTest` can call it. It uses `getGerberLayer()`, flipped
   with `GerberLayer.flip()` when the component is an `IBoardSideComponent` on `_1` (Bottom).
@@ -55,7 +60,7 @@ projects; the open questions below remain.
 - **Canvas rendering (done)**: bottom-side parts use the far-side fade from `copper-side-view.md`,
   set centrally rather than in each component. Wherever a component is drawn - the main loop in
   `DrawingManager`, `DrawingCache` rendering an image, and the Underside Display mirror - the
-  wrapper's undeclared side is set to `DrawingManager.getMountedSide(component)` with
+  wrapper's undeclared side is set to `IBoardSideComponent.sideOf(component)` with
   `G2DWrapper.setUndeclaredSide`. A bottom part is therefore faded in the main view (with Fade
   Copper Under Board on) and solid in the mirror, the same as bottom copper. In the main loop the
   side is set after the locked composite, which is set on the canvas directly and would otherwise
@@ -89,7 +94,8 @@ projects; the open questions below remain.
 ### diylc-swing
 
 - **PCB print-outs (done)**: `SilkScreenDrawingProvider` prints the top side, and a second page for
-  the bottom when a part is mounted there, so a project without bottom parts still prints one page.
+  the bottom when the bottom has silkscreen other than board outlines, so a project without bottom
+  parts, or with only a bottom `Dot`, still prints one page.
   `SilkScreenFilter` takes the side: a part with a Board Side goes on its own side's page, parts
   without one count as top, and board outlines go on both pages so that they line up. Neither
   page is mirrored or captioned, the same as the trace-mask pages.
@@ -114,22 +120,24 @@ order.
   delete, copy and the popup menu all work unchanged. Selection highlighting and the selected
   control points are drawn on both copies.
 - **Stage 2: dragging in the mirror (done).** A drag that starts on a part in a mirror, or on a
-  control point of a selected part there, keeps that mirror's reflection in
-  `Presenter.dragMirrorTx` and reflects every mouse point of the drag before it reaches the existing
-  drag code. Movement along the mirrored axis is therefore reversed, which is what the user sees,
+  control point of a selected part there, keeps that mirror's board in `Presenter.dragMirrorBoard`
+  and reflects every mouse point of the drag through it (`UndersideMirror.reflect`) before it
+  reaches the existing drag code. The part it picks is one the mirror shows, the same one a click
+  there selects, even where something else covers the reflected point on the board. Movement along the mirrored axis is therefore reversed, which is what the user sees,
   and snapping and the shift axis lock apply to the reflected point. Control-point hover
   (`Presenter.findControlPointsAt`) and the hand cursor look through the mirror when the main view
-  has nothing. A drag that starts on empty mirror space still draws a selection rectangle in
-  screen space. Moving the board, or changing its Underside Offset, cancels nothing; the mirror
+  has nothing. Where mirrors overlap, the topmost board's wins, here and for placing. A drag that
+  starts on empty mirror space still draws a selection rectangle in screen space. Moving the board, or changing its Underside Offset, cancels nothing; the mirror
   simply follows.
 - **Stage 3: placing in the mirror (done).** While a component is being placed,
   `Presenter.placementMirrorBoard` holds the board whose mirror the cursor is in; a single-click
   part follows the cursor in and out of mirrors, and a part placed point by point stays in the
   mirror its first point went into. The cursor is reflected before it is snapped to the grid, so
   the part lands on the grid, and `DrawingManager.setSlotMirrorBoard` draws the part being placed
-  through that mirror, under the cursor. On placement, `MirrorPlacement.placeOnBottom` sets an
-  `IBoardSideComponent` to `_1` (Bottom) and a component with a `PCBLayer` (`setLayer`, found the
-  same way `PCBLayerFilter` reads `getLayer`) to `_1`; nothing is mirrored. Anything else, such as
+  through that mirror, under the cursor, seen from below like the parts already there. The board is
+  forgotten when a project is loaded. On placement, `MirrorPlacement.placeOnBottom` sets an
+  `IBoardSideComponent` to `_1` (Bottom) and an `IPCBLayerComponent` to layer `_1`; nothing is
+  mirrored. Anything else, such as
   a jumper, eyelet or wire, is placed at the reflected point unchanged. A part dragged in from
   the component tree or the toolbox goes through `Presenter.dragOver` and `dragEnded` instead,
   which pick the mirror and put the part on the bottom the same way.
@@ -152,8 +160,13 @@ order.
   `PresenterTests.testPlaceThroughUndersideMirror` and `testPlaceUnsidedPartThroughUndersideMirror`
   place a resistor and an eyelet in a mirror and check that they land on the board, the resistor on
   the bottom; `testDropFromComponentTreeIntoUndersideMirror` does the same for a drag and drop.
+  `testDragThroughUndersideMirrorIgnoresPartsTheMirrorDoesNotShow` drags a resistor in the mirror
+  under a jumper that only crosses the board, and `DrawingManagerTest`
+  `.testPartBeingPlacedInMirrorSeenFromBelow` checks that the part being placed is drawn as the
+  mirror draws placed parts.
 - `SilkScreenFilterTest` covers which side's page each part and board outline goes on, and
-  `SilkScreenDrawingProviderTest` checks that the bottom page appears only for a bottom part.
+  `SilkScreenDrawingProviderTest` checks that the bottom page appears only for a bottom part with
+  silkscreen, not for a bottom `Dot`.
 - `DrawingManagerTest` checks rendered pixels for a part that reports its own side: a bottom part
   is faded only with `FADE_FAR_SIDE`, also when drawn from the image cache; it is solid in the
   mirror, where a top part is faded; and a locked bottom part is faded once, not twice.

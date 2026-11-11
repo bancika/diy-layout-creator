@@ -21,14 +21,12 @@
 */
 package org.diylc.presenter;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
-
-import org.apache.log4j.Logger;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPCBLayerComponent;
 
 /**
  * Puts components placed through an Underside Display mirror on the bottom of the board. A part
@@ -37,29 +35,15 @@ import org.diylc.core.IDIYComponent;
  */
 public class MirrorPlacement {
 
-  private static final Logger LOG = Logger.getLogger(MirrorPlacement.class);
-
   private MirrorPlacement() {
   }
 
   public static void placeOnBottom(Collection<IDIYComponent<?>> components) {
     for (IDIYComponent<?> component : components) {
-      if (component instanceof IBoardSideComponent) {
-        ((IBoardSideComponent) component).setBoardSide(PCBLayer._1);
-        continue;
-      }
-      // traces, pads and PCB text share no interface for their layer, so it is found the same way
-      // PCBLayerFilter reads it
-      Method setLayer;
-      try {
-        setLayer = component.getClass().getMethod("setLayer", PCBLayer.class);
-      } catch (NoSuchMethodException e) {
-        continue;
-      }
-      try {
-        setLayer.invoke(component, PCBLayer._1);
-      } catch (Exception e) {
-        LOG.warn("Could not put " + component.getName() + " on the bottom layer", e);
+      if (component instanceof IBoardSideComponent sided) {
+        sided.setBoardSide(PCBLayer._1);
+      } else if (component instanceof IPCBLayerComponent copper) {
+        copper.setLayer(PCBLayer._1);
       }
     }
   }

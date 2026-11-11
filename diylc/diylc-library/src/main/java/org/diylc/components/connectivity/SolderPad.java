@@ -35,6 +35,7 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote.Scope;
@@ -60,7 +61,7 @@ import org.diylc.utils.Constants;
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class SolderPad extends AbstractTransparentComponent<Void>
-    implements IConnective, ILayeredComponent, IGerberComponentCustom {
+    implements IConnective, ILayeredComponent, IGerberComponentCustom, IPCBLayerComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -190,6 +191,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   }
 
   @EditableProperty
+  @Override
   public PCBLayer getLayer() {
     if (layer == null) {
       layer = PCBLayer._1;
@@ -197,6 +199,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     return layer;
   }
 
+  @Override
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
   }

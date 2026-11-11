@@ -33,16 +33,10 @@ public class SilkScreenFilter implements IComponentFilter {
     if (!(component instanceof IGerberComponent gerberComponent)) {
       return false;
     }
-    if (side != null && getSide(component) != side) {
+    if (side != null && IBoardSideComponent.sideOf(component) != side) {
       return false;
     }
     Set<GerberRenderMode> gerberRenderModes = gerberComponent.getGerberRenderModes();
     return gerberRenderModes.contains(GerberRenderMode.Outline);
-  }
-
-  // components that do not say which side they are on are on top
-  private static PCBLayer getSide(IDIYComponent<?> component) {
-    return component instanceof IBoardSideComponent sided && sided.getBoardSide() == PCBLayer._1
-        ? PCBLayer._1 : PCBLayer._2;
   }
 }

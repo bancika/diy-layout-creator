@@ -45,7 +45,8 @@ import org.diylc.core.measures.SizeUnit;
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "X",
     description = "Radial crystal oscillator", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
-public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implements IGerberComponentSimple, IBoardSideComponent {
+public class CrystalOscillator extends AbstractLeadedComponent<Frequency>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

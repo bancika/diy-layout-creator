@@ -27,6 +27,7 @@ import java.awt.Point;
 
 import org.diylc.TestBase;
 import org.diylc.common.PCBLayer;
+import org.diylc.components.connectivity.Dot;
 import org.diylc.components.passive.Resistor;
 import org.junit.Test;
 
@@ -46,5 +47,15 @@ public class SilkScreenDrawingProviderTest extends TestBase {
     resistor.setBoardSide(PCBLayer._1);
 
     assertEquals(2, new SilkScreenDrawingProvider(presenter).getPageCount());
+  }
+
+  // a dot has no silkscreen, so a bottom page would show nothing but the board outline
+  @Test
+  public void testNoBottomPageForBottomDot() {
+    Dot dot = new Dot();
+    dot.setBoardSide(PCBLayer._1);
+    presenter.getCurrentProject().getComponents().add(dot);
+
+    assertEquals(1, new SilkScreenDrawingProvider(presenter).getPageCount());
   }
 }

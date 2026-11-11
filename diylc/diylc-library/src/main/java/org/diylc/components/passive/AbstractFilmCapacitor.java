@@ -36,7 +36,8 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance> implements IGerberComponentSimple, IBoardSideComponent {
+public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

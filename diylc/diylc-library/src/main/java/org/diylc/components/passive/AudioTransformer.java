@@ -64,7 +64,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Signal Transformer", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "TR", description = "Miniature PCB-mount signal transformer with EI core",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
-public class AudioTransformer extends AbstractMultiPartComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
+public class AudioTransformer extends AbstractMultiPartComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

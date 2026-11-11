@@ -307,7 +307,7 @@ public class DrawingManager {
           g2d.setComposite(lockedComposite);
         }
         // after the locked composite, which is set on the canvas and would replace the fade
-        g2dWrapper.setUndeclaredSide(getMountedSide(component));
+        g2dWrapper.setUndeclaredSide(IBoardSideComponent.sideOf(component));
         // Draw the component through the g2dWrapper.
         long componentStart = System.nanoTime();
         try {
@@ -433,8 +433,7 @@ public class DrawingManager {
         g2dWrapper.startedDrawingComponent(project.getComponents().size());
         g2dWrapper.setComposite(slotComposite);
         if (slotTx != null) {
-          g2dWrapper.transform(slotTx);
-          g2dWrapper.setMirrorDirection(UndersideMirror.getMirrorDirection(slotMirrorBoard));
+          viewThroughMirror(g2dWrapper, slotMirrorBoard, slotTx, component);
         }
         try {
           component.draw(g2dWrapper, ComponentState.NORMAL,
@@ -443,7 +442,9 @@ public class DrawingManager {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
         } finally {
-          g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
+          if (slotTx != null) {
+            stopViewingThroughMirror(g2dWrapper);
+          }
           g2dWrapper.finishedDrawingComponent();
         }
       }
@@ -544,15 +545,6 @@ public class DrawingManager {
     return failedComponents;
   }
 
-  /**
-   * @return the side of the board the component is mounted on; components that do not say are
-   *         on top
-   */
-  static PCBLayer getMountedSide(IDIYComponent<?> component) {
-    return component instanceof IBoardSideComponent
-        ? ((IBoardSideComponent) component).getBoardSide() : PCBLayer._2;
-  }
-
   private static void drawSelectedControlPoint(G2DWrapper g2dWrapper, Point2D controlPoint) {
     g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
     g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2),
@@ -571,27 +563,38 @@ public class DrawingManager {
       return;
     }
 
-    G2DWrapper.MirrorDirection mirrorDirection = UndersideMirror.getMirrorDirection(board);
-
     AffineTransform oldTx = g2dWrapper.getTransform();
     Composite oldComposite = g2dWrapper.getComposite();
-    g2dWrapper.setMirrorDirection(mirrorDirection);
     try {
-      g2dWrapper.transform(mirrorTx);
-      // the mirror is the copper side, so copper and the parts mounted on it are drawn solid and
-      // the component side faded
-      g2dWrapper.setViewedSide(PCBLayer._1, Boolean.TRUE.equals(board.getUndersideTransparency()),
-          component instanceof IBoard ? PCBLayer._1 : getMountedSide(component));
+      viewThroughMirror(g2dWrapper, board, mirrorTx, component);
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
     } catch (Exception e) {
       LOG.error("Error drawing mirrored " + component.getName(), e);
     } finally {
-      g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
+      stopViewingThroughMirror(g2dWrapper);
       g2dWrapper.setTransform(oldTx);
-      g2dWrapper.stopDrawingSide();
-      g2dWrapper.resetViewedSide();
       g2dWrapper.setComposite(oldComposite);
     }
+  }
+
+  /**
+   * Sets the wrapper up to draw the component into the board's underside mirror: reflected, with
+   * text kept readable, and seen from the bottom.
+   */
+  private static void viewThroughMirror(G2DWrapper g2dWrapper, IBoard board,
+      AffineTransform mirrorTx, IDIYComponent<?> component) {
+    g2dWrapper.setMirrorDirection(UndersideMirror.getMirrorDirection(board));
+    g2dWrapper.transform(mirrorTx);
+    // the mirror is the copper side, so copper and the parts mounted on it are drawn solid and
+    // the component side faded
+    g2dWrapper.setViewedSide(PCBLayer._1, Boolean.TRUE.equals(board.getUndersideTransparency()),
+        component instanceof IBoard ? PCBLayer._1 : IBoardSideComponent.sideOf(component));
+  }
+
+  private static void stopViewingThroughMirror(G2DWrapper g2dWrapper) {
+    g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
+    g2dWrapper.stopDrawingSide();
+    g2dWrapper.resetViewedSide();
   }
 
   private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,

@@ -59,7 +59,8 @@ import org.diylc.utils.Constants;
     category = "Semiconductors", instanceNamePrefix = "BR",
     description = "Few variations of bridge rectifier chips", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class BridgeRectifier extends AbstractLabeledComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
+public class BridgeRectifier extends AbstractLabeledComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

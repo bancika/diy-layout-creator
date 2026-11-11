@@ -64,7 +64,8 @@ import org.diylc.utils.Constants;
     description = "Cliff-style closed panel mount 1/4\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = CliffJackTransformer.class,
     enableCache = true)
-public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple, IBoardSideComponent {
+public class CliffJack1_4 extends AbstractMultiPartComponent<JackType>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

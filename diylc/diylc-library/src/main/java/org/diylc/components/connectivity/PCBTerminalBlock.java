@@ -54,7 +54,8 @@ import org.diylc.utils.Constants;
     author = "Branislav Stojkovic", description = "Horizontal PCB terminal block with configurable pitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "TB",
     enableCache = true, transformer = PCBTerminalBlockTransformer.class)
-public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> implements IGerberComponentSimple, IBoardSideComponent {
+public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

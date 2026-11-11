@@ -46,4 +46,13 @@ public interface IBoardSideComponent {
    * @param boardSide {@link PCBLayer#_2} for the top or {@link PCBLayer#_1} for the bottom
    */
   void setBoardSide(PCBLayer boardSide);
+
+  /**
+   * @return {@link PCBLayer#_1} for a component mounted on the bottom of the board, and
+   *         {@link PCBLayer#_2} for any other, including components that have no side
+   */
+  static PCBLayer sideOf(IDIYComponent<?> component) {
+    return component instanceof IBoardSideComponent sided && sided.getBoardSide() == PCBLayer._1
+        ? PCBLayer._1 : PCBLayer._2;
+  }
 }

@@ -33,7 +33,8 @@ import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Resistance;
 
-public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> implements IGerberComponentSimple, IBoardSideComponent {
+public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

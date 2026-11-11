@@ -60,7 +60,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1/G5V-2 or Fujitsu FTR-B3",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)
-public class MiniRelay extends AbstractLabeledComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
+public class MiniRelay extends AbstractLabeledComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

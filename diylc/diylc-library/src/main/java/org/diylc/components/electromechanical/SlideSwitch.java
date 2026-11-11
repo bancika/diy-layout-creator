@@ -62,7 +62,8 @@ import org.diylc.utils.SwitchUtils;
     author = "Branislav Stojkovic", description = "Panel mounted slide switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     enableCache = true, transformer = MiniToggleSwitchTransformer.class)
-public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> implements ISwitch, IGerberComponentSimple, IBoardSideComponent {
+public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType>
+    implements ISwitch, IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 

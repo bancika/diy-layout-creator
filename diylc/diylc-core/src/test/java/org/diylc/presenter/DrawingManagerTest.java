@@ -24,6 +24,7 @@ import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.PCBLayer;
+import org.diylc.common.Percentage;
 import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IBoard;
@@ -687,8 +688,10 @@ public class DrawingManagerTest {
   @Test
   public void testBottomMountedPartFadedOnlyWithOption() {
     Project project = new Project();
-    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
-    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
 
     BufferedImage faded = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
     assertSolid(faded, 155, 155);
@@ -701,7 +704,8 @@ public class DrawingManagerTest {
   @Test
   public void testCachedBottomMountedPartFaded() {
     Project project = new Project();
-    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
 
     BufferedImage img = renderSides(project,
         EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.ENABLE_CACHING));
@@ -717,8 +721,10 @@ public class DrawingManagerTest {
     board.setUndersideOffset(new Size(20.0, SizeUnit.px));
     board.setUndersideTransparency(true);
     project.getComponents().add(board);
-    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
-    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
 
     // reflection across y = 410 puts the top part at y 660..670 and the bottom one at 610..620
     BufferedImage img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
@@ -727,9 +733,43 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testPartBeingPlacedInMirrorSeenFromBelow() {
+    Percentage farSideAlpha = DrawingManager.FAR_SIDE_ALPHA;
+    // below the 50% of a part being placed, so that a far-side fade would show
+    DrawingManager.FAR_SIDE_ALPHA = new Percentage(20);
+    try {
+      Project project = new Project();
+      MockBoard board = new MockBoard();
+      board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+      board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+      board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+      board.setUndersideTransparency(true);
+      project.getComponents().add(board);
+      // bottom copper, which the mirror shows as the near side
+      SidePaintingComponent copper =
+          new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+
+      DrawingManager drawingManager = createDrawingManager();
+      drawingManager.setSlotMirrorBoard(board);
+      BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2d = img.createGraphics();
+      drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE),
+          null, null, Collections.emptyList(), Collections.emptySet(), Collections.emptySet(),
+          null, Collections.singletonList(copper), false, Collections.emptySet(), 1.0, 1.0, null);
+      g2d.dispose();
+
+      // drawn at the 50% of a part being placed, not faded further; the square lands at 610..620
+      assertFaded(img, 205, 615, 0.5f);
+    } finally {
+      DrawingManager.FAR_SIDE_ALPHA = farSideAlpha;
+    }
+  }
+
+  @Test
   public void testLockedBottomMountedPartNotFadedTwice() {
     Project project = new Project();
-    MountedComponent bottom = new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+    MountedComponent bottom =
+        new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
     project.getComponents().add(bottom);
 
     DrawingManager drawingManager = createDrawingManager();
@@ -1052,10 +1092,12 @@ public class DrawingManagerTest {
 
   // paints an opaque black square, declared on the given side or, when null, left undeclared
   // paints an undeclared black square, like a part that leaves its side to the Board Side property
-  @ComponentDescriptor(name = "Mounted", author = "test", category = "Test", instanceNamePrefix = "M",
+  @ComponentDescriptor(name = "Mounted", author = "test", category = "Test",
+      instanceNamePrefix = "M",
       description = "Part mounted on one side of the board", zOrder = IDIYComponent.COMPONENT,
       enableCache = true)
-  public static class MountedComponent extends SidePaintingComponent implements IBoardSideComponent {
+  public static class MountedComponent extends SidePaintingComponent
+      implements IBoardSideComponent {
 
     private static final long serialVersionUID = 1L;
 

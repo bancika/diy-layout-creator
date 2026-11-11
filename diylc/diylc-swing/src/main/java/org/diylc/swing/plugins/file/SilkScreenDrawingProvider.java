@@ -24,7 +24,7 @@ package org.diylc.swing.plugins.file;
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PCBLayer;
-import org.diylc.core.IBoardSideComponent;
+import org.diylc.core.IBoard;
 import org.diylc.core.IDIYComponent;
 import org.diylc.filter.PCBLayerFilter;
 import org.diylc.filter.SilkScreenFilter;
@@ -59,11 +59,12 @@ public class SilkScreenDrawingProvider implements IDrawingProvider {
         new SilkScreenFilter(page == 0 ? PCBLayer._2 : PCBLayer._1), zoomFactor, null, null);
   }
 
-  // the top side, followed by the bottom side when a part is mounted there
+  // the top side, followed by the bottom side when it has silkscreen other than board outlines
   @Override
   public int getPageCount() {
+    SilkScreenFilter bottom = new SilkScreenFilter(PCBLayer._1);
     for (IDIYComponent<?> c : plugInPort.getCurrentProject().getComponents()) {
-      if (c instanceof IBoardSideComponent && ((IBoardSideComponent) c).getBoardSide() == PCBLayer._1) {
+      if (!(c instanceof IBoard) && bottom.testComponent(c)) {
         return 2;
       }
     }

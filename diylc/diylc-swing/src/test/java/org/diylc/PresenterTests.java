@@ -27,6 +27,7 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.PCBLayer;
 import org.diylc.components.boards.BlankBoard;
 import org.diylc.components.chassis.ChassisPanel;
+import org.diylc.components.connectivity.Jumper;
 import org.diylc.components.passive.Resistor;
 import org.diylc.components.composite.CompositeComponent;
 import org.diylc.core.BoardUndersideDisplay;
@@ -296,7 +297,8 @@ public class PresenterTests extends TestBase {
     instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
     IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
     IBoard board = boardUnder(resistor);
-    Point2D start = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+    Point2D start = new Point2D.Double(resistor.getControlPoint(1).getX(),
+        resistor.getControlPoint(1).getY());
     Point inMirror = toScreen(UndersideMirror.createTransform(board).transform(start, null));
 
     presenter.mouseMoved(inMirror, false, false, false);
@@ -314,8 +316,10 @@ public class PresenterTests extends TestBase {
     instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
     IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
     IBoard board = boardUnder(resistor);
-    Point2D start0 = new Point2D.Double(resistor.getControlPoint(0).getX(), resistor.getControlPoint(0).getY());
-    Point2D start1 = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+    Point2D start0 = new Point2D.Double(resistor.getControlPoint(0).getX(),
+        resistor.getControlPoint(0).getY());
+    Point2D start1 = new Point2D.Double(resistor.getControlPoint(1).getX(),
+        resistor.getControlPoint(1).getY());
     // the hit test reads the areas recorded while drawing
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2d = img.createGraphics();
@@ -399,6 +403,39 @@ public class PresenterTests extends TestBase {
 
   // a board reaching 200px past the component on every side, with its underside mirror below it;
   // the component stays selected
+  @Test
+  public void testDragThroughUndersideMirrorIgnoresPartsTheMirrorDoesNotShow() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    IBoard board = boardUnder(resistor);
+    // a jumper drawn over the resistor with both ends off the board, so the mirror does not show it
+    double y = resistor.getControlPoint(0).getY();
+    Jumper jumper = new Jumper();
+    jumper.setControlPoint(new Point2D.Double(board.getBoardRectangle().getMinX() - 100, y), 0);
+    jumper.setControlPoint(new Point2D.Double(board.getBoardRectangle().getMaxX() + 100, y), 1);
+    presenter.getCurrentProject().getComponents().add(jumper);
+    Point2D jumperStart =
+        new Point2D.Double(jumper.getControlPoint(0).getX(), jumper.getControlPoint(0).getY());
+    Point2D resistorStart =
+        new Point2D.Double(resistor.getControlPoint(0).getX(), resistor.getControlPoint(0).getY());
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    presenter.draw(g2d, EnumSet.of(DrawOption.ZOOM), null, null, null, null);
+    g2d.dispose();
+    Point2D middle = new Point2D.Double(
+        (resistor.getControlPoint(0).getX() + resistor.getControlPoint(1).getX()) / 2,
+        resistor.getControlPoint(0).getY());
+    Point inMirror = toScreen(UndersideMirror.createTransform(board).transform(middle, null));
+
+    presenter.mouseMoved(inMirror, false, false, false);
+    presenter.dragStarted(inMirror, java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
+    presenter.dragOver(new Point(inMirror.x + 100, inMirror.y + 100));
+    presenter.dragEnded(new Point(inMirror.x + 100, inMirror.y + 100));
+
+    Assert.assertTrue(resistor.getControlPoint(0).getX() > resistorStart.getX());
+    Assert.assertEquals(jumperStart, jumper.getControlPoint(0));
+  }
+
   private IBoard boardUnder(IDIYComponent<?> component) {
     Point2D first = component.getControlPoint(0);
     Point2D last = component.getControlPoint(component.getControlPointCount() - 1);

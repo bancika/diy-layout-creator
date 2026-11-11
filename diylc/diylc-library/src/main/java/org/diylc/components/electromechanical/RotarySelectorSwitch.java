@@ -63,7 +63,8 @@ import org.diylc.utils.Constants;
     description = "Single pole rotary switch, typically used for impedance selector",
     zOrder = IDIYComponent.COMPONENT, transformer = PotentiometerTransformer.class,
     enableCache = true)
-public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
+public class RotarySelectorSwitch extends AbstractMultiPartComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
