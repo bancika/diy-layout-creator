@@ -67,7 +67,7 @@ projects; the open questions below remain.
 - **Done.** Every part that uses the `SilkscreenTop` default implements `IBoardSideComponent`: a
   nullable `PCBLayer boardSide` field and a getter/setter pair with
   `@EditableProperty(name = "Board Side")` on the getter, which returns `_2` (Top) when the field
-  is `null`. The key is in every language file. 45 parts have it.
+  is `null`. The key is in every language file. 45 parts and `Dot` have it.
   - On a shared base, covering every subclass: `AbstractFilmCapacitor`, `AbstractPotentiometer`,
     `AbstractRadialComponent`, `AbstractTransistorPackage`, `PassiveSMDComponent`.
   - On the class itself: `Resistor`, `HeatSinkResistor`, `AxialElectrolyticCapacitor`,
@@ -77,6 +77,8 @@ projects; the open questions below remain.
     `MiniToggleSwitch`, `SlideSwitch`, `TactileMicroSwitch`, `RotarySwitchOpen`,
     `RotarySwitchSealed`, `RotarySelectorSwitch`, `MiniRelay`, `PCBTerminalBlock`.
   - Whether a part can be mirrored does not matter: the app never mirrors it for the user.
+  - `Dot` has it too, though it has no silkscreen: a dot used as a solder joint on stripboard can
+    be put on the copper side (see `copper-side-view.md`).
   - `Label` is left out: it is text, not a mounted part, and `PCBText` already has a layer.
   - `BoardSideComponentsTest` checks that every such part starts on Top and takes Bottom, and
     that every part writing `SilkscreenTop` has a side, so a new part cannot be left out by

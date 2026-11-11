@@ -33,6 +33,7 @@ were regenerated for the faded copper. The open questions below remain.
 | Holes and trace cuts are visible from both sides (`startDrawingBothSides()`) and never fade; a board's own holes are already solid as board paint | A faded hole reads as copper, and a faded cut hides the break the user is looking for. |
 | `Jumper`, `Eyelet`, `Turret`, `Top`-layer copper and `EyeletBoard` eyelets are component side | Jumpers run over the board; eyelets and turrets are visible from the top. |
 | `ProtoBoard780` declares its traces and pads bottom side, like `PerfBoard`. `ProtoBoard` declares only the traces and pads its code paints in the underside colours. `EurorackStripboard` declares nothing | The 780-hole boards carry copper on the bottom only. `ProtoBoard` is plated through with some traces on top. Which side `EurorackStripboard`'s traces are on is not sourced. |
+| `Dot` has a Board Side property, Top by default | Dots are junctions in schematics and wiring diagrams, which must not fade, and solder joints on stripboard, which are on the copper side. Setting a solder joint's side to Bottom fades it in the main view and draws it solid in the mirror; a dot placed in the mirror goes to the bottom on its own (`bottom-side-components.md`). |
 | `Breadboard`, `BlankBoard`, `MarshallPerfBoard`, `TagStrip`, `TerminalStrip` and the maker boards declare nothing | They have no bottom copper to show. |
 
 ## 3. Design as built
@@ -78,8 +79,6 @@ were regenerated for the faded copper. The open questions below remain.
 
 ## 4. Open questions
 
-- **`Dot` on stripboard.** Users draw solder joints with `Dot`, which is generic and undeclared,
-  so dots are solid in the main view and faded in the mirror.
 - **`EurorackStripboard`.** Unchanged until the side of its traces is sourced.
 - **AI catalog.** `ComponentCatalogGenerator` still lists the deprecated inner layers as possible
   values.
