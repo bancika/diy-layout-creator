@@ -6,8 +6,9 @@ Gerber layers and the canvas shows it as a part on the far side of the board.
 Status: 45 parts have a Board Side property, and Gerber export sends a bottom-side part's
 silkscreen to the bottom layer with its text mirrored. Parts can be selected, dragged and stretched
 through the Underside Display mirror. The canvas draws a bottom-side part faded in the main view and
-solid in the mirror. The silkscreen print-out has a separate page for the bottom. The next steps
-below remain.
+solid in the mirror. The silkscreen print-out has a separate page for the bottom, and new parts
+can be placed through the mirror. Every step is done, and the regression suite passes on all 97
+projects; the open questions below remain.
 
 ## 1. Current state
 
@@ -44,6 +45,7 @@ below remain.
 | The Gerber layer is swapped centrally, not inside each component | Components keep emitting their `*Top` layer. One place maps it to the other side. |
 | Default `_2` (Top), with `null` meaning Top | Fields added to existing classes deserialize as `null` in old files. |
 | Bottom-side text is mirrored centrally in the Gerber output | Parts draw their labels readable from the top, which is backwards on the bottom silkscreen once the board is turned over. While `GerberExporter.drawComponent` draws a bottom-side part, `GerberG2DWrapper.setMirrorText` mirrors each string about the centre of its layout box, so no component changes and the canvas keeps readable labels. |
+| A part without a side placed in the mirror is placed unchanged | A jumper, eyelet or wire has no side to set, so it is placed at the reflected point like any other part rather than refused. |
 | A `SolderPad` opens the solder mask on its own side | It used to write `SolderMaskBot` whatever its layer, which was wrong for top-layer pads. It now writes `SolderMaskTop` for a pad on `_2`. |
 
 ## 3. Design
@@ -118,16 +120,19 @@ order.
   has nothing. A drag that starts on empty mirror space still draws a selection rectangle in
   screen space. Moving the board, or changing its Underside Offset, cancels nothing; the mirror
   simply follows.
-- **Stage 3: placing in the mirror.** A component instantiated with its first point in a mirror
-  region is created at the reflected point. If it is an `IBoardSideComponent`, it is created with
-  side `_1` (Bottom), not mirrored. A `PCBLayer` component is created on `_1`. Anything else is
-  placed at the reflected point unchanged.
+- **Stage 3: placing in the mirror (done).** While a component is being placed,
+  `Presenter.placementMirrorBoard` holds the board whose mirror the cursor is in; a single-click
+  part follows the cursor in and out of mirrors, and a part placed point by point stays in the
+  mirror its first point went into. The cursor is reflected before it is snapped to the grid, so
+  the part lands on the grid, and `DrawingManager.setSlotMirrorBoard` draws the part being placed
+  through that mirror, under the cursor. On placement, `MirrorPlacement.placeOnBottom` sets an
+  `IBoardSideComponent` to `_1` (Bottom) and a component with a `PCBLayer` (`setLayer`, found the
+  same way `PCBLayerFilter` reads `getLayer`) to `_1`; nothing is mirrored. Anything else, such as
+  a jumper, eyelet or wire, is placed at the reflected point unchanged. Dragging a new part from
+  the component tree onto a mirror still places it in the main view.
 
 ## 4. Open questions
 
-- **Components that belong to no side.** In mirror stage 3 a jumper, eyelet or wire dropped in the
-  mirror has no side to set. Confirm that placing it at the reflected point unchanged is what users
-  expect, or whether such parts should be refused in the mirror.
 - **Locked bottom-side parts drawn from the cache.** An uncached locked part takes the stronger of
   the locked alpha and the far-side alpha. A cached one is pasted at the locked alpha onto an
   image that already carries the far-side fade, so it ends up fainter. The same applies to
@@ -140,6 +145,10 @@ order.
 
 - `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components,
   including a stub `IBoardSideComponent` on top, bottom and `null`.
+- `MirrorPlacementTest` covers what placing through the mirror changes, and
+  `PresenterTests.testPlaceThroughUndersideMirror` and `testPlaceUnsidedPartThroughUndersideMirror`
+  place a resistor and an eyelet in a mirror and check that they land on the board, the resistor on
+  the bottom.
 - `SilkScreenFilterTest` covers which side's page each part and board outline goes on, and
   `SilkScreenDrawingProviderTest` checks that the bottom page appears only for a bottom part.
 - `DrawingManagerTest` checks rendered pixels for a part that reports its own side: a bottom part
@@ -157,9 +166,10 @@ order.
 - In the app, with Underside Display set to each direction: select, drag and stretch a trace in
   the mirror and confirm that the original follows correctly. Place a part in the mirror and confirm
   that it is bottom-side, faded on the main view and solid in the mirror.
-- Run the regression suite, since rendering and serialization both change.
+- The regression suite passes on all 97 projects with the whole plan in place.
 
 ## 6. Next steps
 
-1. Mirror stage 3: placing in the mirror.
-2. Run the regression suite.
+1. Settle the open questions above.
+2. Check Gerber output of a board with parts on both sides in a Gerber viewer, and try the
+   Underside Display editing in each direction in the app, as listed under Verification.

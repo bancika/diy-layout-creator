@@ -304,6 +304,7 @@ public class PlasticDCJack extends AbstractMultiPartComponent<String> implements
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

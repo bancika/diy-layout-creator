@@ -383,6 +383,7 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implement
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

@@ -1074,6 +1074,11 @@ public class DrawingManagerTest {
     }
 
     @Override
+    public void setBoardSide(PCBLayer boardSide) {
+      this.boardSide = boardSide;
+    }
+
+    @Override
     public Rectangle2D getCachingBounds() {
       return bounds;
     }

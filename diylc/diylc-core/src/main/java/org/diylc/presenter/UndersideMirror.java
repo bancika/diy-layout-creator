@@ -109,6 +109,26 @@ public class UndersideMirror {
   }
 
   /**
+   * @return the axis the board's mirror flips about, which text drawn into it has to be flipped
+   *         back along to stay readable
+   */
+  public static G2DWrapper.MirrorDirection getMirrorDirection(IBoard board) {
+    if (board.getUndersideDisplay() == null) {
+      return G2DWrapper.MirrorDirection.NONE;
+    }
+    switch (board.getUndersideDisplay()) {
+      case ABOVE:
+      case BELOW:
+        return G2DWrapper.MirrorDirection.VERTICAL;
+      case LEFT:
+      case RIGHT:
+        return G2DWrapper.MirrorDirection.HORIZONTAL;
+      default:
+        return G2DWrapper.MirrorDirection.NONE;
+    }
+  }
+
+  /**
    * @return the part of the canvas the board's mirror occupies, or null when the board has no
    *         underside display
    */

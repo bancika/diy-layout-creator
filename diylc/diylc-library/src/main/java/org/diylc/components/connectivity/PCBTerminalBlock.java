@@ -379,6 +379,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

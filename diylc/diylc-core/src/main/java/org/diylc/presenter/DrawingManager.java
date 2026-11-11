@@ -118,6 +118,9 @@ public class DrawingManager {
 
   private List<Area> proximityMarkers = null;
 
+  // the board whose underside mirror the component in the slot is being placed through
+  private IBoard slotMirrorBoard = null;
+
   public DrawingManager(MessageDispatcher<EventType> messageDispatcher,
       IConfigurationManager<?> configManager) {
     super();
@@ -418,6 +421,10 @@ public class DrawingManager {
       }
     }
 
+    // a component being placed through an underside mirror is shown there, under the cursor
+    AffineTransform slotTx =
+        slotMirrorBoard == null ? null : UndersideMirror.createTransform(slotMirrorBoard);
+
     // Draw component slot in a separate composite.
     if (componentSlot != null) {
       for (IDIYComponent<?> component : componentSlot) {
@@ -425,6 +432,10 @@ public class DrawingManager {
         // leaves behind (e.g. a rotated Label) is reverted before the next one is drawn
         g2dWrapper.startedDrawingComponent(project.getComponents().size());
         g2dWrapper.setComposite(slotComposite);
+        if (slotTx != null) {
+          g2dWrapper.transform(slotTx);
+          g2dWrapper.setMirrorDirection(UndersideMirror.getMirrorDirection(slotMirrorBoard));
+        }
         try {
           component.draw(g2dWrapper, ComponentState.NORMAL,
               drawOptions.contains(DrawOption.OUTLINE_MODE), project, g2dWrapper);
@@ -432,6 +443,7 @@ public class DrawingManager {
           LOG.error("Error drawing " + component.getName(), e);
           failedComponents.add(component);
         } finally {
+          g2dWrapper.setMirrorDirection(G2DWrapper.MirrorDirection.NONE);
           g2dWrapper.finishedDrawingComponent();
         }
       }
@@ -439,7 +451,9 @@ public class DrawingManager {
 
     // Draw control points of the component in the slot.
     if (controlPointSlot != null) {
-      for (Point2D point : controlPointSlot) {
+      for (Point2D slotPoint : controlPointSlot) {
+        Point2D point =
+            slotTx == null || slotPoint == null ? slotPoint : slotTx.transform(slotPoint, null);
         if (point != null) {
           g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
           g2dWrapper.fillOval((int) Math.round(point.getX() - CONTROL_POINT_SIZE / 2),
@@ -557,20 +571,7 @@ public class DrawingManager {
       return;
     }
 
-    G2DWrapper.MirrorDirection mirrorDirection;
-    switch (board.getUndersideDisplay()) {
-      case ABOVE:
-      case BELOW:
-        mirrorDirection = G2DWrapper.MirrorDirection.VERTICAL;
-        break;
-      case LEFT:
-      case RIGHT:
-        mirrorDirection = G2DWrapper.MirrorDirection.HORIZONTAL;
-        break;
-      default:
-        mirrorDirection = G2DWrapper.MirrorDirection.NONE;
-        break;
-    }
+    G2DWrapper.MirrorDirection mirrorDirection = UndersideMirror.getMirrorDirection(board);
 
     AffineTransform oldTx = g2dWrapper.getTransform();
     Composite oldComposite = g2dWrapper.getComposite();
@@ -732,6 +733,16 @@ public class DrawingManager {
     componentAreaMap.clear();
     lastDrawnStateMap.clear();
     proximityMarkers = null;
+  }
+
+  /**
+   * Sets the board whose underside mirror the component being placed is drawn through, or null to
+   * draw it in the main view.
+   * 
+   * @param slotMirrorBoard
+   */
+  public void setSlotMirrorBoard(IBoard slotMirrorBoard) {
+    this.slotMirrorBoard = slotMirrorBoard;
   }
 
   public void clearContinuityArea() {

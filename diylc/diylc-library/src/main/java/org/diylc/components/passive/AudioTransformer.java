@@ -535,6 +535,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

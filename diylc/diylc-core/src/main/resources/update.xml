@@ -639,7 +639,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Components can be selected, dragged and stretched by clicking them in a board's Underside Display, not only in the main view</description>
+					<description>Components can be selected, dragged and stretched by clicking them in a board's Underside Display, not only in the main view, and new parts can be placed there; a part placed in the Underside Display goes on the bottom of the board</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

@@ -717,6 +717,7 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

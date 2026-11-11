@@ -493,6 +493,7 @@ public class TubeSocket extends AbstractAngledComponent<String>
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

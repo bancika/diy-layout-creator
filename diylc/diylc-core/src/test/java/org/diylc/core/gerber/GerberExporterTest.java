@@ -173,6 +173,11 @@ public class GerberExporterTest {
     public PCBLayer getBoardSide() {
       return side;
     }
+
+    @Override
+    public void setBoardSide(PCBLayer boardSide) {
+      this.side = boardSide;
+    }
   }
 
   public static class TextGerberComponent extends SidedGerberComponent {

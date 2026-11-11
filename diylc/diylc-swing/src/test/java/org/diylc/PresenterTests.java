@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,8 +24,10 @@ import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.boards.BlankBoard;
 import org.diylc.components.chassis.ChassisPanel;
+import org.diylc.components.passive.Resistor;
 import org.diylc.components.composite.CompositeComponent;
 import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.IBoard;
@@ -331,6 +334,48 @@ public class PresenterTests extends TestBase {
     Assert.assertEquals(resistor.getControlPoint(0).getY(), resistor.getControlPoint(1).getY());
     Assert.assertEquals(start1.getX() - start0.getX(),
         resistor.getControlPoint(1).getX() - resistor.getControlPoint(0).getX());
+  }
+
+  @Test
+  public void testPlaceThroughUndersideMirror() {
+    BlankBoard board = mirroredBoard();
+    Rectangle2D region = UndersideMirror.getMirrorRegion(board);
+    Point first = toScreen(new Point2D.Double(region.getMinX() + 100, region.getMinY() + 100));
+    Point second = toScreen(new Point2D.Double(region.getMinX() + 200, region.getMinY() + 100));
+
+    instantiateTwoClick("Passive", "Resistor", first, second);
+
+    Resistor resistor = (Resistor) presenter.getCurrentProject().getComponents().get(1);
+    Assert.assertEquals(PCBLayer._1, resistor.getBoardSide());
+    // created where the mirror shows it, which is on the board itself
+    Assert.assertTrue(board.getBoardRectangle().contains(resistor.getControlPoint(0)));
+    Assert.assertTrue(board.getBoardRectangle().contains(resistor.getControlPoint(1)));
+  }
+
+  @Test
+  public void testPlaceUnsidedPartThroughUndersideMirror() {
+    BlankBoard board = mirroredBoard();
+    Rectangle2D region = UndersideMirror.getMirrorRegion(board);
+    Point inMirror = toScreen(new Point2D.Double(region.getCenterX(), region.getCenterY()));
+    ComponentType eyeletType = presenter.getComponentTypes().get("Connectivity").stream()
+        .filter(x -> x.getName().equals("Eyelet")).findFirst().get();
+
+    presenter.setNewComponentTypeSlot(eyeletType, null, null, false);
+    presenter.mouseMoved(inMirror, false, false, false);
+    presenter.mouseClicked(inMirror, MouseEvent.BUTTON1, false, false, false, 1);
+
+    IDIYComponent<?> eyelet = presenter.getCurrentProject().getComponents().get(1);
+    Assert.assertTrue(board.getBoardRectangle().contains(eyelet.getControlPoint(0)));
+  }
+
+  // a board with its underside mirror below it, with nothing on it yet
+  private BlankBoard mirroredBoard() {
+    BlankBoard board = new BlankBoard();
+    board.setControlPoint(new Point2D.Double(100, 100), 0);
+    board.setControlPoint(new Point2D.Double(700, 500), 1);
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    presenter.getCurrentProject().getComponents().add(board);
+    return board;
   }
 
   // a board reaching 200px past the component on every side, with its underside mirror below it;

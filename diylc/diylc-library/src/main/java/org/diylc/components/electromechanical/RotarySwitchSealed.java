@@ -367,6 +367,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

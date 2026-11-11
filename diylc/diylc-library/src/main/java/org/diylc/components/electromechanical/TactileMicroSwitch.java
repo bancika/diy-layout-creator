@@ -526,6 +526,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

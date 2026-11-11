@@ -214,6 +214,7 @@ public class DiodeGlass extends AbstractLeadedComponent<String>
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

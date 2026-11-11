@@ -39,4 +39,11 @@ public interface IBoardSideComponent {
    *         never an inner layer or null
    */
   PCBLayer getBoardSide();
+
+  /**
+   * Sets the side of the board the component is mounted on. The component is not mirrored.
+   * 
+   * @param boardSide {@link PCBLayer#_2} for the top or {@link PCBLayer#_1} for the bottom
+   */
+  void setBoardSide(PCBLayer boardSide);
 }

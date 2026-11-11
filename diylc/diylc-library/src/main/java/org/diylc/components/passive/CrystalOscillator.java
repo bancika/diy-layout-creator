@@ -143,6 +143,7 @@ public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implem
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

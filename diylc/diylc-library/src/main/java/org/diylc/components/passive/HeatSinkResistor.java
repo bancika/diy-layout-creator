@@ -553,6 +553,7 @@ public class HeatSinkResistor extends AbstractLeadedComponent<Resistance>
     return boardSide == null ? PCBLayer._2 : boardSide;
   }
 
+  @Override
   public void setBoardSide(PCBLayer boardSide) {
     this.boardSide = boardSide;
   }

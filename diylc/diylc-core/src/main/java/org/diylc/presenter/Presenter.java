@@ -177,6 +177,9 @@ public class Presenter implements IPlugInPort {
   private AffineTransform dragMirrorTx = null;
   // the reflection of the mirror that the control points in controlPointMap were found through
   private AffineTransform hoverMirrorTx = null;
+  // the board whose Underside Display mirror the component in the slot is being placed through;
+  // null when it is placed in the main view
+  private IBoard placementMirrorBoard = null;
 
   private DIYTest test = null;
 
@@ -527,6 +530,8 @@ public class Presenter implements IPlugInPort {
     } else {
       componentSlotToDraw = instantiationManager.getComponentSlot();
     }
+    drawingManager.setSlotMirrorBoard(
+        instantiationManager.getComponentTypeSlot() == null ? null : placementMirrorBoard);
     List<IDIYComponent<?>> failedComponents =
         drawingManager
             .drawProject(
@@ -626,6 +631,8 @@ public class Presenter implements IPlugInPort {
           messageDispatcher.dispatchMessage(EventType.REPAINT);
           return;
         }
+        updatePlacementMirror(scaledPoint);
+        scaledPoint = toPlacementSpace(scaledPoint);
         // Keep the reference to component type for later.
         ComponentType componentTypeSlot = instantiationManager.getComponentTypeSlot();
         Template template = instantiationManager.getTemplate();
@@ -639,6 +646,9 @@ public class Presenter implements IPlugInPort {
               }
               List<IDIYComponent<?>> componentSlot = instantiationManager.getComponentSlot();
               List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(componentSlot);
+              if (placementMirrorBoard != null) {
+                MirrorPlacement.placeOnBottom(componentSlot);
+              }
               addComponents(componentSlot);
               // group components if there's more than one, e.g. building blocks, but not clipboard
               // contents
@@ -676,6 +686,9 @@ public class Presenter implements IPlugInPort {
             if (instantiationManager.getComponentSlot() == null) {
               try {
                 instantiationManager.instatiatePointByPoint(scaledPoint, currentProject);
+                if (placementMirrorBoard != null) {
+                  MirrorPlacement.placeOnBottom(instantiationManager.getComponentSlot());
+                }
               } catch (Exception e) {
                 view.showMessage(ERROR_CREATE, ERROR, IView.ERROR_MESSAGE);
                 LOG.error("Could not create component", e);
@@ -1007,10 +1020,14 @@ public class Presenter implements IPlugInPort {
     Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
     this.previousScaledPoint = scalePoint(point);
     if (instantiationManager.getComponentTypeSlot() != null) {
+      IBoard oldPlacementMirrorBoard = placementMirrorBoard;
+      updatePlacementMirror(previousScaledPoint);
+      // reflected before snapping, so that a component placed through a mirror lands on the grid
+      Point2D placementPoint = toPlacementSpace(previousScaledPoint);
       if (isSnapToGrid()) {
-        CalcUtils.snapPointToGrid(previousScaledPoint, currentProject.getGridSpacing());
+        CalcUtils.snapPointToGrid(placementPoint, currentProject.getGridSpacing());
       } else if (isSnapToObjects()) {
-        CalcUtils.snapPointToObjects(previousScaledPoint, currentProject.getGridSpacing(), null, currentProject.getComponents());
+        CalcUtils.snapPointToObjects(placementPoint, currentProject.getGridSpacing(), null, currentProject.getComponents());
       }
       // What the cursor does is decided by how the slot was armed rather than by the creation
       // method: a slot instantiated up front carries a whole component that follows the cursor,
@@ -1019,13 +1036,13 @@ public class Presenter implements IPlugInPort {
       if (instantiationManager.getComponentSlot() != null
           && instantiationManager.getFirstControlPoint() == null) {
         refresh =
-            instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(),
+            instantiationManager.updateSingleClick(placementPoint, isSnapToGrid(),
                 currentProject.getGridSpacing());
       } else {
         refresh = instantiationManager.updatePointByPoint(
-            constrainToAxis(instantiationManager.getFirstControlPoint(), previousScaledPoint, shiftDown));
+            constrainToAxis(instantiationManager.getFirstControlPoint(), placementPoint, shiftDown));
       }
-      if (refresh) {
+      if (refresh || placementMirrorBoard != oldPlacementMirrorBoard) {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       }
     } else {
@@ -3190,6 +3207,22 @@ public class Presenter implements IPlugInPort {
   private Point2D toDragSpace(Point2D scaledPoint) {
     return dragMirrorTx == null || scaledPoint == null ? scaledPoint
         : dragMirrorTx.transform(scaledPoint, null);
+  }
+
+  // a component placed point by point stays in the mirror its first point went into
+  private void updatePlacementMirror(Point2D scaledPoint) {
+    if (instantiationManager.getFirstControlPoint() != null) {
+      return;
+    }
+    List<IBoard> boards = UndersideMirror.findBoardsMirroredAt(currentProject, scaledPoint);
+    placementMirrorBoard = boards.isEmpty() ? null : boards.get(0);
+  }
+
+  private Point2D toPlacementSpace(Point2D scaledPoint) {
+    AffineTransform mirrorTx =
+        placementMirrorBoard == null ? null : UndersideMirror.createTransform(placementMirrorBoard);
+    return mirrorTx == null || scaledPoint == null ? scaledPoint
+        : mirrorTx.transform(scaledPoint, null);
   }
 
   /**
