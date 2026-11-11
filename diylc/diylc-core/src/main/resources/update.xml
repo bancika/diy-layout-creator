@@ -635,6 +635,18 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Fade Copper Under Board' to the Config menu, on by default: the canvas and the layout export, PDF and print show the board from the component side, with strips, pads, traces and other copper on the bottom of the board drawn faded as if seen through it</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>A board's Underside Display is now a true view from below: copper is drawn solid and the component side faded, and turning 'Underside Transparency' off draws it fully solid instead of fading the whole display</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Inner layers 1 to 6 are no longer offered for traces, pads and other copper, since boards are two-sided; projects that use them still open unchanged</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
 					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board; bottom parts are drawn faded on the canvas and solid in the board's Underside Display, and Gerber export puts their silkscreen on the bottom layer with the text mirrored, and the silkscreen print-out has a separate page for the bottom</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>

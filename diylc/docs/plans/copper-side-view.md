@@ -4,7 +4,8 @@ Make it obvious which side of a board the canvas shows. The main view is the com
 copper on the bottom of the board is drawn faded, as if seen through it. The Underside Display
 mirror is a true view from below: copper solid, components faded.
 
-Status: implemented in the working tree; the open questions below and the regression run remain.
+Status: done and committed; the regression suite passes on all 97 projects and its reference images
+were regenerated for the faded copper. The open questions below remain.
 
 ## 1. Background
 
@@ -53,7 +54,8 @@ Status: implemented in the working tree; the open questions below and the regres
 - `DrawOption.FADE_FAR_SIDE` turns fading on in the main view. `IPlugInPort.FADE_FAR_SIDE_KEY`
   (`fadeFarSide`) is the config key.
 - `DrawingManager.drawMirroredComponent` views the mirror from `_1`, with fading controlled by
-  `undersideTransparency`. The reflection is built by `createMirrorTransform`.
+  `undersideTransparency`. The reflection comes from `UndersideMirror.createTransform`, which
+  `bottom-side-components.md` added so that drawing and editing through the mirror share it.
 
 ### diylc-library
 
@@ -92,10 +94,9 @@ Status: implemented in the working tree; the open questions below and the regres
   change.
 - `InnerLayerCompatibilityTest` loads a trace saved on `_5` and checks that its layer and layer id
   are kept.
-- Still to do: run the regression suite and regenerate reference PNGs for the expected
-  faded-copper changes. Netlists must not change.
+- The regression reference PNGs were regenerated for the faded copper (81 images); no netlist
+  changed.
 
 ## 6. Next steps
 
 1. Settle the open questions above.
-2. Run the regression suite.
