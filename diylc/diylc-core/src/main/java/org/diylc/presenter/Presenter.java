@@ -1000,6 +1000,42 @@ public class Presenter implements IPlugInPort {
     return components;
   }
 
+  /**
+   * Lists the names of the sticky nodes under the specified point, for the hover tooltip. With a
+   * mirror board, the point is already reflected and only the parts shown in that board's
+   * Underside Display are considered.
+   */
+  private List<String> findNodeNamesAt(Point2D point, IBoard mirrorBoard) {
+    List<String> nodeInfos = new ArrayList<String>();
+    for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
+      IDIYComponent<?> component = currentProject.getComponents().get(i);
+      if (mirrorBoard != null && !UndersideMirror.isMirrored(mirrorBoard, component)) {
+        continue;
+      }
+      for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
+        try {
+          if (component.isControlPointSticky(pointIndex)) {
+            Point2D controlPoint = component.getControlPoint(pointIndex);
+            if (controlPoint != null
+                && point.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
+              String nodeName = component.getControlPointNodeName(pointIndex);
+              if (nodeName != null && !nodeName.trim().isEmpty()) {
+                String info = "<b>" + component.getName() + "</b>: " + nodeName;
+                if (!nodeInfos.contains(info)) {
+                  nodeInfos.add(info);
+                }
+              }
+            }
+          }
+        } catch (Exception e) {
+          LOG.warn("Error reading control point for component of type: "
+              + component.getClass().getName());
+        }
+      }
+    }
+    return nodeInfos;
+  }
+
   @Override
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     if (point == null)
@@ -1085,27 +1121,14 @@ public class Presenter implements IPlugInPort {
     // Node name hover detection for sticky points
     String nodeHoverText = null;
     if (!dragInProgress && instantiationManager.getComponentTypeSlot() == null) {
-      List<String> nodeInfos = new ArrayList<String>();
-      for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
-        IDIYComponent<?> component = currentProject.getComponents().get(i);
-        for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
-          try {
-            if (component.isControlPointSticky(pointIndex)) {
-              Point2D controlPoint = component.getControlPoint(pointIndex);
-              if (controlPoint != null && previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE) {
-                String nodeName = component.getControlPointNodeName(pointIndex);
-                if (nodeName != null && !nodeName.trim().isEmpty()) {
-                  String info = "<b>" + component.getName() + "</b>: " + nodeName;
-                  if (!nodeInfos.contains(info)) {
-                    nodeInfos.add(info);
-                  }
-                }
-              }
-            }
-          } catch (Exception e) {
-            LOG.warn("Error reading control point for component of type: " + component.getClass().getName());
-          }
+      List<String> nodeInfos = findNodeNamesAt(previousScaledPoint, null);
+      for (IBoard board :
+          UndersideMirror.findBoardsMirroredAt(currentProject, previousScaledPoint)) {
+        if (!nodeInfos.isEmpty()) {
+          break;
         }
+        nodeInfos =
+            findNodeNamesAt(UndersideMirror.reflect(board, previousScaledPoint), board);
       }
       if (!nodeInfos.isEmpty()) {
         nodeHoverText = String.join("; ", nodeInfos);

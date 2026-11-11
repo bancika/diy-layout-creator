@@ -436,6 +436,37 @@ public class PresenterTests extends TestBase {
     Assert.assertEquals(jumperStart, jumper.getControlPoint(0));
   }
 
+  @Test
+  public void testNodeNameHoverThroughUndersideMirror() {
+    final String[] receivedTooltip = new String[1];
+    IPlugIn testPlugin = new IPlugIn() {
+      @Override
+      public void connect(IPlugInPort plugInPort) {}
+
+      @Override
+      public EnumSet<EventType> getSubscribedEventTypes() {
+        return EnumSet.of(EventType.NODE_NAME_HOVER_TOOLTIP);
+      }
+
+      @Override
+      public void processMessage(EventType eventType, Object... params) {
+        receivedTooltip[0] = params.length > 0 ? (String) params[0] : null;
+      }
+    };
+    presenter.installPlugin(() -> testPlugin);
+    InMemoryConfigurationManager.getInstance()
+        .writeValue(IPlugInPort.SHOW_NODE_NAME_TOOLTIPS_KEY, true);
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    IBoard board = boardUnder(resistor);
+    Point inMirror = toScreen(
+        UndersideMirror.createTransform(board).transform(resistor.getControlPoint(1), null));
+
+    presenter.mouseMoved(inMirror, false, false, false);
+
+    Assert.assertEquals("<b>R1</b>: 2", receivedTooltip[0]);
+  }
+
   private IBoard boardUnder(IDIYComponent<?> component) {
     Point2D first = component.getControlPoint(0);
     Point2D last = component.getControlPoint(component.getControlPointCount() - 1);
