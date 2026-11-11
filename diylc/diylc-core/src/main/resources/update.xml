@@ -641,6 +641,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Projects with a resistor, capacitor or other leaded component whose Width or Length had been cleared in the property editor could not be opened; such values now fall back to the default size, and Width and Length can no longer be left empty</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Highlight Connected Areas', netlists and AI analysis could ignore trace cuts after the board under them was moved or edited, or when the cuts were scrolled out of view, and showed the whole strip as connected</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

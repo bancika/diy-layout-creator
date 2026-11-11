@@ -1,6 +1,6 @@
 ---
 name: regression-test
-description: Run the DIYLC end-to-end regression suite, which renders ~700 sample .diy projects and compares PNG exports and netlists against reference outputs. Use after any change to rendering, component drawing, serialization, netlist or analyzer logic, or when asked to check for regressions or regenerate reference files.
+description: Run the DIYLC end-to-end regression suite, which renders just under 100 sample .diy projects and compares PNG exports and netlists against reference outputs. Use after any change to rendering, component drawing, serialization, netlist or analyzer logic, or when asked to check for regressions or regenerate reference files.
 ---
 
 # Running the DIYLC regression suite
@@ -29,16 +29,18 @@ already has the arguments and JVM flags. Offer that first.
 
 The runner needs the `--add-opens` / `--add-exports` flags and a classpath spanning all three
 modules; `mvn exec:java` will not work because it runs in Maven's own classloader and fails to find
-Reflections. Build a classpath and fork a JVM:
+Reflections. Build a classpath and fork a JVM.
+
+The classpath has to be built in the same reactor run as the compile. Running
+`dependency:build-classpath` on a single module fails with a `DependencyResolutionException`,
+because `diylc-processor` is not installed in the local repository and the plugin can only resolve
+it from the reactor. The relative `outputFile` gives each module its own `target/cp.txt`:
 
 ```bash
 cd diylc
-SP=/tmp   # or the session scratchpad
 
-mvn -q -pl diylc-swing -am test-compile
-mvn -q -pl diylc-swing   dependency:build-classpath -Dmdep.outputFile=$SP/cp-swing.txt -Dmdep.includeScope=test
-mvn -q -pl diylc-core    dependency:build-classpath -Dmdep.outputFile=$SP/cp-core.txt  -Dmdep.includeScope=test
-mvn -q -pl diylc-library dependency:build-classpath -Dmdep.outputFile=$SP/cp-lib.txt   -Dmdep.includeScope=test
+mvn -q -pl diylc-swing -am test-compile dependency:build-classpath \
+  -Dmdep.outputFile=target/cp.txt -Dmdep.includeScope=test
 
 java \
   --add-exports java.desktop/com.apple.eawt.event=ALL-UNNAMED \
@@ -49,19 +51,20 @@ java \
   --add-opens java.desktop/java.awt=ALL-UNNAMED \
   --add-opens java.desktop/java.awt.font=ALL-UNNAMED \
   --add-opens java.desktop/java.awt.geom=ALL-UNNAMED \
-  -cp "diylc-swing/target/test-classes:diylc-swing/target/classes:diylc-core/target/classes:diylc-library/target/classes:$(cat $SP/cp-swing.txt):$(cat $SP/cp-core.txt):$(cat $SP/cp-lib.txt)" \
+  -cp "diylc-swing/target/test-classes:diylc-swing/target/classes:diylc-core/target/classes:diylc-library/target/classes:$(cat diylc-swing/target/cp.txt):$(cat diylc-core/target/cp.txt):$(cat diylc-library/target/cp.txt)" \
   org.diylc.RegressionTestRunner \
   "$(cd .. && pwd)/diylc-regression-data" TEST [filter]
 ```
 
-Sanity-check the log line `Presenter - Current DIYLC version: 6.4.0` near the end. If it reports
-`5.0.0`, the `--add-opens` flags are missing and the run is invalid.
+Sanity-check the log line `Presenter - Current DIYLC version: ...`. It should report the newest
+version in `diylc-core/src/main/resources/update.xml`; if it reports `5.0.0`, the `--add-opens`
+flags are missing and the run is invalid.
 
 ### Arguments
 
 1. Path to `diylc-regression-data`
 2. `TEST` or `PREPARE`
-3. Optional filter — a substring matched against file paths. **Use it.** The full suite is ~700
+3. Optional filter — a substring matched against file paths. The full suite is just under 100
    projects; while narrowing down an issue, run one file or one directory at a time
    (e.g. `splitter2`, or `guitar`).
 

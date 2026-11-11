@@ -312,7 +312,8 @@ public class ChatbotService {
       return null;
     }
     DrawingManager drawingManager = plugInPort.getDrawingManager();
-    List<ContinuityArea> continuityAreas = drawingManager.getContinuityAreas();
+    List<ContinuityArea> continuityAreas =
+        drawingManager.getContinuityAreas(plugInPort.getCurrentProject());
     return AiProjectBuilder.build(plugInPort.getCurrentProject(), continuityAreas, component -> {
       ComponentArea area = drawingManager.getComponentArea(component);
       return area == null ? null : area.getOutlineBounds();

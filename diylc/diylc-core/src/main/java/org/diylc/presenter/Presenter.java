@@ -685,7 +685,7 @@ public class Presenter implements IPlugInPort {
             LOG.error("Unknown creation method: " + componentTypeSlot.getCreationMethod());
         }
       } else if (operationMode == OperationMode.HIGHLIGHT_CONNECTED_AREAS || altDown) {
-        drawingManager.findContinuityAreaAtPoint(scaledPoint);
+        drawingManager.findContinuityAreaAtPoint(currentProject, scaledPoint);
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       } else {
         List<IDIYComponent<?>> newSelection = new ArrayList<IDIYComponent<?>>(selectedComponents);
@@ -3188,7 +3188,7 @@ public class Presenter implements IPlugInPort {
 
   @Override
   public List<Netlist> extractNetlists(boolean includeSwitches) throws NetlistException {
-    List<ContinuityArea> continuityAreas = drawingManager.getContinuityAreas();
+    List<ContinuityArea> continuityAreas = drawingManager.getContinuityAreas(currentProject);
     
     return NetlistBuilder.extractNetlists(includeSwitches, currentProject, continuityAreas);
   }
@@ -3246,12 +3246,13 @@ public class Presenter implements IPlugInPort {
       areas.put(c, componentArea);
     }
     return new Snapshot(currentProject.clone(), new HashSet<IDIYComponent<?>>(selectedComponents), areas, 
-        new HashSet<ContinuityArea>(drawingManager.getContinuityAreas()));
+        new HashSet<ContinuityArea>(drawingManager.getContinuityAreas(currentProject)));
   }
   
   @Override
   public List<Area> checkContinuityAreaProximity(Size threshold) {
-    return drawingManager.getContinuityAreaProximity((float)threshold.convertToPixels());    
+    return drawingManager.getContinuityAreaProximity(currentProject,
+        (float) threshold.convertToPixels());    
   }
 
   @Override
