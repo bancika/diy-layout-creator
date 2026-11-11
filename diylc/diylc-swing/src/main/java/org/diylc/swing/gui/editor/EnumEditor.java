@@ -35,6 +35,7 @@ import javax.swing.JList;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;
+import org.diylc.utils.ReflectionUtils;
 
 public class EnumEditor extends JComboBox<Object> {
 
@@ -84,18 +85,10 @@ public class EnumEditor extends JComboBox<Object> {
   private static Object[] getOfferedValues(PropertyWrapper property) {
     List<Object> values = new ArrayList<Object>();
     for (Object value : property.getType().getEnumConstants()) {
-      if (value.equals(property.getValue()) || !isDeprecated((Enum<?>) value)) {
+      if (value.equals(property.getValue()) || !ReflectionUtils.isDeprecated((Enum<?>) value)) {
         values.add(value);
       }
     }
     return values.toArray();
-  }
-
-  private static boolean isDeprecated(Enum<?> value) {
-    try {
-      return value.getDeclaringClass().getField(value.name()).isAnnotationPresent(Deprecated.class);
-    } catch (NoSuchFieldException e) {
-      return false;
-    }
   }
 }

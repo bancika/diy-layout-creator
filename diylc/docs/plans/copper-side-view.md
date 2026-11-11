@@ -74,14 +74,14 @@ were regenerated for the faded copper. The open questions below remain.
 
 - The **Fade Copper Under Board** checkbox is in the Config menu after Extra Working Area.
   `CanvasPanel.getDrawOptions` and `ProjectDrawingProvider.draw` add `FADE_FAR_SIDE` from it.
-- `EnumEditor` hides `@Deprecated` constants unless one is the current value.
+- `EnumEditor` hides `@Deprecated` constants unless one is the current value, and
+  `ComponentCatalogGenerator` leaves them out of the AI catalog's possible values; both use
+  `ReflectionUtils.isDeprecated`.
 - The language key **Fade Copper Under Board** is in every file in `lang/`.
 
 ## 4. Open questions
 
 - **`EurorackStripboard`.** Unchanged until the side of its traces is sourced.
-- **AI catalog.** `ComponentCatalogGenerator` still lists the deprecated inner layers as possible
-  values.
 
 ## 5. Verification
 

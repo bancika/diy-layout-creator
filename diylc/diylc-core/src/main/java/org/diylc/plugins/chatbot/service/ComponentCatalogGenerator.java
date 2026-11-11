@@ -54,6 +54,7 @@ import org.diylc.presenter.ComparatorFactory;
 import org.diylc.presenter.ComponentProcessor;
 import org.diylc.presenter.DatasheetService;
 import org.diylc.presenter.ReleaseHistory;
+import org.diylc.utils.ReflectionUtils;
 
 /**
  * Standalone tool that generates component catalog JSON files from the current codebase.
@@ -227,9 +228,11 @@ public class ComponentCatalogGenerator {
           }
         }
 
-        // Include enum possible values (using name() instead of toString())
+        // Include enum possible values (using name() instead of toString()), leaving out the
+        // deprecated ones the editor does not offer either
         if (propType.isEnum()) {
           List<String> possibleValues = Arrays.stream(propType.getEnumConstants())
+              .filter(e -> !ReflectionUtils.isDeprecated((Enum<?>) e))
               .map(e -> ((Enum<?>) e).name())
               .collect(Collectors.toList());
           prop.put("possibleValues", possibleValues);

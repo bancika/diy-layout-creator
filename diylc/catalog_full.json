@@ -1,5 +1,5 @@
 {
-  "version" : "6.10.0",
+  "version" : "6.11.0",
   "components" : [ {
     "name" : "Blank Board",
     "className" : "boards.BlankBoard",
@@ -1035,7 +1035,7 @@
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "possibleValues" : [ "_1", "_2" ],
       "defaultValue" : "_1"
     }, {
       "name" : "Name",
@@ -1077,7 +1077,7 @@
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "possibleValues" : [ "_1", "_2" ],
       "defaultValue" : "_1"
     }, {
       "name" : "Name",
@@ -1196,6 +1196,11 @@
     "creationMethod" : "SINGLE_CLICK",
     "notes" : [ "A junction marker for schematics and wiring diagrams; it is drawing only and connects nothing, since ends that meet at the same point are already connected. For a pad on a board use Solder Pad" ],
     "properties" : [ {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -1277,7 +1282,7 @@
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "possibleValues" : [ "_1", "_2" ],
       "defaultValue" : "_1"
     }, {
       "name" : "Name",
@@ -1459,6 +1464,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -1706,7 +1716,7 @@
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "possibleValues" : [ "_1", "_2" ],
       "defaultValue" : "_1"
     }, {
       "name" : "Node Name",
@@ -7156,6 +7166,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Font Size Override",
       "type" : "Integer"
     }, {
@@ -7228,6 +7243,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Font Size Override",
       "type" : "Integer"
@@ -7306,6 +7326,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Font Size Override",
       "type" : "Integer"
@@ -7747,6 +7772,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Display",
       "type" : "Display",
       "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH" ],
@@ -7851,6 +7881,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -8510,6 +8545,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Name",
       "type" : "String"
     }, {
@@ -8578,6 +8618,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Font Size Override",
       "type" : "Integer"
     }, {
@@ -8645,6 +8690,11 @@
     }, {
       "name" : "Angle Offset",
       "type" : "Angle"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -9036,6 +9086,11 @@
       "name" : "Angle",
       "type" : "Angle"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -9373,6 +9428,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -9496,6 +9556,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -11843,6 +11908,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -11970,7 +12040,7 @@
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8" ],
+      "possibleValues" : [ "_1", "_2" ],
       "defaultValue" : "_1"
     }, {
       "name" : "Orientation",
@@ -12083,6 +12153,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -12171,6 +12246,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -12252,6 +12332,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -12367,6 +12452,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -12493,6 +12583,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -12589,6 +12684,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -12693,6 +12793,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -12805,6 +12910,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -12914,6 +13024,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -12994,6 +13109,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -13083,6 +13203,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Coil",
       "type" : "Color",
@@ -13223,6 +13348,11 @@
       "format" : "hex",
       "defaultValue" : "#333333"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -13301,6 +13431,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -13460,6 +13595,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -13527,6 +13667,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -13621,6 +13766,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Border",
       "type" : "Color",
@@ -13729,6 +13879,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -13787,6 +13942,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -13844,6 +14004,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -16502,6 +16667,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -16574,6 +16744,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -16838,6 +17013,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -16931,6 +17111,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Border",
       "type" : "Color",
       "format" : "hex",
@@ -17018,6 +17203,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -17102,6 +17292,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -17264,6 +17459,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -17344,6 +17544,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -17780,6 +17985,11 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
       "name" : "Body",
       "type" : "Color",
       "format" : "hex",
@@ -18210,6 +18420,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -19072,6 +19287,11 @@
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Body",
       "type" : "Color",
@@ -20011,6 +20231,11 @@
       "type" : "Base",
       "possibleValues" : [ "B9A", "OCTAL", "B7G", "B12C", "UX4" ],
       "defaultValue" : "B9A"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
     }, {
       "name" : "Color",
       "type" : "Color",
