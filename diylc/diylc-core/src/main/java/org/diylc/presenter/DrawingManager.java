@@ -193,37 +193,12 @@ public class DrawingManager {
 
     configureRenderingHints(g2d, drawOptions);
 
-    // group components with boards that contain them
-    Map<IBoard, List<IDIYComponent<?>>> boardMap = project.getComponents().stream()
-            .filter(IBoard.class::isInstance)
-            .map(IBoard.class::cast)
-            .filter(b -> b.getUndersideDisplay() != null && b.getUndersideDisplay() != BoardUndersideDisplay.NONE)
-            .collect(Collectors.toMap(x -> x, x -> new ArrayList<IDIYComponent<?>>()));
+    // group components with the boards whose underside mirror shows them
     Map<IDIYComponent<?>, Set<IBoard>> componentBoardMap = new HashMap<IDIYComponent<?>, Set<IBoard>>();
-
-    for (IBoard board : boardMap.keySet()) {
-      Rectangle2D boardRect = board.getBoardRectangle();
-      if (boardRect == null) {
-        continue;
-      }
-      double minX = Math.min(boardRect.getMinX(), boardRect.getMaxX());
-      double maxX = Math.max(boardRect.getMinX(), boardRect.getMaxX());
-      double minY = Math.min(boardRect.getMinY(), boardRect.getMaxY());
-      double maxY = Math.max(boardRect.getMinY(), boardRect.getMaxY());
-      Rectangle2D normalizedBoardRect = new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+    List<IBoard> mirroringBoards = UndersideMirror.getMirroringBoards(project);
+    for (IBoard board : mirroringBoards) {
       for (IDIYComponent<?> c : project.getComponents()) {
-        if (c == board) {
-          continue;
-        }
-        boolean include = false;
-        for (int i = 0; i < c.getControlPointCount(); i++) {
-          if (normalizedBoardRect.contains(c.getControlPoint(i))) {
-            include = true;
-            break;
-          }
-        }
-        if (include) {
-          boardMap.get(board).add(c);
+        if (c != board && UndersideMirror.isMirrored(board, c)) {
           componentBoardMap.computeIfAbsent(c, key -> new HashSet<IBoard>()).add(board);
         }
       }
@@ -427,15 +402,14 @@ public class DrawingManager {
                   || component.getControlPointVisibilityPolicy(i) == VisibilityPolicy.ALWAYS)) {
 
             Point2D controlPoint = component.getControlPoint(i);
-            int pointSize = CONTROL_POINT_SIZE;
-
-            g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
-            g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - pointSize / 2),
-                (int) Math.round(controlPoint.getY() - pointSize / 2), pointSize, pointSize);
-            g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
-            g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1),
-                (int) Math.round(controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
-                CONTROL_POINT_SIZE - 2);
+            drawSelectedControlPoint(g2dWrapper, controlPoint);
+            // the part can be selected through its mirrored copy, which then shows its points too
+            for (IBoard board : mirroringBoards) {
+              if (UndersideMirror.isMirrored(board, component)) {
+                drawSelectedControlPoint(g2dWrapper,
+                    UndersideMirror.createTransform(board).transform(controlPoint, null));
+              }
+            }
           }
         }
       }
@@ -553,9 +527,20 @@ public class DrawingManager {
     return failedComponents;
   }
 
+  private static void drawSelectedControlPoint(G2DWrapper g2dWrapper, Point2D controlPoint) {
+    g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
+    g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2),
+        (int) Math.round(controlPoint.getY() - CONTROL_POINT_SIZE / 2), CONTROL_POINT_SIZE,
+        CONTROL_POINT_SIZE);
+    g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR);
+    g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2 + 1),
+        (int) Math.round(controlPoint.getY() - CONTROL_POINT_SIZE / 2 + 1), CONTROL_POINT_SIZE - 2,
+        CONTROL_POINT_SIZE - 2);
+  }
+
   private static void drawMirroredComponent(Project project, IBoard board, IDIYComponent<?> component,
                                             G2DWrapper g2dWrapper, ComponentState state, boolean outlineMode) {
-    AffineTransform mirrorTx = createMirrorTransform(board);
+    AffineTransform mirrorTx = UndersideMirror.createTransform(board);
     if (mirrorTx == null) {
       return;
     }
@@ -593,61 +578,6 @@ public class DrawingManager {
       g2dWrapper.resetViewedSide();
       g2dWrapper.setComposite(oldComposite);
     }
-  }
-
-  /**
-   * Returns the reflection that maps the board onto its underside mirror, or null when the board
-   * has no underside display.
-   */
-  private static AffineTransform createMirrorTransform(IBoard board) {
-    if (board.getUndersideDisplay() == null || board.getUndersideDisplay() == BoardUndersideDisplay.NONE) {
-      return null;
-    }
-    double offset = board.getUndersideOffset() == null ? 0 : board.getUndersideOffset().convertToPixels();
-    Rectangle2D boardRectangle = board.getBoardRectangle();
-    if (boardRectangle == null) {
-      return null;
-    }
-
-    double minX = Math.min(boardRectangle.getMinX(), boardRectangle.getMaxX());
-    double maxX = Math.max(boardRectangle.getMinX(), boardRectangle.getMaxX());
-    double minY = Math.min(boardRectangle.getMinY(), boardRectangle.getMaxY());
-    double maxY = Math.max(boardRectangle.getMinY(), boardRectangle.getMaxY());
-
-    AffineTransform mirrorTx = new AffineTransform();
-    switch (board.getUndersideDisplay()) {
-      case ABOVE: {
-        double pivotY = minY - offset / 2;
-        mirrorTx.translate(0, pivotY);
-        mirrorTx.scale(1.0, -1.0);
-        mirrorTx.translate(0, -pivotY);
-        break;
-      }
-      case BELOW: {
-        double pivotY = maxY + offset / 2;
-        mirrorTx.translate(0, pivotY);
-        mirrorTx.scale(1.0, -1.0);
-        mirrorTx.translate(0, -pivotY);
-        break;
-      }
-      case LEFT: {
-        double pivotX = minX - offset / 2;
-        mirrorTx.translate(pivotX, 0);
-        mirrorTx.scale(-1.0, 1.0);
-        mirrorTx.translate(-pivotX, 0);
-        break;
-      }
-      case RIGHT: {
-        double pivotX = maxX + offset / 2;
-        mirrorTx.translate(pivotX, 0);
-        mirrorTx.scale(-1.0, 1.0);
-        mirrorTx.translate(-pivotX, 0);
-        break;
-      }
-      default:
-        return null;
-    }
-    return mirrorTx;
   }
 
   private static void drawComponent(Project project, Set<DrawOption> drawOptions, Double scaleFactor,
@@ -805,6 +735,27 @@ public class DrawingManager {
       if (area != null && area.getOutlineBounds().contains(point)
           && area.getOutlineArea().contains(point)) {
         components.add(0, project.getComponents().get(i));
+      }
+    }
+    return components;
+  }
+
+  /**
+   * Finds the components that the underside mirror of a board shows at the specified point, top
+   * first, or none when the point is not in a mirror.
+   *
+   * @param point
+   * @param project
+   * @return
+   */
+  public List<IDIYComponent<?>> findMirroredComponentsAt(Point2D point, Project project) {
+    List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
+    for (IBoard board : UndersideMirror.findBoardsMirroredAt(project, point)) {
+      Point2D reflected = UndersideMirror.createTransform(board).transform(point, null);
+      for (IDIYComponent<?> component : findComponentsAt(reflected, project)) {
+        if (UndersideMirror.isMirrored(board, component) && !components.contains(component)) {
+          components.add(component);
+        }
       }
     }
     return components;

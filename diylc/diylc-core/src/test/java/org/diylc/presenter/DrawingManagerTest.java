@@ -762,6 +762,29 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testComponentFoundThroughUndersideMirror() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    SidePaintingComponent part =
+        new SidePaintingComponent(new Rectangle2D.Double(150, 150, 10, 10), null);
+    project.getComponents().add(board);
+    project.getComponents().add(part);
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+
+    // reflection across y = 410 puts the square at y 660..670
+    Point2D inMirror = new Point2D.Double(155, 665);
+    assertTrue(drawingManager.findComponentsAt(inMirror, project).isEmpty());
+    assertEquals(Collections.singletonList(part),
+        drawingManager.findMirroredComponentsAt(inMirror, project));
+    assertTrue(drawingManager
+        .findMirroredComponentsAt(new Point2D.Double(155, 155), project).isEmpty());
+  }
+
+  @Test
   public void testFarSideFadeLeavesContinuityUnchanged() {
     Area faded = drawBottomConductor(EnumSet.of(DrawOption.FADE_FAR_SIDE));
     Area plain = drawBottomConductor(EnumSet.noneOf(DrawOption.class));

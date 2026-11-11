@@ -4,8 +4,8 @@ Let a component be mounted on the bottom of a PCB, so that its silkscreen goes t
 Gerber layers and the canvas shows it as a part on the far side of the board.
 
 Status: the core Gerber side is done, with tests: `IBoardSideComponent` exists and the export
-sends a bottom-side part to the bottom layers. No component implements it yet; the next steps below
-remain.
+sends a bottom-side part to the bottom layers, but no component implements it yet. Parts can be
+selected through the Underside Display mirror. The next steps below remain.
 
 ## 1. Current state
 
@@ -88,18 +88,20 @@ through the mirror's reflection before the existing logic runs. A reflection is 
 so drawing and hit-testing use the same transform. Each stage is useful by itself and ships in
 order.
 
-- **Shared mirror geometry.** Move the transform built in `DrawingManager.drawMirroredComponent`
-  into a helper in `org.diylc.presenter` (not into `Presenter`). It answers two questions: the
-  reflection for a given `IBoard`, and which board's mirror region, if any, contains a model point.
-  The region is the board rectangle reflected about the pivot. `drawMirroredComponent` uses the
-  helper, so drawing and hit-testing cannot drift apart.
-- **Stage 1: selecting in the mirror.** In `Presenter.findComponentsAt` and the click and hover
-  paths, a point that falls in a mirror region and hits nothing in main-view space is reflected
-  and tested again, limited to the components that board mirrors (those whose control point lies
-  inside it, as in `drawMirroredComponent`). Clicking a part in the mirror selects the original, so
-  the property editor, delete, copy and the popup menu all work unchanged. Selection highlighting
-  and control points are drawn on both copies.
-- **Stage 2: dragging in the mirror.** A drag that starts in a mirror region reflects every
+- **Shared mirror geometry (done).** `org.diylc.presenter.UndersideMirror` holds the reflection
+  for a board, the region its mirror occupies (the board rectangle reflected about the pivot), and
+  which components a mirror shows: the board and every component with a control point on it.
+  `DrawingManager` draws the mirror with it, so drawing and hit-testing cannot drift apart.
+- **Stage 1: selecting in the mirror (done).** `DrawingManager.findMirroredComponentsAt` reflects a
+  point that falls in a mirror region and tests it again, limited to the components that board
+  mirrors. `Presenter.findComponentsAtScaled` falls back to it when nothing selectable is hit in
+  the main view; locked and hidden parts are filtered out first, so a locked part under the mirror
+  does not block it. Clicking a part in the mirror selects the original, so the property editor,
+  delete, copy and the popup menu all work unchanged. Selection highlighting and the selected
+  control points are drawn on both copies. A drag still tests the main view only, and so do the
+  hand cursor and control-point hover, because they promise dragging; all three move to stage 2.
+- **Stage 2: dragging in the mirror.** Dragging, the hand cursor and control-point hover use the
+  mirror. A drag that starts in a mirror region reflects every
   subsequent mouse point before it reaches the existing drag code. Movement along the mirrored axis
   is therefore reversed, which is what the user sees. Snapping applies to the reflected point. Moving
   the board, or changing its Underside Offset, cancels nothing; the mirror simply follows.
@@ -137,8 +139,9 @@ order.
   output is byte-identical to before.
 - Export a board with one part on each side and open the files in a Gerber viewer: the bottom part
   appears only in `.gbo`, mirrored, and in the right position.
-- Unit tests for the mirror geometry helper: the region for each `BoardUndersideDisplay` direction
-  and offset, and that reflecting a point twice returns it.
+- `UndersideMirrorTest` covers the mirror region for each `BoardUndersideDisplay` direction and
+  offset, that reflecting a point twice returns it, and which components a mirror shows.
+  `DrawingManagerTest.testComponentFoundThroughUndersideMirror` covers the hit test.
 - In the app, with Underside Display set to each direction: select, drag and stretch a trace in
   the mirror and confirm that the original follows correctly. Place a part in the mirror and confirm
   that it is bottom-side, mirrored, faded on the main view and solid in the mirror.
@@ -151,9 +154,6 @@ order.
 2. Wrap bottom-side painting in `startDrawingSide(getBoardSide())`.
 3. Add the Flip to Other Side action.
 4. Split the silkscreen print-out by side.
-5. Extract the mirror geometry helper, with tests, and use it in `drawMirroredComponent`.
-6. Mirror stage 1: selecting through the mirror. It does not depend on steps 1-4 and can ship
-   early.
-7. Mirror stage 2: dragging through the mirror.
-8. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
-9. Run the regression suite.
+5. Mirror stage 2: dragging through the mirror.
+6. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
+7. Run the regression suite.

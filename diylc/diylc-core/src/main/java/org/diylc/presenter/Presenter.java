@@ -566,7 +566,23 @@ public class Presenter implements IPlugInPort {
    * @return
    */
   public List<IDIYComponent<?>> findComponentsAtScaled(Point2D point, boolean includeLocked) {
+    return findComponentsAtScaled(point, includeLocked, true);
+  }
+
+  // a drag does not look through the underside mirror, because moving the mouse there moves the
+  // part the other way along the mirrored axis
+  private List<IDIYComponent<?>> findComponentsAtScaled(Point2D point, boolean includeLocked,
+      boolean throughMirror) {
     List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
+    removeUnselectable(components, includeLocked);
+    if (throughMirror && components.isEmpty()) {
+      components = drawingManager.findMirroredComponentsAt(point, currentProject);
+      removeUnselectable(components, includeLocked);
+    }
+    return components;
+  }
+
+  private void removeUnselectable(List<IDIYComponent<?>> components, boolean includeLocked) {
     Iterator<IDIYComponent<?>> iterator = components.iterator();
     while (iterator.hasNext()) {
       IDIYComponent<?> component = iterator.next();
@@ -574,7 +590,6 @@ public class Presenter implements IPlugInPort {
         iterator.remove();
       }
     }
-    return components;
   }
 
   @Override
@@ -1353,7 +1368,8 @@ public class Presenter implements IPlugInPort {
     this.dragStartPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
     this.dragShiftDown = shiftDown;
     this.lockedAxis = null;
-    List<IDIYComponent<?>> components = forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false);
+    List<IDIYComponent<?>> components =
+        forceSelectionRect ? null : findComponentsAtScaled(scaledPoint, false, false);
     if (controlPointMap != null && !this.controlPointMap.isEmpty()) {
       // If we're dragging control points reset selection.
       updateSelection(new ArrayList<IDIYComponent<?>>(this.controlPointMap.keySet()));
