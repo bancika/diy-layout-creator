@@ -662,6 +662,10 @@
 					<description>The 'Layer' property of traces, curved traces, ground fills, solder pads and PCB text is now called 'Board Side', the same as on resistors, ICs and other parts</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>PCB text on the bottom layer is now printed on the bottom page of the silkscreen print-out, not the top one</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotated labels in pasted components and building blocks were drawn in the wrong place and at the wrong angle while following the mouse, until the components were placed</description>
 				</org.diylc.appframework.update.Change>
