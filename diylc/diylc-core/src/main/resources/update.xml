@@ -635,23 +635,27 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Added 'Fade Copper Under Board' to the Config menu, on by default: the canvas and the layout export, PDF and print show the board from the component side, with strips, pads, traces and other copper on the bottom of the board drawn faded as if seen through it</description>
+					<description>The bottom of a board can now be designed directly in its Underside Display, seen the way it will be soldered: components and copper can be selected, moved and stretched there just like on the board itself, new parts placed there or dragged in from the toolbox or the component tree go on the bottom of the board, and hovering over a control point shows its node name. Solder-side work no longer has to be done blind in the see-through top view</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>A board's Underside Display is now a true view from below: copper is drawn solid and the component side faded, and turning 'Underside Transparency' off draws it fully solid instead of fading the whole display</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Inner layers 1 to 6 are no longer offered for traces, pads and other copper, since boards are two-sided; projects that use them still open unchanged</description>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Fade Copper Under Board' to the Config menu, on by default, which controls the see-through look of copper on the bottom of the board on the canvas and in the layout export, PDF and print; turning it off brings back the old look with all copper drawn solid</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
 					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board; bottom parts are drawn faded on the canvas and solid in the board's Underside Display, and Gerber export puts their silkscreen on the bottom layer with the text mirrored, and the silkscreen print-out has a separate page for the bottom; a 'Dot' used as a solder joint can be put on the bottom as well</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
-					<changeType>NEW_FEATURE</changeType>
-					<description>Components can be selected, dragged and stretched by clicking them in a board's Underside Display, not only in the main view, and new parts can be placed there; a part placed in the Underside Display goes on the bottom of the board</description>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Boards are now drawn the way they really are, so it is clear at a glance which side you are looking at: the main view shows the component side, with strips, pads, traces and other copper on the bottom of the board showing through it faded, and the Underside Display shows the solder side, with the copper solid and the parts mounted on top faded behind the board. Holes and trace cuts go through the board and stay clear from both sides</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Turning a board's 'Underside Transparency' off now draws its Underside Display fully solid, and turning it on fades only the parts on the far side of the board instead of the whole display</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Inner layers 1 to 6 are no longer offered for traces, pads and other copper, since boards are two-sided; projects that use them still open unchanged</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
