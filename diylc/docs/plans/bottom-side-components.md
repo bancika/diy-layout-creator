@@ -6,8 +6,7 @@ Gerber layers and the canvas shows it as a part on the far side of the board.
 Status: 32 parts have a Board Side property, and Gerber export sends a bottom-side part's
 silkscreen to the bottom layer with its text mirrored. Parts can be selected, dragged and stretched
 through the Underside Display mirror. The canvas draws a bottom-side part faded in the main view and
-solid in the mirror. The Flip to Other Side action does not exist yet; the next steps below
-remain.
+solid in the mirror. The next steps below remain.
 
 ## 1. Current state
 
@@ -40,10 +39,9 @@ remain.
 | A part's side goes through its own `IBoardSideComponent`, never through `ILayeredComponent` | `getLayerId()` drives continuity, and a through-hole part's leads must connect to copper on both sides. Reporting a resistor as layer `_1` there would cut it off from top copper. |
 | The side is the physical fact. Z-order stays paint order and is not tied to it | Boards are drawn opaque, so painting bottom parts beneath the board would hide them. Bottom-layer traces already follow this rule. |
 | The canvas shows the side visually and does not rely on z-order for it | That is what removes the ambiguity of a "bottom" part drawn above the board. |
-| Flipping a part is an action that sets the side, mirrors the part and sends it back | A part seen from above through the board is a mirror image. Changing the side without mirroring gives a footprint that is wrong for fabrication. |
+| The side is a plain property, and the app never mirrors a part for the user | Seen from above, a part under the board is a mirror image, so a part with an asymmetric footprint moved to the bottom also needs Mirror Horizontally. Doing that for the user was tried as a Flip to Other Side action and dropped as menu clutter; the user sets the side and mirrors the part where needed. |
 | The Gerber layer is swapped centrally, not inside each component | Components keep emitting their `*Top` layer. One place maps it to the other side. |
 | Default `_2` (Top), with `null` meaning Top | Fields added to existing classes deserialize as `null` in old files. |
-| The side is both an editable property and the Flip to Other Side action | The action is the normal way to move a part, because it also mirrors it. The property stays for a part that is already drawn mirrored and only needs its side set. |
 | Bottom-side text is mirrored centrally in the Gerber output | Parts draw their labels readable from the top, which is backwards on the bottom silkscreen once the board is turned over. While `GerberExporter.drawComponent` draws a bottom-side part, `GerberG2DWrapper.setMirrorText` mirrors each string about the centre of its layout box, so no component changes and the canvas keeps readable labels. |
 | A `SolderPad` opens the solder mask on its own side | It used to write `SolderMaskBot` whatever its layer, which was wrong for top-layer pads. It now writes `SolderMaskTop` for a pad on `_2`. |
 
@@ -88,15 +86,6 @@ remain.
 
 ### diylc-swing
 
-- **Flip to Other Side** action in the Edit menu and the canvas popup menu, following the
-  align-distribute actions. For each selected `IBoardSideComponent` it:
-  1. toggles the side,
-  2. mirrors horizontally about the selection centre with the component's `IComponentTransformer`,
-  3. sends the component to the back of its z-order band.
-
-  The whole action is one undo step, and it is enabled only when the selection holds at least one
-  `IBoardSideComponent`. The work is done in `Presenter` behind `IPlugInPort`, with the plugin
-  only wiring the menu items.
 - **PCB print-outs**: `SilkScreenDrawingProvider` prints one page of everything that has a
   silkscreen outline. Split it into top and bottom pages, filtered by side, the same way
   `TraceMaskDrawingProvider` gives one page per `PCBLayer`.
@@ -131,8 +120,8 @@ order.
   simply follows.
 - **Stage 3: placing in the mirror.** A component instantiated with its first point in a mirror
   region is created at the reflected point. If it is an `IBoardSideComponent`, it is created with
-  side `_1` (Bottom) and mirrored, as Flip to Other Side would do. A `PCBLayer` component is created on
-  `_1`. Anything else is placed at the reflected point unchanged.
+  side `_1` (Bottom), not mirrored. A `PCBLayer` component is created on `_1`. Anything else is
+  placed at the reflected point unchanged.
 
 ## 4. Open questions
 
@@ -165,12 +154,11 @@ order.
   that a drag through a mirror below the board moves the part up on the board.
 - In the app, with Underside Display set to each direction: select, drag and stretch a trace in
   the mirror and confirm that the original follows correctly. Place a part in the mirror and confirm
-  that it is bottom-side, mirrored, faded on the main view and solid in the mirror.
+  that it is bottom-side, faded on the main view and solid in the mirror.
 - Run the regression suite, since rendering and serialization both change.
 
 ## 6. Next steps
 
-1. Add the Flip to Other Side action.
-2. Split the silkscreen print-out by side.
-3. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
-4. Run the regression suite.
+1. Split the silkscreen print-out by side.
+2. Mirror stage 3: placing in the mirror.
+3. Run the regression suite.
