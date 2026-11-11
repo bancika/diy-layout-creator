@@ -27,6 +27,7 @@ import org.diylc.common.PCBLayer;
 import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IBoard;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -684,6 +685,66 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testBottomMountedPartFadedOnlyWithOption() {
+    Project project = new Project();
+    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    BufferedImage faded = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertSolid(faded, 155, 155);
+    assertFaded(faded, 205, 205);
+
+    BufferedImage plain = renderSides(project, EnumSet.of(DrawOption.ZOOM));
+    assertSolid(plain, 205, 205);
+  }
+
+  @Test
+  public void testCachedBottomMountedPartFaded() {
+    Project project = new Project();
+    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    BufferedImage img = renderSides(project,
+        EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.ENABLE_CACHING));
+    assertFaded(img, 205, 205);
+  }
+
+  @Test
+  public void testMirrorShowsBottomMountedPartSolid() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    board.setUndersideTransparency(true);
+    project.getComponents().add(board);
+    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents().add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    // reflection across y = 410 puts the top part at y 660..670 and the bottom one at 610..620
+    BufferedImage img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertFaded(img, 155, 665);
+    assertSolid(img, 205, 615);
+  }
+
+  @Test
+  public void testLockedBottomMountedPartNotFadedTwice() {
+    Project project = new Project();
+    MountedComponent bottom = new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+    project.getComponents().add(bottom);
+
+    DrawingManager drawingManager = createDrawingManager();
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project,
+        EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.LOCKED_ALPHA), null, null,
+        Collections.emptyList(), Collections.singleton(bottom), Collections.emptySet(), null, null,
+        false, Collections.emptySet(), 1.0, 1.0, null);
+    g2d.dispose();
+
+    assertFaded(img, 205, 205, Math.min(0.5f, farSideAlpha()));
+  }
+
+  @Test
   public void testLockedBottomSideNotFadedTwice() {
     Project project = new Project();
     SidePaintingComponent bottom = new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
@@ -990,6 +1051,34 @@ public class DrawingManagerTest {
   }
 
   // paints an opaque black square, declared on the given side or, when null, left undeclared
+  // paints an undeclared black square, like a part that leaves its side to the Board Side property
+  @ComponentDescriptor(name = "Mounted", author = "test", category = "Test", instanceNamePrefix = "M",
+      description = "Part mounted on one side of the board", zOrder = IDIYComponent.COMPONENT,
+      enableCache = true)
+  public static class MountedComponent extends SidePaintingComponent implements IBoardSideComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Rectangle2D bounds;
+    private PCBLayer boardSide;
+
+    public MountedComponent(Rectangle2D shape, PCBLayer boardSide) {
+      super(shape, null);
+      this.bounds = shape;
+      this.boardSide = boardSide;
+    }
+
+    @Override
+    public PCBLayer getBoardSide() {
+      return boardSide;
+    }
+
+    @Override
+    public Rectangle2D getCachingBounds() {
+      return bounds;
+    }
+  }
+
   public static class SidePaintingComponent extends MockDIYComponent {
 
     private static final long serialVersionUID = 1L;

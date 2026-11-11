@@ -303,6 +303,8 @@ public class DrawingManager {
         if (lockedComponents.contains(component) && drawOptions.contains(DrawOption.LOCKED_ALPHA)) {
           g2d.setComposite(lockedComposite);
         }
+        // after the locked composite, which is set on the canvas and would replace the fade
+        g2dWrapper.setUndeclaredSide(getMountedSide(component));
         // Draw the component through the g2dWrapper.
         long componentStart = System.nanoTime();
         try {
@@ -334,6 +336,7 @@ public class DrawingManager {
           }
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
+        g2dWrapper.setUndeclaredSide(PCBLayer._2);
         // after finishedDrawingComponent, which reverts the transform the clip was taken in
         if (visibleClip != null) {
           g2d.setClip(visibleClip);
@@ -527,6 +530,15 @@ public class DrawingManager {
     return failedComponents;
   }
 
+  /**
+   * @return the side of the board the component is mounted on; components that do not say are
+   *         on top
+   */
+  static PCBLayer getMountedSide(IDIYComponent<?> component) {
+    return component instanceof IBoardSideComponent
+        ? ((IBoardSideComponent) component).getBoardSide() : PCBLayer._2;
+  }
+
   private static void drawSelectedControlPoint(G2DWrapper g2dWrapper, Point2D controlPoint) {
     g2dWrapper.setColor(SELECTED_CONTROL_POINT_COLOR.darker());
     g2dWrapper.fillOval((int) Math.round(controlPoint.getX() - CONTROL_POINT_SIZE / 2),
@@ -565,9 +577,10 @@ public class DrawingManager {
     g2dWrapper.setMirrorDirection(mirrorDirection);
     try {
       g2dWrapper.transform(mirrorTx);
-      // the mirror is the copper side, so copper is drawn solid and the component side faded
+      // the mirror is the copper side, so copper and the parts mounted on it are drawn solid and
+      // the component side faded
       g2dWrapper.setViewedSide(PCBLayer._1, Boolean.TRUE.equals(board.getUndersideTransparency()),
-          component instanceof IBoard ? PCBLayer._1 : PCBLayer._2);
+          component instanceof IBoard ? PCBLayer._1 : getMountedSide(component));
       component.draw(g2dWrapper, state, outlineMode, project, g2dWrapper);
     } catch (Exception e) {
       LOG.error("Error drawing mirrored " + component.getName(), e);

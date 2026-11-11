@@ -5,8 +5,9 @@ Gerber layers and the canvas shows it as a part on the far side of the board.
 
 Status: 32 parts have a Board Side property, and Gerber export sends a bottom-side part's
 silkscreen to the bottom layer with its text mirrored. Parts can be selected, dragged and stretched
-through the Underside Display mirror. The canvas does not show the side yet, and the Flip to Other
-Side action does not exist; the next steps below remain.
+through the Underside Display mirror. The canvas draws a bottom-side part faded in the main view and
+solid in the mirror. The Flip to Other Side action does not exist yet; the next steps below
+remain.
 
 ## 1. Current state
 
@@ -50,9 +51,15 @@ Side action does not exist; the next steps below remain.
 
 ### diylc-core
 
-- **Canvas rendering**: bottom-side components use the far-side fade from `copper-side-view.md`,
-  wrapping their painting in `startDrawingSide(getBoardSide())`. They are then faded in the main
-  view and solid in the Underside Display mirror, the same as bottom copper.
+- **Canvas rendering (done)**: bottom-side parts use the far-side fade from `copper-side-view.md`,
+  set centrally rather than in each component. Wherever a component is drawn - the main loop in
+  `DrawingManager`, `DrawingCache` rendering an image, and the Underside Display mirror - the
+  wrapper's undeclared side is set to `DrawingManager.getMountedSide(component)` with
+  `G2DWrapper.setUndeclaredSide`. A bottom part is therefore faded in the main view (with Fade
+  Copper Under Board on) and solid in the mirror, the same as bottom copper. In the main loop the
+  side is set after the locked composite, which is set on the canvas directly and would otherwise
+  replace the fade. `DrawingCache` pastes a cached image as both-sides paint, because the fade is
+  already in the image.
 
 ### diylc-library
 
@@ -132,6 +139,10 @@ order.
 - **Components that belong to no side.** In mirror stage 3 a jumper, eyelet or wire dropped in the
   mirror has no side to set. Confirm that placing it at the reflected point unchanged is what users
   expect, or whether such parts should be refused in the mirror.
+- **Locked bottom-side parts drawn from the cache.** An uncached locked part takes the stronger of
+  the locked alpha and the far-side alpha. A cached one is pasted at the locked alpha onto an
+  image that already carries the far-side fade, so it ends up fainter. The same applies to
+  bottom-side paint inside any cached component.
 - **Components inside two boards.** A component whose control points fall inside two boards with
   Underside Display on appears in both mirrors. Selecting through either is fine. Check that
   dragging through one mirror while the other redraws does not confuse the user.
@@ -140,6 +151,9 @@ order.
 
 - `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components,
   including a stub `IBoardSideComponent` on top, bottom and `null`.
+- `DrawingManagerTest` checks rendered pixels for a part that reports its own side: a bottom part
+  is faded only with `FADE_FAR_SIDE`, also when drawn from the image cache; it is solid in the
+  mirror, where a top part is faded; and a locked bottom part is faded once, not twice.
 - Load an old `.diy` with PCB parts and confirm every component reports `_2` (Top) and that the Gerber
   output is byte-identical to before.
 - Export a board with one part on each side and open the files in a Gerber viewer: the bottom part
@@ -156,8 +170,7 @@ order.
 
 ## 6. Next steps
 
-1. Wrap bottom-side painting in `startDrawingSide(getBoardSide())`.
-2. Add the Flip to Other Side action.
-3. Split the silkscreen print-out by side.
-4. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
-5. Run the regression suite.
+1. Add the Flip to Other Side action.
+2. Split the silkscreen print-out by side.
+3. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
+4. Run the regression suite.

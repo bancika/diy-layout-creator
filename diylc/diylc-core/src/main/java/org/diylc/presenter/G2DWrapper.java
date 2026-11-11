@@ -187,6 +187,19 @@ class G2DWrapper extends Graphics2D implements IDrawingObserver {
   }
 
   /**
+   * Sets the side assumed for paint that is not bracketed with
+   * {@link #startDrawingSide(PCBLayer)}, keeping the viewed side. A part mounted on the bottom of
+   * the board is drawn on the bottom side as a whole.
+   *
+   * @param undeclaredSide
+   */
+  public void setUndeclaredSide(PCBLayer undeclaredSide) {
+    this.undeclaredSide = undeclaredSide;
+    this.paintedSide = undeclaredSide;
+    updateFarSideFade();
+  }
+
+  /**
    * Returns to the top-side view, fading the bottom side only if the draw options ask for it.
    */
   public void resetViewedSide() {

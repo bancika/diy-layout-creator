@@ -153,12 +153,16 @@ public class DrawingCache {
         if (Math.abs(1.0 - zoom) > 1e-4) {
           g2d.getCanvasGraphics().scale(1 / zoom, 1 / zoom);
         }
+        // the image was rendered with the far-side fade already applied, so pasting it must not
+        // fade it again
+        g2d.startDrawingBothSides();
         try {
           // draw cached image
           g2d.scale(1 / scaleFactor, 1 / scaleFactor);
           g2d.getCanvasGraphics().drawImage(value.getImage(), (int) ((firstPoint.getX() - value.getDx()) * zoom * scaleFactor),
               (int) ((firstPoint.getY() - value.getDy())* zoom * scaleFactor), null);
         } finally {
+          g2d.stopDrawingSide();
           if (Math.abs(1.0 - zoom) > 1e-4) {
             g2d.getCanvasGraphics().scale(zoom, zoom);
           }
@@ -347,6 +351,7 @@ public class DrawingCache {
 
       // initialize wrapper
       wrapper.startedDrawingComponent(zOrder);
+      wrapper.setUndeclaredSide(DrawingManager.getMountedSide(component));
       
       long componentStart = System.nanoTime();
 
