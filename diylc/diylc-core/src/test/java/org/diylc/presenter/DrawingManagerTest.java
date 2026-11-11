@@ -445,7 +445,7 @@ public class DrawingManagerTest {
 
     drawCachedAndClipped(drawingManager, project, 100);
     // the netlist and continuity checks are built from the areas recorded while painting
-    assertEquals(1, drawingManager.getContinuityAreas().size());
+    assertEquals(1, drawingManager.getContinuityAreas(project).size());
     assertEquals(1, component.drawCount);
 
     drawCachedAndClipped(drawingManager, project, 100);
@@ -639,12 +639,72 @@ public class DrawingManagerTest {
     drawVisibleRect(drawingManager, project, null);
 
     // the cut splits the strip in two for the netlist...
-    assertEquals(2, drawingManager.getContinuityAreas().size());
+    assertEquals(2, drawingManager.getContinuityAreas(project).size());
     // ...but the strip's own recorded area must stay whole, so that moving or deleting the cut
     // does not leave a hole behind
     Area recorded =
         drawingManager.getComponentArea(strip).getContinuityPositiveAreas().iterator().next();
     assertTrue(recorded.contains(50, 5));
+  }
+
+  @Test
+  public void testCutAppliesAfterStripIsRedrawn() {
+    Project project = new Project();
+    ConductorComponent strip = new ConductorComponent(new Rectangle2D.Double(0, 0, 100, 10), true);
+    ConductorComponent cut = new ConductorComponent(new Rectangle2D.Double(40, 0, 20, 10), false);
+    project.getComponents().add(strip);
+    project.getComponents().add(cut);
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+
+    // an edit to the board records its areas again, after those of the cuts already on it
+    drawingManager.invalidateComponent(strip);
+    drawVisibleRect(drawingManager, project, null);
+
+    assertEquals(2, drawingManager.getContinuityAreas(project).size());
+  }
+
+  @Test
+  public void testCutOutOfViewAppliesWhenAreasAreRecorded() {
+    Project project = new Project();
+    project.getComponents()
+        .add(new ConductorComponent(new Rectangle2D.Double(0, 0, 300, 10), true));
+    project.getComponents()
+        .add(new SelfCullingConductorComponent(new Rectangle2D.Double(240, 0, 20, 10), false));
+    DrawingManager drawingManager = createDrawingManager();
+
+    drawCachedAndClipped(drawingManager, project, 100);
+
+    assertEquals(2, drawingManager.getContinuityAreas(project).size());
+  }
+
+  @Test
+  public void testHighlightFollowsAreasRecordedAfterIt() {
+    Project project = new Project();
+    project.getComponents()
+        .add(new ConductorComponent(new Rectangle2D.Double(0, 0, 100, 10), true));
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+    drawingManager.findContinuityAreaAtPoint(project, new Point2D.Double(10, 5));
+
+    // nothing was edited, the cut was only drawn for the first time, e.g. scrolled into view
+    project.getComponents()
+        .add(new ConductorComponent(new Rectangle2D.Double(40, 0, 20, 10), false));
+    drawVisibleRect(drawingManager, project, null);
+    drawingManager.findContinuityAreaAtPoint(project, new Point2D.Double(10, 5));
+
+    BufferedImage img = render(drawingManager, project);
+    assertTrue(img.getRGB(10, 5) != img.getRGB(80, 5));
+  }
+
+  private BufferedImage render(DrawingManager drawingManager, Project project) {
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM), null, null,
+        Collections.emptyList(), Collections.emptySet(), Collections.emptySet(), null, null, false,
+        Collections.emptySet(), 1.0, 1.0, null);
+    g2d.dispose();
+    return img;
   }
 
   private void drawVisibleRect(DrawingManager drawingManager, Project project,
@@ -729,6 +789,38 @@ public class DrawingManagerTest {
       drawingObserver.startTrackingContinuityArea(positive);
       g2d.fill(shape);
       drawingObserver.stopTrackingContinuityArea();
+    }
+  }
+
+  // skips drawing when clipped out, as TraceCut and the boards do
+  public static class SelfCullingConductorComponent extends ConductorComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Point2D center;
+
+    public SelfCullingConductorComponent(Rectangle2D shape, boolean positive) {
+      super(shape, positive);
+      this.center = new Point2D.Double(shape.getCenterX(), shape.getCenterY());
+    }
+
+    @Override
+    public int getControlPointCount() {
+      return 1;
+    }
+
+    @Override
+    public Point2D getControlPoint(int index) {
+      return center;
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      if (checkPointsClipped(g2d.getClip())) {
+        return;
+      }
+      super.draw(g2d, componentState, outlineMode, project, drawingObserver);
     }
   }
 

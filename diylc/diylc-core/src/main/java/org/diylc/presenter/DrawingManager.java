@@ -32,6 +32,7 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -234,7 +235,9 @@ public class DrawingManager {
 
     g2dWrapper.setColor(theme.getBgColor());
     g2dWrapper.fillRect(0, 0, canvasDimension.width, canvasDimension.height);
-    g2d.clip(new Rectangle(new Point(0, 0), canvasDimension));
+    Rectangle canvasRect = new Rectangle(new Point(0, 0), canvasDimension);
+    g2d.clip(canvasRect);
+    Shape canvasDeviceClip = g2d.getTransform().createTransformedShape(canvasRect);
 
     Rectangle2D extraSpaceRect = new Rectangle2D.Double();
     AffineTransform extraSpaceTx = new AffineTransform();
@@ -252,6 +255,11 @@ public class DrawingManager {
         visibleRect.setRect(visibleRect.getX() / zoom, visibleRect.getY() / zoom,
             visibleRect.getWidth() / zoom, visibleRect.getHeight() / zoom);
     }
+
+    // components skip drawing themselves when the clip leaves them out, so a component whose
+    // areas are recorded is drawn against the whole canvas rather than the visible part of it;
+    // otherwise a trace cut scrolled out of view would not cut anything
+    Shape recordingClip = toUserSpace(g2d, canvasDeviceClip);
 
     // Composite mainComposite = g2d.getComposite();
     // Composite alphaComposite =
@@ -304,10 +312,15 @@ public class DrawingManager {
 
       synchronized (this) {
         g2dWrapper.startedDrawingComponent(i);
+        Shape visibleClip = null;
         if (!trackArea) {
           g2dWrapper.stopTracking();
         } else {
           g2dWrapper.startRecordingDrawnBounds();
+          if (recordingClip != null) {
+            visibleClip = g2d.getClip();
+            g2d.setClip(recordingClip);
+          }
         }
         Composite oldComposite = g2d.getComposite();
         Font oldFont = g2d.getFont();
@@ -346,9 +359,15 @@ public class DrawingManager {
           }
         }
         ComponentArea area = g2dWrapper.finishedDrawingComponent();
+        // after finishedDrawingComponent, which reverts the transform the clip was taken in
+        if (visibleClip != null) {
+          g2d.setClip(visibleClip);
+        }
         if (trackArea && area != null && area.hasOutline()) {
           componentAreaMap.put(component, area);
           lastDrawnStateMap.put(component, state);
+          // the graph was built from the areas this one replaces
+          continuityGraphCache = null;
         }
 
         try {
@@ -641,6 +660,18 @@ public class DrawingManager {
         bounds.getHeight() + 2 * OFF_SCREEN_MARGIN);
   }
 
+  /**
+   * @return the specified device-space shape in the current user space of the graphics, or null
+   *         when its transform cannot be inverted
+   */
+  private static Shape toUserSpace(Graphics2D g2d, Shape deviceShape) {
+    try {
+      return g2d.getTransform().createInverse().createTransformedShape(deviceShape);
+    } catch (NoninvertibleTransformException e) {
+      return null;
+    }
+  }
+
   private void configureRenderingHints(Graphics2D g2d, Set<DrawOption> drawOptions) {
     if (drawOptions.contains(DrawOption.ANTIALIASING)) {
       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -805,26 +836,35 @@ public class DrawingManager {
     messageDispatcher.dispatchMessage(EventType.REPAINT);
   }
 
-  public void findContinuityAreaAtPoint(Point2D p) {
-    if (continuityGraphCache == null)
-      continuityGraphCache = getContinuityGraph();
+  public void findContinuityAreaAtPoint(Project project, Point2D p) {
+    if (continuityGraphCache == null) {
+      continuityGraphCache = getContinuityGraph(project);
+    }
 
     currentContinuityAreas = continuityGraphCache.findAreasFor(p);
   }
-  
-  public List<ContinuityArea> getContinuityAreas() {
+
+  /**
+   * Returns the continuity areas recorded for the components of the specified project, with
+   * negative areas subtracted from the positive areas of the components below them.
+   *
+   * @param project
+   * @return
+   */
+  public List<ContinuityArea> getContinuityAreas(Project project) {
     // Find all individual continuity areas for all components
     List<ContinuityArea> preliminaryAreas = new ArrayList<ContinuityArea>();
     List<Boolean> checkBreakout = new ArrayList<Boolean>();
 
-    for (Map.Entry<IDIYComponent<?>, ComponentArea> entry : this.componentAreaMap.entrySet()) {
-      ComponentArea a = entry.getValue();
+    // in z-order rather than the order the areas were recorded in, which changes every time a
+    // component is redrawn after an edit; a trace cut only cuts what lies below it
+    for (IDIYComponent<?> component : project.getComponents()) {
+      ComponentArea a = componentAreaMap.get(component);
 
-      if (a == null)
+      if (a == null) {
         continue;
-      
-      IDIYComponent<?> component = entry.getKey();
-      
+      }
+
       int layerId;
       
       if (component instanceof ILayeredComponent) {
@@ -877,10 +917,13 @@ public class DrawingManager {
     return areas;
   }
 
-  public ContinuityGraph getContinuityGraph() {
+  public ContinuityGraph getContinuityGraph(Project project) {
     Set<Connection> connections = new HashSet<Connection>();
     int z = 0;
-    for (IDIYComponent<?> c : this.componentAreaMap.keySet()) {
+    for (IDIYComponent<?> c : project.getComponents()) {
+      if (!componentAreaMap.containsKey(c)) {
+        continue;
+      }
       if (c instanceof IContinuity) {
         for (int i = 0; i < c.getControlPointCount() - 1; i++)
           for (int j = i + 1; j < c.getControlPointCount(); j++)
@@ -890,13 +933,13 @@ public class DrawingManager {
       z++;
     }
     
-    List<ContinuityArea> areas = getContinuityAreas();
+    List<ContinuityArea> areas = getContinuityAreas(project);
 
     return NetlistBuilder.buildContinuityGraph(areas, connections);
   }
 
-  public List<Area> getContinuityAreaProximity(float threshold) {
-    List<ContinuityArea> continuityAreas = getContinuityAreas();
+  public List<Area> getContinuityAreaProximity(Project project, float threshold) {
+    List<ContinuityArea> continuityAreas = getContinuityAreas(project);
     Stroke s = ObjectCache.getInstance().fetchBasicStroke(threshold - 1); // value eyeballed for
                                                                           // approx good results
 

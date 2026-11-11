@@ -133,7 +133,10 @@ public class DrawingCache {
         .extractComponentTypeFrom((Class<? extends IDIYComponent<?>>) component.getClass());
 
     CacheValue value = null;
+    // a component out of view is drawn only to record its areas, which drawing it directly does
+    // without rendering an image that would push visible ones out of the cache
     if (type != null && type.getEnableCache()
+        && (visibleRect == null || visibleRect.intersects(component.getCachingBounds()))
         && shouldCache(component, componentState, zoom, scaleFactor)) {
       value = renderAndCache(component, g2d, componentState, outlineMode, project, zoom,
           scaleFactor, zOrder, drawOptions, false);
