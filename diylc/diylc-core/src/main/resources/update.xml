@@ -634,6 +634,14 @@
 					<description>Added 'Value Notation' to the Config menu to show resistance, capacitance, inductance and voltage values in RKM notation, e.g. 4K7, 0R22, 2n2, 4u7 or 6V3, instead of decimal; values can be typed in either notation, and typing the unit together with the value, e.g. 4K7 or 2.2nF, sets the unit at the same time</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board; bottom parts are drawn faded on the canvas and solid in the board's Underside Display, and Gerber export puts their silkscreen on the bottom layer with the text mirrored</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Components can be selected, dragged and stretched by clicking them in a board's Underside Display, not only in the main view</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotated labels in pasted components and building blocks were drawn in the wrong place and at the wrong angle while following the mouse, until the components were placed</description>
 				</org.diylc.appframework.update.Change>

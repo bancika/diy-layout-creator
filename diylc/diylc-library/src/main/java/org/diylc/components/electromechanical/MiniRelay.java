@@ -36,8 +36,10 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -58,7 +60,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Relay", author = "Branislav Stojkovic", category = "Electro-Mechanical",
     instanceNamePrefix = "RY", description = "Miniature PCB mount relay, like Omron G5V-1/G5V-2 or Fujitsu FTR-B3",
     zOrder = IDIYComponent.COMPONENT, enableCache = true)
-public class MiniRelay extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
+public class MiniRelay extends AbstractLabeledComponent<String> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -97,6 +99,7 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
   private RelayType type = RelayType.DPDT;
   private RelaySize size = RelaySize.Miniature;
   private Voltage voltage = new Voltage(12d, VoltageUnit.V);
+  private PCBLayer boardSide;
   transient private Area[] body;
 
   public MiniRelay() {
@@ -469,6 +472,16 @@ public class MiniRelay extends AbstractLabeledComponent<String> implements IGerb
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum RelayType {

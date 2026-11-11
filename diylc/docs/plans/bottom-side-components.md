@@ -3,7 +3,7 @@
 Let a component be mounted on the bottom of a PCB, so that its silkscreen goes to the bottom
 Gerber layers and the canvas shows it as a part on the far side of the board.
 
-Status: 32 parts have a Board Side property, and Gerber export sends a bottom-side part's
+Status: 45 parts have a Board Side property, and Gerber export sends a bottom-side part's
 silkscreen to the bottom layer with its text mirrored. Parts can be selected, dragged and stretched
 through the Underside Display mirror. The canvas draws a bottom-side part faded in the main view and
 solid in the mirror. The next steps below remain.
@@ -61,26 +61,23 @@ solid in the mirror. The next steps below remain.
 
 ### diylc-library
 
-- **Done.** Every part that uses the `SilkscreenTop` default and whose transformer can mirror it
-  implements `IBoardSideComponent`: a nullable `PCBLayer boardSide` field and a getter/setter pair
-  with `@EditableProperty(name = "Board Side")` on the getter, which returns `_2` (Top) when the
-  field is `null`. The key is in every language file.
+- **Done.** Every part that uses the `SilkscreenTop` default implements `IBoardSideComponent`: a
+  nullable `PCBLayer boardSide` field and a getter/setter pair with
+  `@EditableProperty(name = "Board Side")` on the getter, which returns `_2` (Top) when the field
+  is `null`. The key is in every language file. 45 parts have it.
   - On a shared base, covering every subclass: `AbstractFilmCapacitor`, `AbstractPotentiometer`,
-    `AbstractRadialComponent`, `PassiveSMDComponent`.
+    `AbstractRadialComponent`, `AbstractTransistorPackage`, `PassiveSMDComponent`.
   - On the class itself: `Resistor`, `HeatSinkResistor`, `AxialElectrolyticCapacitor`,
-    `CrystalOscillator`, `ToroidalInductor`, `DiodePlastic`, `DiodeGlass`, `DIL_IC`, `SIL_IC`,
-    `TransistorTO1`, `TransistorTO92`, `TransistorTO220`, `CliffJack1_4`, `CliffJack1_8`,
-    `ClosedJack1_4`, `MiniToggleSwitch`, `PCBTerminalBlock`. The transistors are not done on
-    `AbstractTransistorPackage` because `TransistorTO126` cannot be mirrored, and a property on the
-    base cannot be hidden from one subclass.
-  - Left out because they cannot be mirrored: `TubeSocket`, `RotarySwitchOpen`,
-    `RotarySwitchSealed`, `RotarySelectorSwitch`, `SlideSwitch`, `PlasticDCJack`,
-    `TactileMicroSwitch`, `MiniRelay`, `AudioTransformer`, `MultiSectionCapacitor`, `MultiwattIC`,
-    `BridgeRectifier`, `TransistorTO126`. Making one of them mirrorable is what it takes to give it
-    a side.
-  - `Label` is left out too: it is text, not a mounted part, and `PCBText` already has a layer.
-  - `BoardSideComponentsTest` checks that every such part starts on Top, takes Bottom, and can be
-    mirrored.
+    `CrystalOscillator`, `ToroidalInductor`, `AudioTransformer`, `MultiSectionCapacitor`,
+    `DiodePlastic`, `DiodeGlass`, `BridgeRectifier`, `DIL_IC`, `SIL_IC`, `MultiwattIC`,
+    `TubeSocket`, `CliffJack1_4`, `CliffJack1_8`, `ClosedJack1_4`, `PlasticDCJack`,
+    `MiniToggleSwitch`, `SlideSwitch`, `TactileMicroSwitch`, `RotarySwitchOpen`,
+    `RotarySwitchSealed`, `RotarySelectorSwitch`, `MiniRelay`, `PCBTerminalBlock`.
+  - Whether a part can be mirrored does not matter: the app never mirrors it for the user.
+  - `Label` is left out: it is text, not a mounted part, and `PCBText` already has a layer.
+  - `BoardSideComponentsTest` checks that every such part starts on Top and takes Bottom, and
+    that every part writing `SilkscreenTop` has a side, so a new part cannot be left out by
+    accident.
 - `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad`, `PCBText` and `DrillHole` do **not**
   implement it. Their `PCBLayer` already says where they are.
 

@@ -40,9 +40,11 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -63,7 +65,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Multi-Section Capacitor", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "C", description = "Multi-section vertically mounted electrolytic capacitor, similar to JJ, CE and others",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]> implements IGerberComponentSimple {
+public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[]> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -92,6 +94,7 @@ public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[
   protected Display display = Display.NAME;
 //  private Size pinSpacing = PIN_SPACING;
   private Size diameter = BODY_DIAMETER;
+  private PCBLayer boardSide;
 
   public MultiSectionCapacitor() {
     super();
@@ -540,5 +543,15 @@ public class MultiSectionCapacitor extends AbstractLabeledComponent<Capacitance[
     int margin = 20;    
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin, bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

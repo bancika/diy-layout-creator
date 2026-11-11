@@ -34,8 +34,10 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
@@ -43,7 +45,7 @@ import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.netlist.ISpiceMapper;
 
 public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper, IGerberComponentSimple,
-    IDatasheetSupport {
+    IDatasheetSupport, IBoardSideComponent {
   
   private static final long serialVersionUID = 1L;
   
@@ -59,6 +61,7 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
   protected TransistorDisplay display = TransistorDisplay.NAME;  
   
   protected boolean folded = false;
+  private PCBLayer boardSide;
 
   public AbstractTransistorPackage() {
   }
@@ -328,6 +331,16 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
     }
   }
   
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
+  }
+
   public enum TransistorDisplay {
 
     NAME, VALUE, NONE, BOTH, PINOUT;

@@ -37,10 +37,12 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ISwitch;
@@ -60,7 +62,7 @@ import org.diylc.utils.Constants;
     instanceNamePrefix = "SW", description = "Sealed plastic rotary switch in several different switching configurations",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
-public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSealedType> implements ISwitch, IGerberComponentSimple {
+public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSealedType> implements ISwitch, IGerberComponentSimple, IBoardSideComponent {
 
   private static final int OUTER_ANGLE_OFFSET = 15;
   private static final int INNER_ANGLE_OFFSET = 30;
@@ -88,6 +90,7 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
   private double[] pointAngles;
+  private PCBLayer boardSide;
 
   public RotarySwitchSealed() {
     super();
@@ -356,6 +359,16 @@ public class RotarySwitchSealed extends AbstractAngledComponent<RotarySwitchSeal
     Rectangle2D rect = getBody()[0].getBounds2D();
     int margin = 40; // to catch the pins that are outside the body, if needed
     return new Rectangle2D.Double(rect.getX() - margin, rect.getY() - margin, rect.getWidth() + 2 * margin, rect.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum Mount {

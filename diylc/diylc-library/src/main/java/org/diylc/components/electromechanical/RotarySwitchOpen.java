@@ -42,12 +42,14 @@ import org.diylc.awt.TwoCircleTangent;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.guitar.RotarySwitchOpenPositionPropertyValueSource;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.Angle;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ISwitch;
@@ -71,7 +73,7 @@ import org.diylc.utils.SwitchUtils;
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true,
     transformer = AngledComponentTransformer.class)
 public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenType>
-    implements ISwitch, IGerberComponentSimple {
+    implements ISwitch, IGerberComponentSimple, IBoardSideComponent {
 
   private static final int ANGLE_OFFSET = -15;
   private static final int INNER_COMMON_ANGLE_OFFSET = -90;
@@ -106,6 +108,7 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
   private double[] pointAngles;
 
   private Integer selectedPosition;
+  private PCBLayer boardSide;
 
   public RotarySwitchOpen() {
     super();
@@ -607,6 +610,16 @@ public class RotarySwitchOpen extends AbstractAngledComponent<RotarySwitchOpenTy
     int margin = 40; // to catch the pins that are outside the body, if needed
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin,
         maxY - minY + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum Mount {

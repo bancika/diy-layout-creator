@@ -41,6 +41,7 @@ import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.guitar.Freeway3x4_03SwitchPositionPropertyValueSource;
 import org.diylc.components.transform.MiniToggleSwitchTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ISwitch;
@@ -61,7 +62,7 @@ import org.diylc.utils.SwitchUtils;
     author = "Branislav Stojkovic", description = "Panel mounted slide switch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "SW",
     enableCache = true, transformer = MiniToggleSwitchTransformer.class)
-public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> implements ISwitch, IGerberComponentSimple {
+public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> implements ISwitch, IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -95,6 +96,7 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
 
   private Integer selectedPosition;
   private Boolean showMarkers;
+  private PCBLayer boardSide;
 
   public SlideSwitch() {
     super();
@@ -534,5 +536,15 @@ public class SlideSwitch extends AbstractTransparentComponent<SlideSwitchType> i
     Rectangle2D bounds = getBody()[1].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin,
         bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

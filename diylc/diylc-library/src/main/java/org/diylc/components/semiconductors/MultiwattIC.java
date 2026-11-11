@@ -37,6 +37,7 @@ import org.diylc.common.*;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
@@ -61,7 +62,7 @@ import org.diylc.utils.Constants;
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
     datasheetModelColumn = 1)
 public class MultiwattIC extends AbstractTransparentComponent<String>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -92,6 +93,7 @@ public class MultiwattIC extends AbstractTransparentComponent<String>
   private Color tabBorderColor = TAB_BORDER_COLOR;
   private String pinNames = null;
   private PinLabels pinLabels = null;
+  private PCBLayer boardSide;
   transient private Area[] body;
   transient private String[] parsedPinNames;
 
@@ -743,6 +745,16 @@ public class MultiwattIC extends AbstractTransparentComponent<String>
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum MultiwattType {

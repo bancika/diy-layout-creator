@@ -28,11 +28,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.diylc.common.ComponentType;
 import org.diylc.common.PCBLayer;
+import org.diylc.components.misc.Label;
 import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
-import org.diylc.presenter.ComponentProcessor;
+import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.utils.ReflectionUtils;
 import org.junit.Test;
 
@@ -55,14 +56,20 @@ public class BoardSideComponentsTest {
     }
   }
 
-  // a part moved to the bottom is seen mirrored from the top, so it must be possible to mirror it
+  // a part that writes its silkscreen to the top layer can sit on either side; Label is text rather
+  // than a mounted part, and PCBText has a layer of its own
   @Test
-  public void testBoardSideComponentsCanBeMirrored() throws Exception {
-    for (IDIYComponent<?> component : createBoardSideComponents()) {
-      @SuppressWarnings("unchecked")
-      ComponentType type = ComponentProcessor.getInstance().extractComponentTypeFrom(
-          (Class<? extends IDIYComponent<?>>) component.getClass());
-      assertTrue(component.getClass().getName(), type.getTransformer().canMirror(component));
+  public void testEveryTopSilkscreenPartHasABoardSide() throws Exception {
+    for (Class<?> type : ReflectionUtils.getIndexedClasses(IDIYComponent.class)) {
+      if (Modifier.isAbstract(type.getModifiers())
+          || !IGerberComponentSimple.class.isAssignableFrom(type) || type == Label.class) {
+        continue;
+      }
+      IGerberComponentSimple component =
+          (IGerberComponentSimple) type.getDeclaredConstructor().newInstance();
+      if (component.getGerberLayer() == GerberLayer.SilkscreenTop) {
+        assertTrue(type.getName(), component instanceof IBoardSideComponent);
+      }
     }
   }
 
