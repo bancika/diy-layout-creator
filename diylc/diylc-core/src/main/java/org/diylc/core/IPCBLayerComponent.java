@@ -25,8 +25,9 @@ import org.diylc.common.PCBLayer;
 
 /**
  * Interface for copper drawn on a layer of a PCB, such as a trace, pad, ground fill or PCB text.
- * The layer is the copper's board side, shown to the user as 'Board Side', but unlike the side of a
- * mounted part it also decides which other copper the copper connects to.
+ * The layer is the copper's board side, but unlike the side of a mounted part it also decides
+ * which other copper the copper connects to. It keeps the name 'Layer' in the editor, which is
+ * what PCB tools call it for copper.
  * 
  * @author Branislav Stojkovic
  */

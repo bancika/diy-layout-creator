@@ -30,9 +30,9 @@ projects; the open questions below remain.
   `PCBText` - implements `IPCBLayerComponent` (`getLayer`/`setLayer`), which `PCBLayerFilter` and
   the trace-mask print-out use to tell copper from parts. `IPCBLayerComponent` extends
   `IBoardSideComponent`, reading and writing the side through the layer, with the deprecated inner
-  layers counted as the bottom, so copper has one side like any part. The copper's layer property
-  is shown as **Board Side**, the same as on parts; its field is still `layer`, so files are
-  unaffected.
+  layers counted as the bottom, so copper has one side like any part. In the editor the copper
+  keeps its **Layer** property, the term PCB tools use for copper, while parts show **Board Side**,
+  the term they use for where a part is mounted.
 - A simple component's Gerber layer follows its side: the default
   `IGerberComponentSimple.getGerberLayer()` returns `SilkscreenBot` for an `IBoardSideComponent` on
   `_1` (Bottom) and `SilkscreenTop` otherwise. `GerberExporter.drawComponent`, package-private so

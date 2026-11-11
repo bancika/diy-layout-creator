@@ -152,7 +152,7 @@ public class GroundFill extends AbstractTransparentComponent<Void>
     this.pointCount = pointCount;
   }
 
-  @EditableProperty(name = "Board Side")
+  @EditableProperty
   @Override
   public PCBLayer getLayer() {
     if (layer == null) {

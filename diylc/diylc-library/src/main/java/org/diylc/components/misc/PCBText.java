@@ -325,7 +325,7 @@ public class PCBText extends AbstractComponent<Void>
     this.horizontalAlignment = alignment;
   }
   
-  @EditableProperty(name = "Board Side")
+  @EditableProperty
   @Override
   public PCBLayer getLayer() {
     if (layer == null) {

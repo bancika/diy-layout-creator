@@ -105,7 +105,7 @@ public class CurvedTrace extends AbstractCurvedComponent<Void>
     this.size = size;
   }
 
-  @EditableProperty(name = "Board Side")
+  @EditableProperty
   @Override
   public PCBLayer getLayer() {
     if (layer == null) {

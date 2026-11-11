@@ -1011,17 +1011,12 @@
     "namePrefix" : "Trace",
     "description" : "Straight copper trace",
     "creationMethod" : "POINT_BY_POINT",
-    "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", "A single straight segment on the copper side chosen by 'Board Side'; chain segments end to end for bends, or use Curved Trace", "The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross" ],
+    "notes" : [ "Use for copper on PCB layouts; for a wire link use Jumper or Hookup Wire", "A single straight segment on the copper side chosen by 'Layer'; chain segments end to end for bends, or use Curved Trace", "The whole length is copper: any terminal or copper on the same layer that it touches or crosses is connected, not just its ends, so traces of different nets must not cross" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
-    }, {
-      "name" : "Board Side",
-      "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2" ],
-      "defaultValue" : "_1"
     }, {
       "name" : "Color",
       "type" : "Color",
@@ -1037,6 +1032,11 @@
       "type" : "LineEndingStyle",
       "possibleValues" : [ "Round", "Flat" ],
       "defaultValue" : "Round"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_1"
     }, {
       "name" : "Name",
       "type" : "String"
@@ -1065,11 +1065,6 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
-      "name" : "Board Side",
-      "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2" ],
-      "defaultValue" : "_1"
-    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -1079,6 +1074,11 @@
       "type" : "LineEndingStyle",
       "possibleValues" : [ "Round", "Flat" ],
       "defaultValue" : "Round"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_1"
     }, {
       "name" : "Name",
       "type" : "String"
@@ -1270,11 +1270,6 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
-      "name" : "Board Side",
-      "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2" ],
-      "defaultValue" : "_1"
-    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -1284,6 +1279,11 @@
       "type" : "PointCount",
       "possibleValues" : [ "_3", "_4", "_5", "_6", "_7", "_8" ],
       "defaultValue" : "_4"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_1"
     }, {
       "name" : "Name",
       "type" : "String"
@@ -1698,11 +1698,6 @@
       "format" : "number without the % sign, e.g. 100",
       "defaultValue" : "100"
     }, {
-      "name" : "Board Side",
-      "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2" ],
-      "defaultValue" : "_1"
-    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -1718,6 +1713,11 @@
       "type" : "HoleType",
       "possibleValues" : [ "NONE", "PTH", "NTPH" ],
       "defaultValue" : "NTPH"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_1"
     }, {
       "name" : "Node Name",
       "type" : "String"
@@ -12013,11 +12013,6 @@
     "description" : "Mirrored text for PCB artwork",
     "creationMethod" : "SINGLE_CLICK",
     "properties" : [ {
-      "name" : "Board Side",
-      "type" : "PCBLayer",
-      "possibleValues" : [ "_1", "_2" ],
-      "defaultValue" : "_1"
-    }, {
       "name" : "Color",
       "type" : "Color",
       "format" : "hex",
@@ -12042,6 +12037,11 @@
       "type" : "HorizontalAlignment",
       "possibleValues" : [ "LEFT", "CENTER", "RIGHT" ],
       "defaultValue" : "CENTER"
+    }, {
+      "name" : "Layer",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_1"
     }, {
       "name" : "Orientation",
       "type" : "Orientation",
