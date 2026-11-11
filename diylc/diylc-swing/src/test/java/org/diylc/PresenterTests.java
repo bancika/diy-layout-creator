@@ -368,6 +368,25 @@ public class PresenterTests extends TestBase {
     Assert.assertTrue(board.getBoardRectangle().contains(eyelet.getControlPoint(0)));
   }
 
+  @Test
+  public void testDropFromComponentTreeIntoUndersideMirror() {
+    BlankBoard board = mirroredBoard();
+    Rectangle2D region = UndersideMirror.getMirrorRegion(board);
+    Point inMirror = toScreen(new Point2D.Double(region.getCenterX(), region.getCenterY()));
+    ComponentType resistorType = presenter.getComponentTypes().get("Passive").stream()
+        .filter(x -> x.getName().equals("Resistor")).findFirst().get();
+
+    // what the component tree and the canvas drop target do for a drag and drop
+    presenter.setNewComponentTypeSlot(resistorType, null, null, true);
+    presenter.dragOver(inMirror);
+    presenter.dragEnded(inMirror);
+
+    Assert.assertEquals(2, presenter.getCurrentProject().getComponents().size());
+    Resistor resistor = (Resistor) presenter.getCurrentProject().getComponents().get(1);
+    Assert.assertEquals(PCBLayer._1, resistor.getBoardSide());
+    Assert.assertTrue(board.getBoardRectangle().contains(resistor.getControlPoint(0)));
+  }
+
   // a board with its underside mirror below it, with nothing on it yet
   private BlankBoard mirroredBoard() {
     BlankBoard board = new BlankBoard();

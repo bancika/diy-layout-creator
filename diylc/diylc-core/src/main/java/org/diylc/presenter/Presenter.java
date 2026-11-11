@@ -1668,8 +1668,11 @@ public class Presenter implements IPlugInPort {
       // messageDispatcher.dispatchMessage(EventType.SELECTION_RECT_CHANGED,
       // selectionRect);
     } else if (instantiationManager.getComponentSlot() != null) {
+      // a component dragged in from the component tree or the toolbox
       this.previousScaledPoint = scalePoint(point);
-      instantiationManager.updateSingleClick(previousScaledPoint, isSnapToGrid(), currentProject.getGridSpacing());
+      updatePlacementMirror(previousScaledPoint);
+      instantiationManager.updateSingleClick(toPlacementSpace(previousScaledPoint), isSnapToGrid(),
+          currentProject.getGridSpacing());
     }
 
     messageDispatcher.dispatchMessage(EventType.REPAINT, false, resizeInProgress);
@@ -2086,6 +2089,9 @@ public class Presenter implements IPlugInPort {
       // calculateSelectionDimension());
     } else if (instantiationManager.getComponentSlot() != null) {
       preDragProject = currentProject.clone();
+      if (placementMirrorBoard != null) {
+        MirrorPlacement.placeOnBottom(instantiationManager.getComponentSlot());
+      }
       addPendingComponentsToProject(scaledPoint, instantiationManager.getComponentTypeSlot(), null, null, preDragProject);
     } else {
       updateSelection(selectedComponents);

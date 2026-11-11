@@ -130,8 +130,9 @@ order.
   through that mirror, under the cursor. On placement, `MirrorPlacement.placeOnBottom` sets an
   `IBoardSideComponent` to `_1` (Bottom) and a component with a `PCBLayer` (`setLayer`, found the
   same way `PCBLayerFilter` reads `getLayer`) to `_1`; nothing is mirrored. Anything else, such as
-  a jumper, eyelet or wire, is placed at the reflected point unchanged. Dragging a new part from
-  the component tree onto a mirror still places it in the main view.
+  a jumper, eyelet or wire, is placed at the reflected point unchanged. A part dragged in from
+  the component tree or the toolbox goes through `Presenter.dragOver` and `dragEnded` instead,
+  which pick the mirror and put the part on the bottom the same way.
 
 ## 4. Open questions
 
@@ -150,7 +151,7 @@ order.
 - `MirrorPlacementTest` covers what placing through the mirror changes, and
   `PresenterTests.testPlaceThroughUndersideMirror` and `testPlaceUnsidedPartThroughUndersideMirror`
   place a resistor and an eyelet in a mirror and check that they land on the board, the resistor on
-  the bottom.
+  the bottom; `testDropFromComponentTreeIntoUndersideMirror` does the same for a drag and drop.
 - `SilkScreenFilterTest` covers which side's page each part and board outline goes on, and
   `SilkScreenDrawingProviderTest` checks that the bottom page appears only for a bottom part.
 - `DrawingManagerTest` checks rendered pixels for a part that reports its own side: a bottom part
