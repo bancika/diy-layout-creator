@@ -145,8 +145,12 @@ public class GerberExporter {
     LOG.info("Completed export to gerber");
   }
 
-  private static void drawComponent(Project currentProject, GerberG2DWrapper g2d,
-                                    IDIYComponent<?> c, boolean outlineMode) {
+  /**
+   * Draws the specified component into the Gerber layers it belongs to. This is the only place that
+   * decides which layer a component's output goes to.
+   */
+  static void drawComponent(Project currentProject, GerberG2DWrapper g2d,
+                            IDIYComponent<?> c, boolean outlineMode) {
     IGerberComponent gerberComponent = (IGerberComponent) c;
     g2d.startedDrawingComponent();
     if (gerberComponent instanceof IGerberComponentCustom) {
