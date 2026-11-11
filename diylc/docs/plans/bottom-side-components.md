@@ -6,7 +6,8 @@ Gerber layers and the canvas shows it as a part on the far side of the board.
 Status: 45 parts have a Board Side property, and Gerber export sends a bottom-side part's
 silkscreen to the bottom layer with its text mirrored. Parts can be selected, dragged and stretched
 through the Underside Display mirror. The canvas draws a bottom-side part faded in the main view and
-solid in the mirror. The next steps below remain.
+solid in the mirror. The silkscreen print-out has a separate page for the bottom. The next steps
+below remain.
 
 ## 1. Current state
 
@@ -83,9 +84,11 @@ solid in the mirror. The next steps below remain.
 
 ### diylc-swing
 
-- **PCB print-outs**: `SilkScreenDrawingProvider` prints one page of everything that has a
-  silkscreen outline. Split it into top and bottom pages, filtered by side, the same way
-  `TraceMaskDrawingProvider` gives one page per `PCBLayer`.
+- **PCB print-outs (done)**: `SilkScreenDrawingProvider` prints the top side, and a second page for
+  the bottom when a part is mounted there, so a project without bottom parts still prints one page.
+  `SilkScreenFilter` takes the side: a part with a Board Side goes on its own side's page, parts
+  without one count as top, and board outlines go on both pages so that they line up. Neither
+  page is mirrored or captioned, the same as the trace-mask pages.
 
 ### Editing through the Underside Display mirror
 
@@ -137,6 +140,8 @@ order.
 
 - `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components,
   including a stub `IBoardSideComponent` on top, bottom and `null`.
+- `SilkScreenFilterTest` covers which side's page each part and board outline goes on, and
+  `SilkScreenDrawingProviderTest` checks that the bottom page appears only for a bottom part.
 - `DrawingManagerTest` checks rendered pixels for a part that reports its own side: a bottom part
   is faded only with `FADE_FAR_SIDE`, also when drawn from the image cache; it is solid in the
   mirror, where a top part is faded; and a locked bottom part is faded once, not twice.
@@ -156,6 +161,5 @@ order.
 
 ## 6. Next steps
 
-1. Split the silkscreen print-out by side.
-2. Mirror stage 3: placing in the mirror.
-3. Run the regression suite.
+1. Mirror stage 3: placing in the mirror.
+2. Run the regression suite.
