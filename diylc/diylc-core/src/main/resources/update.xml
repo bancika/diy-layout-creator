@@ -645,6 +645,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>'Highlight Connected Areas', netlists and AI analysis could ignore trace cuts after the board under them was moved or edited, or when the cuts were scrolled out of view, and showed the whole strip as connected</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Solder Pad' on the top layer put its solder mask opening on the bottom layer in Gerber export</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

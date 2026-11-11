@@ -92,9 +92,12 @@ public class SolderPad extends AbstractTransparentComponent<Void>
             : color);
     drawingObserver.startTrackingContinuityArea(true);
     GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
+    // the mask is opened on the side the pad is on
+    GerberLayer gerberMaskLayer = gerberCopperLayer == GerberLayer.CopperTop
+        ? GerberLayer.SolderMaskTop : GerberLayer.SolderMaskBot;
     if (gerberDrawingObserver != null) {
       gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
+      gerberDrawingObserver.startGerberOutput(gerberMaskLayer, "Material", false);
     }
     Composite oldComposite = applyAlpha(g2d, componentState);
     drawingObserver.startDrawingSide(getLayer());
@@ -115,8 +118,9 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     drawingObserver.stopDrawingSide();
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
-    if (gerberDrawingObserver != null)
-      gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
+    if (gerberDrawingObserver != null) {
+      gerberDrawingObserver.stopGerberOutput(gerberMaskLayer);
+    }
     if (getHoleSize().getValue() > 0 && !HoleType.NONE.equals(getHoleType())) {
       if (gerberDrawingObserver != null) {
         gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
