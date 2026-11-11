@@ -27,8 +27,12 @@ projects; the open questions below remain.
 - `IBoardSideComponent.sideOf(component)` is the one place that answers which side a component is
   on (Top for components without a side); drawing, the Gerber export and the silkscreen filter all
   use it. Copper that sits on a layer - `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad` and
-  `PCBText` - implements `IPCBLayerComponent` (`getLayer`/`setLayer`), which `PCBLayerFilter`, the
-  trace-mask print-out and `MirrorPlacement` use instead of looking the methods up by name.
+  `PCBText` - implements `IPCBLayerComponent` (`getLayer`/`setLayer`), which `PCBLayerFilter` and
+  the trace-mask print-out use to tell copper from parts. `IPCBLayerComponent` extends
+  `IBoardSideComponent`, reading and writing the side through the layer, with the deprecated inner
+  layers counted as the bottom, so copper has one side like any part. The copper's layer property
+  is shown as **Board Side**, the same as on parts; its field is still `layer`, so files are
+  unaffected.
 - A simple component's Gerber layer follows its side: the default
   `IGerberComponentSimple.getGerberLayer()` returns `SilkscreenBot` for an `IBoardSideComponent` on
   `_1` (Bottom) and `SilkscreenTop` otherwise. `GerberExporter.drawComponent`, package-private so
@@ -89,8 +93,9 @@ projects; the open questions below remain.
   - `BoardSideComponentsTest` checks that every such part starts on Top and takes Bottom, and
     that every part writing `SilkscreenTop` has a side, so a new part cannot be left out by
     accident.
-- `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad`, `PCBText` and `DrillHole` do **not**
-  implement it. Their `PCBLayer` already says where they are.
+- `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad` and `PCBText` implement it through
+  `IPCBLayerComponent`, and start on the bottom. `DrillHole` goes through the board and has no
+  side.
 
 ### diylc-swing
 
@@ -137,8 +142,7 @@ order.
   the part lands on the grid, and `DrawingManager.setSlotMirrorBoard` draws the part being placed
   through that mirror, under the cursor, seen from below like the parts already there. The board is
   forgotten when a project is loaded. On placement, `MirrorPlacement.placeOnBottom` sets an
-  `IBoardSideComponent` to `_1` (Bottom) and an `IPCBLayerComponent` to layer `_1`; nothing is
-  mirrored. Anything else, such as
+  `IBoardSideComponent`, part or copper, to `_1` (Bottom); nothing is mirrored. Anything else, such as
   a jumper, eyelet or wire, is placed at the reflected point unchanged. A part dragged in from
   the component tree or the toolbox goes through `Presenter.dragOver` and `dragEnded` instead,
   which pick the mirror and put the part on the bottom the same way.

@@ -24,11 +24,11 @@ package org.diylc.core;
 import org.diylc.common.PCBLayer;
 
 /**
- * Interface for components mounted on one side of a board, such as a resistor or an IC. The side
+ * Interface for components on one side of a board, such as a resistor, an IC or a trace. The side
  * says where the part sits physically; it is separate from {@link ILayeredComponent}, which drives
  * continuity, because the leads of a through-hole part connect to copper on both sides whichever
- * side the part is mounted on. Components whose copper already has a layer (traces, pads, ground
- * fills) do not implement it.
+ * side the part is mounted on. Copper implements it through {@link IPCBLayerComponent}, whose layer
+ * is its side and also drives its continuity.
  * 
  * @author Branislav Stojkovic
  */

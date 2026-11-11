@@ -26,12 +26,11 @@ import java.util.Collection;
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
-import org.diylc.core.IPCBLayerComponent;
 
 /**
- * Puts components placed through an Underside Display mirror on the bottom of the board. A part
- * that is mounted on a side goes to the bottom, copper with a {@link PCBLayer} goes to the bottom
- * layer, and anything else is left as it is. Nothing is mirrored.
+ * Puts components placed through an Underside Display mirror on the bottom of the board. Parts and
+ * copper that have a board side go to the bottom, and anything else is left as it is. Nothing is
+ * mirrored.
  */
 public class MirrorPlacement {
 
@@ -42,8 +41,6 @@ public class MirrorPlacement {
     for (IDIYComponent<?> component : components) {
       if (component instanceof IBoardSideComponent sided) {
         sided.setBoardSide(PCBLayer._1);
-      } else if (component instanceof IPCBLayerComponent copper) {
-        copper.setLayer(PCBLayer._1);
       }
     }
   }

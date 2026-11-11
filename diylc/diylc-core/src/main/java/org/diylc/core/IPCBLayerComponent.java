@@ -25,14 +25,27 @@ import org.diylc.common.PCBLayer;
 
 /**
  * Interface for copper drawn on a layer of a PCB, such as a trace, pad, ground fill or PCB text.
- * Unlike {@link IBoardSideComponent}, the layer is where the copper itself is, and it also decides
- * which other copper it connects to.
+ * The layer is the copper's board side, shown to the user as 'Board Side', but unlike the side of a
+ * mounted part it also decides which other copper the copper connects to.
  * 
  * @author Branislav Stojkovic
  */
-public interface IPCBLayerComponent {
+public interface IPCBLayerComponent extends IBoardSideComponent {
 
   PCBLayer getLayer();
 
   void setLayer(PCBLayer layer);
+
+  /**
+   * @return the layer, with the deprecated inner layers counted as the bottom
+   */
+  @Override
+  default PCBLayer getBoardSide() {
+    return getLayer() == PCBLayer._2 ? PCBLayer._2 : PCBLayer._1;
+  }
+
+  @Override
+  default void setBoardSide(PCBLayer boardSide) {
+    setLayer(boardSide);
+  }
 }

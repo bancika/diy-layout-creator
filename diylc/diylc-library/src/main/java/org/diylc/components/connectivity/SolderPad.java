@@ -190,7 +190,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     this.holeSize = holeSize;
   }
 
-  @EditableProperty
+  @EditableProperty(name = "Board Side")
   @Override
   public PCBLayer getLayer() {
     if (layer == null) {

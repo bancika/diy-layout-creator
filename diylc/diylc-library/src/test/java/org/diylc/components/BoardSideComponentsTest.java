@@ -29,9 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.diylc.common.PCBLayer;
+import org.diylc.components.connectivity.CopperTrace;
 import org.diylc.components.misc.Label;
 import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.gerber.GerberLayer;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.utils.ReflectionUtils;
@@ -73,10 +75,26 @@ public class BoardSideComponentsTest {
     }
   }
 
+  // copper starts on the bottom, where single-sided boards carry it
+  @Test
+  public void testCopperBoardSideIsItsLayer() {
+    CopperTrace trace = new CopperTrace();
+    assertEquals(PCBLayer._1, trace.getBoardSide());
+
+    trace.setBoardSide(PCBLayer._2);
+    assertEquals(PCBLayer._2, trace.getLayer());
+
+    // the deprecated inner layers are inside the board, which counts as the bottom
+    trace.setLayer(PCBLayer._3);
+    assertEquals(PCBLayer._1, trace.getBoardSide());
+  }
+
+  // parts, which start on top; copper starts on the bottom and is covered above
   private static List<IDIYComponent<?>> createBoardSideComponents() throws Exception {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
     for (Class<?> type : ReflectionUtils.getIndexedClasses(IDIYComponent.class)) {
       if (IBoardSideComponent.class.isAssignableFrom(type)
+          && !IPCBLayerComponent.class.isAssignableFrom(type)
           && !Modifier.isAbstract(type.getModifiers())) {
         components.add((IDIYComponent<?>) type.getDeclaredConstructor().newInstance());
       }

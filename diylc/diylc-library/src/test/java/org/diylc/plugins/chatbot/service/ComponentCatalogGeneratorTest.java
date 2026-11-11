@@ -98,7 +98,7 @@ public class ComponentCatalogGeneratorTest {
     assertTrue("a switch carries its switching table", variants.get(0).containsKey("switching"));
 
     // the deprecated inner layers are kept only so that old files load
-    Map<String, Object> layer = findProperty(find(components, "connectivity.CopperTrace"), "Layer");
+    Map<String, Object> layer = findProperty(find(components, "connectivity.CopperTrace"), "Board Side");
     assertEquals(List.of("_1", "_2"), layer.get("possibleValues"));
   }
 
