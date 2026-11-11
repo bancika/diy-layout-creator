@@ -69,6 +69,10 @@ public abstract class AbstractBoard extends AbstractTransparentComponent<String>
   protected Color boardColor = PHENOLIC_COLOR;
   protected Color borderColor = BORDER_COLOR;
   protected Color coordinateColor = COORDINATE_COLOR;
+  // superseded by coordinateDisplay long ago and no longer read, but kept so that files which
+  // still carry it load without an unknown-property warning
+  @Deprecated
+  protected Boolean drawCoordinates = null;
   protected CoordinateType xType = CoordinateType.Numbers;
   protected CoordinateOrigin coordinateOrigin = CoordinateOrigin.Top_Left;
   protected CoordinateDisplay coordinateDisplay = CoordinateDisplay.One_Side;
