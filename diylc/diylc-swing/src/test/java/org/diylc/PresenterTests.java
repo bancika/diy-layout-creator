@@ -1,8 +1,10 @@
 package org.diylc;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -17,14 +19,19 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.clipboard.ComponentTransferable;
 import org.diylc.common.ComponentType;
+import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
 import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
+import org.diylc.components.boards.BlankBoard;
 import org.diylc.components.chassis.ChassisPanel;
 import org.diylc.components.composite.CompositeComponent;
+import org.diylc.core.BoardUndersideDisplay;
+import org.diylc.core.IBoard;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Template;
 import org.diylc.presenter.Presenter;
+import org.diylc.presenter.UndersideMirror;
 import org.diylc.swing.ActionFactory;
 import org.diylc.swing.actions.ComponentCategoryAction;
 import org.diylc.swing.actions.ResetCategoriesAction;
@@ -279,6 +286,75 @@ public class PresenterTests extends TestBase {
     Assert.assertTrue(resistor.getControlPoint(1).getX() > start.getX());
     Assert.assertTrue(resistor.getControlPoint(1).getY() > start.getY());
     presenter.dragEnded(new Point(1300, 1100));
+  }
+
+  @Test
+  public void testStretchThroughUndersideMirror() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    IBoard board = boardUnder(resistor);
+    Point2D start = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+    Point inMirror = toScreen(UndersideMirror.createTransform(board).transform(start, null));
+
+    presenter.mouseMoved(inMirror, false, false, false);
+    presenter.dragStarted(inMirror, java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
+    presenter.dragOver(new Point(inMirror.x + 100, inMirror.y + 100));
+    presenter.dragEnded(new Point(inMirror.x + 100, inMirror.y + 100));
+
+    // the mirror is flipped vertically, so moving down in it moves the point up on the board
+    Assert.assertTrue(resistor.getControlPoint(1).getX() > start.getX());
+    Assert.assertTrue(resistor.getControlPoint(1).getY() < start.getY());
+  }
+
+  @Test
+  public void testDragThroughUndersideMirror() {
+    instantiateTwoClick("Passive", "Resistor", new Point(1000, 1000), new Point(1200, 1000));
+    IDIYComponent<?> resistor = presenter.getCurrentProject().getComponents().get(0);
+    IBoard board = boardUnder(resistor);
+    Point2D start0 = new Point2D.Double(resistor.getControlPoint(0).getX(), resistor.getControlPoint(0).getY());
+    Point2D start1 = new Point2D.Double(resistor.getControlPoint(1).getX(), resistor.getControlPoint(1).getY());
+    // the hit test reads the areas recorded while drawing
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    presenter.draw(g2d, EnumSet.of(DrawOption.ZOOM), null, null, null, null);
+    g2d.dispose();
+    Point2D middle = new Point2D.Double((start0.getX() + start1.getX()) / 2, start0.getY());
+    Point inMirror = toScreen(UndersideMirror.createTransform(board).transform(middle, null));
+
+    presenter.mouseMoved(inMirror, false, false, false);
+    presenter.dragStarted(inMirror, java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
+    presenter.dragOver(new Point(inMirror.x + 100, inMirror.y + 100));
+    presenter.dragEnded(new Point(inMirror.x + 100, inMirror.y + 100));
+
+    Assert.assertTrue(resistor.getControlPoint(0).getX() > start0.getX());
+    Assert.assertTrue(resistor.getControlPoint(0).getY() < start0.getY());
+    Assert.assertEquals(resistor.getControlPoint(0).getY(), resistor.getControlPoint(1).getY());
+    Assert.assertEquals(start1.getX() - start0.getX(),
+        resistor.getControlPoint(1).getX() - resistor.getControlPoint(0).getX());
+  }
+
+  // a board reaching 200px past the component on every side, with its underside mirror below it;
+  // the component stays selected
+  private IBoard boardUnder(IDIYComponent<?> component) {
+    Point2D first = component.getControlPoint(0);
+    Point2D last = component.getControlPoint(component.getControlPointCount() - 1);
+    BlankBoard board = new BlankBoard();
+    board.setControlPoint(new Point2D.Double(first.getX() - 200, first.getY() - 200), 0);
+    board.setControlPoint(new Point2D.Double(last.getX() + 200, last.getY() + 200), 1);
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    presenter.getCurrentProject().getComponents().add(0, board);
+    return board;
+  }
+
+  // the inverse of the zoom and extra-space scaling the presenter applies to mouse points
+  private Point toScreen(Point2D modelPoint) {
+    double zoom = presenter.getZoomLevel();
+    double extraSpace = InMemoryConfigurationManager.getInstance()
+        .readBoolean(IPlugInPort.EXTRA_SPACE_KEY, true)
+            ? presenter.getDrawingManager().getExtraSpace(presenter.getCurrentProject())
+            : 0;
+    return new Point((int) Math.round((modelPoint.getX() + extraSpace) * zoom),
+        (int) Math.round((modelPoint.getY() + extraSpace) * zoom));
   }
 
   @Test

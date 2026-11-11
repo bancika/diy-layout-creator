@@ -751,11 +751,34 @@ public class DrawingManager {
   public List<IDIYComponent<?>> findMirroredComponentsAt(Point2D point, Project project) {
     List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
     for (IBoard board : UndersideMirror.findBoardsMirroredAt(project, point)) {
-      Point2D reflected = UndersideMirror.createTransform(board).transform(point, null);
-      for (IDIYComponent<?> component : findComponentsAt(reflected, project)) {
-        if (UndersideMirror.isMirrored(board, component) && !components.contains(component)) {
+      for (IDIYComponent<?> component : findMirroredComponentsAt(point, project, board)) {
+        if (!components.contains(component)) {
           components.add(component);
         }
+      }
+    }
+    return components;
+  }
+
+  /**
+   * Finds the components that the underside mirror of the specified board shows at the specified
+   * point, top first, or none when the point is not in that mirror.
+   *
+   * @param point
+   * @param project
+   * @param board
+   * @return
+   */
+  public List<IDIYComponent<?>> findMirroredComponentsAt(Point2D point, Project project,
+      IBoard board) {
+    List<IDIYComponent<?>> components = new ArrayList<IDIYComponent<?>>();
+    AffineTransform mirrorTx = UndersideMirror.createTransform(board);
+    if (mirrorTx == null || !UndersideMirror.getMirrorRegion(board).contains(point)) {
+      return components;
+    }
+    for (IDIYComponent<?> component : findComponentsAt(mirrorTx.transform(point, null), project)) {
+      if (UndersideMirror.isMirrored(board, component)) {
+        components.add(component);
       }
     }
     return components;

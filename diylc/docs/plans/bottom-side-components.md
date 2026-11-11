@@ -5,7 +5,7 @@ Gerber layers and the canvas shows it as a part on the far side of the board.
 
 Status: the core Gerber side is done, with tests: `IBoardSideComponent` exists and the export
 sends a bottom-side part to the bottom layers, but no component implements it yet. Parts can be
-selected through the Underside Display mirror. The next steps below remain.
+selected, dragged and stretched through the Underside Display mirror. The next steps below remain.
 
 ## 1. Current state
 
@@ -98,14 +98,16 @@ order.
   the main view; locked and hidden parts are filtered out first, so a locked part under the mirror
   does not block it. Clicking a part in the mirror selects the original, so the property editor,
   delete, copy and the popup menu all work unchanged. Selection highlighting and the selected
-  control points are drawn on both copies. A drag still tests the main view only, and so do the
-  hand cursor and control-point hover, because they promise dragging; all three move to stage 2.
-- **Stage 2: dragging in the mirror.** Dragging, the hand cursor and control-point hover use the
-  mirror. A drag that starts in a mirror region reflects every
-  subsequent mouse point before it reaches the existing drag code. Movement along the mirrored axis
-  is therefore reversed, which is what the user sees. Snapping applies to the reflected point. Moving
-  the board, or changing its Underside Offset, cancels nothing; the mirror simply follows.
-  Control-point drags (stretching a trace) go through the same mapping.
+  control points are drawn on both copies.
+- **Stage 2: dragging in the mirror (done).** A drag that starts on a part in a mirror, or on a
+  control point of a selected part there, keeps that mirror's reflection in
+  `Presenter.dragMirrorTx` and reflects every mouse point of the drag before it reaches the existing
+  drag code. Movement along the mirrored axis is therefore reversed, which is what the user sees,
+  and snapping and the shift axis lock apply to the reflected point. Control-point hover
+  (`Presenter.findControlPointsAt`) and the hand cursor look through the mirror when the main view
+  has nothing. A drag that starts on empty mirror space still draws a selection rectangle in
+  screen space. Moving the board, or changing its Underside Offset, cancels nothing; the mirror
+  simply follows.
 - **Stage 3: placing in the mirror.** A component instantiated with its first point in a mirror
   region is created at the reflected point. If it is an `IBoardSideComponent`, it is created with
   side `_1` (Bottom) and mirrored, as Flip to Other Side would do. A `PCBLayer` component is created on
@@ -141,7 +143,9 @@ order.
   appears only in `.gbo`, mirrored, and in the right position.
 - `UndersideMirrorTest` covers the mirror region for each `BoardUndersideDisplay` direction and
   offset, that reflecting a point twice returns it, and which components a mirror shows.
-  `DrawingManagerTest.testComponentFoundThroughUndersideMirror` covers the hit test.
+  `DrawingManagerTest.testComponentFoundThroughUndersideMirror` covers the hit test, and
+  `PresenterTests.testStretchThroughUndersideMirror` and `testDragThroughUndersideMirror` check
+  that a drag through a mirror below the board moves the part up on the board.
 - In the app, with Underside Display set to each direction: select, drag and stretch a trace in
   the mirror and confirm that the original follows correctly. Place a part in the mirror and confirm
   that it is bottom-side, mirrored, faded on the main view and solid in the mirror.
@@ -154,6 +158,5 @@ order.
 2. Wrap bottom-side painting in `startDrawingSide(getBoardSide())`.
 3. Add the Flip to Other Side action.
 4. Split the silkscreen print-out by side.
-5. Mirror stage 2: dragging through the mirror.
-6. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
-7. Run the regression suite.
+5. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
+6. Run the regression suite.

@@ -172,7 +172,12 @@ public class Presenter implements IPlugInPort {
   private Point2D dragStartPoint = null;
   private boolean dragShiftDown = false;
   private AxisLock lockedAxis = null;
-  
+  // The reflection of the Underside Display mirror a drag started in. Every point of that drag goes
+  // through it, so the drag acts on the components themselves; null for a drag in the main view.
+  private AffineTransform dragMirrorTx = null;
+  // the reflection of the mirror that the control points in controlPointMap were found through
+  private AffineTransform hoverMirrorTx = null;
+
   private DIYTest test = null;
 
   private OperationMode operationMode;
@@ -279,16 +284,8 @@ public class Presenter implements IPlugInPort {
       if (controlPointMap != null && !controlPointMap.isEmpty()) {
         return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
       }
-      for (IDIYComponent<?> component : currentProject.getComponents()) {
-        if (!isComponentLocked(component) && isComponentVisible(component)
-            && operationMode != OperationMode.HIGHLIGHT_CONNECTED_AREAS) {
-          ComponentArea area = drawingManager.getComponentArea(component);
-          // the bounds rule most components out without merging their outline into an area
-          if (area != null && scaledPoint != null && area.getOutlineBounds().contains(scaledPoint)
-              && area.getOutlineArea().contains(scaledPoint)) {
-            return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-          }
-        }
+      if (scaledPoint != null && !findComponentsAtScaled(scaledPoint, false).isEmpty()) {
+        return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
       }
     }
 
@@ -569,8 +566,8 @@ public class Presenter implements IPlugInPort {
     return findComponentsAtScaled(point, includeLocked, true);
   }
 
-  // a drag does not look through the underside mirror, because moving the mouse there moves the
-  // part the other way along the mirrored axis
+  // a drag reflects its points out of the underside mirror itself, so its hit tests must not look
+  // through the mirror a second time
   private List<IDIYComponent<?>> findComponentsAtScaled(Point2D point, boolean includeLocked,
       boolean throughMirror) {
     List<IDIYComponent<?>> components = drawingManager.findComponentsAt(point, currentProject);
@@ -950,6 +947,42 @@ public class Presenter implements IPlugInPort {
     }
   }
 
+  /**
+   * Finds the control points of the selected, ungrouped components that can be dragged from the
+   * specified point, one per component. When the point was reflected out of the underside mirror of
+   * a board, only the components that mirror shows are considered.
+   */
+  private Map<IDIYComponent<?>, Set<Integer>> findControlPointsAt(Point2D point, IBoard mirrorBoard) {
+    Map<IDIYComponent<?>, Set<Integer>> components = new HashMap<IDIYComponent<?>, Set<Integer>>();
+    // Go backwards so we take the highest z-order components first.
+    for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
+      IDIYComponent<?> component = currentProject.getComponents().get(i);
+      if (mirrorBoard != null && selectedComponents.contains(component)
+          && !UndersideMirror.isMirrored(mirrorBoard, component)) {
+        continue;
+      }
+      for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
+        Point2D controlPoint = component.getControlPoint(pointIndex);
+        // Only consider selected components that are not grouped.
+        if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
+            && findAllGroupedComponents(component).size() == 1) {
+          try {
+            if (point.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE &&
+                component.getControlPointVisibilityPolicy(pointIndex) != VisibilityPolicy.NEVER) {
+              Set<Integer> indices = new HashSet<Integer>();
+              indices.add(pointIndex);
+              components.put(component, indices);
+              break;
+            }
+          } catch (Exception e) {
+            LOG.warn("Error reading control point for component of type: " + component.getClass().getName());
+          }
+        }
+      }
+    }
+    return components;
+  }
+
   @Override
   public void mouseMoved(Point point, boolean ctrlDown, boolean shiftDown, boolean altDown) {
     if (point == null)
@@ -996,26 +1029,16 @@ public class Presenter implements IPlugInPort {
         messageDispatcher.dispatchMessage(EventType.REPAINT);
       }
     } else {
-      // Go backwards so we take the highest z-order components first.
-      for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
-        IDIYComponent<?> component = currentProject.getComponents().get(i);
-        for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {
-          Point2D controlPoint = component.getControlPoint(pointIndex);
-          // Only consider selected components that are not grouped.
-          if (selectedComponents.contains(component) && component.canPointMoveFreely(pointIndex)
-              && findAllGroupedComponents(component).size() == 1) {
-            try {
-              if (previousScaledPoint.distance(controlPoint) < DrawingManager.CONTROL_POINT_SIZE && 
-                  component.getControlPointVisibilityPolicy(pointIndex) != VisibilityPolicy.NEVER) {
-                Set<Integer> indices = new HashSet<Integer>();
-                indices.add(pointIndex);
-                components.put(component, indices);
-                break;
-              }
-            } catch (Exception e) {
-              LOG.warn("Error reading control point for component of type: " + component.getClass().getName());
-            }
-          }
+      components = findControlPointsAt(previousScaledPoint, null);
+      hoverMirrorTx = null;
+      for (IBoard board : UndersideMirror.findBoardsMirroredAt(currentProject, previousScaledPoint)) {
+        if (!components.isEmpty()) {
+          break;
+        }
+        AffineTransform mirrorTx = UndersideMirror.createTransform(board);
+        components = findControlPointsAt(mirrorTx.transform(previousScaledPoint, null), board);
+        if (!components.isEmpty()) {
+          hoverMirrorTx = mirrorTx;
         }
       }
     }
@@ -1364,6 +1387,14 @@ public class Presenter implements IPlugInPort {
     this.dragAction = dragAction;
     this.preDragProject = currentProject.clone();
     Point2D scaledPoint = scalePoint(point);
+    if (controlPointMap != null && !controlPointMap.isEmpty()) {
+      this.dragMirrorTx = hoverMirrorTx;
+    } else if (forceSelectionRect || !findComponentsAtScaled(scaledPoint, false, false).isEmpty()) {
+      this.dragMirrorTx = null;
+    } else {
+      this.dragMirrorTx = findMirrorWithComponentAt(scaledPoint);
+    }
+    scaledPoint = toDragSpace(scaledPoint);
     this.previousDragPoint = scaledPoint;
     this.dragStartPoint = new Point2D.Double(scaledPoint.getX(), scaledPoint.getY());
     this.dragShiftDown = shiftDown;
@@ -1586,7 +1617,7 @@ public class Presenter implements IPlugInPort {
 
     boolean resizeInProgress = false;
 
-    Point2D scaledPoint = scalePoint(point);
+    Point2D scaledPoint = toDragSpace(scalePoint(point));
     if (controlPointMap != null && !controlPointMap.isEmpty()) {
       // We're dragging control point(s).
       Point2D targetPoint = constrainToAxis(dragStartPoint, scaledPoint, dragShiftDown);
@@ -2004,7 +2035,7 @@ public class Presenter implements IPlugInPort {
       test.addStep(DIYTest.DRAG_END, params);
     }
 
-    Point2D scaledPoint = scalePoint(point);
+    Point2D scaledPoint = toDragSpace(scalePoint(point));
 
     if (!dragInProgress && instantiationManager.getComponentSlot() == null) {
       return;
@@ -2056,6 +2087,7 @@ public class Presenter implements IPlugInPort {
     dragStartPoint = null;
     dragShiftDown = false;
     lockedAxis = null;
+    dragMirrorTx = null;
   }
 
   @Override
@@ -3153,6 +3185,27 @@ public class Presenter implements IPlugInPort {
       p.setLocation(p.getX() - extraSpace, p.getY() - extraSpace);      
     }
     return p;
+  }
+
+  private Point2D toDragSpace(Point2D scaledPoint) {
+    return dragMirrorTx == null || scaledPoint == null ? scaledPoint
+        : dragMirrorTx.transform(scaledPoint, null);
+  }
+
+  /**
+   * @return the reflection of the first underside mirror that shows a selectable component at the
+   *         specified point, or null
+   */
+  private AffineTransform findMirrorWithComponentAt(Point2D scaledPoint) {
+    for (IBoard board : UndersideMirror.findBoardsMirroredAt(currentProject, scaledPoint)) {
+      List<IDIYComponent<?>> components =
+          drawingManager.findMirroredComponentsAt(scaledPoint, currentProject, board);
+      removeUnselectable(components, false);
+      if (!components.isEmpty()) {
+        return UndersideMirror.createTransform(board);
+      }
+    }
+    return null;
   }
   
   @Override
