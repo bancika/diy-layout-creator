@@ -29,7 +29,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.testcomponents.MockDIYComponent;
@@ -49,6 +51,27 @@ public class GerberExporterTest {
     GerberG2DWrapper g2d = draw(new SimpleGerberComponent(GerberLayer.CopperBot));
 
     assertEquals(EnumSet.of(GerberLayer.CopperBot), EnumSet.copyOf(g2d.getLayerMap().keySet()));
+  }
+
+  @Test
+  public void testTopSideComponentKeepsItsLayer() {
+    GerberG2DWrapper g2d = draw(new SidedGerberComponent(PCBLayer._2));
+
+    assertEquals(EnumSet.of(GerberLayer.SilkscreenTop), EnumSet.copyOf(g2d.getLayerMap().keySet()));
+  }
+
+  @Test
+  public void testBottomSideComponentGoesToTheOtherSide() {
+    GerberG2DWrapper g2d = draw(new SidedGerberComponent(PCBLayer._1));
+
+    assertEquals(EnumSet.of(GerberLayer.SilkscreenBot), EnumSet.copyOf(g2d.getLayerMap().keySet()));
+  }
+
+  @Test
+  public void testComponentWithoutSideStaysOnTop() {
+    GerberG2DWrapper g2d = draw(new SidedGerberComponent(null));
+
+    assertEquals(EnumSet.of(GerberLayer.SilkscreenTop), EnumSet.copyOf(g2d.getLayerMap().keySet()));
   }
 
   private static GerberG2DWrapper draw(SimpleGerberComponent component) {
@@ -83,6 +106,24 @@ public class GerberExporterTest {
         Project project, IDrawingObserver drawingObserver) {
       g2d.setColor(Color.black);
       g2d.fill(new Rectangle2D.Double(10, 10, 20, 20));
+    }
+  }
+
+  public static class SidedGerberComponent extends SimpleGerberComponent
+      implements IBoardSideComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private PCBLayer side;
+
+    public SidedGerberComponent(PCBLayer side) {
+      super(null);
+      this.side = side;
+    }
+
+    @Override
+    public PCBLayer getBoardSide() {
+      return side;
     }
   }
 }

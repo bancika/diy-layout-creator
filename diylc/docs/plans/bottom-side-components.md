@@ -3,8 +3,9 @@
 Let a component be mounted on the bottom of a PCB, so that its silkscreen goes to the bottom
 Gerber layers and the canvas shows it as a part on the far side of the board.
 
-Status: the Gerber dispatch is a single method and `GerberLayer.flip()` exists, with tests; the
-next steps below remain.
+Status: the core Gerber side is done, with tests: `IBoardSideComponent` exists and the export
+sends a bottom-side part to the bottom layers. No component implements it yet; the next steps below
+remain.
 
 ## 1. Current state
 
@@ -20,10 +21,12 @@ next steps below remain.
   default (resistors, film and radial capacitors, diodes, LEDs, transistor packages, DIL/SIL ICs,
   SMD passives, switches, jacks, relays, transformers, tube sockets, ...). None of them emit copper.
   Their pads are separate `SolderPad` components, which already have a layer.
-- One method decides the layer for a simple component: `GerberExporter.drawComponent`, which
-  calls `g2d.startGerberOutput(getGerberLayer(), ...)`. It is package-private so that
-  `GerberExporterTest` can call it. `GerberLayer.flip()` maps a layer to the other side of the
-  board.
+- One method decides the layer for a simple component: `GerberExporter.drawComponent`. It is
+  package-private so that `GerberExporterTest` can call it. It uses `getGerberLayer()`, flipped
+  with `GerberLayer.flip()` when the component is an `IBoardSideComponent` on `_1` (Bottom).
+- **`org.diylc.core.IBoardSideComponent`**: `PCBLayer getBoardSide()`, returning `_1` or `_2`
+  only. It is deliberately separate from `ILayeredComponent` (see Decisions). Core knows a part's
+  side only through this interface.
 - Z-order is paint order only. A trace on the bottom layer already paints above the board
   (`zOrder = TRACE`), so the codebase already treats the physical side as separate from z-order.
 
@@ -43,11 +46,6 @@ next steps below remain.
 
 ### diylc-core
 
-- **`org.diylc.core.IBoardSideComponent`**: `PCBLayer getBoardSide();` with Javadoc and
-  `@author`, in the same shape as `ILayeredComponent` but deliberately separate from it (see
-  Decisions). It returns `_1` or `_2` only. Core knows the side only through this interface.
-- **Gerber dispatch**: in the simple-component branch of `GerberExporter.drawComponent`, use
-  `getGerberLayer().flip()` when the component is an `IBoardSideComponent` on `_1`.
 - **Canvas rendering**: bottom-side components use the far-side fade from `copper-side-view.md`,
   wrapping their painting in `startDrawingSide(getBoardSide())`. They are then faded in the main
   view and solid in the Underside Display mirror, the same as bottom copper.
@@ -133,8 +131,8 @@ order.
 
 ## 5. Verification
 
-- `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components;
-  extend it with a stub `IBoardSideComponent` (top, bottom and `null`).
+- `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components,
+  including a stub `IBoardSideComponent` on top, bottom and `null`.
 - Load an old `.diy` with PCB parts and confirm every component reports `_2` (Top) and that the Gerber
   output is byte-identical to before.
 - Export a board with one part on each side and open the files in a Gerber viewer: the bottom part
@@ -148,15 +146,14 @@ order.
 
 ## 6. Next steps
 
-1. Add `IBoardSideComponent` and swap the Gerber layer in the dispatch.
-2. Add the field to the library components, putting it on shared bases where they exist. Settle
+1. Add the field to the library components, putting it on shared bases where they exist. Settle
    the silkscreen-text question while doing so.
-3. Wrap bottom-side painting in `startDrawingSide(getBoardSide())`.
-4. Add the Flip to Other Side action.
-5. Split the silkscreen print-out by side.
-6. Extract the mirror geometry helper, with tests, and use it in `drawMirroredComponent`.
-7. Mirror stage 1: selecting through the mirror. It does not depend on steps 1-5 and can ship
+2. Wrap bottom-side painting in `startDrawingSide(getBoardSide())`.
+3. Add the Flip to Other Side action.
+4. Split the silkscreen print-out by side.
+5. Extract the mirror geometry helper, with tests, and use it in `drawMirroredComponent`.
+6. Mirror stage 1: selecting through the mirror. It does not depend on steps 1-4 and can ship
    early.
-8. Mirror stage 2: dragging through the mirror.
-9. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
-10. Run the regression suite.
+7. Mirror stage 2: dragging through the mirror.
+8. Mirror stage 3: placing in the mirror, after Flip to Other Side exists.
+9. Run the regression suite.

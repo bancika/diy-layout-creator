@@ -16,8 +16,10 @@ import org.apache.log4j.Logger;
 
 import com.bancika.gerberwriter.DataLayer;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IBoard;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -158,8 +160,14 @@ public class GerberExporter {
       gerberComponentCustom.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d, g2d);
     } else if (gerberComponent instanceof IGerberComponentSimple) {
       IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
-      g2d.startGerberOutput(gerberComponentSimple.getGerberLayer(),
-              gerberComponentSimple.getGerberFunction(), gerberComponentSimple.isGerberNegative());
+      GerberLayer layer = gerberComponentSimple.getGerberLayer();
+      // components emit their top-side layer; a part mounted underneath goes to the bottom one
+      if (c instanceof IBoardSideComponent
+          && ((IBoardSideComponent) c).getBoardSide() == PCBLayer._1) {
+        layer = layer.flip();
+      }
+      g2d.startGerberOutput(layer, gerberComponentSimple.getGerberFunction(),
+              gerberComponentSimple.isGerberNegative());
       c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
       g2d.stopGerberOutput();
     }
