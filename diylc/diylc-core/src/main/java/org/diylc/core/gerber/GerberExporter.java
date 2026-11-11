@@ -160,15 +160,10 @@ public class GerberExporter {
       gerberComponentCustom.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d, g2d);
     } else if (gerberComponent instanceof IGerberComponentSimple) {
       IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
-      GerberLayer layer = gerberComponentSimple.getGerberLayer();
-      // components emit their top-side layer; a part mounted underneath goes to the bottom one
-      boolean bottomSide = IBoardSideComponent.sideOf(c) == PCBLayer._1;
-      if (bottomSide) {
-        layer = layer.flip();
-      }
-      g2d.startGerberOutput(layer, gerberComponentSimple.getGerberFunction(),
-              gerberComponentSimple.isGerberNegative());
-      g2d.setMirrorText(bottomSide);
+      g2d.startGerberOutput(gerberComponentSimple.getGerberLayer(),
+              gerberComponentSimple.getGerberFunction(), gerberComponentSimple.isGerberNegative());
+      // text on the bottom silkscreen is read from below, so it is written mirrored
+      g2d.setMirrorText(IBoardSideComponent.sideOf(c) == PCBLayer._1);
       c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
       g2d.setMirrorText(false);
       g2d.stopGerberOutput();

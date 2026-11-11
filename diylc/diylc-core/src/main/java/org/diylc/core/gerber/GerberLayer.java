@@ -55,29 +55,6 @@ public enum GerberLayer {
     return mirrored;
   }
 
-  /**
-   * @return the same layer on the other side of the board; the outline and the drill layers go
-   *         through the whole board and are returned unchanged
-   */
-  public GerberLayer flip() {
-    switch (this) {
-      case CopperBot:
-        return CopperTop;
-      case CopperTop:
-        return CopperBot;
-      case SilkscreenBot:
-        return SilkscreenTop;
-      case SilkscreenTop:
-        return SilkscreenBot;
-      case SolderMaskBot:
-        return SolderMaskTop;
-      case SolderMaskTop:
-        return SolderMaskBot;
-      default:
-        return this;
-    }
-  }
-  
   public String formatFileName(String fileNameBase, String boardName) {
     return fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
         + boardName + "-" + getSuffix() + "." + getExtension();

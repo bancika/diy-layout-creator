@@ -29,9 +29,10 @@ projects; the open questions below remain.
   use it. Copper that sits on a layer - `CopperTrace`, `CurvedTrace`, `GroundFill`, `SolderPad` and
   `PCBText` - implements `IPCBLayerComponent` (`getLayer`/`setLayer`), which `PCBLayerFilter`, the
   trace-mask print-out and `MirrorPlacement` use instead of looking the methods up by name.
-- One method decides the layer for a simple component: `GerberExporter.drawComponent`. It is
-  package-private so that `GerberExporterTest` can call it. It uses `getGerberLayer()`, flipped
-  with `GerberLayer.flip()` when the component is an `IBoardSideComponent` on `_1` (Bottom).
+- A simple component's Gerber layer follows its side: the default
+  `IGerberComponentSimple.getGerberLayer()` returns `SilkscreenBot` for an `IBoardSideComponent` on
+  `_1` (Bottom) and `SilkscreenTop` otherwise. `GerberExporter.drawComponent`, package-private so
+  that `GerberExporterTest` can call it, mirrors the text of bottom-side parts.
 - **`org.diylc.core.IBoardSideComponent`**: `PCBLayer getBoardSide()`, returning `_1` or `_2`
   only. It is deliberately separate from `ILayeredComponent` (see Decisions). Core knows a part's
   side only through this interface.
@@ -47,7 +48,7 @@ projects; the open questions below remain.
 | The side is the physical fact. Z-order stays paint order and is not tied to it | Boards are drawn opaque, so painting bottom parts beneath the board would hide them. Bottom-layer traces already follow this rule. |
 | The canvas shows the side visually and does not rely on z-order for it | That is what removes the ambiguity of a "bottom" part drawn above the board. |
 | The side is a plain property, and the app never mirrors a part for the user | Seen from above, a part under the board is a mirror image, so a part with an asymmetric footprint moved to the bottom also needs Mirror Horizontally. Doing that for the user was tried as a Flip to Other Side action and dropped as menu clutter; the user sets the side and mirrors the part where needed. |
-| The Gerber layer is swapped centrally, not inside each component | Components keep emitting their `*Top` layer. One place maps it to the other side. |
+| The Gerber layer follows the side in the `IGerberComponentSimple` default, not in each component or in the exporter | Side and layer are decided in one place on the part, with no adjustment afterwards. None of the sided parts overrides `getGerberLayer()`. |
 | Default `_2` (Top), with `null` meaning Top | Fields added to existing classes deserialize as `null` in old files. |
 | Bottom-side text is mirrored centrally in the Gerber output | Parts draw their labels readable from the top, which is backwards on the bottom silkscreen once the board is turned over. While `GerberExporter.drawComponent` draws a bottom-side part, `GerberG2DWrapper.setMirrorText` mirrors each string about the centre of its layout box, so no component changes and the canvas keeps readable labels. |
 | A part without a side placed in the mirror is placed unchanged | A jumper, eyelet or wire has no side to set, so it is placed at the reflected point like any other part rather than refused. |
@@ -154,7 +155,7 @@ order.
 
 ## 5. Verification
 
-- `GerberLayerTest` covers `flip()`. `GerberExporterTest` covers the dispatch for simple components,
+- `GerberExporterTest` covers the layer and text direction of simple components,
   including a stub `IBoardSideComponent` on top, bottom and `null`.
 - `MirrorPlacementTest` covers what placing through the mirror changes, and
   `PresenterTests.testPlaceThroughUndersideMirror` and `testPlaceUnsidedPartThroughUndersideMirror`
