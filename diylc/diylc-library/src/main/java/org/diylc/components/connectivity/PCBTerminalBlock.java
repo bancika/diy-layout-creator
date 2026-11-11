@@ -32,10 +32,12 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.connectivity.PCBTerminalBlock.PCBTerminalBlockCount;
 import org.diylc.components.transform.PCBTerminalBlockTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -52,7 +54,7 @@ import org.diylc.utils.Constants;
     author = "Branislav Stojkovic", description = "Horizontal PCB terminal block with configurable pitch",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "TB",
     enableCache = true, transformer = PCBTerminalBlockTransformer.class)
-public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> implements IGerberComponentSimple {
+public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBlockCount> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,6 +74,7 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
   private Size width = new Size(0.3d, SizeUnit.in);
   private ScrewPosition screwPosition = ScrewPosition.Offset;
   private String nodeNames = "";
+  private PCBLayer boardSide;
 
   public PCBTerminalBlock() {
     super();
@@ -368,6 +371,16 @@ public class PCBTerminalBlock extends AbstractTransparentComponent<PCBTerminalBl
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin,
         bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   static enum PCBTerminalBlockCount {

@@ -162,13 +162,16 @@ public class GerberExporter {
       IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
       GerberLayer layer = gerberComponentSimple.getGerberLayer();
       // components emit their top-side layer; a part mounted underneath goes to the bottom one
-      if (c instanceof IBoardSideComponent
-          && ((IBoardSideComponent) c).getBoardSide() == PCBLayer._1) {
+      boolean bottomSide = c instanceof IBoardSideComponent
+          && ((IBoardSideComponent) c).getBoardSide() == PCBLayer._1;
+      if (bottomSide) {
         layer = layer.flip();
       }
       g2d.startGerberOutput(layer, gerberComponentSimple.getGerberFunction(),
               gerberComponentSimple.isGerberNegative());
+      g2d.setMirrorText(bottomSide);
       c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
+      g2d.setMirrorText(false);
       g2d.stopGerberOutput();
     }
   }

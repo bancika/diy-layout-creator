@@ -36,9 +36,11 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.Percentage;
 import org.diylc.components.transform.TO92Transformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -60,7 +62,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE, transformer = TO92Transformer.class,
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
     datasheetModelColumn = 1)
-public class TransistorTO92 extends AbstractTransistorPackage {
+public class TransistorTO92 extends AbstractTransistorPackage implements IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,6 +74,7 @@ public class TransistorTO92 extends AbstractTransistorPackage {
   public static Size BODY_DIAMETER = new Size(0.2d, SizeUnit.in);
 
   private Size pinSpacing = PIN_SPACING;  
+  private PCBLayer boardSide;
 
   public TransistorTO92() {
     super();
@@ -284,5 +287,15 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     for (int i = 0; i < 3; i++) {
       g2d.fillOval(width / 2 - pinSize / 2, (height / 4) * (i + 1), pinSize, pinSize);
     }
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

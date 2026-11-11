@@ -41,10 +41,12 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.ClosedJackTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -62,7 +64,7 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Closed 1/4\" Jack", category = "Electro-Mechanical", author = "Branislav Stojkovic",
     description = "Enclosed panel mount 1/4\" phono jack", zOrder = IDIYComponent.COMPONENT,
     instanceNamePrefix = "J", transformer = ClosedJackTransformer.class, enableCache = true)
-public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple {
+public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -86,6 +88,7 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implemen
   @SuppressWarnings("unused")
   @Deprecated
   private transient String value = "";
+  private PCBLayer boardSide;
 
   public ClosedJack1_4() {
     super();
@@ -379,5 +382,15 @@ public class ClosedJack1_4 extends AbstractMultiPartComponent<JackType> implemen
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

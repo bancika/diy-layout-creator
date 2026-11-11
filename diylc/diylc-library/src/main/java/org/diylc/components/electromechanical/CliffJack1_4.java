@@ -40,10 +40,12 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.CliffJackTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -62,7 +64,7 @@ import org.diylc.utils.Constants;
     description = "Cliff-style closed panel mount 1/4\" phono jack",
     zOrder = IDIYComponent.COMPONENT, instanceNamePrefix = "J", transformer = CliffJackTransformer.class,
     enableCache = true)
-public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple {
+public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -84,6 +86,7 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implement
   @SuppressWarnings("unused")
   @Deprecated
   private transient String value = "";
+  private PCBLayer boardSide;
 
   public CliffJack1_4() {
     super();
@@ -372,5 +375,15 @@ public class CliffJack1_4 extends AbstractMultiPartComponent<JackType> implement
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

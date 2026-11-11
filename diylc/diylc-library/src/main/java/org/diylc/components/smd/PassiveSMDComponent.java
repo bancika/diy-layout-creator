@@ -37,8 +37,10 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
@@ -49,7 +51,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T> implements IGerberComponentSimple {
+public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -68,6 +70,7 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
   protected Color bodyColor;
   protected Color borderColor;
   private Color labelColor = LABEL_COLOR;
+  private PCBLayer boardSide;
   transient private Area[] body;
 
   public PassiveSMDComponent() {
@@ -411,6 +414,16 @@ public abstract class PassiveSMDComponent<T> extends AbstractLabeledComponent<T>
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum SMDSize {

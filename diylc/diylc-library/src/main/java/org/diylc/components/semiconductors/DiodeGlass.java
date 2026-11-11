@@ -28,9 +28,11 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.Theme;
@@ -51,7 +53,7 @@ import org.diylc.utils.Constants;
     transformer = SimpleComponentTransformer.class, enableCache = true, enableDatasheet = true,
     datasheetCreationStepCount = 2, datasheetModelColumn = 1)
 public class DiodeGlass extends AbstractLeadedComponent<String>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -67,6 +69,7 @@ public class DiodeGlass extends AbstractLeadedComponent<String>
   private String value = "";
   private Color markerColor = MARKER_COLOR;
   private Color insideColor = INSIDE_COLOR;
+  private PCBLayer boardSide;
 
   public DiodeGlass() {
     super();
@@ -203,5 +206,15 @@ public class DiodeGlass extends AbstractLeadedComponent<String>
 
   public void setInsideColor(Color insideColor) {
     this.insideColor = insideColor;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

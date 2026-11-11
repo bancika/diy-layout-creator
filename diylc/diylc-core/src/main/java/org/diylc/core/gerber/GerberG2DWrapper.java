@@ -58,6 +58,7 @@ public class GerberG2DWrapper extends Graphics2D
   private double tolerance;
 
   private Rectangle2D boardRect;
+  private boolean mirrorText = false;
 
   public GerberG2DWrapper(Graphics2D graphics2d, String diylcVersion, Rectangle2D boardRect) {
     super();
@@ -154,6 +155,15 @@ public class GerberG2DWrapper extends Graphics2D
     return layerMap;
   }
 
+  /**
+   * Sets whether text is written mirrored, each string about its own centre. The output is in top
+   * view, so text on the bottom side has to be mirrored to read correctly once the board is turned
+   * over.
+   */
+  public void setMirrorText(boolean mirrorText) {
+    this.mirrorText = mirrorText;
+  }
+
   @Override
   public void draw(Shape s) {
     if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
@@ -181,6 +191,10 @@ public class GerberG2DWrapper extends Graphics2D
     GlyphVector gv = font.createGlyphVector(graphics2d.getFontRenderContext(), str);
     
     AffineTransform translateInstance = AffineTransform.getTranslateInstance(x, y);
+    if (mirrorText) {
+      translateInstance.translate(gv.getLogicalBounds().getWidth(), 0);
+      translateInstance.scale(-1, 1);
+    }
 
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
         Shape glyphShape = gv.getGlyphOutline(i);

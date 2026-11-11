@@ -24,14 +24,16 @@ package org.diylc.components.passive;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
 import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.core.measures.Resistance;
 
-public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> implements IGerberComponentSimple {
+public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Resistance> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -40,6 +42,7 @@ public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Res
   protected Resistance resistance = null;
   protected Orientation orientation = Orientation.DEFAULT;
   protected Taper taper = Taper.LIN;
+  private PCBLayer boardSide;
 
   @Override
   public int getControlPointCount() {
@@ -109,5 +112,15 @@ public abstract class AbstractPotentiometer extends AbstractLabeledComponent<Res
       return getControlPointNodeName(index1) + "-" + getControlPointNodeName(index2);
 
     return null;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

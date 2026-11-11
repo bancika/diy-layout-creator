@@ -22,12 +22,17 @@
 package org.diylc.core.gerber;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.core.ComponentState;
@@ -72,6 +77,49 @@ public class GerberExporterTest {
     GerberG2DWrapper g2d = draw(new SidedGerberComponent(null));
 
     assertEquals(EnumSet.of(GerberLayer.SilkscreenTop), EnumSet.copyOf(g2d.getLayerMap().keySet()));
+  }
+
+  @Test
+  public void testTopSideTextReadsLeftToRight() {
+    List<Rectangle2D> glyphs = drawText(PCBLayer._2);
+
+    assertTrue(glyphs.get(0).getMinX() < glyphs.get(1).getMinX());
+  }
+
+  @Test
+  public void testBottomSideTextIsMirrored() {
+    List<Rectangle2D> top = drawText(PCBLayer._2);
+    List<Rectangle2D> bottom = drawText(PCBLayer._1);
+
+    // seen from the top, the first letter of a bottom-side label is on the right
+    assertTrue(bottom.get(0).getMinX() > bottom.get(1).getMinX());
+    // mirrored about the centre of its layout box, so the text stays where it was; the glyphs'
+    // uneven side bearings move their drawn bounds by a pixel or so
+    assertEquals(union(top).getCenterX(), union(bottom).getCenterX(), 2);
+  }
+
+  private static List<Rectangle2D> drawText(PCBLayer side) {
+    List<Rectangle2D> glyphs = new ArrayList<Rectangle2D>();
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D graphics = img.createGraphics();
+    GerberG2DWrapper g2d =
+        new GerberG2DWrapper(graphics, "test", new Rectangle2D.Double(0, 0, 100, 100)) {
+          @Override
+          public void fillShape(Shape s) {
+            glyphs.add(s.getBounds2D());
+          }
+        };
+    GerberExporter.drawComponent(new Project(), g2d, new TextGerberComponent(side), false);
+    graphics.dispose();
+    return glyphs;
+  }
+
+  private static Rectangle2D union(List<Rectangle2D> rects) {
+    Rectangle2D union = (Rectangle2D) rects.get(0).clone();
+    for (Rectangle2D rect : rects) {
+      union.add(rect);
+    }
+    return union;
   }
 
   private static GerberG2DWrapper draw(SimpleGerberComponent component) {
@@ -124,6 +172,23 @@ public class GerberExporterTest {
     @Override
     public PCBLayer getBoardSide() {
       return side;
+    }
+  }
+
+  public static class TextGerberComponent extends SidedGerberComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    public TextGerberComponent(PCBLayer side) {
+      super(side);
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      g2d.setColor(Color.black);
+      g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+      g2d.drawString("AB", 10, 50);
     }
   }
 }

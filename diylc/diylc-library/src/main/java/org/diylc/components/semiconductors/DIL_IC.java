@@ -39,11 +39,13 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.transform.DIL_ICTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
@@ -69,7 +71,7 @@ import org.diylc.utils.Constants;
     transformer = DIL_ICTransformer.class, enableCache = true, enableDatasheet = true,
     datasheetCreationStepCount = 2, datasheetModelColumn = 1)
 public class DIL_IC extends AbstractLabeledComponent<String>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -97,6 +99,7 @@ public class DIL_IC extends AbstractLabeledComponent<String>
   private Color indentColor = INDENT_COLOR;
   private DisplayNumbers displayNumbers = DISPLAY_NUMBERS;
   private String pinNames = null;
+  private PCBLayer boardSide;
   // new Point(0, pinSpacing.convertToPixels()),
   // new Point(0, 2 * pinSpacing.convertToPixels()),
   // new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -693,6 +696,16 @@ public class DIL_IC extends AbstractLabeledComponent<String>
     int pinNumber = getPinNumber(index);
     String name = getPinName(pinNumber);
     return name == null ? Integer.toString(pinNumber) : name;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum PinCount {

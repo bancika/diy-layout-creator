@@ -24,7 +24,9 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.Theme;
 import org.diylc.core.annotations.EditableProperty;
 import org.diylc.core.annotations.PositiveMeasureValidator;
@@ -34,7 +36,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance> implements IGerberComponentSimple {
+public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capacitance> implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -49,6 +51,7 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
   protected Boolean showOuterFoil = false;
   protected Color outerFoilColor = OUTER_FOIL_COLOR;
   protected String type;
+  private PCBLayer boardSide;
 
   @EditableProperty(validatorClass = PositiveMeasureValidator.class)
   public Capacitance getValue() {
@@ -144,5 +147,15 @@ public abstract class AbstractFilmCapacitor extends AbstractLeadedComponent<Capa
 
   public void setOuterFoilColor(Color outerFoilColor) {
     this.outerFoilColor = outerFoilColor;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }
