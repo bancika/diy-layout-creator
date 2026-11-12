@@ -689,6 +689,10 @@
 					<changeType>BUG_FIX</changeType>
 					<description>Opening an older project with a perfboard or another board warned that the file references unknown component properties</description>
 				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Transistors in TO-92, TO-1, TO-126, TO-220 and TO-3 packages drew circles around their pins in outline mode; only the body outline and the label are drawn now</description>
+				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
 		</org.diylc.appframework.update.Version>

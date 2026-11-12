@@ -223,8 +223,9 @@ public class TransistorTO92 extends AbstractTransistorPackage {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
 
-    drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
-        outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
+    if (!outlineMode) {
+      drawPins(g2d, pinSize, PIN_COLOR, PIN_BORDER_COLOR);
+    }
 
     // Draw label.
     g2d.setFont(project.getFont());

@@ -254,17 +254,14 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
-  // drawn after the body so that pins stay visible whatever its alpha; a null pinColor draws only
-  // the outline
+  // drawn after the body so that pins stay visible whatever its alpha
   protected void drawPins(Graphics2D g2d, int pinSize, Color pinColor, Color pinBorderColor) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     for (Point2D point : controlPoints) {
       Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
           pinSize, pinSize);
-      if (pinColor != null) {
-        g2d.setColor(pinColor);
-        g2d.fill(pin);
-      }
+      g2d.setColor(pinColor);
+      g2d.fill(pin);
       g2d.setColor(pinBorderColor);
       g2d.draw(pin);
     }
