@@ -71,9 +71,6 @@ public class Via extends AbstractTransparentComponent<Void>
   public static Size HOLE_SIZE = new Size(0.4d, SizeUnit.mm);
   public static Color COLOR = Color.black;
 
-  // gerber-writer has no constant for it
-  private static final String VIA_DRILL = "ViaDrill";
-
   private Size size = SIZE;
   private Size holeSize = HOLE_SIZE;
   private Color color = COLOR;
@@ -112,7 +109,8 @@ public class Via extends AbstractTransparentComponent<Void>
     if (gerberDrawingObserver != null) {
       gerberDrawingObserver.stopGerberOutput(GerberLayer.CopperTop);
       gerberDrawingObserver.stopGerberOutput(GerberLayer.CopperBot);
-      gerberDrawingObserver.startGerberOutput(GerberLayer.DrillPlated, VIA_DRILL, false);
+      gerberDrawingObserver.startGerberOutput(GerberLayer.DrillPlated, GerberFunctions.VIA_DRILL,
+          false);
     }
     g2d.setColor(Constants.CANVAS_COLOR);
     g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,

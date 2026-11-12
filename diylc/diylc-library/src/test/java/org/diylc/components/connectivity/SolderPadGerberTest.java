@@ -21,18 +21,20 @@
 */
 package org.diylc.components.connectivity;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Map;
+import java.util.EnumSet;
 import java.util.Set;
 
-import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.DrillFormat;
 
 import org.diylc.common.PCBLayer;
+import org.diylc.components.electromechanical.DrillHole;
 import org.diylc.core.ComponentState;
 import org.diylc.core.Project;
 import org.diylc.core.gerber.GerberG2DWrapper;
@@ -79,7 +81,7 @@ public class SolderPadGerberTest {
   @Test
   public void testViaIsOnBothLayersAndTented() {
     Via via = new Via();
-    Set<GerberLayer> layers = drawGerber(via).keySet();
+    Set<GerberLayer> layers = layersOf(drawGerber(via));
     assertTrue(layers.contains(GerberLayer.CopperTop));
     assertTrue(layers.contains(GerberLayer.CopperBot));
     assertTrue(layers.contains(GerberLayer.DrillPlated));
@@ -95,11 +97,32 @@ public class SolderPadGerberTest {
     assertNoCutOut(drawGerber(new Via()));
   }
 
+  @Test
+  public void testViaIsDrilledOnceAsViaDrill() {
+    String excellon = drawGerber(new Via()).getDrillLayerMap().get(GerberLayer.DrillPlated)
+        .dumpToString(DrillFormat.EXCELLON);
+    assertTrue(excellon.contains("; #@! TA.AperFunction,Plated,PTH,ViaDrill\nT1C0.4\n"));
+    assertEquals(1, countHoles(excellon));
+  }
+
+  @Test
+  public void testDrillHoleMarkerIsDrilledOnce() {
+    // the marker's border and crosshair are drawn too, but they are not holes
+    String excellon = drawGerber(new DrillHole()).getDrillLayerMap()
+        .get(GerberLayer.DrillNonPlated).dumpToString(DrillFormat.EXCELLON);
+    assertTrue(excellon.contains("T1C3.0\n"));
+    assertEquals(1, countHoles(excellon));
+  }
+
+  private static long countHoles(String excellon) {
+    return excellon.lines().filter(line -> line.startsWith("X")).count();
+  }
+
   // a cut-out is drawn with clear polarity, %LPC*%
-  private static void assertNoCutOut(Map<GerberLayer, DataLayer> layers) {
+  private static void assertNoCutOut(GerberG2DWrapper g2d) {
     for (GerberLayer copperLayer : new GerberLayer[] {GerberLayer.CopperTop,
         GerberLayer.CopperBot}) {
-      String gerber = layers.get(copperLayer).dumpGerberToString();
+      String gerber = g2d.getLayerMap().get(copperLayer).dumpGerberToString();
       assertTrue(gerber.contains("D03*"));
       assertFalse(gerber.contains("%LPC*%"));
     }
@@ -113,10 +136,17 @@ public class SolderPadGerberTest {
     SolderPad pad = new SolderPad();
     pad.setLayer(layer);
     pad.setHoleType(holeType);
-    return drawGerber(pad).keySet();
+    return layersOf(drawGerber(pad));
   }
 
-  private static Map<GerberLayer, DataLayer> drawGerber(IGerberComponentCustom component) {
+  private static Set<GerberLayer> layersOf(GerberG2DWrapper g2d) {
+    Set<GerberLayer> layers = EnumSet.noneOf(GerberLayer.class);
+    layers.addAll(g2d.getLayerMap().keySet());
+    layers.addAll(g2d.getDrillLayerMap().keySet());
+    return layers;
+  }
+
+  private static GerberG2DWrapper drawGerber(IGerberComponentCustom component) {
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = img.createGraphics();
     GerberG2DWrapper g2d =
@@ -124,6 +154,6 @@ public class SolderPadGerberTest {
     g2d.startedDrawingComponent();
     component.draw(g2d, ComponentState.NORMAL, false, new Project(), g2d, g2d);
     graphics.dispose();
-    return g2d.getLayerMap();
+    return g2d;
   }
 }
