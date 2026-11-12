@@ -98,6 +98,23 @@ public class SolderPadGerberTest {
   }
 
   @Test
+  public void testPadWithHoleIsComponentPad() {
+    SolderPad pad = new SolderPad();
+    pad.setHoleType(SolderPad.HoleType.NTPH);
+    String gerber = drawGerber(pad).getLayerMap().get(GerberLayer.CopperBot).dumpGerberToString();
+    assertTrue(gerber.contains("TA.AperFunction,ComponentPad*"));
+    assertFalse(gerber.contains("ConnectorPad"));
+  }
+
+  @Test
+  public void testPadWithoutHoleIsSmdPad() {
+    SolderPad pad = new SolderPad();
+    pad.setHoleType(SolderPad.HoleType.NONE);
+    String gerber = drawGerber(pad).getLayerMap().get(GerberLayer.CopperBot).dumpGerberToString();
+    assertTrue(gerber.contains("TA.AperFunction,SMDPad,CuDef*"));
+  }
+
+  @Test
   public void testViaIsDrilledOnceAsViaDrill() {
     String excellon = drawGerber(new Via()).getDrillLayerMap().get(GerberLayer.DrillPlated)
         .dumpToString(DrillFormat.EXCELLON);

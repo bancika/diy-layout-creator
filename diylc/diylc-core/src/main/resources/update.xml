@@ -667,7 +667,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>A 'Solder Pad' with a plated through hole now has copper on both layers, like the real thing, and joins top and bottom copper in netlists and 'Highlight Connected Areas'; Gerber export writes it to both copper and both solder mask layers</description>
+					<description>A 'Solder Pad' with a plated through hole is now a double-sided pad, like the real thing: it has copper on both layers, joins top and bottom copper in netlists and 'Highlight Connected Areas', and Gerber export writes it to both copper and both solder mask layers, so its 'Layer' no longer applies. New solder pads have a plated through hole by default, which is what PCB fabs make; pads in existing projects keep their hole type</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -676,6 +676,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Gerber export writes the drill files in Excellon format, the drill format every PCB fab accepts, instead of Gerber format; a 'Drill Hole' no longer adds its outline and crosshair to the drill file</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Gerber export marks solder pads with a hole as component pads and pads without one as SMD pads, instead of marking every pad as a connector pad</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

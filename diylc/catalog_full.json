@@ -1712,7 +1712,7 @@
       "name" : "Hole Type",
       "type" : "HoleType",
       "possibleValues" : [ "NONE", "PTH", "NTPH" ],
-      "defaultValue" : "NTPH"
+      "defaultValue" : "PTH"
     }, {
       "name" : "Layer",
       "type" : "PCBLayer",

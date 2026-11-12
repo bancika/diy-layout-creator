@@ -75,7 +75,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   private Type type = Type.ROUND;
   private Size holeSize = HOLE_SIZE;
   private PCBLayer layer = PCBLayer._1;
-  private HoleType holeType = HoleType.NTPH;
+  private HoleType holeType = HoleType.PTH;
   private String nodeName = "";
 
   @Override
@@ -97,8 +97,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
         : new GerberLayer[] {getLayer().toGerberCopperLayer()};
     if (gerberDrawingObserver != null) {
       for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
-        gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD,
-            false);
+        gerberDrawingObserver.startGerberOutput(gerberCopperLayer, getGerberPadFunction(), false);
         gerberDrawingObserver.startGerberOutput(getMaskLayer(gerberCopperLayer), "Material", false);
       }
     }
@@ -178,6 +177,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   
   @EditableProperty(name = "Hole Type")
   public HoleType getHoleType() {
+    // pads saved before the hole type existed had non-plated holes; new pads are plated
     if (holeType == null) {
       holeType = HoleType.NTPH;
     }
@@ -224,6 +224,12 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   // layers and joins them, whatever its 'Layer' says
   private boolean isOnBothLayers() {
     return HoleType.PTH.equals(getHoleType());
+  }
+
+  // a pad with a hole takes a part's lead; one without is a surface mount pad
+  private String getGerberPadFunction() {
+    return HoleType.NONE.equals(getHoleType()) ? GerberFunctions.SMDPAD_CU_DEF
+        : GerberFunctions.COMPONENT_PAD;
   }
 
   // the mask is opened on the side the copper is on
