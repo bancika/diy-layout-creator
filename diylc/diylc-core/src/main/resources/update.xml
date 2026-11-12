@@ -643,7 +643,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
-					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board; bottom parts are drawn faded on the canvas and solid in the board's Underside Display, and Gerber export puts their silkscreen on the bottom layer with the text mirrored, and the silkscreen print-out has a separate page for the bottom; a 'Dot' used as a solder joint can be put on the bottom as well</description>
+					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board. Bottom parts are drawn faded on the canvas and solid in the board's Underside Display; Gerber export puts their silkscreen on the bottom layer with the text mirrored; and the silkscreen print-out has a separate page for the bottom, which now also carries PCB text on the bottom layer. A 'Dot' used as a solder joint can be put on the bottom as well</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>NEW_FEATURE</changeType>
@@ -651,11 +651,7 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Boards are now drawn the way they really are, so it is clear at a glance which side you are looking at: the main view shows the component side, with strips, pads, traces and other copper on the bottom of the board showing through it faded, and the Underside Display shows the solder side, with the copper solid and the parts mounted on top faded behind the board. Holes and trace cuts go through the board and stay clear from both sides</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Turning a board's 'Underside Transparency' off now draws its Underside Display fully solid, and turning it on fades only the parts on the far side of the board instead of the whole display</description>
+					<description>Boards are now drawn the way they really are, so it is clear at a glance which side you are looking at: the main view shows the component side, with strips, pads, traces and other copper on the bottom of the board showing through it faded, and the Underside Display shows the solder side, with the copper solid and the parts mounted on top faded behind the board. Holes and trace cuts go through the board and stay clear from both sides. A board's 'Underside Transparency' now fades only the parts on the far side, and turning it off draws the Underside Display fully solid</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
@@ -663,23 +659,11 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>PCB text on the bottom layer is now printed on the bottom page of the silkscreen print-out, not the top one</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
 					<description>A 'Solder Pad' with a plated through hole is now a double-sided pad, like the real thing: it has copper on both layers, joins top and bottom copper in netlists and 'Highlight Connected Areas', and Gerber export writes it to both copper and both solder mask layers, so its 'Layer' no longer applies. New solder pads have a plated through hole by default, which is what PCB fabs make; pads in existing projects keep their hole type</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
-					<description>Gerber export no longer cuts the holes of solder pads and vias out of the copper layers; the holes are defined by the drill files alone, as the Gerber specification recommends</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Gerber export writes the drill files in Excellon format, the drill format every PCB fab accepts, instead of Gerber format; a 'Drill Hole' no longer adds its outline and crosshair to the drill file</description>
-				</org.diylc.appframework.update.Change>
-				<org.diylc.appframework.update.Change>
-					<changeType>IMPROVEMENT</changeType>
-					<description>Gerber export marks solder pads with a hole as component pads and pads without one as SMD pads, instead of marking every pad as a connector pad</description>
+					<description>Gerber export produces files ready for any PCB fab: drill files are written in Excellon format, which every fab accepts, instead of Gerber format; holes are defined by the drill files alone instead of also being cut out of the copper layers; and solder pads are marked as component pads, or SMD pads when they have no hole, instead of as connector pads</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
@@ -704,6 +688,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Transistors in TO-92, TO-1, TO-126, TO-220 and TO-3 packages drew circles around their pins in outline mode; only the body outline and the label are drawn now</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Drill Hole' added its outline and crosshair to the drill file in Gerber export</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
