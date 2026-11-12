@@ -50,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true,
     transformer = ProtoBoardTransformer.class)
-public class ProtoBoard780 extends AbstractProtoBoard {
+public class ProtoBoard780 extends AbstractSolderedProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -517,6 +517,29 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @Override
+  protected Rectangle2D getUnrotatedBody() {
+    return new Rectangle2D.Double(point.getX(), point.getY(), (int) WIDTH_SIZE.convertToPixels(),
+        (int) LENGTH_SIZE.convertToPixels());
+  }
+
+  @Override
+  protected Point2D getRotationCenter() {
+    return point;
+  }
+
+  @Override
+  public Rectangle2D getBoardRectangle() {
+    Rectangle2D rect = super.getBoardRectangle();
+    if (!translateToGrid) {
+      return rect;
+    }
+    // the whole board is drawn shifted onto the grid, after it is turned
+    rect.setRect(rect.getX() - X_OFFSET.convertToPixels(),
+        rect.getY() + SPACING.convertToPixels() / 2, rect.getWidth(), rect.getHeight());
+    return rect;
   }
 
   @Override

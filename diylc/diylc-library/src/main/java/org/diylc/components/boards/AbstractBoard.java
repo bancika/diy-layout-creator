@@ -50,7 +50,6 @@ import org.diylc.core.measures.SizeUnit;
 public abstract class AbstractBoard extends AbstractTransparentComponent<String> implements IBoard {
 
   private static final long serialVersionUID = 1L;
-  public static final Size DEFAULT_UNDERSIDE_OFFSET = new Size(0.1, SizeUnit.in);
 
   public static Color BORDER_COLOR = PHENOLIC_COLOR.darker();
   public static Color COORDINATE_COLOR = Color.gray.brighter();
