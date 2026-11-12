@@ -488,16 +488,8 @@ public class Presenter implements IPlugInPort {
     configManager.writeValue(IPlugInPort.DISABLED_CATEGORIES_KEY, new ArrayList<String>());
   }
 
-  @SuppressWarnings({"unchecked"})
   private boolean isComponentVisible(IDIYComponent<?> component) {
-    ComponentType componentType =
-        ComponentProcessor.getInstance().extractComponentTypeFrom(
-            (Class<? extends IDIYComponent<?>>) component.getClass());
-    // for internal types
-    if (componentType == null)
-      return true;
-    return !currentProject.getHiddenLayers()
-        .contains((int) Math.round(ComponentProcessor.getInstance().getZOrder(component)));
+    return !ComponentLayers.isHidden(currentProject.getHiddenLayers(), component);
   }
 
   @Override
@@ -1162,7 +1154,7 @@ public class Presenter implements IPlugInPort {
       Iterator<IDIYComponent<?>> i = newSelection.iterator();
       while (i.hasNext()) {
         IDIYComponent<?> c = i.next();
-        if ((int) ComponentProcessor.getInstance().getZOrder(c) != layer) {
+        if (!ComponentLayers.isOnLayer(c, layer)) {
           i.remove();
         }
       }
@@ -2285,14 +2277,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setLayerLocked(int layerZOrder, boolean locked) {
-    LOG.info(String.format("setLayerLocked(%s, %s)", layerZOrder, locked));
+  public void setLayerLocked(int layerId, boolean locked) {
+    LOG.info(String.format("setLayerLocked(%s, %s)", layerId, locked));
     Project oldProject = currentProject.clone();
-    if (locked) {
-      currentProject.getLockedLayers().add(layerZOrder);
-    } else {
-      currentProject.getLockedLayers().remove(layerZOrder);
-    }
+    setLayerInSet(currentProject.getLockedLayers(), layerId, locked);
     groupAndLockIndex.invalidate();
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.LAYER_STATE_CHANGED, currentProject.getLockedLayers());
@@ -2301,14 +2289,10 @@ public class Presenter implements IPlugInPort {
   }
 
   @Override
-  public void setLayerVisibility(int layerZOrder, boolean visible) {
-    LOG.info(String.format("setLayerVisibility(%s, %s)", layerZOrder, visible));
+  public void setLayerVisibility(int layerId, boolean visible) {
+    LOG.info(String.format("setLayerVisibility(%s, %s)", layerId, visible));
     Project oldProject = currentProject.clone();
-    if (visible) {
-      currentProject.getHiddenLayers().remove(layerZOrder);
-    } else {
-      currentProject.getHiddenLayers().add(layerZOrder);
-    }
+    setLayerInSet(currentProject.getHiddenLayers(), layerId, !visible);
     updateSelection(EMPTY_SELECTION);
     messageDispatcher.dispatchMessage(EventType.LAYER_VISIBILITY_CHANGED, currentProject.getHiddenLayers());
     
@@ -3225,8 +3209,22 @@ public class Presenter implements IPlugInPort {
   }
   
   private boolean isComponentLayerLocked(IDIYComponent<?> component) {
-    return currentProject.getLockedLayers()
-        .contains((int) Math.round(ComponentProcessor.getInstance().getZOrder(component)));
+    return ComponentLayers.isLocked(currentProject.getLockedLayers(), component);
+  }
+
+  // the legacy trace layer stands for both trace layers
+  private static void setLayerInSet(Set<Integer> layers, int layerId, boolean inSet) {
+    int[] ids = layerId == LayerIds.LEGACY_TRACES
+        ? new int[] {LayerIds.BOTTOM_TRACES, LayerIds.TOP_TRACES}
+        : new int[] {layerId};
+    for (int id : ids) {
+      if (inSet) {
+        layers.add(id);
+      } else {
+        layers.remove(id);
+      }
+    }
+    LayerIds.syncLegacy(layers);
   }
 
   /**

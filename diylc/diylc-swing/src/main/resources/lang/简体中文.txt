@@ -728,3 +728,5 @@ Decimal (4.7K, 0.22uF, 6.3V)|小数 (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
 Fade Copper Under Board|淡化板下铜箔
 Board Side|板面
+Bottom Traces|底层走线
+Top Traces|顶层走线

@@ -196,6 +196,17 @@ public class Project implements Serializable, Cloneable {
     return hiddenLayers;
   }
 
+  // called by XStream after loading, whichever way the project is opened; the trace layer was split
+  // in two, and files from older versions name only the single legacy one
+  private Object readResolve() {
+    if (lockedLayers == null) {
+      lockedLayers = new HashSet<Integer>();
+    }
+    LayerIds.migrateLoaded(lockedLayers);
+    LayerIds.migrateLoaded(getHiddenLayers());
+    return this;
+  }
+
   public VersionNumber getFileVersion() {
     return fileVersion;
   }

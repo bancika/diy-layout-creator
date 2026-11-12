@@ -36,6 +36,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote;
@@ -62,7 +63,7 @@ import org.diylc.utils.Constants;
     bomPolicy = BomPolicy.NEVER_SHOW, keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class Via extends AbstractTransparentComponent<Void>
-    implements IConnective, IGerberComponentCustom {
+    implements IConnective, ILayeredComponent, IGerberComponentCustom {
 
   private static final long serialVersionUID = 1L;
 
@@ -173,6 +174,12 @@ public class Via extends AbstractTransparentComponent<Void>
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  // goes through the board, so it is on every copper layer
+  @Override
+  public int getLayerId() {
+    return 0;
   }
 
   @Override

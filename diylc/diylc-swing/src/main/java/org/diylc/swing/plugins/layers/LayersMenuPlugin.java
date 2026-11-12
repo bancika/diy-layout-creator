@@ -37,6 +37,7 @@ import org.diylc.common.IPlugIn;
 import org.diylc.common.IPlugInPort;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
+import org.diylc.core.LayerIds;
 import org.diylc.swing.ISwingUI;
 
 public class LayersMenuPlugin implements IPlugIn {
@@ -53,14 +54,14 @@ public class LayersMenuPlugin implements IPlugIn {
     visibleActionMap = new HashMap<Layer, Action>();
     selectAllActionMap = new HashMap<Integer, Action>();
     for (Layer layer : Layer.values()) {
-      final int zOrder = layer.getZOrder();
+      final int layerId = layer.getLayerId();
       AbstractAction lockAction = new AbstractAction("Lock") {
 
         private static final long serialVersionUID = 1L;
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          LayersMenuPlugin.this.plugInPort.setLayerLocked(zOrder, (Boolean) getValue(Action.SELECTED_KEY));
+          LayersMenuPlugin.this.plugInPort.setLayerLocked(layerId, (Boolean) getValue(Action.SELECTED_KEY));
 //          selectAllActionMap.get(zOrder).setEnabled(!(Boolean) getValue(Action.SELECTED_KEY));
         }
       };
@@ -73,13 +74,15 @@ public class LayersMenuPlugin implements IPlugIn {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          LayersMenuPlugin.this.plugInPort.setLayerVisibility(zOrder, getValue(Action.SELECTED_KEY) == null ? true : (Boolean) getValue(Action.SELECTED_KEY));
+          LayersMenuPlugin.this.plugInPort.setLayerVisibility(layerId, getValue(Action.SELECTED_KEY) == null ? true : (Boolean) getValue(Action.SELECTED_KEY));
 //          selectAllActionMap.get(zOrder).setEnabled(!(Boolean) getValue(Action.SELECTED_KEY));
         }
       };
       visibleAction.putValue(IView.CHECK_BOX_MENU_ITEM, true);
-      visibleAction.putValue(AbstractAction.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + zOrder,
-          Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+      // the shortcuts follow the menu order, Ctrl+1 for the first layer
+      visibleAction.putValue(AbstractAction.ACCELERATOR_KEY,
+          KeyStroke.getKeyStroke(KeyEvent.VK_1 + layer.ordinal(),
+              Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
       visibleActionMap.put(layer, visibleAction);
 
       AbstractAction selectAllAction = new AbstractAction("Select All") {
@@ -88,10 +91,10 @@ public class LayersMenuPlugin implements IPlugIn {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          LayersMenuPlugin.this.plugInPort.selectAll(zOrder);
+          LayersMenuPlugin.this.plugInPort.selectAll(layerId);
         }
       };
-      selectAllActionMap.put(zOrder, selectAllAction);
+      selectAllActionMap.put(layerId, selectAllAction);
 
       swingUI.injectSubmenu(layer.title, null, LOCK_LAYERS_TITLE);
       swingUI.injectMenuAction(visibleAction, layer.title);
@@ -116,34 +119,38 @@ public class LayersMenuPlugin implements IPlugIn {
     if (eventType == EventType.LAYER_STATE_CHANGED) {
       Set<Integer> lockedLayers = (Set<Integer>) params[0];
       for (Layer layer : Layer.values()) {
-        lockActionMap.get(layer).putValue(Action.SELECTED_KEY, lockedLayers.contains(layer.getZOrder()));
+        lockActionMap.get(layer).putValue(Action.SELECTED_KEY, lockedLayers.contains(layer.getLayerId()));
       }
     } else if (eventType == EventType.LAYER_VISIBILITY_CHANGED) {
       Set<Integer> hiddenLayers = (Set<Integer>) params[0];
       for (Layer layer : Layer.values()) {
-        visibleActionMap.get(layer).putValue(Action.SELECTED_KEY, !hiddenLayers.contains(layer.getZOrder()));
+        visibleActionMap.get(layer).putValue(Action.SELECTED_KEY, !hiddenLayers.contains(layer.getLayerId()));
       }
     }    
   }
 
+  // in menu order, which also gives the shortcuts
   static enum Layer {
-    CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board", IDIYComponent.BOARD), TRACE("Trace", IDIYComponent.TRACE), COMPONENT(
-        "Component", IDIYComponent.COMPONENT), WIRING("Wiring", IDIYComponent.WIRING), TEXT("Text", IDIYComponent.TEXT);
+    CHASSIS("Chassis", IDIYComponent.CHASSIS), BOARD("Board", IDIYComponent.BOARD),
+    BOTTOM_TRACES("Bottom Traces", LayerIds.BOTTOM_TRACES),
+    TOP_TRACES("Top Traces", LayerIds.TOP_TRACES),
+    COMPONENT("Component", IDIYComponent.COMPONENT), WIRING("Wiring", IDIYComponent.WIRING),
+    TEXT("Text", IDIYComponent.TEXT);
 
     String title;
-    int zOrder;
+    int layerId;
 
-    private Layer(String title, int order) {
+    private Layer(String title, int layerId) {
       this.title = title;
-      zOrder = order;
+      this.layerId = layerId;
     }
 
     public String getTitle() {
       return title;
     }
 
-    public int getZOrder() {
-      return zOrder;
+    public int getLayerId() {
+      return layerId;
     }
   }
 }

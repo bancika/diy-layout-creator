@@ -728,3 +728,5 @@ Decimal (4.7K, 0.22uF, 6.3V)|दशमलव (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
 Fade Copper Under Board|बोर्ड के नीचे तांबा धुंधला करें
 Board Side|बोर्ड का पक्ष
+Bottom Traces|नीचे के ट्रेस
+Top Traces|ऊपर के ट्रेस

@@ -729,3 +729,5 @@ Decimal (4.7K, 0.22uF, 6.3V)|Décimale (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
 Fade Copper Under Board|Estomper le cuivre sous la carte
 Board Side|Côté de la carte
+Bottom Traces|Pistes du dessous
+Top Traces|Pistes du dessus

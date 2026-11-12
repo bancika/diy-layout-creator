@@ -666,6 +666,10 @@
 					<description>Gerber export produces files ready for any PCB fab: drill files are written in Excellon format, which every fab accepts, instead of Gerber format; holes are defined by the drill files alone instead of also being cut out of the copper layers; and solder pads are marked as component pads, or SMD pads when they have no hole, instead of as connector pads</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>The 'Trace' layer in the Layers menu is split into 'Bottom Traces' and 'Top Traces', so the copper of one side can be hidden, locked or selected on its own; vias, eyelets, turrets and plated pads go through the board and belong to both, and jumpers are on the top. The layer shortcuts follow the menu order now, Ctrl+1 to Ctrl+7. Projects with the old 'Trace' layer hidden or locked open with both sides hidden or locked</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotated labels in pasted components and building blocks were drawn in the wrong place and at the wrong angle while following the mouse, until the components were placed</description>
 				</org.diylc.appframework.update.Change>
