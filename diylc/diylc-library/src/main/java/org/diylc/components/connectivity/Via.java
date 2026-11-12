@@ -107,9 +107,11 @@ public class Via extends AbstractTransparentComponent<Void>
         diameter, diameter));
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
+    // the hole goes to the drill file only; cutting it out of the copper as well is advised against
+    // by the Gerber specification
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.setGerberNegative(GerberLayer.CopperTop, true);
-      gerberDrawingObserver.setGerberNegative(GerberLayer.CopperBot, true);
+      gerberDrawingObserver.stopGerberOutput(GerberLayer.CopperTop);
+      gerberDrawingObserver.stopGerberOutput(GerberLayer.CopperBot);
       gerberDrawingObserver.startGerberOutput(GerberLayer.DrillPlated, VIA_DRILL, false);
     }
     g2d.setColor(Constants.CANVAS_COLOR);

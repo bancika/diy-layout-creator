@@ -125,16 +125,16 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     drawingObserver.stopDrawingSide();
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
+    // the hole goes to the drill file only; cutting it out of the copper as well is advised against
+    // by the Gerber specification
     if (gerberDrawingObserver != null) {
       for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+        gerberDrawingObserver.stopGerberOutput(gerberCopperLayer);
         gerberDrawingObserver.stopGerberOutput(getMaskLayer(gerberCopperLayer));
       }
     }
     if (getHoleSize().getValue() > 0 && !HoleType.NONE.equals(getHoleType())) {
       if (gerberDrawingObserver != null) {
-        for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
-          gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
-        }
         GerberLayer holeLayer = HoleType.PTH.equals(getHoleType()) ? GerberLayer.DrillPlated : GerberLayer.DrillNonPlated;
         gerberDrawingObserver.startGerberOutput(holeLayer, GerberFunctions.COMPONENT_DRILL, false);
       }

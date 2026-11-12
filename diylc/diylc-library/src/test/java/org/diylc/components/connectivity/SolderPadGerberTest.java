@@ -21,12 +21,16 @@
 */
 package org.diylc.components.connectivity;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.Set;
+
+import com.bancika.gerberwriter.DataLayer;
 
 import org.diylc.common.PCBLayer;
 import org.diylc.core.ComponentState;
@@ -75,12 +79,30 @@ public class SolderPadGerberTest {
   @Test
   public void testViaIsOnBothLayersAndTented() {
     Via via = new Via();
-    Set<GerberLayer> layers = drawGerber(via);
+    Set<GerberLayer> layers = drawGerber(via).keySet();
     assertTrue(layers.contains(GerberLayer.CopperTop));
     assertTrue(layers.contains(GerberLayer.CopperBot));
     assertTrue(layers.contains(GerberLayer.DrillPlated));
     assertTrue(!layers.contains(GerberLayer.SolderMaskTop));
     assertTrue(!layers.contains(GerberLayer.SolderMaskBot));
+  }
+
+  @Test
+  public void testHolesAreNotCutOutOfCopper() {
+    SolderPad pad = new SolderPad();
+    pad.setHoleType(SolderPad.HoleType.PTH);
+    assertNoCutOut(drawGerber(pad));
+    assertNoCutOut(drawGerber(new Via()));
+  }
+
+  // a cut-out is drawn with clear polarity, %LPC*%
+  private static void assertNoCutOut(Map<GerberLayer, DataLayer> layers) {
+    for (GerberLayer copperLayer : new GerberLayer[] {GerberLayer.CopperTop,
+        GerberLayer.CopperBot}) {
+      String gerber = layers.get(copperLayer).dumpGerberToString();
+      assertTrue(gerber.contains("D03*"));
+      assertFalse(gerber.contains("%LPC*%"));
+    }
   }
 
   private static Set<GerberLayer> drawGerber(PCBLayer layer) {
@@ -91,10 +113,10 @@ public class SolderPadGerberTest {
     SolderPad pad = new SolderPad();
     pad.setLayer(layer);
     pad.setHoleType(holeType);
-    return drawGerber(pad);
+    return drawGerber(pad).keySet();
   }
 
-  private static Set<GerberLayer> drawGerber(IGerberComponentCustom component) {
+  private static Map<GerberLayer, DataLayer> drawGerber(IGerberComponentCustom component) {
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = img.createGraphics();
     GerberG2DWrapper g2d =
@@ -102,6 +124,6 @@ public class SolderPadGerberTest {
     g2d.startedDrawingComponent();
     component.draw(g2d, ComponentState.NORMAL, false, new Project(), g2d, g2d);
     graphics.dispose();
-    return g2d.getLayerMap().keySet();
+    return g2d.getLayerMap();
   }
 }
