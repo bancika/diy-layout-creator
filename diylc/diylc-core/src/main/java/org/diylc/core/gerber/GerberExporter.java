@@ -15,9 +15,12 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.DrillFormat;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IBoard;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IView;
 import org.diylc.core.Project;
@@ -29,6 +32,9 @@ public class GerberExporter {
 
   public static final double OUTLINE_THICKNESS = new Size(0.3d, SizeUnit.mm).convertToPixels();
   private static final Logger LOG = Logger.getLogger(GerberExporter.class);
+
+  // Excellon is the drill format every fab accepts; Gerber drill files are not read by all of them
+  private static final DrillFormat DRILL_FORMAT = DrillFormat.EXCELLON;
 
   public static void exportGerber(String fileNameBase, Project currentProject, IView view,
                                   Graphics2D graphics2d, String diylcVersion) {
@@ -135,6 +141,23 @@ public class GerberExporter {
           return;
         }
       });
+
+      g2d.getDrillLayerMap().forEach((layer, drillLayer) -> {
+        try {
+          String fileName = layer.formatFileName(fileNameBase, boardComponent.getName(),
+                  DRILL_FORMAT == DrillFormat.EXCELLON ? "drl" : "gbr");
+          LOG.info("Exporting layer: " + layer + " for board " + boardComponent.getName()
+                  + " to file: " + fileName);
+          drillLayer.dumpToFile(fileName, DRILL_FORMAT);
+          generatedFiles.add(fileName);
+        } catch (IOException e) {
+          LOG.error("Error writing drill file: " + e.getMessage());
+          view.showMessage(
+                  LangUtil.translate(
+                          "Failed to export the project to gerber. Please check the log for details"),
+                  LangUtil.translate("Gerber Export"), IView.ERROR_MESSAGE);
+        }
+      });
     });
     view.showMessage(
             String.format(
@@ -145,8 +168,12 @@ public class GerberExporter {
     LOG.info("Completed export to gerber");
   }
 
-  private static void drawComponent(Project currentProject, GerberG2DWrapper g2d,
-                                    IDIYComponent<?> c, boolean outlineMode) {
+  /**
+   * Draws the specified component into the Gerber layers it belongs to. This is the only place that
+   * decides which layer a component's output goes to.
+   */
+  static void drawComponent(Project currentProject, GerberG2DWrapper g2d,
+                            IDIYComponent<?> c, boolean outlineMode) {
     IGerberComponent gerberComponent = (IGerberComponent) c;
     g2d.startedDrawingComponent();
     if (gerberComponent instanceof IGerberComponentCustom) {
@@ -156,7 +183,10 @@ public class GerberExporter {
       IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
       g2d.startGerberOutput(gerberComponentSimple.getGerberLayer(),
               gerberComponentSimple.getGerberFunction(), gerberComponentSimple.isGerberNegative());
+      // text on the bottom silkscreen is read from below, so it is written mirrored
+      g2d.setMirrorText(IBoardSideComponent.sideOf(c) == PCBLayer._1);
       c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
+      g2d.setMirrorText(false);
       g2d.stopGerberOutput();
     }
   }

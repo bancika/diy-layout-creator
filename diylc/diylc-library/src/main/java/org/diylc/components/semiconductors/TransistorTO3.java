@@ -365,16 +365,16 @@ public class TransistorTO3 extends AbstractLabeledComponent<String>
 
     // the pins leave through the bottom of the case, so they are drawn over it to stay visible
     // whatever its alpha
-    for (int i = 0; i < 2; i++) {
-      Point2D point = getControlPoint(i);
-      if (!outlineMode) {
+    if (!outlineMode) {
+      for (int i = 0; i < 2; i++) {
+        Point2D point = getControlPoint(i);
         g2d.setColor(PIN_COLOR);
         g2d.fillOval((int) Math.round(point.getX() - pinSize / 2),
             (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
+        g2d.setColor(PIN_BORDER_COLOR);
+        g2d.drawOval((int) Math.round(point.getX() - pinSize / 2),
+            (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
       }
-      g2d.setColor(outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
-      g2d.drawOval((int) Math.round(point.getX() - pinSize / 2),
-          (int) Math.round(point.getY() - pinSize / 2), pinSize, pinSize);
     }
 
     // Draw label.

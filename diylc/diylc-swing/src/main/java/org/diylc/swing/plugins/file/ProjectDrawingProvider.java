@@ -69,6 +69,9 @@ public class ProjectDrawingProvider implements IDrawingProvider {
     if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.OUTLINE_KEY, false)) {
       drawOptions.add(DrawOption.OUTLINE_MODE);
     }
+    if (ConfigurationManager.getInstance().readBoolean(IPlugInPort.FADE_FAR_SIDE_KEY, true)) {
+      drawOptions.add(DrawOption.FADE_FAR_SIDE);
+    }
     if (includeExtraSpace) {
       drawOptions.add(DrawOption.EXTRA_SPACE);
     }

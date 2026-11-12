@@ -36,11 +36,13 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.components.transform.PotentiometerTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -61,7 +63,8 @@ import org.diylc.utils.Constants;
     description = "Single pole rotary switch, typically used for impedance selector",
     zOrder = IDIYComponent.COMPONENT, transformer = PotentiometerTransformer.class,
     enableCache = true)
-public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> implements IGerberComponentSimple {
+public class RotarySelectorSwitch extends AbstractMultiPartComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -83,6 +86,7 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> imp
   private boolean showLabels = true;
   private RotaryPositionCount positionCount = RotaryPositionCount.THREE;
   private SwitchTiming timing;
+  private PCBLayer boardSide;
 
   public RotarySelectorSwitch() {
     super();
@@ -368,6 +372,17 @@ public class RotarySelectorSwitch extends AbstractMultiPartComponent<String> imp
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum RotaryPositionCount {

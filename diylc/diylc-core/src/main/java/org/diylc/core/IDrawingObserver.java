@@ -21,6 +21,8 @@
 */
 package org.diylc.core;
 
+import org.diylc.common.PCBLayer;
+
 /**
  * Interface for tracking component drawing process. Components may use it to stop or restart
  * tracking. Anything drawn while tracking is stopped will not be added to the mouse hot-spot area.
@@ -65,4 +67,26 @@ public interface IDrawingObserver {
    * @param marker
    */
   void setContinuityMarker(String marker);
+
+  /**
+   * Notifies the observer that what follows is painted on the given side of the board, until
+   * {@link #stopDrawingSide()}. Paint that is not bracketed is on the top (component) side. The
+   * observer may draw paint on the side facing away from the viewer at reduced opacity, as if seen
+   * through the board. Inner layers count as the bottom side.
+   *
+   * @param side the layer the paint lies on
+   */
+  default void startDrawingSide(PCBLayer side) {}
+
+  /**
+   * Notifies the observer that what follows is visible from both sides of the board, such as a
+   * drilled hole or a cut through the copper, and is never drawn faded, until
+   * {@link #stopDrawingSide()}.
+   */
+  default void startDrawingBothSides() {}
+
+  /**
+   * Notifies the observer that paint is back on the top (component) side.
+   */
+  default void stopDrawingSide() {}
 }

@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
@@ -33,6 +35,7 @@ import javax.swing.JList;
 import org.diylc.common.PropertyWrapper;
 import org.diylc.lang.LangUtil;
 import org.diylc.utils.Constants;
+import org.diylc.utils.ReflectionUtils;
 
 public class EnumEditor extends JComboBox<Object> {
 
@@ -44,7 +47,7 @@ public class EnumEditor extends JComboBox<Object> {
 
   public EnumEditor(final PropertyWrapper property) {
     this.property = property;
-    Object[] values = property.getType().getEnumConstants();
+    Object[] values = getOfferedValues(property);
     if (property.isReadOnly())
       setEnabled(false);
     setModel(new DefaultComboBoxModel<Object>(values));
@@ -75,5 +78,17 @@ public class EnumEditor extends JComboBox<Object> {
     if (!property.isUnique()) {
       setBackground(Constants.MULTI_VALUE_COLOR);
     }
+  }
+
+  // deprecated constants stay loadable from old files but are not offered, unless one is the
+  // current value, which must stay visible rather than be silently replaced
+  private static Object[] getOfferedValues(PropertyWrapper property) {
+    List<Object> values = new ArrayList<Object>();
+    for (Object value : property.getType().getEnumConstants()) {
+      if (value.equals(property.getValue()) || !ReflectionUtils.isDeprecated((Enum<?>) value)) {
+        values.add(value);
+      }
+    }
+    return values.toArray();
   }
 }

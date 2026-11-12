@@ -36,9 +36,11 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.appframework.miscutils.ConfigurationManager;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.AiNote;
@@ -63,7 +65,7 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true,
     enableDatasheet = true, datasheetCreationStepCount = 2, datasheetModelColumn = 1)
 public class HeatSinkResistor extends AbstractLeadedComponent<Resistance>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -101,6 +103,7 @@ public class HeatSinkResistor extends AbstractLeadedComponent<Resistance>
    * Top/bottom lip thickness; main body height = A − 2 × lip = D (HS25: A=28, D=14 → lip 7 mm each).
    */
   private Size lipSize = DEFAULT_LIP_SIZE;
+  private PCBLayer boardSide;
 
   public HeatSinkResistor() {
     super();
@@ -542,6 +545,17 @@ public class HeatSinkResistor extends AbstractLeadedComponent<Resistance>
 
     g2d.setColor(HOUSING_BORDER);
     g2d.draw(a);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public enum MountingHoleCount {

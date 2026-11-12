@@ -28,6 +28,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 import org.diylc.common.OrientationHV;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.transform.VeroBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -85,6 +86,7 @@ public class TriPadBoard extends AbstractVeroBoard implements ILayeredComponent 
               spacesToDraw = (remainingSpace - stripSize) / spacing;
             }
 
+            drawingObserver.startDrawingSide(PCBLayer._1);
             g2d.setColor(stripColor);
             drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect((int)(x + spacing - stripSize / 2), (int)(y - stripSize / 2), (int)(spacing * (spacesToDraw - 1) + stripSize),
@@ -94,6 +96,7 @@ public class TriPadBoard extends AbstractVeroBoard implements ILayeredComponent 
 
             g2d.drawRect((int)(x + spacing - stripSize / 2), (int)(y - stripSize / 2), (int)(spacing * (spacesToDraw - 1) + stripSize),
                 stripSize);
+            drawingObserver.stopDrawingSide();
 
             x += spacing * spacesToDraw;
           }
@@ -123,6 +126,7 @@ public class TriPadBoard extends AbstractVeroBoard implements ILayeredComponent 
               spacesToDraw = (remainingSpace - stripSize) / spacing;
             }
 
+            drawingObserver.startDrawingSide(PCBLayer._1);
             g2d.setColor(stripColor);
             drawingObserver.startTrackingContinuityArea(true);  
             g2d.fillRect((int)(x - stripSize / 2), (int)(y + spacing - stripSize / 2), stripSize, (int)(spacing * (spacesToDraw - 1)
@@ -131,6 +135,7 @@ public class TriPadBoard extends AbstractVeroBoard implements ILayeredComponent 
             g2d.setColor(stripColor.darker());
             g2d.drawRect((int)(x - stripSize / 2), (int)(y + spacing - stripSize / 2), stripSize, (int)(spacing * (spacesToDraw - 1)
                 + stripSize));
+            drawingObserver.stopDrawingSide();
 
             y += spacing * spacesToDraw;
           }

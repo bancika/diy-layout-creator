@@ -28,9 +28,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -45,7 +47,8 @@ import org.diylc.core.measures.SizeUnit;
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "L",
     description = "Ferrite core toroidal inductor mounted vertically", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
-public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implements IGerberComponentSimple {
+public class ToroidalInductor extends AbstractLeadedComponent<Inductance>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -59,6 +62,7 @@ public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implem
 
   private Inductance value = null;
   private Resistance resistance = null;
+  private PCBLayer boardSide;
 
   public ToroidalInductor() {
     super();
@@ -164,5 +168,16 @@ public class ToroidalInductor extends AbstractLeadedComponent<Inductance> implem
   
   public void setResistance(Resistance resistance) {
     this.resistance = resistance;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

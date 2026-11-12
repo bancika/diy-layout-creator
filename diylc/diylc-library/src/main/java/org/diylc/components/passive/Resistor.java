@@ -32,10 +32,12 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.ResistorColorCode;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.annotations.AiNote;
@@ -55,7 +57,7 @@ import org.diylc.core.measures.SizeUnit;
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class, enableCache = true,
     enableDatasheet = true, datasheetCreationStepCount = 2)
 public class Resistor extends AbstractLeadedComponent<Resistance>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -72,6 +74,7 @@ public class Resistor extends AbstractLeadedComponent<Resistance>
   private org.diylc.core.measures.Power powerNew = null;
   private ResistorColorCode colorCode = ResistorColorCode._5_BAND;
   private ResistorShape shape = ResistorShape.Standard;
+  private PCBLayer boardSide;
 
   public Resistor() {
     super();
@@ -261,6 +264,17 @@ public class Resistor extends AbstractLeadedComponent<Resistance>
   @EditableProperty(name = "Reverse (standing)")
   public boolean getFlipStanding() {
     return super.getFlipStanding();
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public enum ResistorShape {

@@ -28,6 +28,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.transform.ProtoBoardTransformer;
 import org.diylc.core.ComponentState;
@@ -49,7 +50,7 @@ import org.diylc.core.measures.SizeUnit;
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true,
     transformer = ProtoBoardTransformer.class)
-public class ProtoBoard780 extends AbstractProtoBoard {
+public class ProtoBoard780 extends AbstractSolderedProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -151,14 +152,17 @@ public class ProtoBoard780 extends AbstractProtoBoard {
 
       g2d.setColor(traceColor);
       int padX = (int) Math.round(point.getX() + width / 2 - 7 * spacing + i * spacing);
+      drawingObserver.startDrawingSide(PCBLayer._1);
       drawingObserver.startTrackingContinuityArea(true);
       g2d.drawLine(padX, (int) Math.round(point.getY() + offsetY), padX,
           (int) Math.round(point.getY() + spacing + offsetY));
       drawingObserver.stopTrackingContinuityArea();
+      drawingObserver.stopDrawingSide();
 
       for (int j = 0; j < 2; j++) {
         int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
+        drawingObserver.startDrawingSide(PCBLayer._1);
         g2d.setColor(padColor);
 
         drawingObserver.startTrackingContinuityArea(true);
@@ -171,6 +175,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
         g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
+        drawingObserver.stopDrawingSide();
 
         g2d.setColor(HOLE_COLOR);
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
@@ -196,6 +201,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
     offsetY = spacing * 5.5;
 
     // draw 3-pad traces and vertical traces
+    drawingObserver.startDrawingSide(PCBLayer._1);
     drawingObserver.startTrackingContinuityArea(true);
     g2d.setColor(traceColor);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize - 2f));
@@ -239,6 +245,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       }
     }
     drawingObserver.stopTrackingContinuityArea();
+    drawingObserver.stopDrawingSide();
 
     // draw main pads
     for (int i = 0; i < 25; i++) {
@@ -254,6 +261,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
       for (int j = 0; j < 30; j++) {
         int padY = (int) Math.round(point.getY() + spacing * j + offsetY);
 
+        drawingObserver.startDrawingSide(PCBLayer._1);
         g2d.setColor(padColor);
 
         drawingObserver.startTrackingContinuityArea(true);
@@ -266,6 +274,7 @@ public class ProtoBoard780 extends AbstractProtoBoard {
         g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
         g2d.drawOval(padX - padSize / 2, padY - padSize / 2, padSize, padSize);
+        drawingObserver.stopDrawingSide();
 
         g2d.setColor(HOLE_COLOR);
         g2d.fillOval(padX - holeSize / 2, padY - holeSize / 2, holeSize, holeSize);
@@ -508,6 +517,29 @@ public class ProtoBoard780 extends AbstractProtoBoard {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @Override
+  protected Rectangle2D getUnrotatedBody() {
+    return new Rectangle2D.Double(point.getX(), point.getY(), (int) WIDTH_SIZE.convertToPixels(),
+        (int) LENGTH_SIZE.convertToPixels());
+  }
+
+  @Override
+  protected Point2D getRotationCenter() {
+    return point;
+  }
+
+  @Override
+  public Rectangle2D getBoardRectangle() {
+    Rectangle2D rect = super.getBoardRectangle();
+    if (!translateToGrid) {
+      return rect;
+    }
+    // the whole board is drawn shifted onto the grid, after it is turned
+    rect.setRect(rect.getX() - X_OFFSET.convertToPixels(),
+        rect.getY() + SPACING.convertToPixels() / 2, rect.getWidth(), rect.getHeight());
+    return rect;
   }
 
   @Override

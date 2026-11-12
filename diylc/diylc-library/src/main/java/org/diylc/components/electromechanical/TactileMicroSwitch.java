@@ -34,6 +34,7 @@ import org.diylc.common.Display;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.guitar.LeverSwitchPositionPropertyValueSource;
 import org.diylc.core.*;
@@ -51,7 +52,7 @@ import org.diylc.utils.Constants;
     description = "4-pin tactile momentary switch", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
 public class TactileMicroSwitch extends AbstractLabeledComponent<String> implements IGerberComponentSimple,
-    ISwitch {
+    ISwitch, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -79,6 +80,7 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
   private Size rowSpacing;
   private PinPairingMode pinPairingMode;
   private int selectedPosition;
+  private PCBLayer boardSide;
 
   public TactileMicroSwitch() {
     super();
@@ -516,6 +518,17 @@ public class TactileMicroSwitch extends AbstractLabeledComponent<String> impleme
 
   public void setSelectedPosition(Integer selectedPosition) {
     this.selectedPosition = selectedPosition;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public enum PinPairingMode {

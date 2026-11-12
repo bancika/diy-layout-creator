@@ -38,12 +38,14 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractAngledComponent;
 import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.semiconductors.PinLabels;
 import org.diylc.components.transform.AngledComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
@@ -68,7 +70,7 @@ import org.diylc.utils.Constants;
     transformer = AngledComponentTransformer.class, enableDatasheet = true,
     datasheetCreationStepCount = 2, datasheetModelColumn = 1)
 public class TubeSocket extends AbstractAngledComponent<String>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final Size B9A_PIN_SPACING_CHASSIS = new Size(12.5d, SizeUnit.mm);
   private static final Size B9A_PIN_SPACING_PCB = new Size(21d, SizeUnit.mm);
@@ -109,6 +111,7 @@ public class TubeSocket extends AbstractAngledComponent<String>
   private PinLabels pinLabels = null;
 
   private Point2D[] controlPoints = new Point2D[] {new Point2D.Double(0, 0)};
+  private PCBLayer boardSide;
 
   public TubeSocket() {
     super();
@@ -482,6 +485,17 @@ public class TubeSocket extends AbstractAngledComponent<String>
     Rectangle2D rect = getBody()[0].getBounds2D();
     int margin = 40; // to catch the pins that are outside the body, if needed
     return new Rectangle2D.Double(rect.getX() - margin, rect.getY() - margin, rect.getWidth() + 2 * margin, rect.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum Base {

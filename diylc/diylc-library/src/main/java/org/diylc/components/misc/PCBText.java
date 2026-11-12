@@ -41,6 +41,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -53,7 +54,8 @@ import org.diylc.core.gerber.IGerberDrawingObserver;
 @ComponentDescriptor(name = "PCB Text", author = "Branislav Stojkovic", category = "Misc",
     description = "Mirrored text for PCB artwork", instanceNamePrefix = "L", zOrder = IDIYComponent.TRACE,
     flexibleZOrder = false, bomPolicy = BomPolicy.NEVER_SHOW, transformer = TextTransformer.class)
-public class PCBText extends AbstractComponent<Void> implements ILayeredComponent, IGerberComponentCustom {
+public class PCBText extends AbstractComponent<Void>
+    implements ILayeredComponent, IGerberComponentCustom, IPCBLayerComponent {
 
   public static String DEFAULT_TEXT = "Double click to edit text";
 
@@ -156,7 +158,9 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
       IDrawingObserver drawingObserver) {
+    drawingObserver.startDrawingSide(getLayer());
     this.draw(g2d, componentState, outlineMode, project, drawingObserver, null);
+    drawingObserver.stopDrawingSide();
   }
 
   @Override
@@ -322,6 +326,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
   }
   
   @EditableProperty
+  @Override
   public PCBLayer getLayer() {
     if (layer == null) {
       layer = PCBLayer._1;
@@ -329,6 +334,7 @@ public class PCBText extends AbstractComponent<Void> implements ILayeredComponen
     return layer;
   }
 
+  @Override
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
   }

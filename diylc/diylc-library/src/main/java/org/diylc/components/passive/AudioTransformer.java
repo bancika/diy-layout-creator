@@ -40,9 +40,11 @@ import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractMultiPartComponent;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -62,7 +64,8 @@ import org.diylc.utils.Constants;
 @ComponentDescriptor(name = "Mini Signal Transformer", author = "Branislav Stojkovic", category = "Passive",
     instanceNamePrefix = "TR", description = "Miniature PCB-mount signal transformer with EI core",
     zOrder = IDIYComponent.COMPONENT, keywordPolicy = KeywordPolicy.SHOW_VALUE)
-public class AudioTransformer extends AbstractMultiPartComponent<String> implements IGerberComponentSimple {
+public class AudioTransformer extends AbstractMultiPartComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -91,6 +94,7 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
   private Color labelColor = LABEL_COLOR;
   private boolean primaryCT = true;
   private boolean secondaryCT = true;
+  private PCBLayer boardSide;
 
   transient private Area[] body;
 
@@ -524,5 +528,16 @@ public class AudioTransformer extends AbstractMultiPartComponent<String> impleme
   @Override
   public boolean canPointMoveFreely(int pointIndex) {
     return false;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

@@ -29,10 +29,12 @@ import org.diylc.appframework.miscutils.ConfigurationManager;
 
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.passive.CapacitorDatasheetService.CapacitorDatasheet;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.Theme;
@@ -53,7 +55,8 @@ import org.diylc.utils.Constants;
     description = "Axial electrolytic capacitor, similar to Sprague Atom, F&T, etc",
     zOrder = IDIYComponent.COMPONENT, transformer = SimpleComponentTransformer.class,
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 3)
-public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance> implements IDatasheetSupport, IGerberComponentSimple {
+public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacitance>
+    implements IDatasheetSupport, IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -73,6 +76,7 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
   private Color tickColor = TICK_COLOR;
   private boolean polarized = true;
   private String type;
+  private PCBLayer boardSide;
 
   public AxialElectrolyticCapacitor() {
     super();
@@ -295,5 +299,16 @@ public class AxialElectrolyticCapacitor extends AbstractLeadedComponent<Capacita
     double a = Math.max(c0.getAlpha(), c1.getAlpha());
 
     return new Color((int) r, (int) g, (int) b, (int) a);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

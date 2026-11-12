@@ -40,6 +40,7 @@ import org.diylc.components.AbstractMakerBoard;
 import org.diylc.components.AbstractTransparentComponent;
 import org.diylc.components.transform.SIL_ICTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.IDrawingObserver;
@@ -65,7 +66,7 @@ import org.diylc.utils.Constants;
     enableCache = true, enableDatasheet = true, datasheetCreationStepCount = 2,
     datasheetModelColumn = 1)
 public class SIL_IC extends AbstractTransparentComponent<String>
-    implements IGerberComponentSimple, IDatasheetSupport {
+    implements IGerberComponentSimple, IDatasheetSupport, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -90,6 +91,7 @@ public class SIL_IC extends AbstractTransparentComponent<String>
   private Color indentColor = INDENT_COLOR;
   private String pinNames = null;
   private PinLabels pinLabels = null;
+  private PCBLayer boardSide;
   // new Point(0, pinSpacing.convertToPixels()),
   // new Point(0, 2 * pinSpacing.convertToPixels()),
   // new Point(0, 3 * pinSpacing.convertToPixels()),
@@ -551,6 +553,17 @@ public class SIL_IC extends AbstractTransparentComponent<String>
     }
     
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum PinCount {

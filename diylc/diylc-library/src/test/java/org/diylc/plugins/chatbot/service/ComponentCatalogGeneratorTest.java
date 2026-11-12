@@ -96,6 +96,10 @@ public class ComponentCatalogGeneratorTest {
         (List<Map<String, Object>>) togglePinout.get("variants");
     assertTrue("every switch type should be described", variants.size() > 1);
     assertTrue("a switch carries its switching table", variants.get(0).containsKey("switching"));
+
+    // the deprecated inner layers are kept only so that old files load
+    Map<String, Object> layer = findProperty(find(components, "connectivity.CopperTrace"), "Layer");
+    assertEquals(List.of("_1", "_2"), layer.get("possibleValues"));
   }
 
   @Test
@@ -110,6 +114,13 @@ public class ComponentCatalogGeneratorTest {
   public void selectionNotesCanBeCollectedOnTheirOwn() {
     assertEquals(List.of("middle 2"),
         ComponentCatalogGenerator.collectNotes(Leaf.class, EnumSet.of(Scope.SELECTION)));
+  }
+
+  @SuppressWarnings("unchecked")
+  private static Map<String, Object> findProperty(Map<String, Object> component, String name) {
+    return ((List<Map<String, Object>>) component.get("properties")).stream()
+        .filter(p -> name.equals(p.get("name"))).findFirst()
+        .orElseThrow(() -> new AssertionError("no property " + name));
   }
 
   private static Map<String, Object> find(List<Map<String, Object>> components, String className) {

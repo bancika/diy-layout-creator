@@ -733,3 +733,7 @@ Remove default model|Standaardmodel verwijderen
 Value Notation|Waardenotatie
 Decimal (4.7K, 0.22uF, 6.3V)|Decimaal (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
+Fade Copper Under Board|Koper onder de print vervagen
+Board Side|Printzijde
+Bottom Traces|Sporen onderkant
+Top Traces|Sporen bovenkant

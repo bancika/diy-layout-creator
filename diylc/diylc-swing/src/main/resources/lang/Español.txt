@@ -728,3 +728,7 @@ Remove default model|Quitar modelo predeterminado
 Value Notation|Notación de valores
 Decimal (4.7K, 0.22uF, 6.3V)|Decimal (4.7K, 0.22uF, 6.3V)
 RKM (4K7, 0u22, 6V3)|RKM (4K7, 0u22, 6V3)
+Fade Copper Under Board|Atenuar cobre bajo la placa
+Board Side|Lado de la placa
+Bottom Traces|Trazos inferiores
+Top Traces|Trazos superiores

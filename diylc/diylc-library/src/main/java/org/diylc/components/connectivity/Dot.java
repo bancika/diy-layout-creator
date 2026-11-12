@@ -26,9 +26,11 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -46,7 +48,7 @@ import org.diylc.core.measures.SizeUnit;
 @ComponentDescriptor(name = "Dot", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Connector dot", instanceNamePrefix = "Dot", zOrder = IDIYComponent.COMPONENT,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
-public class Dot extends AbstractComponent<Void> {
+public class Dot extends AbstractComponent<Void> implements IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -56,6 +58,7 @@ public class Dot extends AbstractComponent<Void> {
   private Size size = SIZE;
   private Color color = COLOR;
   private Point2D.Double point = new Point2D.Double(0, 0);
+  private PCBLayer boardSide;
 
   @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode, Project project,
@@ -135,5 +138,16 @@ public class Dot extends AbstractComponent<Void> {
   @Override
   public String getControlPointNodeName(int index) {   
     return null;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

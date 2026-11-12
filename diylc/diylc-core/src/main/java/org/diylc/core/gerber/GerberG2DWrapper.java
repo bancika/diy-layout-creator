@@ -21,6 +21,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.DrillLayer;
 import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.padmasters.Circle;
 
@@ -45,6 +47,7 @@ public class GerberG2DWrapper extends Graphics2D
   private static final double CURVE_APPROXIMATION_TOLERANCE = 1d;
 
   private Map<GerberLayer, DataLayer> layerMap;
+  private Map<GerberLayer, DrillLayer> drillLayerMap;
   private boolean trackingGerber = false;
   private Map<GerberLayer, GerberProperties> currentLayers =
       new HashMap<GerberLayer, GerberProperties>();
@@ -58,12 +61,14 @@ public class GerberG2DWrapper extends Graphics2D
   private double tolerance;
 
   private Rectangle2D boardRect;
+  private boolean mirrorText = false;
 
   public GerberG2DWrapper(Graphics2D graphics2d, String diylcVersion, Rectangle2D boardRect) {
     super();
     this.graphics2d = graphics2d;
     this.boardRect = boardRect;
     this.layerMap = new HashMap<GerberLayer, DataLayer>();
+    this.drillLayerMap = new HashMap<GerberLayer, DrillLayer>();
     this.diylcVersion = diylcVersion;
   }
 
@@ -114,7 +119,11 @@ public class GerberG2DWrapper extends Graphics2D
 
   @Override
   public void startGerberOutput(GerberLayer layer, String function, boolean negative) {
-    layerMap.computeIfAbsent(layer, k -> layer.buildLayer(diylcVersion));
+    if (layer.isDrill()) {
+      drillLayerMap.computeIfAbsent(layer, k -> layer.buildDrillLayer(diylcVersion));
+    } else {
+      layerMap.computeIfAbsent(layer, k -> layer.buildLayer(diylcVersion));
+    }
     currentLayers.put(layer, new GerberProperties(function, negative));
     trackingGerber = true;
   }
@@ -154,10 +163,28 @@ public class GerberG2DWrapper extends Graphics2D
     return layerMap;
   }
 
+  public Map<GerberLayer, DrillLayer> getDrillLayerMap() {
+    return drillLayerMap;
+  }
+
+  /**
+   * Sets whether text is written mirrored, each string about its own centre. The output is in top
+   * view, so text on the bottom side has to be mirrored to read correctly once the board is turned
+   * over.
+   */
+  public void setMirrorText(boolean mirrorText) {
+    this.mirrorText = mirrorText;
+  }
+
   @Override
   public void draw(Shape s) {
     if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
+        // only round fills are holes; outlines, such as a drill hole marker's border and
+        // crosshair, are not drilled
+        if (entry.getKey().isDrill()) {
+          return;
+        }
         double width = 1;
         if (stroke != null && stroke instanceof BasicStroke) {
           width = ((BasicStroke) stroke).getLineWidth();
@@ -181,6 +208,10 @@ public class GerberG2DWrapper extends Graphics2D
     GlyphVector gv = font.createGlyphVector(graphics2d.getFontRenderContext(), str);
     
     AffineTransform translateInstance = AffineTransform.getTranslateInstance(x, y);
+    if (mirrorText) {
+      translateInstance.translate(gv.getLogicalBounds().getWidth(), 0);
+      translateInstance.scale(-1, 1);
+    }
 
     for (int i = 0; i < gv.getNumGlyphs(); i++) {
         Shape glyphShape = gv.getGlyphOutline(i);
@@ -208,6 +239,10 @@ public class GerberG2DWrapper extends Graphics2D
   public void fillShape(Shape s) {
     if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
+        // only round fills are holes
+        if (entry.getKey().isDrill()) {
+          return;
+        }
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
         GerberPathRenderer.outputPathArea(s.getPathIterator(finalTx), dataLayer,
@@ -220,6 +255,10 @@ public class GerberG2DWrapper extends Graphics2D
   private void fillFlash(Ellipse2D c) {
     if (trackingGerber && !getColor().equals(Constants.TRANSPARENT_COLOR)) {
       currentLayers.entrySet().forEach(entry -> {
+        if (entry.getKey().isDrill()) {
+          addHole(c, entry.getKey(), entry.getValue().function);
+          return;
+        }
         DataLayer dataLayer = layerMap.get(entry.getKey());
         AffineTransform finalTx = getFinalTx(entry.getKey().isMirrored());
         if (Math.abs(c.getWidth() - c.getHeight()) < 0.1 && finalTx.getShearX() == 0
@@ -239,6 +278,17 @@ public class GerberG2DWrapper extends Graphics2D
         }
       });
     }
+  }
+
+  private void addHole(Ellipse2D c, GerberLayer layer, String function) {
+    AffineTransform finalTx = getFinalTx(layer.isMirrored());
+    Point2D center = finalTx.transform(new Point2D.Double(c.getCenterX(), c.getCenterY()), null);
+    double factor = SizeUnit.px.getFactor();
+    // the drawing transform scales evenly, so the circle stays a circle, scaled by the square root
+    // of the determinant whether or not it is also rotated
+    double diameter = c.getWidth() * Math.sqrt(Math.abs(finalTx.getDeterminant())) * factor;
+    drillLayerMap.get(layer).addHole(new Point(center.getX() * factor, center.getY() * factor),
+        diameter, function);
   }
 
   private AffineTransform getFinalTx(boolean isMirrored) {

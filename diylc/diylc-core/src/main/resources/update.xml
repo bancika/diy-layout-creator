@@ -634,6 +634,46 @@
 					<description>Added 'Value Notation' to the Config menu to show resistance, capacitance, inductance and voltage values in RKM notation, e.g. 4K7, 0R22, 2n2, 4u7 or 6V3, instead of decimal; values can be typed in either notation, and typing the unit together with the value, e.g. 4K7 or 2.2nF, sets the unit at the same time</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>The bottom of a board can now be designed directly in its Underside Display, seen the way it will be soldered: components and copper can be selected, moved and stretched there just like on the board itself, new parts placed there or dragged in from the toolbox or the component tree go on the bottom of the board, and hovering over a control point shows its node name. Solder-side work no longer has to be done blind in the see-through top view</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Fade Copper Under Board' to the Config menu, on by default, which controls the see-through look of copper on the bottom of the board on the canvas and in the layout export, PDF and print; turning it off brings back the old look with all copper drawn solid</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board. Bottom parts are drawn faded on the canvas and solid in the board's Underside Display; Gerber export puts their silkscreen on the bottom layer with the text mirrored; and the silkscreen print-out has a separate page for the bottom, which now also carries PCB text on the bottom layer. A 'Dot' used as a solder joint can be put on the bottom as well</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Via' to the Connectivity category, a plated hole that takes a trace from one copper layer to the other: it joins the top and bottom copper in netlists and 'Highlight Connected Areas', and Gerber export writes it to both copper layers and the plated drill file, covered by the solder mask</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Boards are now drawn the way they really are, so it is clear at a glance which side you are looking at: the main view shows the component side, with strips, pads, traces and other copper on the bottom of the board showing through it faded, and the Underside Display shows the solder side, with the copper solid and the parts mounted on top faded behind the board. Holes and trace cuts go through the board and stay clear from both sides. A board's 'Underside Transparency' now fades only the parts on the far side, and turning it off draws the Underside Display fully solid</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Inner layers 1 to 6 are no longer offered for traces, pads and other copper, since boards are two-sided; projects that use them still open unchanged</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>A 'Solder Pad' with a plated through hole is now a double-sided pad, like the real thing: it has copper on both layers, joins top and bottom copper in netlists and 'Highlight Connected Areas', and Gerber export writes it to both copper and both solder mask layers, so its 'Layer' no longer applies. New solder pads have a plated through hole by default, which is what PCB fabs make; pads in existing projects keep their hole type</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>Gerber export produces files ready for any PCB fab: drill files are written in Excellon format, which every fab accepts, instead of Gerber format; holes are defined by the drill files alone instead of also being cut out of the copper layers; and solder pads are marked as component pads, or SMD pads when they have no hole, instead of as connector pads</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>The 'Trace' layer in the Layers menu is split into 'Bottom Traces' and 'Top Traces', so the copper of one side can be hidden, locked or selected on its own; vias, eyelets, turrets and plated pads go through the board and belong to both, and jumpers are on the top. The layer shortcuts follow the menu order now, Ctrl+1 to Ctrl+7. Projects with the old 'Trace' layer hidden or locked open with both sides hidden or locked</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>'P-0+o (Proto) Board', 'Proto Board 780 Holes' and 'Eurorack Stripboard' now have an 'Underside Display' like the other boards, so their solder side can be shown and worked on next to them; the P-0+o's top traces are faded there</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
 					<description>Rotated labels in pasted components and building blocks were drawn in the wrong place and at the wrong angle while following the mouse, until the components were placed</description>
 				</org.diylc.appframework.update.Change>
@@ -647,7 +687,19 @@
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>
+					<description>'Solder Pad' on the top layer put its solder mask opening on the bottom layer in Gerber export</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
 					<description>Opening an older project with a perfboard or another board warned that the file references unknown component properties</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>Transistors in TO-92, TO-1, TO-126, TO-220 and TO-3 packages drew circles around their pins in outline mode; only the body outline and the label are drawn now</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>BUG_FIX</changeType>
+					<description>'Drill Hole' added its outline and crosshair to the drill file in Gerber export</description>
 				</org.diylc.appframework.update.Change>
 			</changes>
 			<url>https://github.com/bancika/diy-layout-creator/releases</url>
