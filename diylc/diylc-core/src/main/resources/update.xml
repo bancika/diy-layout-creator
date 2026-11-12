@@ -646,6 +646,10 @@
 					<description>Resistors, capacitors, diodes, ICs, transistors, switches, jacks, tube sockets and other PCB parts have a new 'Board Side' property to place them on the bottom of the board; bottom parts are drawn faded on the canvas and solid in the board's Underside Display, and Gerber export puts their silkscreen on the bottom layer with the text mirrored, and the silkscreen print-out has a separate page for the bottom; a 'Dot' used as a solder joint can be put on the bottom as well</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
+					<changeType>NEW_FEATURE</changeType>
+					<description>Added 'Via' to the Connectivity category, a plated hole that takes a trace from one copper layer to the other: it joins the top and bottom copper in netlists and 'Highlight Connected Areas', and Gerber export writes it to both copper layers and the plated drill file, covered by the solder mask</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>Boards are now drawn the way they really are, so it is clear at a glance which side you are looking at: the main view shows the component side, with strips, pads, traces and other copper on the bottom of the board showing through it faded, and the Underside Display shows the solder side, with the copper solid and the parts mounted on top faded behind the board. Holes and trace cuts go through the board and stay clear from both sides</description>
 				</org.diylc.appframework.update.Change>
@@ -660,6 +664,10 @@
 				<org.diylc.appframework.update.Change>
 					<changeType>IMPROVEMENT</changeType>
 					<description>PCB text on the bottom layer is now printed on the bottom page of the silkscreen print-out, not the top one</description>
+				</org.diylc.appframework.update.Change>
+				<org.diylc.appframework.update.Change>
+					<changeType>IMPROVEMENT</changeType>
+					<description>A 'Solder Pad' with a plated through hole now has copper on both layers, like the real thing, and joins top and bottom copper in netlists and 'Highlight Connected Areas'; Gerber export writes it to both copper and both solder mask layers</description>
 				</org.diylc.appframework.update.Change>
 				<org.diylc.appframework.update.Change>
 					<changeType>BUG_FIX</changeType>

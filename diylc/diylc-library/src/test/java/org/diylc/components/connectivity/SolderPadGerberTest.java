@@ -33,6 +33,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.Project;
 import org.diylc.core.gerber.GerberG2DWrapper;
 import org.diylc.core.gerber.GerberLayer;
+import org.diylc.core.gerber.IGerberComponentCustom;
 import org.junit.Test;
 
 public class SolderPadGerberTest {
@@ -53,15 +54,53 @@ public class SolderPadGerberTest {
     assertTrue(!layers.contains(GerberLayer.SolderMaskTop));
   }
 
+  @Test
+  public void testPlatedPadIsOnBothLayers() {
+    Set<GerberLayer> layers = drawGerber(PCBLayer._1, SolderPad.HoleType.PTH);
+    assertTrue(layers.contains(GerberLayer.CopperTop));
+    assertTrue(layers.contains(GerberLayer.CopperBot));
+    assertTrue(layers.contains(GerberLayer.SolderMaskTop));
+    assertTrue(layers.contains(GerberLayer.SolderMaskBot));
+    assertTrue(layers.contains(GerberLayer.DrillPlated));
+  }
+
+  @Test
+  public void testNonPlatedPadIsOnItsLayer() {
+    Set<GerberLayer> layers = drawGerber(PCBLayer._1, SolderPad.HoleType.NTPH);
+    assertTrue(layers.contains(GerberLayer.CopperBot));
+    assertTrue(!layers.contains(GerberLayer.CopperTop));
+    assertTrue(layers.contains(GerberLayer.DrillNonPlated));
+  }
+
+  @Test
+  public void testViaIsOnBothLayersAndTented() {
+    Via via = new Via();
+    Set<GerberLayer> layers = drawGerber(via);
+    assertTrue(layers.contains(GerberLayer.CopperTop));
+    assertTrue(layers.contains(GerberLayer.CopperBot));
+    assertTrue(layers.contains(GerberLayer.DrillPlated));
+    assertTrue(!layers.contains(GerberLayer.SolderMaskTop));
+    assertTrue(!layers.contains(GerberLayer.SolderMaskBot));
+  }
+
   private static Set<GerberLayer> drawGerber(PCBLayer layer) {
+    return drawGerber(layer, SolderPad.HoleType.NTPH);
+  }
+
+  private static Set<GerberLayer> drawGerber(PCBLayer layer, SolderPad.HoleType holeType) {
     SolderPad pad = new SolderPad();
     pad.setLayer(layer);
+    pad.setHoleType(holeType);
+    return drawGerber(pad);
+  }
+
+  private static Set<GerberLayer> drawGerber(IGerberComponentCustom component) {
     BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = img.createGraphics();
     GerberG2DWrapper g2d =
         new GerberG2DWrapper(graphics, "test", new Rectangle2D.Double(-50, -50, 100, 100));
     g2d.startedDrawingComponent();
-    pad.draw(g2d, ComponentState.NORMAL, false, new Project(), g2d, g2d);
+    component.draw(g2d, ComponentState.NORMAL, false, new Project(), g2d, g2d);
     graphics.dispose();
     return g2d.getLayerMap().keySet();
   }

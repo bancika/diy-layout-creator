@@ -54,7 +54,7 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@AiNote(value = "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads", scope = Scope.SELECTION)
+@AiNote(value = "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads; a pad with Hole Type 'Plated Through Hole' is on both copper layers and joins them, so its Layer is ignored", scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW,
@@ -92,16 +92,22 @@ public class SolderPad extends AbstractTransparentComponent<Void>
             ? SELECTION_COLOR
             : color);
     drawingObserver.startTrackingContinuityArea(true);
-    GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
-    // the mask is opened on the side the pad is on
-    GerberLayer gerberMaskLayer = gerberCopperLayer == GerberLayer.CopperTop
-        ? GerberLayer.SolderMaskTop : GerberLayer.SolderMaskBot;
+    GerberLayer[] gerberCopperLayers = isOnBothLayers()
+        ? new GerberLayer[] {GerberLayer.CopperTop, GerberLayer.CopperBot}
+        : new GerberLayer[] {getLayer().toGerberCopperLayer()};
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
-      gerberDrawingObserver.startGerberOutput(gerberMaskLayer, "Material", false);
+      for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+        gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD,
+            false);
+        gerberDrawingObserver.startGerberOutput(getMaskLayer(gerberCopperLayer), "Material", false);
+      }
     }
     Composite oldComposite = applyAlpha(g2d, componentState);
-    drawingObserver.startDrawingSide(getLayer());
+    if (isOnBothLayers()) {
+      drawingObserver.startDrawingBothSides();
+    } else {
+      drawingObserver.startDrawingSide(getLayer());
+    }
 
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
@@ -120,11 +126,15 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.stopGerberOutput(gerberMaskLayer);
+      for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+        gerberDrawingObserver.stopGerberOutput(getMaskLayer(gerberCopperLayer));
+      }
     }
     if (getHoleSize().getValue() > 0 && !HoleType.NONE.equals(getHoleType())) {
       if (gerberDrawingObserver != null) {
-        gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
+        for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+          gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
+        }
         GerberLayer holeLayer = HoleType.PTH.equals(getHoleType()) ? GerberLayer.DrillPlated : GerberLayer.DrillNonPlated;
         gerberDrawingObserver.startGerberOutput(holeLayer, GerberFunctions.COMPONENT_DRILL, false);
       }
@@ -204,9 +214,22 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     this.layer = layer;
   }
 
+  // layer id 0 is copper that connects to copper on every layer
   @Override
   public int getLayerId() {
-    return getLayer().getId();
+    return isOnBothLayers() ? 0 : getLayer().getId();
+  }
+
+  // a plated hole is a barrel with a copper ring on each side of the board, so the pad is on both
+  // layers and joins them, whatever its 'Layer' says
+  private boolean isOnBothLayers() {
+    return HoleType.PTH.equals(getHoleType());
+  }
+
+  // the mask is opened on the side the copper is on
+  private static GerberLayer getMaskLayer(GerberLayer gerberCopperLayer) {
+    return gerberCopperLayer == GerberLayer.CopperTop ? GerberLayer.SolderMaskTop
+        : GerberLayer.SolderMaskBot;
   }
 
   @Override

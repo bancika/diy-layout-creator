@@ -67,7 +67,8 @@ were regenerated for the faded copper. The open questions below remain.
 - `ProtoBoard` declares its underside traces and underside mini pads `_1`.
 - `CopperTrace` and `PCBText` declare their whole canvas `draw` on `getLayer()`. `CurvedTrace` and
   `GroundFill` declare their copper fill. `SolderPad` declares the pad on its layer and its
-  drilled hole as both sides.
+  drilled hole as both sides; a pad with a plated through hole declares its pad as both sides
+  too, because it has copper on both. `Via` declares its copper and hole as both sides.
 - `TraceCut` draws its cut and hole as both sides.
 
 ### diylc-swing

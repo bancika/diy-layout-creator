@@ -85,7 +85,7 @@
     }, {
       "name" : "Solder Pad",
       "className" : "connectivity.SolderPad",
-      "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads" ]
+      "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads; a pad with Hole Type 'Plated Through Hole' is on both copper layers and joins them, so its Layer is ignored" ]
     }, {
       "name" : "Trace Cut",
       "className" : "connectivity.TraceCut"
@@ -96,6 +96,10 @@
       "name" : "Twisted Leads",
       "className" : "connectivity.TwistedWire",
       "notes" : [ "Electrically a single conductor between its two ends, exactly like Hookup Wire, even though two twisted leads are drawn; use it only for the look of a twisted pair, and where the circuit must be electrically correct and analyzable, draw each conductor as its own Hookup Wire or Right Angle Wire instead" ]
+    }, {
+      "name" : "Via",
+      "className" : "connectivity.Via",
+      "notes" : [ "Use on Blank Board and PCB layouts to take a trace from one copper layer to the other" ]
     } ],
     "Controllers" : [ {
       "name" : "Arduino Mega 2560",

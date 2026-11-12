@@ -116,7 +116,8 @@ the gap always matches the drawn copper.
 | --- | --- |
 | `CopperTrace` | Stroked line, current thickness and `LineEndingStyle` cap |
 | `CurvedTrace` | Stroked curve, same stroke as `draw()` |
-| `SolderPad` | Pad outline per `Type` (round, oval H/V, square); the drill hole is ignored |
+| `SolderPad` | Pad outline per `Type` (round, oval H/V, square); the drill hole is ignored. A pad with a plated through hole is on both layers, so it clears fills on both |
+| `Via` | Round copper outline, on both layers like a plated pad |
 | `PCBText` | Glyph outlines (confirm it is copper and not silkscreen before including) |
 
 `PCBTerminalBlock` tracks no continuity and is not layered today, so it waits for phase 2.

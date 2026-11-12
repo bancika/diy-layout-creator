@@ -1691,7 +1691,7 @@
     "namePrefix" : "Pad",
     "description" : "Copper solder pad, round or square",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads" ],
+    "notes" : [ "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads; a pad with Hole Type 'Plated Through Hole' is on both copper layers and joins them, so its Layer is ignored" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -1930,6 +1930,44 @@
           "label" : "7"
         } ]
       } ]
+    }
+  }, {
+    "name" : "Via",
+    "className" : "connectivity.Via",
+    "category" : "Connectivity",
+    "namePrefix" : "Via",
+    "description" : "Plated hole joining the copper on the top and bottom of a PCB",
+    "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Use on Blank Board and PCB layouts to take a trace from one copper layer to the other", "Place the control point where a Top trace and a Bottom trace meet; the via joins the copper of both layers there. It is not a component pad: leads go into a Solder Pad" ],
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "100"
+    }, {
+      "name" : "Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Hole",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.4mm"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.8mm"
+    } ],
+    "pinout" : {
+      "pinCount" : 1,
+      "labels" : "sequential"
     }
   }, {
     "name" : "Arduino Mega 2560",
