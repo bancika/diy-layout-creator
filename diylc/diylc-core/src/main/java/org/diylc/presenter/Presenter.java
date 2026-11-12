@@ -966,7 +966,7 @@ public class Presenter implements IPlugInPort {
     for (int i = currentProject.getComponents().size() - 1; i >= 0; i--) {
       IDIYComponent<?> component = currentProject.getComponents().get(i);
       if (mirrorBoard != null && selectedComponents.contains(component)
-          && !UndersideMirror.isMirrored(mirrorBoard, component)) {
+          && !UndersideMirror.isEditableThrough(mirrorBoard, component)) {
         continue;
       }
       for (int pointIndex = 0; pointIndex < component.getControlPointCount(); pointIndex++) {

@@ -768,8 +768,9 @@ public class DrawingManager {
   }
 
   /**
-   * Finds the components that the underside mirror of a board shows at the specified point, top
-   * first, or none when the point is not in a mirror.
+   * Finds the components that the underside mirror of a board shows at the specified point and that
+   * can be edited through it, top first, or none when the point is not in a mirror. The board
+   * itself is left out (see {@link UndersideMirror#isEditableThrough}).
    *
    * @param point
    * @param project
@@ -789,7 +790,7 @@ public class DrawingManager {
 
   /**
    * Finds the components that the underside mirror of the specified board shows at the specified
-   * point, top first, or none when the point is not in that mirror.
+   * point, other than the board itself, top first, or none when the point is not in that mirror.
    *
    * @param point
    * @param project
@@ -804,7 +805,7 @@ public class DrawingManager {
       return components;
     }
     for (IDIYComponent<?> component : findComponentsAt(mirrorTx.transform(point, null), project)) {
-      if (UndersideMirror.isMirrored(board, component)) {
+      if (UndersideMirror.isEditableThrough(board, component)) {
         components.add(component);
       }
     }

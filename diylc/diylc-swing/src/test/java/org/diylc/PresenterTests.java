@@ -391,6 +391,46 @@ public class PresenterTests extends TestBase {
     Assert.assertTrue(board.getBoardRectangle().contains(resistor.getControlPoint(0)));
   }
 
+  @Test
+  public void testBoardIsNotSelectableThroughItsUndersideMirror() {
+    BlankBoard board = mirroredBoard();
+    drawProject();
+    Rectangle2D region = UndersideMirror.getMirrorRegion(board);
+    Point inMirror = toScreen(new Point2D.Double(region.getCenterX(), region.getCenterY()));
+
+    Assert.assertTrue(presenter.findComponentsAt(inMirror, false).isEmpty());
+    presenter.mouseClicked(inMirror, MouseEvent.BUTTON1, false, false, false, 1);
+    Assert.assertTrue(presenter.getSelectedComponents().isEmpty());
+  }
+
+  @Test
+  public void testBoardIsNotDraggedThroughItsUndersideMirror() {
+    BlankBoard board = mirroredBoard();
+    drawProject();
+    Rectangle2D region = UndersideMirror.getMirrorRegion(board);
+    Rectangle2D before = board.getBoardRectangle();
+    // selected on the board itself, then dragged by its picture in the mirror
+    Point onBoard = toScreen(new Point2D.Double(before.getCenterX(), before.getCenterY()));
+    presenter.mouseClicked(onBoard, MouseEvent.BUTTON1, false, false, false, 1);
+    Assert.assertTrue(presenter.getSelectedComponents().contains(board));
+    Point inMirror = toScreen(new Point2D.Double(region.getCenterX(), region.getCenterY()));
+
+    presenter.mouseMoved(inMirror, false, false, false);
+    presenter.dragStarted(inMirror, java.awt.dnd.DnDConstants.ACTION_MOVE, false, false);
+    presenter.dragOver(new Point(inMirror.x + 100, inMirror.y + 100));
+    presenter.dragEnded(new Point(inMirror.x + 100, inMirror.y + 100));
+
+    Assert.assertEquals(before, board.getBoardRectangle());
+  }
+
+  // the hit tests read the areas recorded while drawing
+  private void drawProject() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    presenter.draw(g2d, EnumSet.of(DrawOption.ZOOM), null, null, null, null);
+    g2d.dispose();
+  }
+
   // a board with its underside mirror below it, with nothing on it yet
   private BlankBoard mirroredBoard() {
     BlankBoard board = new BlankBoard();

@@ -161,6 +161,15 @@ public class UndersideMirror {
   }
 
   /**
+   * @return true when the component can be selected, dragged or stretched through the board's
+   *         mirror: any component the mirror shows except the board itself. The mirror is placed
+   *         relative to the board, so moving the board through it would move the mirror as well.
+   */
+  public static boolean isEditableThrough(IBoard board, IDIYComponent<?> component) {
+    return component != board && isMirrored(board, component);
+  }
+
+  /**
    * @return the boards whose mirror contains the point, the topmost first, which is the one drawn
    *         over the others where mirrors overlap
    */

@@ -121,7 +121,10 @@ order.
 - **Shared mirror geometry (done).** `org.diylc.presenter.UndersideMirror` holds the reflection
   for a board, the region its mirror occupies (the board rectangle reflected about the pivot), and
   which components a mirror shows: the board and every component with a control point on it.
-  `DrawingManager` draws the mirror with it, so drawing and hit-testing cannot drift apart.
+  `DrawingManager` draws the mirror with it, so drawing and hit-testing cannot drift apart. The
+  board itself cannot be selected, dragged or stretched through its own mirror
+  (`UndersideMirror.isEditableThrough`): the mirror is placed relative to the board, so moving the
+  board through it moved the mirror under the mouse and the board went the wrong way.
 - **Stage 1: selecting in the mirror (done).** `DrawingManager.findMirroredComponentsAt` reflects a
   point that falls in a mirror region and tests it again, limited to the components that board
   mirrors. `Presenter.findComponentsAtScaled` falls back to it when nothing selectable is hit in
