@@ -77,7 +77,8 @@ public interface ISelectionProcessor extends IGroupProcessor {
   /**
    * Selects all components in the project.
    * 
-   * @param int layer if > 0, designates which layer to select. If <= 0 we should select all
+   * @param int layer if > 0, the id of the layer to select, as for
+   *        {@link IPlugInPort#setLayerVisibility(int, boolean)}. If <= 0 we should select all
    *        regardless of layer
    */
   void selectAll(int layer);

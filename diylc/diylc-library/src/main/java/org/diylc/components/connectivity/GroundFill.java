@@ -38,6 +38,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.BomPolicy;
@@ -53,7 +54,7 @@ import org.diylc.core.measures.SizeUnit;
     instanceNamePrefix = "GF", description = "Polygonal ground fill area", zOrder = IDIYComponent.TRACE,
     bomPolicy = BomPolicy.NEVER_SHOW, autoEdit = false, transformer = SimpleComponentTransformer.class)
 public class GroundFill extends AbstractTransparentComponent<Void>
-    implements ILayeredComponent, IGerberComponentSimple {
+    implements ILayeredComponent, IGerberComponentSimple, IPCBLayerComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -83,11 +84,13 @@ public class GroundFill extends AbstractTransparentComponent<Void>
       xPoints[i] = (int)controlPoints[i].getX();
       yPoints[i] = (int)controlPoints[i].getY();
     }
+    drawingObserver.startDrawingSide(getLayer());
     drawingObserver.startTrackingContinuityArea(true);
     Composite oldComposite = applyAlpha(g2d, componentState);
     g2d.fillPolygon(xPoints, yPoints, controlPoints.length);
     g2d.setComposite(oldComposite);
     drawingObserver.stopTrackingContinuityArea();
+    drawingObserver.stopDrawingSide();
     // Do not track any changes that follow because the whole board has been
     // tracked so far.
     drawingObserver.stopTracking();
@@ -150,6 +153,7 @@ public class GroundFill extends AbstractTransparentComponent<Void>
   }
 
   @EditableProperty
+  @Override
   public PCBLayer getLayer() {
     if (layer == null) {
       layer = PCBLayer._1;
@@ -157,6 +161,7 @@ public class GroundFill extends AbstractTransparentComponent<Void>
     return layer;
   }
 
+  @Override
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
   }

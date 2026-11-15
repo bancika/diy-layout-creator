@@ -1,9 +1,12 @@
 package org.diylc.presenter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
@@ -20,9 +23,12 @@ import org.diylc.appframework.miscutils.InMemoryConfigurationManager;
 import org.diylc.appframework.simplemq.MessageDispatcher;
 import org.diylc.common.DrawOption;
 import org.diylc.common.EventType;
+import org.diylc.common.PCBLayer;
+import org.diylc.common.Percentage;
 import org.diylc.core.BoardUndersideDisplay;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IBoard;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -175,10 +181,10 @@ public class DrawingManagerTest {
     assertEquals(150.0, mirroredP.getX(), 0.001);
     assertEquals(670.0, mirroredP.getY(), 0.001);
 
-    // Check transparency
+    // the mirror fades through the wrapper, so the component still sees its own composite
     assertEquals(2, component.capturedAlphas.size());
     assertEquals(1.0f, component.capturedAlphas.get(0), 0.01f);
-    assertEquals(0.5f, component.capturedAlphas.get(1), 0.01f);
+    assertEquals(1.0f, component.capturedAlphas.get(1), 0.01f);
   }
 
   @Test
@@ -213,7 +219,6 @@ public class DrawingManagerTest {
     assertEquals(150.0, mirroredP.getX(), 0.001);
     assertEquals(10.0, mirroredP.getY(), 0.001);
 
-    // Transparency should not be 0.5 when undersideTransparency is false
     assertEquals(1.0f, component.capturedAlphas.get(1), 0.01f);
   }
 
@@ -648,6 +653,277 @@ public class DrawingManagerTest {
   }
 
   @Test
+  public void testBottomSideFadedOnlyWithOption() {
+    Project project = new Project();
+    project.getComponents().add(new SidePaintingComponent(new Rectangle2D.Double(150, 150, 10, 10), null));
+    project.getComponents().add(new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+    project.getComponents().add(new SidePaintingComponent(new Rectangle2D.Double(250, 250, 10, 10), PCBLayer._3));
+
+    BufferedImage faded = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertSolid(faded, 155, 155);
+    assertFaded(faded, 205, 205);
+    // inner layers count as the bottom side
+    assertFaded(faded, 255, 255);
+
+    BufferedImage plain = renderSides(project, EnumSet.of(DrawOption.ZOOM));
+    assertSolid(plain, 205, 205);
+    assertSolid(plain, 255, 255);
+  }
+
+  @Test
+  public void testBothSidesNeverFaded() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    project.getComponents().add(board);
+    project.getComponents().add(SidePaintingComponent.bothSides(new Rectangle2D.Double(150, 150, 10, 10)));
+
+    BufferedImage img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertSolid(img, 155, 155);
+    assertSolid(img, 155, 665);
+  }
+
+  @Test
+  public void testBottomMountedPartFadedOnlyWithOption() {
+    Project project = new Project();
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    BufferedImage faded = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertSolid(faded, 155, 155);
+    assertFaded(faded, 205, 205);
+
+    BufferedImage plain = renderSides(project, EnumSet.of(DrawOption.ZOOM));
+    assertSolid(plain, 205, 205);
+  }
+
+  @Test
+  public void testCachedBottomMountedPartFaded() {
+    Project project = new Project();
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    BufferedImage img = renderSides(project,
+        EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.ENABLE_CACHING));
+    assertFaded(img, 205, 205);
+  }
+
+  @Test
+  public void testMirrorShowsBottomMountedPartSolid() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    board.setUndersideTransparency(true);
+    project.getComponents().add(board);
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(150, 150, 10, 10), PCBLayer._2));
+    project.getComponents()
+        .add(new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    // reflection across y = 410 puts the top part at y 660..670 and the bottom one at 610..620
+    BufferedImage img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertFaded(img, 155, 665);
+    assertSolid(img, 205, 615);
+  }
+
+  @Test
+  public void testPartBeingPlacedInMirrorSeenFromBelow() {
+    Percentage farSideAlpha = DrawingManager.FAR_SIDE_ALPHA;
+    // below the 50% of a part being placed, so that a far-side fade would show
+    DrawingManager.FAR_SIDE_ALPHA = new Percentage(20);
+    try {
+      Project project = new Project();
+      MockBoard board = new MockBoard();
+      board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+      board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+      board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+      board.setUndersideTransparency(true);
+      project.getComponents().add(board);
+      // bottom copper, which the mirror shows as the near side
+      SidePaintingComponent copper =
+          new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+
+      DrawingManager drawingManager = createDrawingManager();
+      drawingManager.setSlotMirrorBoard(board);
+      BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2d = img.createGraphics();
+      drawingManager.drawProject(g2d, project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE),
+          null, null, Collections.emptyList(), Collections.emptySet(), Collections.emptySet(),
+          null, Collections.singletonList(copper), false, Collections.emptySet(), 1.0, 1.0, null);
+      g2d.dispose();
+
+      // drawn at the 50% of a part being placed, not faded further; the square lands at 610..620
+      assertFaded(img, 205, 615, 0.5f);
+    } finally {
+      DrawingManager.FAR_SIDE_ALPHA = farSideAlpha;
+    }
+  }
+
+  @Test
+  public void testLockedBottomMountedPartNotFadedTwice() {
+    Project project = new Project();
+    MountedComponent bottom =
+        new MountedComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+    project.getComponents().add(bottom);
+
+    DrawingManager drawingManager = createDrawingManager();
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project,
+        EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.LOCKED_ALPHA), null, null,
+        Collections.emptyList(), Collections.singleton(bottom), Collections.emptySet(), null, null,
+        false, Collections.emptySet(), 1.0, 1.0, null);
+    g2d.dispose();
+
+    assertFaded(img, 205, 205, Math.min(0.5f, farSideAlpha()));
+  }
+
+  @Test
+  public void testLockedBottomSideNotFadedTwice() {
+    Project project = new Project();
+    SidePaintingComponent bottom = new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1);
+    project.getComponents().add(bottom);
+
+    DrawingManager drawingManager = createDrawingManager();
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project,
+        EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE, DrawOption.LOCKED_ALPHA), null, null,
+        Collections.emptyList(), Collections.singleton(bottom), Collections.emptySet(), null, null,
+        false, Collections.emptySet(), 1.0, 1.0, null);
+    g2d.dispose();
+
+    // the stronger of the 50% locked alpha and the far-side alpha decides, not their product
+    assertFaded(img, 205, 205, Math.min(0.5f, farSideAlpha()));
+  }
+
+  @Test
+  public void testMirrorShowsCopperSideSolid() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    board.setUndersideTransparency(true);
+    project.getComponents().add(board);
+    project.getComponents().add(new SidePaintingComponent(new Rectangle2D.Double(150, 150, 10, 10), null));
+    project.getComponents().add(new SidePaintingComponent(new Rectangle2D.Double(200, 200, 10, 10), PCBLayer._1));
+
+    // reflection across y = 410 puts the top-side square at y 660..670 and the bottom one at 610..620
+    BufferedImage img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertFaded(img, 155, 665);
+    assertSolid(img, 205, 615);
+
+    board.setUndersideTransparency(false);
+    img = renderSides(project, EnumSet.of(DrawOption.ZOOM, DrawOption.FADE_FAR_SIDE));
+    assertSolid(img, 155, 665);
+    assertSolid(img, 205, 615);
+  }
+
+  @Test
+  public void testFarSideFadeKeepsComponentComposite() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D canvas = img.createGraphics();
+    G2DWrapper wrapper = new G2DWrapper(canvas, 1.0, EnumSet.of(DrawOption.FADE_FAR_SIDE));
+    float farSideAlpha = farSideAlpha();
+
+    Composite half = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+    wrapper.setComposite(half);
+    wrapper.startDrawingSide(PCBLayer._1);
+    assertSame(half, wrapper.getComposite());
+    // the stronger of the two fades wins rather than multiplying
+    assertEquals(Math.min(0.5f, farSideAlpha), ((AlphaComposite) canvas.getComposite()).getAlpha(), 0.001f);
+
+    wrapper.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.25f));
+    assertEquals(Math.min(0.25f, farSideAlpha), ((AlphaComposite) canvas.getComposite()).getAlpha(), 0.001f);
+
+    wrapper.setComposite(half);
+    wrapper.stopDrawingSide();
+    assertSame(half, canvas.getComposite());
+    canvas.dispose();
+  }
+
+  @Test
+  public void testFarSideNotFadedInOutlineMode() {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D canvas = img.createGraphics();
+    Composite original = canvas.getComposite();
+    G2DWrapper wrapper = new G2DWrapper(canvas, 1.0,
+        EnumSet.of(DrawOption.FADE_FAR_SIDE, DrawOption.OUTLINE_MODE));
+    wrapper.startDrawingSide(PCBLayer._1);
+    assertSame(original, canvas.getComposite());
+    wrapper.stopDrawingSide();
+    canvas.dispose();
+  }
+
+  @Test
+  public void testComponentFoundThroughUndersideMirror() {
+    Project project = new Project();
+    MockBoard board = new MockBoard();
+    board.setBoardRectangle(new Rectangle2D.Double(100, 100, 200, 300));
+    board.setUndersideDisplay(BoardUndersideDisplay.BELOW);
+    board.setUndersideOffset(new Size(20.0, SizeUnit.px));
+    SidePaintingComponent part =
+        new SidePaintingComponent(new Rectangle2D.Double(150, 150, 10, 10), null);
+    project.getComponents().add(board);
+    project.getComponents().add(part);
+    DrawingManager drawingManager = createDrawingManager();
+    drawVisibleRect(drawingManager, project, null);
+
+    // reflection across y = 410 puts the square at y 660..670
+    Point2D inMirror = new Point2D.Double(155, 665);
+    assertTrue(drawingManager.findComponentsAt(inMirror, project).isEmpty());
+    assertEquals(Collections.singletonList(part),
+        drawingManager.findMirroredComponentsAt(inMirror, project));
+    assertTrue(drawingManager
+        .findMirroredComponentsAt(new Point2D.Double(155, 155), project).isEmpty());
+  }
+
+  @Test
+  public void testFarSideFadeLeavesContinuityUnchanged() {
+    Area faded = drawBottomConductor(EnumSet.of(DrawOption.FADE_FAR_SIDE));
+    Area plain = drawBottomConductor(EnumSet.noneOf(DrawOption.class));
+    assertTrue(faded.equals(plain));
+    assertEquals(new Rectangle2D.Double(10, 10, 30, 20), faded.getBounds2D());
+  }
+
+  private Area drawBottomConductor(Set<DrawOption> drawOptions) {
+    BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D canvas = img.createGraphics();
+    G2DWrapper wrapper = new G2DWrapper(canvas, 1.0, drawOptions);
+    wrapper.startedDrawingComponent(0);
+    wrapper.startDrawingSide(PCBLayer._1);
+    wrapper.startTrackingContinuityArea(true);
+    wrapper.fill(new Rectangle2D.Double(10, 10, 30, 20));
+    wrapper.stopTrackingContinuityArea();
+    wrapper.stopDrawingSide();
+    ComponentArea componentArea = wrapper.finishedDrawingComponent();
+    canvas.dispose();
+    Area area = new Area();
+    for (Area a : componentArea.getContinuityPositiveAreas()) {
+      area.add(a);
+    }
+    return area;
+  }
+
+  private BufferedImage renderSides(Project project, Set<DrawOption> drawOptions) {
+    DrawingManager drawingManager = createDrawingManager();
+    BufferedImage img = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = img.createGraphics();
+    drawingManager.drawProject(g2d, project, drawOptions, null, null, Collections.emptyList(),
+        Collections.emptySet(), Collections.emptySet(), null, null, false, Collections.emptySet(),
+        1.0, 1.0, null);
+    g2d.dispose();
+    return img;
+  }
+
+  @Test
   public void testCutAppliesAfterStripIsRedrawn() {
     Project project = new Project();
     ConductorComponent strip = new ConductorComponent(new Rectangle2D.Double(0, 0, 100, 10), true);
@@ -705,6 +981,28 @@ public class DrawingManagerTest {
         Collections.emptySet(), 1.0, 1.0, null);
     g2d.dispose();
     return img;
+  }
+
+  private static float farSideAlpha() {
+    return (float) (DrawingManager.FAR_SIDE_ALPHA.getValue().doubleValue() / 100d);
+  }
+
+  private static int red(BufferedImage img, int x, int y) {
+    return new Color(img.getRGB(x, y)).getRed();
+  }
+
+  // the squares are painted black, so the red channel alone shows how much of the background is left
+  private static void assertSolid(BufferedImage img, int x, int y) {
+    assertEquals(0, red(img, x, y));
+  }
+
+  private static void assertFaded(BufferedImage img, int x, int y) {
+    assertFaded(img, x, y, farSideAlpha());
+  }
+
+  private static void assertFaded(BufferedImage img, int x, int y, float alpha) {
+    double background = red(img, 5, 5);
+    assertEquals(background * (1 - alpha), red(img, x, y), 3);
   }
 
   private void drawVisibleRect(DrawingManager drawingManager, Project project,
@@ -789,6 +1087,85 @@ public class DrawingManagerTest {
       drawingObserver.startTrackingContinuityArea(positive);
       g2d.fill(shape);
       drawingObserver.stopTrackingContinuityArea();
+    }
+  }
+
+  // paints an opaque black square, declared on the given side or, when null, left undeclared
+  // paints an undeclared black square, like a part that leaves its side to the Board Side property
+  @ComponentDescriptor(name = "Mounted", author = "test", category = "Test",
+      instanceNamePrefix = "M",
+      description = "Part mounted on one side of the board", zOrder = IDIYComponent.COMPONENT,
+      enableCache = true)
+  public static class MountedComponent extends SidePaintingComponent
+      implements IBoardSideComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Rectangle2D bounds;
+    private PCBLayer boardSide;
+
+    public MountedComponent(Rectangle2D shape, PCBLayer boardSide) {
+      super(shape, null);
+      this.bounds = shape;
+      this.boardSide = boardSide;
+    }
+
+    @Override
+    public PCBLayer getBoardSide() {
+      return boardSide;
+    }
+
+    @Override
+    public void setBoardSide(PCBLayer boardSide) {
+      this.boardSide = boardSide;
+    }
+
+    @Override
+    public Rectangle2D getCachingBounds() {
+      return bounds;
+    }
+  }
+
+  public static class SidePaintingComponent extends MockDIYComponent {
+
+    private static final long serialVersionUID = 1L;
+
+    private Rectangle2D shape;
+    private PCBLayer side;
+    private boolean bothSides;
+
+    public SidePaintingComponent(Rectangle2D shape, PCBLayer side) {
+      this.shape = shape;
+      this.side = side;
+    }
+
+    public static SidePaintingComponent bothSides(Rectangle2D shape) {
+      SidePaintingComponent component = new SidePaintingComponent(shape, null);
+      component.bothSides = true;
+      return component;
+    }
+
+    @Override
+    public int getControlPointCount() {
+      return 1;
+    }
+
+    @Override
+    public Point2D getControlPoint(int index) {
+      return new Point2D.Double(shape.getCenterX(), shape.getCenterY());
+    }
+
+    @Override
+    public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
+        Project project, IDrawingObserver drawingObserver) {
+      if (bothSides) {
+        drawingObserver.startDrawingBothSides();
+      } else if (side != null) {
+        drawingObserver.startDrawingSide(side);
+      }
+      g2d.setColor(Color.black);
+      g2d.fill(shape);
+      drawingObserver.stopDrawingSide();
     }
   }
 

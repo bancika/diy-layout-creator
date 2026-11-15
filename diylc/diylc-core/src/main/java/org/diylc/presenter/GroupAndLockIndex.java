@@ -94,8 +94,7 @@ public class GroupAndLockIndex {
     if (componentType == null) {
       return false;
     }
-    return project.getLockedLayers()
-        .contains((int) Math.round(ComponentProcessor.getInstance().getZOrder(component)))
+    return ComponentLayers.isLocked(project.getLockedLayers(), component)
         || project.getLockedComponents().contains(component);
   }
 

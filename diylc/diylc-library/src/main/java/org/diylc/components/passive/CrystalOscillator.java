@@ -28,9 +28,11 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.components.AbstractLeadedComponent;
 import org.diylc.components.transform.SimpleComponentTransformer;
 import org.diylc.core.CreationMethod;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -43,7 +45,8 @@ import org.diylc.core.measures.SizeUnit;
     creationMethod = CreationMethod.POINT_BY_POINT, instanceNamePrefix = "X",
     description = "Radial crystal oscillator", zOrder = IDIYComponent.COMPONENT,
     transformer = SimpleComponentTransformer.class)
-public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implements IGerberComponentSimple {
+public class CrystalOscillator extends AbstractLeadedComponent<Frequency>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -59,6 +62,7 @@ public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implem
   private Size pinSpacing = PIN_SPACING;
   
   private Frequency value;
+  private PCBLayer boardSide;
 
   public CrystalOscillator() {
     super();
@@ -132,5 +136,16 @@ public class CrystalOscillator extends AbstractLeadedComponent<Frequency> implem
   @Override
   protected Size getDefaultWidth() {
     return DEFAULT_WIDTH;
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 }

@@ -25,28 +25,9 @@ import com.bancika.gerberwriter.Point;
 import com.bancika.gerberwriter.path.MoveTo;
 import com.bancika.gerberwriter.path.Path;
 
-import org.diylc.core.ComponentState;
-import org.diylc.core.IDIYComponent;
-import org.diylc.core.Project;
 import org.diylc.core.measures.SizeUnit;
 
 public class GerberPathRenderer {
-
-  public static void drawComponent(Project currentProject, GerberG2DWrapper g2d, IDIYComponent<?> c,
-      boolean outlineMode) {
-    IGerberComponent gerberComponent = (IGerberComponent) c;
-    g2d.startedDrawingComponent();
-    if (gerberComponent instanceof IGerberComponentCustom) {
-      IGerberComponentCustom gerberComponentCustom = (IGerberComponentCustom) gerberComponent;
-      gerberComponentCustom.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d, g2d);
-    } else if (gerberComponent instanceof IGerberComponentSimple) {
-      IGerberComponentSimple gerberComponentSimple = (IGerberComponentSimple) gerberComponent;
-      g2d.startGerberOutput(gerberComponentSimple.getGerberLayer(),
-          gerberComponentSimple.getGerberFunction(), gerberComponentSimple.isGerberNegative());
-      c.draw(g2d, ComponentState.NORMAL, outlineMode, currentProject, g2d);
-      g2d.stopGerberOutput();
-    }
-  }
 
   public static void outputPathArea(PathIterator pathIterator, DataLayer dataLayer, double d,
       boolean isNegative, String function) {

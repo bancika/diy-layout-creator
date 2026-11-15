@@ -23,6 +23,9 @@ package org.diylc.swing.plugins.file;
 
 import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
+import org.diylc.common.PCBLayer;
+import org.diylc.core.IBoard;
+import org.diylc.core.IDIYComponent;
 import org.diylc.filter.PCBLayerFilter;
 import org.diylc.filter.SilkScreenFilter;
 import org.diylc.swingframework.IDrawingProvider;
@@ -53,11 +56,18 @@ public class SilkScreenDrawingProvider implements IDrawingProvider {
   @Override
   public void draw(int page, Graphics g, double zoomFactor) {
     plugInPort.draw((Graphics2D) g, EnumSet.of(DrawOption.ANTIALIASING, DrawOption.OUTLINE_MODE, DrawOption.MONOCHROMATIC),
-        new SilkScreenFilter(), zoomFactor, null, null);
+        new SilkScreenFilter(page == 0 ? PCBLayer._2 : PCBLayer._1), zoomFactor, null, null);
   }
 
+  // the top side, followed by the bottom side when it has silkscreen other than board outlines
   @Override
   public int getPageCount() {
+    SilkScreenFilter bottom = new SilkScreenFilter(PCBLayer._1);
+    for (IDIYComponent<?> c : plugInPort.getCurrentProject().getComponents()) {
+      if (!(c instanceof IBoard) && bottom.testComponent(c)) {
+        return 2;
+      }
+    }
     return 1;
   }
 }

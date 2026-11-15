@@ -113,6 +113,9 @@ public class ConfigPlugin implements IPlugIn {
     swingUI.injectMenuAction(
         ActionFactory.getInstance().createConfigAction(plugInPort, "Extra Working Area", IPlugInPort.EXTRA_SPACE_KEY, true),
         CONFIG_MENU);
+    swingUI.injectMenuAction(
+        ActionFactory.getInstance().createConfigAction(plugInPort, "Fade Copper Under Board",
+            IPlugInPort.FADE_FAR_SIDE_KEY, true), CONFIG_MENU);
 //    swingUI.injectMenuAction(
 //        ActionFactory.getInstance().createConfigAction(plugInPort, "Hardware Acceleration", IPlugInPort.HARDWARE_ACCELERATION, false),
 //        CONFIG_MENU);

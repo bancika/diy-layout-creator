@@ -39,6 +39,7 @@ import org.diylc.components.AbstractLabeledComponent;
 import org.diylc.components.RoundedPolygon;
 import org.diylc.components.AbstractLeadedComponent.LabelOrientation;
 import org.diylc.core.ComponentState;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
@@ -58,7 +59,8 @@ import org.diylc.utils.Constants;
     category = "Semiconductors", instanceNamePrefix = "BR",
     description = "Few variations of bridge rectifier chips", zOrder = IDIYComponent.COMPONENT,
     keywordPolicy = KeywordPolicy.SHOW_VALUE, enableCache = true)
-public class BridgeRectifier extends AbstractLabeledComponent<String> implements IGerberComponentSimple {
+public class BridgeRectifier extends AbstractLabeledComponent<String>
+    implements IGerberComponentSimple, IBoardSideComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -108,6 +110,7 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
   @Deprecated
   private LabelOrientation labelOriantation;
   private LabelOrientation labelOrientation = LabelOrientation.Directional;
+  private PCBLayer boardSide;
 
   public BridgeRectifier() {
     super();
@@ -707,6 +710,17 @@ public class BridgeRectifier extends AbstractLabeledComponent<String> implements
     Rectangle2D bounds = getBody()[0].getBounds2D();
     return new Rectangle2D.Double(bounds.getX() - margin, bounds.getY() - margin,
         bounds.getWidth() + 2 * margin, bounds.getHeight() + 2 * margin);
+  }
+
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
   }
 
   public static enum RectifierType {

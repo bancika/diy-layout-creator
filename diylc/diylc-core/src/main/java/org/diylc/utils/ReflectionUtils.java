@@ -148,4 +148,16 @@ public class ReflectionUtils {
     }
     return result.get(0);
   }
+
+  /**
+   * @return true when the enum constant is marked {@link Deprecated}; such values are kept only so
+   *         that old files load, and are not offered for new choices
+   */
+  public static boolean isDeprecated(Enum<?> value) {
+    try {
+      return value.getDeclaringClass().getField(value.name()).isAnnotationPresent(Deprecated.class);
+    } catch (NoSuchFieldException e) {
+      return false;
+    }
+  }
 }

@@ -31,6 +31,7 @@ import java.awt.geom.Rectangle2D;
 import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.transform.ProtoBoardTransformer;
 import org.diylc.core.ComponentState;
@@ -52,7 +53,7 @@ import org.diylc.core.measures.SizeUnit;
     description = "A prototyping board for modular synths, central bus with V+ GND and V-", instanceNamePrefix = "BB",
     zOrder = IDIYComponent.BOARD, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true, transformer = ProtoBoardTransformer.class)
-public class ProtoBoard extends AbstractProtoBoard {
+public class ProtoBoard extends AbstractSolderedProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -145,6 +146,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     
     drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startDrawingSide(PCBLayer._2);
     
     // draw segment connectors
     for (int y = 0; y < ROW_COUNT; y++) {
@@ -169,6 +171,8 @@ public class ProtoBoard extends AbstractProtoBoard {
           (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) (point.getY() + (yOffset + y - 0.25d) * spacing + 1));
     }
     
+    drawingObserver.stopDrawingSide();
+    drawingObserver.startDrawingSide(PCBLayer._1);
     g2d.setColor(undersideTraceColor);
     
     // bottom row.
@@ -182,8 +186,10 @@ public class ProtoBoard extends AbstractProtoBoard {
     // vertical ground line
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int) (point.getY() + (yOffset - 1.5) * spacing),
       (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing), (int) (point.getY() + (yOffset + ROW_COUNT + 0.5) * spacing));
+    drawingObserver.stopDrawingSide();
     
     g2d.setColor(traceColor);   
+    drawingObserver.startDrawingSide(PCBLayer._2);
     
     // traces to top and bottom 3 pads
     g2d.drawPolyline(new int[] { 
@@ -220,6 +226,7 @@ public class ProtoBoard extends AbstractProtoBoard {
         (int) (point.getY() + (yOffset + ROW_COUNT) * spacing),   
         (int) (point.getY() + (yOffset + ROW_COUNT - 0.35) * spacing)}, 3);
     
+    drawingObserver.stopDrawingSide();
     drawingObserver.stopTrackingContinuityArea();
     
     int miniPadSize = getClosestOdd((2d * spacing - 6) / 5);
@@ -228,12 +235,14 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(traceColor);      
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
     drawingObserver.startTrackingContinuityArea(true);
+    drawingObserver.startDrawingSide(PCBLayer._2);
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) Math.round(point.getY() + 1 * spacing), 
         (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) Math.round(point.getY() + 1 * spacing), 
         (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing + miniPadSize / 2), (int) Math.round(point.getY() + 3.5 * spacing));
     g2d.drawLine((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) Math.round(point.getY() + 1 * spacing), 
         (int) (point.getX() + (1 + SEGMENTS_SUM[3] + 2.5) * spacing), (int) Math.round(point.getY() + 3.5 * spacing));
+    drawingObserver.stopDrawingSide();
     drawingObserver.stopTrackingContinuityArea();
     
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
@@ -351,8 +360,10 @@ public class ProtoBoard extends AbstractProtoBoard {
     drawingObserver.startTrackingContinuityArea(true);     
     
     // Draw two horizontal traces in the top-right section
+    drawingObserver.startDrawingSide(PCBLayer._2);
     g2d.drawLine((int) Math.round(point.getX() + width - 4 * spacing), (int) Math.round(point.getY() + 0.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) Math.round(point.getY() + 0.5 * spacing));
     g2d.drawLine((int) Math.round(point.getX() + width - 4 * spacing), (int) Math.round(point.getY() + 1.5 * spacing), (int) (point.getX() + width - (2) * spacing), (int) Math.round(point.getY() + 1.5 * spacing));        
+    drawingObserver.stopDrawingSide();
     
     // Draw top-right pads
     for (int x = 0; x < 6; x++) { 
@@ -360,7 +371,9 @@ public class ProtoBoard extends AbstractProtoBoard {
 
       g2d.setColor(traceColor);      
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(padSize / 4));
+      drawingObserver.startDrawingSide(PCBLayer._2);
       g2d.drawLine(padX, (int) Math.round(point.getY() + 0.5 * spacing), padX, (int) Math.round(point.getY() + 3 * spacing));
+      drawingObserver.stopDrawingSide();
       
       g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
       
@@ -470,7 +483,7 @@ public class ProtoBoard extends AbstractProtoBoard {
     g2d.setColor(textColor);
     g2d.setFont(LABEL_FONT.deriveFont(COORDINATE_FONT_SIZE + 2));
     
-    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Bl�sol 2019", (int) Math.round(point.getX() + width * 0.70d), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
+    StringUtils.drawCenteredText(g2d, "P-0+o by:\nKristian Bl\u00e5sol 2019", (int) Math.round(point.getX() + spacing / 2), (int) (point.getY() + (yOffset + ROW_COUNT + 0.9) * spacing), 
         HorizontalAlignment.LEFT, VerticalAlignment.TOP);        
     
     // draw central mini pads
@@ -478,6 +491,7 @@ public class ProtoBoard extends AbstractProtoBoard {
       g2d.setColor(padColor);
       
       drawingObserver.startTrackingContinuityArea(true);
+      drawingObserver.startDrawingSide(PCBLayer._2);
       
       // top row      
       g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
@@ -493,7 +507,9 @@ public class ProtoBoard extends AbstractProtoBoard {
       g2d.setColor(padColor.darker());
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + 1, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 0.5) * spacing) + miniPadSize + 3, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
+      drawingObserver.stopDrawingSide();
       
+      drawingObserver.startDrawingSide(PCBLayer._1);
       g2d.setColor(undersidePadColor);
       
       drawingObserver.startTrackingContinuityArea(true);
@@ -507,15 +523,18 @@ public class ProtoBoard extends AbstractProtoBoard {
       g2d.fillRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize / 2 + 3, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize, miniPadSize);
       
       drawingObserver.stopTrackingContinuityArea();
+      drawingObserver.stopDrawingSide();
       
       g2d.setColor(undersidePadColor.darker());
       
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + 3, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize + 5, (int) (point.getY() + (yOffset + y - 0.5d) * spacing + 2), miniPadSize, miniPadSize);
       
+      drawingObserver.startDrawingSide(PCBLayer._1);
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize / 2, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) - miniPadSize * 3 / 2 - 2, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize, miniPadSize);
       g2d.drawRect((int) (point.getX() + (1 + SEGMENTS_SUM[3] + 1.5) * spacing) + miniPadSize / 2 + 3, (int) (point.getY() + (yOffset + y + 0.5d) * spacing - 1 - miniPadSize), miniPadSize, miniPadSize);
+      drawingObserver.stopDrawingSide();
     }        
   }
 
@@ -689,6 +708,17 @@ public class ProtoBoard extends AbstractProtoBoard {
     return null;
   }
   
+  @Override
+  protected Rectangle2D getUnrotatedBody() {
+    return new Rectangle2D.Double(point.getX(), point.getY(), (int) WIDTH_SIZE.convertToPixels(),
+        (int) LENGTH_SIZE.convertToPixels());
+  }
+
+  @Override
+  protected Point2D getRotationCenter() {
+    return point;
+  }
+
   @Override
   public Rectangle2D getCachingBounds() {
     Point2D finalSecondPoint = getControlPoint(1); 
