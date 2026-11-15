@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 
+import org.diylc.common.PCBLayer;
 import org.diylc.components.transform.AbstractBoardTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
@@ -81,10 +82,12 @@ public class PerfBoard extends AbstractBoard implements ILayeredComponent {
         y += spacing;
         while (x < finalSecondPoint.getX() - spacing - diameter) {
           x += spacing;
+          drawingObserver.startDrawingSide(PCBLayer._1);
           g2d.setColor(padColor);
           g2d.fillOval((int)(x - diameter / 2), (int)(y - diameter / 2), diameter, diameter);
           g2d.setColor(padColor.darker());
           g2d.drawOval((int)(x - diameter / 2), (int)(y - diameter / 2), diameter, diameter);
+          drawingObserver.stopDrawingSide();
           g2d.setColor(Constants.CANVAS_COLOR);
           g2d.fillOval((int)(x - holeDiameter / 2), (int)(y - holeDiameter / 2), holeDiameter, holeDiameter);
           g2d.setColor(padColor.darker());

@@ -27,7 +27,9 @@ env:
 
 jobs:
   windows:
-    runs-on: ubuntu-latest
+    # amake/innosetup's wine cannot start its wineserver on Ubuntu 26.04 ("socket: Function not
+    # implemented"); pinned until the image supports it
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code

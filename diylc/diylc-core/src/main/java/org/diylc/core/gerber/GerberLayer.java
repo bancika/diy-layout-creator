@@ -1,6 +1,7 @@
 package org.diylc.core.gerber;
 
 import com.bancika.gerberwriter.DataLayer;
+import com.bancika.gerberwriter.DrillLayer;
 import com.bancika.gerberwriter.GenerationSoftware;
 
 public enum GerberLayer {
@@ -30,9 +31,18 @@ public enum GerberLayer {
   }
   
   public DataLayer buildLayer(String diylcVersion) {
-    GenerationSoftware genSoftware =
-        new GenerationSoftware("bancika", "DIY Layout Creator", diylcVersion);
-    return new DataLayer(function, negative, genSoftware);
+    return new DataLayer(function, negative, createGenerationSoftware(diylcVersion));
+  }
+
+  public DrillLayer buildDrillLayer(String diylcVersion) {
+    return new DrillLayer(this == DrillPlated, createGenerationSoftware(diylcVersion));
+  }
+
+  /**
+   * @return true for the drill layers, which hold holes rather than drawn copper or graphics
+   */
+  public boolean isDrill() {
+    return this == DrillPlated || this == DrillNonPlated;
   }
   
   public String getExtension() {
@@ -54,9 +64,17 @@ public enum GerberLayer {
   public boolean isMirrored() {
     return mirrored;
   }
-  
+
   public String formatFileName(String fileNameBase, String boardName) {
+    return formatFileName(fileNameBase, boardName, getExtension());
+  }
+
+  public String formatFileName(String fileNameBase, String boardName, String extension) {
     return fileNameBase + (fileNameBase.endsWith(".") ? "" : ".")
-        + boardName + "-" + getSuffix() + "." + getExtension();
+        + boardName + "-" + getSuffix() + "." + extension;
+  }
+
+  private static GenerationSoftware createGenerationSoftware(String diylcVersion) {
+    return new GenerationSoftware("bancika", "DIY Layout Creator", diylcVersion);
   }
 }

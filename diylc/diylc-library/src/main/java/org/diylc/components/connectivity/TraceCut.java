@@ -83,6 +83,8 @@ public class TraceCut extends AbstractTransparentComponent<Void> implements ILay
       return;
     }
     Composite oldComposite = applyAlpha(g2d, componentState);
+    // the cut is what tells the user a strip is broken, so it stays crisp from either side
+    drawingObserver.startDrawingBothSides();
     g2d.setStroke(ObjectCache.getInstance().fetchZoomableStroke(1f));
     int size = getClosestOdd((int) this.size.convertToPixels());
     int cutWidth = getClosestOdd((int) CUT_WIDTH.convertToPixels());
@@ -109,6 +111,7 @@ public class TraceCut extends AbstractTransparentComponent<Void> implements ILay
       g2d.setColor(getBoardColor().darker());
       g2d.drawOval((int) Math.round(point.getX() - holeSize / 2), (int) Math.round(point.getY() - holeSize / 2), holeSize, holeSize);
     }
+    drawingObserver.stopDrawingSide();
     g2d.setComposite(oldComposite);
   }
 

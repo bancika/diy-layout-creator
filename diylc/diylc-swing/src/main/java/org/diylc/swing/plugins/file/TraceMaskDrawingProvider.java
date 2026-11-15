@@ -24,7 +24,6 @@ package org.diylc.swing.plugins.file;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -37,6 +36,7 @@ import org.diylc.common.DrawOption;
 import org.diylc.common.IPlugInPort;
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.filter.PCBLayerFilter;
 
 /**
@@ -72,12 +72,8 @@ public class TraceMaskDrawingProvider implements IDrawingProvider {
   private PCBLayer[] getUsedLayers() {
     Set<PCBLayer> layers = EnumSet.noneOf(PCBLayer.class);
     for (IDIYComponent<?> c : plugInPort.getCurrentProject().getComponents()) {
-      Class<?> clazz = c.getClass();
-      try {
-        Method m = clazz.getMethod("getLayer");
-        PCBLayer l = (PCBLayer) m.invoke(c);
-        layers.add(l);
-      } catch (Exception e) {
+      if (c instanceof IPCBLayerComponent copper) {
+        layers.add(copper.getLayer());
       }
     }
     List<PCBLayer> sorted = new ArrayList<PCBLayer>(layers);

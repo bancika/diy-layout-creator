@@ -35,6 +35,7 @@ import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.ILayeredComponent;
+import org.diylc.core.IPCBLayerComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote.Scope;
@@ -53,14 +54,14 @@ import org.diylc.core.measures.Size;
 import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
-@AiNote(value = "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads", scope = Scope.SELECTION)
+@AiNote(value = "Use on Blank Board and PCB layouts; Perf Board, Vero Board, TriPad Board and the proto boards already have their own pads; a pad with Hole Type 'Plated Through Hole' is on both copper layers and joins them, so its Layer is ignored", scope = Scope.SELECTION)
 @ComponentDescriptor(name = "Solder Pad", category = "Connectivity", author = "Branislav Stojkovic",
     description = "Copper solder pad, round or square", instanceNamePrefix = "Pad",
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.NEVER_SHOW,
     keywordPolicy = KeywordPolicy.SHOW_TAG, keywordTag = "PCB",
     transformer = SimpleComponentTransformer.class, enableCache = true)
 public class SolderPad extends AbstractTransparentComponent<Void>
-    implements IConnective, ILayeredComponent, IGerberComponentCustom {
+    implements IConnective, ILayeredComponent, IGerberComponentCustom, IPCBLayerComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -74,7 +75,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   private Type type = Type.ROUND;
   private Size holeSize = HOLE_SIZE;
   private PCBLayer layer = PCBLayer._1;
-  private HoleType holeType = HoleType.NTPH;
+  private HoleType holeType = HoleType.PTH;
   private String nodeName = "";
 
   @Override
@@ -91,12 +92,21 @@ public class SolderPad extends AbstractTransparentComponent<Void>
             ? SELECTION_COLOR
             : color);
     drawingObserver.startTrackingContinuityArea(true);
-    GerberLayer gerberCopperLayer = this.getLayer().toGerberCopperLayer();
+    GerberLayer[] gerberCopperLayers = isOnBothLayers()
+        ? new GerberLayer[] {GerberLayer.CopperTop, GerberLayer.CopperBot}
+        : new GerberLayer[] {getLayer().toGerberCopperLayer()};
     if (gerberDrawingObserver != null) {
-      gerberDrawingObserver.startGerberOutput(gerberCopperLayer, GerberFunctions.CONNECTOR_PAD, false);
-      gerberDrawingObserver.startGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot, "Material", false);
+      for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+        gerberDrawingObserver.startGerberOutput(gerberCopperLayer, getGerberPadFunction(), false);
+        gerberDrawingObserver.startGerberOutput(getMaskLayer(gerberCopperLayer), "Material", false);
+      }
     }
     Composite oldComposite = applyAlpha(g2d, componentState);
+    if (isOnBothLayers()) {
+      drawingObserver.startDrawingBothSides();
+    } else {
+      drawingObserver.startDrawingSide(getLayer());
+    }
 
     if (type == Type.ROUND) {
       g2d.fill(new Ellipse2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
@@ -111,19 +121,27 @@ public class SolderPad extends AbstractTransparentComponent<Void>
       g2d.fill(new Rectangle2D.Double(point.getX() - diameter / 2, point.getY() - diameter / 2,
           diameter, diameter));
     }
+    drawingObserver.stopDrawingSide();
     drawingObserver.stopTracking();
     drawingObserver.stopTrackingContinuityArea();
-    if (gerberDrawingObserver != null)
-      gerberDrawingObserver.stopGerberOutput(org.diylc.core.gerber.GerberLayer.SolderMaskBot);
+    // the hole goes to the drill file only; cutting it out of the copper as well is advised against
+    // by the Gerber specification
+    if (gerberDrawingObserver != null) {
+      for (GerberLayer gerberCopperLayer : gerberCopperLayers) {
+        gerberDrawingObserver.stopGerberOutput(gerberCopperLayer);
+        gerberDrawingObserver.stopGerberOutput(getMaskLayer(gerberCopperLayer));
+      }
+    }
     if (getHoleSize().getValue() > 0 && !HoleType.NONE.equals(getHoleType())) {
       if (gerberDrawingObserver != null) {
-        gerberDrawingObserver.setGerberNegative(gerberCopperLayer, true);
         GerberLayer holeLayer = HoleType.PTH.equals(getHoleType()) ? GerberLayer.DrillPlated : GerberLayer.DrillNonPlated;
         gerberDrawingObserver.startGerberOutput(holeLayer, GerberFunctions.COMPONENT_DRILL, false);
       }
+      drawingObserver.startDrawingBothSides();
       g2d.setColor(Constants.CANVAS_COLOR);
       g2d.fill(new Ellipse2D.Double(point.getX() - holeDiameter / 2,
           point.getY() - holeDiameter / 2, holeDiameter, holeDiameter));
+      drawingObserver.stopDrawingSide();
     }
     g2d.setComposite(oldComposite);
     if (gerberDrawingObserver != null)
@@ -159,6 +177,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   
   @EditableProperty(name = "Hole Type")
   public HoleType getHoleType() {
+    // pads saved before the hole type existed had non-plated holes; new pads are plated
     if (holeType == null) {
       holeType = HoleType.NTPH;
     }
@@ -182,6 +201,7 @@ public class SolderPad extends AbstractTransparentComponent<Void>
   }
 
   @EditableProperty
+  @Override
   public PCBLayer getLayer() {
     if (layer == null) {
       layer = PCBLayer._1;
@@ -189,13 +209,33 @@ public class SolderPad extends AbstractTransparentComponent<Void>
     return layer;
   }
 
+  @Override
   public void setLayer(PCBLayer layer) {
     this.layer = layer;
   }
 
+  // layer id 0 is copper that connects to copper on every layer
   @Override
   public int getLayerId() {
-    return getLayer().getId();
+    return isOnBothLayers() ? 0 : getLayer().getId();
+  }
+
+  // a plated hole is a barrel with a copper ring on each side of the board, so the pad is on both
+  // layers and joins them, whatever its 'Layer' says
+  private boolean isOnBothLayers() {
+    return HoleType.PTH.equals(getHoleType());
+  }
+
+  // a pad with a hole takes a part's lead; one without is a surface mount pad
+  private String getGerberPadFunction() {
+    return HoleType.NONE.equals(getHoleType()) ? GerberFunctions.SMDPAD_CU_DEF
+        : GerberFunctions.COMPONENT_PAD;
+  }
+
+  // the mask is opened on the side the copper is on
+  private static GerberLayer getMaskLayer(GerberLayer gerberCopperLayer) {
+    return gerberCopperLayer == GerberLayer.CopperTop ? GerberLayer.SolderMaskTop
+        : GerberLayer.SolderMaskBot;
   }
 
   @Override

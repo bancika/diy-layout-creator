@@ -55,7 +55,7 @@ import org.diylc.core.measures.SizeUnit;
     bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, enableCache = true,
     transformer = ProtoBoardTransformer.class)
-public class EurorackStripboard extends AbstractProtoBoard {
+public class EurorackStripboard extends AbstractSolderedProtoBoard {
 
   private static final long serialVersionUID = 1L;
 
@@ -718,6 +718,18 @@ public class EurorackStripboard extends AbstractProtoBoard {
   @Override
   public String getControlPointNodeName(int index) {
     return null;
+  }
+
+  @Override
+  protected Rectangle2D getUnrotatedBody() {
+    int bodyOffsetY = (int) BODY_OFFSET_Y.convertToPixels();
+    return new Rectangle2D.Double(point.getX(), point.getY() - bodyOffsetY,
+        (int) WIDTH_SIZE.convertToPixels(), (int) LENGTH_SIZE.convertToPixels());
+  }
+
+  @Override
+  protected Point2D getRotationCenter() {
+    return point;
   }
 
   @Override

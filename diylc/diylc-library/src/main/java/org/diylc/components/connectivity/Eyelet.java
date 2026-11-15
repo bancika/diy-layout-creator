@@ -33,6 +33,7 @@ import org.diylc.core.ComponentState;
 import org.diylc.core.IConnective;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
+import org.diylc.core.ILayeredComponent;
 import org.diylc.core.Project;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.AiNote;
@@ -52,7 +53,8 @@ import org.diylc.utils.Constants;
     zOrder = IDIYComponent.TRACE + 0.1, bomPolicy = BomPolicy.SHOW_ONLY_TYPE_NAME, autoEdit = false,
     keywordPolicy = KeywordPolicy.SHOW_TYPE_NAME, transformer = SimpleComponentTransformer.class,
     enableCache = true)
-public class Eyelet extends AbstractTransparentComponent<String> implements IConnective {
+public class Eyelet extends AbstractTransparentComponent<String>
+    implements IConnective, ILayeredComponent {
 
   private static final long serialVersionUID = 1L;
 
@@ -130,6 +132,12 @@ public class Eyelet extends AbstractTransparentComponent<String> implements ICon
   @Override
   public String getName() {
     return super.getName();
+  }
+
+  // goes through the board, so it is on every copper layer
+  @Override
+  public int getLayerId() {
+    return 0;
   }
 
   @Override

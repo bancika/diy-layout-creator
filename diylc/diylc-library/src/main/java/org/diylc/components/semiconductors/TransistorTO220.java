@@ -333,8 +333,9 @@ public class TransistorTO220 extends AbstractTransistorPackage {
       g2d.draw(tabArea);
     }
 
-    drawPins(g2d, pinSize, outlineMode ? null : PIN_COLOR,
-        outlineMode ? theme.getOutlineColor() : PIN_BORDER_COLOR);
+    if (!outlineMode) {
+      drawPins(g2d, pinSize, PIN_COLOR, PIN_BORDER_COLOR);
+    }
 
     // Draw label.
     g2d.setFont(project.getFont());

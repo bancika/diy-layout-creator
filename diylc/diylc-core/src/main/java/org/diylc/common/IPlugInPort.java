@@ -110,6 +110,8 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
 
   public static final String LOCKED_ALPHA = "lockedAlpha";
 
+  public static final String FADE_FAR_SIDE_KEY = "fadeFarSide";
+
   public static final String LANGUAGE = "language";
   public static final String LANGUAGE_DEFAULT = "English";
 
@@ -362,22 +364,24 @@ public interface IPlugInPort extends ISelectionProcessor, IMouseProcessor, IKeyP
   void setNewComponentTypeSlot(ComponentType componentType, Template template, String[] model, boolean forceInstatiate);
 
   /**
-   * Locks or unlocks the specified layer. All components within +- 0.5 range will be affected by
-   * the change as well.
+   * Locks or unlocks the specified layer: the components whose z-order rounds to it, or the
+   * components on one side of the board for a trace layer.
    * 
-   * @param layerZOrder
+   * @param layerId a z-order such as {@link org.diylc.core.IDIYComponent#BOARD}, or one of the
+   *        trace layers in {@link org.diylc.core.LayerIds}
    * @param locked
    */
-  void setLayerLocked(int layerZOrder, boolean locked);
+  void setLayerLocked(int layerId, boolean locked);
 
   /**
-   * Shows or hides the specified layer. All components within +- 0.5 range will be affected by the
-   * change as well.
+   * Shows or hides the specified layer: the components whose z-order rounds to it, or the
+   * components on one side of the board for a trace layer.
    * 
-   * @param layerZOrder
+   * @param layerId a z-order such as {@link org.diylc.core.IDIYComponent#BOARD}, or one of the
+   *        trace layers in {@link org.diylc.core.LayerIds}
    * @param visible
    */
-  void setLayerVisibility(int layerZOrder, boolean visible);
+  void setLayerVisibility(int layerId, boolean visible);
 
   /**
    * @return selection size expressed in both inches or centimeters, respectively

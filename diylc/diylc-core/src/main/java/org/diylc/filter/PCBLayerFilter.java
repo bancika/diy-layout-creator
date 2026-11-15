@@ -21,10 +21,9 @@
 */
 package org.diylc.filter;
 
-import java.lang.reflect.Method;
-
 import org.diylc.common.PCBLayer;
 import org.diylc.core.IDIYComponent;
+import org.diylc.core.IPCBLayerComponent;
 
 public class PCBLayerFilter implements IComponentFilter {
 
@@ -37,13 +36,6 @@ public class PCBLayerFilter implements IComponentFilter {
 
   @Override
   public boolean testComponent(IDIYComponent<?> component) {
-    Class<?> clazz = component.getClass();
-    try {
-      Method m = clazz.getMethod("getLayer");
-      PCBLayer l = (PCBLayer) m.invoke(component);
-      return layer == l;
-    } catch (Exception e) {
-      return false;
-    }
+    return component instanceof IPCBLayerComponent copper && copper.getLayer() == layer;
   }
 }

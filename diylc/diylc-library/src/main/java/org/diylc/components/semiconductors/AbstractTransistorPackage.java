@@ -34,8 +34,10 @@ import org.diylc.awt.StringUtils;
 import org.diylc.common.HorizontalAlignment;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
+import org.diylc.common.PCBLayer;
 import org.diylc.common.VerticalAlignment;
 import org.diylc.components.AbstractLabeledComponent;
+import org.diylc.core.IBoardSideComponent;
 import org.diylc.core.IDatasheetSupport;
 import org.diylc.core.VisibilityPolicy;
 import org.diylc.core.annotations.EditableProperty;
@@ -43,7 +45,7 @@ import org.diylc.core.gerber.IGerberComponentSimple;
 import org.diylc.netlist.ISpiceMapper;
 
 public abstract class AbstractTransistorPackage extends AbstractLabeledComponent<String> implements ISpiceMapper, IGerberComponentSimple,
-    IDatasheetSupport {
+    IDatasheetSupport, IBoardSideComponent {
   
   private static final long serialVersionUID = 1L;
   
@@ -59,6 +61,7 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
   protected TransistorDisplay display = TransistorDisplay.NAME;  
   
   protected boolean folded = false;
+  private PCBLayer boardSide;
 
   public AbstractTransistorPackage() {
   }
@@ -251,17 +254,14 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
     return new Rectangle2D.Double(minX - margin, minY - margin, maxX - minX + 2 * margin, maxY - minY + 2 * margin);
   }
   
-  // drawn after the body so that pins stay visible whatever its alpha; a null pinColor draws only
-  // the outline
+  // drawn after the body so that pins stay visible whatever its alpha
   protected void drawPins(Graphics2D g2d, int pinSize, Color pinColor, Color pinBorderColor) {
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
     for (Point2D point : controlPoints) {
       Shape pin = new Ellipse2D.Double(point.getX() - pinSize / 2, point.getY() - pinSize / 2,
           pinSize, pinSize);
-      if (pinColor != null) {
-        g2d.setColor(pinColor);
-        g2d.fill(pin);
-      }
+      g2d.setColor(pinColor);
+      g2d.fill(pin);
       g2d.setColor(pinBorderColor);
       g2d.draw(pin);
     }
@@ -328,6 +328,17 @@ public abstract class AbstractTransistorPackage extends AbstractLabeledComponent
     }
   }
   
+  @EditableProperty(name = "Board Side")
+  @Override
+  public PCBLayer getBoardSide() {
+    return boardSide == null ? PCBLayer._2 : boardSide;
+  }
+
+  @Override
+  public void setBoardSide(PCBLayer boardSide) {
+    this.boardSide = boardSide;
+  }
+
   public enum TransistorDisplay {
 
     NAME, VALUE, NONE, BOTH, PINOUT;

@@ -372,6 +372,9 @@ public class CanvasPanel extends JComponent implements Autoscroll {
     if (configManager.readBoolean(IPlugInPort.LOCKED_ALPHA, true)) {
       drawOptions.add(DrawOption.LOCKED_ALPHA);
     }
+    if (configManager.readBoolean(IPlugInPort.FADE_FAR_SIDE_KEY, true)) {
+      drawOptions.add(DrawOption.FADE_FAR_SIDE);
+    }
     return drawOptions;
   }
 

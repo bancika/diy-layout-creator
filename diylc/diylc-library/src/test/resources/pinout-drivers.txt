@@ -33,6 +33,7 @@ connectivity.SolderPad = fixed
 connectivity.TraceCut = none
 connectivity.Turret = fixed
 connectivity.TwistedWire = Point Count
+connectivity.Via = fixed
 displays.CharacterLCD = Interface
 displays.LEDBarGraph = Segments
 displays.LEDMatrix = fixed

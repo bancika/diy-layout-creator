@@ -72,5 +72,9 @@ public enum DrawOption {
   /**
    * When applied, all colors will be converted to blackest black or whitest white
    */
-  MONOCHROMATIC;
+  MONOCHROMATIC,
+  /**
+   * Paint on the bottom side of a board is drawn at reduced opacity, as if seen through the board.
+   */
+  FADE_FAR_SIDE;
 }

@@ -210,6 +210,14 @@ logic, netlist and analyzer behaviour, datasheet parsing, core utilities. Compon
 user interaction are covered by the regression suite instead, not by unit tests. Test classes are
 named `*Test` or `*Tests` and carry the license header like any other file.
 
+## Changelog
+
+User-facing changes are listed in `diylc-core/src/main/resources/update.xml`, one `Version` block
+per release. Within a block, all `NEW_FEATURE` entries come first, then `IMPROVEMENT`, then
+`BUG_FIX`; keep the existing order inside each group and add a new entry at the end of its own
+group, not at the end of the block. After a merge that brings entries in from both sides, sort the
+unreleased block again. Released blocks stay exactly as they shipped.
+
 ## Git
 
 **Do not commit or push.** Make the change in the working tree and stop; the maintainer reviews and
