@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.diylc</groupId>
         <artifactId>diylc-parent</artifactId>
-        <version>6.11.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>diylc-processor</artifactId>

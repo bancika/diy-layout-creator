@@ -4,7 +4,7 @@
 # Requires: GitHub CLI (gh) installed and authenticated.
 #
 # Usage:
-#   ./draft-github-release.sh                    # use version from pom.xml, deploy/
+#   ./draft-github-release.sh                    # use version from update.xml, deploy/
 #   ./draft-github-release.sh v1.2.3             # specific tag
 #   ./draft-github-release.sh v1.2.3 /path/to/deploy
 #
@@ -18,15 +18,10 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEPLOY_DIR="${2:-${PROJECT_DIR}/deploy}"
 TAG_OR_VERSION="${1:-}"
 
-# Resolve version from parent pom.xml if not provided
+# Resolve version from update.xml if not provided
 if [ -z "${TAG_OR_VERSION}" ]; then
-    if [ -f "${PROJECT_DIR}/pom.xml" ]; then
-        VERSION=$(sed -n 's/.*<version>\([^<]*\)<\/version>.*/\1/p' "${PROJECT_DIR}/pom.xml" | head -1)
-        TAG_OR_VERSION="v${VERSION}"
-    else
-        echo "ERROR: No tag/version given and could not read pom.xml"
-        exit 1
-    fi
+    VERSION=$("${PROJECT_DIR}/current_version.sh")
+    TAG_OR_VERSION="v${VERSION}"
 fi
 
 # Ensure tag has v prefix for display

@@ -12,6 +12,7 @@ DEPLOY_DIR="${1:-}"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SWING_MODULE_DIR="${PROJECT_DIR}/diylc-swing"
 DEPLOY_DIR="${DEPLOY_DIR:-${PROJECT_DIR}/deploy}"
+REVISION="$("${PROJECT_DIR}/current_version.sh")"
 
 # Docker must be up before jpackage-based profiles can run
 ensure_docker_running() {
@@ -64,6 +65,7 @@ echo "=========================================="
 echo "Project directory: ${PROJECT_DIR}"
 echo "Swing module directory: ${SWING_MODULE_DIR}"
 echo "Deployment directory: ${DEPLOY_DIR}"
+echo "Version: ${REVISION}"
 echo "Tests: Skipped"
 echo ""
 
@@ -87,7 +89,7 @@ for profile in "${PROFILES[@]}"; do
     
     # Clean and build from root, specifying the swing module and profile
     # This ensures dependencies (diylc-core, diylc-library) are built first
-    mvn clean package -pl diylc-swing -am -P"${profile}" -DskipTests || {
+    mvn clean package -pl diylc-swing -am -P"${profile}" -Drevision="${REVISION}" -DskipTests || {
         echo "ERROR: Failed to build profile ${profile}"
         echo "Continuing with next profile..."
         continue

@@ -15,7 +15,7 @@ if it compiles and works.
 
 ## Modules
 
-Maven reactor rooted at `diylc/pom.xml`, version `6.4.0`, three application modules with a strict
+Maven reactor rooted at `diylc/pom.xml`, three application modules with a strict
 one-way dependency chain, plus a build-time annotation processor:
 
 | Module | Contains | Depends on |
@@ -218,6 +218,11 @@ per release. Within a block, all `NEW_FEATURE` entries come first, then `IMPROVE
 group, not at the end of the block. After a merge that brings entries in from both sides, sort the
 unreleased block again. Released blocks stay exactly as they shipped.
 
+The newest block is the application's version. `build-all-profiles.sh` passes it to Maven as
+`-Drevision` (via `current_version.sh`), so packages are always named after it. When adding a new
+block, also set the `<revision>` default in `diylc/pom.xml` to match: it is what IDE and development
+builds use, and `ReleaseHistoryTest` fails until the two agree.
+
 ## Git
 
 **Do not commit or push.** Make the change in the working tree and stop; the maintainer reviews and
@@ -231,7 +236,6 @@ never `git add -A` over unrelated dirty files.
 - `deploy/`, `build-all-profiles.sh`, packaging and notarization.
 - `lib/` — vendored jars for dependencies not on Maven Central.
 - `diylc-regression-data/reports/` — historical evidence, append-only.
-- Bumping the project version in the POMs.
 
 ## Task recipes
 

@@ -6,7 +6,7 @@
 
     <groupId>org.diylc</groupId>
     <artifactId>diylc-parent</artifactId>
-    <version>6.11.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     
     <name>DIY Layout Creator</name>
@@ -20,6 +20,10 @@
     </modules>
     
     <properties>
+        <!-- the release version lives in diylc-core/src/main/resources/update.xml; build-all-profiles.sh
+             passes it in with -Drevision, and this default is only for IDE and development builds.
+             ReleaseHistoryTest fails when the two drift apart -->
+        <revision>6.11.0</revision>
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -143,9 +147,41 @@
                         <!-- XStream reflects into JDK collections when reading update.xml, and into fonts when reading
                              import-defaults/blocks.xml; mirrors the run configuration -->
                         <argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED</argLine>
+                        <systemPropertyVariables>
+                            <diylc.projectVersion>${project.version}</diylc.projectVersion>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- resolves ${revision} in the POMs that get installed, so a module built without -am can
+                 still find its parent in the local repository -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
