@@ -734,7 +734,6 @@ Bottom Traces|Trazos inferiores
 Top Traces|Trazos superiores
 Lead pitch|Paso de Terminales
 Common|Común
-Pin order|Orden de Terminales
 Side|Lateral
 Common cathode|Cátodo común
 Common anode|Ánodo común

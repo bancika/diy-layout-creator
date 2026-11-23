@@ -739,7 +739,6 @@ Bottom Traces|Sporen onderkant
 Top Traces|Sporen bovenkant
 Lead pitch|Draadpitch
 Common|Gemeenschappelijk
-Pin order|Pinvolgorde
 Side|Zijkant
 Common cathode|Gemeenschappelijke kathode
 Common anode|Gemeenschappelijke anode

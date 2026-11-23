@@ -17536,7 +17536,7 @@
     "namePrefix" : "D",
     "description" : "4-lead RGB LED with flexible leads",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pin order' lists the leads from pin 1 using R, G, B and C for the common lead; 'Common' decides whether C is the anode (A) or the cathode (K)", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
+    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' decides whether COM is the anode (A) or the cathode (K)", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17595,9 +17595,10 @@
       "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
       "defaultValue" : "DEFAULT"
     }, {
-      "name" : "Pin order",
-      "type" : "String",
-      "defaultValue" : "RCGB"
+      "name" : "Pinout",
+      "type" : "RGBPinout",
+      "possibleValues" : [ "R_COM_G_B", "R_COM_B_G", "G_COM_R_B", "B_COM_R_G" ],
+      "defaultValue" : "R_COM_G_B"
     }, {
       "name" : "Size",
       "type" : "Size",
@@ -17614,10 +17615,11 @@
       "defaultValue" : "TOP"
     } ],
     "pinout" : {
-      "drivers" : [ "Common" ],
+      "drivers" : [ "Common", "Pinout" ],
       "variants" : [ {
         "when" : {
-          "Common" : "CATHODE"
+          "Common" : "CATHODE",
+          "Pinout" : "R_COM_G_B"
         },
         "pins" : [ {
           "i" : 0,
@@ -17634,7 +17636,62 @@
         } ]
       }, {
         "when" : {
-          "Common" : "ANODE"
+          "Common" : "CATHODE",
+          "Pinout" : "R_COM_B_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "K"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        }, {
+          "i" : 3,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "CATHODE",
+          "Pinout" : "G_COM_R_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "K"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "CATHODE",
+          "Pinout" : "B_COM_R_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "K"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "ANODE",
+          "Pinout" : "R_COM_G_B"
         },
         "pins" : [ {
           "i" : 0,
@@ -17648,6 +17705,60 @@
         }, {
           "i" : 3,
           "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "ANODE",
+          "Pinout" : "R_COM_B_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        }, {
+          "i" : 3,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "ANODE",
+          "Pinout" : "G_COM_R_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "ANODE",
+          "Pinout" : "B_COM_R_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "G"
         } ]
       } ]
     }

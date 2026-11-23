@@ -57,7 +57,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends")
-@AiNote("'Pin order' lists the leads from pin 1 using R, G, B and C for the common lead; 'Common' decides whether C is the anode (A) or the cathode (K)")
+@AiNote("'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' decides whether COM is the anode (A) or the cathode (K)")
 @AiNote("The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side")
 @ComponentDescriptor(name = "RGB LED", author = "Jindra Helcl", category = "Semiconductors",
     instanceNamePrefix = "D", description = "4-lead RGB LED with flexible leads",
@@ -77,15 +77,13 @@ public class RGBLED extends AbstractTransistorPackage {
   public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
   public static Size LEAD_PITCH = new Size(0.05d, SizeUnit.in);
   public static Size LENS_SIZE = new Size(5d, SizeUnit.mm);
-  public static String PIN_ORDER = "RCGB";
-
   private static final int BODY = 4;
   private static final double PIXELS_PER_MM = new Size(1d, SizeUnit.mm).convertToPixels();
 
   private Size leadPitch = LEAD_PITCH;
   private Size size = LENS_SIZE;
   private CommonType common = CommonType.CATHODE;
-  private String pinOrder = PIN_ORDER;
+  private RGBPinout rgbPinout = RGBPinout.R_COM_G_B;
   private View view = View.TOP;
   private Color leadColor = LEAD_COLOR;
 
@@ -159,16 +157,17 @@ public class RGBLED extends AbstractTransistorPackage {
     this.common = common;
   }
 
-  @EditableProperty(name = "Pin order", validatorClass = PinOrderValidator.class)
-  public String getPinOrder() {
-    if (pinOrder == null) {
-      pinOrder = PIN_ORDER;
+  // named apart from getPinout(), which the transistor base class uses for TransistorPinout
+  @EditableProperty(name = "Pinout")
+  public RGBPinout getRgbPinout() {
+    if (rgbPinout == null) {
+      rgbPinout = RGBPinout.R_COM_G_B;
     }
-    return pinOrder;
+    return rgbPinout;
   }
 
-  public void setPinOrder(String pinOrder) {
-    this.pinOrder = pinOrder == null ? null : pinOrder.trim().toUpperCase();
+  public void setRgbPinout(RGBPinout rgbPinout) {
+    this.rgbPinout = rgbPinout;
   }
 
   @EditableProperty(name = "Lead Color")
@@ -210,21 +209,12 @@ public class RGBLED extends AbstractTransistorPackage {
     return index;
   }
 
-  /** @return R, G, B, K or A for the given lead, or its number if the pin order is invalid */
   public String getPinLabel(int index) {
-    String order = getPinOrder();
-    if (order.length() != 4 || index < 0 || index > 3) {
-      return Integer.toString(index + 1);
-    }
-    char c = order.charAt(index);
-    if (isCommon(c)) {
+    char c = getRgbPinout().getLead(index);
+    if (c == RGBPinout.COMMON) {
       return getCommon() == CommonType.ANODE ? "A" : "K";
     }
     return Character.toString(c);
-  }
-
-  private static boolean isCommon(char c) {
-    return c == 'C' || c == 'K' || c == 'A';
   }
 
   @Override
@@ -395,18 +385,8 @@ public class RGBLED extends AbstractTransistorPackage {
     double s = scale();
     double post = px(0.5) * s;
     double die = px(0.4) * s;
-    String order = getPinOrder();
-    int commonIndex = -1;
-    if (order.length() == 4) {
-      for (int i = 0; i < 4; i++) {
-        if (isCommon(order.charAt(i))) {
-          commonIndex = i;
-        }
-      }
-    }
-    if (commonIndex < 0) {
-      commonIndex = 1;
-    }
+    RGBPinout pinout = getRgbPinout();
+    int commonIndex = pinout.getCommonIndex();
     Color frameBorder = FRAME_COLOR.darker();
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1f));
 
@@ -444,7 +424,7 @@ public class RGBLED extends AbstractTransistorPackage {
         double dx = cx + (d - 1) * die * 1.2;
         Shape dieShape = t.createTransformedShape(
             new Rectangle2D.Double(dx - die / 2, cupTop - die, die, die));
-        g2d.setColor(dieColor(order, i, d));
+        g2d.setColor(dieColor(pinout.getLead(i)));
         g2d.fill(dieShape);
         g2d.setColor(Color.darkGray);
         g2d.draw(t.createTransformedShape(
@@ -477,7 +457,7 @@ public class RGBLED extends AbstractTransistorPackage {
       double dy = (d - 1) * die * 1.3;
       Shape dieShape =
           t.createTransformedShape(new Rectangle2D.Double(cx - die / 2, dy - die / 2, die, die));
-      g2d.setColor(dieColor(order, i, d));
+      g2d.setColor(dieColor(pinout.getLead(i)));
       g2d.fill(dieShape);
       g2d.setColor(Color.darkGray);
       g2d.draw(t.createTransformedShape(new Line2D.Double(cx, dy, tips[i].getX(), tips[i].getY())));
@@ -485,18 +465,14 @@ public class RGBLED extends AbstractTransistorPackage {
     }
   }
 
-  private Color dieColor(String order, int lead, int fallback) {
-    char c = order.length() == 4 ? order.charAt(lead) : ' ';
-    if (c == 'R') {
+  private Color dieColor(char lead) {
+    if (lead == 'R') {
       return DIE_COLORS[0];
     }
-    if (c == 'G') {
+    if (lead == 'G') {
       return DIE_COLORS[1];
     }
-    if (c == 'B') {
-      return DIE_COLORS[2];
-    }
-    return DIE_COLORS[fallback % 3];
+    return DIE_COLORS[2];
   }
 
   private void drawLabels(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
@@ -623,6 +599,34 @@ public class RGBLED extends AbstractTransistorPackage {
     @Override
     public String toString() {
       return label;
+    }
+  }
+
+  // lead order from pin 1, seen from the side with the dome up and the flat on the left;
+  // these are the arrangements found in datasheets of 4-lead through-hole RGB LEDs
+  public enum RGBPinout {
+
+    R_COM_G_B("RCGB"), R_COM_B_G("RCBG"), G_COM_R_B("GCRB"), B_COM_R_G("BCRG");
+
+    public static final char COMMON = 'C';
+
+    private String leads;
+
+    private RGBPinout(String leads) {
+      this.leads = leads;
+    }
+
+    public char getLead(int index) {
+      return leads.charAt(index);
+    }
+
+    public int getCommonIndex() {
+      return leads.indexOf(COMMON);
+    }
+
+    @Override
+    public String toString() {
+      return name().replace('_', ' ').replace(" ", ", ");
     }
   }
 }
