@@ -41,13 +41,13 @@ import org.diylc.common.IPlugInPort;
 import org.diylc.common.ObjectCache;
 import org.diylc.common.Orientation;
 import org.diylc.common.Percentage;
+import org.diylc.components.transform.RGBLEDTransformer;
 import org.diylc.core.ComponentState;
 import org.diylc.core.IDIYComponent;
 import org.diylc.core.IDrawingObserver;
 import org.diylc.core.Project;
 import org.diylc.core.Theme;
 import org.diylc.core.VisibilityPolicy;
-import org.diylc.components.transform.RGBLEDTransformer;
 import org.diylc.core.annotations.AiNote;
 import org.diylc.core.annotations.ComponentDescriptor;
 import org.diylc.core.annotations.EditableProperty;
@@ -77,6 +77,7 @@ public class RGBLED extends AbstractTransistorPackage {
   public static Size LEAD_THICKNESS = new Size(0.6d, SizeUnit.mm);
   public static Size LEAD_PITCH = new Size(0.05d, SizeUnit.in);
   public static Size LENS_SIZE = new Size(5d, SizeUnit.mm);
+
   private static final int BODY = 4;
   private static final double PIXELS_PER_MM = new Size(1d, SizeUnit.mm).convertToPixels();
 
@@ -255,11 +256,8 @@ public class RGBLED extends AbstractTransistorPackage {
     // the leads are flexible, so orientation only turns the body around its control point
   }
 
-  /**
-   * Maps body-local coordinates to the canvas: x runs along the row of leads (pin 1 first), y
-   * points from the body towards the leads, and the origin is the body control point. The
-   * orientation sets the lead direction; mirroring reverses the row, so pin 1 swaps ends.
-   */
+  // body-local coordinates: x runs along the row of leads (pin 1 first), y points from the body
+  // towards the leads, and the origin is the body control point; mirroring reverses the row
   private AffineTransform localToCanvas() {
     Point2D b = controlPoints[BODY];
     Point2D v = getLeadDirection(getOrientation());
@@ -268,7 +266,6 @@ public class RGBLED extends AbstractTransistorPackage {
         b.getY());
   }
 
-  /** @return unit vector from the body towards the leads for the given orientation */
   public static Point2D getLeadDirection(Orientation orientation) {
     if (orientation == Orientation._90) {
       return new Point2D.Double(-1, 0);
@@ -331,6 +328,7 @@ public class RGBLED extends AbstractTransistorPackage {
     return a;
   }
 
+  @Override
   public Area[] getBody() {
     if (body == null) {
       body = new Area[] {localBody().createTransformedArea(localToCanvas())};
@@ -338,6 +336,7 @@ public class RGBLED extends AbstractTransistorPackage {
     return body;
   }
 
+  @Override
   public void draw(Graphics2D g2d, ComponentState componentState, boolean outlineMode,
       Project project, IDrawingObserver drawingObserver) {
     if (checkPointsClipped(g2d.getClip())) {
@@ -388,11 +387,10 @@ public class RGBLED extends AbstractTransistorPackage {
     g2d.setColor(border);
     g2d.setStroke(ObjectCache.getInstance().fetchBasicStroke(1));
     g2d.draw(mainArea);
+    double r = lensRadius();
     if (getView() == View.TOP) {
-      double r = lensRadius();
       g2d.draw(t.createTransformedShape(new Ellipse2D.Double(-r, -r, 2 * r, 2 * r)));
     } else {
-      double r = lensRadius();
       g2d.draw(t.createTransformedShape(new Line2D.Double(-r, -rimHeight(), r, -rimHeight())));
     }
 
@@ -544,7 +542,7 @@ public class RGBLED extends AbstractTransistorPackage {
     drawText(g2d, label, anchor.getX(), anchor.getY(), -vx, -vy);
   }
 
-  /** Draws text next to (x, y), pushed away from that point in the direction (dx, dy). */
+  // aligns the text so that it grows away from (x, y) in the direction (dx, dy)
   private void drawText(Graphics2D g2d, String text, double x, double y, double dx, double dy) {
     FontMetrics fm = g2d.getFontMetrics(g2d.getFont());
     double w = fm.getStringBounds(text, g2d).getWidth();
@@ -563,6 +561,7 @@ public class RGBLED extends AbstractTransistorPackage {
     g2d.drawString(text, (float) tx, (float) ty);
   }
 
+  @Override
   public void drawIcon(Graphics2D g2d, int width, int height) {
     int cx = width / 2;
     int r = width * 7 / 32;
