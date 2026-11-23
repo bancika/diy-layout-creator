@@ -17530,6 +17530,163 @@
       } ]
     }
   }, {
+    "name" : "RGB LED",
+    "className" : "semiconductors.RGBLED",
+    "category" : "Semiconductors",
+    "namePrefix" : "D",
+    "description" : "4-lead RGB LED with flexible leads",
+    "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' says whether the COM lead is the common anode or the common cathode", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "60"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
+      "name" : "Body",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#CDE4F2"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#788C9B"
+    }, {
+      "name" : "Common",
+      "type" : "CommonType",
+      "possibleValues" : [ "CATHODE", "ANODE" ],
+      "defaultValue" : "CATHODE"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH", "PINOUT" ],
+      "defaultValue" : "NAME"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Label",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Lead Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#CCCCCC"
+    }, {
+      "name" : "Lead pitch",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Pinout",
+      "type" : "RGBPinout",
+      "possibleValues" : [ "R_COM_G_B", "R_COM_B_G", "G_COM_R_B", "B_COM_R_G" ],
+      "defaultValue" : "R_COM_G_B"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "5mm"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "View",
+      "type" : "View",
+      "possibleValues" : [ "TOP", "SIDE" ],
+      "defaultValue" : "TOP"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Pinout" ],
+      "variants" : [ {
+        "when" : {
+          "Pinout" : "R_COM_G_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "COM"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "R_COM_B_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "COM"
+        }, {
+          "i" : 2,
+          "label" : "B"
+        }, {
+          "i" : 3,
+          "label" : "G"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "G_COM_R_B"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "G"
+        }, {
+          "i" : 1,
+          "label" : "COM"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Pinout" : "B_COM_R_G"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "B"
+        }, {
+          "i" : 1,
+          "label" : "COM"
+        }, {
+          "i" : 2,
+          "label" : "R"
+        }, {
+          "i" : 3,
+          "label" : "G"
+        } ]
+      } ]
+    }
+  }, {
     "name" : "SIP IC",
     "className" : "semiconductors.SIL_IC",
     "category" : "Semiconductors",

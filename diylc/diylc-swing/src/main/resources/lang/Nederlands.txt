@@ -737,3 +737,8 @@ Fade Copper Under Board|Koper onder de print vervagen
 Board Side|Printzijde
 Bottom Traces|Sporen onderkant
 Top Traces|Sporen bovenkant
+Lead pitch|Draadpitch
+Common|Gemeenschappelijk
+Side|Zijkant
+Common cathode|Gemeenschappelijke kathode
+Common anode|Gemeenschappelijke anode

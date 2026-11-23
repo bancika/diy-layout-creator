@@ -500,6 +500,9 @@
       "name" : "Multiwatt IC",
       "className" : "semiconductors.MultiwattIC"
     }, {
+      "name" : "RGB LED",
+      "className" : "semiconductors.RGBLED"
+    }, {
       "name" : "SIP IC",
       "className" : "semiconductors.SIL_IC"
     }, {

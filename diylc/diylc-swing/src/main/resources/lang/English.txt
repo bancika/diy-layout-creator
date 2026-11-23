@@ -729,3 +729,8 @@ Fade Copper Under Board
 Board Side
 Bottom Traces
 Top Traces
+Lead pitch
+Common
+Side
+Common cathode
+Common anode
