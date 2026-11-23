@@ -17536,7 +17536,7 @@
     "namePrefix" : "D",
     "description" : "4-lead RGB LED with flexible leads",
     "creationMethod" : "SINGLE_CLICK",
-    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' decides whether COM is the anode (A) or the cathode (K)", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
+    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' says whether the COM lead is the common anode or the common cathode", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
     "properties" : [ {
       "name" : "Alpha",
       "type" : "Percentage",
@@ -17615,10 +17615,9 @@
       "defaultValue" : "TOP"
     } ],
     "pinout" : {
-      "drivers" : [ "Common", "Pinout" ],
+      "drivers" : [ "Pinout" ],
       "variants" : [ {
         "when" : {
-          "Common" : "CATHODE",
           "Pinout" : "R_COM_G_B"
         },
         "pins" : [ {
@@ -17626,7 +17625,7 @@
           "label" : "R"
         }, {
           "i" : 1,
-          "label" : "K"
+          "label" : "COM"
         }, {
           "i" : 2,
           "label" : "G"
@@ -17636,7 +17635,6 @@
         } ]
       }, {
         "when" : {
-          "Common" : "CATHODE",
           "Pinout" : "R_COM_B_G"
         },
         "pins" : [ {
@@ -17644,7 +17642,7 @@
           "label" : "R"
         }, {
           "i" : 1,
-          "label" : "K"
+          "label" : "COM"
         }, {
           "i" : 2,
           "label" : "B"
@@ -17654,7 +17652,6 @@
         } ]
       }, {
         "when" : {
-          "Common" : "CATHODE",
           "Pinout" : "G_COM_R_B"
         },
         "pins" : [ {
@@ -17662,7 +17659,7 @@
           "label" : "G"
         }, {
           "i" : 1,
-          "label" : "K"
+          "label" : "COM"
         }, {
           "i" : 2,
           "label" : "R"
@@ -17672,7 +17669,6 @@
         } ]
       }, {
         "when" : {
-          "Common" : "CATHODE",
           "Pinout" : "B_COM_R_G"
         },
         "pins" : [ {
@@ -17680,79 +17676,7 @@
           "label" : "B"
         }, {
           "i" : 1,
-          "label" : "K"
-        }, {
-          "i" : 2,
-          "label" : "R"
-        }, {
-          "i" : 3,
-          "label" : "G"
-        } ]
-      }, {
-        "when" : {
-          "Common" : "ANODE",
-          "Pinout" : "R_COM_G_B"
-        },
-        "pins" : [ {
-          "i" : 0,
-          "label" : "R"
-        }, {
-          "i" : 1,
-          "label" : "A"
-        }, {
-          "i" : 2,
-          "label" : "G"
-        }, {
-          "i" : 3,
-          "label" : "B"
-        } ]
-      }, {
-        "when" : {
-          "Common" : "ANODE",
-          "Pinout" : "R_COM_B_G"
-        },
-        "pins" : [ {
-          "i" : 0,
-          "label" : "R"
-        }, {
-          "i" : 1,
-          "label" : "A"
-        }, {
-          "i" : 2,
-          "label" : "B"
-        }, {
-          "i" : 3,
-          "label" : "G"
-        } ]
-      }, {
-        "when" : {
-          "Common" : "ANODE",
-          "Pinout" : "G_COM_R_B"
-        },
-        "pins" : [ {
-          "i" : 0,
-          "label" : "G"
-        }, {
-          "i" : 1,
-          "label" : "A"
-        }, {
-          "i" : 2,
-          "label" : "R"
-        }, {
-          "i" : 3,
-          "label" : "B"
-        } ]
-      }, {
-        "when" : {
-          "Common" : "ANODE",
-          "Pinout" : "B_COM_R_G"
-        },
-        "pins" : [ {
-          "i" : 0,
-          "label" : "B"
-        }, {
-          "i" : 1,
-          "label" : "A"
+          "label" : "COM"
         }, {
           "i" : 2,
           "label" : "R"

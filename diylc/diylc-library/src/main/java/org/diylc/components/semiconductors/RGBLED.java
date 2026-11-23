@@ -57,7 +57,7 @@ import org.diylc.core.measures.SizeUnit;
 import org.diylc.utils.Constants;
 
 @AiNote("Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends")
-@AiNote("'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' decides whether COM is the anode (A) or the cathode (K)")
+@AiNote("'Pinout' lists the leads from pin 1 as seen from the side with the dome up and the flat on the left; 'Common' says whether the COM lead is the common anode or the common cathode")
 @AiNote("The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side")
 @ComponentDescriptor(name = "RGB LED", author = "Jindra Helcl", category = "Semiconductors",
     instanceNamePrefix = "D", description = "4-lead RGB LED with flexible leads",
@@ -206,8 +206,7 @@ public class RGBLED extends AbstractTransistorPackage {
 
   @Override
   public String getComment() {
-    return getCommon().toString() + ", pins " + getPinLabel(0) + getPinLabel(1) + getPinLabel(2)
-        + getPinLabel(3);
+    return getCommon().toString() + ", pins " + getRgbPinout();
   }
 
   @Override
@@ -223,7 +222,7 @@ public class RGBLED extends AbstractTransistorPackage {
   public String getPinLabel(int index) {
     char c = getRgbPinout().getLead(index);
     if (c == RGBPinout.COMMON) {
-      return getCommon() == CommonType.ANODE ? "A" : "K";
+      return "COM";
     }
     return Character.toString(c);
   }
