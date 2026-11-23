@@ -728,3 +728,9 @@ Fade Copper Under Board|Prigušen Bakar Ispod Ploče
 Board Side|Strana Ploče
 Bottom Traces|Donji Vodovi
 Top Traces|Gornji Vodovi
+Lead pitch|Korak Izvoda
+Common|Zajednički
+Pin order|Redosled Pinova
+Side|Bočno
+Common cathode|Zajednička katoda
+Common anode|Zajednička anoda

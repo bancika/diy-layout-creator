@@ -17530,6 +17530,128 @@
       } ]
     }
   }, {
+    "name" : "RGB LED",
+    "className" : "semiconductors.RGBLED",
+    "category" : "Semiconductors",
+    "namePrefix" : "D",
+    "description" : "4-lead RGB LED with flexible leads",
+    "creationMethod" : "SINGLE_CLICK",
+    "notes" : [ "Control points 0-3 are the free ends of the four leads, pin 1 first; control point 4 is the body, and the leads run from a tight row at the body to their ends", "'Pin order' lists the leads from pin 1 using R, G, B and C for the common lead; 'Common' decides whether C is the anode (A) or the cathode (K)", "The flat on the rim marks the pin 1 end; 'View' draws the LED from the top or from the side" ],
+    "properties" : [ {
+      "name" : "Alpha",
+      "type" : "Percentage",
+      "format" : "number without the % sign, e.g. 100",
+      "defaultValue" : "60"
+    }, {
+      "name" : "Board Side",
+      "type" : "PCBLayer",
+      "possibleValues" : [ "_1", "_2" ],
+      "defaultValue" : "_2"
+    }, {
+      "name" : "Body",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#CDE4F2"
+    }, {
+      "name" : "Border",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#788C9B"
+    }, {
+      "name" : "Common",
+      "type" : "CommonType",
+      "possibleValues" : [ "CATHODE", "ANODE" ],
+      "defaultValue" : "CATHODE"
+    }, {
+      "name" : "Display",
+      "type" : "TransistorDisplay",
+      "possibleValues" : [ "NAME", "VALUE", "NONE", "BOTH", "PINOUT" ],
+      "defaultValue" : "NAME"
+    }, {
+      "name" : "Font Size Override",
+      "type" : "Integer"
+    }, {
+      "name" : "Label",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#000000"
+    }, {
+      "name" : "Lead Color",
+      "type" : "Color",
+      "format" : "hex",
+      "defaultValue" : "#CCCCCC"
+    }, {
+      "name" : "Lead pitch",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "0.05in"
+    }, {
+      "name" : "Name",
+      "type" : "String"
+    }, {
+      "name" : "Orientation",
+      "type" : "Orientation",
+      "possibleValues" : [ "DEFAULT", "_90", "_180", "_270" ],
+      "defaultValue" : "DEFAULT"
+    }, {
+      "name" : "Pin order",
+      "type" : "String",
+      "defaultValue" : "RCGB"
+    }, {
+      "name" : "Size",
+      "type" : "Size",
+      "format" : "(value)(unit)",
+      "possibleUnits" : [ "px", "mm", "cm", "m", "in", "ft", "yd" ],
+      "defaultValue" : "5mm"
+    }, {
+      "name" : "Value",
+      "type" : "String"
+    }, {
+      "name" : "View",
+      "type" : "View",
+      "possibleValues" : [ "TOP", "SIDE" ],
+      "defaultValue" : "TOP"
+    } ],
+    "pinout" : {
+      "drivers" : [ "Common" ],
+      "variants" : [ {
+        "when" : {
+          "Common" : "CATHODE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "K"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      }, {
+        "when" : {
+          "Common" : "ANODE"
+        },
+        "pins" : [ {
+          "i" : 0,
+          "label" : "R"
+        }, {
+          "i" : 1,
+          "label" : "A"
+        }, {
+          "i" : 2,
+          "label" : "G"
+        }, {
+          "i" : 3,
+          "label" : "B"
+        } ]
+      } ]
+    }
+  }, {
     "name" : "SIP IC",
     "className" : "semiconductors.SIL_IC",
     "category" : "Semiconductors",

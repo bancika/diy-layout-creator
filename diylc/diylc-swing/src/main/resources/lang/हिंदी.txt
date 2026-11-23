@@ -730,3 +730,9 @@ Fade Copper Under Board|बोर्ड के नीचे तांबा ध�
 Board Side|बोर्ड का पक्ष
 Bottom Traces|नीचे के ट्रेस
 Top Traces|ऊपर के ट्रेस
+Lead pitch|लीड पिच
+Common|कॉमन
+Pin order|पिन क्रम
+Side|साइड
+Common cathode|कॉमन कैथोड
+Common anode|कॉमन एनोड

@@ -732,3 +732,9 @@ Fade Copper Under Board|Atenuar cobre bajo la placa
 Board Side|Lado de la placa
 Bottom Traces|Trazos inferiores
 Top Traces|Trazos superiores
+Lead pitch|Paso de Terminales
+Common|Común
+Pin order|Orden de Terminales
+Side|Lateral
+Common cathode|Cátodo común
+Common anode|Ánodo común

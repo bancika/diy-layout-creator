@@ -731,3 +731,9 @@ Fade Copper Under Board|Estomper le cuivre sous la carte
 Board Side|Côté de la carte
 Bottom Traces|Pistes du dessous
 Top Traces|Pistes du dessus
+Lead pitch|Pas des fils
+Common|Commun
+Pin order|Ordre des broches
+Side|De côté
+Common cathode|Cathode commune
+Common anode|Anode commune

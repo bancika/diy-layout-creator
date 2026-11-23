@@ -733,3 +733,9 @@ Fade Copper Under Board|Attenua il rame sotto la scheda
 Board Side|Lato della scheda
 Bottom Traces|Tracce inferiori
 Top Traces|Tracce superiori
+Lead pitch|Passo dei cavi
+Common|Comune
+Pin order|Ordine dei pin
+Side|Laterale
+Common cathode|Catodo comune
+Common anode|Anodo comune

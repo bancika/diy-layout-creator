@@ -736,3 +736,9 @@ Fade Copper Under Board|Kupfer unter der Platine abblenden
 Board Side|Platinenseite
 Bottom Traces|Leiterbahnen unten
 Top Traces|Leiterbahnen oben
+Lead pitch|Leitungsraster
+Common|Gemeinsam
+Pin order|Stiftreihenfolge
+Side|Seitlich
+Common cathode|Gemeinsame Kathode
+Common anode|Gemeinsame Anode

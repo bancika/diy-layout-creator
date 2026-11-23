@@ -148,6 +148,7 @@ semiconductors.LogicGateSymbol = Type
 semiconductors.MOSFETSymbol = fixed
 semiconductors.MultiwattIC = Type
 semiconductors.PhotoDiodeSymbol = fixed
+semiconductors.RGBLED = Common
 semiconductors.SIL_IC = Pins
 semiconductors.SchottkyDiodeSymbol = fixed
 semiconductors.TransistorTO1 = Pinout
