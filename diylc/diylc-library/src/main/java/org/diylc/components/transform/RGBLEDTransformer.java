@@ -36,10 +36,9 @@ public class RGBLEDTransformer implements IComponentTransformer {
     return component.getClass().equals(RGBLED.class);
   }
 
-  // mirroring would only reverse the pin order, which "Pin order" already covers
   @Override
   public boolean canMirror(IDIYComponent<?> component) {
-    return false;
+    return component.getClass().equals(RGBLED.class);
   }
 
   @Override
@@ -64,5 +63,27 @@ public class RGBLEDTransformer implements IComponentTransformer {
   }
 
   @Override
-  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {}
+  public void mirror(IDIYComponent<?> component, Point2D center, int direction) {
+    boolean horizontal = direction == IComponentTransformer.HORIZONTAL;
+    for (int index = 0; index < component.getControlPointCount(); index++) {
+      Point2D p = component.getControlPoint(index);
+      component.setControlPoint(horizontal
+          ? new Point2D.Double(2 * center.getX() - p.getX(), p.getY())
+          : new Point2D.Double(p.getX(), 2 * center.getY() - p.getY()), index);
+    }
+
+    // a reflection cannot be expressed as a rotation, so the lead direction is reflected and the
+    // mirrored flag toggled, which reverses the row of leads
+    RGBLED led = (RGBLED) component;
+    Point2D v = RGBLED.getLeadDirection(led.getOrientation());
+    Point2D reflected = horizontal ? new Point2D.Double(-v.getX(), v.getY())
+        : new Point2D.Double(v.getX(), -v.getY());
+    for (Orientation o : Orientation.values()) {
+      if (RGBLED.getLeadDirection(o).equals(reflected)) {
+        led.setOrientation(o);
+        break;
+      }
+    }
+    led.setMirrored(!led.isMirrored());
+  }
 }

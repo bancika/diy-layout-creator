@@ -85,6 +85,7 @@ public class RGBLED extends AbstractTransistorPackage {
   private CommonType common = CommonType.CATHODE;
   private RGBPinout rgbPinout = RGBPinout.R_COM_G_B;
   private View view = View.TOP;
+  private boolean mirrored = false;
   private Color leadColor = LEAD_COLOR;
 
   public RGBLED() {
@@ -115,6 +116,16 @@ public class RGBLED extends AbstractTransistorPackage {
 
   public void setView(View view) {
     this.view = view;
+    body = null;
+  }
+
+  // set only by RGBLEDTransformer, which combines it with the orientation to express any mirroring
+  public boolean isMirrored() {
+    return mirrored;
+  }
+
+  public void setMirrored(boolean mirrored) {
+    this.mirrored = mirrored;
     body = null;
   }
 
@@ -247,21 +258,29 @@ public class RGBLED extends AbstractTransistorPackage {
 
   /**
    * Maps body-local coordinates to the canvas: x runs along the row of leads (pin 1 first), y
-   * points from the body towards the leads, and the origin is the body control point.
+   * points from the body towards the leads, and the origin is the body control point. The
+   * orientation sets the lead direction; mirroring reverses the row, so pin 1 swaps ends.
    */
   private AffineTransform localToCanvas() {
     Point2D b = controlPoints[BODY];
-    Orientation o = getOrientation();
-    if (o == Orientation._90) {
-      return new AffineTransform(0, 1, -1, 0, b.getX(), b.getY());
+    Point2D v = getLeadDirection(getOrientation());
+    double s = isMirrored() ? -1 : 1;
+    return new AffineTransform(s * v.getY(), -s * v.getX(), v.getX(), v.getY(), b.getX(),
+        b.getY());
+  }
+
+  /** @return unit vector from the body towards the leads for the given orientation */
+  public static Point2D getLeadDirection(Orientation orientation) {
+    if (orientation == Orientation._90) {
+      return new Point2D.Double(-1, 0);
     }
-    if (o == Orientation._180) {
-      return new AffineTransform(-1, 0, 0, -1, b.getX(), b.getY());
+    if (orientation == Orientation._180) {
+      return new Point2D.Double(0, -1);
     }
-    if (o == Orientation._270) {
-      return new AffineTransform(0, -1, 1, 0, b.getX(), b.getY());
+    if (orientation == Orientation._270) {
+      return new Point2D.Double(1, 0);
     }
-    return new AffineTransform(1, 0, 0, 1, b.getX(), b.getY());
+    return new Point2D.Double(0, 1);
   }
 
   private double px(double mm) {
